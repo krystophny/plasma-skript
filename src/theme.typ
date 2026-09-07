@@ -1,15 +1,47 @@
+#import "@preview/frame-it:2.0.0": frames, frame-style, styles
+#import "@preview/unify:0.8.1": num, qty, unit
+
 #let ink = rgb("#17202A")
 #let muted = rgb("#526175")
 #let accent = rgb("#126E82")
 #let accent-light = rgb("#D8F0F0")
+#let blue = rgb("#356AA0")
+#let orange = rgb("#B86418")
 #let paper = rgb("#F7F9FC")
 
 #set text(font: "Libertinus Serif", size: 11pt, fill: ink)
 #set par(leading: 0.72em)
 
+// Frame-It supplies the shared visual grammar for the teaching blocks. The
+// labels remain meaningful without color, and the CSS gives them a matching
+// presentation in the typed HTML output.
+#let frame-set = frames(
+  keyidea: ("Key idea", accent),
+  definition: ("Definition", blue),
+  assumption: ("Assumptions", orange),
+  law: ("Governing law", accent),
+  interpretation: ("Interpretation", blue),
+  example: ("Rechenbeispiel", orange),
+  summary: ("Summary", accent),
+  knowledge: ("Knowledge check", blue),
+)
+
+#let keyidea-frame = frame-set.keyidea
+#let definition-frame = frame-set.definition
+#let assumption-frame = frame-set.assumption
+#let law-frame = frame-set.law
+#let interpretation-frame = frame-set.interpretation
+#let example-frame = frame-set.example
+#let summary-frame = frame-set.summary
+#let knowledge-frame = frame-set.knowledge
+
+#show: frame-style(styles.boxy)
+
 #let lead(body) = context {
   if target() == "paged" {
-    block(width: 100%, inset: (top: 0.2em, bottom: 0.7em))[#text(size: 14pt, fill: muted)[#body]]
+    block(width: 100%, inset: (top: 0.2em, bottom: 0.7em))[
+      #text(size: 14pt, fill: muted)[#body]
+    ]
   } else {
     html.p(class: "lede")[#body]
   }
@@ -31,10 +63,14 @@
   }
 }
 
-#let page-shell(body, stylesheet: "styles.css") = context {
+#let page-shell(body, stylesheet: "styles.css", root: false) = context {
   if target() == "paged" {
     body
   } else {
+    let overview = if root { "index.html" } else { "../index.html" }
+    let contents = if root { "#contents" } else { "../index.html#contents" }
+    let glossary = if root { "#glossary" } else { "../index.html#glossary" }
+    let bibliography = if root { "#bibliography" } else { "../index.html#bibliography" }
     html.div(class: "site-shell")[
       #html.link(rel: "stylesheet", href: stylesheet)
       #html.header(class: "site-header")[
@@ -42,43 +78,174 @@
           #html.span(class: "brand-mark")[PL]
           #html.span[Plasma physics]
         ]
-        #html.nav(class: "site-nav")[
-          #link(<home>)[Overview]
-          #link(<orbits>)[Charged-particle motion]
+        #html.nav(class: "site-nav", aria-label: "Primary navigation")[
+          #link(overview)[Overview]
+          #link(contents)[Contents]
+          #link(glossary)[Glossary]
+          #link(bibliography)[Bibliography]
         ]
       ]
       #html.main(class: "site-main")[#body]
       #html.footer(class: "site-footer")[
-        Lecture notes in Typst, visualizations rendered with Manim.
+        Lecture notes in Typst, visualizations rendered with Manim. Authors:
+        Christopher Albert and Maximilian Philipp.
       ]
     ]
   }
 }
 
-#let callout(title, body) = context {
+#let callout(title, body) = keyidea-frame[#title][][#body]
+
+#let definition(title, body) = definition-frame[#title][][#body]
+
+#let assumption(title, body) = assumption-frame[#title][][#body]
+
+#let governing-law(title, body) = law-frame[#title][][#body]
+
+#let interpretation(title, body) = interpretation-frame[#title][][#body]
+
+#let summary(body) = summary-frame[Summary][][#body]
+
+#let equation-note(body) = context {
+  if target() == "paged" {
+    text(size: 8pt, fill: muted)[#body]
+  } else {
+    html.p(class: "equation-note")[#body]
+  }
+}
+
+#let details(title, body) = context {
   if target() == "paged" {
     block(
       width: 100%,
-      inset: 1em,
-      radius: 0.5em,
-      fill: accent-light,
-      stroke: (left: 3pt + accent),
+      inset: 0.9em,
+      radius: 0.45em,
+      fill: paper,
+      stroke: 0.8pt + muted,
     )[
       #strong(title) \
       #body
     ]
   } else {
-    html.aside(class: "callout")[
-      #html.strong[#title]
+    html.details(open: false, class: "disclosure")[
+      #html.summary[#title]
       #body
     ]
   }
 }
 
-#let animation(path, description) = context {
+#let objectives(items) = context {
+  if target() == "paged" {
+    block(
+      width: 100%,
+      inset: 0.9em,
+      radius: 0.45em,
+      fill: accent-light,
+      stroke: 0.8pt + accent,
+    )[
+      #strong[Learning objectives] \
+      #list(tight: true, ..items.map(item => [#item]))
+    ]
+  } else {
+    html.section(class: "objectives")[
+      #html.h3[Learning objectives]
+      #html.ul[
+        #for item in items [
+          #html.li[#item]
+        ]
+      ]
+    ]
+  }
+}
+
+#let unit-ledger(body) = context {
+  if target() == "paged" {
+    block(
+      width: 100%,
+      inset: 0.9em,
+      radius: 0.45em,
+      fill: rgb("#FFF3E5"),
+      stroke: 0.8pt + orange,
+    )[
+      #strong[Unit ledger] \
+      #body
+    ]
+  } else {
+    html.aside(class: "unit-ledger")[
+      #html.strong[Unit ledger]
+      #body
+    ]
+  }
+}
+
+#let rechenbeispiel(body) = example-frame[Rechenbeispiel][][#body]
+
+#let exam-prompts(prompts, source) = context {
+  if target() == "paged" {
+    block(
+      width: 100%,
+      inset: 0.9em,
+      radius: 0.45em,
+      fill: rgb("#FFF3E5"),
+      stroke: 0.8pt + orange,
+      breakable: false,
+    )[
+      #strong[Exam connection — exact wording] \
+      #emph[These prompts are study prompts, not an answer key.] \
+      #list(..prompts.map(prompt => [#prompt])) \
+      #text(size: 8pt, fill: muted)[Source: #source]
+    ]
+  } else {
+    html.aside(class: "exam-prompt")[
+      #html.h3[Exam connection — exact wording]
+      #html.p(class: "exam-note")[
+        These prompts are study prompts, not an answer key.
+      ]
+      #html.ol[
+        #for prompt in prompts [
+          #html.li[#prompt]
+        ]
+      ]
+      #html.p(class: "source-note")[Source: #source]
+    ]
+  }
+}
+
+#let knowledge-check(items) = context {
+  if target() == "paged" {
+    knowledge-frame[Knowledge check][][
+      #list(..items.map(item => [#item.question]))
+      #details([Answers], [
+        #for item in items [
+          #strong[#item.question] \
+          #item.answer \
+        ]
+      ])
+    ]
+  } else {
+    html.section(class: "knowledge-check")[
+      #html.h3[Knowledge check]
+      #html.ol[
+        #for item in items [
+          #html.li[
+            #item.question
+            #html.details(open: false)[
+              #html.summary[Answer]
+              #item.answer
+            ]
+          ]
+        ]
+      ]
+    ]
+  }
+}
+
+#let animation(path, alt-description, caption: none, poster: "") = context {
+  let visible-caption = if caption == none { alt-description } else { caption }
   if target() == "paged" {
     figure(
-      caption: [#description],
+      alt: alt-description,
+      caption: [#visible-caption],
     )[
       #block(
         width: 100%,
@@ -88,7 +255,8 @@
         stroke: 1pt + muted,
       )[
         #emph[Animation available in the website build.] \
-        #description
+        #visible-caption \
+        #emph[Static reading: #alt-description]
       ]
     ]
   } else {
@@ -101,11 +269,71 @@
         playsinline: true,
         preload: "metadata",
         src: path,
+        poster: poster,
         width: 960,
       )[
-        #description
+        #alt-description
       ]
-      #html.figcaption[#description]
+      #html.figcaption[
+        #visible-caption
+        #html.span(class: "alt-note")[Alternative description: #alt-description]
+      ]
     ]
   }
 }
+
+#let chapter-nav(previous: none, next: none) = context {
+  if target() == "paged" {
+    block(width: 100%, inset: (top: 1em, bottom: 0.5em), stroke: (top: 0.8pt + muted))[
+      #if previous != none {
+        link(previous.href)[← #previous.title]
+      }
+      #h(1fr)
+      #if next != none {
+        link(next.href)[#next.title →]
+      }
+    ]
+  } else {
+    html.nav(class: "chapter-nav", aria-label: "Chapter navigation")[
+      #if previous != none {
+        link(previous.href)[← #previous.title]
+      }
+      #if next != none {
+        link(next.href)[#next.title →]
+      }
+    ]
+  }
+}
+
+#let planned-chapter(number, title, role, sections, previous: none, next: none) = [
+  #page-title[#number. #title]
+
+  #lead[
+    Foundation scaffold. This page fixes the chapter boundary, order, and
+    notation plan before the full derivations are written.
+  ]
+
+  #callout(
+    [Chapter status],
+    [#role The completed chapter will use the section contract: motivation,
+    observable objectives, definitions and units, derivation, visual or
+    Rechenbeispiel, limits, summary, exam connection, and four-question
+    knowledge check.]
+  )
+
+  #section-title[Planned sequence]
+  #list(..sections.map(section => [#section]))
+
+  #unit-ledger[
+    Gaussian CGS is the default dimensional convention. Each chapter will
+    declare its electromagnetic convention before its first dimensional
+    equation and will identify every normalized reference scale.
+  ]
+
+  #summary[
+    This scaffold is intentionally explicit about what remains to be written.
+    Waves and plasma sheaths remain separate top-level chapters.
+  ]
+
+  #chapter-nav(previous: previous, next: next)
+]

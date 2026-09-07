@@ -44,8 +44,26 @@ if [[ ! -d "$site_dir" ]]; then
 else
   require_file "$site_dir/index.html"
   require_file "$site_dir/styles.css"
-  require_file "$site_dir/chapters/01-orbits.html"
+  for chapter in \
+    01-introduction \
+    02-single-particle-motion \
+    03-kinetic-theory \
+    04-moments \
+    05-multiple-fluids \
+    06-mhd \
+    07-collisions-conductivity \
+    08-diffusion \
+    09-introduction-waves \
+    10-cold-magnetized-waves \
+    11-finite-temperature-waves \
+    12-hot-plasma-waves \
+    13-sheaths-probes; do
+    require_file "$site_dir/chapters/$chapter.html"
+  done
   require_file "$site_dir/media/exb-drift.mp4"
+  require_file "$site_dir/media/exb-drift.png"
+  require_file "$site_dir/media/plasma-oscillation.mp4"
+  require_file "$site_dir/media/plasma-oscillation.png"
 
   private_artifact="$(find -L "$site_dir" -type f \
     \( -path '*/solutions/*' \

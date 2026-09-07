@@ -10,9 +10,57 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
+        typst = pkgs.typst.withPackages (ps: [
+          ps.physica_0_9_8
+          ps.cetz_0_5_2
+          ps.fletcher_0_5_8
+          ps.lilaq_0_6_0
+          ps.frame-it_2_0_0
+          ps.unify_0_8_1
+        ]);
+        mkHostApp = { name, bind }:
+          let
+            hostScript = pkgs.writeShellApplication {
+              inherit name;
+              runtimeInputs = [ pkgs.python3 ];
+              text = ''
+                site_dir="''${SITE_DIR:-public}"
+                if [[ ! -d "$site_dir" ]]; then
+                  echo "Site directory '$site_dir' does not exist; build the site first." >&2
+                  exit 1
+                fi
+
+                if (( $# == 0 )); then
+                  set -- "''${PORT:-4444}"
+                fi
+
+                exec python3 -m http.server \
+                  --bind ${bind} \
+                  --directory "$site_dir" \
+                  "$@"
+              '';
+            };
+          in
+          {
+            type = "app";
+            meta.description = "Serve the generated site on ${bind}";
+            program = "${hostScript}/bin/${name}";
+          };
       in
       {
         formatter = pkgs.alejandra;
+
+        apps = {
+          local-host = mkHostApp {
+            name = "local-host";
+            bind = "localhost";
+          };
+
+          public-host = mkHostApp {
+            name = "public-host";
+            bind = "0.0.0.0";
+          };
+        };
 
         packages.default = pkgs.stdenvNoCC.mkDerivation {
           pname = "plasma-physics-script";
@@ -22,7 +70,7 @@
           nativeBuildInputs = [
             pkgs.ffmpeg
             pkgs.manim
-            pkgs.typst
+            typst
           ];
 
           buildPhase = ''
@@ -58,7 +106,7 @@
 
         devShells.default = pkgs.mkShell {
           packages = [
-            pkgs.typst
+            typst
             pkgs.manim
             pkgs.ffmpeg
             pkgs.alejandra

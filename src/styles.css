@@ -94,7 +94,8 @@ a {
 .site-main > figure,
 .site-main > aside,
 .site-main > ol,
-.site-main > ul {
+.site-main > ul,
+.site-main > div {
   max-width: 48rem;
   margin-inline: auto;
 }
@@ -177,6 +178,250 @@ a {
 .roadmap li::marker {
   color: var(--teal);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.project-note {
+  max-width: 58rem !important;
+  margin: 0 auto 4rem;
+  padding: 1.2rem 1.4rem;
+  border: 1px solid var(--line);
+  border-left: 0.25rem solid var(--teal);
+  border-radius: 0 0.7rem 0.7rem 0;
+  background: var(--surface);
+}
+
+.project-note strong {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--teal);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.catalog {
+  max-width: 58rem !important;
+  margin-bottom: 5rem;
+}
+
+.catalog > h2,
+.content-sections > h2 {
+  margin-top: 0.3rem;
+}
+
+.chapter-list {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.chapter-item {
+  display: grid;
+  grid-template-columns: 3.4rem 1fr;
+  gap: 1rem;
+  padding: 1.2rem;
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  background: var(--surface);
+}
+
+.chapter-number {
+  display: grid;
+  width: 2.6rem;
+  height: 2.6rem;
+  place-items: center;
+  border: 1px solid var(--teal);
+  border-radius: 0.55rem;
+  color: var(--teal);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9rem;
+}
+
+.chapter-copy h3 {
+  margin: 0.1rem 0 0.35rem;
+  font-size: 1.25rem;
+}
+
+.chapter-copy p:last-child {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.content-sections {
+  max-width: 58rem !important;
+  margin-bottom: 5rem;
+}
+
+.content-sections > p:not(.eyebrow) {
+  color: var(--muted);
+}
+
+dl {
+  display: grid;
+  grid-template-columns: minmax(10rem, 0.35fr) 1fr;
+  margin: 1.5rem 0;
+  border-top: 1px solid var(--line);
+}
+
+dt,
+dd {
+  margin: 0;
+  padding: 1rem 0.8rem;
+  border-bottom: 1px solid var(--line);
+}
+
+dt {
+  color: var(--teal);
+  font-weight: 700;
+}
+
+dd {
+  color: var(--muted);
+}
+
+.objectives,
+.unit-ledger,
+.exam-prompt,
+.knowledge-check {
+  max-width: 48rem;
+  margin: 2rem auto;
+  padding: 1.1rem 1.35rem;
+  border-radius: 0.75rem;
+}
+
+.objectives {
+  border: 1px solid var(--teal);
+  background: color-mix(in srgb, var(--teal) 10%, var(--surface));
+}
+
+.unit-ledger {
+  border-left: 0.25rem solid var(--orange);
+  background: color-mix(in srgb, var(--orange) 10%, var(--surface));
+}
+
+.exam-prompt {
+  border: 1px solid var(--orange);
+  background: color-mix(in srgb, var(--orange) 10%, var(--surface));
+}
+
+.knowledge-check {
+  border: 1px solid var(--blue);
+  background: color-mix(in srgb, var(--blue) 10%, var(--surface));
+}
+
+.objectives h3,
+.exam-prompt h3,
+.knowledge-check h3,
+.unit-ledger strong {
+  display: block;
+  margin: 0 0 0.6rem;
+  color: var(--teal);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.unit-ledger strong,
+.exam-prompt h3 {
+  color: var(--orange);
+}
+
+.knowledge-check h3 {
+  color: var(--blue);
+}
+
+.objectives ul,
+.exam-prompt ol,
+.knowledge-check ol {
+  margin: 0.3rem 0 0;
+  padding-left: 1.35rem;
+}
+
+.exam-note,
+.source-note,
+.alt-note,
+.equation-note {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.source-note {
+  margin-bottom: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.disclosure,
+.knowledge-check details {
+  margin-top: 0.8rem;
+  border-top: 1px solid var(--line);
+}
+
+.disclosure summary,
+.knowledge-check summary {
+  padding: 0.75rem 0;
+  color: var(--teal);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.disclosure[open],
+.knowledge-check details[open] {
+  padding-bottom: 0.5rem;
+}
+
+.disclosure[open] summary,
+.knowledge-check details[open] summary {
+  border-bottom: 1px solid var(--line);
+}
+
+.equation-note {
+  max-width: 48rem;
+  margin: -1.1rem auto 1.4rem;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 48rem;
+  margin: 3rem auto 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.chapter-nav a {
+  max-width: 48%;
+}
+
+.alt-note {
+  display: block;
+  margin-top: 0.45rem;
+}
+
+.bibliography {
+  margin-top: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.bibliography li {
+  margin: 0.75rem 0;
+  color: var(--muted);
+}
+
+main > div[class*="frame"],
+main > div[class*="box"] {
+  max-width: 48rem;
+  margin-inline: auto;
+}
+
+summary:focus-visible,
+a:focus-visible,
+button:focus-visible {
+  outline: 0.2rem solid var(--orange);
+  outline-offset: 0.2rem;
 }
 
 h1,

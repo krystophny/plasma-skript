@@ -23,6 +23,8 @@ Before changing files:
 - Use Gaussian CGS as the default dimensional convention. Label every unit,
   normalization, reference scale, and dimensionless quantity at its point of
   use.
+- Use the `unify` Typst package for unit-bearing quantities and numerical
+  results whenever its unit parser supports the notation.
 - Put exact exam wording in clearly labelled exam-prompt blocks with a source
   location. Teach the prerequisites without answering the exam prompt.
 - End every section with four original knowledge-check questions and concise

@@ -19,6 +19,9 @@ HTML-specific components have an equivalent paged fallback.
 - Gaussian CGS is the default dimensional unit system. Normalized variables are
   welcome, but every normalization must state its reference scales and how to
   reconstruct dimensional quantities.
+- Use the versioned `unify` Typst package for unit-bearing quantities and
+  numerical results whenever its parser supports the notation. Do not replace
+  it with ad hoc unit formatting in new content.
 - Every equation, numerical value, table, plot, animation, caption, axis,
   legend, and alternative description must label its unit system. A quantity
   without a unit is explicitly marked as dimensionless or normalized.
@@ -371,6 +374,8 @@ snapshots provide these starting API baselines:
   phase-space projections, and other data-driven plots.
 - `frame-it` for definitions, assumptions, examples, warnings, derivation
   summaries, physical interpretations, and knowledge-check presentation.
+- `unify` for unit-bearing quantities and numerical results, with the active
+  Gaussian-CGS or normalized convention stated nearby.
 
 Use the APIs documented in the corresponding PDFs under `resources/typst/`.
 The imported version must be updated deliberately when the package API or the
