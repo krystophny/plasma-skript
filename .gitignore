@@ -1,0 +1,15 @@
+public/
+_site/
+solutions/
+# Copyrighted and private source material; never publish or force-add these.
+resources/books/
+resources/content/
+# Local documentation snapshots are reference material, not project sources.
+resources/typst/*.pdf
+result
+result-*
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.pytest_cache/
+.DS_Store
