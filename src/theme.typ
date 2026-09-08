@@ -307,15 +307,10 @@
 
 #let chapter-nav(previous: none, next: none) = context {
   if target() == "paged" {
-    block(width: 100%, inset: (top: 1em, bottom: 0.5em), stroke: (top: 0.8pt + muted))[
-      #if previous != none {
-        link(previous.href)[← #previous.title]
-      }
-      #h(1fr)
-      #if next != none {
-        link(next.href)[#next.title →]
-      }
-    ]
+    // The paged fallback already has explicit chapter breaks and a table of
+    // contents. Keeping navigation in the web target avoids orphaning a
+    // one-line navigation block onto its own print page.
+    []
   } else {
     html.nav(class: "chapter-nav", aria-label: "Chapter navigation")[
       #if previous != none {

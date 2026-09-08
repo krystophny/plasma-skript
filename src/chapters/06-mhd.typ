@@ -1,6 +1,6 @@
 #import "../theme.typ": *
 #import "../figures.typ": mhd-reduction, mhd-ohm-balance, mhd-flux-diffusion, mhd-force-balance
-#import "@preview/physica:0.9.8": div, grad, pdv, curl
+#import "@preview/physica:0.9.8": div, grad, pdv, dv, curl
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
@@ -47,7 +47,7 @@
     electric field in statvolt per #unit("cm"), and current density in
     statcoulomb per #unit("cm^2") per #unit("s"). The magnetic force density
     is in #unit("g") #unit("cm^-2") #unit("s^-2"); the factor $1/c$ in
-    $bold(j) times bold(B)/c$ belongs to Gaussian CGS.
+    $(bold(j) times bold(B))/c$ belongs to Gaussian CGS.
   ]
 
   #definition(
@@ -78,7 +78,7 @@
 
   $ pdv(rho bold(u), t)
     + div_(bold(r))(rho bold(u) bold(u) + bold(P))
-    = rho_q bold(E) + bold(j) times bold(B)/c
+    = rho_q bold(E) + (bold(j) times bold(B))/c
       + sum_s bold(R)_(s) $ <mhd-momentum>
 
   For isolated elastic interspecies collisions,
@@ -115,8 +115,8 @@
 
     The force sums are
     $sum_s q_(s)n_(s)bold(E)=rho_q bold(E)$ and
-    $sum_s q_(s)n_(s)bold(u)_(s)times bold(B)/c
-      =bold(j)times bold(B)/c$. Internal collision sources cancel only when
+    $(sum_s q_(s)n_(s)(bold(u)_(s)times bold(B)))/c
+      =(bold(j)times bold(B))/c$. Internal collision sources cancel only when
     their species sum is zero. These identities yield the displayed total
     momentum equation.]
   )
@@ -216,15 +216,15 @@
 
   $ m_(e)n (pdv(bold(u)_(e),t)
     + bold(u)_(e) dot grad_(bold(r))(bold(u)_(e)))
-    = -e n (bold(E) + bold(u)_(e) times bold(B)/c)
+    = -e n (bold(E) + (bold(u)_(e) times bold(B))/c)
       - grad_(bold(r))(p_(e)) + bold(R)_(e) $ <mhd-electron-momentum>
 
   Solving it for the field in the electron frame and replacing
   $bold(u)_(e)$ by $bold(u)-bold(j)/(e n)$ gives the ordered generalized Ohm
   law
 
-  $ bold(E) + bold(u) times bold(B)/c
-    = bold(j) times bold(B)/(e n c)
+  $ bold(E) + (bold(u) times bold(B))/c
+    = (bold(j) times bold(B))/(e n c)
       - grad_(bold(r))(p_(e))/(e n)
       + eta bold(j)
       + m_(e)/(e^2 n) pdv(bold(j),t) $ <mhd-generalized-ohm>
@@ -239,12 +239,12 @@
 
   $ bold(R)_(e) = m_(e)n nu_(e i)
     (bold(u)_(i)-bold(u)_(e))
-    = m_(e)nu_(e i)/e bold(j) $ <mhd-collisional-drag>
+    = (m_(e)nu_(e i) bold(j))/e $ <mhd-collisional-drag>
 
   Therefore
 
-  $ eta = m_(e)nu_(e i)/(n e^2),
-    quad sigma = 1/eta = n e^2/(m_(e)nu_(e i)) $ <mhd-spitzer-resistivity>
+  $ eta = (m_(e)nu_(e i))/(n e^2),
+    quad sigma = 1/eta = (n e^2)/(m_(e)nu_(e i)) $ <mhd-spitzer-resistivity>
 
   Here $nu_(e i)$ is the electron--ion momentum-transfer frequency. The
   frequency itself depends on the collision model and plasma state; the later
@@ -255,35 +255,40 @@
     [Derivation: locate every term in generalized Ohm's law],
     [Start with the electron material momentum equation and move the electric
     force to the left:
-    $bold(E)+bold(u)_(e)times bold(B)/c
-      =-grad p_(e)/(e n)+bold(R)_(e)/(e n)
-        -m_(e)/e D_(e)bold(u)_(e)$,
-    where $D_(e)$ denotes the electron material derivative.
+    $bold(E)+(bold(u)_(e)times bold(B))/c
+      =-(grad p_(e))/(e n)+bold(R)_(e)/(e n)
+        -(m_(e) (
+          pdv(bold(u)_(e),t)
+          + bold(u)_(e) dot grad_(bold(r))(bold(u)_(e))))/e$,
+    where the parenthesized sum is the electron material derivative.
 
     Add the difference between bulk and electron magnetic advection to both
     sides. Since
     $bold(u)-bold(u)_(e) approx bold(j)/(e n)$,
-    $bold(E)+bold(u)times bold(B)/c$
+    $bold(E)+(bold(u)times bold(B))/c$
     equals the preceding right-hand side plus
-    $bold(j)times bold(B)/(e n c)$. This is the Hall term. It is the magnetic
+    $(bold(j)times bold(B))/(e n c)$. This is the Hall term. It is the magnetic
     force expressed in the electron--bulk relative velocity.
 
     For a scalar electron pressure, the pressure force is already
-    $-grad p_(e)/(e n)$. If $n$ varies, it is useful to retain this form rather
+    $-(grad p_(e))/(e n)$. If $n$ varies, it is useful to retain this form rather
     than split it into an electrostatic term and a density-gradient term; the
     distinction is a matter of ordering and closure.
 
     Model interspecies drag as a frictional force toward the ion velocity:
     $bold(R)_(e)=m_(e)n nu_(e i)(bold(u)_(i)-bold(u)_(e))$.
     Insert $bold(u)_(i)-bold(u)_(e)=bold(j)/(e n)$ to obtain
-    $bold(R)_(e)/(e n)=m_(e)nu_(e i)bold(j)/(n e^2)=eta bold(j)$.
-    Thus $eta=m_(e)nu_(e i)/(n e^2)$ and $sigma=1/eta$.
+    $bold(R)_(e)/(e n)=(m_(e)nu_(e i)bold(j))/(n e^2)=eta bold(j)$.
+    Thus $eta=(m_(e)nu_(e i))/(n e^2)$ and $sigma=1/eta$.
 
     Finally, write the electron velocity as
     $bold(u)_(e) approx bold(u)-bold(j)/(e n)$. In the slowly varying-density
     and slow-bulk-inertia ordering, the part of
-    $-m_(e)D_(e)bold(u)_(e)/e$ that depends on the current is
-    $m_(e)pdv(bold(j),t)/(e^2 n)$. If current advection or density variation is
+    $-(m_(e) (
+      pdv(bold(u)_(e),t)
+      + bold(u)_(e) dot grad_(bold(r))(bold(u)_(e))))/e$
+    that depends on the current is
+    $(m_(e)pdv(bold(j),t))/(e^2 n)$. If current advection or density variation is
     not small, this term must be replaced by the corresponding full
     electron-inertia operator; the displayed generalized law is then not
     sufficient.]
@@ -292,8 +297,8 @@
   #interpretation(
     [The ideal field is a limit, not the starting equation],
     [If Hall, pressure, resistive, and electron-inertia terms are all small
-    compared with $bold(u)times bold(B)/c$, generalized Ohm's law reduces to
-    $bold(E)+bold(u)times bold(B)/c approx bold(0)$. If one correction is not
+    compared with $(bold(u)times bold(B))/c$, generalized Ohm's law reduces to
+    $bold(E)+(bold(u)times bold(B))/c approx bold(0)$. If one correction is not
     small, the plasma is still a fluid but it is not described by ideal MHD.
     The ordering must be checked against the length, time, density, and field
     scales of the problem.]
@@ -325,14 +330,14 @@
     (
       question: [What physical process gives the scalar resistivity?],
       answer: [Electron--ion collisional drag gives
-      $bold(R)_(e)=m_(e)nu_(e i)bold(j)/e$, hence
-      $eta=m_(e)nu_(e i)/(n e^2)$. More frequent momentum transfer means
+      $bold(R)_(e)=(m_(e)nu_(e i)bold(j))/e$, hence
+      $eta=(m_(e)nu_(e i))/(n e^2)$. More frequent momentum transfer means
       larger resistivity and smaller conductivity.]
     ),
     (
       question: [When is the Hall term important?],
       answer: [It matters when
-      $bold(j)times bold(B)/(e n c)$ is not small compared with the bulk
+      $(bold(j)times bold(B))/(e n c)$ is not small compared with the bulk
       electric field. It is enhanced by large current, strong field, or low
       density and is absent only after a scale ordering justifies neglecting
       it.]
@@ -340,7 +345,7 @@
     (
       question: [What is the ideal-MHD electric-field condition in Gaussian CGS?],
       answer: [The condition is
-      $bold(E)+bold(u)times bold(B)/c=bold(0)$. It is a reduced generalized
+      $bold(E)+(bold(u)times bold(B))/c=bold(0)$. It is a reduced generalized
       Ohm law and therefore requires all retained correction terms to be small.]
     ),
   ))
@@ -366,17 +371,19 @@
     The dimensional MHD variables use Gaussian CGS: $rho$ in #unit("g/cm^3"),
     $bold(u)$ in #unit("cm/s"), $p$ in #unit("erg/cm^3"), and $bold(B)$ in
     gauss. The adiabatic sound speed
-    $c_(s)=sqrt(gamma p_0/rho_0)$ is in #unit("cm/s"). Perturbation symbols
-    such as $delta rho/rho_0$, $delta p/p_0$, and
-    $delta bold(B)/B_0$ are dimensionless ratios.
+    $c_(s)=sqrt((gamma p_0)/rho_0)$ is in #unit("cm/s"). Perturbation symbols
+    such as $(delta rho)/rho_0$, $(delta p)/p_0$, and
+    $(delta bold(B))/B_0$ are dimensionless ratios.
   ]
 
   #assumption(
     [Simplified MHD ordering],
     [Use quasi-neutrality, negligible displacement current, isotropic pressure,
     negligible Hall and electron-pressure corrections, and a magnetic Reynolds
-    number large enough for ideal induction. Close the pressure with an
-    adiabatic law $D(p rho^(-gamma))/D t=0$. For the linearized equations,
+    number large enough for ideal induction. Close the pressure with the
+    explicit material-derivative form
+    $pdv(p rho^(-gamma),t)+bold(u) dot grad_(bold(r))(p rho^(-gamma))=0$.
+    For the linearized equations,
     take a static uniform equilibrium
     $(rho_0,p_0,bold(B)_0)$ with no equilibrium current or pressure gradient.]
   )
@@ -387,7 +394,7 @@
 
   $ rho (pdv(bold(u),t) + bold(u) dot grad_(bold(r))(bold(u)))
     = -grad_(bold(r))(p)
-      + 1/(4 pi) (curl_(bold(r))(bold(B)) times bold(B)) $ <mhd-ideal-momentum>
+      + (curl_(bold(r))(bold(B)) times bold(B))/(4 pi) $ <mhd-ideal-momentum>
 
   $ pdv(bold(B),t) = curl_(bold(r))(bold(u) times bold(B)),
     quad div_(bold(r))(bold(B))=0 $ <mhd-ideal-induction>
@@ -398,7 +405,7 @@
   The magnetic force has the Gaussian-CGS coefficient $1/(4 pi)$ because the
   displacement current has been neglected in Ampere's law:
 
-  $ bold(j) = c/(4 pi) curl_(bold(r))(bold(B)) $ <mhd-ampere-reduced>
+  $ bold(j) = (c curl_(bold(r))(bold(B)))/(4 pi) $ <mhd-ampere-reduced>
 
   The electric field is recovered from the ideal constraint, not evolved as an
   independent MHD variable.
@@ -413,14 +420,14 @@
 
   $ rho_0 pdv(delta bold(u),t)
     = -grad_(bold(r))(delta p)
-      + 1/(4 pi) (curl_(bold(r))(delta bold(B)) times bold(B)_0) $ <mhd-linear-momentum>
+      + (curl_(bold(r))(delta bold(B)) times bold(B)_0)/(4 pi) $ <mhd-linear-momentum>
 
   $ pdv(delta bold(B),t)
     = curl_(bold(r))(delta bold(u) times bold(B)_0),
     quad div_(bold(r))(delta bold(B))=0 $ <mhd-linear-induction>
 
   $ delta p = c_(s)^2 delta rho,
-    quad c_(s)^2=gamma p_0/rho_0 $ <mhd-linear-closure>
+    quad c_(s)^2=(gamma p_0)/rho_0 $ <mhd-linear-closure>
 
   #animation(
     "../media/exb-drift.mp4",
@@ -443,7 +450,7 @@
 
     In momentum, the equilibrium has $bold(u)_0=bold(0)$ and no pressure
     gradient. The inertial term becomes
-    $rho (pdv bold(u)+bold(u)dot grad bold(u))
+    $rho (pdv(bold(u),t)+bold(u) dot grad_(bold(r))(bold(u)))
       =rho_0 pdv(delta bold(u),t)+O(delta^2)$.
     The pressure force is $-grad(delta p)$. Expand the magnetic force:
     $1/(4 pi)[curl(bold(B)_0+delta bold(B))]
@@ -461,11 +468,11 @@
     Finally expand the adiabatic invariant
     $p rho^(-gamma)=p_0 rho_0^(-gamma)+delta(p rho^(-gamma))$.
     The first-order perturbation is proportional to
-    $delta p/p_0-gamma delta rho/rho_0$. Its material derivative reduces to a
+    $(delta p)/p_0-gamma (delta rho)/rho_0$. Its material derivative reduces to a
     time derivative because the equilibrium is static. For perturbations
     initially satisfying the adiabatic relation, this quantity stays zero:
-    $delta p/p_0=gamma delta rho/rho_0$, or
-    $delta p=(gamma p_0/rho_0)delta rho=c_(s)^2delta rho$.
+    $(delta p)/p_0=gamma (delta rho)/rho_0$, or
+    $delta p=((gamma p_0)/rho_0)delta rho=c_(s)^2delta rho$.
     Every discarded product contains at least two perturbation factors.]
   )
 
@@ -507,7 +514,7 @@
       question: [What closure relates pressure and density perturbations in the adiabatic model?],
       answer: [The first-order closure is
       $delta p=c_(s)^2delta rho$ with
-      $c_(s)^2=gamma p_0/rho_0$. The sound speed has units #unit("cm/s"),
+      $c_(s)^2=(gamma p_0)/rho_0$. The sound speed has units #unit("cm/s"),
       while the perturbation ratios are dimensionless.]
     ),
     (
@@ -545,8 +552,8 @@
   #unit-ledger[
     The magnetic field is in gauss, characteristic length $L$ in #unit("cm"),
     bulk speed $U$ in #unit("cm/s"), resistivity $eta$ in #unit("s"), and
-    magnetic diffusivity $D_(B)=c^2 eta/(4 pi)$ in #unit("cm^2/s"). The
-    magnetic Reynolds number $R_(m)=U L/D_(B)$ is dimensionless. The
+    magnetic diffusivity $D_(B)=(c^2 eta)/(4 pi)$ in #unit("cm^2/s"). The
+    magnetic Reynolds number $R_(m)=(U L)/D_(B)$ is dimensionless. The
     advection time $tau_(A)=L/U$ and diffusion time $tau_(D)=L^2/D_(B)$ are
     both in #unit("s").
   ]
@@ -554,7 +561,7 @@
   #assumption(
     [Induction ordering],
     [Use Faraday's law, reduced Ampere's law
-    $bold(j)=c curl(bold(B))/(4 pi)$, and a uniform scalar resistivity. For
+    $bold(j)=(c curl(bold(B)))/(4 pi)$, and a uniform scalar resistivity. For
     ideal MHD set $eta=0$ after the induction equation is derived. Assume
     $div bold(B)=0$ when converting the double curl into a Laplacian. A
     material surface has boundary velocity $bold(u)$ and remains smooth while
@@ -564,19 +571,19 @@
   Faraday's law and generalized Ohm's law in the resistive MHD limit are
 
   $ curl_(bold(r))(bold(E)) = -1/c pdv(bold(B),t),
-    quad bold(E) + bold(u) times bold(B)/c = eta bold(j) $ <mhd-faraday-ohm>
+    quad bold(E) + (bold(u) times bold(B))/c = eta bold(j) $ <mhd-faraday-ohm>
 
   Substitution of reduced Ampere's law gives the induction equation
 
   $ pdv(bold(B),t)
     = curl_(bold(r))(bold(u) times bold(B))
       + D_(B) nabla^2 bold(B),
-    quad D_(B)=c^2 eta/(4 pi) $ <mhd-resistive-induction>
+    quad D_(B)=(c^2 eta)/(4 pi) $ <mhd-resistive-induction>
 
   The first term advects and stretches field; the second diffuses it. The
   dimensionless competition is
 
-  $ R_(m) = U L/D_(B) = tau_(D)/tau_(A) $ <mhd-magnetic-reynolds>
+  $ R_(m) = (U L)/D_(B) = tau_(D)/tau_(A) $ <mhd-magnetic-reynolds>
 
   #mhd-flux-diffusion
 
@@ -584,46 +591,46 @@
   long. For a characteristic structure of size $L$, the finite-resistivity
   diffusion estimate is
 
-  $ tau_(D) approx L^2/D_(B) = 4 pi L^2/(c^2 eta) $ <mhd-diffusion-time>
+  $ tau_(D) approx L^2/D_(B) = (4 pi L^2)/(c^2 eta) $ <mhd-diffusion-time>
 
   #details(
     [Derivation: induction equation and frozen magnetic flux],
     [Begin with
-    $bold(E)+bold(u)times bold(B)/c=eta bold(j)$ and solve for the electric
+    $bold(E)+(bold(u)times bold(B))/c=eta bold(j)$ and solve for the electric
     field:
-    $bold(E)=-bold(u)times bold(B)/c+eta bold(j)$.
+    $bold(E)=-(bold(u)times bold(B))/c+eta bold(j)$.
     Insert this into Faraday's law:
     $pdv(bold(B),t)=-c curl bold(E)
       =curl(bold(u)times bold(B))-c eta curl bold(j)$.
 
     The reduced Ampere law is
-    $bold(j)=c curl bold(B)/(4 pi)$. For uniform $eta$,
-    $-c eta curl bold(j)=-c^2eta curl(curl bold(B))/(4 pi)$.
+    $bold(j)=(c curl bold(B))/(4 pi)$. For uniform $eta$,
+    $-c eta curl bold(j)=-(c^2 eta curl(curl bold(B)))/(4 pi)$.
     The identity
     $curl(curl bold(B))=grad(div bold(B))-nabla^(2) bold(B)$
     and $div bold(B)=0$ give
-    $-c eta curl bold(j)=c^2eta nabla^(2) bold(B)/(4 pi)$.
-    Define $D_(B)=c^2eta/(4 pi)$ to obtain the displayed induction equation.
+    $-c eta curl bold(j)=(c^2 eta nabla^(2) bold(B))/(4 pi)$.
+    Define $D_(B)=(c^2 eta)/(4 pi)$ to obtain the displayed induction equation.
 
     Now let $S(t)$ be a surface whose boundary moves with $bold(u)$ and let
     $Psi_(B)=integral_(S(t)) bold(B) dot dif bold(S)$ be its magnetic flux.
     The moving-surface transport theorem, or equivalently the flux rule for a
     moving loop, gives
-    $d Psi_(B)/d t
+    $dv(Psi_(B),t)
       =integral_(S(t))[pdv(bold(B),t)-curl(bold(u)times bold(B))]
         dot dif bold(S)$.
     The ideal induction equation sets the integrand to zero, so
-    $d Psi_(B)/d t=0$. Stokes' theorem shows the same result from the moving
+    $dv(Psi_(B),t)=0$. Stokes' theorem shows the same result from the moving
     loop:
-    $d Psi_(B)/d t=integral_(S) pdv(bold(B),t) dot dif bold(S)
+    $dv(Psi_(B),t)=integral_(S) pdv(bold(B),t) dot dif bold(S)
       -integral_(partial S)(bold(u)times bold(B))dot dif bold(l)$.
     Thus the flux through every material surface is constant, which is the
     frozen-flux theorem.
 
     Compare the induction terms with
-    $|curl(bold(u)times bold(B))| approx U B/L$ and
-    $|D_(B)nabla^(2) bold(B)| approx D_(B)B/L^2$. Their ratio is
-    $U L/D_(B)=R_(m)$. The same ratio equals
+    $|curl(bold(u)times bold(B))| approx (U B)/L$ and
+    $|D_(B)nabla^(2) bold(B)| approx (D_(B)B)/(L^2)$. Their ratio is
+    $(U L)/D_(B)=R_(m)$. The same ratio equals
     $(L/U)/(L^2/D_(B))=tau_(D)/tau_(A)$.]
   )
 
@@ -640,8 +647,8 @@
   #summary[
     Faraday's law plus Ohm's law produces advection and diffusion in the
     magnetic induction equation. In Gaussian CGS,
-    $D_(B)=c^2eta/(4 pi)$, $tau_(D)=L^2/D_(B)$, and
-    $R_(m)=U L/D_(B)$. The ideal limit conserves flux through material surfaces;
+    $D_(B)=(c^2 eta)/(4 pi)$, $tau_(D)=L^2/D_(B)$, and
+    $R_(m)=(U L)/D_(B)$. The ideal limit conserves flux through material surfaces;
     resistivity breaks that material conservation on the diffusion scale.
   ]
 
@@ -676,7 +683,7 @@
       question: [What assumption is needed to replace the double curl by a Laplacian?],
       answer: [Use $div bold(B)=0$ and uniform resistivity. Then
       $curl curl bold(B)=-nabla^(2) bold(B)$, yielding the diffusion term with
-      coefficient $D_(B)=c^2eta/(4 pi)$.]
+      coefficient $D_(B)=(c^2 eta)/(4 pi)$.]
     ),
   ))
 
@@ -694,6 +701,7 @@
     [derive the static MHD equilibrium equation from the momentum balance],
     [separate magnetic-pressure and magnetic-tension contributions],
     [deduce the restrictions on pressure along field lines and current across them],
+    [explain why the parallel current requires field-line geometry and closure],
     [interpret theta-pinch, cylindrical pinch, and plasma-beta examples],
   ))
 
@@ -701,9 +709,9 @@
     Static pressure $p$ and magnetic pressure $B^2/(8 pi)$ are both in
     #unit("erg/cm^3") in Gaussian CGS. The current density is in
     statcoulomb per #unit("cm^2") per #unit("s"), and
-    $bold(j)times bold(B)/c$ is a force density in
+    $(bold(j)times bold(B))/c$ is a force density in
     #unit("g") #unit("cm^-2") #unit("s^-2"). The plasma beta
-    $beta=8 pi p/B^2$ is dimensionless.
+    $beta=(8 pi p)/(B^2)$ is dimensionless.
   ]
 
   #assumption(
@@ -717,8 +725,8 @@
 
   The static momentum equation is
 
-  $ grad_(bold(r))(p) = bold(j) times bold(B)/c
-    = 1/(4 pi) curl_(bold(r))(bold(B)) times bold(B) $ <mhd-static-force-balance>
+  $ grad_(bold(r))(p) = (bold(j) times bold(B))/c
+    = (curl_(bold(r))(bold(B)) times bold(B))/(4 pi) $ <mhd-static-force-balance>
 
   Using the vector identity
   $curl bold(B) times bold(B)
@@ -740,24 +748,64 @@
   to pressure surfaces when the scalar-pressure equilibrium is valid. The
   perpendicular current follows by crossing the equilibrium with $bold(B)$:
 
-  $ bold(j)_perp = c bold(B) times grad_(bold(r))(p)/B^2 $ <mhd-equilibrium-current>
+  $ bold(j)_perp = (c (bold(B) times grad_(bold(r))(p)))/(B^2) $ <mhd-equilibrium-current>
+
+  The force balance fixes only this perpendicular component. Write the total
+  current as
+
+  $ bold(j) = j_(parallel) (bold(B)/B) + bold(j)_perp $
+
+  Because reduced Ampere's law also implies $div_(bold(r))(bold(j))=0$, the
+  parallel component obeys the magnetic differential equation
+
+  $ bold(B) dot grad_(bold(r))(j_(parallel)/B)
+    = -div_(bold(r))(bold(j)_perp) $ <mhd-parallel-current>
+
+  Thus $j_(parallel)$ requires field-line geometry and boundary or closure data;
+  it is not determined by the local pressure balance alone.
 
   A useful dimensionless measure is
 
-  $ beta = 8 pi p/B^2 $ <mhd-beta>
+  $ beta = (8 pi p)/(B^2) $ <mhd-beta>
 
   Low $beta$ means magnetic pressure dominates thermal pressure; high $beta$
   means pressure gradients can strongly reshape the field or require stronger
   currents for equilibrium.
+
+  #definition(
+    [Two canonical pinch geometries],
+    [A $theta$-pinch uses an externally applied, primarily axial field and an
+    azimuthal current: $bold(B)=B_(z)(r)bold(e)_(z)$ and
+    $bold(j)=j_(theta)(r)bold(e)_(theta)$. Straight field lines have no curvature
+    tension, so the radial balance is a total-pressure balance. A cylindrical
+    or $z$-pinch uses an axial plasma current and a self-generated azimuthal
+    field: $bold(j)=j_(z)(r)bold(e)_(z)$ and
+    $bold(B)=B_(theta)(r)bold(e)_(theta)$. The curved field then contributes an
+    inward tension term.]
+  )
+
+  The two radial balances make the distinction quantitative:
+
+  For a $theta$-pinch,
+
+  $ dv(p+B_(z)^2/(8 pi),r)=0 $
+
+  For a cylindrical or $z$-pinch,
+
+  $ dv(p+B_(theta)^2/(8 pi),r) + (B_(theta)^2)/(4 pi r)=0 $
+
+  The second term is the curvature tension of the azimuthal field. Both
+  relations are special reductions of the same vector equilibrium equation;
+  neither replaces the general force balance.
 
   #mhd-force-balance
 
   #details(
     [Derivation: magnetic pressure, tension, and pinch balance],
     [Begin with the static momentum equation after reduced Ampere's law:
-    $bold(0)=-grad p+bold(j)times bold(B)/c$ and
-    $bold(j)=c curl bold(B)/(4 pi)$. Therefore
-    $grad p=(curl bold(B))times bold(B)/(4 pi)$.
+    $bold(0)=-grad p+(bold(j)times bold(B))/c$ and
+    $bold(j)=(c curl bold(B))/(4 pi)$. Therefore
+    $grad p=((curl bold(B))times bold(B))/(4 pi)$.
 
     For the magnetic identity, use components or the standard vector relation
     $grad(B^2/2)=(bold(B)dot grad)bold(B)
@@ -768,38 +816,60 @@
       =(bold(B)dot grad)bold(B)-grad(B^2/2)$.
     Substitute into the force balance and move the magnetic-pressure gradient
     to the left:
-    $grad(p+B^2/(8 pi))=(bold(B)dot grad)bold(B)/(4 pi)$.
+    $grad(p+B^2/(8 pi))=((bold(B)dot grad)bold(B))/(4 pi)$.
     The first term is compression of field magnitude, the second is field-line
     tension.
 
-    Dot $grad p=bold(j)times bold(B)/c$ with $bold(B)$. The right side is zero,
+    Dot $grad p=(bold(j)times bold(B))/c$ with $bold(B)$. The right side is zero,
     so $bold(B)dot grad p=0$. Dot it with $bold(j)$ instead; again the right
     side is zero, so $bold(j)dot grad p=0$. Cross it from the left with
     $bold(B)$:
     $bold(B)times grad p
-      =bold(B)times(bold(j)times bold(B))/c$.
+      =(bold(B)times(bold(j)times bold(B)))/c$.
     The triple-product identity gives
     $bold(B)times(bold(j)times bold(B))
       =B^2 bold(j)-bold(B)(bold(B)dot bold(j))$.
     The component perpendicular to $bold(B)$ is therefore
-    $bold(j)_perp=c bold(B)times grad p/B^2$.
+    $bold(j)_perp=(c (bold(B)times grad p))/(B^2)$.
+
+    Decompose the current as
+    $bold(j)=j_(parallel) (bold(B)/B)+bold(j)_perp$. Since
+    $div bold(j)=div((c curl bold(B))/(4 pi))=0$ and $div bold(B)=0$,
+
+    $0=div bold(j)
+      =div(j_(parallel) bold(B)/B)+div bold(j)_perp
+      =bold(B)dot grad(j_(parallel)/B)+div bold(j)_perp$.
+
+    This gives the displayed magnetic differential equation for the parallel
+    current. A boundary condition or a separate closure is needed to select a
+    solution along each field line.
 
     For a straight cylindrical field $bold(B)=B_(z)(r)bold(e)_(z)$, the reduced
     Ampere law gives
-    $bold(j)=-(c/(4 pi)) (d B_z/d r)bold(e)_theta$.
+    $bold(j)=-(c dv(B_z,r))/(4 pi) bold(e)_theta$.
     The radial force balance is then
-    $d p/d r=-(B_z/(4 pi))d B_z/d r$,
+    $dv(p,r)=-(B_z dv(B_z,r))/(4 pi)$,
     so
-    $pdv(p+B_z^2/(8 pi),r)=0$.
-    For a theta pinch with a uniform axial field inside, the volume current
+    $dv(p+B_(z)^2/(8 pi),r)=0$.
+    For a $theta$-pinch with a uniform axial field inside, the volume current
     and magnetic tension can vanish in the interior; the pressure change is
-    balanced by the magnetic-pressure change across the boundary. These
-    examples are special geometries, not extra equilibrium laws.]
+    balanced by the magnetic-pressure change across the boundary.
+
+    For a cylindrical or $z$-pinch, take
+    $bold(B)=B_(theta)(r)bold(e)_(theta)$ and
+    $bold(j)=j_(z)(r)bold(e)_(z)$. Cylindrical Ampere's law gives
+    $j_(z)=(c/(4 pi r))dv(r B_(theta),r)$. Since
+    $bold(e)_z times bold(e)_theta=-bold(e)_r$, the radial force balance is
+    $dv(p,r)=-(B_(theta)/(4 pi r))dv(r B_(theta),r)$.
+    Expanding the derivative yields
+    $dv(p+B_(theta)^2/(8 pi),r)+(B_(theta)^2)/(4 pi r)=0$.
+    The final term is the inward magnetic tension from curved field lines.
+    These examples are special geometries, not extra equilibrium laws.]
   )
 
   #interpretation(
     [Equilibrium is a geometry constraint],
-    [The equation $grad p=bold(j)times bold(B)/c$ says more than “forces
+    [The equation $grad p=(bold(j)times bold(B))/c$ says more than “forces
     cancel.” Pressure cannot vary along a field line, and current-driven force
     is perpendicular to the field. In a pinch, a pressure profile therefore
     determines the magnetic-field profile together with boundary conditions;
@@ -808,11 +878,12 @@
 
   #summary[
     Static MHD balances pressure force against magnetic force. In Gaussian CGS,
-    $grad p=(curl bold(B))times bold(B)/(4 pi)$, or equivalently the gradient
+    $grad p=((curl bold(B))times bold(B))/(4 pi)$, or equivalently the gradient
     of gas plus magnetic pressure balances field-line tension. Pressure is
     constant along field lines, the perpendicular current follows from the
-    pressure gradient, and $beta=8 pi p/B^2$ measures the relative strength of
-    thermal and magnetic pressure.
+    pressure gradient, and the parallel current obeys a magnetic differential
+    equation. The dimensionless $beta=(8 pi p)/(B^2)$ measures the relative
+    strength of thermal and magnetic pressure.
   ]
 
   #exam-prompts(
@@ -826,25 +897,26 @@
     (
       question: [What is the static MHD force-balance equation in Gaussian CGS?],
       answer: [With the stated assumptions,
-      $grad p=bold(j)times bold(B)/c
-        =(curl bold(B))times bold(B)/(4 pi)$.]
+      $grad p=(bold(j)times bold(B))/c
+        =((curl bold(B))times bold(B))/(4 pi)$.]
     ),
     (
       question: [What does the magnetic-pressure/tension decomposition show?],
       answer: [It rewrites the force as
-      $grad(p+B^2/(8 pi))=(bold(B)dot grad)bold(B)/(4 pi)$. The gradient term
+      $grad(p+B^2/(8 pi))=((bold(B)dot grad)bold(B))/(4 pi)$. The gradient term
       is magnetic pressure and the directional derivative is field-line
       tension.]
     ),
     (
-      question: [How does pressure vary along an equilibrium field line?],
-      answer: [It is constant along the field line because dotting the force
-      balance with $bold(B)$ gives $bold(B)dot grad p=0$. This conclusion uses
-      scalar-pressure static MHD assumptions.]
+      question: [What is fixed locally about the current, and what determines its parallel component?],
+      answer: [The pressure balance fixes
+      $bold(j)_perp=(c (bold(B)times grad p))/(B^2)$. The parallel component is
+      constrained by $bold(B) dot grad(j_(parallel)/B)=-div(bold(j)_perp)$ and
+      therefore requires field-line geometry and boundary or closure data.]
     ),
     (
       question: [What does a large plasma beta indicate?],
-      answer: [A large $beta=8 pi p/B^2$ means thermal pressure exceeds magnetic
+      answer: [A large $beta=(8 pi p)/(B^2)$ means thermal pressure exceeds magnetic
       pressure in the chosen local scales. Magnetic stresses may still balance
       it, but a stronger field curvature or current response is generally
       required.]

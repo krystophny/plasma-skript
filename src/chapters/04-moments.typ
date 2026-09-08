@@ -81,7 +81,7 @@
 
   The first velocity moment defines the species fluid velocity:
 
-  $ bold(u)_s = 1/n_s integral_(RR^3) bold(v) f_s dif^3 bold(v), quad
+  $ bold(u)_s = (1/n_s) integral_(RR^3) bold(v) f_s dif^3 bold(v), quad
     bold(j)_s = q_s n_s bold(u)_s $ <moments-fluid-velocity>
 
   Introduce the random velocity relative to this local mean,
@@ -182,7 +182,7 @@
     (
       question: [What is removed when the pressure tensor is replaced by a scalar pressure?],
       answer: [Directional information is removed. The replacement keeps only
-      $p_s=sum_i (P_s)_(i i)/3$ and discards anisotropic normal stresses and
+      $p_s=(sum_i (P_s)_(i i))/3$ and discards anisotropic normal stresses and
       off-diagonal shear stresses.]
     ),
     (
@@ -366,7 +366,7 @@
     #unit("g") #unit("cm^-2") #unit("s^-1"). The divergence of a pressure
     tensor and an electromagnetic force density are in
     #unit("g") #unit("cm^-2") #unit("s^-2"). The Lorentz acceleration is
-    $bold(a)_s=q_s/m_s (bold(E)+bold(v) times bold(B)/c)$, with $bold(E)$ in
+    $bold(a)_s=q_s/m_s (bold(E)+(bold(v) times bold(B))/c)$, with $bold(E)$ in
     statvolt per centimetre, $bold(B)$ in gauss, and $c$ in #unit("cm/s").
   ]
 
@@ -412,7 +412,7 @@
   The force term is handled by integration by parts in velocity space. In
   components, with repeated Cartesian indices summed,
 
-  $ m_s integral v_i pdv_(v_j)(a_(s,j) f_s) dif^3 bold(v)
+  $ m_s integral v_i pdv((a_(s,j) f_s),v_j) dif^3 bold(v)
     = -m_s integral delta_(i j) a_(s,j) f_s dif^3 bold(v)
     = -m_s integral a_(s,i) f_s dif^3 bold(v) $ \
   <moments-force-integration>
@@ -421,21 +421,21 @@
   balance is
 
   $ m_s integral bold(a)_s f_s dif^3 bold(v)
-    = q_s n_s (bold(E) + bold(u)_s times bold(B)/c) $ \
+    = q_s n_s (bold(E) + (bold(u)_s times bold(B))/c) $ \
   <moments-lorentz-force-density>
 
   The species momentum equation is consequently
 
   $ pdv(rho_s bold(u)_s,t)
     + div_(bold(r))(rho_s bold(u)_s bold(u)_s + bold(P)_s)
-    = q_s n_s (bold(E) + bold(u)_s times bold(B)/c) + bold(R)_s $ \
+    = q_s n_s (bold(E) + (bold(u)_s times bold(B))/c) + bold(R)_s $ \
   <moments-momentum-equation>
 
   #equation-note[
     The pressure force density is $-div_(bold(r)) bold(P)_s$. In the
     fluid-following form, obtained with species continuity, the equation reads
     $rho_s (pdv(bold(u)_s,t)+bold(u)_s dot grad_(bold(r)) bold(u)_s)
-      = q_s n_s (bold(E)+bold(u)_s times bold(B)/c)
+      = q_s n_s (bold(E)+(bold(u)_s times bold(B))/c)
       -div_(bold(r)) bold(P)_s + bold(R)_s$. Every term has force-density
     units in #unit("g") #unit("cm^-2") #unit("s^-2").
   ]
@@ -446,25 +446,33 @@
     integral and use $m_s integral bold(v) f_s dif^3 bold(v)
     =rho_s bold(u)_s$. For spatial streaming, use the dyadic identity in
     components:
-    $m_s integral v_i partial_(x_j)(v_j f_s) dif^3 bold(v)
-      =partial_(x_j)(m_s integral v_i v_j f_s dif^3 bold(v))$.
+    $m_s integral v_i pdv((v_j f_s),x_j) dif^3 bold(v)
+      =pdv((m_s integral v_i v_j f_s dif^3 bold(v)),x_j)$.
     This is the divergence of the raw second-moment tensor.
 
     For the velocity-space force term, integrate each component by parts:
-    $m_s integral v_i partial_(v_j)(a_(s,j)f_s) dif^3 bold(v)
+    $m_s integral v_i pdv((a_(s,j)f_s),v_j) dif^3 bold(v)
       =m_s integral_("boundary") v_i a_(s,j)f_s d S_j
-      -m_s integral (partial_(v_j)v_i) a_(s,j)f_s dif^3 bold(v)$.
+      -m_s integral pdv(v_i,v_j) a_(s,j)f_s dif^3 bold(v)$.
     The surface term vanishes by assumption and
-    $partial_(v_j)v_i=delta_(i j)$. Thus the result is
+    $pdv(v_i,v_j)=delta_(i j)$. Thus the result is
     $-m_s integral a_(s,i) f_s dif^3 bold(v)$ on the left. Move it to the
     right. Substituting the Lorentz acceleration gives
     $q_s bold(E) integral f_s dif^3 bold(v)
-      +q_s/c (integral bold(v)f_s dif^3 bold(v)) times bold(B)$,
-    which is $q_s n_s (bold(E)+bold(u)_s times bold(B)/c)$.
+      +(q_s/c) (integral bold(v)f_s dif^3 bold(v)) times bold(B)$,
+    which is $q_s n_s (bold(E)+(bold(u)_s times bold(B))/c)$.
 
     Finally insert $bold(v)=bold(u)_s+bold(w)_s$ into the raw second moment.
     The terms linear in $bold(w)_s$ vanish, leaving directed momentum flux
-    $rho_s bold(u)_s bold(u)_s$ and random momentum flux $bold(P)_s$.]
+    $rho_s bold(u)_s bold(u)_s$ and random momentum flux $bold(P)_s$.
+
+    To rewrite the conservative momentum equation in fluid-following form, use
+    the product identity
+    $pdv(rho_s bold(u)_s,t)+div_(bold(r))(rho_s bold(u)_s bold(u)_s)
+      =rho_s (pdv(bold(u)_s,t)+bold(u)_s dot grad_(bold(r)) bold(u)_s)
+      +bold(u)_s (pdv(rho_s,t)+div_(bold(r))(rho_s bold(u)_s))$.
+    The final bracket is zero by mass continuity, so only the species material
+    acceleration remains on the left-hand side.]
   )
 
   #interpretation(
@@ -495,7 +503,7 @@
       question: [Why does the magnetic part of the Lorentz force do no work but still affect momentum?],
       answer: [It is perpendicular to the instantaneous velocity, so it does
       no kinetic-energy work. It is nevertheless a directional force and
-      appears in the momentum source $q_s n_s bold(u)_s times bold(B)/c$.]
+    appears in the momentum source $(q_s n_s (bold(u)_s times bold(B)))/c$.]
     ),
     (
       question: [When can the collision momentum sources cancel?],
@@ -548,31 +556,31 @@
 
   Define the kinetic-energy density and its bulk and internal parts:
 
-  $ W_s = m_s/2 integral_(RR^3) abs(bold(v))^2 f_s dif^3 bold(v), quad
-    epsilon_s = 1/2 sum_i (P_s)_(i i), quad
-    W_s = 1/2 rho_s abs(bold(u)_s)^2 + epsilon_s $ \
+  $ W_s = (m_s/2) integral_(RR^3) abs(bold(v))^2 f_s dif^3 bold(v), quad
+    epsilon_s = (sum_i (P_s)_(i i))/2, quad
+    W_s = (rho_s abs(bold(u)_s)^2)/2 + epsilon_s $ \
   <moments-energy-density>
 
   The heat-flux vector is the third central moment
 
-  $ bold(q)_s = m_s/2 integral_(RR^3)
+  $ bold(q)_s = (m_s/2) integral_(RR^3)
     abs(bold(w)_s)^2 bold(w)_s f_s dif^3 bold(v) $ \
   <moments-heat-flux>
 
   and the energy collision source is
 
-  $ Q_s = m_s/2 integral_(RR^3) abs(bold(v))^2 C_(s)[f] dif^3 bold(v) $ \
+  $ Q_s = (m_s/2) integral_(RR^3) abs(bold(v))^2 C_(s)[f] dif^3 bold(v) $ \
   <moments-energy-collision>
 
-  Weight the kinetic equation by $m_s abs(bold(v))^2/2$. The time term is
+  Weight the kinetic equation by $(m_s abs(bold(v))^2)/2$. The time term is
   $pdv(W_s,t)$. The spatial term is the divergence of the raw energy flux
 
-  $ bold(F)_s = m_s/2 integral_(RR^3)
+  $ bold(F)_s = (m_s/2) integral_(RR^3)
     abs(bold(v))^2 bold(v) f_s dif^3 bold(v) $ <moments-energy-flux>
 
   Integration by parts of the force term gives
 
-  $ m_s/2 integral abs(bold(v))^2
+  $ (m_s/2) integral abs(bold(v))^2
     grad_(bold(v)) dot (f_s bold(a)_s) dif^3 bold(v)
     = -m_s integral bold(v) dot bold(a)_s f_s dif^3 bold(v) $ \
   <moments-energy-force>
@@ -606,7 +614,7 @@
 
   The pressure tensor has scalar pressure
 
-  $ p_s = 1/3 sum_i (P_s)_(i i) $ <moments-scalar-pressure>
+  $ p_s = (sum_i (P_s)_(i i))/3 $ <moments-scalar-pressure>
 
   as its isotropic part. If the distribution is isotropic in the local fluid
   frame, then
@@ -618,25 +626,27 @@
   In components, however,
 
   $ (div_(bold(r)) bold(P)_s)_i
-    = sum_j partial_(x_j) (P_s)_(i j) $ <moments-pressure-divergence>
+    = sum_j pdv((P_s)_(i j),x_j) $ <moments-pressure-divergence>
 
   so the scalar gradient is insufficient when anisotropy or shear is present.
 
   #details(
     [Derivation: energy density and energy flux decomposition],
-    [Multiply the kinetic equation by $m_s v^2/2$ and integrate. The time
+    [Multiply the kinetic equation by $(m_s v^2)/2$ and integrate. The time
     derivative gives $pdv(W_s,t)$. The spatial streaming term gives
-    $div_(bold(r))(m_s/2 integral v^2 bold(v) f_s dif^3 bold(v))$.
+    $div_(bold(r))((m_s/2) integral v^2 bold(v) f_s dif^3 bold(v))$.
     For the force term, integrate by parts in velocity:
-    $m_s/2 integral v^2 grad_(bold(v)) dot(f_s bold(a)_s) dif^3 bold(v)
-      =-m_s/2 integral grad_(bold(v))(v^2) dot bold(a)_s f_s dif^3 bold(v)
+    $(m_s/2) integral v^2 grad_(bold(v)) dot(f_s bold(a)_s) dif^3 bold(v)
+      =-(m_s/2) integral grad_(bold(v))(v^2) dot bold(a)_s f_s dif^3 bold(v)
       =-m_s integral bold(v) dot bold(a)_s f_s dif^3 bold(v)$.
     Substituting the Lorentz acceleration leaves
     $-q_s bold(E) dot integral bold(v) f_s dif^3 bold(v)$ because the
     magnetic term is zero. Move this term to the right and use
     $integral bold(v)f_s dif^3 bold(v)=n_s bold(u)_s$.
 
-    To split the flux, use $v^2=bold(u)_s^2+2 bold(u)_s dot bold(w)_s+w_s^2$
+    To split the flux, use
+    $abs(bold(v))^2=abs(bold(u)_s)^2+2 bold(u)_s dot bold(w)_s
+      +abs(bold(w)_s)^2$
     and $bold(v)=bold(u)_s+bold(w)_s$. The terms are: bulk kinetic energy
     times $bold(u)_s$, internal energy times $bold(u)_s$, the cross term
     $m_s integral (bold(u)_s dot bold(w)_s) bold(w)_s f_s dif^3 bold(v)
@@ -648,7 +658,7 @@
     Finally, write $bold(P)_s$ in Cartesian components. Its divergence has
     one spatial derivative for each tensor component. If
     $P_(i j)=p_s delta_(i j)$, the sum reduces to
-    $partial_(x_i)p_s$, which is $grad p_s$.]
+    $pdv(p_s,x_i)$, which is $grad p_s$.]
   )
 
   #details(
@@ -656,24 +666,29 @@
     [Dot the momentum equation with $bold(u)_s$ and use mass continuity. The
     bulk kinetic-energy balance is
 
-    $pdv(1/2 rho_s u_s^2,t)+div(1/2 rho_s u_s^2 bold(u)_s)
-      +bold(u)_s dot div bold(P)_s
+    $pdv((rho_s abs(bold(u)_s)^2)/2,t)
+      +div_(bold(r))((rho_s abs(bold(u)_s)^2 bold(u)_s)/2)
+      +bold(u)_s dot div_(bold(r)) bold(P)_s
       =q_s n_s bold(u)_s dot bold(E)+bold(u)_s dot bold(R)_s$.
 
     Use the product identity
-    $bold(u)_s dot div bold(P)_s
-      =div(bold(P)_s dot bold(u)_s)-bold(P)_s:grad bold(u)_s$.
+    $bold(u)_s dot div_(bold(r)) bold(P)_s
+      =div_(bold(r))(bold(P)_s dot bold(u)_s)
+      -bold(P)_s:grad_(bold(r)) bold(u)_s$.
     Subtract this bulk equation from the total energy equation. The electric
-    work and collisional momentum work cancel, leaving
-    $pdv(epsilon_s,t)+div(epsilon_s bold(u)_s+bold(q)_s)
-      +bold(P)_s:grad bold(u)_s=Q_s$.
+    work cancels, while collisional momentum transfer contributes to the
+    internal-energy source:
+    $pdv(epsilon_s,t)+div_(bold(r))(epsilon_s bold(u)_s+bold(q)_s)
+      +bold(P)_s:grad_(bold(r)) bold(u)_s
+      =Q_s-bold(u)_s dot bold(R)_s$.
 
     For an isotropic three-dimensional pressure tensor,
-    $epsilon_s=3 p_s/2$ and
-    $bold(P)_s:grad bold(u)_s=p_s div bold(u)_s$. With no heat flux or
-    collisional heating, this becomes
-    $D_s p_s / D t+5 p_s/3 div bold(u)_s=0$, the adiabatic pressure law used by
-    one common warm-fluid closure.]
+    $epsilon_s=(3 p_s)/2$ and
+    $bold(P)_s:grad_(bold(r)) bold(u)_s=p_s div_(bold(r)) bold(u)_s$. With no
+    heat flux and no net collisional internal heating, this becomes
+    $pdv(p_s,t)+bold(u)_s dot grad_(bold(r))(p_s)
+      +(5 p_s)/3 div_(bold(r)) bold(u)_s=0$, the adiabatic pressure law used
+    by one common warm-fluid closure.]
   )
 
   #interpretation(
@@ -712,7 +727,7 @@
     (
       question: [What physical transport does $bold(q)_s$ represent?],
       answer: [It is the energy flux carried by random motion in the local
-      bulk frame, $m_s/2 integral w_s^2 bold(w)_s f_s dif^3 bold(v)$.]
+      bulk frame, $(m_s/2) integral abs(bold(w)_s)^2 bold(w)_s f_s dif^3 bold(v)$.]
     ),
     (
       question: [When may $grad p_s$ replace $div bold(P)_s$?],
@@ -776,7 +791,7 @@
 
   A warm isotropic model retains a scalar pressure:
 
-  $ bold(P)_s = p_s bold(I), quad epsilon_s=3/2 p_s $ \
+  $ bold(P)_s = p_s bold(I), quad epsilon_s=(3 p_s)/2 $ \
   <moments-warm-isotropic>
 
   and must supply one additional relation. Examples include an isothermal
@@ -789,8 +804,9 @@
   For a source-free, heat-flux-free three-dimensional monatomic fluid, the
   second relation is equivalently
 
-  $ D_s p_s / D t + gamma p_s div_(bold(r)) bold(u)_s = 0,
-    quad gamma=5/3 $ <moments-polytropic-law>
+  $ pdv(p_s,t) + bold(u)_s dot grad_(bold(r))(p_s)
+    + gamma p_s div_(bold(r)) bold(u)_s = 0, quad gamma=5/3 $ \
+  <moments-polytropic-law>
 
   It replaces the need to evolve a separate heat-transport equation, but it is
   an assumption about unresolved energy exchange. A prescribed isothermal
@@ -822,7 +838,7 @@
     source is $S_("N,s")=integral C_(s)[f] dif^3 bold(v)$. For ordinary elastic
     collisions within a species, $S_("N,s")=0$. The momentum source is
     $bold(R)_s=m_s integral bold(v) C_(s)[f] dif^3 bold(v)$ and the energy source
-    is $Q_s=m_s/2 integral v^2 C_(s)[f] dif^3 bold(v)$. Interspecies collisions
+    is $Q_s=(m_s/2) integral v^2 C_(s)[f] dif^3 bold(v)$. Interspecies collisions
     can give nonzero $bold(R)_s$ and $Q_s$ for each species. Conservation of
     total momentum and energy is expressed by summing over all collision
     partners: $sum_s bold(R)_s=bold(0)$ and $sum_s Q_s=0$ for an isolated

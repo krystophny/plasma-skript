@@ -25,6 +25,19 @@ HTML-specific components have an equivalent paged fallback.
 - In Typst math, explicitly group a subscript or superscript before an argument
   or bracketed application: write `f_(s)(x)`, `f^(a)(x)`, and `C_(s)[f]` rather
   than relying on `f_s(x)`, `f^a(x)`, or `C_s[f]`.
+- Typst fraction parsing is precedence-sensitive. Parenthesize the complete
+  numerator or denominator whenever it contains more than one factor, an
+  operator, or a derivative: write `(a b)/c` and `a/(b c)`, never `a b/c` or
+  `a/b c` when the grouped expression is intended. This applies equally to
+  physical expressions such as `(m_(s) v^2)/2`, `(q_(s) n_(s) (bold(u)_(s)
+  times bold(B)))/c`, and `(k_B T_e)/(2 e)`.
+- Use the derivative operators supplied by `physica`: `dv(f, x)` or
+  `derivative(f, x)` for ordinary derivatives, and `pdv(f, x)` or
+  `partialderivative(f, x)` for partial derivatives. Do not typeset an
+  ordinary or partial derivative as a handwritten `dif f/dif x` expression.
+  Keep `dif x` for differentials in integrals and differential forms. Put
+  indices on the operand, for example `dv(g_(s), t)`, rather than on the
+  derivative operator.
 - Every equation, numerical value, table, plot, animation, caption, axis,
   legend, and alternative description must label its unit system. A quantity
   without a unit is explicitly marked as dimensionless or normalized.
@@ -388,6 +401,71 @@ Use the APIs documented in the corresponding PDFs under `resources/typst/`.
 The imported version must be updated deliberately when the package API or the
 Typst unstable toolchain changes. The source should not rely on an undocumented
 package behavior.
+
+### 6.1 Expression precedence and derivative syntax
+
+Parentheses in a Typst math expression are semantic grouping, not cosmetic
+spacing. The slash operator binds only to the adjacent term. Before reviewing
+the physics, inspect every compound fraction and ask which complete product or
+sum must appear above and below the bar. In particular, check kinetic-energy,
+pressure, current, force, wave-response, exponential, square-root, and
+normalized-unit expressions. A successful Typst compile does not establish
+that the fraction has the intended meaning.
+
+The preferred Physica forms are the following:
+
+```typst
+$ (m_(s) v^2)/2 $
+$ a/(b c) $
+$ dv(f, x) $
+$ pdv(f, t) $
+$ dv(g_(s), t, d: upright(D)) $
+```
+
+Use the full `derivative` and `partialderivative` names when an abbreviated
+operator would be unclear. Use `dv` for an ordinary derivative and `pdv` for
+a partial derivative; do not mix a handwritten derivative fraction with a
+Physica derivative in the same derivation. A species, tensor, or other index
+belongs inside the derivative operand. Powers of a derivative must also be
+grouped when they are part of a fraction, for example `((dv(V, s))^2)/2`.
+
+For a material derivative, either expand it explicitly as
+`pdv(f, t) + u dot grad_(bold(r))(f)` or define the material-derivative
+notation before using it. An unexplained `D` must not be allowed to look like
+an ordinary partial-time derivative. The `d: upright(D)` form above is only
+appropriate after that operator label and its meaning have been defined.
+
+### 6.2 Rendered equation and frame audit
+
+Math and component markup must be checked in the rendered targets, not only in
+the source or compiler diagnostics. Any change to equations, `equation-note`,
+Frame-It usage, or the shared stylesheet requires a small focused render
+containing representative grouped fractions, `dv`/`pdv` expressions, a long
+frame title such as `Cold, unmagnetized, collisionless response assumptions`,
+and an equation note directly below a display equation.
+
+The focused check must cover both a wide layout and a narrow layout. Inspect
+the generated HTML in a browser or equivalent rasterized page view and inspect
+the paged PDF with rendered page images when PDF output is enabled. The review
+must confirm that:
+
+- the intended complete numerator and denominator are visibly on the correct
+  sides of the fraction bar;
+- derivative order, variable, indices, and ordinary versus partial status are
+  visible and mathematically correct;
+- equation notes have readable separation from the equation above them;
+- long Frame-It titles wrap without moving the title into an unintended row;
+- the Frame-It header has no stray rounded tail, empty connector, loop, or
+  horizontal artifact after the title; and
+- the paged rendering preserves the same mathematical grouping and teaching
+  meaning as the HTML rendering.
+
+The HTML build must enable the Typst HTML feature explicitly with
+`TYPST_FEATURES=bundle,html`. Preserve the shared CSS rule that keeps the
+Frame-It title span flexible, removes the empty connector span, and keeps the
+semantic frame counter separate. Do not repair a wide-title regression by
+putting the title on its own line unless the component contract is deliberately
+changed and re-audited at both widths.
 
 ## 7. Visual and component conventions
 

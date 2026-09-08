@@ -1,6 +1,6 @@
 #import "../theme.typ": *
 #import "../figures.typ": collision-regimes, coulomb-cutoff, conductivity-tensor
-#import "@preview/physica:0.9.8": div, grad, pdv, curl
+#import "@preview/physica:0.9.8": div, grad, pdv, dv, curl
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
@@ -187,7 +187,7 @@
 
   The momentum-transfer cross section is the angle-weighted quantity:
 
-  $ sigma_"mt"(v)=integral (1-cos chi) dif sigma/dif Omega dif Omega $
+  $ sigma_"mt"(v)=integral (1-cos chi) dv(sigma,Omega) dif Omega $
 
   It weights a scattering event by the fraction of directed momentum removed.
   A collision that changes the direction only slightly can have a sizeable
@@ -338,7 +338,7 @@
   The large-angle estimate is:
 
   $ nu_90 approx n_"i" sigma_90 v_"e"
-    =pi n_"i" e^4/(m_"e"^2 v_"e"^3) $
+    =(pi n_"i" e^4)/(m_"e"^2 v_"e"^3) $
 
   It is not the full electron--ion relaxation rate because the many more
   distant encounters contribute cumulatively.
@@ -346,15 +346,15 @@
   #definition(
     [Coulomb logarithm and electron--ion rate],
     [For impact parameters $b$ much larger than $b_90$, the deflection is
-    small, $chi(b) approx 2b_90/b$. The screened upper cutoff is
+    small, $chi(b) approx (2 b_90)/b$. The screened upper cutoff is
     $b_"max" approx lambda_D$. The broad-impact-parameter measure is recorded
     by
     $Lambda=n_"e"lambda_D^3$ and
     $ln Lambda=ln(lambda_D/b_90)$ up to the order-one convention used for the
     lower cutoff. For the collision-frequency convention used here,
-    $nu_(e i) approx sqrt(2) omega_(p,e)^4/(64 pi n_"e")
-      (k_B T_"e"/m_"e")^(-3/2) ln Lambda$,
-    where $omega_(p,e)=sqrt(4 pi n_"e"e^2/m_"e")$.
+    $nu_(e i) approx (sqrt(2) omega_(p,e)^4)/(64 pi n_"e")
+      ((k_B T_"e")/m_"e")^(-3/2) ln Lambda$,
+    where $omega_(p,e)=sqrt((4 pi n_"e"e^2)/m_"e")$.
     The corresponding mean free path is
     $lambda_(e i)=⟨v_"e"⟩/nu_(e i)$.]
   )
@@ -379,12 +379,12 @@
   #details(
     [Derivation: cumulative small-angle scattering],
     [For $b >> b_90$, Rutherford scattering gives
-    $chi(b) approx 2b_90/b$. During $dif t$, the number of target ions with
+    $chi(b) approx (2 b_90)/b$. During $dif t$, the number of target ions with
     impact parameters in the annulus $b$ to $b+dif b$ is proportional to
     $n_"i"v_"rel" 2 pi b dif b dif t$. The squared transverse kick from each
     event is proportional to $v_"rel"^2 chi(b)^2$. The rate of accumulated
     squared deflection therefore has the scale
-    $dif ⟨Delta v_perp^2⟩/dif t
+    $dv(⟨Delta v_perp^2⟩,t)
       ∝ n_"i"v_"rel"^3 b_90^2
       integral_(b_90)^(lambda_D) dif b/b$.
     The integral is
@@ -394,8 +394,8 @@
 
     For a Maxwellian electron population use
     $⟨v_"e"⟩
-      =sqrt(8 k_B T_"e"/(pi m_"e"))$ in the rate convention. Insert
-    $omega_(p,e)^2=4 pi n_"e"e^2/m_"e"$ and the velocity scale into the
+      =sqrt((8 k_B T_"e")/(pi m_"e"))$ in the rate convention. Insert
+    $omega_(p,e)^2=(4 pi n_"e"e^2)/m_"e"$ and the velocity scale into the
     statistical scattering estimate. This yields the displayed
     $nu_(e i) ∝ T_"e"^(-3/2)ln Lambda$ expression. The ratio of
     distant to strong-scattering scales is large only when
@@ -490,18 +490,18 @@
       (bold(u)_"i"-bold(u)_"e")$.
     Since $bold(j)=e n_"e"(bold(u)_"i"-bold(u)_"e")$, the force per electron
     charge density is $eta bold(j)$ with
-    $eta=m_"e"nu_"e i"/(n_"e"e^2)$.
+    $eta=(m_"e"nu_"e i")/(n_"e"e^2)$.
     More generally use $nu=nu_"en"$ for a stationary neutral background or
     the sum of the relevant momentum-transfer frequencies. The scalar
-    conductivity is $sigma_"dc"=1/eta=n_"e"e^2/(m_"e"nu)$.]
+    conductivity is $sigma_"dc"=1/eta=(n_"e"e^2)/(m_"e"nu)$.]
   )
 
   #governing-law(
     [Spitzer scaling in the stated collision convention],
-    [$nu_"e i" approx sqrt(2) omega_(p,e)^4/(64 pi n_"e")
-      (k_B T_"e"/m_"e")^(-3/2) ln Lambda$ gives
+    [$nu_"e i" approx (sqrt(2) omega_(p,e)^4)/(64 pi n_"e")
+      ((k_B T_"e")/m_"e")^(-3/2) ln Lambda$ gives
     $eta_"Sp" approx pi/(2 sqrt(2))
-      e^2 sqrt(m_"e")/(k_B T_"e")^(3/2) ln Lambda$.
+      (e^2 sqrt(m_"e"))/((k_B T_"e")^(3/2)) ln Lambda$.
     Thus $eta_"Sp"$ is approximately independent of density at fixed
     temperature, apart from the weak density dependence hidden in
     $ln Lambda$. Its dominant temperature scaling is
@@ -530,16 +530,16 @@
     $bold(j)=e n_"e"(bold(u)_"i"-bold(u)_"e")$.
     Divide the drag by the charge density scale $e n_"e"$:
     $bold(R)_"e i"/(e n_"e")
-      =m_"e"nu_"e i"bold(j)/(n_"e"e^2)$.
+      =(m_"e"nu_"e i"bold(j))/(n_"e"e^2)$.
     Identifying the coefficient of $bold(j)$ with the resistivity gives
-    $eta=m_"e"nu_"e i"/(n_"e"e^2)$ and therefore
-    $sigma_"dc"=n_"e"e^2/(m_"e"nu_"e i")$.
+    $eta=(m_"e"nu_"e i")/(n_"e"e^2)$ and therefore
+    $sigma_"dc"=(n_"e"e^2)/(m_"e"nu_"e i")$.
 
     Insert the Coulomb rate and
-    $omega_(p,e)^4=(4 pi n_"e"e^2/m_"e")^2$:
+    $omega_(p,e)^4=((4 pi n_"e"e^2)/m_"e")^2$:
     $eta_"Sp"=m_"e"/(n_"e"e^2)
-      [sqrt(2)omega_(p,e)^4/(64 pi n_"e")]
-      (k_B T_"e"/m_"e")^(-3/2)ln Lambda$.
+      [(sqrt(2)omega_(p,e)^4)/(64 pi n_"e")]
+      ((k_B T_"e")/m_"e")^(-3/2)ln Lambda$.
     Cancelling the explicit density factors gives the displayed temperature
     scaling and leaves only the weak logarithmic density dependence. The
     cancellation does not mean that density is irrelevant to the plasma: it
@@ -557,8 +557,8 @@
 
   #summary[
     Linear drag converts the collision frequency into
-    $eta=m_"e"nu/(n_"e"e^2)$ and
-    $sigma_"dc"=n_"e"e^2/(m_"e"nu)$. Neutral and Coulomb channels supply
+    $eta=(m_"e"nu)/(n_"e"e^2)$ and
+    $sigma_"dc"=(n_"e"e^2)/(m_"e"nu)$. Neutral and Coulomb channels supply
     different $nu$. With the stated Coulomb convention, Spitzer resistivity
     scales mainly as $T_"e"^(-3/2)ln Lambda$ and is nearly density-independent
     at fixed temperature.
@@ -569,7 +569,7 @@
       question: [What physical quantity is divided by the charge density to obtain resistivity?],
       answer: [The collisional drag force density is divided by the charge
       density scale and expressed per current. This gives
-      $eta=m_"e"nu/(n_"e"e^2)$ in the scalar model.]
+      $eta=(m_"e"nu)/(n_"e"e^2)$ in the scalar model.]
     ),
     (
       question: [How are resistivity and conductivity related in this Gaussian-CGS convention?],
@@ -630,17 +630,17 @@
   The linear electron momentum equation becomes
 
   $m_"e"(nu_"e"-i omega)bold(u)_"e"
-    =q_"e"(bold(E)+bold(u)_"e"times bold(B)_0/c)$.
+    =q_"e"(bold(E)+(bold(u)_"e"times bold(B)_0)/c)$.
 
   For an unmagnetized plasma, $bold(B)_0=bold(0)$, so
 
   $bold(j)=sigma_"dc"bold(E),
-    quad sigma_"dc"=n_"e"q_"e"^2/(m_"e"nu_"e")$.
+    quad sigma_"dc"=(n_"e"q_"e"^2)/(m_"e"nu_"e")$.
 
   Align the $z$ axis with $bold(B)_0$ and define the signed electron
   cyclotron frequency
 
-  $Omega_"e"=q_"e"B_0/(m_"e"c)$.
+  $Omega_"e"=(q_"e"B_0)/(m_"e"c)$.
 
   #conductivity-tensor
 
@@ -648,7 +648,7 @@
 
   $ J_x=sigma_"dc" E_x+(Omega_"e"/nu_"e")J_y,
     quad J_y=sigma_"dc" E_y-(Omega_"e"/nu_"e")J_x,
-    quad J_z=sigma_"dc" E_z $.
+    quad J_z=sigma_"dc" E_z $
 
   Thus
 
@@ -660,9 +660,9 @@
   with
 
   $ sigma_"parallel"=sigma_"dc",
-    quad sigma_"perp"=sigma_"dc"nu_"e"^2/(nu_"e"^2+Omega_"e"^2),
-    quad sigma_"H"=sigma_"dc"nu_"e"Omega_"e"
-      /(nu_"e"^2+Omega_"e"^2) $.
+    quad sigma_"perp"=(sigma_"dc"nu_"e"^2)/(nu_"e"^2+Omega_"e"^2),
+    quad sigma_"H"=(sigma_"dc"nu_"e"Omega_"e")
+      /(nu_"e"^2+Omega_"e"^2) $
 
   The sign of $sigma_"H"$ follows the signed charge convention. Its magnitude
   describes current perpendicular to both the applied electric field and the
@@ -689,29 +689,29 @@
     [Derivation: DC and AC conductivity tensor],
     [Let $a_"e"=nu_"e"-i omega$. Multiplying the harmonic momentum equation
     by $n_"e"q_"e"$ and using $bold(j)=n_"e"q_"e"bold(u)_"e"$ gives
-    $bold(j)=n_"e"q_"e"^2/(m_"e"a_"e")bold(E)
-      + (Omega_"e"/a_"e")bold(j)times hat(bold(z))$.
+    $bold(j)=(n_"e"q_"e"^2)/(m_"e"a_"e")bold(E)
+      + (Omega_"e"/a_"e")(bold(j)times hat(bold(z)))$.
     In components,
     $J_x=sigma_0 E_x+(Omega_"e"/a_"e")J_y$ and
     $J_y=sigma_0 E_y-(Omega_"e"/a_"e")J_x$ with
-    $sigma_0=n_"e"q_"e"^2/(m_"e"a_"e")$.
+    $sigma_0=(n_"e"q_"e"^2)/(m_"e"a_"e")$.
     Solving the two coupled equations gives
-    $sigma_"perp"=n_"e"q_"e"^2 a_"e"
+    $sigma_"perp"=(n_"e"q_"e"^2 a_"e")
       /(m_"e"(a_"e"^2+Omega_"e"^2))$,
-    $sigma_"H"=n_"e"q_"e"^2 Omega_"e"
+    $sigma_"H"=(n_"e"q_"e"^2 Omega_"e")
       /(m_"e"(a_"e"^2+Omega_"e"^2))$, and
-    $sigma_"parallel"=n_"e"q_"e"^2/(m_"e"a_"e")$.
+    $sigma_"parallel"=(n_"e"q_"e"^2)/(m_"e"a_"e")$.
     Setting $omega=0$ recovers the displayed real DC tensor.
 
     If ions are mobile, sum the response of every species. Define
-    $omega_(p,s)^2=4 pi n_s q_s^2/m_s$,
-    $Omega_s=q_s B_0/(m_s c)$, and
+    $omega_(p,s)^2=(4 pi n_s q_s^2)/m_s$,
+    $Omega_s=(q_s B_0)/(m_s c)$, and
     $a_s=nu_s-i omega$. In Gaussian CGS,
-    $sigma_"parallel"=1/(4 pi)sum_s omega_(p,s)^2/a_s$,
+    $sigma_"parallel"=1/(4 pi)sum_s (omega_(p,s)^2/a_s)$,
     $sigma_"perp"=1/(4 pi)sum_s
-      omega_(p,s)^2 a_s/(a_s^2+Omega_s^2)$, and
+      (omega_(p,s)^2 a_s)/(a_s^2+Omega_s^2)$, and
     $sigma_"H"=1/(4 pi)sum_s
-      omega_(p,s)^2 Omega_s/(a_s^2+Omega_s^2)$.
+      (omega_(p,s)^2 Omega_s)/(a_s^2+Omega_s^2)$.
     These sums are additive because the total current is
     $bold(j)=sum_s n_s q_s bold(u)_s$. An electron-only model is appropriate
     when the ions are effectively fixed on the frequency and collision scales;

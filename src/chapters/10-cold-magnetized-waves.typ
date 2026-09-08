@@ -45,7 +45,7 @@
     and $bold(j)$ is in statcoulomb per #unit("cm^2") per #unit("s").
     Frequencies $omega$ and $Omega_s$ are in #unit("s^-1"), wave number $k$
     is in #unit("cm^-1"), and $c$ is in #unit("cm/s"). The dielectric
-    coefficients and refractive index $N=k c/omega$ are dimensionless.
+    coefficients and refractive index $N=(k c)/omega$ are dimensionless.
   ]
 
   #assumption(
@@ -61,10 +61,10 @@
     [Signed gyrofrequency and plasma frequency],
     [For species $s$, define the signed gyrofrequency and the positive plasma
     frequency by
-    $Omega_s=q_s B_0/(m_s c)$ and
-    $omega_(p,s)^2=4 pi n_(s,0) q_s^2/m_s$.
+    $Omega_s=(q_s B_0)/(m_s c)$ and
+    $omega_(p,s)^2=(4 pi n_(s,0) q_s^2)/m_s$.
     For electrons it is useful to reserve
-    $omega_(c,e)=abs(q_e) B_0/(m_e c)>0$
+    $omega_(c,e)=(abs(q_e) B_0)/(m_e c)>0$
     for the cyclotron-frequency magnitude. The sign of $q_e$ remains in the
     transverse polarization convention.]
   )
@@ -72,7 +72,7 @@
   #definition(
     [Cold dielectric tensor],
     [The current response is represented by
-    $bold(epsilon)_(p) dot bold(E)_1=bold(E)_1+(4 pi i/omega) bold(j)_1$,
+    $bold(epsilon)_(p) dot bold(E)_1=bold(E)_1+((4 pi i)/omega) bold(j)_1$,
     with
     $bold(epsilon)_(p)=mat(
       epsilon_(perp), -i epsilon_(times), 0;
@@ -80,7 +80,8 @@
       0, 0, epsilon_(parallel))$.
     For several species,
     $epsilon_(perp)=1-sum_s omega_(p,s)^2/(omega^2-Omega_s^2)$,
-    $epsilon_(times)=sum_s (Omega_s/omega) omega_(p,s)^2/(omega^2-Omega_s^2)$,
+    $epsilon_(times)=sum_s
+      ((Omega_s omega_(p,s)^2)/(omega (omega^2-Omega_s^2)))$,
     and
     $epsilon_(parallel)=1-sum_s omega_(p,s)^2/omega^2$.
     The off-diagonal coefficient changes sign with the charge convention.]
@@ -117,7 +118,7 @@
     [Derivation: from cold momentum to the dielectric tensor],
     [The linearized cold momentum equation is
     $-i omega m_(s) bold(u)_(s,1)=q_(s)(
-      bold(E)_1+bold(u)_(s,1) times bold(B)_0/c)$.
+      bold(E)_1+(bold(u)_(s,1) times bold(B)_0)/c)$.
     With $bold(B)_0=B_0 bold(e)_z$, its transverse components are
     $-i omega bold(u)_(s,1,x)-Omega_s bold(u)_(s,1,y)
       =(q_s/m_s) bold(E)_(1,x)$ and
@@ -127,21 +128,21 @@
     $-i omega bold(u)_(s,1,z)=(q_s/m_s) bold(E)_(1,z)$.
 
     Inverting the transverse two-by-two system gives
-    $bold(u)_(s,1,x)=i q_s omega/(m_(s)(omega^2-Omega_s^2)) bold(E)_(1,x)
-      -q_s Omega_s/(m_(s)(omega^2-Omega_s^2)) bold(E)_(1,y)$ and
-    $bold(u)_(s,1,y)=q_s Omega_s/(m_(s)(omega^2-Omega_s^2)) bold(E)_(1,x)
-      +i q_s omega/(m_(s)(omega^2-Omega_s^2)) bold(E)_(1,y)$.
+    $bold(u)_(s,1,x)=((i q_s omega)/(m_(s)(omega^2-Omega_s^2))) bold(E)_(1,x)
+      -(q_s Omega_s/(m_(s)(omega^2-Omega_s^2))) bold(E)_(1,y)$ and
+    $bold(u)_(s,1,y)=(q_s Omega_s/(m_(s)(omega^2-Omega_s^2))) bold(E)_(1,x)
+      +((i q_s omega)/(m_(s)(omega^2-Omega_s^2))) bold(E)_(1,y)$.
     Multiplication by $q_s n_(s,0)$ and summation produces $bold(j)_1$.
     Inserting the result into
-    $bold(epsilon)_(p) dot bold(E)_1=bold(E)_1+(4 pi i/omega) bold(j)_1$
+    $bold(epsilon)_(p) dot bold(E)_1=bold(E)_1+((4 pi i)/omega) bold(j)_1$
     yields the three coefficients shown above. The transverse entries are
     coupled because the Lorentz force rotates the velocity in the $x-y$
     plane; the $z$ motion has no magnetic force.
 
     Faraday's and Ampere's laws in Fourier form are
-    $bold(k) times bold(E)_1=omega bold(B)_1/c$ and
-    $bold(k) times bold(B)_1=-omega bold(E)_1/c
-      -4 pi i bold(j)_1/c$.
+    $bold(k) times bold(E)_1=(omega bold(B)_1)/c$ and
+    $bold(k) times bold(B)_1=-(omega bold(E)_1)/c
+      -(4 pi i bold(j)_1)/c$.
     Substitute the first into the second, eliminate $bold(j)_1$ with the
     dielectric definition, and use
     $bold(k) times (bold(k) times bold(E)_1)
@@ -203,7 +204,7 @@
   ))
 
   #unit-ledger[
-    The refractive index $N=k c/omega$, normalized frequency is
+    The refractive index $N=(k c)/omega$, normalized frequency is
     $W=omega/omega_(p,e)$, and magnetization is
     $Y=omega_(c,e)/omega_(p,e)$; all three are dimensionless. The dimensional
     $k$ is in #unit("cm^-1"), $omega$ and $omega_(c,e)$ are in
@@ -238,7 +239,7 @@
     The two transverse circular branches are
     $N_(s)^2=epsilon_(s)=1-omega_(p,e)^2/(omega(omega+s omega_(c,e)))$.
     Their positive-frequency cutoffs satisfy $N_(s)=0$ and are
-    $omega_"cut,s"=1/2 (sqrt(omega_(c,e)^2+4 omega_(p,e)^2)-s omega_(c,e))$.
+    $omega_"cut,s"=(sqrt(omega_(c,e)^2+4 omega_(p,e)^2)-s omega_(c,e))/2$.
     A real $N$ denotes bulk propagation in this idealized model; $N^2<0$
     denotes an evanescent branch.]
   )
@@ -263,7 +264,7 @@
     $omega_(c,e)=qty("1.76e9", "s^-1")$, and a parallel wave with
     $omega=qty("2.00e10", "s^-1")$ crossing a path of
     $L=qty("10", "cm")$, determine the two refractive indices and the
-    Faraday-rotation angle $theta_F=(k_+-k_-)L/2$.
+    Faraday-rotation angle $theta_F=((k_+-k_-)L)/2$.
 
     Numerical result: $N_+=0.963$, $N_-=0.955$, and
     $theta_F=2.47 dot 10^-2$ rad $=1.42 degree$.
@@ -299,9 +300,9 @@
     eigenmodes. After distance $L$ their relative phase is
     $(k_+-k_-)L$. The major axis of the resulting linear polarization rotates
     by half that relative phase:
-    $theta_F=(k_+-k_-)L/2$.
+    $theta_F=((k_+-k_-)L)/2$.
     If the plasma varies slowly along the ray, replace the constant difference
-    by $theta_F=1/2 integral (k_+(z)-k_-(z)) d z$.]
+    by $theta_F=(integral (k_+(z)-k_-(z)) d z)/2$.]
   )
 
   #interpretation(
@@ -358,7 +359,7 @@
 
   #unit-ledger[
     The angle $theta$ is dimensionless and measured in radians. The refractive
-    index $N=k c/omega$, $W=omega/omega_(p,e)$, and
+    index $N=(k c)/omega$, $W=omega/omega_(p,e)$, and
     $Y=omega_(c,e)/omega_(p,e)$ are dimensionless. Dimensional $k$ is in
     #unit("cm^-1"), $omega$ in #unit("s^-1"), and wavelengths in #unit("cm").
   ]
@@ -380,8 +381,9 @@
     $N_X^2=(epsilon_(perp)^2-epsilon_(times)^2)/epsilon_(perp)$.
     Define the upper-hybrid frequency by
     $omega_"UH"=sqrt(omega_(p,e)^2+omega_(c,e)^2)$; then
-    $N_X^2=1-omega_(p,e)^2/omega^2
-      dot (omega^2-omega_(p,e)^2)/(omega^2-omega_"UH"^2)$.
+    $N_X^2=1-
+      (omega_(p,e)^2 (omega^2-omega_(p,e)^2)) /
+      (omega^2 (omega^2-omega_"UH"^2))$.
     The extraordinary polarization ratio is
     $E_x/E_y=i epsilon_(times)/epsilon_(perp)$, away from zeros of the
     denominator.]
@@ -429,13 +431,13 @@
     $N_X^2=(epsilon_(perp)^2-epsilon_(times)^2)/epsilon_(perp)$.
     For one electron species, write
     $epsilon_(perp)=1-omega_(p,e)^2/(omega^2-omega_(c,e)^2)$ and
-    $epsilon_(times)=omega_(c,e) omega_(p,e)^2/
+    $epsilon_(times)=-(omega_(c,e) omega_(p,e)^2)/
       (omega(omega^2-omega_(c,e)^2))$
     after choosing the positive-magnitude convention for the eigenvalue
     labels. Multiplying the two circular factors and simplifying yields
-    $N_X^2=1-omega_(p,e)^2/omega^2
-      dot (omega^2-omega_(p,e)^2)/
-      (omega^2-omega_(p,e)^2-omega_(c,e)^2)$.
+    $N_X^2=1-
+      (omega_(p,e)^2 (omega^2-omega_(p,e)^2)) /
+      (omega^2 (omega^2-omega_(p,e)^2-omega_(c,e)^2))$.
     The denominator is zero at $omega_"UH"^2=omega_(p,e)^2+omega_(c,e)^2$.
     The first row of the transverse block gives
     $epsilon_(perp) E_x-i epsilon_(times) E_y=0$,
@@ -496,7 +498,7 @@
 
   #unit-ledger[
     The propagation angle $theta$ is dimensionless. Use
-    $N=k c/omega$, $X_(omega)=omega_(p,e)^2/omega^2$, and
+    $N=(k c)/omega$, $X_(omega)=omega_(p,e)^2/omega^2$, and
     $Y_(omega)=omega_(c,e)/omega$, all dimensionless. The dimensional wave
     number $k$ is in #unit("cm^-1") and frequency $omega$ in
     #unit("s^-1").
@@ -525,9 +527,9 @@
     Its determinant gives two electromagnetic roots. For one cold electron
     species they can be written in the Appleton--Hartree form
     $N_(1,2)^2=1-X_(omega) /
-      (1-Y_(omega)^2 sin^2 theta/(2(1-X_(omega)) )
+      (1-(Y_(omega)^2 sin^2 theta)/(2(1-X_(omega)) )
       plus.minus sqrt(
-        (Y_(omega)^2 sin^2 theta/(2(1-X_(omega))))^2
+        ((Y_(omega)^2 sin^2 theta)/(2(1-X_(omega))))^2
         +Y_(omega)^2 cos^2 theta))$.
     The two signs identify the two branches; their polarization and
     longitudinal content vary continuously with $theta$.]
@@ -559,7 +561,8 @@
     The determinant is a quadratic polynomial in $N^2$. Insert the single
     electron coefficients
     $S=1-X_(omega)/(1-Y_(omega)^2)$,
-    $D$ with magnitude $Y_(omega) X_(omega)/(1-Y_(omega)^2)$, and
+    $D$ with magnitude
+    $(Y_(omega) X_(omega))/(1-Y_(omega)^2)$, and
     $P=1-X_(omega)$. Collect the terms in $N^4$, $N^2$, and the constant
     term, then use the quadratic formula. Completing the square in the
     angle-dependent coefficient produces the two Appleton--Hartree roots.
@@ -659,7 +662,7 @@
   #governing-law(
     [Normalized landmarks],
     [For $Y=omega_(c,e)/omega_(p,e)$, the parallel circular cutoffs are
-    $W_"cut,s"=1/2 (sqrt(Y^2+4)-s Y)$.
+    $W_"cut,s"=(sqrt(Y^2+4)-s Y)/2$.
     The perpendicular extraordinary resonance is
     $W_"UH"=sqrt(1+Y^2)$, while the ordinary cutoff is $W=1$.
     When $Y -> 0$, both circular modes merge into the unmagnetized transverse

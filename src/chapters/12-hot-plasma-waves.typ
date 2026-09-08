@@ -1,6 +1,6 @@
 #import "../theme.typ": *
 #import "../figures.typ": hot-isotropic-dispersion, hot-velocity-space-slopes, two-stream-growth, hot-magnetized-resonance
-#import "@preview/physica:0.9.8": div, grad, pdv, curl
+#import "@preview/physica:0.9.8": div, grad, pdv, dv, curl
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
@@ -63,7 +63,7 @@
     [Kinetic perturbation],
     [The collisionless kinetic equation for species $s$ is
     $pdv(f_s,t)+bold(v) dot grad_(bold(r))(f_s)+
-      q_s/m_s (bold(E)+bold(v) times bold(B)/c) dot
+      (q_s/m_s) (bold(E)+(bold(v) times bold(B))/c) dot
       grad_(bold(v))(f_s)=0$.
     Expand
     $f_s=f_(s,0)(bold(v))+epsilon f_(s,1)(bold(r),bold(v),t)$,
@@ -81,7 +81,7 @@
     [For a longitudinal perturbation with $bold(k) parallel bold(E)_1$,
     the allowed modes satisfy
     $epsilon_(L)(omega,bold(k))=1+
-      sum_s 4 pi q_s^2/(m_s k^2)
+      sum_s (4 pi q_s^2)/(m_s k^2)
       integral_(-infinity)^infinity
       [bold(k) dot grad_(bold(v))(f_(s,0)(bold(v)))]/
       [omega-bold(k) dot bold(v)] d^3 v=0$.
@@ -89,10 +89,10 @@
     the real velocity path. For an electron Maxwellian,
     $f_(e,0)(bold(v))=n_0/(pi^(3/2) v_"te"^3)
       exp(-v^2/v_"te"^2)$,
-    $v_"te"=sqrt(2 k_B T_e/m_e)$, and
+    $v_"te"=sqrt((2 k_B T_e)/m_e)$, and
     $epsilon_L=1+1/(k^2 lambda_D^2)[1+zeta Z(zeta)]$ with
     $zeta=omega/(k v_"te")$ and
-    $lambda_D^2=k_B T_e/(4 pi n_0 e^2)$.]
+    $lambda_D^2=(k_B T_e)/(4 pi n_0 e^2)$.]
   )
 
   #rechenbeispiel[
@@ -121,7 +121,7 @@
     $i (bold(k) dot bold(v)-omega) tilde(f)_(s,1)+
       q_s/m_s bold(E)_1 dot grad_(bold(v))(f_(s,0))=0$.
     Therefore
-    $tilde(f)_(s,1)=-i q_s/m_s
+    $tilde(f)_(s,1)=(-i q_s)/m_s
       [bold(E)_1 dot grad_(bold(v))(f_(s,0))]/
       [omega-bold(k) dot bold(v)]$.
 
@@ -152,7 +152,7 @@
     $omega=omega_(p,e)$. For $abs(zeta)>>1$,
     $Z(zeta) approx -1/zeta-1/(2 zeta^3)-3/(4 zeta^5)$.
     Substituting this expansion into $epsilon_L=0$ gives
-    $omega^2 approx omega_(p,e)^2+3 k^2 k_B T_e/m_e$.
+    $omega^2 approx omega_(p,e)^2+(3 k^2 k_B T_e)/m_e$.
     The warm-fluid coefficient is thus the leading real kinetic correction,
     while the contour contribution contains the collisionless damping that
     the moment closure omits.]
@@ -172,7 +172,7 @@
     containing the distribution function and a resonant denominator. A cold
     delta distribution recovers $omega=omega_(p,e)$; a Maxwellian gives the
     plasma-dispersion function and the warm long-wave shift
-    $omega^2 approx omega_(p,e)^2+3 k^2 k_B T_e/m_e$.
+    $omega^2 approx omega_(p,e)^2+(3 k^2 k_B T_e)/m_e$.
   ]
 
   #knowledge-check((
@@ -190,7 +190,7 @@
     ),
     (
       question: [What does the coefficient three in the warm Langmuir correction represent?],
-      answer: [For an isotropic Maxwellian and a long-wavelength expansion, the second velocity moment enters the real susceptibility and gives the coefficient $3 k_B T_e/m_e$. A different closure or distribution must be stated before changing it.]
+      answer: [For an isotropic Maxwellian and a long-wavelength expansion, the second velocity moment enters the real susceptibility and gives the coefficient $(3 k_B T_e)/m_e$. A different closure or distribution must be stated before changing it.]
     ),
   ))
 
@@ -215,7 +215,7 @@
     The phase velocity $v_"phi"$ and thermal speed $v_"te"$ are in
     #unit("cm/s"). The resonant velocity $v_"res"$ is in #unit("cm/s"),
     $omega_r$ and the weak rate $gamma$ are in #unit("s^-1"), and $k$ is in
-    #unit("cm^-1"). The slope $dif f_(0)/dif v$ carries the phase-space-density
+    #unit("cm^-1"). The slope $dv(f_(0),v)$ carries the phase-space-density
     per #unit("cm/s") unit. The ratios $v_"phi"/v_"te"$ and
     $gamma/omega_(p,e)$ are dimensionless.
   ]
@@ -235,7 +235,7 @@
     $v_"res"=v_"phi"$. The pole of the response is at
     $omega-k v_"res"=0$. For a distribution that varies slowly across the
     resonant layer, only its local derivative
-    $dif f_(0)/dif v|_(v=v_"res")$ is needed for the leading sign of the
+    $dv(f_(0),v)$ evaluated at $v=v_"res"$ is needed for the leading sign of the
     collisionless energy exchange.]
   )
 
@@ -244,11 +244,13 @@
   #governing-law(
     [Slope criterion],
     [For a weakly damped or growing root,
-    $gamma=-Im(epsilon_(L)(omega_(r),k)) /
-      [dif Re(epsilon_(L))/dif omega]_(omega=omega_(r))$.
+    $gamma=-(Im(epsilon_(L)(omega_(r),k)))/
+      dv(Re(epsilon_(L)(omega,k)),omega)$.
+    The derivative in the denominator is evaluated at
+    $omega=omega_(r)$.
     With the present Fourier convention, $gamma<0$ means temporal damping and
     $gamma>0$ means temporal growth. For the usual positive-frequency branch,
-    a Maxwellian slope $dif f_(0)/dif v<0$ gives damping, while a positive
+    a Maxwellian slope $dv(f_(0),v)<0$ gives damping, while a positive
     bump-on-tail slope can give growth. The sign is a physical statement only
     after the Fourier convention and propagation direction are fixed.]
   )
@@ -274,22 +276,23 @@
     in its one-dimensional form. Integration by parts gives a denominator
     squared:
     $epsilon_L=1-
-      sum_s 4 pi q_s^2/(m_s k^2)
+      sum_s (4 pi q_s^2)/(m_s k^2)
       integral_(-infinity)^infinity
       f_(s,0)(v) / (v-omega/k)^2 dif v$,
     with the same contour prescription. The equivalent first-derivative form
     is useful because the pole contribution is directly proportional to
-    $dif f_(s,0)/dif v$ at $v=omega_r/k$.
+    $dv(f_(s,0),v)$ at $v=omega_r/k$.
 
     Let $omega=omega_(r)+i gamma$ and assume $abs(gamma)<<omega_(r)$. Expand
     the dispersion function around the real root:
     $epsilon_(L)(omega_(r)+i gamma,k) approx
       Re(epsilon_(L)(omega_(r),k))+
       i Im(epsilon_(L)(omega_(r),k))+
-      i gamma [dif Re(epsilon_(L))/dif omega]_(omega_(r))$.
+      i gamma dv(Re(epsilon_(L)(omega,k)),omega)$.
     The real part gives the undamped dispersion relation. Setting the
     imaginary part to zero yields
-    $gamma=-Im(epsilon_(L))/[dif Re(epsilon_(L))/dif omega]_(omega_(r))$.
+    $gamma=-Im(epsilon_(L)(omega_(r),k))/
+      dv(Re(epsilon_(L)(omega,k)),omega)$.
     The Landau contour turns the pole into a term proportional to the local
     derivative of the equilibrium distribution. For a Maxwellian and a
     positive phase velocity, that derivative is negative, so the rate is
@@ -305,7 +308,7 @@
     instead of using the weak-damping expansion.
 
     A wave packet connects temporal and spatial descriptions. If
-    $omega(k)$ has group velocity $v_"g"=dif omega/dif k$, then the same
+    $omega(k)$ has group velocity $v_"g"=dv(omega,k)$, then the same
     weak rate corresponds approximately to $k_i=-gamma/v_"g"$ at fixed real
     frequency. Thus temporal damping with $gamma<0$ becomes positive spatial
     attenuation for a forward wave with $v_"g">0$.]
@@ -407,7 +410,7 @@
     [Landau damping estimate],
     [The general weak-rate relation is
     $gamma=-Im(epsilon_(L)(omega_(r),k))/
-      [dif Re(epsilon_(L))/dif omega]_(omega=omega_(r))$.
+      dv(Re(epsilon_(L)(omega,k)),omega)$.
     For a Maxwellian Langmuir branch at $k lambda_D << 1$,
     $gamma approx -sqrt(pi/8) omega_(p,e) exp(-3/2)
       (k lambda_D)^(-3) exp[-1/(2(k lambda_D)^2)]$.
@@ -422,11 +425,11 @@
     $epsilon_(L)(omega,k)=epsilon_(r)(omega,k)+i epsilon_(i)(omega,k)$ and
     let $omega=omega_(r)+i gamma$. To first order in $gamma$,
     $0 approx epsilon_(r)(omega_(r),k)+i epsilon_(i)(omega_(r),k)+
-      i gamma [dif epsilon_(r)/dif omega]_(omega_(r))$.
+      i gamma dv(epsilon_(r)(omega,k),omega)$.
     Separating real and imaginary parts gives
     $epsilon_(r)(omega_(r),k)=0$ and
     $gamma=-epsilon_(i)(omega_(r),k)/
-      [dif epsilon_(r)/dif omega]_(omega_(r))$.
+      dv(epsilon_(r)(omega,k),omega)$.
 
     For the Maxwellian response, the causal continuation gives
     $Im(Z(zeta))=sqrt(pi) exp(-zeta^2)$ for real positive $zeta$, while its
@@ -511,7 +514,7 @@
     light speed $c$ are in #unit("cm/s"), $k$ is in #unit("cm^-1"), and
     $omega$, $gamma$, and $omega_p$ are in #unit("s^-1"). The wavelength is
     in #unit("cm"). The normalized variables
-    $k v_0/omega_p$, $omega/omega_p$, and $gamma/omega_p$ are dimensionless.
+    $(k v_0)/omega_p$, $omega/omega_p$, and $gamma/omega_p$ are dimensionless.
   ]
 
   #assumption(
@@ -520,7 +523,7 @@
     $+v_0$ and $-v_0$ along $bold(e)_z$. Ions form a fixed neutralizing
     background, the plasma is unmagnetized and collisionless, and the wave is
     one-dimensional and electrostatic. The total electron plasma frequency is
-    $omega_p^2=4 pi n_0 e^2/m_e$.]
+    $omega_p^2=(4 pi n_0 e^2)/m_e$.]
   )
 
   #definition(
@@ -547,13 +550,13 @@
 
   #governing-law(
     [Cold two-stream dispersion],
-    [With $x=(k v_0/omega_p)^2$, the dispersion relation is
-    $D(omega,k)=1-1/2 omega_p^2/(omega-k v_0)^2-
-      1/2 omega_p^2/(omega+k v_0)^2=0$.
+    [With $x=((k v_0)/omega_p)^2$, the dispersion relation is
+    $D(omega,k)=1-(omega_p^2)/(2(omega-k v_0)^2)-
+      (omega_p^2)/(2(omega+k v_0)^2)=0$.
     Its two values of $omega^2$ are
-    $omega^2/omega_p^2=x+1/2 ± 1/2 sqrt(1+8x)$.
+    $omega^2/omega_p^2=x+1/2 ± (sqrt(1+8x))/2$.
     The lower branch is negative when $0<x<1$, so
-    $gamma/omega_p=[1/2 sqrt(1+8x)-x-1/2]^(1/2)$ in that interval.
+    $gamma/omega_p=[(sqrt(1+8x))/2-x-1/2]^(1/2)$ in that interval.
     The maximum occurs at $x=3/8$ and has
     $gamma_"max"/omega_p=1/(2 sqrt(2))$.]
   )
@@ -561,7 +564,7 @@
   #rechenbeispiel[
     Let $n_0=qty("1.0e10", "cm^-3")$,
     $v_0=0.10 c$ with $c=qty("2.998e10", "cm/s")$, and choose
-    $k v_0/omega_p=0.50$. Use
+    $(k v_0)/omega_p=0.50$. Use
     $e=qty("4.803e-10", "statcoulomb")$ and
     $m_e=qty("9.109e-28", "g")$. Determine $k$, the wavelength, and the
     positive growth rate.
@@ -569,8 +572,8 @@
     Numerical result: $omega_p approx qty("5.64e9", "s^-1")$,
     $k approx qty("9.41e-1", "cm^-1")$,
     $lambda approx qty("6.68", "cm")$,
-    $gamma/omega_p approx 0.344$, and
-    $gamma approx qty("1.94e9", "s^-1")$.
+    $gamma/omega_p approx 0.341$, and
+    $gamma approx qty("1.92e9", "s^-1")$.
   ]
 
   #details(
@@ -580,17 +583,17 @@
     each cold beam responds as a cold fluid whose equilibrium drift shifts the
     frequency to $omega-k v_0$ or $omega+k v_0$. The total response is
     therefore
-    $D(omega,k)=1-1/2 omega_p^2/(omega-k v_0)^2-
-      1/2 omega_p^2/(omega+k v_0)^2$.
+    $D(omega,k)=1-(omega_p^2)/(2(omega-k v_0)^2)-
+      (omega_p^2)/(2(omega+k v_0)^2)$.
 
     Multiply by $(omega^2-k^2 v_0^2)^2$ and collect powers of $omega^2$:
     $omega^4-(2 k^2 v_(0)^(2)+omega_p^2)omega^2+
       k^2 v_(0)^(2) (k^2 v_(0)^(2)-omega_p^2)=0$.
-    Define $x=k^2 v_0^2/omega_p^2$ and
+    Define $x=(k^2 v_0^2)/(omega_p^2)$ and
     $y=omega^2/omega_p^2$. Dividing by $omega_p^4$ gives
     $y^2-(2x+1)y+x(x-1)=0$.
     The quadratic formula yields
-    $y=x+1/2 ± 1/2 sqrt(1+8x)$.
+    $y=x+1/2 ± (sqrt(1+8x))/2$.
 
     The upper branch is positive for all $x>=0$. For the lower branch,
     $y_-<0$ precisely when
@@ -600,7 +603,7 @@
     $gamma/omega_p=sqrt(-y_-)$.
 
     To locate the maximum, differentiate
-    $gamma^2/omega_p^2=1/2 sqrt(1+8x)-x-1/2$.
+    $gamma^2/omega_p^2=(sqrt(1+8x))/2-x-1/2$.
     The derivative vanishes when $2/sqrt(1+8x)=1$, so
     $x=3/8$. Substitution gives
     $gamma^2/omega_p^2=1/8$ and therefore
@@ -621,9 +624,9 @@
 
   #summary[
     The cold symmetric two-stream model has a finite unstable band
-    $0<abs(k v_0)/omega_p<1$. The maximum growth rate is
+    $0<(abs(k v_0))/omega_p<1$. The maximum growth rate is
     $omega_p/(2 sqrt(2))$, reached at
-    $abs(k v_0)/omega_p=sqrt(3/8)$. Finite temperature and kinetic phase
+    $(abs(k v_0))/omega_p=sqrt(3/8)$. Finite temperature and kinetic phase
     mixing determine how this ideal beam instability is modified.
   ]
 
@@ -634,7 +637,7 @@
     ),
     (
       question: [Why is the unstable interval finite in wave number?],
-      answer: [For $abs(k v_0)/omega_p>=1$, the lower algebraic root is nonnegative and both branches are oscillatory. Only below the boundary can the lower $omega^2$ become negative.]
+      answer: [For $(abs(k v_0))/omega_p>=1$, the lower algebraic root is nonnegative and both branches are oscillatory. Only below the boundary can the lower $omega^2$ become negative.]
     ),
     (
       question: [What does a positive imaginary frequency mean here?],
@@ -666,11 +669,14 @@
   #unit-ledger[
     Gaussian CGS is active. Magnetic field $B_0$ is in #unit("G"), mass is in
     #unit("g"), gyrofrequency and wave frequency are in #unit("s^-1"),
-    parallel wave number is in #unit("cm^-1"), and parallel or perpendicular
-    speeds are in #unit("cm/s"). The signed gyrofrequency
-    $Omega_s=q_s B_0/(m_s c)$ has units #unit("s^-1"). Harmonic number $n$,
-    $k_perp rho_s$, $omega/abs(Omega_s)$, and the resonance condition after
-    division by a frequency are dimensionless.
+    parallel and perpendicular wave numbers are in #unit("cm^-1"), and
+    parallel or perpendicular particle speeds are in #unit("cm/s"). The
+    signed gyrofrequency $Omega_s=(q_s B_0)/(m_s c)$ has units
+    #unit("s^-1"). For a characteristic perpendicular speed $v_"perp,s"$,
+    define the thermal gyroradius
+    $rho_s=v_"perp,s"/abs(Omega_s)$, which is in #unit("cm"). Harmonic number
+    $n$, $k_perp rho_s$, $omega/abs(Omega_s)$, and the resonance condition
+    after division by a frequency are dimensionless.
   ]
 
   #assumption(
@@ -679,13 +685,15 @@
     $bold(B)_0=B_0 bold(e)_z$ and an equilibrium
     $f_(s,0)(v_"parallel",v_"perp")$ independent of gyroangle. Begin with
     parallel propagation to expose the harmonic denominators; finite
-    $k_perp rho_s$ introduces Bessel factors and finite-Larmor-radius effects.]
+    $k_perp rho_s$ introduces Bessel factors and finite-Larmor-radius effects.
+    For thermal estimates, take $v_"perp,s"$ to be the characteristic
+    perpendicular thermal speed of species $s$.]
   )
 
   #definition(
     [Gyroangle harmonic response],
     [Define the signed gyrofrequency
-    $Omega_s=q_s B_0/(m_s c)$ and write the perturbed distribution as
+    $Omega_s=(q_s B_0)/(m_s c)$ and write the perturbed distribution as
     $f_(s,1)=sum_(n=-infinity)^infinity
       f_(s,1,n)(v_"parallel",v_"perp") exp(i n theta)$.
     The integer $n$ counts the number of gyroangle phase windings sampled by
@@ -734,7 +742,7 @@
     $pdv(v_"perp",t)=0$, and
     $pdv(theta,t)=Omega_s$.
     A stationary gyrotropic equilibrium therefore satisfies
-    $Omega_s dif f_(s,0)/dif theta=0$ and can depend on
+    $Omega_s pdv(f_(s,0),theta)=0$ and can depend on
     $v_"parallel"$ and $v_"perp"$ but not on $theta$.
 
     Linearize the Vlasov equation about this equilibrium. The streaming and
@@ -742,7 +750,7 @@
     $pdv(,t)+v_"parallel" pdv(,z)+Omega_s pdv(,theta)
       -> -i(omega-k_"parallel"v_"parallel"-n Omega_s)$.
     If the forcing term for harmonic $n$ is written $S_(s,n)$, its response is
-    $f_(s,1,n)=i S_(s,n)/
+    $f_(s,1,n)=(i S_(s,n))/
       [omega-k_"parallel"v_"parallel"-n Omega_s]$,
     up to the overall sign convention used to define $S_(s,n)$. The location
     of the pole is invariant under that bookkeeping choice.
@@ -787,7 +795,7 @@
   #knowledge-check((
     (
       question: [What is the difference between a signed gyrofrequency and its positive magnitude?],
-      answer: [The positive magnitude $omega_"c"=abs(q) B/(m c)$ is a rate, while the signed $Omega=q B/(m c)$ retains the charge-dependent sense of gyromotion and enters the harmonic resonance with its sign.]
+      answer: [The positive magnitude $omega_"c"=(abs(q) B)/(m c)$ is a rate, while the signed $Omega=(q B)/(m c)$ retains the charge-dependent sense of gyromotion and enters the harmonic resonance with its sign.]
     ),
     (
       question: [Which harmonic corresponds to the parallel Landau resonance?],

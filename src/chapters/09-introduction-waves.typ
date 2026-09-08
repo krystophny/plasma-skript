@@ -1,6 +1,6 @@
 #import "../theme.typ": *
 #import "../figures.typ": wave-linearization, wave-dispersion, warm-kinetic-limits
-#import "@preview/physica:0.9.8": div, grad, pdv, curl
+#import "@preview/physica:0.9.8": div, grad, pdv, dv, curl
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
@@ -46,7 +46,7 @@
     #unit("cm"), $bold(B)$ is in #unit("G"), and current density is in
     statcoulomb per #unit("cm^2") per #unit("s"). The speed of light $c$ is
     in #unit("cm/s"). The phase $bold(k) dot bold(r)-omega t$ and normalized
-    variables such as $omega / omega_(p,e)$ are dimensionless.
+    variables such as $omega/omega_(p,e)$ are dimensionless.
   ]
 
   #assumption(
@@ -79,10 +79,10 @@
   $ pdv(n_s,t)+div_(bold(r))(n_s bold(u)_s)=0 $
 
   $ m_s n_s (pdv(bold(u)_s,t)+bold(u)_s dot grad_(bold(r)) bold(u)_s)
-    =q_s n_s (bold(E)+bold(u)_s times bold(B)/c)-grad_(bold(r))(p_s) $
+    =q_s n_s (bold(E)+(bold(u)_s times bold(B))/c)-grad_(bold(r))(p_s) $
 
-  $ curl_(bold(r))(bold(E))=-1/c pdv(bold(B),t), quad
-    curl_(bold(r))(bold(B))=4 pi/c bold(j)+1/c pdv(bold(E),t) $
+  $ curl_(bold(r))(bold(E))=-(pdv(bold(B),t))/c, quad
+    curl_(bold(r))(bold(B))=((4 pi)/c) bold(j)+(pdv(bold(E),t))/c $
 
   $ div_(bold(r))(bold(E))=4 pi rho_q, quad
     div_(bold(r))(bold(B))=0 $
@@ -103,7 +103,7 @@
     $bold(u)_(s,1) times bold(B)_1$. The first-order momentum equation is
     $m_s n_(s,0) pdv(bold(u)_(s,1),t)
       =q_s n_(s,0)(bold(E)_1+
-      bold(u)_(s,1) times bold(B)_0/c)-grad_(bold(r))(p_(s,1))$.
+      (bold(u)_(s,1) times bold(B)_0)/c)-grad_(bold(r))(p_(s,1))$.
 
     Apply the plane-wave replacements
     $pdv(,t) -> -i omega$, $grad_(bold(r)) -> i bold(k)$,
@@ -113,7 +113,7 @@
     and
     $-i omega m_s n_(s,0) bold(u)_(s,1)
       =q_s n_(s,0)(bold(E)_1+
-      bold(u)_(s,1) times bold(B)_0/c)-i bold(k) p_(s,1)$.
+      (bold(u)_(s,1) times bold(B)_0)/c)-i bold(k) p_(s,1)$.
     Maxwell's equations become algebraic relations between the field
     amplitudes, while the equilibrium neutrality removes the zeroth-order
     charge density. A nontrivial amplitude exists only when the resulting
@@ -187,7 +187,7 @@
     statcoulomb, electron mass $m_e$ is in #unit("g"), electric field is in
     statvolt per #unit("cm"), and the plasma frequency
     $omega_(p,e)$ is in #unit("s^-1"). The normalized displacement
-    $xi / xi_0$ and time $omega_(p,e) t$ are dimensionless.
+    $xi/xi_0$ and time $omega_(p,e) t$ are dimensionless.
   ]
 
   #assumption(
@@ -201,7 +201,7 @@
   #definition(
     [Electron plasma frequency],
     [The electron plasma frequency in Gaussian CGS is
-    $omega_(p,e)=sqrt(4 pi n_0 e^2/m_e)$.
+    $omega_(p,e)=sqrt((4 pi n_0 e^2)/m_e)$.
     It is a local collective frequency. Since the cold longitudinal
     dispersion relation contains no $k$, this idealized oscillation has no
     group propagation.]
@@ -210,9 +210,9 @@
   #governing-law(
     [Cold electrostatic plasma oscillation],
     [For a longitudinal perturbation with fixed ions,
-    $omega^2=omega_(p,e)^2=4 pi n_0 e^2/m_e$.
+    $omega^2=omega_(p,e)^2=(4 pi n_0 e^2)/m_e$.
     If every species is allowed to move coherently, the restoring frequency
-    becomes $omega_p^2=sum_s 4 pi n_(s,0) q_s^2/m_s$.]
+    becomes $omega_p^2=sum_s ((4 pi n_(s,0) q_s^2)/m_s)$.]
   )
 
   #rechenbeispiel[
@@ -233,25 +233,25 @@
     [For the electron charge $q_e=-e$, the cold linearized momentum equation
     is $-i omega m_e bold(u)_(e,1)=-e bold(E)_1$.
     The longitudinal continuity equation gives
-    $n_(e,1)=n_0 bold(k) dot bold(u)_(e,1)/omega$.
+    $n_(e,1)=(n_0 (bold(k) dot bold(u)_(e,1)))/omega$.
     For a parallel electric field, this is
-    $n_(e,1)=n_0 k u_(e,1)/omega$.
+    $n_(e,1)=(n_0 k u_(e,1))/omega$.
 
     Poisson's equation contains only the perturbed electron charge because
     the ion background is fixed:
     $i k E_1=4 pi rho_(q,1)=-4 pi e n_(e,1)$.
     Solving the momentum equation gives
-    $u_(e,1)=-i e E_1/(m_e omega)$.
+    $u_(e,1)=(-i e E_1)/(m_e omega)$.
     Insert it into continuity and then Poisson:
-    $i k E_1=-4 pi e (-i n_0 e k E_1/(m_e omega^2))$.
+    $i k E_1=-4 pi e ((-i n_0 e k E_1)/(m_e omega^2))$.
     Cancel the nonzero amplitude and the common factor $i k$:
-    $omega^2=4 pi n_0 e^2/m_e$.
+    $omega^2=(4 pi n_0 e^2)/m_e$.
 
     The wave number disappeared because the cold model has no pressure
     gradient and therefore no spatial restoring scale. If the ions also move,
     repeat the same force-balance calculation for each species and sum their
     charge responses. The result is
-    $omega_p^2=sum_s 4 pi n_(s,0)q_s^2/m_s$; for hydrogen the ion term is
+    $omega_p^2=sum_s ((4 pi n_(s,0)q_s^2)/m_s)$; for hydrogen the ion term is
     smaller by $m_e/m_i$.]
   )
 
@@ -266,7 +266,7 @@
 
   #summary[
     A displaced cold electron population creates a charge-separation field.
-    In Gaussian CGS this gives $omega_(p,e)^2=4 pi n_0 e^2/m_e$.
+    In Gaussian CGS this gives $omega_(p,e)^2=(4 pi n_0 e^2)/m_e$.
     The frequency is collective and local in the cold fixed-ion limit; ion
     inertia adds the corresponding ion plasma-frequency contribution.
   ]
@@ -286,7 +286,8 @@
     ),
     (
       question: [How does allowing the ions to move change the collective frequency?],
-      answer: [Each mobile species contributes $4 pi n_(s,0)q_s^2/m_s$ to the
+      answer: [Each mobile species contributes
+      $(4 pi n_(s,0)q_s^2)/m_s$ to the
       squared collective frequency. The ion contribution is usually small
       because the ion mass is large.]
     ),
@@ -318,7 +319,7 @@
     The wave number $k$ is in #unit("cm^-1"), frequency $omega$ is in
     #unit("s^-1"), and $c$ is in #unit("cm/s"). The velocities
     $v_"phi"$ and $v_"g"$ are in #unit("cm/s"). The dielectric factor
-    $epsilon_(r)$, $k c/omega_(p,e)$, and $omega/omega_(p,e)$ are
+    $epsilon_(r)$, $(k c)/omega_(p,e)$, and $omega/omega_(p,e)$ are
     dimensionless.
   ]
 
@@ -333,7 +334,7 @@
   #definition(
     [Phase and group velocity],
     [For a branch $omega(k)$ with $k>0$, define
-    $v_"phi"=omega/k$ and $v_"g"=dif omega/dif k$.
+    $v_"phi"=omega/k$ and $v_"g"=dv(omega,k)$.
     Phase velocity tracks a constant phase surface. For a narrow-band packet
     in a weakly dispersive medium, group velocity describes the motion of its
     envelope; energy and information transport require the full causal
@@ -348,7 +349,7 @@
     Equivalently,
     $omega^2=omega_(p,e)^2+c^2 k^2$,
     $v_"phi"=c sqrt(1+omega_(p,e)^2/(c^2 k^2))$, and
-    $v_"g"=c^2 k/omega$.]
+    $v_"g"=(c^2 k)/omega$.]
   )
 
   #animation(
@@ -366,16 +367,16 @@
     [Derivation: current response and the transverse wave equation],
     [The cold electron momentum response is again
     $-i omega m_e bold(u)_(e,1)=-e bold(E)_1$,
-    so $bold(u)_(e,1)=-i e bold(E)_1/(m_e omega)$.
+    so $bold(u)_(e,1)=(-i e bold(E)_1)/(m_e omega)$.
     The perturbed current is therefore
     $bold(j)_1=-e n_0 bold(u)_(e,1)
-      =i n_0 e^2 bold(E)_1/(m_e omega)$.
+      =(i n_0 e^2 bold(E)_1)/(m_e omega)$.
 
     For a transverse plane wave, Faraday's and Ampere's equations become
-    $bold(k) times bold(E)_1=omega bold(B)_1/c$
+    $bold(k) times bold(E)_1=(omega bold(B)_1)/c$
     and
-    $bold(k) times bold(B)_1=-omega bold(E)_1/c
-      -4 pi i bold(j)_1/c$.
+    $bold(k) times bold(B)_1=-(omega bold(E)_1)/c
+      -(4 pi i bold(j)_1)/c$.
     Substitute the first into the second and use
     $bold(k) times (bold(k) times bold(E)_1)=-k^2 bold(E)_1$.
     The result is
@@ -384,11 +385,11 @@
     Inserting the current response on the right gives
     $(omega^2-c^2 k^2) bold(E)_1
       =omega_(p,e)^2 bold(E)_1$,
-    with $omega_(p,e)^2=4 pi n_0e^2/m_e$. A nonzero field amplitude then
+    with $omega_(p,e)^2=(4 pi n_0e^2)/m_e$. A nonzero field amplitude then
     requires $omega^2=omega_(p,e)^2+c^2 k^2$.
 
     Dividing by $omega^2$ gives
-    $k^2 c^2/omega^2=1-omega_(p,e)^2/omega^2$,
+    $(k^2 c^2)/(omega^2)=1-omega_(p,e)^2/omega^2$,
     which identifies the relative dielectric factor. Real $k$ requires
     $omega>omega_(p,e)$. Below the cutoff, $k$ is imaginary and the field
     is evanescent rather than a propagating bulk wave.]
@@ -401,7 +402,7 @@
     Determine $k$, the phase velocity, the group velocity, and the wavelength.
 
     Numerical result:
-    $k c/omega_(p,e)=1.732$,
+    $(k c)/omega_(p,e)=1.732$,
     $v_"phi"/c=1.155$,
     $v_"g"/c=0.866$,
     $k=qty("0.326", "cm^-1")$, and
@@ -486,11 +487,11 @@
   #definition(
     [Warm-fluid scales],
     [Define
-    $c_s^2=gamma_s k_B T_s/m_s$ and
-    $omega_(p,s)^2=4 pi n_(s,0)q_s^2/m_s$.
+    $c_s^2=(gamma_s k_B T_s)/m_s$ and
+    $omega_(p,s)^2=(4 pi n_(s,0)q_s^2)/m_s$.
     Here $c_s$ is a pressure-response speed, not necessarily the phase
     velocity of a branch. The thermal-speed convention used for kinetic
-    comparisons is $v_"th,s"=sqrt(2 k_B T_s/m_s)$.]
+    comparisons is $v_"th,s"=sqrt((2 k_B T_s)/m_s)$.]
   )
 
   #warm-kinetic-limits
@@ -502,26 +503,26 @@
     With fixed ions this gives
     $omega^2=omega_(p,e)^2+k^2 c_e^2$.
     In the low-frequency quasi-neutral hydrogen limit,
-    $omega^2 approx k^2 (gamma_e k_B T_e+gamma_i k_B T_i)/m_i$.]
+    $omega^2 approx (k^2 (gamma_e k_B T_e+gamma_i k_B T_i))/m_i$.]
   )
   #details(
     [Derivation: warm-fluid susceptibility and ion sound],
     [For one species in one dimension, the Fourier continuity equation is
     $-i omega n_(s,1)+i k n_(s,0)u_(s,1)=0$,
-    hence $n_(s,1)=k n_(s,0)u_(s,1)/omega$.
+    hence $n_(s,1)=(k n_(s,0)u_(s,1))/omega$.
     The longitudinal momentum equation with the pressure closure is
     $-i omega m_s u_(s,1)=q_s E_1
-      -i k gamma_s k_B T_s n_(s,1)/n_(s,0)$.
+      -(i k gamma_s k_B T_s n_(s,1))/n_(s,0)$.
     Substituting continuity and solving for the velocity gives
-    $u_(s,1)=i q_s omega E_1/
+    $u_(s,1)=(i q_s omega E_1)/
       (m_(s)(omega^2-k^2 c_s^2))$.
     Therefore
-    $n_(s,1)=i n_(s,0)q_s k E_1/
+    $n_(s,1)=(i n_(s,0)q_s k E_1)/
       (m_(s)(omega^2-k^2 c_s^2))$.
     Poisson's equation is
     $i k E_1=4 pi sum_s q_s n_(s,1)$.
     Canceling $i k E_1$ and inserting the species response produces
-    $1=sum_s 4 pi n_(s,0)q_s^2/
+    $1=sum_s (4 pi n_(s,0)q_s^2)/
       (m_(s)(omega^2-k^2 c_s^2))$,
     which is the displayed dispersion relation.
     For a high-frequency electron branch with fixed ions, the ion term is
@@ -531,7 +532,7 @@
     impose $n_(e,1)=n_(i,1)$ from quasi-neutrality. The electron pressure
     supplies the electric field, while the ion inertia carries the wave.
     Combining the two pressure responses yields
-    $omega^2=k^2 (gamma_e k_B T_e+gamma_i k_B T_i)/m_i$.
+    $omega^2=(k^2 (gamma_e k_B T_e+gamma_i k_B T_i))/m_i$.
     The reduction requires $omega << omega_(p,e)$ and $k lambda_D << 1$;
     otherwise charge separation or electron inertia cannot be discarded.
     Kinetic theory replaces the fluid closure by a velocity-space response.
@@ -611,7 +612,7 @@
     [identify when a branch is evanescent or when a fluid model has left its ordering],
   ))
   #unit-ledger[
-    The normalized axes use $K=k c/omega_(p,e)$ and
+    The normalized axes use $K=(k c)/omega_(p,e)$ and
     $W=omega/omega_(p,e)$, both dimensionless. The reconstructed wave number
     is in #unit("cm^-1"), frequency in #unit("s^-1"), and velocities in
     #unit("cm/s"). For warm electrostatic checks, $K_D=k lambda_D$ is also
@@ -626,7 +627,7 @@
   )
   #definition(
     [Dimensionless dispersion coordinates],
-    [Use $K=k c/omega_(p,e)$ and $W=omega/omega_(p,e)$ for the cold
+    [Use $K=(k c)/omega_(p,e)$ and $W=omega/omega_(p,e)$ for the cold
     electromagnetic branch. Then $W^2=1+K^2$,
     $v_"phi"/c=W/K$, and $v_"g"/c=K/W$.
     The cutoff is the intercept $W=1$ at $K=0$. A vertical or horizontal
@@ -694,7 +695,7 @@
     ),
     (
       question: [How can the slope of a dispersion curve be used physically?],
-      answer: [The local slope $dif omega/dif k$ is the group velocity for a
+      answer: [The local slope $dv(omega,k)$ is the group velocity for a
       narrow-band packet. It is distinct from the ratio $omega/k$, which is
       the phase velocity.]
     ),

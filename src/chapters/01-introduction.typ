@@ -1,6 +1,6 @@
 #import "../theme.typ": *
-#import "../figures.typ": model-hierarchy, debye-profile
-#import "@preview/physica:0.9.8": grad, div, curl, laplacian, pdv, vb
+#import "../figures.typ": model-hierarchy, debye-profile, maxwellian-profile
+#import "@preview/physica:0.9.8": grad, div, curl, laplacian, pdv, dv, vb
 
 #let chapter = [
   #page-title[1. Introduction] <introduction>
@@ -10,6 +10,125 @@
     make the particles respond collectively. This chapter establishes the
     vocabulary, scales, and model choices used in the rest of the script.
   ]
+
+  #section-title[Speed, energy, and temperature] <intro-speed-energy-temperature>
+
+  #lead[
+    What does temperature measure for a plasma particle, and why is it not a
+    universal switch into the plasma state? Start with the kinetic-energy
+    scale, then keep the equilibrium and non-equilibrium meanings of
+    temperature distinct.
+  ]
+
+  #objectives((
+    [relate particle speed, kinetic energy, and the thermal energy $k_B T_s$],
+    [use one stated thermal-speed convention consistently],
+    [explain why different species can have different temperatures],
+  ))
+
+  #unit-ledger[
+    Gaussian CGS is active. Mass $m_s$ is in grams, speed $v$ in
+    #unit("cm/s"), and kinetic energy and $k_B T_s$ are in #unit("erg").
+    Temperature $T_s$ itself is in kelvin. When temperature is quoted in
+    electron-volts, the intended quantity is the energy $k_B T_s$, not the
+    thermodynamic temperature symbol by itself.
+  ]
+
+  For a particle of species $s$, the kinetic energy associated with speed $v$
+  is
+
+  $ epsilon_("kin,s") = (m_s v^2)/2, quad epsilon_("th,s") = k_B T_s $
+  <intro-thermal-energy>
+
+  #equation-note[
+    The first quantity depends on the individual particle speed. The second
+    is the thermal energy scale of an equilibrium population; both are in
+    #unit("erg"). The factor $1/2$ belongs to the complete numerator
+    $(m_s v^2)$.
+  ]
+
+  In a three-dimensional Maxwell--Boltzmann equilibrium with bulk velocity
+  $bold(u)_s$, the velocity distribution is
+
+  $ f_(s)^({"M"})(bold(v)) = n_s (m_s/(2 pi k_B T_s))^(3/2)
+    exp(-(m_s (bold(v) - bold(u)_s)^2)/(2 k_B T_s)) $
+  <intro-maxwellian>
+
+  #equation-note[
+    $f_(s)^({"M"})$ is normalized so that $integral f_(s)^({"M"})(bold(v))
+    dif bold(v) = n_s$. The density is in #unit("cm^-3"), and the velocity
+    integral supplies the corresponding phase-space units.
+  ]
+
+  The width of this distribution is set by the temperature. With the
+  convention used throughout this script,
+
+  $ v_("th,s") = sqrt((2 k_B T_s)/m_s), quad
+    ⟨(m_s (bold(v) - bold(u)_s)^2)/2⟩ = (3 k_B T_s)/2 $
+  <intro-thermal-speed>
+
+  #details(
+    [Why the three-dimensional average is $3 k_B T_s / 2$],
+    [Each Cartesian component of a Maxwellian has variance
+    $⟨(v_j-u_(s,j))^2⟩ = (k_B T_s)/m_s$. Summing the three independent
+    components gives
+    $⟨(m_s (bold(v) - bold(u)_s)^2)/2⟩
+      = (m_s)/2 sum_j ⟨(v_j-u_(s,j))^2⟩
+      = (3 k_B T_s)/2$.
+    The convention $v_("th,s")=sqrt((2 k_B T_s)/m_s)$ is therefore a width
+    parameter, not the mean particle speed.]
+  )
+
+  #maxwellian-profile
+
+  The conversion $1 #unit("eV") = 1.602176634 dot 10^(-12) #unit("erg")$
+  corresponds to $1 #unit("eV") / k_B approx 1.1605 dot 10^4$ K. Thus a
+  statement such as $k_B T_e = 10 #unit("eV")$ identifies an energy scale of
+  roughly $1.16 dot 10^5$ K, while the electron and ion temperatures may still
+  differ. A temperature also does not specify the total heat content: that
+  depends on the number of particles and the volume.
+
+  Temperature is an equilibrium concept. A collisionally equilibrated species
+  can be described by the Maxwellian above, whereas a collisionless species
+  may retain beams, anisotropy, or other non-Maxwellian structure. There is
+  consequently no universal temperature at which matter abruptly enters the
+  plasma state. Ionization, the energy source, collisionality, and the scale of
+  the electromagnetic response decide whether an ionized gas behaves as a
+  plasma.
+
+  #summary[
+    Speed sets the single-particle kinetic energy, while temperature sets the
+    width and average energy of an equilibrium distribution. The script uses
+    $v_("th,s")=sqrt((2 k_B T_s)/m_s)$ and treats electron and ion temperatures
+    as separate quantities unless an equilibration assumption is stated.
+  ]
+
+  #exam-prompts(
+    (
+      [1(a) At which temperature does matter enter the plasma state?],
+      [1(m) What is a Boltzmann distribution and how is it related to equilibrium states?],
+    ),
+    [Plasma Physics Exam.pdf, p. 1],
+  )
+
+  #knowledge-check((
+    (
+      question: [What quantity does a quoted plasma temperature in electron-volts represent?],
+      answer: [It represents the thermal energy $k_B T_s$ expressed in electron-volts. The thermodynamic temperature $T_s$ can be recovered using the conversion to kelvin.],
+    ),
+    (
+      question: [How does the chosen thermal-speed convention relate to $k_B T_s$?],
+      answer: [$v_("th,s")=sqrt((2 k_B T_s)/m_s)$, so the one-dimensional Gaussian width is set by $k_B T_s/m_s$ and the three-dimensional mean kinetic energy is $3 k_B T_s/2$.],
+    ),
+    (
+      question: [Why can a plasma have separate electron and ion temperatures?],
+      answer: [Interspecies energy exchange can be slower than equilibration within each species, so each species can have its own approximately Maxwellian distribution for the time scale being considered.],
+    ),
+    (
+      question: [Why is there no universal temperature threshold for the plasma state?],
+      answer: [Plasma behavior depends on ionization, collisionality, boundaries, and whether collective electromagnetic response matters on the chosen scales, not on temperature alone.],
+    ),
+  ))
 
   #section-title[Plasma as a collective state] <intro-plasma-state>
 
@@ -64,6 +183,25 @@
     plasma approximation.
   ]
 
+  #definition(
+    [Quasineutrality],
+    [On a macroscopic scale, a simple electron--positive-ion plasma is
+    quasineutral when its net charge density is small compared with the
+    individual species charge densities. This is an ordering statement, not
+    an exact pointwise identity.]
+  )
+
+  $ rho_q = e (sum_i Z_i n_i - n_e) approx 0,
+    quad n_e approx sum_i Z_i n_i $ <intro-quasineutrality>
+
+  #equation-note[
+    Gaussian CGS. $e$ is the positive elementary charge in statcoulomb and
+    $Z_i$ is the integer ion charge state. For a singly ionized hydrogen
+    plasma, the condition reduces to $n_e approx n_i$. Charge-separated
+    regions of Debye-scale thickness and boundary sheaths are controlled
+    departures from this bulk ordering.
+  ]
+
   The important distinction from a neutral gas is not simply the presence of
   charged particles. It is the range of the response. A charge imbalance can
   launch an electric field, a current can launch a magnetic perturbation, and
@@ -76,6 +214,31 @@
   magnitude, so the collective criterion must be stated at the scale of the
   observation rather than replaced by a temperature label.
 
+  #details(
+    [Order-of-magnitude examples],
+    [The following ranges are orientation values rather than a phase diagram.
+    The density column is $n_e$ in #unit("cm^-3"), and the energy column is
+    $k_B T_e$ in electron-volts. A single named object can occupy more than one
+    row as its local state changes.
+
+    #table(
+      columns: (2.6cm, 2.4cm, 2.6cm, 4.2cm),
+      stroke: 0.5pt + muted,
+      inset: 0.35em,
+      table.header(
+        [Setting],
+        [$n_e$],
+        [$k_B T_e$],
+        [Characteristic emphasis],
+      ),
+      [Solar wind], [$1$--$10$], [$1$--$100$], [dilute, weakly collisional, magnetized],
+      [Ionosphere], [$10^4$--$10^6$], [$0.1$--$1$], [partially ionized and collisional],
+      [Glow discharge], [$10^9$--$10^12$], [$1$--$10$], [weak ionization and boundaries],
+      [Solar corona], [$10^8$--$10^10$], [$10^2$--$10^3$], [hot, magnetized, nearly fully ionized],
+      [Fusion plasma], [$10^13$--$10^15$], [$10^3$--$2 dot 10^4$], [hot, confined, collective],
+    )
+  ])
+
   The characteristic responses introduced by this script are Debye shielding,
   electron plasma oscillations, collective waves, gyromotion and guiding-center
   drifts, instabilities, and boundary sheaths. These are different limits of
@@ -86,7 +249,7 @@
     [Ideal-plasma convention used here],
     [For the purposes of this script, an ideal plasma is weakly coupled and
     sufficiently populated that collective fields can be treated smoothly.
-    A useful weak-coupling parameter is $Gamma_s = q_s^2 / (a_s k_B T_s)$,
+    A useful weak-coupling parameter is $Gamma_s = (q_s^2) / (a_s k_B T_s)$,
     where $a_s = (3 / (4 pi n_s))^(1/3)$ is the mean-spacing scale. The
     classical collective ordering also requires many particles in a Debye
     sphere and, when quasineutral fluid behavior is invoked, a system scale
@@ -95,12 +258,12 @@
   )
 
   #equation-note[
-    Gaussian CGS. $a_s$ is in #unit("cm"), $q_s^2 / (a_s k_B T_s)$ is
+    Gaussian CGS. $a_s$ is in #unit("cm"), $(q_s^2) / (a_s k_B T_s)$ is
     dimensionless, and the weak-coupling condition is $Gamma_s << 1$.
   ]
 
   Classical statistics also have a validity boundary. For electrons, define
-  the degeneracy parameter $theta_e = k_B T_e / E_(F,e)$, with the
+  the degeneracy parameter $theta_e = (k_B T_e) / E_(F,e)$, with the
   nonrelativistic Fermi energy
 
   $ E_(F,e) = (ℏ^2 / (2 m_e)) (3 pi^2 n_e)^(2/3) $
@@ -134,7 +297,6 @@
 
   #exam-prompts(
     (
-      [1(a) At which temperature does matter enter the plasma state?],
       [1(b) Describe some typical plasmas in nature and technology (Fig. 1.3).],
       [1(c) What are characteristic phenomena in plasmas?],
       [1(g) List features of an ideal plasma.],
@@ -145,16 +307,16 @@
 
   #knowledge-check((
     (
-      question: [Why is a temperature alone insufficient to identify a plasma?],
-      answer: [The relevant test is whether collective electromagnetic response matters on the chosen length and time scales. Ionization, collisionality, boundaries, and observation scale also enter.],
+      question: [What is the bulk meaning of quasineutrality?],
+      answer: [On scales large compared with the charge-separation layer, the signed species charge densities nearly cancel: $rho_q approx 0$. This does not forbid Debye-scale charge separation or a sheath.],
     ),
     (
-      question: [What does weak coupling mean for the parameter $Gamma_s$?],
-      answer: [It means $Gamma_s = q_s^2 / (a_s k_B T_s)$ is much smaller than one, so typical thermal energy exceeds the electrostatic interaction energy at the mean spacing.],
+      question: [What do weak coupling and quasineutrality assert, respectively?],
+      answer: [Weak coupling compares interaction and thermal energies through $Gamma_s << 1$. Quasineutrality compares the net charge density with the individual species charge densities on a stated macroscopic scale.],
     ),
     (
       question: [Which ordering distinguishes quantum degeneracy from classical statistics?],
-      answer: [The ratio $theta_e = k_B T_e / E_(F,e)$ is the indicator: $theta_e >> 1$ is classical, while $theta_e <= 1$ requires quantum statistics.],
+      answer: [The ratio $theta_e = (k_B T_e) / E_(F,e)$ is the indicator: $theta_e >> 1$ is classical, while $theta_e <= 1$ requires quantum statistics.],
     ),
     (
       question: [What is lost when moving from the particle--field model to a fluid model?],
@@ -196,7 +358,7 @@
 
   A magnetic field introduces the signed gyrofrequency
 
-  $ Omega_s = q_s B / (m_s c), quad omega_(c,s) = abs(Omega_s) $ <intro-gyrofrequency>
+  $ Omega_s = (q_s B) / (m_s c), quad omega_(c,s) = abs(Omega_s) $ <intro-gyrofrequency>
 
   #equation-note[
     Gaussian CGS. $Omega_s$ and $omega_(c,s)$ are in $upright("s")^(-1)$. The sign of
@@ -217,6 +379,18 @@
     Gaussian CGS. $v_("th,s")$ is in $upright("cm") dot upright("s")^(-1)$, $rho_s$ and $lambda_D$
     are in cm, and $e$ is the positive elementary charge in statcoulomb. The
     chosen factor of $2$ defines this thermal-speed convention.
+  ]
+
+  Combining the definitions gives the useful estimate requested whenever a
+  thermal speed and a Debye length are known:
+
+  $ lambda_D = v_("th,e")/(sqrt(2) omega_(p,e)),
+    quad omega_(p,e) = v_("th,e")/(sqrt(2) lambda_D) $ <intro-plasma-frequency-debye-relation>
+
+  #equation-note[
+    Gaussian CGS. The factor $sqrt(2)$ follows from the convention
+    $v_("th,e")=sqrt((2 k_B T_e)/m_e)$. If a source defines thermal speed as
+    $sqrt(k_B T_e/m_e)$, the same relation is written without that factor.
   ]
 
   A common collective ordering is the Debye number
@@ -243,6 +417,26 @@
     $omega_(p,e) = qty("5.6e11", "s^-1")$,
     $rho_e = qty("3.1e-3", "cm")$, and $rho_i = qty("1.3e-1", "cm")$.
     These values are dimensional Gaussian-CGS results.
+  ]
+
+  #rechenbeispiel[
+    Context: use a representative thermonuclear hydrogen plasma with
+    $n_e = qty("1e14", "cm^-3")$, $T_e = qty("1e8", "K")$,
+    $T_i = qty("1e8", "K")$, and $B = qty("5e4", "G")$. Assume
+    singly charged ions, $n_i = n_e$, and use the same constants and thermal
+    speed convention as in the preceding example.
+
+    Target: report $lambda_D$, $omega_(p,e)$, $omega_(c,e)$,
+    $omega_(c,i)$, $rho_e$, and $rho_i$.
+
+    Numerical result: $k_B T_e approx qty("8.62", "keV")$,
+    $lambda_D = qty("6.9e-3", "cm")$,
+    $omega_(p,e) = qty("5.6e11", "s^-1")$,
+    $omega_(c,e) = qty("8.8e11", "s^-1")$,
+    $omega_(c,i) = qty("4.8e8", "s^-1")$,
+    $rho_e = qty("6.3e-3", "cm")$, and
+    $rho_i = qty("2.7e-1", "cm")$. These are rough dimensional
+    Gaussian-CGS values for a hot confined plasma.
   ]
 
   #debye-profile
@@ -311,6 +505,39 @@
     temperature $T_e$ is in kelvin. The screening length $lambda_D$ is in cm.
   ]
 
+  A first estimate of the size of a charge-separated region can be obtained
+  before solving the shielding profile. Let $N$ denote a number density in a
+  uniformly charged spherical region of radius $R$, with charge magnitude
+  $e$ per particle. Gaussian Gauss's law gives the boundary potential scale
+
+  $ phi(R) = (4 pi N e R^2)/3,
+    quad abs(e phi(R)) approx k_B T_e
+    => R approx sqrt((3 k_B T_e)/(4 pi N e^2)) $ <debye-charge-separation-scale>
+
+  #equation-note[
+    Gaussian CGS. $N$ is a number density in #unit("cm^-3"), $R$ is in cm,
+    and $phi$ is in statvolt. The numerical factor depends on the assumed
+    charge profile; the robust result is the scaling
+    $R$ proportional to $sqrt(k_B T_e/(N e^2))$.
+  ]
+
+  #details(
+    [Derivation: potential scale of a uniformly charge-separated sphere],
+    [The enclosed charge at radius $r$ is
+    $Q(r) = (4 pi)/3 N e r^3$. Applying the Gaussian flux law to a sphere
+    gives $E(r) 4 pi r^2 = 4 pi Q(r)$ and therefore
+    $E(r) = (4 pi)/3 N e r$ inside the region. The potential at its boundary,
+    measured relative to infinity for the uniformly charged sphere, is
+    $phi(R) = Q(R)/R = (4 pi)/3 N e R^2$.
+    A thermal particle can cross or substantially rearrange the region when
+    its potential-energy scale $abs(e phi(R))$ is comparable to $k_B T_e$.
+    Solving that balance gives the displayed estimate. If $N$ is identified
+    with the background electron density $n_0$, the result is
+    $R approx sqrt(3) lambda_D$ for the electron Debye length. The order-one
+    factor is geometry-dependent, so this is a charge-separation estimate,
+    not a new hard boundary.]
+  )
+
   #assumption(
     [Linearized Boltzmann response],
     [Take a uniform, stationary ion background with $n_i = n_0$, mobile
@@ -322,7 +549,7 @@
   The electron equilibrium density follows from the electrostatic potential
   energy $-e phi$:
 
-  $ n_e = n_0 exp(e phi / (k_B T_e)) approx n_0 (1 + e phi / (k_B T_e)) $ <debye-boltzmann-response>
+  $ n_e = n_0 exp((e phi) / (k_B T_e)) approx n_0 (1 + (e phi) / (k_B T_e)) $ <debye-boltzmann-response>
 
   #equation-note[
     Gaussian CGS. $n_e$ and $n_0$ are in $upright("cm")^(-3)$, and $e phi$ and $k_B T_e$
@@ -361,12 +588,12 @@
     [Derivation: from particle response to shielding],
     [For a positive test potential, the electron potential energy is $-e phi$.
     The equilibrium Boltzmann factor is therefore
-    $exp(-(-e phi)/(k_B T_e)) = exp(e phi/(k_B T_e))$. Expand the exponential
+    $exp((-(-e phi)) / (k_B T_e)) = exp((e phi) / (k_B T_e))$. Expand the exponential
     to first order because $abs(e phi)/(k_B T_e) << 1$. With immobile ions,
     $rho_q = e n_0 - e n_e$ becomes
-    $rho_q approx -e^2 n_0 phi/(k_B T_e)$. Insert this response into the
+    $rho_q approx -(e^2 n_0 phi)/(k_B T_e)$. Insert this response into the
     Gaussian-CGS Poisson equation. Defining the coefficient of $phi$ as
-    $lambda_D^(-2) = 4 pi n_0 e^2/(k_B T_e)$ yields
+    $lambda_D^(-2) = (4 pi n_0 e^2)/(k_B T_e)$ yields
     $laplacian phi - phi/lambda_D^2 = 0$. In spherical symmetry, the decaying
     source solution has the form $phi(r)$ proportional to
     $exp(-r/lambda_D)/r$.
@@ -403,7 +630,7 @@
   #knowledge-check((
     (
       question: [Why does a positive electrostatic potential increase the equilibrium electron density in the Boltzmann response?],
-      answer: [An electron has charge $-e$, so its potential energy is $-e phi$. A positive $phi$ lowers that energy and produces the factor $exp(e phi/(k_B T_e))$.],
+      answer: [An electron has charge $-e$, so its potential energy is $-e phi$. A positive $phi$ lowers that energy and produces the factor $exp((e phi) / (k_B T_e))$.],
     ),
     (
       question: [Which approximation turns the exponential Boltzmann response into a linear screening equation?],
@@ -415,7 +642,7 @@
     ),
     (
       question: [Give one situation in which the linear Debye-shielding derivation should not be used without modification.],
-      answer: [A potential comparable to or larger than $k_B T_e/e$, a time-dependent kinetic response, or a boundary within the shielding region violates the stated assumptions.],
+      answer: [A potential comparable to or larger than $(k_B T_e)/e$, a time-dependent kinetic response, or a boundary within the shielding region violates the stated assumptions.],
     ),
   ))
 
@@ -460,7 +687,7 @@
 
   The electron force is opposite to the displacement:
 
-  $ m_e (d^2 xi)/(d t^2) = -e E = -4 pi n_0 e^2 xi $ <plasma-oscillation-force>
+  $ m_e dv(xi,t,2) = -e E = -4 pi n_0 e^2 xi $ <plasma-oscillation-force>
 
   #equation-note[
     Gaussian CGS. The force is in dynes. The negative sign is the restoring
@@ -469,7 +696,7 @@
 
   Dividing by $m_e$ gives the harmonic-oscillator equation
 
-  $ (d^2 xi)/(d t^2) + omega_(p,e)^2 xi = 0, quad omega_(p,e) = sqrt((4 pi n_0 e^2)/m_e) $ <plasma-oscillation-frequency>
+  $ dv(xi,t,2) + omega_(p,e)^2 xi = 0, quad omega_(p,e) = sqrt((4 pi n_0 e^2)/m_e) $ <plasma-oscillation-frequency>
 
   #equation-note[
     Gaussian CGS. $omega_(p,e)$ is an angular frequency in $upright("s")^(-1)$.
@@ -483,7 +710,7 @@
     neutral, while the two boundary layers carry sheet charges with magnitude
     $e n_0 xi$. Gauss's law for two infinite sheets gives the uniform internal
     field $E = 4 pi e n_0 xi$ in Gaussian CGS. An electron feels
-    $F = -e E$, hence $m_e xi'' = -4 pi n_0 e^2 xi$. The coefficient of $xi$
+    $F = -e E$, hence $m_e dv(xi,t,2) = -4 pi n_0 e^2 xi$. The coefficient of $xi$
     has units $upright("s")^(-2)$ and identifies the plasma-frequency square. The
     displacement is therefore sinusoidal, $xi(t) = xi_0 cos(omega_(p,e) t +
     delta)$, within the small-amplitude model.]
@@ -564,6 +791,32 @@
     corresponding powers of cm and seconds.
   ]
 
+  #details(
+    [Complete classical particle--field model],
+    [At the most complete classical level, every particle trajectory and both
+    electromagnetic fields are evolved self-consistently:
+
+    $ dv(bold(r)_(a)(t), t) = bold(v)_(a)(t) $
+
+    $ m_a dv(bold(v)_(a)(t), t) = q_a [bold(E)(bold(r)_(a)(t), t)
+      + (bold(v)_(a)(t) times bold(B)(bold(r)_(a)(t), t))/c] $
+
+    $ rho_q(bold(r), t) = sum_a q_a delta(bold(r) - bold(r)_(a)(t)),
+      quad bold(j)(bold(r), t) = sum_a q_a bold(v)_(a)(t)
+        delta(bold(r) - bold(r)_(a)(t)) $
+
+    $ div bold(E) = 4 pi rho_q, quad div bold(B) = 0 $
+
+    $ curl bold(E) = -1/c pdv(bold(B), t),
+      quad curl bold(B) = (4 pi)/c bold(j) + 1/c pdv(bold(E), t) $
+
+    The discrete particle sources are coarse-grained when one passes to a
+    kinetic distribution or to fluid moments. This is the sense in which the
+    model is complete: all charged particles interact through the shared
+    electromagnetic fields, subject to the classical and nonrelativistic
+    assumptions stated here.]
+  )
+
   #definition(
     [Distribution function],
     [For species $s$, $f_(s)(t, bold(r), bold(v))$ gives the density of particles
@@ -585,7 +838,7 @@
 
   For electromagnetic acceleration,
 
-  $ bold(a)_s = q_s/m_s (bold(E) + bold(v) times bold(B) / c) $ <intro-electromagnetic-acceleration>
+  $ bold(a)_s = q_s/m_s (bold(E) + (bold(v) times bold(B)) / c) $ <intro-electromagnetic-acceleration>
 
   #equation-note[
     Gaussian CGS. The factor $1/c$ belongs to the magnetic part of the Lorentz
@@ -636,7 +889,6 @@
     (
       [1(k) Describe the most complete plasma model? (All particles interacting with electromagnetic forces)],
       [1(l) What kind of models can be used for plasma and how are they related?],
-      [1(m) What is a Boltzmann distribution and how is it related to equilibrium states?],
     ),
     [Plasma Physics Exam.pdf, p. 1],
   )

@@ -91,16 +91,16 @@
     [Derivation: from step statistics to the diffusion equation],
     [Let one step be $+Delta x$ or $-Delta x$ with equal probability. Its
     first moment is
-    $⟨Delta x⟩=1/2 Delta x+1/2(-Delta x)=0$,
+    $⟨Delta x⟩=(Delta x)/2+(-Delta x)/2=0$,
     while its second moment is
-    $⟨(Delta x)^2⟩=1/2(Delta x)^2+1/2(-Delta x)^2=(Delta x)^2$.
+    $⟨(Delta x)^2⟩=((Delta x)^2)/2+((-Delta x)^2)/2=(Delta x)^2$.
 
     After $N=t/Delta t$ statistically independent steps, cross terms in the
     square of the total displacement vanish because the individual means are
     zero. Therefore
     $⟨x⟩=0$ and
     $⟨x^2⟩=N(Delta x)^2
-      =((Delta x)^2/Delta t)t=2 D t$,
+      =(((Delta x)^2 t)/Delta t)=2 D t$,
     which defines the one-dimensional coefficient.
 
     To obtain the local flux, consider a cell of width $Delta x$. The
@@ -205,10 +205,10 @@
       =q_s n_s bold(E)-grad p_s
         -m_s n_s nu_s bold(u)_s$.
     In the steady small-drift limit,
-    $bold(u)_s=mu_s^(q) bold(E)-D_s grad n_s/n_s$,
+    $bold(u)_s=mu_s^(q) bold(E)-D_s (grad n_s)/n_s$,
     where the signed mobility and diffusion coefficient are
     $mu_s^(q)=q_s/(m_s nu_s)$ and
-    $D_s=k_B T_s/(m_s nu_s)$.]
+    $D_s=(k_B T_s)/(m_s nu_s)$.]
   )
 
   #governing-law(
@@ -218,7 +218,7 @@
     If a positive mobility is preferred, define
     $mu_s=abs(q_s)/(m_s nu_s)$ and keep the sign of $q_s$ explicitly
     in the force term. The Einstein relation is
-    $D_s=mu_s k_B T_s/abs(q_s)$.]
+    $D_s=(mu_s k_B T_s)/abs(q_s)$.]
   )
 
   #rechenbeispiel[
@@ -228,7 +228,7 @@
     $e=qty("4.803e-10", "statC")$, and
     $nu_e=qty("1.0e8", "s^-1")$. Determine the positive mobility magnitude
     $mu_e=e/(m_e nu_e)$ and the diffusion coefficient
-    $D_e=k_B T_e/(m_e nu_e)$.
+    $D_e=(k_B T_e)/(m_e nu_e)$.
 
     Numerical result: $mu_e=qty("5.27e9", "cm^2/statV/s")$ and
     $D_e=qty("3.52e7", "cm^2/s")$.
@@ -245,14 +245,14 @@
       =q_s n_s bold(E)-k_B T_s grad n_s$.
     Division by $m_s n_s nu_s$ gives
     $bold(u)_s=q_s/(m_s nu_s) bold(E)
-      -k_B T_s/(m_s nu_s) grad n_s/n_s$.
+      -(k_B T_s)/(m_s nu_s) (grad n_s)/n_s$.
 
     Identifying the first coefficient as the signed mobility
     $mu_s^(q)=q_s/(m_s nu_s)$ and the second as
-    $D_s=k_B T_s/(m_s nu_s)$ gives the displayed velocity law. Multiplication
+    $D_s=(k_B T_s)/(m_s nu_s)$ gives the displayed velocity law. Multiplication
     by $n_s$ produces the flux. For the magnitude convention,
     $abs(mu_s^(q))=abs(q_s)/(m_s nu_s)$, so
-    $D_s/abs(mu_s^(q))=k_B T_s/abs(q_s)$.
+    $D_s/abs(mu_s^(q))=(k_B T_s)/abs(q_s)$.
     This is the Einstein relation in the present local, isothermal model.
 
     The derivation also identifies the approximation boundary: inertia matters
@@ -273,7 +273,7 @@
     Neutral drag yields
     $bold(Gamma)_s=n_s mu_s^(q) bold(E)-D_s grad n_s$ with
     $mu_s^(q)=q_s/(m_s nu_s)$ and
-    $D_s=k_B T_s/(m_s nu_s)$. The Einstein relation connects their
+    $D_s=(k_B T_s)/(m_s nu_s)$. The Einstein relation connects their
     magnitudes, while the sign of the force response remains set by $q_s$.
   ]
 
@@ -285,7 +285,7 @@
     ),
     (
       question: [How does increasing the neutral collision frequency affect unmagnetized diffusion?],
-      answer: [At fixed temperature, $D_s=k_B T_s/(m_s nu_s)$ decreases
+      answer: [At fixed temperature, $D_s=(k_B T_s)/(m_s nu_s)$ decreases
       inversely with $nu_s$ because the mean free path and drift response are
       both shortened.]
     ),
@@ -352,7 +352,7 @@
   #governing-law(
     [Ambipolar field and diffusion coefficient],
     [Solving the equal-flux condition gives
-    $bold(E)_a=(D_i-D_e)/(mu_i+mu_e) grad n/n$.
+    $bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) (grad n)/n$.
     Substitution into either species flux gives
     $bold(Gamma)_a=-D_a grad n$ with
     $D_a=(mu_i D_e+mu_e D_i)/(mu_i+mu_e)$.]
@@ -361,7 +361,7 @@
   #rechenbeispiel[
     Consider a weakly ionized hydrogen plasma with
     $n=qty("1.0e10", "cm^-3")$,
-    $grad n/n=qty("-1.0e-2", "cm^-1")$, and
+    $(grad n)/n=qty("-1.0e-2", "cm^-1")$, and
     $k_B T_i=k_B T_e=qty("1.602e-12", "erg")$.
     Use $m_i=qty("1.673e-24", "g")$,
     $m_e=qty("9.109e-28", "g")$,
@@ -388,11 +388,11 @@
     Equating the two fluxes and collecting the field terms gives
     $(mu_i+mu_e)n bold(E)=(D_i-D_e)grad n$,
     hence
-    $bold(E)_a=(D_i-D_e)/(mu_i+mu_e) grad n/n$.
+    $bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) (grad n)/n$.
 
     Insert this field into the ion flux:
     $bold(Gamma)_i
-      =mu_i n (D_i-D_e)/(mu_i+mu_e) grad n/n-D_i grad n$.
+      =((mu_i n (D_i-D_e))/(mu_i+mu_e)) ((grad n)/n)-D_i grad n$.
     Putting both terms over the common denominator produces
     $bold(Gamma)_i
       =-(mu_i D_e+mu_e D_i)/(mu_i+mu_e) grad n$.
@@ -415,7 +415,7 @@
 
   #summary[
     Equal electron and ion particle fluxes give
-    $bold(E)_a=(D_i-D_e)/(mu_i+mu_e) grad n/n$ and
+    $bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) (grad n)/n$ and
     $bold(Gamma)_a=-D_a grad n$, where
     $D_a=(mu_i D_e+mu_e D_i)/(mu_i+mu_e)$. Ambipolar diffusion is
     therefore a collective consequence of quasi-neutrality.
@@ -465,7 +465,7 @@
 
   #unit-ledger[
     In Gaussian CGS, $bold(B)$ is in gauss, the signed cyclotron frequency
-    $Omega_s=q_s B/(m_s c)$ is in #unit("s^-1"), and the magnetization
+    $Omega_s=(q_s B)/(m_s c)$ is in #unit("s^-1"), and the magnetization
     parameter $abs(Omega_s)/nu_s$ is dimensionless. Parallel, perpendicular,
     and Hall diffusion coefficients are in #unit("cm^2/s").
   ]
@@ -480,12 +480,12 @@
 
   #definition(
     [Magnetized diffusion tensor],
-    [Let $Omega_s=q_s B/(m_s c)$ and
-    $D_s=k_B T_s/(m_s nu_s)$. The parallel coefficient is
+    [Let $Omega_s=(q_s B)/(m_s c)$ and
+    $D_s=(k_B T_s)/(m_s nu_s)$. The parallel coefficient is
     $D_(s,parallel)=D_s$, while
     $D_(s,perp)=D_s/(1+(Omega_s/nu_s)^2)$.
     A signed transverse coefficient is
-    $D_(s,H)=D_s (Omega_s/nu_s)/(1+(Omega_s/nu_s)^2)$.
+    $D_(s,H)=(D_s (Omega_s/nu_s))/(1+(Omega_s/nu_s)^2)$.
     The gradient contribution can be written
     $bold(Gamma)_(s,perp)=-D_(s,perp)grad_perp n_s
       +D_(s,H) hat(bold(b)) times grad_perp n_s$,
@@ -518,8 +518,8 @@
       [nu_s, -Omega_s],
       [Omega_s, nu_s]
     ] [u_(s,x), u_(s,y)]^T
-      =q_s/m_s [E_x,E_y]^T
-        -k_B T_s/(m_s n_s) [partial_x n_s,partial_y n_s]^T$.
+      =(q_s/m_s) [E_x,E_y]^T
+        -(k_B T_s)/(m_s n_s) [pdv(n_s,x),pdv(n_s,y)]^T$.
     The inverse matrix is
     $1/(nu_s^2+Omega_s^2)
       [
@@ -528,20 +528,20 @@
       ]$.
 
     The gradient part of the flux therefore has diagonal coefficient
-    $k_(B) T_s nu_s/(m_(s)(nu_s^2+Omega_s^2))
-      =D_s nu_s^2/(nu_s^2+Omega_s^2)$
+    $(k_(B) T_s nu_s)/(m_(s)(nu_s^2+Omega_s^2))
+      =(D_s nu_s^2)/(nu_s^2+Omega_s^2)$
     and signed off-diagonal coefficient
-    $k_(B) T_s Omega_s/(m_(s)(nu_s^2+Omega_s^2))
-      =D_s nu_s Omega_s/(nu_s^2+Omega_s^2)$.
+    $(k_(B) T_s Omega_s)/(m_(s)(nu_s^2+Omega_s^2))
+      =(D_s nu_s Omega_s)/(nu_s^2+Omega_s^2)$.
     These are the displayed $D_(s,perp)$ and $D_(s,H)$.
 
     The electric-force part contains the familiar crossed-field drift
-    $bold(u)_(E times B)=c bold(E) times bold(B)/B^2$ as well as a
+    $bold(u)_(E times B)=(c (bold(E) times bold(B)))/(B^2)$ as well as a
     collision-reduced force response. In the strongly magnetized limit,
     $abs(Omega_s)>>nu_s$, the perpendicular coefficient becomes
     $D_(s,perp) approx D_(s)(nu_s/Omega_s)^2$.
-    Since $D_s=k_B T_s/(m_s nu_s)$ and
-    $rho_(s,"thermal")^2=k_B T_s/(m_s Omega_s^2)$, this is
+    Since $D_s=(k_B T_s)/(m_s nu_s)$ and
+    $rho_(s,"thermal")^2=(k_B T_s)/(m_s Omega_s^2)$, this is
     $D_(s,perp) approx nu_s rho_(s,"thermal")^2$.
     The limit $nu_s -> 0$ therefore suppresses classical cross-field
     diffusion: without interruptions, guiding centers do not make a
@@ -630,14 +630,14 @@
   #definition(
     [Classical fully ionized diffusion],
     [The steady force balance and resistive Ohm law are
-    $bold(0)=-grad p+bold(j) times bold(B)/c$ and
-    $bold(j)=sigma (bold(E)+bold(u) times bold(B)/c)$.
+    $bold(0)=-grad p+(bold(j) times bold(B))/c$ and
+    $bold(j)=sigma (bold(E)+(bold(u) times bold(B))/c)$.
     The perpendicular velocity contains
-    $bold(u)_perp=c bold(E) times bold(B)/B^2
-      -c^2 grad_perp p/(sigma B^2)$.
+    $bold(u)_perp=(c (bold(E) times bold(B)))/(B^2)
+      -(c^2 grad_perp p)/(sigma B^2)$.
     For $p=n k_(B)(T_e+T_i)$, the pressure-driven flux is
     $bold(Gamma)_perp=-D_perp^("cl") grad_perp n$ with
-    $D_perp^("cl")=n c^2 k_(B)(T_e+T_i)/(sigma B^2)$.]
+    $D_perp^("cl")=(n c^2 k_(B)(T_e+T_i))/(sigma B^2)$.]
   )
 
   #diffusion-scalings
@@ -647,7 +647,7 @@
     [At fixed density, temperatures, and conductivity,
     $D_perp^("cl") ∝ B^(-2)$. A commonly used empirical Bohm estimate in
     Gaussian CGS is
-    $D_perp^(B) approx c k_B T_e/(16 e B)$,
+    $D_perp^(B) approx (c k_B T_e)/(16 e B)$,
     so $D_perp^(B) ∝ B^(-1)$. The numerical factor is empirical and
     should not be mistaken for a derivation from the collisional model.]
   )
@@ -673,18 +673,18 @@
   #details(
     [Derivation: pressure-driven classical flux],
     [Start from
-    $bold(0)=-grad p+bold(j) times bold(B)/c$
+    $bold(0)=-grad p+(bold(j) times bold(B))/c$
     and substitute
-    $bold(j)=sigma(bold(E)+bold(u) times bold(B)/c)$.
+    $bold(j)=sigma(bold(E)+(bold(u) times bold(B))/c)$.
     The cross product identity
     $(bold(u) times bold(B)) times bold(B)=-B^2 bold(u)_perp$
     gives
     $bold(0)=-grad_perp p
-      +sigma bold(E) times bold(B)/c
-      -sigma B^2 bold(u)_perp/c^2$.
+      +(sigma (bold(E) times bold(B)))/c
+      -(sigma B^2 bold(u)_perp)/(c^2)$.
     Solving for the perpendicular velocity yields
-    $bold(u)_perp=c bold(E) times bold(B)/B^2
-      -c^2 grad_perp p/(sigma B^2)$.
+    $bold(u)_perp=(c (bold(E) times bold(B)))/(B^2)
+      -(c^2 grad_perp p)/(sigma B^2)$.
 
     Multiply by $n$. The first term is a common crossed-field drift and does
     not diffuse a uniform density. For an isothermal two-temperature hydrogen
@@ -692,9 +692,9 @@
     $grad_perp p=k_(B)(T_e+T_i)grad_perp n$.
     The pressure term in the particle flux is consequently
     $bold(Gamma)_perp^("diff")
-      =-n c^2 k_(B)(T_e+T_i)/(sigma B^2) grad_perp n$,
+      =-(n c^2 k_(B)(T_e+T_i) grad_perp n)/(sigma B^2)$,
     which identifies
-    $D_perp^("cl")=n c^2 k_(B)(T_e+T_i)/(sigma B^2)$.
+    $D_perp^("cl")=(n c^2 k_(B)(T_e+T_i))/(sigma B^2)$.
     The explicit $c^2$ is required because both the Lorentz force density and
     the magnetic part of Ohm's law use the Gaussian-CGS convention.
 
@@ -717,7 +717,7 @@
 
   #summary[
     Fully ionized classical transport gives
-    $D_perp^("cl")=n c^2 k_(B)(T_e+T_i)/(sigma B^2)$ and
+    $D_perp^("cl")=(n c^2 k_(B)(T_e+T_i))/(sigma B^2)$ and
     $tau_"D"=L^2/D$. It scales as $B^(-2)$, while the empirical Bohm
     estimate scales as $B^(-1)$. The two describe different physical
     assumptions and must not be conflated.
@@ -726,8 +726,8 @@
   #knowledge-check((
     (
       question: [Where does the factor of c enter the Gaussian-CGS classical diffusion coefficient?],
-      answer: [It enters through both $bold(j) times bold(B)/c$ in force
-      balance and $bold(u) times bold(B)/c$ in Ohm's law. Solving the
+      answer: [It enters through both $(bold(j) times bold(B))/c$ in force
+      balance and $(bold(u) times bold(B))/c$ in Ohm's law. Solving the
       perpendicular balance therefore produces the explicit $c^2$ in
       $D_perp^("cl")$.]
     ),

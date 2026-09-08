@@ -133,7 +133,7 @@
       question: [What is the physical role of the magnetic field in the
       species equations?],
       answer: [It couples to each species through
-      $q_(s)n_(s) bold(u)_(s) times bold(B)/c$. The force is perpendicular to
+      $(q_(s)n_(s) (bold(u)_(s) times bold(B)))/c$. The force is perpendicular to
       the instantaneous velocity and changes direction of motion without
       directly doing work.]
     ),
@@ -159,7 +159,7 @@
     The equations use Gaussian CGS. The Lorentz force density is in
     #unit("g") #unit("cm^-2") #unit("s^-2"), because
     $q_(s)n_(s) bold(E)$ and
-    $q_(s)n_(s)bold(u)_(s) times bold(B)/c$ have that unit. The pressure
+    $(q_(s)n_(s)(bold(u)_(s) times bold(B)))/c$ have that unit. The pressure
     divergence and $bold(R)_(s)$ are also force densities. Energy density is
     in #unit("erg/cm^3"), and an energy flux is in
     #unit("erg") #unit("cm^-2") #unit("s^-1").
@@ -183,7 +183,7 @@
 
   $ pdv(rho_(s) bold(u)_(s), t)
     + div_(bold(r))(rho_(s) bold(u)_(s) bold(u)_(s) + bold(P)_(s))
-    = q_(s) n_(s) (bold(E) + bold(u)_(s) times bold(B)/c)
+    = q_(s) n_(s) (bold(E) + (bold(u)_(s) times bold(B))/c)
     + bold(R)_(s) $ <multiple-momentum-conservative>
 
   Equivalently, after using continuity, the left-hand side can be written as
@@ -191,7 +191,7 @@
 
   $ rho_(s) (pdv(bold(u)_(s), t)
     + bold(u)_(s) dot grad_(bold(r))(bold(u)_(s)))
-    = q_(s) n_(s) (bold(E) + bold(u)_(s) times bold(B)/c)
+    = q_(s) n_(s) (bold(E) + (bold(u)_(s) times bold(B))/c)
     - div_(bold(r))(bold(P)_(s)) + bold(R)_(s) $
     <multiple-momentum-material>
 
@@ -204,12 +204,12 @@
 
   Define the total species energy density and heat-flux vector by
 
-  $ W_(s) = 1/2 rho_(s) bold(u)_(s)^2 + epsilon_(s), quad
-    epsilon_(s) = m_(s)/2 integral bold(w)_(s)^2 f_(s) dif^3 bold(v) $
+  $ W_(s) = (rho_(s) bold(u)_(s)^2)/2 + epsilon_(s), quad
+    epsilon_(s) = (m_(s) integral bold(w)_(s)^2 f_(s) dif^3 bold(v))/2 $
     <multiple-energy-definitions>
 
-  $ bold(q)_(h,s) = m_(s)/2 integral bold(w)_(s)^2 bold(w)_(s)
-    f_(s) dif^3 bold(v) $ <multiple-heat-flux>
+  $ bold(q)_(h,s) = (m_(s) integral bold(w)_(s)^2 bold(w)_(s)
+    f_(s) dif^3 bold(v))/2 $ <multiple-heat-flux>
 
   The corresponding energy balance is
 
@@ -224,8 +224,8 @@
   $ div bold(E) = 4 pi rho_q, quad div bold(B) = 0 $
     <multiple-gauss-laws>
 
-  $ curl bold(E) = -1/c pdv(bold(B), t), quad
-    curl bold(B) = 4 pi/c bold(j) + 1/c pdv(bold(E), t) $
+  $ curl bold(E) = -(pdv(bold(B), t))/c, quad
+    curl bold(B) = ((4 pi)/c) bold(j) + (pdv(bold(E), t))/c $
     <multiple-maxwell>
 
   #details(
@@ -234,7 +234,7 @@
     $pdv(f_(s),t)+div_(bold(r))(f_(s)bold(v))
       +grad_(bold(v)) dot(f_(s)bold(a)_(s))=C_(s)[f]$,
     with
-    $bold(a)_(s)=q_(s)/m_(s)(bold(E)+bold(v) times bold(B)/c)$.
+    $bold(a)_(s)=q_(s)/m_(s)(bold(E)+(bold(v) times bold(B))/c)$.
 
     First integrate over velocity. The time term becomes $pdv(n_(s),t)$ and
     the spatial flux becomes $div_(bold(r))(n_(s)bold(u)_(s))$. The velocity
@@ -243,22 +243,22 @@
 
     Next multiply by $m_(s)bold(v)$ and integrate. In components, the spatial
     term is
-    $m_(s) integral v_i partial_(x_j)(v_j f_(s)) dif^3 bold(v)
-      = partial_(x_j)(m_(s) integral v_i v_j f_(s) dif^3 bold(v))$,
+    $m_(s) integral v_i pdv((v_j f_(s)),x_j) dif^3 bold(v)
+      = pdv((m_(s) integral v_i v_j f_(s) dif^3 bold(v)),x_j)$,
     which is the divergence of the raw momentum tensor. Writing
     $bold(v)=bold(u)_(s)+bold(w)_(s)$ decomposes that tensor into
     $rho_(s)bold(u)_(s)bold(u)_(s)+bold(P)_(s)$.
 
     Integration by parts in velocity gives
-    $m_(s) integral v_i partial_(v_j)(a_(s,j)f_(s)) dif^3 bold(v)
+    $m_(s) integral v_i pdv((a_(s,j)f_(s)),v_j) dif^3 bold(v)
       =-m_(s) integral a_(s,i)f_(s) dif^3 bold(v)$.
     Moving this term to the right gives the Lorentz force density, because
     $m_(s) integral bold(a)_(s)f_(s) dif^3 bold(v)
-      =q_(s)n_(s)bold(E)+q_(s)n_(s)bold(u)_(s)times bold(B)/c$.
+      =q_(s)n_(s)bold(E)+(q_(s)n_(s)(bold(u)_(s)times bold(B)))/c$.
     The remaining collision moment is
     $bold(R)_(s)=m_(s) integral bold(v)C_(s)[f]dif^3 bold(v)$.
 
-    Finally multiply the kinetic equation by $m_(s)v^2/2$. The force term is
+    Finally multiply the kinetic equation by $(m_(s)v^2)/2$. The force term is
     $-m_(s) integral bold(v) dot bold(a)_(s) f_(s)dif^3 bold(v)$ after the
     velocity integration by parts. The magnetic contribution vanishes because
     $bold(v) dot (bold(v) times bold(B))=0$; the electric contribution is
@@ -266,7 +266,7 @@
     $v^2=bold(u)_(s)^2+2bold(u)_(s)dot bold(w)_(s)+bold(w)_(s)^2$ separates
     directed kinetic energy, internal energy, pressure work, and heat flux. The
     collision energy moment is
-    $Q_(s)=m_(s)/2 integral v^2 C_(s)[f] dif^3 bold(v)$.
+    $Q_(s)=(m_(s)/2) integral v^2 C_(s)[f] dif^3 bold(v)$.
 
     No pressure equation has been assumed in these steps. Replacing
     $bold(P)_(s)$ by a scalar or replacing $bold(q)_(h,s)$ by a constitutive
@@ -302,7 +302,7 @@
       question: [Which term couples a species momentum equation to the
       electromagnetic field?],
       answer: [The Lorentz force density
-      $q_(s)n_(s)(bold(E)+bold(u)_(s)times bold(B)/c)$ couples the species
+      $q_(s)n_(s)(bold(E)+(bold(u)_(s)times bold(B))/c)$ couples the species
       momentum to the common fields.]
     ),
     (
@@ -365,7 +365,7 @@
   Let $bold(b)=bold(B)/B$ and project the species momentum balance
   perpendicular to the field:
 
-  $ 0 approx q_(s)n_(s) (bold(E) + bold(u)_(s,perp) times bold(B)/c)
+  $ 0 approx q_(s)n_(s) (bold(E) + (bold(u)_(s,perp) times bold(B))/c)
     - grad_(bold(r))(p_(s)) $ <multiple-perpendicular-balance>
 
   Here the pressure gradient in this equation is understood to be its
@@ -374,11 +374,10 @@
   $ bold(u)_(s,perp) = bold(u)_(E times B) + bold(u)_(*,s) $
     <multiple-drift-decomposition>
 
-  $ bold(u)_(E times B) = c (bold(E) times bold(B))/B^2 $
+  $ bold(u)_(E times B) = (c (bold(E) times bold(B)))/(B^2) $
     <multiple-exb-drift>
 
-  $ bold(u)_(*,s) = c/(q_(s)n_(s)B^2)
-    bold(B) times grad_(bold(r))(p_(s)) $ <multiple-diamagnetic-drift>
+  $ bold(u)_(*,s) = (c (bold(B) times grad_(bold(r))(p_(s))))/(q_(s)n_(s)B^2) $ <multiple-diamagnetic-drift>
 
   #equation-note[
     Both velocities are in #unit("cm/s"). The electric drift is independent
@@ -390,16 +389,16 @@
   #details(
     [Derivation: solve the perpendicular force balance],
     [Start with
-    $q_(s)n_(s)(bold(E)+bold(u)_(s,perp)times bold(B)/c)
+    $q_(s)n_(s)(bold(E)+(bold(u)_(s,perp)times bold(B))/c)
       =grad p_(s)$.
     Cross the equation with $bold(B)$ from the right. The identity
     $(bold(u)times bold(B))times bold(B)=-B^2 bold(u)_perp$ gives
     $q_(s)n_(s)bold(E)times bold(B)
-      -q_(s)n_(s)B^2 bold(u)_(s,perp)/c
+      -(q_(s)n_(s)B^2 bold(u)_(s,perp))/c
       =grad p_(s)times bold(B)$.
     Rearranging and using $grad p times bold(B)=-bold(B)times grad p$ gives
-    $bold(u)_(s,perp)=c bold(E)times bold(B)/B^2
-      +c bold(B)times grad p_(s)/(q_(s)n_(s)B^2)$.
+    $bold(u)_(s,perp)=(c (bold(E)times bold(B)))/(B^2)
+      +(c (bold(B)times grad p_(s)))/(q_(s)n_(s)B^2)$.
 
     The first term comes from the electric force and contains the factor
     $q_(s)$ on both sides of the force balance, so it is common to all
@@ -431,7 +430,7 @@
       question: [Which term makes the electric drift common to both species?],
       answer: [The electric force is proportional to $q_(s)$, which cancels
       the $1/q_(s)$ introduced when the perpendicular Lorentz balance is
-      solved. Thus $bold(u)_(E times B)=c bold(E)times bold(B)/B^2$.]
+      solved. Thus $bold(u)_(E times B)=(c (bold(E)times bold(B)))/(B^2)$.]
     ),
     (
       question: [How does reversing the charge affect the diamagnetic drift?],
@@ -472,7 +471,7 @@
   #unit-ledger[
     The current density is in statcoulomb per #unit("cm^2") per #unit("s").
     The pressure sum $p_(e)+p_(i)$ is in #unit("erg/cm^3"), and
-    $c bold(B)times grad p/B^2$ has the same current-density unit in Gaussian
+    $(c (bold(B)times grad p))/(B^2)$ has the same current-density unit in Gaussian
     CGS after the charge and density factors cancel. All displayed drift
     velocities remain in #unit("cm/s").
   ]
@@ -488,13 +487,13 @@
   Insert the perpendicular drift into the current definition:
 
   $ bold(j)_perp = sum_s q_(s)n_(s)bold(u)_(s,perp)
-    = rho_q c (bold(E) times bold(B))/B^2
-      + c/B^2 sum_s bold(B) times grad_(bold(r))(p_(s)) $
+    = (rho_q c (bold(E) times bold(B)))/(B^2)
+      + (c sum_s (bold(B) times grad_(bold(r))(p_(s))))/(B^2) $
     <multiple-current-sum>
 
   Under quasi-neutrality, the first term is small and the pressure term is
 
-  $ bold(j)_* = c/B^2 bold(B) times grad_(bold(r))(p_(e)+p_(i)) $
+  $ bold(j)_* = (c (bold(B) times grad_(bold(r))(p_(e)+p_(i))))/(B^2) $
     <multiple-diamagnetic-current>
 
   For scalar ideal-gas pressures, $p_(s)=n_(s) k_B T_(s)$. If
@@ -514,10 +513,10 @@
     [Derivation: add the charge-weighted drift responses],
     [For each species,
     $q_(s)n_(s)bold(u)_(*,s)
-      =c bold(B)times grad p_(s)/B^2$.
+      =(c (bold(B)times grad p_(s)))/(B^2)$.
     The factors $q_(s)n_(s)$ cancel exactly against the denominator in the
     species diamagnetic velocity. Summing over electrons and ions gives
-    $bold(j)_*=c bold(B)times[grad p_(e)+grad p_(i)]/B^2$.
+    $bold(j)_*=(c (bold(B)times[grad p_(e)+grad p_(i)]))/(B^2)$.
 
     The common drift instead gives
     $sum_s q_(s)n_(s)bold(u)_(E times B)
@@ -546,7 +545,7 @@
   #summary[
     Charge-weighting converts opposite diamagnetic velocities into additive
     current contributions. In a quasi-neutral hydrogen plasma,
-    $bold(j)_*=c bold(B)times grad(p_(e)+p_(i))/B^2$, while the common electric
+    $bold(j)_*=(c (bold(B)times grad(p_(e)+p_(i))))/(B^2)$, while the common electric
     drift contributes only through the small charge density. The current is a
     response to the pressure gradient; its interpretation as transport needs
     the full fluid balance and boundary conditions.
@@ -565,7 +564,7 @@
       question: [Why do the electron and ion diamagnetic currents add?],
       answer: [Their diamagnetic velocities have opposite signs, but each
       current is multiplied by its own charge. Since
-      $q_(s)n_(s)bold(u)_(*,s)=c bold(B)times grad p_(s)/B^2$, both contributions
+      $q_(s)n_(s)bold(u)_(*,s)=(c (bold(B)times grad p_(s)))/(B^2)$, both contributions
       point along the corresponding pressure-gradient cross-field direction.]
     ),
     (
@@ -618,10 +617,14 @@
   #assumption(
     [Parallel ordering],
     [Let $bold(b)=bold(B)/B$ and neglect the magnetic part of the Lorentz force
-    after projection along $bold(b)$. Keep inertia and collisions until a
-    further limit is stated. The Boltzmann response below additionally assumes
-    negligible parallel inertia and collisions, scalar isothermal electron
-    pressure, and a connected field line.]
+    after projection along $bold(b)$. For the scalar parallel-velocity form,
+    take the field direction as locally fixed on the scale of interest;
+    otherwise retain $bold(b) dot pdv(bold(u)_(s),t)$ and the associated
+    field-line geometry rather than replacing it by a derivative of
+    $u_(parallel,s)$. Keep inertia and collisions until a further limit is
+    stated. The Boltzmann response below additionally assumes negligible
+    parallel inertia and collisions, scalar isothermal electron pressure, and
+    a connected field line.]
   )
 
   Projecting the species momentum equation gives
@@ -640,13 +643,13 @@
 
   With $p_(e)=n_(e) k_B T_(e)$ and uniform $T_(e)$, this becomes
 
-  $ E_parallel = -k_B T_(e)/e bold(b) dot grad_(bold(r))(ln n_(e)),
+  $ E_parallel = -((k_B T_(e))/e) bold(b) dot grad_(bold(r))(ln n_(e)),
     quad E_parallel=-bold(b) dot grad_(bold(r))(phi) $
     <multiple-boltzmann-field>
 
   and integration along a field line gives the electron Boltzmann relation
 
-  $ n_(e) = n_(e,0) exp(e(phi-phi_0)/(k_B T_(e))) $
+  $ n_(e) = n_(e,0) exp((e (phi-phi_0))/(k_B T_(e))) $
     <multiple-boltzmann-response>
 
   The exact one-fluid definitions are
@@ -666,7 +669,7 @@
 
   $ pdv(rho bold(u),t)
     + div_(bold(r))(rho bold(u) bold(u)+bold(P)_(1))
-    = rho_q bold(E) + bold(j) times bold(B)/c
+    = rho_q bold(E) + (bold(j) times bold(B))/c
       + sum_s bold(R)_(s) $ <multiple-summed-momentum>
 
   For isolated elastic collisions, the last term vanishes. Dropping the
@@ -687,10 +690,10 @@
     $q_(e)=-e$. The balance is
     $bold(b)dot grad p_(e)=-e n_(e)E_parallel$. Isothermal pressure gives
     $bold(b)dot grad p_(e)=k_B T_(e)bold(b)dot grad n_(e)$, so
-    $E_parallel=-k_B T_(e)bold(b)dot grad(ln n_(e))/e$. With
+    $E_parallel=-((k_B T_(e))/e) bold(b)dot grad(ln n_(e))$. With
     $E_parallel=-bold(b)dot grad phi$, integrate to obtain
-    $bold(b)dot grad(ln n_(e)-e phi/(k_B T_(e)))=0$, hence
-    $n_(e)=n_(e,0)exp(e(phi-phi_0)/(k_B T_(e)))$ along the connected field line.
+    $bold(b)dot grad(ln n_(e)-(e phi)/(k_B T_(e)))=0$, hence
+    $n_(e)=n_(e,0)exp((e(phi-phi_0))/(k_B T_(e)))$ along the connected field line.
 
     To sum the momentum equations, write
     $bold(u)_(s)=bold(u)+bold(V)_(s)$ and expand
@@ -700,8 +703,8 @@
     $sum_s rho_(s)bold(V)_(s)=sum_s rho_(s)bold(u)_(s)-rho bold(u)=bold(0)$.
     Similarly,
     $sum_s q_(s)n_(s)bold(E)=rho_q bold(E)$ and
-    $sum_s q_(s)n_(s)bold(u)_(s)times bold(B)/c
-      =bold(j)times bold(B)/c$.
+    $sum_s (q_(s)n_(s)(bold(u)_(s)times bold(B)))/c
+      =(bold(j)times bold(B))/c$.
     These identities give the summed momentum equation. If interspecies
     collisions are internal, their momentum sources cancel in the sum.]
   )
@@ -735,7 +738,7 @@
       answer: [Negligible parallel electron inertia and collisions, scalar
       isothermal pressure, electrostatic parallel balance, and a connected
       field line lead to
-      $n_(e)/n_(e,0)=exp(e(phi-phi_0)/(k_B T_(e)))$.]
+      $n_(e)/n_(e,0)=exp((e(phi-phi_0))/(k_B T_(e)))$.]
     ),
     (
       question: [What is the one-fluid velocity?],

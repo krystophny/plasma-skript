@@ -1,6 +1,6 @@
 #import "../theme.typ": *
 #import "../figures.typ": maxwellian-profile
-#import "@preview/physica:0.9.8": div, grad, pdv
+#import "@preview/physica:0.9.8": div, grad, pdv, dv
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
@@ -57,7 +57,7 @@
   If the background is uniform, the survival probability $S(ell)$ after a
   flight of length $ell$ obeys
 
-  $ d S / d ell = -n_b sigma_(a b) S, quad S(0)=1 $ <kinetic-survival>
+  $ dv(S,ell) = -n_b sigma_(a b) S, quad S(0)=1 $ <kinetic-survival>
 
   #equation-note[
     The coefficient $n_b sigma_(a b)$ has units #unit("cm^-1") in Gaussian
@@ -280,13 +280,13 @@
   velocity $bold(u)_s$ is the shifted Maxwellian
 
   $ f_(M,s) = n_s (m_s/(2 pi k_B T_s))^(3/2)
-    exp(-m_s abs(bold(v)-bold(u)_s)^2/(2 k_B T_s)) $ <kinetic-maxwellian>
+    exp(-(m_s abs(bold(v)-bold(u)_s)^2)/(2 k_B T_s)) $ <kinetic-maxwellian>
 
   #equation-note[
     Temperature is expressed through the thermal energy $k_B T_s$ in
     #unit("erg"). The one-dimensional standard deviation is
-    $sqrt(k_B T_s/m_s)$, while the parameter
-    $v_"th,s"=sqrt(2 k_B T_s/m_s)$ is the most-probable-speed scale used in the
+    $sqrt((k_B T_s)/m_s)$, while the parameter
+    $v_"th,s"=sqrt((2 k_B T_s)/m_s)$ is the most-probable-speed scale used in the
     normalized plot below.]
 
   #maxwellian-profile
@@ -302,8 +302,8 @@
 
     Symmetry gives $integral bold(c) f_(M,s) dif^3 bold(v)=bold(0)$, so the
     first moment is $n_s bold(u)_s$. For the second central moment, each
-    Cartesian component has variance $1/(2a)=k_B T_s/m_s$. Hence
-    $bold(P)_s = m_s n_s (k_B T_s/m_s) bold(I)
+    Cartesian component has variance $1/(2a)=(k_B T_s)/m_s$. Hence
+    $bold(P)_s = m_s n_s ((k_B T_s)/m_s) bold(I)
     = n_s k_B T_s bold(I)$ for an isotropic Maxwellian.]
   )
 
@@ -378,21 +378,21 @@
     characteristic $bold(z)=(bold(r),bold(v))$, the two blocks of its velocity
     are $bold(V)_z=(bold(v),bold(a))$. We also use the normalized variables
     $xi=bold(r)/L_0$, $eta=bold(v)/v_0$, and
-    $tau=t v_0/L_0$, all explicitly dimensionless.
+    $tau=(t v_0)/L_0$, all explicitly dimensionless.
   ]
 
   #definition(
     [Convective derivative],
     [For a scalar $g(t,bold(r),bold(v))$, the derivative along a particle
     trajectory is
-    $ D_s g / D t = pdv(g,t) + bold(v) dot grad_(bold(r)) g
-    + bold(a)_s dot grad_(bold(v)) g$. It follows the particle through both
+    $ dv(g_(s),t,d:upright(D)) = pdv(g_(s),t) + bold(v) dot grad_(bold(r)) g_(s)
+    + bold(a)_s dot grad_(bold(v)) g_(s)$. It follows the particle through both
     real space and velocity space.]
   )
 
   A characteristic is the phase-space curve defined by
 
-  $ d bold(r)/d t = bold(v), quad d bold(v)/d t = bold(a)_s,
+  $ dv(bold(r),t) = bold(v), quad dv(bold(v),t) = bold(a)_s,
     quad bold(z)=(bold(r),bold(v)) $ <kinetic-characteristic>
 
   #equation-note[
@@ -415,7 +415,7 @@
 
   The normalized free-streaming equation used in the animation is
 
-  $ pdv(f,tau) + (v/v_0) pdv(f,xi) = 0 $ <kinetic-normalized-streaming>
+  $ pdv(f,tau) + eta pdv(f,xi) = 0 $ <kinetic-normalized-streaming>
 
   #equation-note[
     Both $xi=bold(r)/L_0$ and $eta=bold(v)/v_0$ are dimensionless. The plotted
@@ -442,8 +442,8 @@
     by the partial time change plus the changes caused by both coordinates:
     $d g = pdv(g,t) d t + grad_(bold(r)) g dot d bold(r)
     + grad_(bold(v)) g dot d bold(v)$. Divide by $d t$ and insert
-    $d bold(r)/d t=bold(v)$ and $d bold(v)/d t=bold(a)_s$. The result is
-    $d g/d t = pdv(g,t) + bold(v) dot grad_(bold(r))g
+    $dv(bold(r),t)=bold(v)$ and $dv(bold(v),t)=bold(a)_s$. The result is
+    $dv(g,t) = pdv(g,t) + bold(v) dot grad_(bold(r))g
     + bold(a)_s dot grad_(bold(v))g$. At a fixed point, only $pdv(g,t)$ is
     measured. Along a characteristic, all three terms contribute.]
   )
@@ -536,7 +536,7 @@
   The electromagnetic acceleration follows from the Gaussian-CGS Lorentz
   force:
 
-  $ bold(a)_s = q_s/m_s (bold(E) + bold(v) times bold(B)/c) $ <kinetic-acceleration>
+  $ bold(a)_s = q_s/m_s (bold(E) + (bold(v) times bold(B))/c) $ <kinetic-acceleration>
 
   #equation-note[
     The speed of light $c$ is in #unit("cm/s"). The acceleration is in
@@ -578,13 +578,13 @@
 
   The convective form is therefore
 
-  $ D_s f_s / D t = pdv(f_s,t) + bold(v) dot grad_(bold(r)) f_s
-    + bold(a)_s dot grad_(bold(v)) f_s = C_(s)[f] $ <kinetic-convective>
+  $ dv(f_(s),t,d:upright(D)) = pdv(f_(s),t) + bold(v) dot grad_(bold(r)) f_(s)
+    + bold(a)_s dot grad_(bold(v)) f_(s) = C_(s)[f] $ <kinetic-convective>
 
   When the collision operator is neglected, this becomes the Vlasov equation:
 
   $ pdv(f_s,t) + bold(v) dot grad_(bold(r)) f_s
-    + q_s/m_s (bold(E) + bold(v) times bold(B)/c)
+    + q_s/m_s (bold(E) + (bold(v) times bold(B))/c)
       dot grad_(bold(v)) f_s = 0 $ <kinetic-vlasov>
 
   #equation-note[
@@ -708,11 +708,11 @@
 
   $ f_("eq,s")(bold(r),bold(v)) = n_(0,s)
     (m_s/(2 pi k_B T_s))^(3/2)
-    exp(-(m_s v^2/2 + q_s Phi(bold(r)))/(k_B T_s)) $ <kinetic-equilibrium-distribution>
+    exp(-((m_s v^2)/2 + q_s Phi(bold(r)))/(k_B T_s)) $ <kinetic-equilibrium-distribution>
 
   Integrating over velocity gives the Boltzmann density response:
 
-  $ n_(s)(bold(r)) = n_(0,s) exp(-q_s Phi(bold(r))/(k_B T_s)) $ <kinetic-boltzmann-response>
+  $ n_(s)(bold(r)) = n_(0,s) exp(-(q_s Phi(bold(r)))/(k_B T_s)) $ <kinetic-boltzmann-response>
 
   #equation-note[
     The exponent is dimensionless because both $q_s Phi$ and $k_B T_s$ are
@@ -723,13 +723,13 @@
   #details(
     [Derivation: Maxwellian equilibrium in a potential],
     [The single-particle energy in a static electrostatic field is
-    $H_s=m_s v^2/2+q_s Phi(bold(r))$. A stationary collisional equilibrium
+    $H_s=(m_s v^2)/2+q_s Phi(bold(r))$. A stationary collisional equilibrium
     depends on velocity through this invariant and has the Maxwellian form
-    $f_("eq,s")=A_s exp(-H_s/(k_B T_s))$. Choose
+    $f_("eq,s")=A_s exp(-(H_s)/(k_B T_s))$. Choose
     $A_s=n_(0,s)(m_s/(2 pi k_B T_s))^(3/2)$ so that at $Phi=0$ the velocity
     integral is $n_(0,s)$. Factor the exponential into a velocity part and a
     position part. The normalized Gaussian integrates to one, leaving
-    $n_(s)(bold(r))=n_(0,s) exp(-q_s Phi/(k_B T_s))$.]
+    $n_(s)(bold(r))=n_(0,s) exp(-(q_s Phi)/(k_B T_s))$.]
   )
 
   #callout(
@@ -772,7 +772,7 @@
       $C_(s)[f_(M,s)]=0$.],
     ),
     (
-      question: [Why is $q_s Phi/(k_B T_s)$ dimensionless?],
+      question: [Why is $(q_s Phi)/(k_B T_s)$ dimensionless?],
       answer: [Both the numerator and denominator are energies in Gaussian
       CGS, so their ratio has no units.],
     ),
