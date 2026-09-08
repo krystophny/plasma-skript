@@ -87,8 +87,6 @@
   momentum equation, but the magnetic force density remains through the total
   current.
 
-  #mhd-reduction
-
   #details(
     [Derivation: sum species moments without losing relative flow],
     [Start with the species continuity equations
@@ -120,6 +118,8 @@
     their species sum is zero. These identities yield the displayed total
     momentum equation.]
   )
+
+  #mhd-reduction
 
   #interpretation(
     [One fluid does not mean one velocity for every species],
@@ -233,8 +233,6 @@
   electron-pressure or ambipolar response, collisional resistivity, and the
   leading electron-inertia response in a slowly varying bulk frame.
 
-  #mhd-ohm-balance
-
   For a linear electron--ion drag law, the force on electrons is
 
   $ bold(R)_(e) = m_(e)n nu_(e i)
@@ -293,6 +291,8 @@
     electron-inertia operator; the displayed generalized law is then not
     sufficient.]
   )
+
+  #mhd-ohm-balance
 
   #interpretation(
     [The ideal field is a limit, not the starting equation],
@@ -429,17 +429,6 @@
   $ delta p = c_(s)^2 delta rho,
     quad c_(s)^2=(gamma p_0)/rho_0 $ <mhd-linear-closure>
 
-  #animation(
-    "../media/exb-drift.mp4",
-    "A charged particle gyros around a magnetic-field direction while its guiding center translates with the common electric drift. The axes are normalized by the reference gyroradius; the electric field points upward and the magnetic field points out of the page. The animation illustrates the shared perpendicular advection that becomes the ideal bulk constraint, not a full MHD solution.",
-    caption: [
-      Common $E times B$ advection as a visual bridge to ideal MHD. The
-      animation is a deterministic normalized illustration; it does not show
-      the linearized MHD perturbation equations or measured data.
-    ],
-    poster: "../media/exb-drift.png",
-  )
-
   #details(
     [Derivation: linearize the ideal-MHD system],
     [For continuity, insert
@@ -474,6 +463,17 @@
     $(delta p)/p_0=gamma (delta rho)/rho_0$, or
     $delta p=((gamma p_0)/rho_0)delta rho=c_(s)^2delta rho$.
     Every discarded product contains at least two perturbation factors.]
+  )
+
+  #animation(
+    "../media/exb-drift.mp4",
+    "A charged particle gyros around a magnetic-field direction while its guiding center translates with the common electric drift. The axes are normalized by the reference gyroradius; the electric field points upward and the magnetic field points out of the page. The animation illustrates the shared perpendicular advection that becomes the ideal bulk constraint, not a full MHD solution.",
+    caption: [
+      Common $E times B$ advection as a visual bridge to ideal MHD. The
+      animation is a deterministic normalized illustration; it does not show
+      the linearized MHD perturbation equations or measured data.
+    ],
+    poster: "../media/exb-drift.png",
   )
 
   #interpretation(
@@ -585,8 +585,6 @@
 
   $ R_(m) = (U L)/D_(B) = tau_(D)/tau_(A) $ <mhd-magnetic-reynolds>
 
-  #mhd-flux-diffusion
-
   For $R_(m) >> 1$, advection dominates and the approximate diffusion time is
   long. For a characteristic structure of size $L$, the finite-resistivity
   diffusion estimate is
@@ -633,6 +631,8 @@
     $(U L)/D_(B)=R_(m)$. The same ratio equals
     $(L/U)/(L^2/D_(B))=tau_(D)/tau_(A)$.]
   )
+
+  #mhd-flux-diffusion
 
   #interpretation(
     [Frozen flux is an approximation with a precise failure mode],
@@ -798,8 +798,6 @@
   relations are special reductions of the same vector equilibrium equation;
   neither replaces the general force balance.
 
-  #mhd-force-balance
-
   #details(
     [Derivation: magnetic pressure, tension, and pinch balance],
     [Begin with the static momentum equation after reduced Ampere's law:
@@ -866,6 +864,8 @@
     The final term is the inward magnetic tension from curved field lines.
     These examples are special geometries, not extra equilibrium laws.]
   )
+
+  #mhd-force-balance
 
   #interpretation(
     [Equilibrium is a geometry constraint],

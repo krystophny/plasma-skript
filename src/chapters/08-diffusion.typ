@@ -63,30 +63,6 @@
     $⟨abs(bold(r))^2⟩=6 D t$.]
   )
 
-  #random-walk-diffusion
-
-  #animation(
-    "../media/diffusion-random-walk.mp4",
-    "A normalized one-dimensional ensemble of walkers starts at the same position and takes reproducible symmetric steps. As time advances, the blue walkers spread to both sides while their mean position remains near the origin. Teal traces show selected paths, and the displayed relation states that the variance grows as two times the diffusion coefficient times time.",
-    caption: [
-      Random-walk spreading: the mean displacement cancels while the variance
-      grows. The animation is a deterministic normalized illustration, not a
-      Monte-Carlo transport calculation or measured data.
-    ],
-    poster: "../media/diffusion-random-walk.png",
-  )
-
-  #rechenbeispiel[
-    A one-dimensional neutral-collision model has a step magnitude
-    $Delta x=qty("2.0e-1", "cm")$ every
-    $Delta t=qty("1.0e-7", "s")$. For a device of length
-    $L=qty("1.0e1", "cm")$, determine the diffusion coefficient and the
-    characteristic diffusion time.
-
-    Numerical result: $D=qty("2.0e5", "cm^2/s")$ and
-    $tau_"D"=qty("5.0e-4", "s")$.
-  ]
-
   #details(
     [Derivation: from step statistics to the diffusion equation],
     [Let one step be $+Delta x$ or $-Delta x$ with equal probability. Its
@@ -122,6 +98,30 @@
     Its second moment evaluates to $⟨x^2⟩=2 D t$. Independent Cartesian
     directions add, giving $⟨abs(bold(r))^2⟩=6 D t$ in three dimensions.]
   )
+
+  #random-walk-diffusion
+
+  #animation(
+    "../media/diffusion-random-walk.mp4",
+    "A normalized one-dimensional ensemble of walkers starts at the same position and takes reproducible symmetric steps. As time advances, the blue walkers spread to both sides while their mean position remains near the origin. Teal traces show selected paths, and the displayed relation states that the variance grows as two times the diffusion coefficient times time.",
+    caption: [
+      Random-walk spreading: the mean displacement cancels while the variance
+      grows. The animation is a deterministic normalized illustration, not a
+      Monte-Carlo transport calculation or measured data.
+    ],
+    poster: "../media/diffusion-random-walk.png",
+  )
+
+  #rechenbeispiel[
+    A one-dimensional neutral-collision model has a step magnitude
+    $Delta x=qty("2.0e-1", "cm")$ every
+    $Delta t=qty("1.0e-7", "s")$. For a device of length
+    $L=qty("1.0e1", "cm")$, determine the diffusion coefficient and the
+    characteristic diffusion time.
+
+    Numerical result: $D=qty("2.0e5", "cm^2/s")$ and
+    $tau_"D"=qty("5.0e-4", "s")$.
+  ]
 
   #interpretation(
     [Diffusion is not advection],
@@ -221,19 +221,6 @@
     $D_s=(mu_s k_B T_s)/abs(q_s)$.]
   )
 
-  #rechenbeispiel[
-    For electrons in a weakly ionized plasma, use
-    $k_B T_e=qty("3.204e-12", "erg")$,
-    $m_e=qty("9.109e-28", "g")$,
-    $e=qty("4.803e-10", "statC")$, and
-    $nu_e=qty("1.0e8", "s^-1")$. Determine the positive mobility magnitude
-    $mu_e=e/(m_e nu_e)$ and the diffusion coefficient
-    $D_e=(k_B T_e)/(m_e nu_e)$.
-
-    Numerical result: $mu_e=qty("5.27e9", "cm^2/statV/s")$ and
-    $D_e=qty("3.52e7", "cm^2/s")$.
-  ]
-
   #details(
     [Derivation: collisional force balance],
     [Start with the species momentum equation and use the isothermal equation
@@ -260,6 +247,19 @@
     scalar coefficient is insufficient when a magnetic field makes the
     response tensorial.]
   )
+
+  #rechenbeispiel[
+    For electrons in a weakly ionized plasma, use
+    $k_B T_e=qty("3.204e-12", "erg")$,
+    $m_e=qty("9.109e-28", "g")$,
+    $e=qty("4.803e-10", "statC")$, and
+    $nu_e=qty("1.0e8", "s^-1")$. Determine the positive mobility magnitude
+    $mu_e=e/(m_e nu_e)$ and the diffusion coefficient
+    $D_e=(k_B T_e)/(m_e nu_e)$.
+
+    Numerical result: $mu_e=qty("5.27e9", "cm^2/statV/s")$ and
+    $D_e=qty("3.52e7", "cm^2/s")$.
+  ]
 
   #interpretation(
     [The same collision rate controls two responses],
@@ -347,8 +347,6 @@
     $bold(Gamma)_i=bold(Gamma)_e$.]
   )
 
-  #ambipolar-balance
-
   #governing-law(
     [Ambipolar field and diffusion coefficient],
     [Solving the equal-flux condition gives
@@ -357,24 +355,6 @@
     $bold(Gamma)_a=-D_a grad n$ with
     $D_a=(mu_i D_e+mu_e D_i)/(mu_i+mu_e)$.]
   )
-
-  #rechenbeispiel[
-    Consider a weakly ionized hydrogen plasma with
-    $n=qty("1.0e10", "cm^-3")$,
-    $(grad n)/n=qty("-1.0e-2", "cm^-1")$, and
-    $k_B T_i=k_B T_e=qty("1.602e-12", "erg")$.
-    Use $m_i=qty("1.673e-24", "g")$,
-    $m_e=qty("9.109e-28", "g")$,
-    $e=qty("4.803e-10", "statC")$,
-    $nu_i=qty("1.0e7", "s^-1")$, and
-    $nu_e=qty("1.0e9", "s^-1")$. Determine the ambipolar field,
-    coefficient, and particle flux.
-
-    Numerical result:
-    $bold(E)_a=qty("2.99e-5", "statV/cm")$,
-    $D_a=qty("1.82e5", "cm^2/s")$, and
-    $abs(bold(Gamma)_a)=qty("1.82e13", "cm^-2/s")$.
-  ]
 
   #details(
     [Derivation: quasi-neutral flux balance],
@@ -404,6 +384,26 @@
     $D_a approx D_i+(mu_i/mu_e) D_e$; the electron diffusion is largely
     converted into the ambipolar electric field rather than a net current.]
   )
+
+  #ambipolar-balance
+
+  #rechenbeispiel[
+    Consider a weakly ionized hydrogen plasma with
+    $n=qty("1.0e10", "cm^-3")$,
+    $(grad n)/n=qty("-1.0e-2", "cm^-1")$, and
+    $k_B T_i=k_B T_e=qty("1.602e-12", "erg")$.
+    Use $m_i=qty("1.673e-24", "g")$,
+    $m_e=qty("9.109e-28", "g")$,
+    $e=qty("4.803e-10", "statC")$,
+    $nu_i=qty("1.0e7", "s^-1")$, and
+    $nu_e=qty("1.0e9", "s^-1")$. Determine the ambipolar field,
+    coefficient, and particle flux.
+
+    Numerical result:
+    $bold(E)_a=qty("2.99e-5", "statV/cm")$,
+    $D_a=qty("1.82e5", "cm^2/s")$, and
+    $abs(bold(Gamma)_a)=qty("1.82e13", "cm^-2/s")$.
+  ]
 
   #interpretation(
     [Quasi-neutrality couples otherwise unequal rates],
@@ -492,24 +492,6 @@
     in the chosen orientation convention.]
   )
 
-  #cross-field-diffusion
-
-  #rechenbeispiel[
-    For electrons at $k_B T_e=qty("1.602e-12", "erg")$, use
-    $m_e=qty("9.109e-28", "g")$,
-    $e=qty("4.803e-10", "statC")$,
-    $c=qty("2.998e10", "cm/s")$,
-    $B=qty("1.0e2", "G")$, and
-    $nu_e=qty("1.0e7", "s^-1")$. Determine the magnitude of the cyclotron
-    frequency, the parallel coefficient, and the perpendicular coefficient.
-
-    Numerical result:
-    $abs(Omega_e)=qty("1.76e9", "s^-1")$,
-    $D_(e,parallel)=qty("1.76e8", "cm^2/s")$,
-    $D_(e,perp)=qty("5.69e3", "cm^2/s")$, and
-    $D_(e,perp)/D_(e,parallel)=qty("3.23e-5", "1")$.
-  ]
-
   #details(
     [Derivation: solving the perpendicular momentum balance],
     [For $bold(B)=B hat(bold(z))$, the steady perpendicular momentum equation
@@ -547,6 +529,24 @@
     diffusion: without interruptions, guiding centers do not make a
     collisional random walk across field lines.]
   )
+
+  #cross-field-diffusion
+
+  #rechenbeispiel[
+    For electrons at $k_B T_e=qty("1.602e-12", "erg")$, use
+    $m_e=qty("9.109e-28", "g")$,
+    $e=qty("4.803e-10", "statC")$,
+    $c=qty("2.998e10", "cm/s")$,
+    $B=qty("1.0e2", "G")$, and
+    $nu_e=qty("1.0e7", "s^-1")$. Determine the magnitude of the cyclotron
+    frequency, the parallel coefficient, and the perpendicular coefficient.
+
+    Numerical result:
+    $abs(Omega_e)=qty("1.76e9", "s^-1")$,
+    $D_(e,parallel)=qty("1.76e8", "cm^2/s")$,
+    $D_(e,perp)=qty("5.69e3", "cm^2/s")$, and
+    $D_(e,perp)/D_(e,parallel)=qty("3.23e-5", "1")$.
+  ]
 
   #interpretation(
     [Collisions facilitate cross-field transport],
@@ -640,8 +640,6 @@
     $D_perp^("cl")=(n c^2 k_(B)(T_e+T_i))/(sigma B^2)$.]
   )
 
-  #diffusion-scalings
-
   #governing-law(
     [Classical and Bohm-like scalings],
     [At fixed density, temperatures, and conductivity,
@@ -651,24 +649,6 @@
     so $D_perp^(B) ∝ B^(-1)$. The numerical factor is empirical and
     should not be mistaken for a derivation from the collisional model.]
   )
-
-  #rechenbeispiel[
-    For a fully ionized hydrogen plasma, use
-    $n=qty("1.0e10", "cm^-3")$,
-    $k_B T_e=k_B T_i=qty("1.602e-11", "erg")$,
-    $sigma=qty("1.0e15", "s^-1")$,
-    $B=qty("1.0e2", "G")$,
-    $c=qty("2.998e10", "cm/s")$, and
-    $e=qty("4.803e-10", "statC")$. Determine the classical coefficient,
-    the Bohm estimate, and their ratio. For a device of length
-    $L=qty("1.0e2", "cm")$, also estimate the classical diffusion time.
-
-    Numerical result:
-    $D_perp^("cl")=qty("2.88e1", "cm^2/s")$,
-    $D_perp^(B)=qty("6.25e5", "cm^2/s")$,
-    $D_perp^(B)/D_perp^("cl")=qty("2.17e4", "1")$, and
-    $tau_"D"^("cl")=qty("3.47e2", "s")$.
-  ]
 
   #details(
     [Derivation: pressure-driven classical flux],
@@ -705,6 +685,26 @@
     Neoclassical calculations add field geometry, trapped-particle orbits, and
     finite collisionality before comparing with such an empirical law.]
   )
+
+  #diffusion-scalings
+
+  #rechenbeispiel[
+    For a fully ionized hydrogen plasma, use
+    $n=qty("1.0e10", "cm^-3")$,
+    $k_B T_e=k_B T_i=qty("1.602e-11", "erg")$,
+    $sigma=qty("1.0e15", "s^-1")$,
+    $B=qty("1.0e2", "G")$,
+    $c=qty("2.998e10", "cm/s")$, and
+    $e=qty("4.803e-10", "statC")$. Determine the classical coefficient,
+    the Bohm estimate, and their ratio. For a device of length
+    $L=qty("1.0e2", "cm")$, also estimate the classical diffusion time.
+
+    Numerical result:
+    $D_perp^("cl")=qty("2.88e1", "cm^2/s")$,
+    $D_perp^(B)=qty("6.25e5", "cm^2/s")$,
+    $D_perp^(B)/D_perp^("cl")=qty("2.17e4", "1")$, and
+    $tau_"D"^("cl")=qty("3.47e2", "s")$.
+  ]
 
   #interpretation(
     [Classical, neoclassical, and anomalous are different claims],

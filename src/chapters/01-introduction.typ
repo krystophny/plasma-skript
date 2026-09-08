@@ -402,6 +402,19 @@
     $>> 1$ states an ordering assumption, not an exact numerical boundary.
   ]
 
+  #details(
+    [Why scale ratios come first],
+    [A model is selected by comparing its smallest resolved length with
+    $lambda_D$ and $rho_s$, and its fastest resolved time with
+    $omega_(p,s)^(-1)$ and $omega_(c,s)^(-1)$. A fluid model can be useful
+    even when it does not resolve every orbit, but only after the unresolved
+    motion has been averaged or closed. The ratios $lambda_D/L$,
+    $rho_s/L$, and $omega/omega_(c,s)$ are dimensionless only after the
+    system length $L$ and observation frequency $omega$ are stated.]
+  )
+
+  #debye-profile
+
   #rechenbeispiel[
     Context: use a hydrogen plasma with $n_e = qty("1e14", "cm^-3")$,
     $T_e = qty("1e6", "K")$, $T_i = qty("1e6", "K")$, and
@@ -438,19 +451,6 @@
     $rho_i = qty("2.7e-1", "cm")$. These are rough dimensional
     Gaussian-CGS values for a hot confined plasma.
   ]
-
-  #debye-profile
-
-  #details(
-    [Why scale ratios come first],
-    [A model is selected by comparing its smallest resolved length with
-    $lambda_D$ and $rho_s$, and its fastest resolved time with
-    $omega_(p,s)^(-1)$ and $omega_(c,s)^(-1)$. A fluid model can be useful
-    even when it does not resolve every orbit, but only after the unresolved
-    motion has been averaged or closed. The ratios $lambda_D/L$,
-    $rho_s/L$, and $omega/omega_(c,s)$ are dimensionless only after the
-    system length $L$ and observation frequency $omega$ are stated.]
-  )
 
   #summary[
     The plasma frequency, gyrofrequency, Debye length, gyroradius, and Debye

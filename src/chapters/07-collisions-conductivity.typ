@@ -59,8 +59,6 @@
     $lambda_(a b)=1/(n_b sigma_(a b))$.]
   )
 
-  #collision-regimes
-
   The two transport mechanisms are separated conceptually. A spatial
   gradient produces a diffusive particle flux, schematically
   $bold(G)_"diff"=-D grad_(bold(r))(n)$, while an external force produces a
@@ -104,6 +102,8 @@
     $K_"n" approx 1$ marks a transition, and $K_"n" >> 1$ requires kinetic
     or ballistic reasoning.]
   )
+
+  #collision-regimes
 
   #interpretation(
     [A collision frequency is an averaged observable],
@@ -206,17 +206,6 @@
     $bold(u)_"e"-bold(u)_"n"$.]
   )
 
-  #rechenbeispiel[
-    Given a weakly ionized gas with neutral density
-    $n_"n"=qty("2.0e14", "cm^-3")$, momentum-transfer cross section
-    $sigma_"mt,en"=qty("2.0e-15", "cm^2")$, and representative electron
-    speed $v_"e"=qty("1.0e7", "cm/s")$, determine the effective collision
-    frequency and mean free path.
-
-    Numerical result: $nu_"en"=qty("4.0e6", "s^-1")$ and
-    $lambda_"en"=qty("2.5e0", "cm")$.
-  ]
-
   #details(
     [Derivation: neutral drag from momentum transfer],
     [A particle that suffers a collision changes its average directed momentum
@@ -237,6 +226,17 @@
     ionization introduce inelastic energy-loss channels that must be added to
     an energy equation rather than hidden inside a momentum drag coefficient.]
   )
+
+  #rechenbeispiel[
+    Given a weakly ionized gas with neutral density
+    $n_"n"=qty("2.0e14", "cm^-3")$, momentum-transfer cross section
+    $sigma_"mt,en"=qty("2.0e-15", "cm^2")$, and representative electron
+    speed $v_"e"=qty("1.0e7", "cm/s")$, determine the effective collision
+    frequency and mean free path.
+
+    Numerical result: $nu_"en"=qty("4.0e6", "s^-1")$ and
+    $lambda_"en"=qty("2.5e0", "cm")$.
+  ]
 
   #interpretation(
     [Weak ionization is a collision hierarchy],
@@ -333,8 +333,6 @@
     collision logarithm is insensitive to that convention at leading order.]
   )
 
-  #coulomb-cutoff
-
   The large-angle estimate is:
 
   $ nu_90 approx n_"i" sigma_90 v_"e"
@@ -358,23 +356,6 @@
     The corresponding mean free path is
     $lambda_(e i)=⟨v_"e"⟩/nu_(e i)$.]
   )
-
-  #rechenbeispiel[
-    For a fully ionized hydrogen plasma, use
-    $n_"e"=qty("1.0e10", "cm^-3")$,
-    $k_B T_"e"=qty("1.602e-11", "erg")$,
-    $e=qty("4.803e-10", "statC")$,
-    $m_"e"=qty("9.109e-28", "g")$, and
-    $⟨v_"e"⟩
-      =qty("2.12e8", "cm/s")$.
-    Determine $lambda_D$, $Lambda$, $ln Lambda$, $nu_(e i)$ using the
-    collision-frequency convention above, and $lambda_(e i)$.
-
-    Numerical result: $lambda_D=qty("2.35e-2", "cm")$,
-    $Lambda=qty("1.30e5", "1")$, $ln Lambda=qty("11.8", "1")$,
-    $nu_(e i)=qty("2.54e3", "s^-1")$, and
-    $lambda_(e i)=qty("8.35e4", "cm")$.
-  ]
 
   #details(
     [Derivation: cumulative small-angle scattering],
@@ -402,6 +383,25 @@
     $Lambda=n_"e"lambda_D^3 >> 1$; otherwise independent binary encounters
     and a weak-coupling collision operator are not self-consistent.]
   )
+
+  #coulomb-cutoff
+
+  #rechenbeispiel[
+    For a fully ionized hydrogen plasma, use
+    $n_"e"=qty("1.0e10", "cm^-3")$,
+    $k_B T_"e"=qty("1.602e-11", "erg")$,
+    $e=qty("4.803e-10", "statC")$,
+    $m_"e"=qty("9.109e-28", "g")$, and
+    $⟨v_"e"⟩
+      =qty("2.12e8", "cm/s")$.
+    Determine $lambda_D$, $Lambda$, $ln Lambda$, $nu_(e i)$ using the
+    collision-frequency convention above, and $lambda_(e i)$.
+
+    Numerical result: $lambda_D=qty("2.35e-2", "cm")$,
+    $Lambda=qty("1.30e5", "1")$, $ln Lambda=qty("11.8", "1")$,
+    $nu_(e i)=qty("2.54e3", "s^-1")$, and
+    $lambda_(e i)=qty("8.35e4", "cm")$.
+  ]
 
   #interpretation(
     [Screening makes the long-range interaction finite],
@@ -509,18 +509,6 @@
     $sigma_"Sp"$ scales as $T_"e"^(3/2)/ln Lambda$.]
   )
 
-  #rechenbeispiel[
-    Using the Coulomb rate from the previous section for
-    $n_"e"=qty("1.0e10", "cm^-3")$ and
-    $nu_"e i"=qty("2.54e3", "s^-1")$, calculate the scalar resistivity and
-    DC conductivity in Gaussian CGS with
-    $e=qty("4.803e-10", "statC")$ and
-    $m_"e"=qty("9.109e-28", "g")$.
-
-    Numerical result: $eta_"Sp"=qty("1.00e-15", "s")$ and
-    $sigma_"dc"=qty("9.97e14", "s^-1")$.
-  ]
-
   #details(
     [Derivation: drag, current, and Spitzer scaling],
     [Start with the electron--ion frictional force density
@@ -545,6 +533,18 @@
     cancellation does not mean that density is irrelevant to the plasma: it
     changes current for a given drift and changes $Lambda$.]
   )
+
+  #rechenbeispiel[
+    Using the Coulomb rate from the previous section for
+    $n_"e"=qty("1.0e10", "cm^-3")$ and
+    $nu_"e i"=qty("2.54e3", "s^-1")$, calculate the scalar resistivity and
+    DC conductivity in Gaussian CGS with
+    $e=qty("4.803e-10", "statC")$ and
+    $m_"e"=qty("9.109e-28", "g")$.
+
+    Numerical result: $eta_"Sp"=qty("1.00e-15", "s")$ and
+    $sigma_"dc"=qty("9.97e14", "s^-1")$.
+  ]
 
   #interpretation(
     [More carriers do not automatically mean lower resistivity],
@@ -642,8 +642,6 @@
 
   $Omega_"e"=(q_"e"B_0)/(m_"e"c)$.
 
-  #conductivity-tensor
-
   For DC response, set $omega=0$. The component equations are
 
   $ J_x=sigma_"dc" E_x+(Omega_"e"/nu_"e")J_y,
@@ -667,23 +665,6 @@
   The sign of $sigma_"H"$ follows the signed charge convention. Its magnitude
   describes current perpendicular to both the applied electric field and the
   background magnetic field.
-
-  #rechenbeispiel[
-    Consider a homogeneous electron plasma with
-    $n_"e"=qty("1.0e10", "cm^-3")$,
-    $nu_"e"=qty("2.5e3", "s^-1")$,
-    $B_0=qty("100", "G")$,
-    $e=qty("4.803e-10", "statC")$,
-    $m_"e"=qty("9.109e-28", "g")$, and
-    $c=qty("2.998e10", "cm/s")$. With
-    $q_"e"=-e$, determine the signed cyclotron frequency and the three DC
-    tensor entries.
-
-    Numerical result: $Omega_"e"=qty("-1.76e9", "s^-1")$,
-    $sigma_"parallel"=qty("1.01e15", "s^-1")$,
-    $sigma_"perp"=qty("2.05e3", "s^-1")$, and
-    $sigma_"H"=qty("-1.44e9", "s^-1")$.
-  ]
 
   #details(
     [Derivation: DC and AC conductivity tensor],
@@ -717,6 +698,25 @@
     when the ions are effectively fixed on the frequency and collision scales;
     at low frequency, ion motion can change every tensor entry.]
   )
+
+  #conductivity-tensor
+
+  #rechenbeispiel[
+    Consider a homogeneous electron plasma with
+    $n_"e"=qty("1.0e10", "cm^-3")$,
+    $nu_"e"=qty("2.5e3", "s^-1")$,
+    $B_0=qty("100", "G")$,
+    $e=qty("4.803e-10", "statC")$,
+    $m_"e"=qty("9.109e-28", "g")$, and
+    $c=qty("2.998e10", "cm/s")$. With
+    $q_"e"=-e$, determine the signed cyclotron frequency and the three DC
+    tensor entries.
+
+    Numerical result: $Omega_"e"=qty("-1.76e9", "s^-1")$,
+    $sigma_"parallel"=qty("1.01e15", "s^-1")$,
+    $sigma_"perp"=qty("2.05e3", "s^-1")$, and
+    $sigma_"H"=qty("-1.44e9", "s^-1")$.
+  ]
 
   #interpretation(
     [Three current directions, three physical responses],

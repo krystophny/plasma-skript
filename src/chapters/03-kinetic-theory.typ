@@ -155,16 +155,6 @@
     feels electromagnetic forces continuously.]
   )
 
-  #rechenbeispiel[
-    Consider a weakly ionized gas with $n_b = qty("1e12", "cm^-3")$,
-    $sigma_(a b) = qty("1e-15", "cm^2")$, and
-    $v_"rel" = qty("1e8", "cm/s")$. Use the neutral-collision model above.
-    Determine the mean free path and collision frequency.
-
-    Numerical result: $lambda_"mfp" = qty("1e3", "cm")$ and
-    $nu_(a b) = qty("1e5", "s^-1")$.
-  ]
-
   The comparison with a macroscopic length $L$ is summarized by the Knudsen
   number and, for a process with time scale $tau$, by a collisionality
   parameter:
@@ -175,6 +165,16 @@
     Both $K_"n"$ and $nu tau$ are dimensionless. $K_"n" << 1$ means many collisions
     occur over a macroscopic flight, while $nu tau << 1$ means the process is
     effectively collisionless over the time $tau$.]
+
+  #rechenbeispiel[
+    Consider a weakly ionized gas with $n_b = qty("1e12", "cm^-3")$,
+    $sigma_(a b) = qty("1e-15", "cm^2")$, and
+    $v_"rel" = qty("1e8", "cm/s")$. Use the neutral-collision model above.
+    Determine the mean free path and collision frequency.
+
+    Numerical result: $lambda_"mfp" = qty("1e3", "cm")$ and
+    $nu_(a b) = qty("1e5", "s^-1")$.
+  ]
 
   #summary[
     A mean free path follows from the survival probability of an uncollided
@@ -289,8 +289,6 @@
     $v_"th,s"=sqrt((2 k_B T_s)/m_s)$ is the most-probable-speed scale used in the
     normalized plot below.]
 
-  #maxwellian-profile
-
   #details(
     [Derivation: normalization and central moments of a Maxwellian],
     [Set $bold(c)=bold(v)-bold(u)_s$ and
@@ -306,6 +304,8 @@
     $bold(P)_s = m_s n_s ((k_B T_s)/m_s) bold(I)
     = n_s k_B T_s bold(I)$ for an isotropic Maxwellian.]
   )
+
+  #maxwellian-profile
 
   #interpretation(
     [What information is lost by taking a moment?],
@@ -424,17 +424,6 @@
     three-dimensional in each.
   ]
 
-  #animation(
-    "../media/phase-space-advection.mp4",
-    "A localized cloud of phase-space samples stretches and shifts to the right. The horizontal axis is position divided by L0 and the vertical axis is velocity divided by v0. Each sample keeps its velocity while its position advances, so faster samples move farther and the cloud shears. Horizontal characteristic arrows show the free-streaming phase-space flow.",
-    caption: [
-      Free streaming in one spatial and one velocity dimension. The
-      visualization uses normalized variables and a deterministic sample of a
-      distribution, not a particle simulation or measured data.
-    ],
-    poster: "../media/phase-space-advection.png",
-  )
-
   #details(
     [Derivation: the Eulerian chain rule],
     [Let $g(t,bold(r),bold(v))$ be evaluated on
@@ -459,6 +448,17 @@
     $pdv(f,t) + div(f bold(v))
     + grad_(bold(v)) dot (f bold(a)_s) = S$. Combining the two fluxes into
     $bold(V)_z=(bold(v),bold(a)_s)$ gives the compact conservative form.]
+  )
+
+  #animation(
+    "../media/phase-space-advection.mp4",
+    "A localized cloud of phase-space samples stretches and shifts to the right. The horizontal axis is position divided by L0 and the vertical axis is velocity divided by v0. Each sample keeps its velocity while its position advances, so faster samples move farther and the cloud shears. Horizontal characteristic arrows show the free-streaming phase-space flow.",
+    caption: [
+      Free streaming in one spatial and one velocity dimension. The
+      visualization uses normalized variables and a deterministic sample of a
+      distribution, not a particle simulation or measured data.
+    ],
+    poster: "../media/phase-space-advection.png",
   )
 
   #interpretation(

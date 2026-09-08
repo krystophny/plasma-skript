@@ -74,8 +74,6 @@
     current.
   ]
 
-  #multiple-fluid-hierarchy
-
   #details(
     [Derivation: species moments retain separate fluids],
     [Begin with a distribution $f_(s)(t, bold(r), bold(v))$ for every species.
@@ -93,6 +91,8 @@
     For hydrogen, $rho_q approx e(n_(i)-n_(e))$, while
     $bold(j)=e n_(i) bold(u)_(i)-e n_(e) bold(u)_(e)$ can remain finite.]
   )
+
+  #multiple-fluid-hierarchy
 
   #interpretation(
     [Quasi-neutrality is not one-fluid motion],
