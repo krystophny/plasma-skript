@@ -379,6 +379,9 @@ The authoring environment is defined by `flake.nix`:
 - `pkgs.manim` renders animations.
 - `pkgs.ffmpeg` provides video handling.
 - `nix flake check` must build the site as a behavioral check.
+- On Linux, `nix flake check` also runs the NixOS VM browser integration test
+  against the built site. The test uses real CSS viewport emulation rather
+  than inferring mobile behavior from a resized screenshot.
 - The website must be buildable from the shared source components. A PDF target
   may use those components when an equivalent paged rendering is available.
 
@@ -539,6 +542,15 @@ The automated checks must verify behavior such as successful rendering,
 presence of media and disclosure elements in the generated site, and, when
 enabled, validity of the PDF. A check that only compares repository state with
 the source patch is not sufficient.
+
+The NixOS browser integration test is an independent behavioral check. It
+serves the built static bundle in a NixOS VM and audits every page at mobile,
+tablet, and wide CSS viewports. It checks page-level overflow, closed
+disclosures, accessible images and animations, browser errors, and failed local
+requests. It also captures representative diagram, equation, Frame-It, and
+animation screenshots into the Nix test output for visual review. These
+screenshots are evidence artifacts, not pixel-perfect golden tests, so browser
+and font updates do not create needless failures.
 
 ### 9.1 GitHub Pages
 

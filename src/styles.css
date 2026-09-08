@@ -417,6 +417,61 @@ main > div[class*="box"] {
   margin-inline: auto;
 }
 
+/* The HTML exporter preserves intrinsic diagram sizes and keeps MathML
+   expressions unbreakable. Contain both at the reading width without
+   changing MathML's native layout; long expressions remain pannable. */
+main svg,
+main img,
+main canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+main math[display="block"],
+main p,
+main li,
+main dt,
+main dd,
+main > div[id^="frame-wrapper-"] > figure > div:nth-child(2) {
+  overflow-x: auto;
+  scrollbar-color: var(--line) transparent;
+  scrollbar-width: thin;
+}
+
+main math[display="block"] {
+  max-width: 100%;
+  overflow-y: hidden;
+  padding-bottom: 0.2rem;
+}
+
+main math[display="block"]::-webkit-scrollbar,
+main p::-webkit-scrollbar,
+main li::-webkit-scrollbar,
+main dt::-webkit-scrollbar,
+main dd::-webkit-scrollbar,
+main > div[id^="frame-wrapper-"] > figure > div:nth-child(2)::-webkit-scrollbar {
+  height: 0.45rem;
+}
+
+main math[display="block"]::-webkit-scrollbar-track,
+main p::-webkit-scrollbar-track,
+main li::-webkit-scrollbar-track,
+main dt::-webkit-scrollbar-track,
+main dd::-webkit-scrollbar-track,
+main > div[id^="frame-wrapper-"] > figure > div:nth-child(2)::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+main math[display="block"]::-webkit-scrollbar-thumb,
+main p::-webkit-scrollbar-thumb,
+main li::-webkit-scrollbar-thumb,
+main dt::-webkit-scrollbar-thumb,
+main dd::-webkit-scrollbar-thumb,
+main > div[id^="frame-wrapper-"] > figure > div:nth-child(2)::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 999px;
+}
+
 /* Keep Frame-It headers readable when a long title has to wrap. */
 main > div[id^="frame-wrapper-"] > figure {
   margin: 2rem 0;

@@ -41,6 +41,18 @@ The flake check builds the site and runs the same artifact checks from a Nix
 source snapshot. The checkout-level verifier additionally checks the Git ignore
 rules for author-only material.
 
+On Linux, the flake check also runs a NixOS VM browser integration test. To
+keep its screenshots for visual review, build that check directly:
+
+```sh
+nix build .#checks.x86_64-linux.site-integration
+find -L result/site-audit -maxdepth 1 -type f -print
+```
+
+The test audits the complete site at mobile, tablet, and wide CSS viewports.
+The NixOS VM check is Linux-only because the packaged Chromium browser is
+Linux-only; macOS development can run it through a Linux builder or CI.
+
 The generated site is in `public/`. Serve that directory with any static file
 server so that the video and stylesheet are available alongside the HTML:
 
