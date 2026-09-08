@@ -1,8 +1,10 @@
 # Plasma physics lecture script
 
-This project is a small starting point for a plasma physics script written in
-Typst. It contains a first chapter on charged-particle motion and a Manim
-animation of cyclotron motion with `E × B` guiding-center drift.
+This project is a web-first graduate plasma physics lecture script written in
+Typst. It follows the course sequence from plasma fundamentals through
+single-particle motion, kinetic and fluid models, waves, sheaths, and
+Langmuir probes. A supplemental mathematical toolkit collects the recurring
+moment and coordinate-operator derivations.
 
 Typst comes directly from `nixpkgs-unstable`. Run `nix flake update` when you
 want to refresh the toolchain. Typst's HTML and bundle exporters are
@@ -64,8 +66,9 @@ python3 scripts/build-lilaq-pdf.py
 ```
 
 The main source is [`src/main.typ`](src/main.typ). Add chapters under
-`src/chapters/` and animations under `animations/`. The build script renders
-the animations first, then exports the Typst bundle.
+`src/chapters/`, supplemental material under `src/appendices/`, and animations
+under `animations/`. The build script renders the animations first, then
+exports the Typst bundle.
 
 The first animation uses normalized, illustrative coordinates rather than
 measured data:

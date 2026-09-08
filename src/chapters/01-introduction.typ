@@ -558,7 +558,7 @@
 
   #unit-ledger[
     Gaussian CGS remains the dimensional convention. The distribution function
-    $f_s(t, bold(r), bold(v))$ is defined so that its velocity integral gives
+    $f_(s)(t, bold(r), bold(v))$ is defined so that its velocity integral gives
     number density in $upright("cm")^(-3)$. The velocity variable is in
     $upright("cm") dot upright("s")^(-1)$, and phase-space integrals carry the
     corresponding powers of cm and seconds.
@@ -566,7 +566,7 @@
 
   #definition(
     [Distribution function],
-    [For species $s$, $f_s(t, bold(r), bold(v))$ gives the density of particles
+    [For species $s$, $f_(s)(t, bold(r), bold(v))$ gives the density of particles
     near position $bold(r)$ and velocity $bold(v)$. Its normalization is
     $n_s = integral f_s dif bold(v)$. A fluid variable is a velocity moment of
     this distribution.]
@@ -580,7 +580,7 @@
     Gaussian CGS. This is a schematic collisionless kinetic equation. The
     acceleration $bold(a)_s$ is in $upright("cm") dot upright("s")^(-2)$, and the divergence in
     velocity space is distinct from the spatial divergence. Collisions add a
-    right-hand-side operator $C_s[f]$.
+    right-hand-side operator $C_(s)[f]$.
   ]
 
   For electromagnetic acceleration,

@@ -379,7 +379,7 @@ dd {
 
 .equation-note {
   max-width: 48rem;
-  margin: -1.1rem auto 1.4rem;
+  margin: 0.65rem auto 1.6rem;
 }
 
 .chapter-nav {
@@ -417,6 +417,72 @@ main > div[class*="box"] {
   margin-inline: auto;
 }
 
+/* Keep Frame-It headers readable when a long title has to wrap. */
+main > div[id^="frame-wrapper-"] > figure {
+  margin: 2rem 0;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+@media print {
+  main > div[id^="frame-wrapper-"] {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+main > div[id^="frame-wrapper-"] > figure > div:first-child {
+  display: flex !important;
+  align-items: flex-end !important;
+  flex-wrap: nowrap;
+  row-gap: 0.25rem;
+}
+
+main > div[id^="frame-wrapper-"] > figure > div:first-child > span:first-child {
+  min-width: 0;
+  flex: 0 1 auto;
+  overflow-wrap: anywhere;
+  line-height: 1.25;
+  border-top-right-radius: 5pt !important;
+}
+
+main > div[id^="frame-wrapper-"] > figure > div:first-child > span:nth-child(2) {
+  display: none !important;
+}
+
+main > div[id^="frame-wrapper-"] > figure > div:first-child > span:nth-child(3) {
+  flex: 0 0 auto;
+  margin-left: auto !important;
+  margin-right: 0.8em !important;
+  white-space: nowrap;
+}
+
+/* On narrow screens, keep the semantic counter in the header while allowing
+   a long title to wrap in the space that remains beside it. */
+@media (max-width: 42rem) {
+  main > div[id^="frame-wrapper-"] > figure > div:first-child {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    align-items: end !important;
+    column-gap: 0;
+  }
+
+  main > div[id^="frame-wrapper-"] > figure > div:first-child > span:first-child {
+    grid-column: 1;
+    grid-row: 1;
+    width: auto;
+    flex: 1 1 auto;
+  }
+
+  main > div[id^="frame-wrapper-"] > figure > div:first-child > span:nth-child(3) {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: stretch;
+    margin-left: auto !important;
+    margin-right: 0.8em !important;
+  }
+}
+
 summary:focus-visible,
 a:focus-visible,
 button:focus-visible {
@@ -429,11 +495,26 @@ h2,
 h3 {
   color: var(--ink);
   line-height: 1.1;
+  overflow-wrap: anywhere;
 }
 
 h1 {
   margin-top: 0;
   font-size: clamp(2.4rem, 5vw, 4rem);
+}
+
+.site-main > h1 > ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-main > h1 > ol > li {
+  list-style: none;
+}
+
+.site-main > h1 > ol > li::before {
+  content: attr(value) ". ";
 }
 
 h2 {
@@ -487,6 +568,166 @@ figcaption {
   padding: 0.9rem 0.4rem 0.2rem;
   color: var(--muted);
   font-size: 0.95rem;
+}
+
+.concept-figure {
+  margin: 1.5rem auto;
+}
+
+.hierarchy-fallback {
+  display: grid;
+  max-width: 38rem;
+  gap: 0.55rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hierarchy-node {
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--teal);
+  border-radius: 0.55rem;
+  background: var(--surface);
+}
+
+.hierarchy-node strong,
+.hierarchy-node span {
+  display: block;
+}
+
+.hierarchy-node strong {
+  color: var(--teal);
+}
+
+.hierarchy-node span {
+  margin-top: 0.25rem;
+}
+
+.hierarchy-branches {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.hierarchy-fields {
+  border-color: var(--orange);
+}
+
+.hierarchy-fields strong {
+  color: var(--orange);
+}
+
+.hierarchy-sums {
+  border-color: var(--blue);
+}
+
+.hierarchy-sums strong {
+  color: var(--blue);
+}
+
+.hierarchy-arrow {
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.88rem;
+}
+
+.mhd-diagram {
+  display: grid;
+  max-width: 42rem;
+  gap: 0.65rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.mhd-node {
+  min-width: 0;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--teal);
+  border-radius: 0.55rem;
+  background: var(--surface);
+}
+
+.mhd-node-wide {
+  border-color: var(--teal);
+}
+
+.mhd-node strong,
+.mhd-node span {
+  display: block;
+}
+
+.mhd-node strong {
+  color: var(--teal);
+}
+
+.mhd-node span {
+  margin-top: 0.25rem;
+}
+
+.mhd-arrow {
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.88rem;
+}
+
+.mhd-branches,
+.mhd-term-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.mhd-branches {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.mhd-term-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.mhd-node-ohm,
+.mhd-node-hall,
+.mhd-node-magnetic {
+  border-color: var(--orange);
+}
+
+.mhd-node-ohm strong,
+.mhd-node-hall strong,
+.mhd-node-magnetic strong {
+  color: var(--orange);
+}
+
+.mhd-node-result,
+.mhd-node-ideal {
+  border-color: var(--blue);
+}
+
+.mhd-node-result strong,
+.mhd-node-ideal strong {
+  color: var(--blue);
+}
+
+.mhd-node-resistive,
+.mhd-node-diffusion,
+.mhd-node-pressure {
+  border-color: var(--orange);
+}
+
+.mhd-node-resistive strong,
+.mhd-node-diffusion strong,
+.mhd-node-pressure strong {
+  color: var(--orange);
+}
+
+@media (max-width: 42rem) {
+  .mhd-branches,
+  .mhd-term-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 42rem) {
+  .hierarchy-branches {
+    grid-template-columns: 1fr;
+  }
 }
 
 .site-footer {

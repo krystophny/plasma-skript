@@ -1,4 +1,6 @@
-#import "theme.typ": page-shell, frame-style, styles
+#import "theme.typ": page-shell, frame-style, styles, register-cgs-units
+
+#register-cgs-units
 
 #show: frame-style(styles.boxy)
 #import "chapters/01-introduction.typ": chapter as introduction
@@ -14,6 +16,7 @@
 #import "chapters/11-finite-temperature-waves.typ": chapter as finite-temperature-waves
 #import "chapters/12-hot-plasma-waves.typ": chapter as hot-waves
 #import "chapters/13-sheaths-probes.typ": chapter as sheaths
+#import "appendices/mathematical-toolkit.typ": appendix as mathematical-toolkit
 
 #let chapters = (
   (
@@ -34,78 +37,78 @@
     number: 3,
     title: [Kinetic theory of plasmas],
     slug: "03-kinetic-theory",
-    status: "scaffold",
-    summary: [Distribution functions, collisions, phase space, and kinetic balance.],
+    status: "drafted",
+    summary: [Collisions, distribution functions, phase space, kinetic balance, and model limits.],
   ),
   (
     number: 4,
     title: [Moments of the Boltzmann equation],
     slug: "04-moments",
-    status: "scaffold",
-    summary: [Moments, pressure tensors, transport equations, and closure.],
+    status: "drafted",
+    summary: [Velocity moments, continuity, momentum and energy transport, and closure.],
   ),
   (
     number: 5,
     title: [Multiple-fluid theory of plasmas],
     slug: "05-multiple-fluids",
-    status: "scaffold",
+    status: "drafted",
     summary: [Two-fluid hydrogen plasma, species forces, and diamagnetic current.],
   ),
   (
     number: 6,
     title: [Single-fluid theory and magnetohydrodynamics],
     slug: "06-mhd",
-    status: "scaffold",
+    status: "drafted",
     summary: [MHD variables, Ohm's law, frozen flux, diffusion, and equilibrium.],
   ),
   (
     number: 7,
     title: [Collisions and plasma conductivity],
     slug: "07-collisions-conductivity",
-    status: "scaffold",
-    summary: [Coulomb collisions, resistivity, and DC or AC conductivity.],
+    status: "drafted",
+    summary: [Neutral and Coulomb collisions, Spitzer resistivity, and DC or AC conductivity tensors.],
   ),
   (
     number: 8,
     title: [Plasma diffusion],
     slug: "08-diffusion",
-    status: "scaffold",
-    summary: [Random walks, ambipolar transport, cross-field diffusion, and timescales.],
+    status: "drafted",
+    summary: [Random walks, ambipolar transport, cross-field diffusion, and classical or Bohm-like limits.],
   ),
   (
     number: 9,
     title: [Introduction to waves in plasmas],
     slug: "09-introduction-waves",
-    status: "scaffold",
-    summary: [Linear perturbations, modes, dispersion, and plasma-wave limits.],
+    status: "drafted",
+    summary: [Linearization, plasma oscillations, electromagnetic dispersion, and kinetic limits.],
   ),
   (
     number: 10,
     title: [Waves in cold magnetized plasmas],
     slug: "10-cold-magnetized-waves",
-    status: "scaffold",
-    summary: [Cold dielectric response, propagation direction, cutoffs, and resonances.],
+    status: "drafted",
+    summary: [Cold dielectric tensor, circular and principal modes, oblique propagation, cutoffs, and resonances.],
   ),
   (
     number: 11,
     title: [Collisions, ions, and finite-temperature effects on magnetized waves],
     slug: "11-finite-temperature-waves",
-    status: "scaffold",
-    summary: [Collisional, ion, and warm corrections to magnetized wave branches.],
+    status: "drafted",
+    summary: [Collisional damping, ion-cyclotron and Alfvén branches, warm dispersion, and model ordering.],
   ),
   (
     number: 12,
     title: [Waves in hot plasmas],
     slug: "12-hot-plasma-waves",
-    status: "scaffold",
-    summary: [Kinetic resonances, Landau effects, instabilities, and hot response.],
+    status: "drafted",
+    summary: [Vlasov response, velocity-space resonances, Landau damping, two-stream growth, and hot magnetized harmonics.],
   ),
   (
     number: 13,
     title: [Plasma sheaths and Langmuir probes],
     slug: "13-sheaths-probes",
-    status: "scaffold",
-    summary: [Sheath formation, current balance, and probe diagnostics.],
+    status: "drafted",
+    summary: [Particle flux, Bohm sheath entry, floating surfaces, and Langmuir-probe diagnostics.],
   ),
 )
 
@@ -138,8 +141,9 @@
       #html.h2[Chronological course map]
       #html.p[
         The order follows the rendered course-material sequence. Waves and
-        plasma sheaths are separate top-level chapters. “Scaffold” pages record
-        the planned scope and will be filled with the same section contract.
+        plasma sheaths are separate top-level chapters. A supplemental
+        mathematical toolkit follows the course map without changing its
+        chronology.
       ]
       #html.ol(class: "chapter-list")[
         #for item in chapters [
@@ -155,6 +159,17 @@
           ]
         ]
       ]
+    ]
+
+    #html.section(class: "content-sections supplemental", id: "appendices")[
+      #html.p(class: "eyebrow")[Supplemental reference]
+      #html.h2[Mathematical toolkit]
+      #html.p[
+        A compact reference for the energy-weighted second moment of the
+        kinetic equation and vector operators in common coordinate systems.
+        Full derivation routes are available as collapsed supplemental detail.
+      ]
+      #link("appendices/mathematical-toolkit.html")[Open the mathematical toolkit →]
     ]
 
     #html.section(class: "content-sections", id: "glossary")[
@@ -298,6 +313,10 @@
 
 #document("chapters/13-sheaths-probes.html", title: [Sheaths and probes])[
   #page-shell(stylesheet: "../styles.css")[#sheaths]
+]
+
+#document("appendices/mathematical-toolkit.html", title: [Mathematical toolkit])[
+  #page-shell(stylesheet: "../styles.css")[#mathematical-toolkit]
 ]
 
 #asset("styles.css", read("styles.css"))

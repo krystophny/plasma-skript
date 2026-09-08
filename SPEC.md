@@ -22,6 +22,9 @@ HTML-specific components have an equivalent paged fallback.
 - Use the versioned `unify` Typst package for unit-bearing quantities and
   numerical results whenever its parser supports the notation. Do not replace
   it with ad hoc unit formatting in new content.
+- In Typst math, explicitly group a subscript or superscript before an argument
+  or bracketed application: write `f_(s)(x)`, `f^(a)(x)`, and `C_(s)[f]` rather
+  than relying on `f_s(x)`, `f^a(x)`, or `C_s[f]`.
 - Every equation, numerical value, table, plot, animation, caption, axis,
   legend, and alternative description must label its unit system. A quantity
   without a unit is explicitly marked as dimensionless or normalized.
@@ -112,6 +115,10 @@ The first eight positions follow the content PDFs. The final five positions
 follow the corresponding wave and sheath chapters in the reference material
 until a later slide sequence is supplied. A conflict between the slide order
 and the books must be resolved in favor of the slide order.
+
+The chronological course map is followed by a supplemental mathematical
+toolkit. It is not a fourteenth physics chapter: it collects the energy-weighted
+second moment and coordinate-operator derivations used across the sequence.
 
 The content PDFs have been reviewed as rendered pages. The combined
 `Chapter 1-5.pdf` file is a mixed source packet rather than a uniform slide

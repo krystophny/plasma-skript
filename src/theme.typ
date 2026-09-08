@@ -1,5 +1,13 @@
 #import "@preview/frame-it:2.0.0": frames, frame-style, styles
-#import "@preview/unify:0.8.1": num, qty, unit
+#import "@preview/unify:0.8.1": num, qty, unit, add-unit
+
+// Gaussian-CGS units are not part of unify's default SI catalogue. This
+// content is inserted by each build entry point before chapter content so the
+// registration is active when quantities are formatted.
+#let register-cgs-units = [
+  #add-unit("statvolt", "statV", "upright(\"statV\")")
+  #add-unit("statcoulomb", "statC", "upright(\"statC\")")
+]
 
 #let ink = rgb("#17202A")
 #let muted = rgb("#526175")
@@ -34,6 +42,14 @@
 #let example-frame = frame-set.example
 #let summary-frame = frame-set.summary
 #let knowledge-frame = frame-set.knowledge
+
+#let keep-frame(frame) = context {
+  if target() == "paged" {
+    block(breakable: false)[#frame]
+  } else {
+    frame
+  }
+}
 
 #show: frame-style(styles.boxy)
 
@@ -94,21 +110,26 @@
   }
 }
 
-#let callout(title, body) = keyidea-frame[#title][][#body]
+#let callout(title, body) = keep-frame(keyidea-frame[#title][][#body])
 
-#let definition(title, body) = definition-frame[#title][][#body]
+#let definition(title, body) = keep-frame(definition-frame[#title][][#body])
 
-#let assumption(title, body) = assumption-frame[#title][][#body]
+#let assumption(title, body) = keep-frame(assumption-frame[#title][][#body])
 
-#let governing-law(title, body) = law-frame[#title][][#body]
+#let governing-law(title, body) = keep-frame(law-frame[#title][][#body])
 
-#let interpretation(title, body) = interpretation-frame[#title][][#body]
+#let interpretation(title, body) = keep-frame(interpretation-frame[#title][][#body])
 
-#let summary(body) = summary-frame[Summary][][#body]
+#let summary(body) = keep-frame(summary-frame[Summary][][#body])
 
 #let equation-note(body) = context {
   if target() == "paged" {
-    text(size: 8pt, fill: muted)[#body]
+    block(
+      width: 100%,
+      inset: (top: 0.35em, bottom: 0.7em),
+    )[
+      #text(size: 8pt, fill: muted)[#body]
+    ]
   } else {
     html.p(class: "equation-note")[#body]
   }
@@ -122,6 +143,7 @@
       radius: 0.45em,
       fill: paper,
       stroke: 0.8pt + muted,
+      breakable: false,
     )[
       #strong(title) \
       #body
@@ -142,6 +164,7 @@
       radius: 0.45em,
       fill: accent-light,
       stroke: 0.8pt + accent,
+      breakable: false,
     )[
       #strong[Learning objectives] \
       #list(tight: true, ..items.map(item => [#item]))
@@ -178,7 +201,7 @@
   }
 }
 
-#let rechenbeispiel(body) = example-frame[Rechenbeispiel][][#body]
+#let rechenbeispiel(body) = keep-frame(example-frame[Rechenbeispiel][][#body])
 
 #let exam-prompts(prompts, source) = context {
   if target() == "paged" {
@@ -213,7 +236,7 @@
 
 #let knowledge-check(items) = context {
   if target() == "paged" {
-    knowledge-frame[Knowledge check][][
+    keep-frame(knowledge-frame[Knowledge check][][
       #list(..items.map(item => [#item.question]))
       #details([Answers], [
         #for item in items [
@@ -221,7 +244,7 @@
           #item.answer \
         ]
       ])
-    ]
+    ])
   } else {
     html.section(class: "knowledge-check")[
       #html.h3[Knowledge check]

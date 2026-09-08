@@ -60,10 +60,31 @@ else
     13-sheaths-probes; do
     require_file "$site_dir/chapters/$chapter.html"
   done
+  require_file "$site_dir/appendices/mathematical-toolkit.html"
   require_file "$site_dir/media/exb-drift.mp4"
   require_file "$site_dir/media/exb-drift.png"
   require_file "$site_dir/media/plasma-oscillation.mp4"
   require_file "$site_dir/media/plasma-oscillation.png"
+  require_file "$site_dir/media/phase-space-advection.mp4"
+  require_file "$site_dir/media/phase-space-advection.png"
+  require_file "$site_dir/media/moment-hierarchy.mp4"
+  require_file "$site_dir/media/moment-hierarchy.png"
+  require_file "$site_dir/media/diffusion-random-walk.mp4"
+  require_file "$site_dir/media/diffusion-random-walk.png"
+  require_file "$site_dir/media/wave-packet.mp4"
+  require_file "$site_dir/media/wave-packet.png"
+  require_file "$site_dir/media/magnetized-polarization.mp4"
+  require_file "$site_dir/media/magnetized-polarization.png"
+  require_file "$site_dir/media/magnetosonic-waves.mp4"
+  require_file "$site_dir/media/magnetosonic-waves.png"
+  require_file "$site_dir/media/landau-resonance.mp4"
+  require_file "$site_dir/media/landau-resonance.png"
+  require_file "$site_dir/media/two-stream-instability.mp4"
+  require_file "$site_dir/media/two-stream-instability.png"
+  require_file "$site_dir/media/sheath-formation.mp4"
+  require_file "$site_dir/media/sheath-formation.png"
+  require_file "$site_dir/media/langmuir-probe.mp4"
+  require_file "$site_dir/media/langmuir-probe.png"
 
   private_artifact="$(find -L "$site_dir" -type f \
     \( -path '*/solutions/*' \
