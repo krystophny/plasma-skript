@@ -986,7 +986,7 @@
       #lq.diagram(
         width: 10cm,
         height: 5.4cm,
-        xlabel: [$K=k c / omega_(p,e)$ (dimensionless)],
+        xlabel: [$K=(k c)/omega_(p,e)$ (dimensionless)],
         ylabel: [$W=omega / omega_(p,e)$ (dimensionless)],
         lq.plot(
           (0, 0.5, 1, 2, 3, 4),
@@ -1020,7 +1020,7 @@
       )[
         #html.div(class: "mhd-node mhd-node-wide")[
           #html.strong[Normalized axes]
-          #html.span[$K=k c / omega_(p,e)$ and $W=omega / omega_(p,e)$]
+          #html.span[$K=(k c)/omega_(p,e)$ and $W=omega/omega_(p,e)$]
         ]
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ideal")[
@@ -1062,7 +1062,7 @@
         node((0, 0), [Cold fluid \
           no pressure]),
         node((0, -1), [Warm fluid \
-          $c_s^2=gamma_s k_B T_s/m_s$]),
+          $c_s^2=(gamma_s k_B T_s)/m_s$]),
         node((0, -2), [Kinetic response \
           $Z(zeta_s)$]),
         edge((0, 0), (0, -1), [pressure closure], "->"),
@@ -1083,7 +1083,7 @@
         #html.div(class: "mhd-arrow")[add pressure closure]
         #html.div(class: "mhd-node mhd-node-result")[
           #html.strong[Warm fluid]
-          #html.span[$c_s^2=gamma_s k_B T_s/m_s$]
+          #html.span[$c_s^2=(gamma_s k_B T_s)/m_s$]
         ]
         #html.div(class: "mhd-arrow")[resolve velocity space]
         #html.div(class: "mhd-node mhd-node-wide")[

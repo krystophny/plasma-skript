@@ -42,7 +42,8 @@
     Gaussian CGS is active. Number density $n_s$ is in #unit("cm^-3"),
     position and wavelength are in #unit("cm"), time and frequency are in
     #unit("s") and #unit("s^-1"), velocity is in #unit("cm/s"), mass is in
-    #unit("g"), pressure is in #unit("dyn/cm^2"), $bold(E)$ is in statvolt per
+    #unit("g"), pressure is in #unit("dyn/cm^2"), $k_B T_s$ is in
+    #unit("erg"), $q_s$ is in statcoulomb, $bold(E)$ is in statvolt per
     #unit("cm"), $bold(B)$ is in #unit("G"), and current density is in
     statcoulomb per #unit("cm^2") per #unit("s"). The speed of light $c$ is
     in #unit("cm/s"). The phase $bold(k) dot bold(r)-omega t$ and normalized
@@ -72,13 +73,11 @@
     frequency $omega$ is in #unit("s^-1").]
   )
 
-  #wave-linearization
-
   The species equations and Maxwell equations that are linearized are
 
   $ pdv(n_s,t)+div_(bold(r))(n_s bold(u)_s)=0 $
 
-  $ m_s n_s (pdv(bold(u)_s,t)+bold(u)_s dot grad_(bold(r)) bold(u)_s)
+  $ m_s n_s (pdv(bold(u)_s,t)+bold(u)_s dot grad_(bold(r))(bold(u)_s))
     =q_s n_s (bold(E)+(bold(u)_s times bold(B))/c)-grad_(bold(r))(p_s) $
 
   $ curl_(bold(r))(bold(E))=-(pdv(bold(B),t))/c, quad
@@ -106,9 +105,9 @@
       (bold(u)_(s,1) times bold(B)_0)/c)-grad_(bold(r))(p_(s,1))$.
 
     Apply the plane-wave replacements
-    $pdv(,t) -> -i omega$, $grad_(bold(r)) -> i bold(k)$,
-    $div_(bold(r)) -> i bold(k) dot$, and
-    $curl_(bold(r)) -> i bold(k) times$. This gives
+    $pdv(f,t) -> -i omega f$, $grad_(bold(r))(f) -> i bold(k) f$,
+    $div_(bold(r))(bold(A)) -> i bold(k) dot bold(A)$, and
+    $curl_(bold(r))(bold(A)) -> i bold(k) times bold(A)$. This gives
     $-i omega n_(s,1)+i n_(s,0) bold(k) dot bold(u)_(s,1)=0$
     and
     $-i omega m_s n_(s,0) bold(u)_(s,1)
@@ -120,6 +119,8 @@
     linear coefficient matrix is singular; that determinant is the
     dispersion relation.]
   )
+
+  #wave-linearization
 
   #interpretation(
     [Linearization is an ordering, not a slogan],
@@ -147,8 +148,8 @@
     (
       question: [What does the plane-wave ansatz do to a time derivative and a spatial gradient?],
       answer: [For the convention $exp(i (bold(k) dot bold(r)-omega t))$,
-      $pdv(,t)$ becomes $-i omega$ and $grad$ becomes $i bold(k)$ when acting
-      on the amplitude.]
+      $pdv(f,t)$ becomes $-i omega f$ and
+      $grad_(bold(r))(f)$ becomes $i bold(k) f$ when acting on the amplitude.]
     ),
     (
       question: [What is the difference between longitudinal and transverse polarization?],
@@ -215,19 +216,6 @@
     becomes $omega_p^2=sum_s ((4 pi n_(s,0) q_s^2)/m_s)$.]
   )
 
-  #rechenbeispiel[
-    For a cold hydrogen plasma use
-    $n_0=qty("1.0e10", "cm^-3")$,
-    $e=qty("4.803e-10", "statC")$, and
-    $m_e=qty("9.109e-28", "g")$.
-    Determine the electron plasma frequency and its ordinary frequency
-    $f_p=omega_(p,e)/(2 pi)$.
-
-    Numerical result:
-    $omega_(p,e)=qty("5.64e9", "s^-1")$ and
-    $f_p=qty("8.98e8", "Hz")$.
-  ]
-
   #details(
     [Derivation: charge separation supplies the restoring force],
     [For the electron charge $q_e=-e$, the cold linearized momentum equation
@@ -254,6 +242,19 @@
     $omega_p^2=sum_s ((4 pi n_(s,0)q_s^2)/m_s)$; for hydrogen the ion term is
     smaller by $m_e/m_i$.]
   )
+
+  #rechenbeispiel[
+    For a cold hydrogen plasma use
+    $n_0=qty("1.0e10", "cm^-3")$,
+    $e=qty("4.803e-10", "statC")$, and
+    $m_e=qty("9.109e-28", "g")$.
+    Determine the electron plasma frequency and its ordinary frequency
+    $f_p=omega_(p,e)/(2 pi)$.
+
+    Numerical result:
+    $omega_(p,e)=qty("5.64e9", "s^-1")$ and
+    $f_p=qty("8.98e8", "s^-1")$.
+  ]
 
   #interpretation(
     [A plasma oscillation can be local],
@@ -352,17 +353,6 @@
     $v_"g"=(c^2 k)/omega$.]
   )
 
-  #animation(
-    "../media/wave-packet.mp4",
-    "A Gaussian wave packet with a visible carrier oscillation travels to the right. The slowly moving envelope is marked as the group-velocity scale, while a separate crest marker shows the faster phase motion. The normalized horizontal coordinate is position divided by a reference length, and the vertical field amplitude is dimensionless.",
-    caption: [
-      A carrier and its envelope separate because the cold plasma branch is
-      dispersive. The animation is a deterministic normalized illustration,
-      not a measurement or a live parameter solver.
-    ],
-    poster: "../media/wave-packet.png",
-  )
-
   #details(
     [Derivation: current response and the transverse wave equation],
     [The cold electron momentum response is again
@@ -393,6 +383,24 @@
     which identifies the relative dielectric factor. Real $k$ requires
     $omega>omega_(p,e)$. Below the cutoff, $k$ is imaginary and the field
     is evanescent rather than a propagating bulk wave.]
+  )
+
+  #callout(
+    [Pause and predict],
+    [Before playing the animation, identify which marker should move faster:
+    the carrier crest or the packet envelope. The answer follows from the
+    two velocities in the governing law.]
+  )
+
+  #animation(
+    "../media/wave-packet.mp4",
+    "A Gaussian wave packet with a visible carrier oscillation travels to the right. The slowly moving envelope is marked as the group-velocity scale, while a separate crest marker shows the faster phase motion. The normalized horizontal coordinate is position divided by a reference length, and the vertical field amplitude is dimensionless.",
+    caption: [
+      A carrier and its envelope separate because the cold plasma branch is
+      dispersive. The animation is a deterministic normalized illustration,
+      not a measurement or a live parameter solver.
+    ],
+    poster: "../media/wave-packet.png",
   )
 
   #rechenbeispiel[
@@ -494,7 +502,15 @@
     comparisons is $v_"th,s"=sqrt((2 k_B T_s)/m_s)$.]
   )
 
-  #warm-kinetic-limits
+  #definition(
+    [Plasma-dispersion function convention],
+    [Use the dimensionless Fried--Conte function
+    $Z(zeta)=1/sqrt(pi) integral_(-infinity)^infinity
+      exp(-x^2)/(x-zeta) dif x$,
+    with the contour prescribed by analytic continuation around the pole.
+    The factor of two in the susceptibility below follows from the stated
+    convention $v_"th,s"=sqrt((2 k_B T_s)/m_s)$.]
+  )
 
   #governing-law(
     [Warm electrostatic fluid dispersion],
@@ -538,7 +554,7 @@
     Kinetic theory replaces the fluid closure by a velocity-space response.
     A standard unmagnetized electrostatic form is
     $1+sum_s chi_(s)(omega,k)=0$ with
-    $chi_s=omega_(p,s)^2/(k^2 v_"th,s"^2)
+    $chi_s=(2 omega_(p,s)^2)/(k^2 v_"th,s"^2)
       (1+zeta_s Z(zeta_s))$ and
     $zeta_s=omega/(k v_"th,s")$.
     The analytically continued plasma-dispersion function $Z$ accounts for
@@ -547,6 +563,8 @@
     long-wavelength real-frequency limits, but it cannot reproduce this
     resonant phase mixing.]
   )
+  #warm-kinetic-limits
+
   #rechenbeispiel[
     For cold ions and an isothermal electron response use
     $k_B T_e=qty("1.602e-11", "erg")$,
@@ -633,7 +651,6 @@
     The cutoff is the intercept $W=1$ at $K=0$. A vertical or horizontal
     tangent has a direct velocity interpretation through these slopes.]
   )
-  #wave-dispersion
   #details(
     [Derivation: limiting-case checks],
     [Start from the normalized transverse relation
@@ -660,6 +677,7 @@
     propagation. Every plotted branch should be read together with the
     approximation that produced it.]
   )
+  #wave-dispersion
   #rechenbeispiel[
     A radio source drives a homogeneous cold plasma with
     $n_0=qty("1.0e10", "cm^-3")$ and
@@ -669,9 +687,9 @@
     propagating drive, report $k$ and the normalized phase and group speeds.
     Numerical result:
     $omega_(p,e)=qty("5.64e9", "s^-1")$; the lower-frequency drive is
-    evanescent with $alpha=qty("3.98e-1", "cm^-1")$. The higher-frequency
-    drive is propagating with $k=qty("2.94e-1", "cm^-1")$,
-    $v_"phi"/c=1.31$, and $v_"g"/c=0.763$.
+    evanescent with $alpha=qty("1.33e-1", "cm^-1")$. The higher-frequency
+    drive is propagating with $k=qty("3.27e-1", "cm^-1")$,
+    $v_"phi"/c=1.15$, and $v_"g"/c=0.866$.
   ]
   #interpretation(
     [A good plot is a compact argument],
