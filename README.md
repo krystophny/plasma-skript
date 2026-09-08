@@ -24,18 +24,22 @@ Enter the reproducible environment with:
 nix develop
 ```
 
-Build the website locally (the current script also emits the optional PDF) with:
+Build the website locally (the app also emits the optional PDF) with:
 
 ```sh
-./scripts/build-site.sh
+nix run .#build-site
 ```
 
 Verify the generated public bundle and the private-material boundary with:
 
 ```sh
-bash scripts/verify-spec.sh public
+nix run .#verify-spec -- public
 nix flake check
 ```
+
+The shell scripts remain the implementation used by the Nix package and CI;
+development commands should go through the flake apps so their toolchains are
+reproducible.
 
 The flake check builds the site and runs the same artifact checks from a Nix
 source snapshot. The checkout-level verifier additionally checks the Git ignore

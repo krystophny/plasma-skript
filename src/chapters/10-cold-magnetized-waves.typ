@@ -87,8 +87,6 @@
     The off-diagonal coefficient changes sign with the charge convention.]
   )
 
-  #magnetized-dielectric
-
   #governing-law(
     [Magnetized Maxwell wave equation],
     [For a plane wave, Maxwell's equations reduce to
@@ -100,19 +98,6 @@
     The dispersion relation is the condition that the associated coefficient
     matrix has zero determinant.]
   )
-
-  #rechenbeispiel[
-    For a fixed-ion hydrogen plasma use
-    $n_0=qty("1.0e10", "cm^-3")$, $B_0=qty("100", "G")$,
-    $e=qty("4.803e-10", "statcoulomb")$,
-    $m_e=qty("9.109e-28", "g")$, and
-    $c=qty("2.998e10", "cm/s")$. Determine the electron plasma frequency,
-    the electron cyclotron-frequency magnitude, and their ratio.
-
-    Numerical result: $omega_(p,e)=5.64 dot 10^9 #unit("s^-1")$,
-    $omega_(c,e)=1.76 dot 10^9 #unit("s^-1")$, and
-    $omega_(c,e)/omega_(p,e)=0.312$.
-  ]
 
   #details(
     [Derivation: from cold momentum to the dielectric tensor],
@@ -151,6 +136,21 @@
     wave matrix to vanish. This is why the dielectric tensor is the bridge
     between particle response and the dispersion branches.]
   )
+
+  #magnetized-dielectric
+
+  #rechenbeispiel[
+    For a fixed-ion hydrogen plasma use
+    $n_0=qty("1.0e10", "cm^-3")$, $B_0=qty("100", "G")$,
+    $e=qty("4.803e-10", "statcoulomb")$,
+    $m_e=qty("9.109e-28", "g")$, and
+    $c=qty("2.998e10", "cm/s")$. Determine the electron plasma frequency,
+    the electron cyclotron-frequency magnitude, and their ratio.
+
+    Numerical result: $omega_(p,e)=5.64 dot 10^9 #unit("s^-1")$,
+    $omega_(c,e)=1.76 dot 10^9 #unit("s^-1")$, and
+    $omega_(c,e)/omega_(p,e)=0.312$.
+  ]
 
   #interpretation(
     [Anisotropy is a response, not a label],
@@ -226,7 +226,8 @@
     label $s=+1$ or $s=-1$ by
     $bold(E)_(1,y)=-i s bold(E)_(1,x)$.
     The corresponding refractive indices are
-    $N_(s)^2=1-omega_(p,e)^2/(omega(omega+s omega_(c,e)))$.
+    $N_(s)^2=epsilon_(s)=epsilon_(perp)-s epsilon_(times)
+      =1-omega_(p,e)^2/(omega(omega+s omega_(c,e)))$.
     Thus the $s=+1$ branch has the lower positive-frequency cutoff, while
     the $s=-1$ branch has a cyclotron-sensitive denominator at
     $omega=omega_(c,e)$.]
@@ -244,7 +245,53 @@
     denotes an evanescent branch.]
   )
 
+  #details(
+    [Derivation: circular factorization and Faraday rotation],
+    [For parallel propagation, divide the transverse part of the wave matrix
+    by $omega^2/c^2$ and write it as
+    $mat(
+      epsilon_(perp)-N^2, -i epsilon_(times), 0;
+      i epsilon_(times), epsilon_(perp)-N^2, 0;
+      0, 0, epsilon_(parallel)) mat(E_x; E_y; E_z)=mat(0;0;0)$.
+    The longitudinal factor gives $epsilon_(parallel)=0$. The transverse
+    determinant is
+    $(epsilon_(perp)-N^2)^2-epsilon_(times)^2=0$,
+    so $N^2=epsilon_(perp)+epsilon_(times)$ or
+    $N^2=epsilon_(perp)-epsilon_(times)$.
+
+    For an electron, the signed gyrofrequency is negative when $B_0$ points
+    along positive $z$. Rewriting the two eigenvalues using the positive
+    magnitude $omega_(c,e)$ and the basis
+    $bold(E)_(1,y)=-i s bold(E)_(1,x)$ gives
+    $N_(s)^2=epsilon_(perp)-s epsilon_(times)
+      =1-omega_(p,e)^2/(omega(omega+s omega_(c,e)))$.
+    Setting this index to zero gives
+    $omega^2+s omega_(c,e) omega-omega_(p,e)^2=0$.
+    The positive root is the cutoff written above. The $s=-1$ denominator
+    vanishes at the electron cyclotron frequency, so the cold response becomes
+    singular there. A finite-temperature or collisional model is required
+    before interpreting the singular limit.
+
+    A linearly polarized wave is the equal-amplitude sum of the two circular
+    eigenmodes. After distance $L$ their relative phase is
+    $(k_+-k_-)L$. The major axis of the resulting linear polarization rotates
+    by half that relative phase:
+    $theta_F=((k_+-k_-)L)/2$.
+    If the plasma varies slowly along the ray, replace the constant difference
+    by $theta_F=(integral (k_+(z)-k_-(z)) d z)/2$.]
+  )
+
   #magnetized-parallel-dispersion
+
+  #callout(
+    [Pause and predict],
+    [A linearly polarized wave enters the plasma with its electric field along
+    $bold(e)_x$. Before opening the animation, predict whether the output
+    polarization can remain fixed when $k_+ != k_-$. It cannot: the two
+    circular components accumulate different phases, so their superposition
+    rotates. The viewing direction and Fourier convention determine the sign
+    of the rotation; its magnitude follows from $k_+-k_-$.]
+  )
 
   #animation(
     "../media/magnetized-polarization.mp4",
@@ -269,41 +316,6 @@
     Numerical result: $N_+=0.963$, $N_-=0.955$, and
     $theta_F=2.47 dot 10^-2$ rad $=1.42 degree$.
   ]
-
-  #details(
-    [Derivation: circular factorization and Faraday rotation],
-    [For parallel propagation, divide the transverse part of the wave matrix
-    by $omega^2/c^2$ and write it as
-    $mat(
-      epsilon_(perp)-N^2, -i epsilon_(times), 0;
-      i epsilon_(times), epsilon_(perp)-N^2, 0;
-      0, 0, epsilon_(parallel)) mat(E_x; E_y; E_z)=mat(0;0;0)$.
-    The longitudinal factor gives $epsilon_(parallel)=0$. The transverse
-    determinant is
-    $(epsilon_(perp)-N^2)^2-epsilon_(times)^2=0$,
-    so $N^2=epsilon_(perp)+epsilon_(times)$ or
-    $N^2=epsilon_(perp)-epsilon_(times)$.
-
-    For an electron, the signed gyrofrequency is negative when $B_0$ points
-    along positive $z$. Rewriting the two eigenvalues using the positive
-    magnitude $omega_(c,e)$ and the basis
-    $bold(E)_(1,y)=-i s bold(E)_(1,x)$ gives
-    $N_(s)^2=1-omega_(p,e)^2/(omega(omega+s omega_(c,e)))$.
-    Setting this index to zero gives
-    $omega^2+s omega_(c,e) omega-omega_(p,e)^2=0$.
-    The positive root is the cutoff written above. The $s=-1$ denominator
-    vanishes at the electron cyclotron frequency, so the cold response becomes
-    singular there. A finite-temperature or collisional model is required
-    before interpreting the singular limit.
-
-    A linearly polarized wave is the equal-amplitude sum of the two circular
-    eigenmodes. After distance $L$ their relative phase is
-    $(k_+-k_-)L$. The major axis of the resulting linear polarization rotates
-    by half that relative phase:
-    $theta_F=((k_+-k_-)L)/2$.
-    If the plasma varies slowly along the ray, replace the constant difference
-    by $theta_F=(integral (k_+(z)-k_-(z)) d z)/2$.]
-  )
 
   #interpretation(
     [The resonant branch is not an ordinary cutoff],
@@ -400,19 +412,6 @@
     diverges at the upper-hybrid resonance.]
   )
 
-  #rechenbeispiel[
-    For $n_0=qty("1.0e10", "cm^-3")$ and $B_0=qty("100", "G")$, use
-    $omega_(p,e)=qty("5.64e9", "s^-1")$,
-    $omega_(c,e)=qty("1.76e9", "s^-1")$, and
-    $omega=qty("5.50e9", "s^-1")$. Classify the ordinary and extraordinary
-    branches and report the wave number for the propagating branch.
-
-    Numerical result: the ordinary branch is evanescent with
-    $alpha_O=4.17 dot 10^-2 #unit("cm^-1")$; the extraordinary branch
-    propagates with $N_X=0.805$, $k_X=1.48 dot 10^-1 #unit("cm^-1")$,
-    and $lambda_X=42.5 #unit("cm")$.
-  ]
-
   #details(
     [Derivation: perpendicular factorization],
     [For $bold(k)=k bold(e)_x$, the wave equation becomes
@@ -444,6 +443,19 @@
     hence $E_x/E_y=i epsilon_(times)/epsilon_(perp)$ and the generally
     elliptical extraordinary polarization.]
   )
+
+  #rechenbeispiel[
+    For $n_0=qty("1.0e10", "cm^-3")$ and $B_0=qty("100", "G")$, use
+    $omega_(p,e)=qty("5.64e9", "s^-1")$,
+    $omega_(c,e)=qty("1.76e9", "s^-1")$, and
+    $omega=qty("5.50e9", "s^-1")$. Classify the ordinary and extraordinary
+    branches and report the wave number for the propagating branch.
+
+    Numerical result: the ordinary branch is evanescent with
+    $alpha_O=4.17 dot 10^-2 #unit("cm^-1")$; the extraordinary branch
+    propagates with $N_X=0.805$, $k_X=1.48 dot 10^-1 #unit("cm^-1")$,
+    and $lambda_X=42.5 #unit("cm")$.
+  ]
 
   #interpretation(
     [Ordinary does not mean unmagnetized everywhere],
@@ -513,8 +525,6 @@
     polarization labels at every angle.]
   )
 
-  #magnetized-oblique-geometry
-
   #governing-law(
     [Oblique wave matrix and Appleton--Hartree roots],
     [With $S=epsilon_(perp)$, $D=epsilon_(times)$, and
@@ -526,23 +536,14 @@
       mat(E_x;E_y;E_z)=mat(0;0;0)$.
     Its determinant gives two electromagnetic roots. For one cold electron
     species they can be written in the Appleton--Hartree form
-    $N_(1,2)^2=1-X_(omega) /
+    $N_(plus.minus)^2=1-(X_(omega)) /
       (1-(Y_(omega)^2 sin^2 theta)/(2(1-X_(omega)) )
       plus.minus sqrt(
         ((Y_(omega)^2 sin^2 theta)/(2(1-X_(omega))))^2
         +Y_(omega)^2 cos^2 theta))$.
-    The two signs identify the two branches; their polarization and
-    longitudinal content vary continuously with $theta$.]
+    The upper sign defines $N_+$ and the lower sign defines $N_-$; their
+    polarization and longitudinal content vary continuously with $theta$.]
   )
-
-  #rechenbeispiel[
-    Use the normalized parameters $Y=omega_(c,e)/omega_(p,e)=0.30$,
-    $W=omega/omega_(p,e)=1.50$, and $theta=pi/4$. Evaluate the two
-    Appleton--Hartree refractive indices.
-
-    Numerical result: $X_(omega)=0.444$, $Y_(omega)=0.200$, and the two roots
-    are $N_1=0.686$ and $N_2=0.778$.
-  ]
 
   #details(
     [Derivation: oblique matrix and limiting geometry],
@@ -577,6 +578,18 @@
     root without the correct endpoint polarization can be assigned to the
     wrong physical branch.]
   )
+
+  #magnetized-oblique-geometry
+
+  #rechenbeispiel[
+    Use the normalized parameters $Y=omega_(c,e)/omega_(p,e)=0.30$,
+    $W=omega/omega_(p,e)=1.50$, and $theta=pi/4$. Evaluate the two
+    Appleton--Hartree refractive indices.
+
+    Numerical result: $X_(omega)=0.444$, $Y_(omega)=0.200$, and the two roots
+    are $N_+=0.778$ and $N_-=0.686$, where the signs follow the displayed
+    denominator signs.
+  ]
 
   #interpretation(
     [Oblique modes exchange character],
@@ -657,8 +670,6 @@
     scale ordering.]
   )
 
-  #magnetized-cutoff-map
-
   #governing-law(
     [Normalized landmarks],
     [For $Y=omega_(c,e)/omega_(p,e)$, the parallel circular cutoffs are
@@ -670,18 +681,6 @@
     than unity, all cold branches approach the vacuum relation $W=N$ where
     they propagate.]
   )
-
-  #rechenbeispiel[
-    Let $Y=omega_(c,e)/omega_(p,e)=0.30$. Determine the normalized circular
-    cutoffs and upper-hybrid resonance, then classify the ordinary and
-    extraordinary modes at $W=0.90$, $W=1.10$, and $W=1.30$.
-
-    Numerical result: $W_"cut,+"=0.861$, $W_"cut,-"=1.161$, and
-    $W_"UH"=1.044$. At $W=0.90$, ordinary is evanescent and extraordinary
-    propagates with $N_X=0.403$; at $W=1.10$, ordinary propagates with
-    $N_O=0.417$ and extraordinary is evanescent; at $W=1.30$, both propagate
-    with $N_O=0.639$ and $N_X=0.565$.
-  ]
 
   #details(
     [Derivation: limiting-case checks],
@@ -717,6 +716,20 @@
     the kinetic susceptibility and resonant damping or growth replace the
     cold-fluid response.]
   )
+
+  #magnetized-cutoff-map
+
+  #rechenbeispiel[
+    Let $Y=omega_(c,e)/omega_(p,e)=0.30$. Determine the normalized circular
+    cutoffs and upper-hybrid resonance, then classify the ordinary and
+    extraordinary modes at $W=0.90$, $W=1.10$, and $W=1.30$.
+
+    Numerical result: $W_"cut,+"=0.861$, $W_"cut,-"=1.161$, and
+    $W_"UH"=1.044$. At $W=0.90$, ordinary is evanescent and extraordinary
+    propagates with $N_X=0.403$; at $W=1.10$, ordinary propagates with
+    $N_O=0.417$ and extraordinary is evanescent; at $W=1.30$, both propagate
+    with $N_O=0.639$ and $N_X=0.565$.
+  ]
 
   #interpretation(
     [A limit check is a physical unit test],

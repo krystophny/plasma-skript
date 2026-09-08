@@ -378,6 +378,10 @@ The authoring environment is defined by `flake.nix`:
 - `pkgs.typst` from the `nixpkgs-unstable` input is the only required Typst CLI.
 - `pkgs.manim` renders animations.
 - `pkgs.ffmpeg` provides video handling.
+- The flake exposes `build-site` and `verify-spec` apps. Use
+  `nix run .#build-site` and `nix run .#verify-spec -- <built-site>` for
+  development and release checks; the shell scripts remain implementation
+  details used by the package and CI.
 - `nix flake check` must build the site as a behavioral check.
 - On Linux, `nix flake check` also runs the NixOS VM browser integration test
   against the built site. The test uses real CSS viewport emulation rather

@@ -70,8 +70,6 @@
     positive half of the normal-velocity distribution.]
   )
 
-  #sheath-structure
-
   #governing-law(
     [Maxwellian half-space flux],
     [For a three-dimensional Maxwellian with density $n_s$ and temperature
@@ -84,14 +82,6 @@
     give $Gamma_(e,0)/Gamma_(i,0)=sqrt(m_i/m_e)$, even though the
     equilibrium densities can be equal.]
   )
-
-  #rechenbeispiel[
-    Consider a hydrogen plasma with equal electron and ion temperatures and
-    $n_e=n_i$. Let $m_i/m_e=1836$. Determine the ratio of the unretarded
-    electron and ion fluxes to the same planar surface.
-
-    Numerical result: $Gamma_(e,0)/Gamma_(i,0)=sqrt(1836) approx 42.8$.
-  ]
 
   #details(
     [Derivation: the one-sided Maxwellian flux],
@@ -124,6 +114,16 @@
     $angle(v_s)=sqrt((8 k_B T_s)/(pi m_s))$, which gives
     $Gamma_(s,0)=(n_s angle(v_s))/4$.]
   )
+
+  #sheath-structure
+
+  #rechenbeispiel[
+    Consider a hydrogen plasma with equal electron and ion temperatures and
+    $n_e=n_i$. Let $m_i/m_e=1836$. Determine the ratio of the unretarded
+    electron and ion fluxes to the same planar surface.
+
+    Numerical result: $Gamma_(e,0)/Gamma_(i,0)=sqrt(1836) approx 42.8$.
+  ]
 
   #interpretation(
     [Flux imbalance charges the boundary],
@@ -211,8 +211,6 @@
     $c_s=sqrt((k_B T_e)/m_i)$ and $M=u_s/c_s$, and take $eta=0$ at the
     matching edge.]
   )
-
-  #sheath-profile
 
   #governing-law(
     [Planar sheath equation],
@@ -318,6 +316,8 @@
     Boltzmann-electron sheath equation across the whole boundary layer.]
   )
 
+  #sheath-profile
+
   #interpretation(
     [The Bohm condition is an attachment condition],
     [The criterion does not say that every ion in the plasma moves at exactly
@@ -415,27 +415,6 @@
     $phi_f approx -(2.84 k_B T_e)/e$.]
   )
 
-  #rechenbeispiel[
-    Use a hydrogen plasma with
-    $n_0=qty("1.0e10", "cm^-3")$ and
-    $k_B T_e=qty("4.806e-12", "erg")$ (3.00 eV). Take
-    $m_e=qty("9.109e-28", "g")$,
-    $m_i=qty("1.673e-24", "g")$, and
-    $e=qty("4.803e-10", "statcoulomb")$. Use the cold-ion Bohm flux and
-    a planar area of $1.0 #unit("cm^2")$. Determine $lambda_D$, the
-    electron and ion edge fluxes, the floating potential, and the ion
-    current collected at the floating surface.
-
-    Numerical result:
-    $lambda_D approx qty("1.29e-2", "cm")$,
-    $Gamma_(e,0) approx qty("2.90e17", "cm^-2 s^-1")$,
-    $Gamma_i approx qty("1.70e16", "cm^-2 s^-1")$,
-    $phi_f approx -(2.84 k_B T_e)/e approx -0.0284 #unit("statvolt")$
-    (approximately $-8.52 #unit("V")$), and
-    $e Gamma_i A approx qty("8.14e6", "statC/s")$, corresponding to
-    approximately $2.72 #unit("mA")$.
-  ]
-
   #details(
     [Derivation: electron transmission and the floating logarithm],
     [Let the plasma potential be zero and the wall potential be
@@ -471,6 +450,26 @@
     The numerical example then follows by evaluating the stated cgs
     definitions; no additional probe geometry factor has been introduced.]
   )
+  #rechenbeispiel[
+    Use a hydrogen plasma with
+    $n_0=qty("1.0e10", "cm^-3")$ and
+    $k_B T_e=qty("4.806e-12", "erg")$ (3.00 eV). Take
+    $m_e=qty("9.109e-28", "g")$,
+    $m_i=qty("1.673e-24", "g")$, and
+    $e=qty("4.803e-10", "statcoulomb")$. Use the cold-ion Bohm flux and
+    a planar area of $1.0 #unit("cm^2")$. Determine $lambda_D$, the
+    electron and ion edge fluxes, the floating potential, and the ion
+    current collected at the floating surface.
+
+    Numerical result:
+    $lambda_D approx qty("1.29e-2", "cm")$,
+    $Gamma_(e,0) approx qty("2.90e17", "cm^-2 s^-1")$,
+    $Gamma_i approx qty("1.70e16", "cm^-2 s^-1")$,
+    $phi_f approx -(2.84 k_B T_e)/e approx -0.0284 #unit("statvolt")$
+    (approximately $-8.52 #unit("V")$), and
+    $e Gamma_i A approx qty("8.14e6", "statC/s")$, corresponding to
+    approximately $2.72 #unit("mA")$.
+  ]
   #interpretation(
     [Floating does not mean field-free],
     [Zero net current is a global electrical condition, not the statement
@@ -554,18 +553,6 @@
     collection becomes geometry- and sheath-limited, producing an electron
     saturation region rather than an unlimited exponential.]
   )
-  #probe-iv-characteristic
-  #animation(
-    "../media/sheath-formation.mp4",
-    "A normalized planar-boundary illustration shows a quasineutral plasma, a marked sheath edge, a charge-separated sheath, and a material wall. Electron and ion density profiles separate in the sheath, the normalized negative potential-energy barrier grows toward the wall, a fast-electron marker reflects, and an ion marker reaches the wall. The animation is schematic and not a particle-in-cell simulation.",
-    caption: [
-      A surface charges until the potential barrier and directed ion flow
-      regulate the two collection fluxes. All coordinates and plotted
-      profiles are normalized; the animation is a visual guide to the
-      boundary conditions.
-    ],
-    poster: "../media/sheath-formation.png",
-  )
   #governing-law(
     [Idealized probe characteristic],
     [On the negative-bias side, write
@@ -580,28 +567,6 @@
     $n_e=abs(I_(e,0))/[e A sqrt((k_B T_e)/(2 pi m_e))]$
     for the ideal planar collection model.]
   )
-  #animation(
-    "../media/langmuir-probe.mp4",
-    "A normalized idealized probe current--voltage curve is divided into ion saturation, electron retardation, and electron saturation regions. A marked floating bias is where the conventional current is zero. A companion panel shows a probe surrounded by a sheath, with electron and ion collection arrows. The animation is a teaching map, not experimental data.",
-    caption: [
-      Probe bias moves the operating point across collection regimes. The
-      retarding branch carries the temperature information in its logarithmic
-      slope, while the saturation scale carries the density information under
-      the stated collection model.
-    ],
-    poster: "../media/langmuir-probe.png",
-  )
-  #rechenbeispiel[
-    A planar probe has area $A=qty("0.10", "cm^2")$. In its electron-retarding
-    region, a fit gives
-    $dv(ln(abs(I_e)),phi_p)=qty("0.40", "V^-1")$.
-    The extrapolated zero-bias electron saturation current magnitude is
-    $abs(I_(e,0))=qty("4.0", "mA")$. Use the ideal planar model and determine
-    the electron temperature in eV and density in #unit("cm^-3").
-    Numerical result: $(k_B T_e)/e approx 2.50 #unit("V")$, so
-    $T_e approx 2.50 #unit("eV")$, and
-    $n_e approx qty("9.44e9", "cm^-3")$.
-  ]
   #details(
     [Derivation: semilog temperature and density inversion],
     [The negative-bias electron flux is
@@ -632,6 +597,40 @@
     unit. In the numerical example, converting the cgs charge flux to
     amperes gives the stated density.]
   )
+  #probe-iv-characteristic
+  #animation(
+    "../media/sheath-formation.mp4",
+    "A normalized planar-boundary illustration shows a quasineutral plasma, a marked sheath edge, a charge-separated sheath, and a material wall. Electron and ion density profiles separate in the sheath, the normalized negative potential-energy barrier grows toward the wall, a fast-electron marker reflects, and an ion marker reaches the wall. The animation is schematic and not a particle-in-cell simulation.",
+    caption: [
+      A surface charges until the potential barrier and directed ion flow
+      regulate the two collection fluxes. All coordinates and plotted
+      profiles are normalized; the animation is a visual guide to the
+      boundary conditions.
+    ],
+    poster: "../media/sheath-formation.png",
+  )
+  #animation(
+    "../media/langmuir-probe.mp4",
+    "A normalized idealized probe current--voltage curve is divided into ion saturation, electron retardation, and electron saturation regions. A marked floating bias is where the conventional current is zero. A companion panel shows a probe surrounded by a sheath, with electron and ion collection arrows. The animation is a teaching map, not experimental data.",
+    caption: [
+      Probe bias moves the operating point across collection regimes. The
+      retarding branch carries the temperature information in its logarithmic
+      slope, while the saturation scale carries the density information under
+      the stated collection model.
+    ],
+    poster: "../media/langmuir-probe.png",
+  )
+  #rechenbeispiel[
+    A planar probe has area $A=qty("0.10", "cm^2")$. In its electron-retarding
+    region, a fit gives
+    $dv(ln(abs(I_e)),phi_p)=qty("0.40", "V^-1")$.
+    The extrapolated zero-bias electron saturation current magnitude is
+    $abs(I_(e,0))=qty("4.0", "mA")$. Use the ideal planar model and determine
+    the electron temperature in eV and density in #unit("cm^-3").
+    Numerical result: $(k_B T_e)/e approx 2.50 #unit("V")$, so
+    $T_e approx 2.50 #unit("eV")$, and
+    $n_e approx qty("9.44e9", "cm^-3")$.
+  ]
   #interpretation(
     [A probe measures a model-dependent collection response],
     [The semilog slope is powerful because it is local to the retarding

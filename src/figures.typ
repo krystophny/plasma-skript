@@ -1170,9 +1170,9 @@
 }
 
 #let magnetized-parallel-dispersion = context {
-  let alt-description = "A normalized parallel-propagation dispersion plot compares the vacuum line with two circularly polarized cold-plasma branches. The branches begin at distinct cutoffs, approach the vacuum line at high frequency, and the lower-frequency resonant branch is identified as the cyclotron-sensitive branch. A horizontal line marks the longitudinal plasma oscillation."
+  let alt-description = "A normalized parallel-propagation dispersion plot compares the vacuum line with two circularly polarized cold-plasma branches. The horizontal axis is the dimensionless refractive index N = k c / omega and the vertical axis is W = omega / omega_(p,e). The branches begin at distinct cutoffs, approach the vacuum line at high frequency, and the lower-frequency resonant branch is identified as the cyclotron-sensitive branch. A horizontal line marks the longitudinal plasma oscillation."
   let caption-text = [
-    Parallel propagation at fixed $Y=Omega_e/omega_(p,e)=0.3$. The circular
+    Parallel propagation at fixed $Y=omega_(c,e)/omega_(p,e)=0.3$. The circular
     branches have different cutoffs because the magnetic field distinguishes
     the two rotation senses. Only the upper propagating portions are plotted;
     the low-frequency continuation of one branch approaches the cyclotron
@@ -1187,7 +1187,7 @@
       #lq.diagram(
         width: 10cm,
         height: 5.4cm,
-        xlabel: [$N=k c/omega_(p,e)$ (dimensionless)],
+        xlabel: [$N=(k c)/omega$ (dimensionless)],
         ylabel: [$W=omega/omega_(p,e)$ (dimensionless)],
         lq.plot(
           (0, 0.5, 1, 2, 3, 4),
@@ -1228,7 +1228,8 @@
       )[
         #html.div(class: "mhd-node mhd-node-wide")[
           #html.strong[Normalized axes]
-          #html.span[$N=k c/omega_(p,e)$, $W=omega/omega_(p,e)$, and $Y=0.3$]
+          #html.span[$N=(k c)/omega$, $W=omega/omega_(p,e)$, and
+            $Y=omega_(c,e)/omega_(p,e)=0.3$ (all dimensionless)]
         ]
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ideal")[

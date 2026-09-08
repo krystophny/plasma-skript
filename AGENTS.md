@@ -63,7 +63,7 @@ Before changing files:
    requested. Do not create a commit or publish without an explicit request.
 3. Build the actual site and inspect its generated HTML, media, and optional
    PDF when that target is enabled.
-4. Run `bash scripts/verify-spec.sh <built-site>` and `nix flake check`.
+4. Run `nix run .#verify-spec -- <built-site>` and `nix flake check`.
 5. Report the commands run, the artifact inspected, and any unresolved spec
    conflict.
 

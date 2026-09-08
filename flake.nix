@@ -30,6 +30,23 @@
           exec node /etc/plasma-site-integration-test.cjs "$@"
         '';
       };
+      buildSiteApp = pkgs.writeShellApplication {
+        name = "plasma-build-site";
+        runtimeInputs = [pkgs.bash pkgs.ffmpeg pkgs.manim typst];
+        text = ''
+          site_dir="''${SITE_DIR:-$PWD/public}"
+          export SITE_DIR="$site_dir"
+          exec bash "${self}/scripts/build-site.sh" "$@"
+        '';
+      };
+      verifySpecApp = pkgs.writeShellApplication {
+        name = "plasma-verify-spec";
+        runtimeInputs = [pkgs.bash pkgs.coreutils pkgs.findutils pkgs.perl pkgs.ripgrep];
+        text = ''
+          site_dir="''${1:-''${SITE_DIR:-$PWD/public}}"
+          exec bash "${self}/scripts/verify-spec.sh" "$site_dir"
+        '';
+      };
       mkHostApp = {
         name,
         bind,
@@ -101,6 +118,18 @@
       formatter = pkgs.alejandra;
 
       apps = {
+        build-site = {
+          type = "app";
+          meta.description = "Build the public Typst website and media";
+          program = "${buildSiteApp}/bin/plasma-build-site";
+        };
+
+        verify-spec = {
+          type = "app";
+          meta.description = "Verify a generated public site against SPEC.md";
+          program = "${verifySpecApp}/bin/plasma-verify-spec";
+        };
+
         local-host = mkHostApp {
           name = "local-host";
           bind = "localhost";

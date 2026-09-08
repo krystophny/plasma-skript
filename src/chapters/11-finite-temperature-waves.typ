@@ -69,8 +69,6 @@
     follows the stated Fourier convention.]
   )
 
-  #collisional-wave-response
-
   #governing-law(
     [Complex refractive index],
     [The cold tensor formulas can be reused with $m_s$ replaced by
@@ -84,19 +82,6 @@
     so $k_i>0$ is amplitude attenuation and $1/(2 k_i)$ is the intensity
     attenuation length.]
   )
-
-  #rechenbeispiel[
-    Use $omega_(p,e)=qty("5.64e9", "s^-1")$,
-    $omega=qty("2.00e10", "s^-1")$, and a constant
-    $nu_e=qty("1.00e9", "s^-1")$. In the high-frequency weak-collision
-    approximation, estimate $k_r$, $k_i$, and the amplitude attenuation length
-    for the unmagnetized branch.
-
-    Numerical result: $N approx 0.959+i 2.07 dot 10^(-3)$,
-    $k_r approx 6.40 dot 10^(-1) #unit("cm^-1")$,
-    $k_i approx 1.38 dot 10^(-3) #unit("cm^-1")$, and the amplitude
-    attenuation length is approximately $7.25 dot 10^2 #unit("cm")$.
-  ]
 
   #details(
     [Derivation: drag, complex susceptibility, and attenuation],
@@ -145,6 +130,21 @@
     There the full collisional dielectric tensor, and often a kinetic model,
     must be derived rather than inserted as a perturbative mass replacement.]
   )
+
+  #collisional-wave-response
+
+  #rechenbeispiel[
+    Use $omega_(p,e)=qty("5.64e9", "s^-1")$,
+    $omega=qty("2.00e10", "s^-1")$, and a constant
+    $nu_e=qty("1.00e9", "s^-1")$. In the high-frequency weak-collision
+    approximation, estimate $k_r$, $k_i$, and the amplitude attenuation length
+    for the unmagnetized branch.
+
+    Numerical result: $N approx 0.959+i 2.07 dot 10^(-3)$,
+    $k_r approx 6.40 dot 10^(-1) #unit("cm^-1")$,
+    $k_i approx 1.38 dot 10^(-3) #unit("cm^-1")$, and the amplitude
+    attenuation length is approximately $7.25 dot 10^2 #unit("cm")$.
+  ]
 
   #interpretation(
     [Damping is part of the response],
@@ -236,8 +236,6 @@
       =omega_(c,i)/omega_(c,e)$.]
   )
 
-  #ion-wave-branches
-
   #governing-law(
     [Circular branches and the Alfvén limit],
     [For parallel propagation, the two circular branches can be written,
@@ -259,19 +257,6 @@
     and $rho_0 approx n_0 m_i$. Thus $omega approx k v_A$ at low
     frequency.]
   )
-
-  #rechenbeispiel[
-    For a hydrogen plasma use $n_0=qty("1.0e10", "cm^-3")$,
-    $B_0=qty("100", "G")$, $m_i=qty("1.673e-24", "g")$,
-    and $e=qty("4.803e-10", "statcoulomb")$. Consider a parallel
-    low-frequency wave at $omega=0.10 omega_(c,i)$. Determine
-    $omega_(c,i)$, $v_A$, $k approx omega/v_A$, and the wavelength.
-
-    Numerical result: $omega_(c,i)=9.58 dot 10^5 #unit("s^-1")$,
-    $v_A=2.18 dot 10^8 #unit("cm/s")$,
-    $k=4.40 dot 10^(-4) #unit("cm^-1")$, and
-    $lambda=1.43 dot 10^4 #unit("cm")$.
-  ]
 
   #details(
     [Derivation: species sum, circular factors, and low frequency],
@@ -327,6 +312,21 @@
     correction becomes negligible and the fixed-ion electron branches are
     recovered.]
   )
+
+  #ion-wave-branches
+
+  #rechenbeispiel[
+    For a hydrogen plasma use $n_0=qty("1.0e10", "cm^-3")$,
+    $B_0=qty("100", "G")$, $m_i=qty("1.673e-24", "g")$,
+    and $e=qty("4.803e-10", "statcoulomb")$. Consider a parallel
+    low-frequency wave at $omega=0.10 omega_(c,i)$. Determine
+    $omega_(c,i)$, $v_A$, $k approx omega/v_A$, and the wavelength.
+
+    Numerical result: $omega_(c,i)=9.58 dot 10^5 #unit("s^-1")$,
+    $v_A=2.18 dot 10^8 #unit("cm/s")$,
+    $k=4.40 dot 10^(-4) #unit("cm^-1")$, and
+    $lambda=1.43 dot 10^4 #unit("cm")$.
+  ]
 
   #interpretation(
     [Low-frequency circular modes can become linear],
@@ -410,8 +410,6 @@
     reference.]
   )
 
-  #warm-longitudinal-modes
-
   #governing-law(
     [Warm plasma oscillation and ion acoustic wave],
     [The fixed-ion warm branch is
@@ -429,17 +427,6 @@
     $omega^2=(k^2 gamma k_(B)(T_e+T_i))/m_i$ when the same adiabatic
     convention is used for both species.]
   )
-
-  #rechenbeispiel[
-    Let $n_0=qty("1.0e10", "cm^-3")$, $T_e=10 #unit("eV")$,
-    $gamma_e=1$, and use the electron constants from the earlier examples.
-    At $k lambda_(D,e)=0.80$, determine $lambda_(D,e)$, $k$, and the
-    normalized warm plasma-oscillation frequency.
-
-    Numerical result: $lambda_(D,e)=2.35 dot 10^(-2) #unit("cm")$,
-    $k=3.40 dot 10^1 #unit("cm^-1")$, and
-    $omega/omega_(p,e)=1.28$.
-  ]
 
   #details(
     [Derivation: pressure response and the two longitudinal roots],
@@ -499,6 +486,19 @@
     The high-frequency root approaches the electron plasma-oscillation
     branch.]
   )
+
+  #warm-longitudinal-modes
+
+  #rechenbeispiel[
+    Let $n_0=qty("1.0e10", "cm^-3")$, $T_e=10 #unit("eV")$,
+    $gamma_e=1$, and use the electron constants from the earlier examples.
+    At $k lambda_(D,e)=0.80$, determine $lambda_(D,e)$, $k$, and the
+    normalized warm plasma-oscillation frequency.
+
+    Numerical result: $lambda_(D,e)=2.35 dot 10^(-2) #unit("cm")$,
+    $k=3.40 dot 10^1 #unit("cm^-1")$, and
+    $omega/omega_(p,e)=1.28$.
+  ]
 
   #interpretation(
     [Temperature creates a communication length],
@@ -582,19 +582,6 @@
     their warm perpendicular combination.]
   )
 
-  #mhd-wave-speeds
-
-  #animation(
-    "../media/magnetosonic-waves.mp4",
-    "The animation compares three normalized schematic patterns. A sound wave is shown as pressure or density compression, a shear Alfvén wave as transverse displacement of otherwise nearly parallel magnetic field lines, and a magnetosonic wave as combined pressure and magnetic compression. The patterns are illustrative and do not represent dimensional simulation data.",
-    caption: [
-      Warm magnetized-wave patterns: pressure compression, shear-Alfvén field
-      displacement, and compressional magnetosonic motion. The animation is a
-      schematic visual companion to $v_m^2=v_A^2+v_s^2$.
-    ],
-    poster: "../media/magnetosonic-waves.png",
-  )
-
   #governing-law(
     [Warm upper-hybrid and MHD branches],
     [Near the perpendicular upper-hybrid branch, the warm-fluid correction
@@ -608,21 +595,6 @@
     The latter is often called the magnetosonic or magnetosonic-Alfvén
     branch.]
   )
-
-  #rechenbeispiel[
-    For $n_0=qty("1.0e10", "cm^-3")$, $B_0=qty("100", "G")$,
-    $T_e=T_i=10 #unit("eV")$, and isothermal
-    $gamma_e=gamma_i=1$, determine $v_A$, the total-pressure sound speed
-    $v_s$, and $v_m$. For $k=qty("1.0e-5", "cm^-1")$, report the parallel
-    shear-Alfvén and perpendicular magnetosonic frequencies.
-
-    Numerical result: $v_A=2.18 dot 10^8 #unit("cm/s")$,
-    $v_s=4.38 dot 10^6 #unit("cm/s")$, and
-    $v_m=2.18 dot 10^8 #unit("cm/s")$ to the shown precision.
-    The two example frequencies are
-    $omega_A=2.18 dot 10^3 #unit("s^-1")$ and
-    $omega_m=2.18 dot 10^3 #unit("s^-1")$.
-  ]
 
   #details(
     [Derivation: warm upper hybrid and magnetosonic restoring forces],
@@ -693,6 +665,34 @@
     geometric: tension bends field lines, while perpendicular compression
     changes both density and magnetic-field strength.]
   )
+
+  #mhd-wave-speeds
+
+  #animation(
+    "../media/magnetosonic-waves.mp4",
+    "The animation compares three normalized schematic patterns. A sound wave is shown as pressure or density compression, a shear Alfvén wave as transverse displacement of otherwise nearly parallel magnetic field lines, and a magnetosonic wave as combined pressure and magnetic compression. The patterns are illustrative and do not represent dimensional simulation data.",
+    caption: [
+      Warm magnetized-wave patterns: pressure compression, shear-Alfvén field
+      displacement, and compressional magnetosonic motion. The animation is a
+      schematic visual companion to $v_m^2=v_A^2+v_s^2$.
+    ],
+    poster: "../media/magnetosonic-waves.png",
+  )
+
+  #rechenbeispiel[
+    For $n_0=qty("1.0e10", "cm^-3")$, $B_0=qty("100", "G")$,
+    $T_e=T_i=10 #unit("eV")$, and isothermal
+    $gamma_e=gamma_i=1$, determine $v_A$, the total-pressure sound speed
+    $v_s$, and $v_m$. For $k=qty("1.0e-5", "cm^-1")$, report the parallel
+    shear-Alfvén and perpendicular magnetosonic frequencies.
+
+    Numerical result: $v_A=2.18 dot 10^8 #unit("cm/s")$,
+    $v_s=4.38 dot 10^6 #unit("cm/s")$, and
+    $v_m=2.18 dot 10^8 #unit("cm/s")$ to the shown precision.
+    The two example frequencies are
+    $omega_A=2.18 dot 10^3 #unit("s^-1")$ and
+    $omega_m=2.18 dot 10^3 #unit("s^-1")$.
+  ]
 
   #interpretation(
     [The same field can support different restoring forces],
@@ -776,8 +776,6 @@
     frequency.]
   )
 
-  #warm-wave-ordering
-
   #governing-law(
     [Controlled limits],
     [The branches must satisfy four checks:
@@ -790,20 +788,6 @@
     zero, or the distribution is strongly non-Maxwellian, a kinetic
     susceptibility is required even when the fluid equations look closed.]
   )
-
-  #rechenbeispiel[
-    Classify two model orderings. Case A has
-    $C=0.02$, $I=50$, $K=0.05$, and $M=1/1836$.
-    Case B has $C=0.30$, $I=0.40$, $K=0.80$, and the same $M$.
-    State the simplest justified description and the first correction to add
-    in each case.
-
-    Numerical result: Case A is collisionless cold fixed-ion to leading order;
-    the first corrections are collisional damping, ion inertia, and warm
-    dispersion in the displayed order. Case B requires a collisional
-    two-fluid warm model; a kinetic check is recommended because all three
-    primary orderings are no longer asymptotically small.
-  ]
 
   #details(
     [Derivation: recovering the neighboring models],
@@ -848,6 +832,22 @@
     $omega-k_"parallel"v_(parallel)=0$ or a cyclotron harmonic. These are
     independent checks: satisfying one does not imply that the others hold.]
   )
+
+  #warm-wave-ordering
+
+  #rechenbeispiel[
+    Classify two model orderings. Case A has
+    $C=0.02$, $I=50$, $K=0.05$, and $M=1/1836$.
+    Case B has $C=0.30$, $I=0.40$, $K=0.80$, and the same $M$.
+    State the simplest justified description and the first correction to add
+    in each case.
+
+    Numerical result: Case A is collisionless cold fixed-ion to leading order;
+    the first corrections are collisional damping, ion inertia, and warm
+    dispersion in the displayed order. Case B requires a collisional
+    two-fluid warm model; a kinetic check is recommended because all three
+    primary orderings are no longer asymptotically small.
+  ]
 
   #interpretation(
     [A limit is a diagnostic, not a slogan],

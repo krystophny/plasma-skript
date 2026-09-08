@@ -74,8 +74,6 @@
     the response is cold, warm, or kinetic.]
   )
 
-  #hot-isotropic-dispersion
-
   #governing-law(
     [Electrostatic kinetic dispersion],
     [For a longitudinal perturbation with $bold(k) parallel bold(E)_1$,
@@ -94,21 +92,6 @@
     $zeta=omega/(k v_"te")$ and
     $lambda_D^2=(k_B T_e)/(4 pi n_0 e^2)$.]
   )
-
-  #rechenbeispiel[
-    Use $n_0=qty("1.0e10", "cm^-3")$,
-    $k_B T_e=qty("1.602e-11", "erg")$,
-    $m_e=qty("9.109e-28", "g")$, and
-    $e=qty("4.803e-10", "statcoulomb")$. Take
-    $k lambda_D=0.20$ and use the long-wavelength warm approximation
-    $omega_r^2/omega_(p,e)^2 approx 1+3(k lambda_D)^2$.
-    Determine $lambda_D$, $k$, and $omega_r$.
-
-    Numerical result: $lambda_D approx qty("2.35e-2", "cm")$,
-    $k approx qty("8.51", "cm^-1")$, and
-    $omega_r/omega_(p,e) approx 1.06$ or
-    $omega_r approx qty("5.97e9", "s^-1")$.
-  ]
 
   #details(
     [Derivation: Vlasov response, Poisson, and the Maxwellian limit],
@@ -157,6 +140,23 @@
     while the contour contribution contains the collisionless damping that
     the moment closure omits.]
   )
+
+  #hot-isotropic-dispersion
+
+  #rechenbeispiel[
+    Use $n_0=qty("1.0e10", "cm^-3")$,
+    $k_B T_e=qty("1.602e-11", "erg")$,
+    $m_e=qty("9.109e-28", "g")$, and
+    $e=qty("4.803e-10", "statcoulomb")$. Take
+    $k lambda_D=0.20$ and use the long-wavelength warm approximation
+    $omega_r^2/omega_(p,e)^2 approx 1+3(k lambda_D)^2$.
+    Determine $lambda_D$, $k$, and $omega_r$.
+
+    Numerical result: $lambda_D approx qty("2.35e-2", "cm")$,
+    $k approx qty("8.51", "cm^-1")$, and
+    $omega_r/omega_(p,e) approx 1.06$ or
+    $omega_r approx qty("5.97e9", "s^-1")$.
+  ]
 
   #interpretation(
     [The kinetic correction has two parts],
@@ -239,8 +239,6 @@
     collisionless energy exchange.]
   )
 
-  #hot-velocity-space-slopes
-
   #governing-law(
     [Slope criterion],
     [For a weakly damped or growing root,
@@ -254,21 +252,6 @@
     bump-on-tail slope can give growth. The sign is a physical statement only
     after the Fourier convention and propagation direction are fixed.]
   )
-
-  #rechenbeispiel[
-    For $n_0=qty("1.0e10", "cm^-3")$ and
-    $k_B T_e=qty("1.602e-11", "erg")$, use
-    $lambda_D=qty("2.35e-2", "cm")$ and
-    $omega_(p,e)=qty("5.64e9", "s^-1")$. At $k lambda_D=0.30$, estimate
-    $omega_r/omega_(p,e)$ and the weak-damping Maxwellian rate from
-    $gamma/omega_(p,e) approx -sqrt(pi/8) exp(-3/2)(k lambda_D)^(-3)
-      exp[-1/(2(k lambda_D)^2)]$.
-
-    Numerical result: $omega_r/omega_(p,e) approx 1.13$,
-    $gamma/omega_(p,e) approx -2.00 dot 10^(-2)$,
-    $gamma approx -1.13 dot 10^8 #unit("s^-1")$, and the temporal
-    e-folding time is approximately $8.9 dot 10^(-9) #unit("s")$.
-  ]
 
   #details(
     [Derivation: pole, contour, and local slope],
@@ -313,6 +296,23 @@
     frequency. Thus temporal damping with $gamma<0$ becomes positive spatial
     attenuation for a forward wave with $v_"g">0$.]
   )
+
+  #hot-velocity-space-slopes
+
+  #rechenbeispiel[
+    For $n_0=qty("1.0e10", "cm^-3")$ and
+    $k_B T_e=qty("1.602e-11", "erg")$, use
+    $lambda_D=qty("2.35e-2", "cm")$ and
+    $omega_(p,e)=qty("5.64e9", "s^-1")$. At $k lambda_D=0.30$, estimate
+    $omega_r/omega_(p,e)$ and the weak-damping Maxwellian rate from
+    $gamma/omega_(p,e) approx -sqrt(pi/8) exp(-3/2)(k lambda_D)^(-3)
+      exp[-1/(2(k lambda_D)^2)]$.
+
+    Numerical result: $omega_r/omega_(p,e) approx 1.13$,
+    $gamma/omega_(p,e) approx -2.00 dot 10^(-2)$,
+    $gamma approx -1.13 dot 10^8 #unit("s^-1")$, and the temporal
+    e-folding time is approximately $8.9 dot 10^(-9) #unit("s")$.
+  ]
 
   #interpretation(
     [Resonance is not the same as trapping],
@@ -395,17 +395,6 @@
     which is $1/(2 k_i)$.]
   )
 
-  #animation(
-    "../media/landau-resonance.mp4",
-    "A normalized phase-space sketch shows a wave and a highlighted particle moving at the phase-velocity scale. Beside it, a Maxwellian velocity distribution is marked at the resonant velocity with a negative local slope. Labels identify slower particles gaining energy and faster particles losing energy; the animation is a schematic teaching illustration, not a particle simulation.",
-    caption: [
-      Landau damping is a phase-correlated exchange between a wave and
-      particles near its phase velocity. The animation is schematic and all
-      coordinates are normalized.
-    ],
-    poster: "../media/landau-resonance.png",
-  )
-
   #governing-law(
     [Landau damping estimate],
     [The general weak-rate relation is
@@ -454,6 +443,17 @@
     Holding $omega$ real requires $gamma+k_i v_"g"=0$, hence
     $k_i=-gamma/v_"g"$. This relation is valid only for a simple branch with
     small damping and nonzero group velocity.]
+  )
+
+  #animation(
+    "../media/landau-resonance.mp4",
+    "A normalized phase-space sketch shows a wave and a highlighted particle moving at the phase-velocity scale. Beside it, a Maxwellian velocity distribution is marked at the resonant velocity with a negative local slope. Labels identify slower particles gaining energy and faster particles losing energy; the animation is a schematic teaching illustration, not a particle simulation.",
+    caption: [
+      Landau damping is a phase-correlated exchange between a wave and
+      particles near its phase velocity. The animation is schematic and all
+      coordinates are normalized.
+    ],
+    poster: "../media/landau-resonance.png",
   )
 
   #interpretation(
@@ -535,19 +535,6 @@
     damping, and additional kinetic structure.]
   )
 
-  #two-stream-growth
-
-  #animation(
-    "../media/two-stream-instability.mp4",
-    "A normalized phase-space sketch shows two equal counter-streaming electron beams at positive and negative beam speed, together with a growing electrostatic perturbation. Beside it, the normalized growth rate rises inside the unstable wave-number band, reaches a marked maximum, and returns to zero at the boundary. The scene is schematic and is not a particle-in-cell simulation.",
-    caption: [
-      Counter-streaming beams can convert directed kinetic energy into an
-      electrostatic wave. The growth curve is the cold symmetric two-stream
-      result in normalized variables.
-    ],
-    poster: "../media/two-stream-instability.png",
-  )
-
   #governing-law(
     [Cold two-stream dispersion],
     [With $x=((k v_0)/omega_p)^2$, the dispersion relation is
@@ -560,21 +547,6 @@
     The maximum occurs at $x=3/8$ and has
     $gamma_"max"/omega_p=1/(2 sqrt(2))$.]
   )
-
-  #rechenbeispiel[
-    Let $n_0=qty("1.0e10", "cm^-3")$,
-    $v_0=0.10 c$ with $c=qty("2.998e10", "cm/s")$, and choose
-    $(k v_0)/omega_p=0.50$. Use
-    $e=qty("4.803e-10", "statcoulomb")$ and
-    $m_e=qty("9.109e-28", "g")$. Determine $k$, the wavelength, and the
-    positive growth rate.
-
-    Numerical result: $omega_p approx qty("5.64e9", "s^-1")$,
-    $k approx qty("9.41e-1", "cm^-1")$,
-    $lambda approx qty("6.68", "cm")$,
-    $gamma/omega_p approx 0.341$, and
-    $gamma approx qty("1.92e9", "s^-1")$.
-  ]
 
   #details(
     [Derivation: symmetric beams and the unstable branch],
@@ -612,6 +584,34 @@
     collisions, boundaries, and nonlinear trapping all modify this ideal
     result.]
   )
+
+  #two-stream-growth
+
+  #animation(
+    "../media/two-stream-instability.mp4",
+    "A normalized phase-space sketch shows two equal counter-streaming electron beams at positive and negative beam speed, together with a growing electrostatic perturbation. Beside it, the normalized growth rate rises inside the unstable wave-number band, reaches a marked maximum, and returns to zero at the boundary. The scene is schematic and is not a particle-in-cell simulation.",
+    caption: [
+      Counter-streaming beams can convert directed kinetic energy into an
+      electrostatic wave. The growth curve is the cold symmetric two-stream
+      result in normalized variables.
+    ],
+    poster: "../media/two-stream-instability.png",
+  )
+
+  #rechenbeispiel[
+    Let $n_0=qty("1.0e10", "cm^-3")$,
+    $v_0=0.10 c$ with $c=qty("2.998e10", "cm/s")$, and choose
+    $(k v_0)/omega_p=0.50$. Use
+    $e=qty("4.803e-10", "statcoulomb")$ and
+    $m_e=qty("9.109e-28", "g")$. Determine $k$, the wavelength, and the
+    positive growth rate.
+
+    Numerical result: $omega_p approx qty("5.64e9", "s^-1")$,
+    $k approx qty("9.41e-1", "cm^-1")$,
+    $lambda approx qty("6.68", "cm")$,
+    $gamma/omega_p approx 0.341$, and
+    $gamma approx qty("1.92e9", "s^-1")$.
+  ]
 
   #interpretation(
     [An unstable mode is a branch conversion],
@@ -701,8 +701,6 @@
     nonzero $n$ are cyclotron harmonics.]
   )
 
-  #hot-magnetized-resonance
-
   #governing-law(
     [Doppler-shifted cyclotron resonance],
     [The hot magnetized response contains denominators of the form
@@ -717,23 +715,6 @@
     damped, amplified, or strongly refracted near a resonance even when its
     cold-fluid counterpart is smooth.]
   )
-
-  #rechenbeispiel[
-    For electrons in a $B_0=qty("100", "G")$ field use
-    $omega_"ce"=qty("1.76e9", "s^-1")$ as the positive electron gyrofrequency
-    magnitude and $Omega_e=-omega_"ce"$. Let
-    $omega/omega_"ce"=0.80$ and
-    $k_"parallel" v_"te"/omega_"ce"=1.50$, with
-    $v_"te"=qty("1.88e8", "cm/s")$. Report the resonant parallel velocities
-    for $n=0$ and $n=-1$, normalized by $v_"te"$, and give
-    $k_"parallel"$ and $omega$.
-
-    Numerical result: for $n=0$,
-    $v_"parallel,res"/v_"te"=0.533$; for $n=-1$,
-    $v_"parallel,res"/v_"te"=-0.133$;
-    $k_"parallel" approx qty("14.0", "cm^-1")$ and
-    $omega approx qty("1.41e9", "s^-1")$.
-  ]
 
   #details(
     [Derivation: gyroangle harmonics and resonant denominators],
@@ -773,6 +754,25 @@
     growth or produce strong absorption. Sending $B_0 -> 0$ removes the
     harmonic spacing and recovers the unmagnetized velocity-space response.]
   )
+
+  #hot-magnetized-resonance
+
+  #rechenbeispiel[
+    For electrons in a $B_0=qty("100", "G")$ field use
+    $omega_"ce"=qty("1.76e9", "s^-1")$ as the positive electron gyrofrequency
+    magnitude and $Omega_e=-omega_"ce"$. Let
+    $omega/omega_"ce"=0.80$ and
+    $k_"parallel" v_"te"/omega_"ce"=1.50$, with
+    $v_"te"=qty("1.88e8", "cm/s")$. Report the resonant parallel velocities
+    for $n=0$ and $n=-1$, normalized by $v_"te"$, and give
+    $k_"parallel"$ and $omega$.
+
+    Numerical result: for $n=0$,
+    $v_"parallel,res"/v_"te"=0.533$; for $n=-1$,
+    $v_"parallel,res"/v_"te"=-0.133$;
+    $k_"parallel" approx qty("14.0", "cm^-1")$ and
+    $omega approx qty("1.41e9", "s^-1")$.
+  ]
 
   #interpretation(
     [Cold branches are organizing limits],
