@@ -105,6 +105,26 @@
 
   #collision-regimes
 
+  #rechenbeispiel[
+    Consider a test population moving through stationary targets with
+    $n_b=qty("1.0e13", "cm^-3")$,
+    $sigma_(a b)=qty("2.0e-15", "cm^2")$, representative relative speed
+    $v_"rel"=qty("1.0e7", "cm/s")$, and macroscopic length
+    $L=qty("1.0e3", "cm")$ in Gaussian CGS.
+
+    Assumptions: independent binary encounters, speed-independent effective
+    cross section, and the fixed-speed convention
+    $nu_(a b)=n_b sigma_(a b)v_"rel"$.
+
+    Target: report the collision frequency, collision time, mean free path,
+    and Knudsen number.
+
+    Numerical result: $nu_(a b)=qty("2.0e5", "s^-1")$,
+    $tau_(a b)=qty("5.0e-6", "s")$,
+    $lambda_(a b)=qty("5.0e1", "cm")$, and
+    $K_"n"=0.050$ (dimensionless).
+  ]
+
   #interpretation(
     [A collision frequency is an averaged observable],
     [The same particles have a distribution of relative speeds and scattering
