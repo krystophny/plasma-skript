@@ -207,7 +207,7 @@
 
   The momentum-transfer cross section is the angle-weighted quantity:
 
-  $ sigma_"mt"(v)=integral (1-cos chi) dv(sigma,Omega) dif Omega $
+  $ sigma_"mt"(v)=integral (1-cos chi) (dif sigma)/(dif Omega) dif Omega $
 
   It weights a scattering event by the fraction of directed momentum removed.
   A collision that changes the direction only slightly can have a sizeable
@@ -251,8 +251,13 @@
     Given a weakly ionized gas with neutral density
     $n_"n"=qty("2.0e14", "cm^-3")$, momentum-transfer cross section
     $sigma_"mt,en"=qty("2.0e-15", "cm^2")$, and representative electron
-    speed $v_"e"=qty("1.0e7", "cm/s")$, determine the effective collision
-    frequency and mean free path.
+    speed $v_"e"=qty("1.0e7", "cm/s")$.
+
+    Assumptions: stationary neutrals, a fixed representative electron speed,
+    and the momentum-transfer rate
+    $nu_"en"=n_"n"sigma_"mt,en"v_"e"$.
+
+    Target: report the effective collision frequency and mean free path.
 
     Numerical result: $nu_"en"=qty("4.0e6", "s^-1")$ and
     $lambda_"en"=qty("2.5e0", "cm")$.
@@ -328,7 +333,8 @@
     #unit("g"), relative speed is in #unit("cm/s"), and the impact parameter
     $b_90$ and Debye length $lambda_D$ are in #unit("cm"). The Coulomb
     logarithm $ln Lambda$ and plasma parameter $Lambda$ are dimensionless;
-    collision frequencies are in #unit("s^-1").
+    thermal energy $k_B T_s$ is in #unit("erg"), and collision frequencies are
+    in #unit("s^-1").
   ]
 
   #assumption(
@@ -414,13 +420,18 @@
     $m_"e"=qty("9.109e-28", "g")$, and
     $⟨v_"e"⟩
       =qty("2.12e8", "cm/s")$.
-    Determine $lambda_D$, $Lambda$, $ln Lambda$, $nu_(e i)$ using the
+
+    Assumptions: weak coupling $Lambda >> 1$, classical Coulomb scattering,
+    a Debye upper cutoff, the heavy-ion approximation, and the Maxwellian
+    mean-speed convention stated above.
+
+    Target: report $lambda_D$, $Lambda$, $ln Lambda$, $nu_(e i)$ using the
     collision-frequency convention above, and $lambda_(e i)$.
 
     Numerical result: $lambda_D=qty("2.35e-2", "cm")$,
     $Lambda=qty("1.30e5", "1")$, $ln Lambda=qty("11.8", "1")$,
-    $nu_(e i)=qty("2.54e3", "s^-1")$, and
-    $lambda_(e i)=qty("8.35e4", "cm")$.
+    $nu_(e i)=qty("3.60e3", "s^-1")$, and
+    $lambda_(e i)=qty("5.89e4", "cm")$.
   ]
 
   #interpretation(
@@ -557,13 +568,18 @@
   #rechenbeispiel[
     Using the Coulomb rate from the previous section for
     $n_"e"=qty("1.0e10", "cm^-3")$ and
-    $nu_"e i"=qty("2.54e3", "s^-1")$, calculate the scalar resistivity and
+    $nu_"e i"=qty("3.60e3", "s^-1")$, calculate the scalar resistivity and
     DC conductivity in Gaussian CGS with
     $e=qty("4.803e-10", "statC")$ and
     $m_"e"=qty("9.109e-28", "g")$.
 
-    Numerical result: $eta_"Sp"=qty("1.00e-15", "s")$ and
-    $sigma_"dc"=qty("9.97e14", "s^-1")$.
+    Assumptions: quasi-neutral singly charged hydrogen, scalar linear
+    electron--ion drag, and no magnetic-field or pressure contribution.
+
+    Target: report the scalar resistivity and DC conductivity.
+
+    Numerical result: $eta_"Sp"=qty("1.42e-15", "s")$ and
+    $sigma_"dc"=qty("7.04e14", "s^-1")$.
   ]
 
   #interpretation(
@@ -729,8 +745,14 @@
     $e=qty("4.803e-10", "statC")$,
     $m_"e"=qty("9.109e-28", "g")$, and
     $c=qty("2.998e10", "cm/s")$. With
-    $q_"e"=-e$, determine the signed cyclotron frequency and the three DC
-    tensor entries.
+    $q_"e"=-e$.
+
+    Assumptions: linear homogeneous DC response, immobile ions, a uniform
+    magnetic field along the $z$ axis, and the signed-charge convention
+    $Omega_"e"=q_"e"B_0/(m_"e"c)$.
+
+    Target: report the signed cyclotron frequency and the three DC tensor
+    entries.
 
     Numerical result: $Omega_"e"=qty("-1.76e9", "s^-1")$,
     $sigma_"parallel"=qty("1.01e15", "s^-1")$,
