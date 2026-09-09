@@ -152,6 +152,22 @@
     $omega_(c,e)/omega_(p,e)=0.312$.
   ]
 
+  #rechenbeispiel[
+    At angular frequency $omega=qty("1.00e10", "s^-1")$, use the same
+    fixed-ion plasma and constants as above. Take the electron charge to be
+    $q_(e)=-e$ and evaluate the cold dielectric coefficients
+    $epsilon_(perp)$, $epsilon_(times)$, and $epsilon_(parallel)$.
+
+    Assumptions: homogeneous, cold, collisionless electron response with
+    $bold(B)_0$ along $z$ and Gaussian-CGS conventions.
+
+    Target: report the three dimensionless entries of the dielectric tensor.
+
+    Numerical result: $epsilon_(perp)=qty("0.672", "1")$,
+    $epsilon_(times)=qty("-5.78e-2", "1")$, and
+    $epsilon_(parallel)=qty("0.682", "1")$.
+  ]
+
   #interpretation(
     [Anisotropy is a response, not a label],
     [The tensor is anisotropic even though the equilibrium is homogeneous.
