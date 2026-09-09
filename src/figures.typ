@@ -1,7 +1,7 @@
 #import "@preview/cetz:0.5.2"
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
 #import "@preview/lilaq:0.6.0" as lq
-#import "@preview/physica:0.9.8": grad, pdv, curl
+#import "@preview/physica:0.9.8": grad, pdv, curl, dv
 #import "theme.typ": accent, blue, orange, muted, normalized-axis, normalized-label
 
 #let model-hierarchy = figure(
@@ -1859,16 +1859,16 @@
       )[
         #html.div(class: "mhd-node mhd-node-wide")[
           #html.strong[Velocity-space slope at $v_"phi"$]
-          #html.span[the resonant denominator samples $dif f_0/dif v$]
+          #html.span[the resonant denominator samples $dv(f_(0),v)$]
         ]
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ideal")[
             #html.strong[Maxwellian]
-            #html.span[$dif f_0/dif v<0$ → damping]
+            #html.span[$dv(f_(0),v)<0$ → damping]
           ]
           #html.div(class: "mhd-node mhd-node-ohm")[
             #html.strong[Bump-on-tail]
-            #html.span[$dif f_0/dif v>0$ → possible growth]
+            #html.span[$dv(f_(0),v)>0$ → possible growth]
           ]
         ]
         #html.div(class: "mhd-arrow")[resonant particles exchange energy with the wave]

@@ -12,7 +12,8 @@
     distribution function becomes part of the response. This chapter builds
     that kinetic response from the Vlasov equation, identifies resonant
     particles, derives collisionless damping and two-stream growth, and then
-    extends the resonance picture to a magnetized plasma.
+    extends the resonance picture to a magnetized plasma, following the hot-
+    plasma treatment in @bittencourt2004.
   ]
 
   #callout(
@@ -62,9 +63,9 @@
   #definition(
     [Kinetic perturbation],
     [The collisionless kinetic equation for species $s$ is
-    $pdv(f_s,t)+bold(v) dot grad_(bold(r))(f_s)+
+    $pdv(f_s,t)+bold(v) dot grad(f_s)+
       (q_s/m_s) (bold(E)+(bold(v) times bold(B))/c) dot
-      grad_(bold(v))(f_s)=0$.
+      pdv(f_s,bold(v))=0$.
     Expand
     $f_s=f_(s,0)(bold(v))+epsilon f_(s,1)(bold(r),bold(v),t)$,
     $bold(E)=epsilon bold(E)_1$, and use
@@ -81,7 +82,7 @@
     $epsilon_(L)(omega,bold(k))=1+
       sum_s (4 pi q_s^2)/(m_s k^2)
       integral_(-infinity)^infinity
-      [bold(k) dot grad_(bold(v))(f_(s,0)(bold(v)))]/
+      [bold(k) dot pdv(f_(s,0)(bold(v)),bold(v))]/
       [omega-bold(k) dot bold(v)] dif^3 bold(v)=0$.
     The integral is evaluated with the Landau contour when the pole lies on
     the real velocity path. For an electron Maxwellian,
@@ -97,26 +98,26 @@
     [Derivation: Vlasov response, Poisson, and the Maxwellian limit],
     [Insert the perturbation expansion into the Vlasov equation and retain
     first-order terms. With $bold(B)_0=bold(0)$, the linear equation is
-    $pdv(f_(s,1),t)+bold(v) dot grad_(bold(r))(f_(s,1))+
-      q_s/m_s bold(E)_1 dot grad_(bold(v))(f_(s,0))=0$.
+    $pdv(f_(s,1),t)+bold(v) dot grad(f_(s,1))+
+      q_s/m_s bold(E)_1 dot pdv(f_(s,0),bold(v))=0$.
     Applying the Fourier replacements $pdv(f,t) -> -i omega f$ and
-    $grad_(bold(r))(f) -> i bold(k) f$ gives
+    $grad(f) -> i bold(k) f$ gives
     $i (bold(k) dot bold(v)-omega) tilde(f)_(s,1)+
-      q_s/m_s bold(E)_1 dot grad_(bold(v))(f_(s,0))=0$.
+      q_s/m_s bold(E)_1 dot pdv(f_(s,0),bold(v))=0$.
     Therefore
     $tilde(f)_(s,1)=(-i q_s)/m_s
-      [bold(E)_1 dot grad_(bold(v))(f_(s,0))]/
+      [bold(E)_1 dot pdv(f_(s,0),bold(v))]/
       [omega-bold(k) dot bold(v)]$.
 
     For an electrostatic wave choose a potential amplitude with
     $bold(E)_1=-i bold(k) phi_1$. The perturbed charge density is
     $rho_1=sum_s q_s integral tilde(f)_(s,1) dif^3 bold(v)$.
     Substitution gives
-    $rho_1=-sum_s q_s^2/m_s phi_1
-      integral [bold(k) dot grad_(bold(v))(f_(s,0))]/
+    $rho_1=-sum_s (q_s^2 phi_1)/m_s
+      integral [bold(k) dot pdv(f_(s,0),bold(v))]/
       [omega-bold(k) dot bold(v)] dif^3 bold(v)$.
     Poisson's equation in Gaussian CGS is
-    $div_(bold(r))(bold(E)_1)=4 pi rho_1$,
+    $div(bold(E)_1)=4 pi rho_1$,
     or $k^2 phi_1=4 pi rho_1$ after the Fourier substitution. A nonzero
     potential then requires the displayed $epsilon_L=0$ condition.
 
@@ -148,13 +149,15 @@
     $k_B T_e=qty("1.602e-11", "erg")$,
     $m_e=qty("9.109e-28", "g")$, and
     $e=qty("4.803e-10", "statcoulomb")$. Take
-    $k lambda_D=0.20$ and use the long-wavelength warm approximation
-    $omega_r^2/omega_(p,e)^2 approx 1+3(k lambda_D)^2$.
+    #normalized-label[$k lambda_D=qty("0.20", "1")$] and use the
+    long-wavelength warm approximation
+    #normalized-label[$omega_r^2/omega_(p,e)^2 approx
+      1+3(k lambda_D)^2$].
     Determine $lambda_D$, $k$, and $omega_r$.
 
     Numerical result: $lambda_D approx qty("2.35e-2", "cm")$,
     $k approx qty("8.51", "cm^-1")$, and
-    $omega_r/omega_(p,e) approx 1.06$ or
+    #normalized-label[$omega_r/omega_(p,e) approx qty("1.06", "1")$] or
     $omega_r approx qty("5.97e9", "s^-1")$.
   ]
 
@@ -303,15 +306,18 @@
     For $n_0=qty("1.0e10", "cm^-3")$ and
     $k_B T_e=qty("1.602e-11", "erg")$, use
     $lambda_D=qty("2.35e-2", "cm")$ and
-    $omega_(p,e)=qty("5.64e9", "s^-1")$. At $k lambda_D=0.30$, estimate
-    $omega_r/omega_(p,e)$ and the weak-damping Maxwellian rate from
-    $gamma/omega_(p,e) approx -sqrt(pi/8) exp(-3/2)(k lambda_D)^(-3)
-      exp[-1/(2(k lambda_D)^2)]$.
+    $omega_(p,e)=qty("5.64e9", "s^-1")$. At
+    #normalized-label[$k lambda_D=qty("0.30", "1")$], estimate
+    #normalized-label[$omega_r/omega_(p,e)$] and the weak-damping Maxwellian
+    rate from
+    #normalized-label[$gamma/omega_(p,e) approx -sqrt(pi/8) exp(-3/2)
+      (k lambda_D)^(-3) exp[-1/(2(k lambda_D)^2)]$].
 
-    Numerical result: $omega_r/omega_(p,e) approx 1.13$,
-    $gamma/omega_(p,e) approx -2.00 dot 10^(-2)$,
-    $gamma approx -1.13 dot 10^8 #unit("s^-1")$, and the temporal
-    e-folding time is approximately $8.9 dot 10^(-9) #unit("s")$.
+    Numerical result: #normalized-label[$omega_r/omega_(p,e)
+      approx qty("1.13", "1")$],
+    #normalized-label[$gamma/omega_(p,e) approx qty("-2.00e-2", "1")$],
+    $gamma approx qty("-1.13e8", "s^-1")$, and the temporal e-folding time
+    is approximately $qty("8.9e-9", "s")$.
   ]
 
   #interpretation(
@@ -613,8 +619,9 @@
 
   #rechenbeispiel[
     Let $n_0=qty("1.0e10", "cm^-3")$,
-    $v_0=0.10 c$ with $c=qty("2.998e10", "cm/s")$, and choose
-    $(k v_0)/omega_p=0.50$. Use
+    #normalized-label[$v_0/c=qty("0.10", "1")$] with
+    $c=qty("2.998e10", "cm/s")$, and choose
+    #normalized-label[$(k v_0)/omega_p=qty("0.50", "1")$]. Use
     $e=qty("4.803e-10", "statcoulomb")$ and
     $m_e=qty("9.109e-28", "g")$. Determine $k$, the wavelength, and the
     positive growth rate.
@@ -622,7 +629,7 @@
     Numerical result: $omega_p approx qty("5.64e9", "s^-1")$,
     $k approx qty("9.41e-1", "cm^-1")$,
     $lambda approx qty("6.68", "cm")$,
-    $gamma/omega_p approx 0.341$, and
+    #normalized-label[$gamma/omega_p approx qty("0.341", "1")$], and
     $gamma approx qty("1.92e9", "s^-1")$.
   ]
 
@@ -732,9 +739,9 @@
   #details(
     [Derivation: gyroangle harmonics and resonant denominators],
     [The unperturbed characteristic equations in a uniform field are
-    $pdv(v_"parallel",t)=0$,
-    $pdv(v_"perp",t)=0$, and
-    $pdv(theta,t)=Omega_s$.
+    $dv(v_"parallel",t)=0$,
+    $dv(v_"perp",t)=0$, and
+    $dv(theta,t)=Omega_s$.
     A stationary gyrotropic equilibrium therefore satisfies
     $Omega_s pdv(f_(s,0),theta)=0$ and can depend on
     $v_"parallel"$ and $v_"perp"$ but not on $theta$.
@@ -774,15 +781,17 @@
     For electrons in a $B_0=qty("100", "G")$ field use
     $omega_"ce"=qty("1.76e9", "s^-1")$ as the positive electron gyrofrequency
     magnitude and $Omega_e=-omega_"ce"$. Let
-    $omega/omega_"ce"=0.80$ and
-    $k_"parallel" v_"te"/omega_"ce"=1.50$, with
+    #normalized-label[$omega/omega_"ce"=qty("0.80", "1")$] and
+    #normalized-label[$k_"parallel" v_"te"/omega_"ce"=qty("1.50", "1")$],
+    with
     $v_"te"=qty("1.88e8", "cm/s")$. Report the resonant parallel velocities
     for $n=0$ and $n=-1$, normalized by $v_"te"$, and give
     $k_"parallel"$ and $omega$.
 
     Numerical result: for $n=0$,
-    $v_"parallel,res"/v_"te"=0.533$; for $n=-1$,
-    $v_"parallel,res"/v_"te"=-0.133$;
+    #normalized-label[$v_"parallel,res"/v_"te"=qty("0.533", "1")$]; for
+    $n=-1$,
+    #normalized-label[$v_"parallel,res"/v_"te"=qty("-0.133", "1")$];
     $k_"parallel" approx qty("14.0", "cm^-1")$ and
     $omega approx qty("1.41e9", "s^-1")$.
   ]

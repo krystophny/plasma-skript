@@ -664,7 +664,7 @@
     and the CGS MHD momentum equation
     $rho pdv(bold(u),t)
       =-grad(p)+
-      [curl_(bold(B))times bold(B)]/(4 pi)$.
+      [curl(bold(B))times bold(B)]/(4 pi)$.
     Linearize about $rho=rho_0$, $p=p_0$, $bold(B)=B_0 bold(e)_z$,
     and take a plane wave with $bold(k)=k bold(e)_x$ and
     $bold(u)_1=u_x bold(e)_x$. Continuity gives
