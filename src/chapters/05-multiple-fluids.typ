@@ -309,7 +309,7 @@
 
   #exam-prompts(
     (
-      [Write down the two-fluid equations of a hydrogen plasma.],
+      [(a) Write down the two-fluid equations of a hydrogen plasma.],
     ),
     [Plasma Physics Exam.pdf, p. 3],
   )
@@ -609,7 +609,7 @@
 
   #exam-prompts(
     (
-      [What is the diamagnetic drift? Derive and interpret it. How does it
+      [(b) What is the diamagnetic drift? Derive and interpret it. How does it
       result in a diamagnetic current?],
     ),
     [Plasma Physics Exam.pdf, p. 3],

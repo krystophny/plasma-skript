@@ -161,7 +161,7 @@
 
   #exam-prompts(
     (
-      [How are single-fluid mass, charge, current density, pressure and mass velocity defined?],
+      [(a) How are single-fluid mass, charge, current density, pressure and mass velocity defined?],
     ),
     [Plasma Physics Exam.pdf, p. 3, section 6(a)],
   )
@@ -350,8 +350,8 @@
 
   #exam-prompts(
     (
-      [Sketch the derivation of Ohm's law. Where does the current term finally come from? What is the simplified form?],
-      [Relate collisional drag force to the current to get the Spitzer resistivity in terms of collision frequency.],
+      [(c) Sketch the derivation of Ohm’s law. Where does the current term finally come from? What’s the simplified form?],
+      [(d) Relate collisional drag force to the current to get the Spitzer resistivity in terms of collision frequency.],
     ),
     [Plasma Physics Exam.pdf, p. 3, section 6(c)--(d)],
   )
@@ -549,7 +549,7 @@
 
   #exam-prompts(
     (
-      [Write down the linearized single-fluid MHD equations.],
+      [(b) Write down the linearized single-fluid MHD equations.],
     ),
     [Plasma Physics Exam.pdf, p. 3, section 6(b)],
   )
@@ -725,8 +725,8 @@
 
   #exam-prompts(
     (
-      [Sketch the derivation of the frozen-flux theorem.],
-      [Derive the diffusion equation for the B field and estimate the timescale.],
+      [(e) Sketch the derivation of the frozen-flux theorem.],
+      [(f) Derive the diffusion equation for the B field and estimate the timescale.],
     ),
     [Plasma Physics Exam.pdf, p. 3, section 6(e)--(f)],
   )
@@ -975,7 +975,7 @@
 
   #exam-prompts(
     (
-      [Write down and explain the static MHD equilibrium equation.],
+      [(g) Write down and explain the static MHD equilibrium equation.],
     ),
     [Plasma Physics Exam.pdf, p. 3, section 6(g)],
   )

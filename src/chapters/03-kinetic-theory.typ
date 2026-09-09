@@ -186,8 +186,8 @@
 
   #exam-prompts(
     (
-      [3(a) What’s the difference between a gas and a plasma in terms of collisions?],
-      [3(b) What’s the mean free path and how is it related to the collision frequency?],
+      [(a) What’s the difference between a gas and a plasma in terms of collisions?],
+      [(b) What’s the mean free path and how is it related to the collision frequency?],
     ),
     [Plasma Physics Exam.pdf, p. 2],
   )
@@ -326,7 +326,7 @@
 
   #exam-prompts(
     (
-      [3(c) What’s the meaning of the distribution function?],
+      [(c) What’s the meaning of the distribution function?],
     ),
     [Plasma Physics Exam.pdf, p. 2],
   )
@@ -479,8 +479,8 @@
 
   #exam-prompts(
     (
-      [3(d) Sketch how the distribution function changes over time due to fluxes in phase-space (also collisions, see Fig. 3.3)],
-      [3(e) What is a convective derivative in terms of Euler and Lagrange picture?],
+      [(d) Sketch how the distribution function changes over time due to fluxes in phase-space (also collisions, see Fig. 3.3)],
+      [(e) What is a convective derivative in terms of Euler and Lagrange picture?],
     ),
     [Plasma Physics Exam.pdf, p. 2],
   )
@@ -642,7 +642,7 @@
 
   #exam-prompts(
     (
-      [3(f) Write down and explain the convective and conservative variant of the plasma kinetic (Boltzmann) equation. Why can one transform one into the other?],
+      [(f) Write down and explain the convective and conservative variant of the plasma kinetic (Boltzmann) equation. Why can one transform one into the other?],
     ),
     [Plasma Physics Exam.pdf, p. 2],
   )

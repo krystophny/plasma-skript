@@ -160,8 +160,8 @@
 
   #exam-prompts(
     (
-      [How are particle density, mass density and charge density computed from a given (one-particle) distribution function f(t,x,v)?],
-      [How are species fluid velocity and pressure tensor computed starting from a kinetic description?],
+      [(a) How are particle density, mass density and charge density computed from a given (one-particle) distribution function f(t,x,v)?],
+      [(b) How are species fluid velocity and pressure tensor computed starting from a kinetic description?],
     ),
     [Plasma Physics Exam.pdf, p. 2],
   )
@@ -331,7 +331,7 @@
 
   #exam-prompts(
     (
-      [How do fluid equations follow from the Boltzmann equation? Perform the derivation for the continuity equation.],
+      [(c) How do fluid equations follow from the Boltzmann equation? Perform the derivation for the continuity equation.],
     ),
     [Plasma Physics Exam.pdf, p. 2],
   )
@@ -758,8 +758,8 @@
 
   #exam-prompts(
     (
-      [Give the key steps of the derivation of momentum and heat transport equation.],
-      [How are pressure tensor and scalar pressure and their divergence/gradient related?],
+      [(d) Give the key steps of the derivation of momentum and heat transport equation.],
+      [(e) How are pressure tensor and scalar pressure and their divergence/gradient related?],
     ),
     [Plasma Physics Exam.pdf, p. 3],
   )
@@ -946,9 +946,9 @@
 
   #exam-prompts(
     (
-      [How can one empirically model the collision term? In which equations does it stay or disappear and why?],
-      [What is the difference between cold and warm plasma model?],
-      [How can one close the hierarchy of fluid equations to avoid requiring a heat transport law?],
+      [(f) How can one empirically model the collision term? In which equations does it stay or disappear and why?],
+      [(g) What is the difference between cold and warm plasma model?],
+      [(h) How can one close the hierarchy of fluid equations to avoid requiring a heat transport law?],
     ),
     [Plasma Physics Exam.pdf, p. 3],
   )

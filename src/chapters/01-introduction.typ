@@ -107,8 +107,8 @@
 
   #exam-prompts(
     (
-      [1(a) At which temperature does matter enter the plasma state?],
-      [1(m) What is a Boltzmann distribution and how is it related to equilibrium states?],
+      [(a) At which temperature does matter enter the plasma state?],
+      [(m) What is a Boltzmann distribution and how is it related to equilibrium states?],
     ),
     [Plasma Physics Exam.pdf, p. 1],
   )
@@ -299,10 +299,10 @@
 
   #exam-prompts(
     (
-      [1(b) Describe some typical plasmas in nature and technology (Fig. 1.3).],
-      [1(c) What are characteristic phenomena in plasmas?],
-      [1(g) List features of an ideal plasma.],
-      [1(h) What is a quantum degenerate plasma and where does it appear?],
+      [(b) Describe some typical plasmas in nature and technology (Fig. 1.3).],
+      [(c) What are characteristic phenomena in plasmas?],
+      [(g) List features of an ideal plasma.],
+      [(h) What is a quantum degenerate plasma and where does it appear?],
     ),
     [Plasma Physics Exam.pdf, p. 1],
   )
@@ -424,7 +424,9 @@
     $m_e = qty("9.109e-28", "g")$,
     $m_i = qty("1.673e-24", "g")$, $e = 4.803 dot 10^(-10)$ statcoulomb,
     $k_B = qty("1.381e-16", "erg/K")$, and
-    $c = qty("2.998e10", "cm/s")$.
+    $c = qty("2.998e10", "cm/s")$. Take the perpendicular speed to be the
+    thermal speed, $v_("perp,s") = v_("th,s") = sqrt((2 k_B T_s)/m_s)$, for each
+    species.
 
     Target: report $lambda_D$, $omega_(p,e)$, $rho_e$, and $rho_i$.
 
@@ -438,8 +440,13 @@
     Context: use a representative thermonuclear hydrogen plasma with
     $n_e = qty("1e14", "cm^-3")$, $T_e = qty("1e8", "K")$,
     $T_i = qty("1e8", "K")$, and $B = qty("5e4", "G")$. Assume
-    singly charged ions, $n_i = n_e$, and use the same constants and thermal
-    speed convention as in the preceding example.
+    singly charged ions, $n_i = n_e$. Use
+    $m_e = qty("9.109e-28", "g")$,
+    $m_i = qty("1.673e-24", "g")$, $e = 4.803 dot 10^(-10)$ statcoulomb,
+    $k_B = qty("1.381e-16", "erg/K")$, and
+    $c = qty("2.998e10", "cm/s")$. Take the perpendicular speed to be the
+    thermal speed, $v_("perp,s") = v_("th,s") = sqrt((2 k_B T_s)/m_s)$, for each
+    species.
 
     Target: report $lambda_D$, $omega_(p,e)$, $omega_(c,e)$,
     $omega_(c,i)$, $rho_e$, and $rho_i$.
@@ -462,8 +469,8 @@
 
   #exam-prompts(
     (
-      [1(i) Estimate the plasma frequency $omega_p$ from thermal velocity $v_t$ and Debye length $lambda_D$.],
-      [1(j) Give rough values of particle density, temperature, plasma frequency, gyrofrequency (electrons, ions) and Debye length and gyroradius (thermal electrons, ion) in a thermonuclear plasma.],
+      [(i) Estimate the plasma frequency $omega_p$ from thermal velocity $v_t$ and Debye length $lambda_D$.],
+      [(j) Give rough values of particle density, temperature, plasma frequency, gyrofrequency (electrons, ions) and Debye length and gyroradius (thermal electrons, ion) in a thermonuclear plasma.],
     ),
     [Plasma Physics Exam.pdf, p. 1],
   )
@@ -623,8 +630,8 @@
 
   #exam-prompts(
     (
-      [1(d) A spherical region of complete charge separation has a potential $Phi(r) = (N q_e / epsilon_0) r^2$ at its boundary. What size can such a region roughly have in a thermal plasma of temperature $T$ (potential energy = thermal energy)?],
-      [1(e) Describe and give an overview of the derivation for Debye shielding.],
+      [(d) A spherical region of complete charge separation has a potential $Phi(r) = (N q_e / epsilon_0) r^2$ at its boundary. What size can such a region roughly have in a thermal plasma of temperature $T$ (potential energy = thermal energy)?],
+      [(e) Describe and give an overview of the derivation for Debye shielding.],
     ),
     [Plasma Physics Exam.pdf, p. 1],
   )
@@ -746,8 +753,7 @@
 
   #exam-prompts(
     (
-      [1(f) Describe and derive electron plasma oscillations.],
-      [1(i) Estimate the plasma frequency $omega_p$ from thermal velocity $v_t$ and Debye length $lambda_D$.],
+      [(f) Describe and derive electron plasma oscillations.],
     ),
     [Plasma Physics Exam.pdf, p. 1],
   )
@@ -889,8 +895,8 @@
 
   #exam-prompts(
     (
-      [1(k) Describe the most complete plasma model? (All particles interacting with electromagnetic forces)],
-      [1(l) What kind of models can be used for plasma and how are they related?],
+      [(k) Describe the most complete plasma model? (All particles interacting with electromagnetic forces)],
+      [(l) What kind of models can be used for plasma and how are they related?],
     ),
     [Plasma Physics Exam.pdf, p. 1],
   )

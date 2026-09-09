@@ -96,8 +96,8 @@
 
   #exam-prompts(
     (
-      [2(a) What are the main differences between the electric and magnetic force acting on a charged particle? How does a background magnetic field $B$ change the effect of an electric field on particle orbits if it is parallel or perpendicular to $B$?],
-      [2(b) Compute the gyroradius by balancing centrifugal force and Lorentz force. Draw the direction of the gyration for ions/electrons if the $B$ field points inside the paper plane.],
+      [(a) What are the main differences between the electric and magnetic force acting on a charged particle? How does a background magnetic field $B$ change the effect of an electric field on particle orbits if it is parallel or perpendicular to $B$?],
+      [(b) Compute the gyroradius by balancing centrifugal force and Lorentz force. Draw the direction of the gyration for ions/electrons if the $B$ field points inside the paper plane.],
     ),
     [Plasma Physics Exam.pdf, p. 2],
   )
@@ -221,8 +221,8 @@
 
   #exam-prompts(
     (
-      [2(c) Derive the drift velocity in a magnetized plasma for a general homogeneous force.],
-      [2(d) What is the $E times B$ drift?],
+      [(c) Derive the drift velocity in a magnetized plasma for a general homogeneous force.],
+      [(d) What is the $E times B$ drift?],
     ),
     [Plasma Physics Exam.pdf, p. 2],
   )
@@ -371,8 +371,7 @@
 
   #exam-prompts(
     (
-      [2(e) How are particle orbits approximated in a magnetized plasma and how is the particle motion decomposed and averaged in a not fully homogeneous plasma? What are the conditions that such an approximation is applicable?],
-      [2(f) How is the magnetic moment $mu$ defined and how does the grad-B-drift follow from $F = -mu grad B$?],
+      [(e) How are particle orbits approximated in a magnetized plasma and how is the particle motion decomposed and averaged in a not fully homogeneous plasma? What are the conditions that such an approximation is applicable?],
     ),
     [Plasma Physics Exam.pdf, p. 2],
   )
@@ -552,10 +551,10 @@
 
   #exam-prompts(
     (
-      [2(f) How is the magnetic moment $mu$ defined and how does the grad-B-drift follow from $F = -mu grad B$?],
-      [2(g) Draw and explain a magnetic mirror.],
-      [2(h) What is the curvature drift?],
-      [2(i) What drifts do you know in magnetized plasmas?],
+      [(f) How is the magnetic moment $mu$ defined and how does the grad-B-drift follow from $F = -mu grad B$?],
+      [(g) Draw and explain a magnetic mirror.],
+      [(h) What is the curvature drift?],
+      [(i) What drifts do you know in magnetized plasmas?],
     ),
     [Plasma Physics Exam.pdf, p. 2],
   )
