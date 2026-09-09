@@ -28,7 +28,7 @@ class MomentHierarchy(Scene):
 
         title = Text("From distribution to fluid moments", color=INK, font_size=31)
         subtitle = Text(
-            "schematic hierarchy; all quantities are labelled, not measured",
+            "schematic hierarchy · normalized quantities use unit [1]",
             color=MUTED,
             font_size=19,
         )
