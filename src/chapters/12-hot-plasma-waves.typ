@@ -456,6 +456,19 @@
     poster: "../media/landau-resonance.png",
   )
 
+  #rechenbeispiel[
+    For a forward packet use a temporal rate
+    $gamma=-qty("1.13e8", "s^-1")$ and group velocity
+    $v_"g"=qty("1.00e8", "cm/s")$ in Gaussian CGS. Use the weak-rate
+    conversion $k_i approx (-gamma)/v_"g"$, with
+    $L_"amp"=1/k_i$ and $tau_"d"=1/abs(gamma)$. Determine the spatial
+    attenuation rate, amplitude attenuation length, and temporal damping time.
+
+    Numerical result: $k_i approx qty("1.13", "cm^-1")$,
+    $L_"amp" approx qty("8.85e-1", "cm")$, and
+    $tau_"d" approx qty("8.85e-9", "s")$.
+  ]
+
   #interpretation(
     [Damping is a collective collisionless process],
     [Landau damping does not require binary collisions or entropy production
