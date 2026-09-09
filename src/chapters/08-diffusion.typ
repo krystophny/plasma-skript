@@ -99,6 +99,23 @@
     directions add, giving $⟨abs(bold(r))^2⟩=6 D t$ in three dimensions.]
   )
 
+  #governing-law(
+    [A normalized diffusion equation],
+    [Choose reference length $L_0$ in #unit("cm"), time $tau_0$ in
+    #unit("s"), and density $n_0$ in #unit("cm^-3"). Define the reference
+    coefficient $D_0=L_0^2/tau_0$ in #unit("cm^2/s") and the dimensionless
+    variables
+    $bold(xi)=bold(r)/L_0$, $tau=t/tau_0$,
+    $n_("norm")=n/n_0$, and $D_("norm")=D/D_0$.
+    The diffusion equation then has the dimensionless form
+    $pdv(n_("norm"), tau)=div_(bold(xi))
+      (D_("norm") grad_(bold(xi))(n_("norm")))$.
+    For a system length $L$ with $L_("norm")=L/L_0$, the normalized
+    diffusion time is $tau_"D"/tau_0=L_("norm")^2/D_("norm")$.
+    Every dimensional result is recovered by restoring the stated reference
+    scales; no unit is hidden in a normalized axis or coefficient.]
+  )
+
   #random-walk-diffusion
 
   #animation(
