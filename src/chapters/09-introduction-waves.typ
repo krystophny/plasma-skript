@@ -122,6 +122,28 @@
 
   #wave-linearization
 
+  #rechenbeispiel[
+    A homogeneous hydrogen plasma has equilibrium density
+    $n_(e,0)=n_(i,0)=qty("1.0e10", "cm^-3")$, electron temperature energy
+    $k_B T_e=qty("1.602e-12", "erg")$, and a density perturbation with
+    relative amplitude $delta n_e/n_(e,0)=0.020$. Use
+    $e=qty("4.803e-10", "statC")$, $m_e=qty("9.109e-28", "g")$, and a
+    wavelength $lambda=qty("1.0e1", "cm")$ at angular frequency
+    $omega=qty("1.0e10", "s^-1")$.
+
+    Assumptions: cold fixed-ion ordering for the plasma-frequency estimate,
+    small-amplitude perturbation, and Gaussian-CGS dimensional quantities.
+
+    Target: report the perturbation parameter, Debye-scale ordering
+    $k lambda_D$, and frequency ordering $omega/omega_(p,e)$.
+
+    Numerical result: $epsilon=0.020$ (dimensionless),
+    $lambda_D=qty("7.43e-3", "cm")$,
+    $k lambda_D=4.67 dot 10^(-3)$ (dimensionless),
+    $omega_(p,e)=qty("5.64e9", "s^-1")$, and
+    $omega/omega_(p,e)=1.77$ (dimensionless).
+  ]
+
   #interpretation(
     [Linearization is an ordering, not a slogan],
     [The small parameter controls amplitudes, while the ratios
