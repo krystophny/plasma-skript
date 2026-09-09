@@ -121,6 +121,26 @@
 
   #mhd-reduction
 
+  #rechenbeispiel[
+    Context: a quasi-neutral hydrogen plasma has
+    $n_(e)=n_(i)=qty("1.0e10", "cm^-3")$,
+    $m_(e)=qty("9.109e-28", "g")$,
+    $m_(i)=qty("1.673e-24", "g")$,
+    $u_(i,x)=qty("2.0e7", "cm/s")$, and
+    $u_(e,x)=qty("1.5e7", "cm/s")$. Use
+    $e=qty("4.803e-10", "statC")$.
+
+    Assumptions: singly charged species, equal densities, and one-dimensional
+    flows along $x$.
+
+    Target: report the total mass density, mass-weighted velocity, and
+    $x$-directed current density.
+
+    Numerical result: $rho=qty("1.674e-14", "g/cm^3")$,
+    $u_x=qty("2.00e7", "cm/s")$, and
+    $j_x=qty("2.40e7", "statC")$ per #unit("cm^2") per #unit("s").
+  ]
+
   #interpretation(
     [One fluid does not mean one velocity for every species],
     [The mass velocity describes the center-of-mass motion. The current
@@ -293,6 +313,22 @@
   )
 
   #mhd-ohm-balance
+
+  #rechenbeispiel[
+    Context: an electron--ion plasma has
+    $n=qty("1.0e10", "cm^-3")$,
+    $m_(e)=qty("9.109e-28", "g")$,
+    $e=qty("4.803e-10", "statC")$, and
+    $nu_(e i)=qty("2.54e3", "s^-1")$.
+
+    Assumptions: scalar linear electron--ion drag, Gaussian-CGS resistivity,
+    and the Spitzer form $eta=(m_(e)nu_(e i))/(n e^2)$.
+
+    Target: report the scalar resistivity and conductivity.
+
+    Numerical result: $eta=qty("1.00e-15", "s")$ and
+    $sigma=qty("9.97e14", "s^-1")$.
+  ]
 
   #interpretation(
     [The ideal field is a limit, not the starting equation],
@@ -476,6 +512,22 @@
     poster: "../media/exb-drift.png",
   )
 
+  #rechenbeispiel[
+    Context: a uniform equilibrium has
+    $rho_0=qty("1.0e-14", "g/cm^3")$, $p_0=qty("1.0", "erg/cm^3")$,
+    $gamma=5/3$, and a density perturbation
+    $delta rho/rho_0=0.010$.
+
+    Assumptions: ideal, adiabatic, small-amplitude MHD perturbations about a
+    static uniform state.
+
+    Target: report the adiabatic sound speed and pressure perturbation.
+
+    Numerical result: $c_(s)=qty("1.29e7", "cm/s")$,
+    $delta p=qty("1.67e-2", "erg/cm^3")$, and
+    $delta p/p_0=0.0167$ (dimensionless).
+  ]
+
   #interpretation(
     [What the linear system preserves and discards],
     [The linearized equations preserve pressure restoring forces, magnetic
@@ -633,6 +685,25 @@
   )
 
   #mhd-flux-diffusion
+
+  #rechenbeispiel[
+    Context: a magnetic structure has length
+    $L=qty("1.0e3", "cm")$ and bulk speed
+    $U=qty("1.0e7", "cm/s")$. Use scalar resistivity
+    $eta=qty("1.00e-12", "s")$ and
+    $c=qty("2.998e10", "cm/s")$.
+
+    Assumptions: uniform resistivity, divergence-free magnetic field, and the
+    resistive induction ordering stated above.
+
+    Target: report the magnetic diffusivity, advection time, diffusion time,
+    and magnetic Reynolds number.
+
+    Numerical result: $D_(B)=qty("7.15e7", "cm^2/s")$,
+    $tau_(A)=qty("1.00e-4", "s")$,
+    $tau_(D)=qty("1.40e-2", "s")$, and
+    $R_(m)=1.40 dot 10^2$ (dimensionless).
+  ]
 
   #interpretation(
     [Frozen flux is an approximation with a precise failure mode],
@@ -866,6 +937,22 @@
   )
 
   #mhd-force-balance
+
+  #rechenbeispiel[
+    Context: a straight theta-pinch has constant total pressure across its
+    boundary. Inside, let
+    $p_("in")=qty("10.0", "erg/cm^3")$ and
+    $B_(z,"in")=qty("10.0", "G")$; outside, let
+    $B_(z,"out")=qty("12.0", "G")$.
+
+    Assumptions: scalar static equilibrium, straight axial field, and no
+    field-line curvature contribution in the pressure balance.
+
+    Target: report the outside gas pressure and the inside plasma beta.
+
+    Numerical result: $p_("out")=qty("8.25", "erg/cm^3")$ and
+    $beta_("in")=2.51$ (dimensionless).
+  ]
 
   #interpretation(
     [Equilibrium is a geometry constraint],
