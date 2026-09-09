@@ -11,6 +11,8 @@
     inertia are distributed among charged particles and fields. This chapter
     establishes the common language for the later wave chapters: equilibria,
     linearization, plane-wave response, dispersion, and controlled limits.
+    The chapter follows the standard progression from small-amplitude wave
+    properties to non-magnetized plasma modes in @bittencourt2004.
   ]
 
   #callout(
@@ -126,10 +128,10 @@
     A homogeneous hydrogen plasma has equilibrium density
     $n_(e,0)=n_(i,0)=qty("1.0e10", "cm^-3")$, electron temperature energy
     $k_B T_e=qty("1.602e-12", "erg")$, and a density perturbation with
-    relative amplitude $delta n_e/n_(e,0)=0.020$. Use
+    relative amplitude #normalized-label[$delta n_e/n_(e,0)=qty("2.0e-2", "1")$]. Use
     $e=qty("4.803e-10", "statC")$, $m_e=qty("9.109e-28", "g")$, and a
     wavelength $lambda=qty("1.0e1", "cm")$ at angular frequency
-    $omega=qty("1.0e10", "s^-1")$.
+    $omega=qty("1.0e10", "s^-1")$, with $k=(2 pi)/lambda$.
 
     Assumptions: cold fixed-ion ordering for the plasma-frequency estimate,
     small-amplitude perturbation, and Gaussian-CGS dimensional quantities.
@@ -137,11 +139,11 @@
     Target: report the perturbation parameter, Debye-scale ordering
     $k lambda_D$, and frequency ordering $omega/omega_(p,e)$.
 
-    Numerical result: $epsilon=0.020$ (dimensionless),
+    Numerical result: #normalized-label[$epsilon=qty("2.0e-2", "1")$],
     $lambda_D=qty("7.43e-3", "cm")$,
-    $k lambda_D=4.67 dot 10^(-3)$ (dimensionless),
+    #normalized-label[$k lambda_D=qty("4.67e-3", "1")$],
     $omega_(p,e)=qty("5.64e9", "s^-1")$, and
-    $omega/omega_(p,e)=1.77$ (dimensionless).
+    #normalized-label[$omega/omega_(p,e)=qty("1.77", "1")$].
   ]
 
   #interpretation(
@@ -266,7 +268,9 @@
   )
 
   #rechenbeispiel[
-    For a cold hydrogen plasma use
+    Assume a homogeneous, cold, collisionless, longitudinal electrostatic
+    perturbation with fixed ions and Gaussian-CGS quantities. For a cold
+    hydrogen plasma use
     $n_0=qty("1.0e10", "cm^-3")$,
     $e=qty("4.803e-10", "statC")$, and
     $m_e=qty("9.109e-28", "g")$.
@@ -426,15 +430,17 @@
   )
 
   #rechenbeispiel[
-    A cold electromagnetic wave has $omega=2 omega_(p,e)$ in a plasma with
+    Assume the homogeneous, cold, collisionless, unmagnetized, fixed-ion
+    transverse electromagnetic model and Gaussian CGS. A cold electromagnetic
+    wave has #normalized-label[$omega/omega_(p,e)=2$] in a plasma with
     $omega_(p,e)=qty("5.64e9", "s^-1")$ and
     $c=qty("2.998e10", "cm/s")$.
     Determine $k$, the phase velocity, the group velocity, and the wavelength.
 
     Numerical result:
-    $(k c)/omega_(p,e)=1.732$,
-    $v_"phi"/c=1.155$,
-    $v_"g"/c=0.866$,
+    #normalized-label[$(k c)/omega_(p,e)=qty("1.732", "1")$],
+    #normalized-label[$v_"phi"/c=qty("1.155", "1")$],
+    #normalized-label[$v_"g"/c=qty("0.866", "1")$],
     $k=qty("0.326", "cm^-1")$, and
     $lambda=qty("19.3", "cm")$.
   ]
@@ -588,7 +594,9 @@
   #warm-kinetic-limits
 
   #rechenbeispiel[
-    For cold ions and an isothermal electron response use
+    Assume an unmagnetized, electrostatic warm-fluid model with cold ions,
+    an isothermal electron response, quasi-neutral long-wavelength ordering,
+    and Gaussian CGS. For cold ions and an isothermal electron response use
     $k_B T_e=qty("1.602e-11", "erg")$,
     $m_i=qty("1.673e-24", "g")$, and
     $k=qty("1.0e-2", "cm^-1")$.
@@ -598,7 +606,7 @@
     $c_s=qty("3.09e6", "cm/s")$,
     $omega=qty("3.09e4", "s^-1")$,
     $lambda_D=qty("2.35e-2", "cm")$, and
-    $k lambda_D=2.35 dot 10^(-4)$.
+    #normalized-label[$k lambda_D=qty("2.35e-4", "1")$].
   ]
   #interpretation(
     [Fluid and kinetic limits answer different questions],
@@ -701,7 +709,8 @@
   )
   #wave-dispersion
   #rechenbeispiel[
-    A radio source drives a homogeneous cold plasma with
+    Assume a homogeneous, cold, collisionless, unmagnetized, fixed-ion
+    electromagnetic model in Gaussian CGS. A radio source drives a plasma with
     $n_0=qty("1.0e10", "cm^-3")$ and
     $c=qty("2.998e10", "cm/s")$. Classify a drive at
     $omega=qty("4.0e9", "s^-1")$ and another at
@@ -711,7 +720,8 @@
     $omega_(p,e)=qty("5.64e9", "s^-1")$; the lower-frequency drive is
     evanescent with $alpha=qty("1.33e-1", "cm^-1")$. The higher-frequency
     drive is propagating with $k=qty("3.27e-1", "cm^-1")$,
-    $v_"phi"/c=1.15$, and $v_"g"/c=0.866$.
+    #normalized-label[$v_"phi"/c=qty("1.15", "1")$], and
+    #normalized-label[$v_"g"/c=qty("0.866", "1")$].
   ]
   #interpretation(
     [A good plot is a compact argument],
