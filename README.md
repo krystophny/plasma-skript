@@ -57,11 +57,11 @@ The test audits the complete site at mobile, tablet, and wide CSS viewports.
 The NixOS VM check is Linux-only because the packaged Chromium browser is
 Linux-only; macOS development can run it through a Linux builder or CI.
 
-The generated site is in `public/`. Serve that directory with any static file
-server so that the video and stylesheet are available alongside the HTML:
+The generated site is in `public/`. Serve it with the flake app so that the
+video and stylesheet are available alongside the HTML:
 
 ```sh
-python -m http.server --directory public 8000
+nix run .#public-host -- 8000
 ```
 
 The repository includes a GitHub Pages workflow that builds the same bundle
@@ -78,7 +78,7 @@ Contribution and attribution terms are documented in
 Refresh the offline Lilaq documentation snapshot with:
 
 ```sh
-python3 scripts/build-lilaq-pdf.py
+nix run .#build-lilaq-pdf
 ```
 
 The main source is [`src/main.typ`](src/main.typ). Add chapters under

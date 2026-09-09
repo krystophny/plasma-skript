@@ -212,11 +212,13 @@
       #html.h2[Sources and implementation references]
       #html.p[
         Citations are numeric and are generated from the public BibLaTeX
-        database. The semantic HTML follows the typed-HTML reference
-        @typst-html, while scientific notation and unit-bearing quantities use
-        the documented packages @physica and @unify. The books and course PDFs
-        used for reference remain private and are not copied into the public
-        site.
+        database. The Typst reference @typst-reference and typed-HTML
+        reference @typst-html describe the authoring and web output. Scientific
+        notation and unit-bearing quantities use @physica and @unify;
+        diagrams, plots, and highlighted teaching blocks use @cetz @fletcher
+        @lilaq and @frame-it. The Manim documentation @manim describes the
+        animation workflow. The books and course PDFs used for reference remain
+        private and are not copied into the public site.
       ]
       #bibliography(
         "sources.bib",

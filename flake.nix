@@ -47,6 +47,13 @@
           exec bash "${self}/scripts/verify-spec.sh" "$site_dir"
         '';
       };
+      lilaqDocumentationApp = pkgs.writeShellApplication {
+        name = "plasma-build-lilaq-pdf";
+        runtimeInputs = [pkgs.python3] ++ pkgs.lib.optional pkgs.stdenv.hostPlatform.isLinux pkgs.chromium;
+        text = ''
+          exec python3 "${self}/scripts/build-lilaq-pdf.py" "$@"
+        '';
+      };
       mkHostApp = {
         name,
         bind,
@@ -128,6 +135,12 @@
           type = "app";
           meta.description = "Verify a generated public site against SPEC.md";
           program = "${verifySpecApp}/bin/plasma-verify-spec";
+        };
+
+        build-lilaq-pdf = {
+          type = "app";
+          meta.description = "Refresh the ignored offline Lilaq documentation snapshot";
+          program = "${lilaqDocumentationApp}/bin/plasma-build-lilaq-pdf";
         };
 
         local-host = mkHostApp {
