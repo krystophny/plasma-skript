@@ -490,8 +490,10 @@
   #warm-longitudinal-modes
 
   #rechenbeispiel[
-    Let $n_0=qty("1.0e10", "cm^-3")$, $T_e=10 #unit("eV")$,
-    $gamma_e=1$, and use the electron constants from the earlier examples.
+    Let $n_0=qty("1.0e10", "cm^-3")$,
+    $k_B T_e=qty("1.602e-11", "erg")$ (the same energy as
+    $qty("10", "eV")$), $gamma_e=1$, and use the electron constants from
+    the earlier examples.
     At $k lambda_(D,e)=0.80$, determine $lambda_(D,e)$, $k$, and the
     normalized warm plasma-oscillation frequency.
 
@@ -681,7 +683,7 @@
 
   #rechenbeispiel[
     For $n_0=qty("1.0e10", "cm^-3")$, $B_0=qty("100", "G")$,
-    $T_e=T_i=10 #unit("eV")$, and isothermal
+    $k_B T_e=k_B T_i=qty("1.602e-11", "erg")$ (10 eV), and isothermal
     $gamma_e=gamma_i=1$, determine $v_A$, the total-pressure sound speed
     $v_s$, and $v_m$. For $k=qty("1.0e-5", "cm^-1")$, report the parallel
     shear-Alfvén and perpendicular magnetosonic frequencies.

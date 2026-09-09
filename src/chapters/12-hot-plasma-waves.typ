@@ -82,7 +82,7 @@
       sum_s (4 pi q_s^2)/(m_s k^2)
       integral_(-infinity)^infinity
       [bold(k) dot grad_(bold(v))(f_(s,0)(bold(v)))]/
-      [omega-bold(k) dot bold(v)] d^3 v=0$.
+      [omega-bold(k) dot bold(v)] dif^3 bold(v)=0$.
     The integral is evaluated with the Landau contour when the pole lies on
     the real velocity path. For an electron Maxwellian,
     $f_(e,0)(bold(v))=n_0/(pi^(3/2) v_"te"^3)
@@ -99,8 +99,8 @@
     first-order terms. With $bold(B)_0=bold(0)$, the linear equation is
     $pdv(f_(s,1),t)+bold(v) dot grad_(bold(r))(f_(s,1))+
       q_s/m_s bold(E)_1 dot grad_(bold(v))(f_(s,0))=0$.
-    Applying the Fourier replacements $pdv(,t) -> -i omega$ and
-    $grad_(bold(r)) -> i bold(k)$ gives
+    Applying the Fourier replacements $pdv(f,t) -> -i omega f$ and
+    $grad_(bold(r))(f) -> i bold(k) f$ gives
     $i (bold(k) dot bold(v)-omega) tilde(f)_(s,1)+
       q_s/m_s bold(E)_1 dot grad_(bold(v))(f_(s,0))=0$.
     Therefore
@@ -110,11 +110,11 @@
 
     For an electrostatic wave choose a potential amplitude with
     $bold(E)_1=-i bold(k) phi_1$. The perturbed charge density is
-    $rho_1=sum_s q_s integral tilde(f)_(s,1) d^3 v$.
+    $rho_1=sum_s q_s integral tilde(f)_(s,1) dif^3 bold(v)$.
     Substitution gives
     $rho_1=-sum_s q_s^2/m_s phi_1
       integral [bold(k) dot grad_(bold(v))(f_(s,0))]/
-      [omega-bold(k) dot bold(v)] d^3 v$.
+      [omega-bold(k) dot bold(v)] dif^3 bold(v)$.
     Poisson's equation in Gaussian CGS is
     $div_(bold(r))(bold(E)_1)=4 pi rho_1$,
     or $k^2 phi_1=4 pi rho_1$ after the Fourier substitution. A nonzero
@@ -726,10 +726,10 @@
     $Omega_s pdv(f_(s,0),theta)=0$ and can depend on
     $v_"parallel"$ and $v_"perp"$ but not on $theta$.
 
-    Linearize the Vlasov equation about this equilibrium. The streaming and
-    gyroangle pieces of the operator acting on a Fourier harmonic are
-    $pdv(,t)+v_"parallel" pdv(,z)+Omega_s pdv(,theta)
-      -> -i(omega-k_"parallel"v_"parallel"-n Omega_s)$.
+    Linearize the Vlasov equation about this equilibrium. For a Fourier
+    harmonic $f$, the streaming and gyroangle pieces of the operator are
+    $pdv(f,t)+v_"parallel" pdv(f,z)+Omega_s pdv(f,theta)
+      -> -i(omega-k_"parallel"v_"parallel"-n Omega_s) f$.
     If the forcing term for harmonic $n$ is written $S_(s,n)$, its response is
     $f_(s,1,n)=(i S_(s,n))/
       [omega-k_"parallel"v_"parallel"-n Omega_s]$,

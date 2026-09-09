@@ -41,9 +41,9 @@ The shell scripts remain the implementation used by the Nix package and CI;
 development commands should go through the flake apps so their toolchains are
 reproducible.
 
-The flake check builds the site and runs the same artifact checks from a Nix
-source snapshot. The checkout-level verifier additionally checks the Git ignore
-rules for author-only material.
+The flake check builds the site and runs the same source-structure and artifact
+checks from a Nix source snapshot. The checkout-level verifier additionally
+checks the Git ignore rules for author-only material.
 
 On Linux, the flake check also runs a NixOS VM browser integration test. To
 keep its screenshots for visual review, build that check directly:

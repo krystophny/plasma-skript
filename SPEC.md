@@ -382,6 +382,11 @@ The authoring environment is defined by `flake.nix`:
   `nix run .#build-site` and `nix run .#verify-spec -- <built-site>` for
   development and release checks; the shell scripts remain implementation
   details used by the package and CI.
+- The `verify-spec` app checks both the public artifact boundary and the
+  source-level section contract: every chapter must provide matching section,
+  objective, unit-ledger, summary, and knowledge-check blocks, with four
+  knowledge-check questions per section; the summary, optional exam prompt,
+  and knowledge check must occur in that order at the end of each section.
 - `nix flake check` must build the site as a behavioral check.
 - On Linux, `nix flake check` also runs the NixOS VM browser integration test
   against the built site. The test uses real CSS viewport emulation rather

@@ -76,9 +76,9 @@
     $T_s$, the unretarded flux toward a plane is
     $Gamma_(s,0)=n_s sqrt((k_B T_s)/(2 pi m_s))
       =(n_s v_"th,s")/(2 sqrt(pi))
-      =(n_s angle(v_s))/4$,
+      =(n_s v_"mean,s")/4$,
     where $v_"th,s"=sqrt((2 k_B T_s)/m_s)$ and
-    $angle(v_s)=sqrt((8 k_B T_s)/(pi m_s))$. Equal temperatures therefore
+    $v_"mean,s"=sqrt((8 k_B T_s)/(pi m_s))$. Equal temperatures therefore
     give $Gamma_(e,0)/Gamma_(i,0)=sqrt(m_i/m_e)$, even though the
     equilibrium densities can be equal.]
   )
@@ -111,8 +111,8 @@
     $Gamma_(s,0)=n_s sqrt((k_B T_s)/(2 pi m_s))$.
     Substituting $v_"th,s"=sqrt((2 k_B T_s)/m_s)$ gives the second form.
     The mean speed of the same three-dimensional Maxwellian is
-    $angle(v_s)=sqrt((8 k_B T_s)/(pi m_s))$, which gives
-    $Gamma_(s,0)=(n_s angle(v_s))/4$.]
+    $v_"mean,s"=sqrt((8 k_B T_s)/(pi m_s))$, which gives
+    $Gamma_(s,0)=(n_s v_"mean,s")/4$.]
   )
 
   #sheath-structure
@@ -146,8 +146,8 @@
 
   #knowledge-check((
     (
-      question: [Why is the flux to a plane not $n_s angle(v_s)$?],
-      answer: [Only the velocity component normal to the plane contributes, and only particles with positive normal velocity cross the surface. The angular average and half-space restriction together give $Gamma_(s,0)=(n_s angle(v_s))/4$.]
+      question: [Why is the flux to a plane not $n_s v_"mean,s"$?],
+      answer: [Only the velocity component normal to the plane contributes, and only particles with positive normal velocity cross the surface. The angular average and half-space restriction together give $Gamma_(s,0)=(n_s v_"mean,s")/4$.]
     ),
     (
       question: [Why can equal electron and ion densities still produce unequal wall currents?],

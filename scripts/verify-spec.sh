@@ -26,6 +26,97 @@ for required in AGENTS.md SPEC.md .gitignore scripts/build-site.sh; do
   require_file "$repo_root/$required"
 done
 
+# Keep the source-level section contract executable.  These checks run both in
+# a checkout and in the Nix source snapshot, so a site can compile while a new
+# section is still missing one of its required teaching anchors.
+chapter_sources=(
+  01-introduction
+  02-single-particle-motion
+  03-kinetic-theory
+  04-moments
+  05-multiple-fluids
+  06-mhd
+  07-collisions-conductivity
+  08-diffusion
+  09-introduction-waves
+  10-cold-magnetized-waves
+  11-finite-temperature-waves
+  12-hot-plasma-waves
+  13-sheaths-probes
+)
+
+count_matches() {
+  local pattern="$1"
+  local file="$2"
+  local count
+  count="$(rg -o -- "$pattern" "$file" 2>/dev/null | wc -l | tr -d '[:space:]' || true)"
+  printf '%s\n' "${count:-0}"
+}
+
+for chapter in "${chapter_sources[@]}"; do
+  source_file="$repo_root/src/chapters/$chapter.typ"
+  require_file "$source_file"
+  if [[ -f "$source_file" ]]; then
+    sections="$(count_matches '^[[:space:]]*#section-title\[' "$source_file")"
+    objectives="$(count_matches '^[[:space:]]*#objectives\(' "$source_file")"
+    ledgers="$(count_matches '^[[:space:]]*#unit-ledger\[' "$source_file")"
+    summaries="$(count_matches '^[[:space:]]*#summary\[' "$source_file")"
+    checks="$(count_matches '^[[:space:]]*#knowledge-check\(' "$source_file")"
+    questions="$(count_matches '^[[:space:]]*question:' "$source_file")"
+
+    if [[ "$sections" -eq 0 ]]; then
+      fail "$source_file has no section-title blocks"
+    fi
+    for anchor in objectives ledgers summaries checks; do
+      if [[ "${!anchor}" -ne "$sections" ]]; then
+        fail "$source_file has $sections sections but ${!anchor} $anchor"
+      fi
+    done
+    if [[ "$questions" -ne $((4 * checks)) ]]; then
+      fail "$source_file has $checks knowledge checks but $questions questions (expected four per section)"
+    fi
+
+    if ! perl -ne '
+      if (/^(\s*)#section-title\[/) {
+        $bad = 1 if $in_section && !$seen_check;
+        $in_section = 1;
+        $indent = $1;
+        $seen_summary = 0;
+        $seen_exam = 0;
+        $seen_check = 0;
+        next;
+      }
+      next unless $in_section;
+      if (/^\Q$indent\E#summary\[/) {
+        $bad = 1 if $seen_check;
+        $seen_summary = 1;
+        next;
+      }
+      if (/^\Q$indent\E#exam-prompts\(/) {
+        $bad = 1 unless $seen_summary;
+        $bad = 1 if $seen_check;
+        $seen_exam = 1;
+        next;
+      }
+      if (/^\Q$indent\E#knowledge-check\(/) {
+        $bad = 1 unless $seen_summary;
+        $bad = 1 if $seen_check;
+        $seen_check = 1;
+        next;
+      }
+      if ($seen_check && /^\Q$indent\E#/ && !/^\Q$indent\E#chapter-nav\(/) {
+        $bad = 1;
+      }
+    END {
+      $bad = 1 if $in_section && !$seen_check;
+      exit($bad ? 1 : 0);
+    }
+    ' "$source_file"; then
+      fail "$source_file has a section-ordering error or content after a knowledge check"
+    fi
+  fi
+done
+
 # Check the Git boundary in a worktree. Nix evaluates the same script from a
 # source snapshot without .git, so the artifact checks below remain authoritative
 # in that environment and this branch runs in the checkout-based CI job.
