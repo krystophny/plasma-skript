@@ -415,13 +415,13 @@
 
   The normalized free-streaming equation used in the animation is
 
-  $ pdv(f,tau) + eta pdv(f,xi) = 0 $ <kinetic-normalized-streaming>
+  $ pdv(f,tau) + bold(eta) dot grad_(bold(xi)) f = 0 $ <kinetic-normalized-streaming>
 
   #equation-note[
-    Both $xi=bold(r)/L_0$ and $eta=bold(v)/v_0$ are dimensionless. The plotted
-    axes use $x/L_0$ and $v/v_0$. This equation is one-dimensional in space and
-    velocity for visualization, while the physical kinetic equation is
-    three-dimensional in each.
+    Both $bold(xi)=bold(r)/L_0$ and $bold(eta)=bold(v)/v_0$ are dimensionless.
+    In the one-dimensional visualization, the vector equation reduces to
+    $pdv(f,tau)+eta pdv(f,xi)=0$ with $xi=x/L_0$ and $eta=v/v_0$. The physical
+    kinetic equation is three-dimensional in both position and velocity.
   ]
 
   #details(
