@@ -297,6 +297,22 @@
     express the same conservation law.]
   )
 
+  #rechenbeispiel[
+    Context: a uniform singly ionized particle stream has
+    $n_s=qty("1.0e10", "cm^-3")$, normal speed
+    $u_s=qty("2.0e7", "cm/s")$, and reaches a planar collector of area
+    $A=qty("1.0", "cm^2")$.
+
+    Assumptions: steady source-free flow with the velocity normal to the
+    collector.
+
+    Target: report the particle flux $Gamma_s$ and the collection rate
+    $dot(N)_s$.
+
+    Numerical result: $Gamma_s=qty("2.0e17", "cm^-2 s^-1")$ and
+    $dot(N)_s=qty("2.0e17", "s^-1")$.
+  ]
+
   #interpretation(
     [Eulerian reading of continuity],
     [The term $pdv(n_s,t)$ measures accumulation at a fixed position. The
@@ -474,6 +490,20 @@
     The final bracket is zero by mass continuity, so only the species material
     acceleration remains on the left-hand side.]
   )
+
+  #rechenbeispiel[
+    Context: a uniform singly ionized hydrogen plasma has
+    $n_i=qty("1.0e10", "cm^-3")$, $q_i=e=qty("4.803e-10", "statcoulomb")$,
+    and an electric field $E=qty("2.00", "statV/cm")$ along $x$.
+
+    Assumptions: neglect pressure gradients and magnetic forces, and use the
+    electrostatic force density $f_(E,x)=n_i q_i E_x$.
+
+    Target: report the $x$-directed electric force density.
+
+    Numerical result: $f_(E,x)=9.61 #unit("g") #unit("cm^-2") #unit("s^-2")$,
+    equivalently $9.61 #unit("dyn/cm^3")$.
+  ]
 
   #interpretation(
     [Pressure is a momentum flux],
@@ -691,6 +721,23 @@
     by one common warm-fluid closure.]
   )
 
+  #rechenbeispiel[
+    Context: an isotropic hydrogen-ion population has
+    $n_i=qty("1.0e10", "cm^-3")$, $m_i=qty("1.673e-24", "g")$,
+    $k_B T_i=qty("1.602e-11", "erg")$, and bulk speed
+    $u_i=qty("1.0e7", "cm/s")$.
+
+    Assumptions: Maxwellian random motion, isotropic pressure, and the
+    three-dimensional kinetic-energy definitions used above.
+
+    Target: report the internal energy density $epsilon_i$, bulk kinetic-energy
+    density, and total kinetic-energy density $W_i$.
+
+    Numerical result: $epsilon_i=0.240 #unit("erg/cm^3")$,
+    $W_"bulk",i=0.837 #unit("erg/cm^3")$, and
+    $W_i=1.08 #unit("erg/cm^3")$.
+  ]
+
   #interpretation(
     [Why does the hierarchy continue?],
     [The continuity equation needs the first moment. The momentum equation
@@ -862,6 +909,21 @@
     forces or all kinetic effects vanish. The validity of either model is a
     scale-ordering statement.]
   )
+
+  #rechenbeispiel[
+    Context: a warm isotropic closure follows a polytropic law with
+    $gamma=5/3$. The density changes from $n_0$ to
+    $n_1=8 n_0$.
+
+    Assumptions: source-free adiabatic compression with
+    $p n^(-gamma)$ constant along the fluid path.
+
+    Target: report the pressure ratio $p_1/p_0$ and temperature ratio
+    $T_1/T_0$.
+
+    Numerical result: $p_1/p_0=32$ and $T_1/T_0=4$; both ratios are
+    dimensionless.
+  ]
 
   #interpretation(
     [Choosing a closure],
