@@ -11,6 +11,8 @@
     trajectories. Collisions randomize a particle's direction; gradients bias
     the resulting random walk toward lower density. Magnetic fields do not
     remove diffusion, but they make the transport direction dependent.
+    This transport hierarchy follows the standard collisional and magnetized
+    plasma description in @bittencourt2004.
   ]
 
   #callout(
@@ -130,7 +132,9 @@
   )
 
   #rechenbeispiel[
-    A one-dimensional neutral-collision model has a step magnitude
+    Assume independent symmetric one-dimensional steps in a neutral-collision
+    model, with no directed drift, and use Gaussian CGS. The model has a step
+    magnitude
     $Delta x=qty("2.0e-1", "cm")$ every
     $Delta t=qty("1.0e-7", "s")$. For a device of length
     $L=qty("1.0e1", "cm")$, determine the diffusion coefficient and the
@@ -266,7 +270,9 @@
   )
 
   #rechenbeispiel[
-    For electrons in a weakly ionized plasma, use
+    Assume local, isothermal, steady, unmagnetized neutral drag with
+    negligible inertia, and use Gaussian CGS. For electrons in a weakly
+    ionized plasma, use
     $k_B T_e=qty("3.204e-12", "erg")$,
     $m_e=qty("9.109e-28", "g")$,
     $e=qty("4.803e-10", "statC")$, and
@@ -405,7 +411,10 @@
   #ambipolar-balance
 
   #rechenbeispiel[
-    Consider a weakly ionized hydrogen plasma with
+    Assume local isothermal neutral drag in a weakly ionized, quasi-neutral,
+    singly charged hydrogen plasma with no externally imposed current. Use
+    Gaussian CGS and let the ambipolar field adjust rapidly compared with the
+    density evolution. Consider the plasma with
     $n=qty("1.0e10", "cm^-3")$,
     $(grad n)/n=qty("-1.0e-2", "cm^-1")$, and
     $k_B T_i=k_B T_e=qty("1.602e-12", "erg")$.
@@ -539,18 +548,28 @@
     collision-reduced force response. In the strongly magnetized limit,
     $abs(Omega_s)>>nu_s$, the perpendicular coefficient becomes
     $D_(s,perp) approx D_(s)(nu_s/Omega_s)^2$.
-    Since $D_s=(k_B T_s)/(m_s nu_s)$ and
-    $rho_(s,"thermal")^2=(k_B T_s)/(m_s Omega_s^2)$, this is
-    $D_(s,perp) approx nu_s rho_(s,"thermal")^2$.
     The limit $nu_s -> 0$ therefore suppresses classical cross-field
     diffusion: without interruptions, guiding centers do not make a
-    collisional random walk across field lines.]
+    collisional random walk across field lines.
+
+    With the thermal-speed convention used in Chapter 1,
+    $v_("th,s")=sqrt((2 k_B T_s)/m_s)$ and
+    $rho_("th,s")=v_("th,s")/abs(Omega_s)$, so
+    $rho_("th,s")^2=(2 k_B T_s)/(m_s Omega_s^2)$. Therefore
+    $D_(s,perp) approx (nu_s/2) rho_("th,s")^2$.
+    An alternative one-dimensional thermal scale
+    $rho_("1D,s")^2=(k_B T_s)/(m_s Omega_s^2)$ would instead give
+    $D_(s,perp) approx nu_s rho_("1D,s")^2$; it is not the thermal gyroradius
+    convention used elsewhere in this script.]
   )
 
   #cross-field-diffusion
 
   #rechenbeispiel[
-    For electrons at $k_B T_e=qty("1.602e-12", "erg")$, use
+    Assume a local uniform magnetic field, isotropic steady collisional drag,
+    Gaussian CGS, and the scalar diffusion model derived above. Ignore field
+    curvature, finite-orbit effects, and turbulence. For electrons at
+    $k_B T_e=qty("1.602e-12", "erg")$, use
     $m_e=qty("9.109e-28", "g")$,
     $e=qty("4.803e-10", "statC")$,
     $c=qty("2.998e10", "cm/s")$,
@@ -566,6 +585,15 @@
   ]
 
   #interpretation(
+    [Ambipolarity depends on geometry],
+    [The zero-current closure used in the preceding section does not force
+    transverse electron and ion fluxes to match in every geometry. Rapid
+    parallel electron transport can short-circuit a charge imbalance created
+    by unequal cross-field fluxes. Whether a loss is ambipolar therefore also
+    depends on field-line connection and boundary conditions.]
+  )
+
+  #interpretation(
     [Collisions facilitate cross-field transport],
     [This is a counterintuitive but central ordering. More collisions shorten
     the free path, yet a nonzero collision rate is needed to break the
@@ -579,7 +607,8 @@
     cross-field coefficient to
     $D_perp=D_s/(1+(Omega_s/nu_s)^2)$. The signed Hall-like coefficient
     describes a transverse response; in the strongly magnetized limit
-    $D_perp$ scales as $nu_s rho_"thermal"^2$.
+    $D_(s,perp)$ scales as $(nu_s/2) rho_("th,s")^2$ under the thermal-speed
+    convention used in Chapter 1.
   ]
 
   #knowledge-check((
@@ -706,7 +735,10 @@
   #diffusion-scalings
 
   #rechenbeispiel[
-    For a fully ionized hydrogen plasma, use
+    Assume a quasi-neutral, fully ionized hydrogen plasma in steady classical
+    perpendicular force balance, with scalar conductivity and Gaussian CGS.
+    Neglect turbulent and finite-orbit corrections; use the Bohm expression
+    only as an empirical comparison. For the plasma, use
     $n=qty("1.0e10", "cm^-3")$,
     $k_B T_e=k_B T_i=qty("1.602e-11", "erg")$,
     $sigma=qty("1.0e15", "s^-1")$,
