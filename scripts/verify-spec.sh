@@ -22,7 +22,7 @@ require_file() {
   fi
 }
 
-for required in AGENTS.md SPEC.md .gitignore scripts/build-site.sh; do
+for required in AGENTS.md SPEC.md .gitignore scripts/build-site.sh src/sources.bib; do
   require_file "$repo_root/$required"
 done
 
@@ -188,6 +188,11 @@ else
 
   if ! rg -q 'href="chapters/[^"#]+\.html"' "$site_dir/index.html"; then
     fail "the overview page does not link to a chapter page"
+  fi
+
+  if ! rg -q 'id="bibliography"' "$site_dir/index.html" \
+    || ! rg -q 'bibliography' "$site_dir/index.html"; then
+    fail "the overview page does not contain the generated bibliography"
   fi
 
   html_files=()

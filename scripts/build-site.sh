@@ -2,15 +2,27 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-site_dir="${SITE_DIR:-$repo_root/public}"
+target_dir="${SITE_DIR:-$repo_root/public}"
+mkdir -p "$(dirname "$target_dir")"
+site_dir="$(mktemp -d "${target_dir}.staging.XXXXXX")"
 manim_media="$(mktemp -d "${TMPDIR:-/tmp}/plasma-manim.XXXXXX")"
+backup_dir=""
+previous_dir=""
 
 cleanup() {
   rm -rf -- "$manim_media"
+  if [[ -n "$site_dir" ]]; then
+    rm -rf -- "$site_dir"
+  fi
+  if [[ -n "$previous_dir" && ( -e "$previous_dir" || -L "$previous_dir" ) && ! ( -e "$target_dir" || -L "$target_dir" ) ]]; then
+    mv -- "$previous_dir" "$target_dir" || true
+  fi
+  if [[ -n "$backup_dir" ]]; then
+    rm -rf -- "$backup_dir"
+  fi
 }
 trap cleanup EXIT
 
-rm -rf -- "$site_dir"
 mkdir -p "$site_dir/media"
 
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$manim_media/xdg}"
@@ -201,4 +213,24 @@ typst compile \
   "$repo_root/src/print.typ" \
   "$site_dir/plasma-physics.pdf"
 
-echo "Website written to $site_dir"
+if [[ -e "$target_dir" || -L "$target_dir" ]]; then
+  backup_dir="$(mktemp -d "${target_dir}.previous.XXXXXX")"
+  previous_dir="$backup_dir/site"
+  mv -- "$target_dir" "$previous_dir"
+fi
+
+if ! mv -- "$site_dir" "$target_dir"; then
+  if [[ -n "$previous_dir" && ( -e "$previous_dir" || -L "$previous_dir" ) ]]; then
+    mv -- "$previous_dir" "$target_dir"
+  fi
+  exit 1
+fi
+site_dir=""
+
+if [[ -n "$backup_dir" ]]; then
+  rm -rf -- "$backup_dir"
+  backup_dir=""
+  previous_dir=""
+fi
+
+echo "Website written to $target_dir"

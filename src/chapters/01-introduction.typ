@@ -8,7 +8,9 @@
   #lead[
     A plasma is a many-particle system whose long-range electromagnetic fields
     make the particles respond collectively. This chapter establishes the
-    vocabulary, scales, and model choices used in the rest of the script.
+    vocabulary, scales, and model choices used in the rest of the script. The
+    scale hierarchy follows standard graduate plasma-physics treatments
+    @chen2016 @bittencourt2004.
   ]
 
   #section-title[Speed, energy, and temperature] <intro-speed-energy-temperature>

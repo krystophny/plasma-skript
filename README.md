@@ -83,7 +83,9 @@ python3 scripts/build-lilaq-pdf.py
 
 The main source is [`src/main.typ`](src/main.typ). Add chapters under
 `src/chapters/`, supplemental material under `src/appendices/`, and animations
-under `animations/`. The build script renders the animations first, then
+under `animations/`. Bibliographic entries live in
+[`src/sources.bib`](src/sources.bib) and are cited with Typst's native `@key`
+or `#cite(<key>)` syntax. The build script renders the animations first, then
 exports the Typst bundle.
 
 The first animation uses normalized, illustrative coordinates rather than

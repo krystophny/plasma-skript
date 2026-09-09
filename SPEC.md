@@ -53,7 +53,9 @@ HTML-specific components have an equivalent paged fallback.
   explicitly added in a later revision.
 - The published site includes a visible bibliography with citations for the
   physics sources, source material, figures, and external documentation used
-  in the script. Citations use numeric references.
+  in the script. The public `src/sources.bib` file is the source database;
+  citations use Typst's native `@key` or `#cite(<key>)` syntax and the
+  bibliography uses a numeric physics style.
 - The website provides an overview page, table of contents, chapter pages,
   stable section anchors, and previous or next chapter navigation.
 - A shared notation glossary records the Gaussian-CGS conventions, symbols,
@@ -382,6 +384,9 @@ The authoring environment is defined by `flake.nix`:
   `nix run .#build-site` and `nix run .#verify-spec -- <built-site>` for
   development and release checks; the shell scripts remain implementation
   details used by the package and CI.
+- `build-site` must render into a staging directory and publish it only after
+  all animation, website, and PDF outputs succeed, preserving the previous
+  complete bundle if a build fails.
 - The `verify-spec` app checks both the public artifact boundary and the
   source-level section contract: every chapter must provide matching section,
   objective, unit-ledger, summary, and knowledge-check blocks, with four

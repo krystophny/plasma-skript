@@ -57,3 +57,10 @@
 #sheaths
 #pagebreak()
 #mathematical-toolkit
+#pagebreak()
+#bibliography(
+  "sources.bib",
+  style: "american-physics-society",
+  title: [Bibliography],
+  full: true,
+)

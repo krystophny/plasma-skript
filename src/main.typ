@@ -211,38 +211,19 @@
       #html.p(class: "eyebrow")[Bibliography]
       #html.h2[Sources and implementation references]
       #html.p[
-        Citations are numeric. The books and course PDFs used for reference
-        remain private and are not copied into the public site.
+        Citations are numeric and are generated from the public BibLaTeX
+        database. The semantic HTML follows the typed-HTML reference
+        @typst-html, while scientific notation and unit-bearing quantities use
+        the documented packages @physica and @unify. The books and course PDFs
+        used for reference remain private and are not copied into the public
+        site.
       ]
-      #html.ol(class: "bibliography")[
-        #html.li[
-          F. F. Chen, #html.em[Introduction to Plasma Physics and Controlled
-          Fusion], 3rd ed., Springer, 2016.
-        ]
-        #html.li[
-          J. A. Bittencourt, #html.em[Fundamentals of Plasma Physics], 3rd ed.,
-          Springer, 2004.
-        ]
-        #html.li[
-          Plasma Physics Exam catalogue, PHT.512UF, private course material,
-          p. 1–3.
-        ]
-        #html.li[
-          Typst reference and package manuals, accessed through the local
-          resource set. The current package versions are declared in
-          #html.code[flake.nix].
-        ]
-        #html.li[
-          #html.a(href: "https://typst.app/docs/reference/html/typed/")[Typst
-          typed HTML reference], for the disclosure component and semantic
-          HTML.
-        ]
-        #html.li[
-          #html.a(href: "https://typst.app/universe/package/unify")[unify
-          unit package documentation], version 0.8.1, for unit-bearing
-          quantities and numerical results.
-        ]
-      ]
+      #bibliography(
+        "sources.bib",
+        title: none,
+        full: true,
+        style: "american-physics-society",
+      )
     ]
 
     #html.section(class: "content-sections contributors")[
