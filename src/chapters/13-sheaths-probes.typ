@@ -318,6 +318,23 @@
 
   #sheath-profile
 
+  #rechenbeispiel[
+    For a hydrogen plasma use
+    $n_0=qty("1.0e10", "cm^-3")$,
+    $k_B T_e=qty("1.602e-11", "erg")$,
+    $m_i=qty("1.673e-24", "g")$, and
+    $e=qty("4.803e-10", "statcoulomb")$. Let the normalized sheath-edge
+    speed be $M=1.50$ (dimensionless). Determine the electron Debye length,
+    cold-ion sound speed, sheath-edge ion speed, and ion particle flux
+    $Gamma_i=n_0 M c_s$.
+
+    Numerical result: $lambda_D approx qty("2.35e-2", "cm")$,
+    $c_s approx qty("3.09e6", "cm/s")$,
+    $u_s approx qty("4.64e6", "cm/s")$, and
+    $Gamma_i approx qty("4.64e16", "cm^-2 s^-1")$. The chosen
+    $M=1.50>1$ is above the cold-ion Bohm threshold.
+  ]
+
   #interpretation(
     [The Bohm condition is an attachment condition],
     [The criterion does not say that every ion in the plasma moves at exactly
