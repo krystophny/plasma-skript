@@ -137,10 +137,12 @@
     Use $omega_(p,e)=qty("5.64e9", "s^-1")$,
     $omega=qty("2.00e10", "s^-1")$, and a constant
     $nu_e=qty("1.00e9", "s^-1")$. In the high-frequency weak-collision
-    approximation, estimate $k_r$, $k_i$, and the amplitude attenuation length
-    for the unmagnetized branch.
+    approximation, estimate the effective-mass ratio $m_"eff",e/m_e$,
+    $k_r$, $k_i$, and the amplitude attenuation length for the unmagnetized
+    branch.
 
-    Numerical result: $N approx 0.959+i 2.07 dot 10^(-3)$,
+    Numerical result: $m_"eff",e/m_e=1+i 0.0500$ (dimensionless),
+    $N approx 0.959+i 2.07 dot 10^(-3)$,
     $k_r approx 6.40 dot 10^(-1) #unit("cm^-1")$,
     $k_i approx 1.38 dot 10^(-3) #unit("cm^-1")$, and the amplitude
     attenuation length is approximately $7.25 dot 10^2 #unit("cm")$.
