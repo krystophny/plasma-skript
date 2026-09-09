@@ -12,7 +12,8 @@
     until an electric field filters the particle fluxes. This chapter derives
     the planar collisionless sheath model, obtains the Bohm entry condition
     and floating potential, and turns the same flux picture into a
-    Langmuir-probe diagnostic.
+    Langmuir-probe diagnostic, following the boundary treatment in
+    @bittencourt2004.
   ]
 
   #callout(
@@ -119,10 +120,12 @@
 
   #rechenbeispiel[
     Consider a hydrogen plasma with equal electron and ion temperatures and
-    $n_e=n_i$. Let $m_i/m_e=1836$. Determine the ratio of the unretarded
+    $n_e=n_i$. Let #normalized-label[$m_i/m_e=qty("1836", "1")$]. Determine
+    the ratio of the unretarded
     electron and ion fluxes to the same planar surface.
 
-    Numerical result: $Gamma_(e,0)/Gamma_(i,0)=sqrt(1836) approx 42.8$.
+    Numerical result: #normalized-label[$Gamma_(e,0)/Gamma_(i,0)
+      =sqrt(qty("1836", "1")) approx qty("42.8", "1")$].
   ]
 
   #interpretation(
@@ -217,8 +220,8 @@
     [Ion continuity and energy give
     $n_i/n_s=M/(M^2+2 eta)^(1/2)$.
     Gaussian-CGS Poisson's equation, written with
-    $bold(E)=-grad_(bold(r))(phi)$ and
-    $div_(bold(r))(bold(E))=4 pi e(n_i-n_e)$, becomes
+    $bold(E)=-grad(phi)$ and
+    $div(bold(E))=4 pi e(n_i-n_e)$, becomes
     $dv(eta,xi,2) =
       M/(M^2+2 eta)^(1/2)-exp(-eta)$.
     Expanding at the quasineutral edge gives
@@ -254,7 +257,7 @@
     $n_i/n_s=u_s/u_i=M/(M^2+2 eta)^(1/2)$.
 
     Poisson's equation in Gaussian CGS is
-    $div_(bold(r))(bold(E))=4 pi rho_q
+    $div(bold(E))=4 pi rho_q
       =4 pi e(n_i-n_e)$.
     In one dimension, $E_x=-dv(phi,x)$, so
     $-dv(phi,x,2)=4 pi e(n_i-n_e)$.
@@ -324,7 +327,8 @@
     $k_B T_e=qty("1.602e-11", "erg")$,
     $m_i=qty("1.673e-24", "g")$, and
     $e=qty("4.803e-10", "statcoulomb")$. Let the normalized sheath-edge
-    speed be $M=1.50$ (dimensionless). Determine the electron Debye length,
+    speed be #normalized-label[$M=qty("1.50", "1")$]. Determine the electron
+    Debye length,
     cold-ion sound speed, sheath-edge ion speed, and ion particle flux
     $Gamma_i=n_0 M c_s$.
 
@@ -332,7 +336,8 @@
     $c_s approx qty("3.09e6", "cm/s")$,
     $u_s approx qty("4.64e6", "cm/s")$, and
     $Gamma_i approx qty("4.64e16", "cm^-2 s^-1")$. The chosen
-    $M=1.50>1$ is above the cold-ion Bohm threshold.
+    #normalized-label[$M=qty("1.50", "1")>1$] is above the cold-ion Bohm
+    threshold.
   ]
 
   #interpretation(
@@ -474,7 +479,7 @@
     $m_e=qty("9.109e-28", "g")$,
     $m_i=qty("1.673e-24", "g")$, and
     $e=qty("4.803e-10", "statcoulomb")$. Use the cold-ion Bohm flux and
-    a planar area of $1.0 #unit("cm^2")$. Determine $lambda_D$, the
+    a planar area of $A=qty("1.0", "cm^2")$. Determine $lambda_D$, the
     electron and ion edge fluxes, the floating potential, and the ion
     current collected at the floating surface.
 
@@ -482,10 +487,11 @@
     $lambda_D approx qty("1.29e-2", "cm")$,
     $Gamma_(e,0) approx qty("2.90e17", "cm^-2 s^-1")$,
     $Gamma_i approx qty("1.70e16", "cm^-2 s^-1")$,
-    $phi_f approx -(2.84 k_B T_e)/e approx -0.0284 #unit("statvolt")$
-    (approximately $-8.52 #unit("V")$), and
-    $e Gamma_i A approx qty("8.14e6", "statC/s")$, corresponding to
-    approximately $2.72 #unit("mA")$.
+    #normalized-label[$(e phi_f)/(k_B T_e) approx qty("-2.84", "1")$],
+    $phi_f approx qty("-2.84e-2", "statvolt")$
+    (approximately $qty("-8.52", "V")$), and
+    $e Gamma_i A approx qty("8.14e6", "statcoulomb")$ per #unit("s"), corresponding to
+    approximately $qty("2.72", "mA")$.
   ]
   #interpretation(
     [Floating does not mean field-free],
@@ -644,8 +650,8 @@
     The extrapolated zero-bias electron saturation current magnitude is
     $abs(I_(e,0))=qty("4.0", "mA")$. Use the ideal planar model and determine
     the electron temperature in eV and density in #unit("cm^-3").
-    Numerical result: $(k_B T_e)/e approx 2.50 #unit("V")$, so
-    $T_e approx 2.50 #unit("eV")$, and
+    Numerical result: $(k_B T_e)/e approx qty("2.50", "V")$, so
+    $T_e approx qty("2.50", "eV")$, and
     $n_e approx qty("9.44e9", "cm^-3")$.
   ]
   #interpretation(
