@@ -11,7 +11,8 @@
     This chapter derives that tensor from the cold-fluid momentum equation and
     uses it to organize parallel, perpendicular, and oblique wave propagation.
     The central habit is to carry the propagation direction, polarization, and
-    frequency ordering together.
+    frequency ordering together, following the standard cold-plasma treatment
+    in @bittencourt2004.
   ]
 
   #callout(
@@ -113,10 +114,10 @@
     $-i omega bold(u)_(s,1,z)=(q_s/m_s) bold(E)_(1,z)$.
 
     Inverting the transverse two-by-two system gives
-    $bold(u)_(s,1,x)=((i q_s omega)/(m_(s)(omega^2-Omega_s^2))) bold(E)_(1,x)
-      -(q_s Omega_s/(m_(s)(omega^2-Omega_s^2))) bold(E)_(1,y)$ and
-    $bold(u)_(s,1,y)=(q_s Omega_s/(m_(s)(omega^2-Omega_s^2))) bold(E)_(1,x)
-      +((i q_s omega)/(m_(s)(omega^2-Omega_s^2))) bold(E)_(1,y)$.
+    $bold(u)_(s,1,x)=((i q_s omega)/(m_(s) (omega^2-Omega_s^2))) bold(E)_(1,x)
+      -((q_s Omega_s)/(m_(s) (omega^2-Omega_s^2))) bold(E)_(1,y)$ and
+    $bold(u)_(s,1,y)=((q_s Omega_s)/(m_(s) (omega^2-Omega_s^2))) bold(E)_(1,x)
+      +((i q_s omega)/(m_(s) (omega^2-Omega_s^2))) bold(E)_(1,y)$.
     Multiplication by $q_s n_(s,0)$ and summation produces $bold(j)_1$.
     Inserting the result into
     $bold(epsilon)_(p) dot bold(E)_1=bold(E)_1+((4 pi i)/omega) bold(j)_1$
@@ -140,32 +141,34 @@
   #magnetized-dielectric
 
   #rechenbeispiel[
-    For a fixed-ion hydrogen plasma use
+    Assume a homogeneous, cold, collisionless, magnetized electron response
+    with fixed ions, a uniform field $bold(B)_0=B_0 bold(e)_z$, and Gaussian
+    CGS. For a hydrogen plasma use
     $n_0=qty("1.0e10", "cm^-3")$, $B_0=qty("100", "G")$,
     $e=qty("4.803e-10", "statcoulomb")$,
     $m_e=qty("9.109e-28", "g")$, and
     $c=qty("2.998e10", "cm/s")$. Determine the electron plasma frequency,
     the electron cyclotron-frequency magnitude, and their ratio.
 
-    Numerical result: $omega_(p,e)=5.64 dot 10^9 #unit("s^-1")$,
-    $omega_(c,e)=1.76 dot 10^9 #unit("s^-1")$, and
-    $omega_(c,e)/omega_(p,e)=0.312$.
+    Numerical result: $omega_(p,e)=qty("5.64e9", "s^-1")$,
+    $omega_(c,e)=qty("1.76e9", "s^-1")$, and
+    #normalized-label[$omega_(c,e)/omega_(p,e)=qty("0.312", "1")$].
   ]
 
   #rechenbeispiel[
-    At angular frequency $omega=qty("1.00e10", "s^-1")$, use the same
-    fixed-ion plasma and constants as above. Take the electron charge to be
-    $q_(e)=-e$ and evaluate the cold dielectric coefficients
+    Assume a homogeneous, cold, collisionless, fixed-ion electron response
+    with $bold(B)_0$ along $z$ and Gaussian-CGS conventions. At angular
+    frequency $omega=qty("1.00e10", "s^-1")$, use
+    $omega_(p,e)=qty("5.64e9", "s^-1")$,
+    $omega_(c,e)=qty("1.76e9", "s^-1")$, and the signed convention
+    $Omega_e=-omega_(c,e)$. Evaluate the cold dielectric coefficients
     $epsilon_(perp)$, $epsilon_(times)$, and $epsilon_(parallel)$.
-
-    Assumptions: homogeneous, cold, collisionless electron response with
-    $bold(B)_0$ along $z$ and Gaussian-CGS conventions.
 
     Target: report the three dimensionless entries of the dielectric tensor.
 
-    Numerical result: $epsilon_(perp)=qty("0.672", "1")$,
-    $epsilon_(times)=qty("-5.78e-2", "1")$, and
-    $epsilon_(parallel)=qty("0.682", "1")$.
+    Numerical result: #normalized-label[$epsilon_(perp)=qty("0.672", "1")$],
+    #normalized-label[$epsilon_(times)=qty("-5.78e-2", "1")$], and
+    #normalized-label[$epsilon_(parallel)=qty("0.682", "1")$].
   ]
 
   #interpretation(
@@ -322,15 +325,18 @@
   )
 
   #rechenbeispiel[
-    For the fixed-ion plasma with
+    Assume a homogeneous, cold, collisionless, fixed-ion electron response
+    with uniform $bold(B)_0$, parallel propagation, and Gaussian CGS. For the
+    fixed-ion plasma with
     $omega_(p,e)=qty("5.64e9", "s^-1")$,
     $omega_(c,e)=qty("1.76e9", "s^-1")$, and a parallel wave with
     $omega=qty("2.00e10", "s^-1")$ crossing a path of
     $L=qty("10", "cm")$, determine the two refractive indices and the
     Faraday-rotation angle $theta_F=((k_+-k_-)L)/2$.
 
-    Numerical result: $N_+=0.963$, $N_-=0.955$, and
-    $theta_F=2.47 dot 10^-2$ rad $=1.42 degree$.
+    Numerical result: #normalized-label[$N_+=qty("0.963", "1")$],
+    #normalized-label[$N_-=qty("0.955", "1")$], and
+    $theta_F=qty("2.47e-2", "rad")=qty("1.42", "deg")$.
   ]
 
   #interpretation(
@@ -449,7 +455,11 @@
     $epsilon_(times)=-(omega_(c,e) omega_(p,e)^2)/
       (omega(omega^2-omega_(c,e)^2))$
     after choosing the positive-magnitude convention for the eigenvalue
-    labels. Multiplying the two circular factors and simplifying yields
+    labels. Writing $d=omega^2-omega_(c,e)^2$ and
+    $p=omega_(p,e)^2$, the extraordinary index is first
+    $N_X^2=((d-p)^2-(omega_(c,e)^2 p^2)/omega^2)/(d(d-p))$.
+    Multiplying the two circular factors and simplifying this expression
+    yields
     $N_X^2=1-
       (omega_(p,e)^2 (omega^2-omega_(p,e)^2)) /
       (omega^2 (omega^2-omega_(p,e)^2-omega_(c,e)^2))$.
@@ -461,6 +471,8 @@
   )
 
   #rechenbeispiel[
+    Assume a homogeneous, cold, collisionless, fixed-ion electron response
+    with perpendicular propagation, uniform $bold(B)_0$, and Gaussian CGS.
     For $n_0=qty("1.0e10", "cm^-3")$ and $B_0=qty("100", "G")$, use
     $omega_(p,e)=qty("5.64e9", "s^-1")$,
     $omega_(c,e)=qty("1.76e9", "s^-1")$, and
@@ -468,9 +480,10 @@
     branches and report the wave number for the propagating branch.
 
     Numerical result: the ordinary branch is evanescent with
-    $alpha_O=4.17 dot 10^-2 #unit("cm^-1")$; the extraordinary branch
-    propagates with $N_X=0.805$, $k_X=1.48 dot 10^-1 #unit("cm^-1")$,
-    and $lambda_X=42.5 #unit("cm")$.
+    $alpha_O=qty("4.17e-2", "cm^-1")$; the extraordinary branch
+    propagates with #normalized-label[$N_X=qty("0.805", "1")$],
+    $k_X=qty("1.48e-1", "cm^-1")$, and
+    $lambda_X=qty("42.5", "cm")$.
   ]
 
   #interpretation(
@@ -575,14 +588,27 @@
     $N^2 sin theta cos theta E_x-N^2 sin^2 theta E_z$.
     Adding the dielectric tensor gives the displayed matrix.
 
-    The determinant is a quadratic polynomial in $N^2$. Insert the single
-    electron coefficients
+    Set $Z=N^2$, $a=sin theta$, and $b=cos theta$. Expanding the determinant
+    of the displayed matrix gives
+    $det(M)=(P-Z a^2)((S-Z b^2)(S-Z)-D^2)-Z^2 a^2 b^2(S-Z)$,
+    which collects as
+    $A Z^2-B Z+C=0$ with
+    $A=S a^2+P b^2$,
+    $B=(S^2-D^2) a^2+P S(1+b^2)$, and
+    $C=P(S^2-D^2)$.
+    Therefore the two roots before specialization are
+    $Z_(plus.minus)=(B plus.minus sqrt(B^2-4 A C))/(2 A)$.
+
+    Insert the single electron coefficients
     $S=1-X_(omega)/(1-Y_(omega)^2)$,
     $D$ with magnitude
     $(Y_(omega) X_(omega))/(1-Y_(omega)^2)$, and
-    $P=1-X_(omega)$. Collect the terms in $N^4$, $N^2$, and the constant
-    term, then use the quadratic formula. Completing the square in the
-    angle-dependent coefficient produces the two Appleton--Hartree roots.
+    $P=1-X_(omega)$. With $a^2+b^2=1$, the useful intermediate identities are
+    $S^2-D^2=((1-X_(omega))^2-Y_(omega)^2)/(1-Y_(omega)^2)$ and
+    $A=S a^2+P b^2$.
+    Substitution into the quadratic formula, extraction of the common factor
+    $1-X_(omega)$, and completing the square in the angle-dependent
+    coefficient gives the displayed Appleton--Hartree roots.
     The square-root term measures the splitting produced by the component of
     the magnetic field along the propagation direction together with the
     transverse coupling.
@@ -598,13 +624,19 @@
   #magnetized-oblique-geometry
 
   #rechenbeispiel[
-    Use the normalized parameters $Y=omega_(c,e)/omega_(p,e)=0.30$,
-    $W=omega/omega_(p,e)=1.50$, and $theta=pi/4$. Evaluate the two
+    Assume a homogeneous, cold, collisionless, fixed-ion electron response
+    with uniform $bold(B)_0$, oblique propagation, and Gaussian CGS. Use the
+    normalized parameters
+    #normalized-label[$Y=omega_(c,e)/omega_(p,e)=qty("0.30", "1")$],
+    #normalized-label[$W=omega/omega_(p,e)=qty("1.50", "1")$], and
+    $theta=pi/4$ radians. Evaluate the two
     Appleton--Hartree refractive indices.
 
-    Numerical result: $X_(omega)=0.444$, $Y_(omega)=0.200$, and the two roots
-    are $N_+=0.778$ and $N_-=0.686$, where the signs follow the displayed
-    denominator signs.
+    Numerical result: #normalized-label[$X_(omega)=qty("0.444", "1")$],
+    #normalized-label[$Y_(omega)=qty("0.200", "1")$], and the two roots are
+    #normalized-label[$N_+=qty("0.778", "1")$] and
+    #normalized-label[$N_-=qty("0.686", "1")$], where the signs follow the
+    displayed denominator signs.
   ]
 
   #interpretation(
@@ -736,15 +768,25 @@
   #magnetized-cutoff-map
 
   #rechenbeispiel[
-    Let $Y=omega_(c,e)/omega_(p,e)=0.30$. Determine the normalized circular
-    cutoffs and upper-hybrid resonance, then classify the ordinary and
-    extraordinary modes at $W=0.90$, $W=1.10$, and $W=1.30$.
+    Assume a homogeneous, cold, collisionless, fixed-ion electron response
+    with uniform $bold(B)_0$ and Gaussian CGS. Let
+    #normalized-label[$Y=omega_(c,e)/omega_(p,e)=qty("0.30", "1")$].
+    Determine the normalized circular cutoffs and upper-hybrid resonance,
+    then classify the ordinary and extraordinary modes at
+    #normalized-label[$W=qty("0.90", "1")$],
+    #normalized-label[$W=qty("1.10", "1")$], and
+    #normalized-label[$W=qty("1.30", "1")$].
 
-    Numerical result: $W_"cut,+"=0.861$, $W_"cut,-"=1.161$, and
-    $W_"UH"=1.044$. At $W=0.90$, ordinary is evanescent and extraordinary
-    propagates with $N_X=0.403$; at $W=1.10$, ordinary propagates with
-    $N_O=0.417$ and extraordinary is evanescent; at $W=1.30$, both propagate
-    with $N_O=0.639$ and $N_X=0.565$.
+    Numerical result: #normalized-label[$W_"cut,+"=qty("0.861", "1")$],
+    #normalized-label[$W_"cut,-"=qty("1.161", "1")$], and
+    #normalized-label[$W_"UH"=qty("1.044", "1")$]. At
+    #normalized-label[$W=qty("0.90", "1")$], ordinary is evanescent and
+    extraordinary propagates with #normalized-label[$N_X=qty("0.403", "1")$];
+    at #normalized-label[$W=qty("1.10", "1")$], ordinary propagates with
+    #normalized-label[$N_O=qty("0.417", "1")$] and extraordinary is
+    evanescent; at #normalized-label[$W=qty("1.30", "1")$], both propagate
+    with #normalized-label[$N_O=qty("0.639", "1")$] and
+    #normalized-label[$N_X=qty("0.565", "1")$].
   ]
 
   #interpretation(

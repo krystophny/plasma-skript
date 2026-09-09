@@ -11,7 +11,8 @@
     endpoint. Collisions make the response complex, ion inertia opens
     low-frequency branches, and pressure gives longitudinal waves a spatial
     dispersion. This chapter adds those effects in a controlled order and
-    connects the resulting two-fluid branches to warm MHD.
+    connects the resulting two-fluid branches to warm MHD, following
+    @bittencourt2004.
   ]
 
   #callout(
@@ -134,18 +135,22 @@
   #collisional-wave-response
 
   #rechenbeispiel[
-    Use $omega_(p,e)=qty("5.64e9", "s^-1")$,
+    Assume a homogeneous, cold, unmagnetized, weakly collisional, fixed-ion
+    electron plasma with linear momentum drag, the stated Fourier convention,
+    and Gaussian CGS. Use
+    $omega_(p,e)=qty("5.64e9", "s^-1")$,
     $omega=qty("2.00e10", "s^-1")$, and a constant
     $nu_e=qty("1.00e9", "s^-1")$. In the high-frequency weak-collision
     approximation, estimate the effective-mass ratio $m_"eff",e/m_e$,
     $k_r$, $k_i$, and the amplitude attenuation length for the unmagnetized
     branch.
 
-    Numerical result: $m_"eff",e/m_e=1+i 0.0500$ (dimensionless),
-    $N approx 0.959+i 2.07 dot 10^(-3)$,
-    $k_r approx 6.40 dot 10^(-1) #unit("cm^-1")$,
-    $k_i approx 1.38 dot 10^(-3) #unit("cm^-1")$, and the amplitude
-    attenuation length is approximately $7.25 dot 10^2 #unit("cm")$.
+    Numerical result:
+    #normalized-label[$m_"eff",e/m_e=qty("1.00", "1")+i qty("5.00e-2", "1")$],
+    #normalized-label[$N approx qty("0.959", "1")+i qty("2.07e-3", "1")$],
+    $k_r approx qty("6.40e-1", "cm^-1")$,
+    $k_i approx qty("1.38e-3", "cm^-1")$, and the amplitude attenuation
+    length is approximately $qty("7.25e2", "cm")$.
   ]
 
   #interpretation(
@@ -318,16 +323,19 @@
   #ion-wave-branches
 
   #rechenbeispiel[
-    For a hydrogen plasma use $n_0=qty("1.0e10", "cm^-3")$,
+    Assume a homogeneous, cold, collisionless, two-fluid hydrogen plasma with
+    both species mobile, parallel low-frequency propagation, and Gaussian CGS.
+    For the neutral hydrogen plasma use $n_0=qty("1.0e10", "cm^-3")$,
     $B_0=qty("100", "G")$, $m_i=qty("1.673e-24", "g")$,
     and $e=qty("4.803e-10", "statcoulomb")$. Consider a parallel
-    low-frequency wave at $omega=0.10 omega_(c,i)$. Determine
+    low-frequency wave at
+    #normalized-label[$omega/omega_(c,i)=qty("0.10", "1")$]. Determine
     $omega_(c,i)$, $v_A$, $k approx omega/v_A$, and the wavelength.
 
-    Numerical result: $omega_(c,i)=9.58 dot 10^5 #unit("s^-1")$,
-    $v_A=2.18 dot 10^8 #unit("cm/s")$,
-    $k=4.40 dot 10^(-4) #unit("cm^-1")$, and
-    $lambda=1.43 dot 10^4 #unit("cm")$.
+    Numerical result: $omega_(c,i)=qty("9.58e5", "s^-1")$,
+    $v_A=qty("2.18e8", "cm/s")$,
+    $k=qty("4.40e-4", "cm^-1")$, and
+    $lambda=qty("1.43e4", "cm")$.
   ]
 
   #interpretation(
@@ -433,7 +441,7 @@
   #details(
     [Derivation: pressure response and the two longitudinal roots],
     [The linearized continuity equation is
-    $pdv(n_(s,1),t)+n_(s,0) div_(bold(r))(bold(u)_(s,1))=0$.
+    $pdv(n_(s,1),t)+n_(s,0) div(bold(u)_(s,1))=0$.
     For a plane wave with longitudinal velocity, it becomes
     $-i omega n_(s,1)+i n_(s,0) k u_(s,1)=0$,
     hence
@@ -492,16 +500,19 @@
   #warm-longitudinal-modes
 
   #rechenbeispiel[
-    Let $n_0=qty("1.0e10", "cm^-3")$,
+    Assume a homogeneous, unmagnetized, collisionless, fixed-ion warm-fluid
+    electron plasma with an isothermal closure and Gaussian CGS. Use
+    $n_0=qty("1.0e10", "cm^-3")$,
     $k_B T_e=qty("1.602e-11", "erg")$ (the same energy as
-    $qty("10", "eV")$), $gamma_e=1$, and use the electron constants from
-    the earlier examples.
-    At $k lambda_(D,e)=0.80$, determine $lambda_(D,e)$, $k$, and the
+    $qty("10", "eV")$), $e=qty("4.803e-10", "statcoulomb")$,
+    $m_e=qty("9.109e-28", "g")$, and $gamma_e=1$.
+    At #normalized-label[$k lambda_(D,e)=qty("0.80", "1")$], determine
+    $lambda_(D,e)$, $k$, and the
     normalized warm plasma-oscillation frequency.
 
-    Numerical result: $lambda_(D,e)=2.35 dot 10^(-2) #unit("cm")$,
-    $k=3.40 dot 10^1 #unit("cm^-1")$, and
-    $omega/omega_(p,e)=1.28$.
+    Numerical result: $lambda_(D,e)=qty("2.35e-2", "cm")$,
+    $k=qty("3.40e1", "cm^-1")$, and
+    #normalized-label[$omega/omega_(p,e)=qty("1.28", "1")$].
   ]
 
   #interpretation(
@@ -603,33 +614,56 @@
   #details(
     [Derivation: warm upper hybrid and magnetosonic restoring forces],
     [For a perpendicular electrostatic-scale perturbation, take
-    $bold(k)=k bold(e)_x$ and retain the electron pressure term in the
-    $x$ momentum equation. Continuity gives
-    $n_(e,1)/n_0=(k u_(e,1,x))/omega$.
-    The linear transverse momentum equations have the same Lorentz coupling
-    as in the cold tensor, while the pressure term adds
-    $-(i k c_(s,e)^2 n_(e,1))/n_0$
-    to the $x$ equation. Eliminate $u_(e,1,y)$ using the $y$ equation and
-    eliminate $n_(e,1)$ using continuity. The denominator of the
-    $x$-directed susceptibility is shifted from
-    $omega^2-omega_(c,e)^2$ to
-    $omega^2-k^2c_(s,e)^2-omega_(c,e)^2$.
-    The perpendicular charge response also contributes the electron plasma
-    restoring term. Setting the warm perpendicular response to zero therefore
-    gives
-    $omega^2=omega_(p,e)^2+omega_(c,e)^2+k^2c_(s,e)^2
-      =omega_"UH"^2+k^2c_(s,e)^2$.
+    $bold(k)=k bold(e)_x$, $bold(E)_1=E_(1,x) bold(e)_x$, and
+    $bold(B)_0=B_0 bold(e)_z$. Continuity gives
+    $-i omega n_(e,1)+i k n_0 u_(e,1,x)=0$,
+    hence $n_(e,1)/n_0=(k u_(e,1,x))/omega$.
+
+    With the signed electron gyrofrequency
+    $Omega_e=-omega_(c,e)$, the transverse momentum components are
+    $-i omega u_(e,1,x)-Omega_e u_(e,1,y)
+      =(q_e/m_e) E_(1,x)
+      -i k c_(s,e)^2 n_(e,1)/n_0$
+    and
+    $Omega_e u_(e,1,x)-i omega u_(e,1,y)=0$.
+    The second equation gives
+    $u_(e,1,y)=-i (Omega_e/omega) u_(e,1,x)$.
+    Insert this and the continuity relation into the first equation:
+    $-i ((omega^2-Omega_e^2)/omega) u_(e,1,x)
+      =(q_e/m_e) E_(1,x)
+      -i (k^2 c_(s,e)^2/omega) u_(e,1,x)$.
+    Collect the velocity terms and multiply by $i$:
+    $((omega^2-Omega_e^2-k^2 c_(s,e)^2)/omega) u_(e,1,x)
+      =((i q_e)/m_e) E_(1,x)$.
+    Thus
+    $u_(e,1,x)=((i q_e omega)/(m_e
+      (omega^2-omega_(c,e)^2-k^2 c_(s,e)^2))) E_(1,x)$,
+    and continuity gives
+    $n_(e,1)=((i n_0 q_e k)/(m_e
+      (omega^2-omega_(c,e)^2-k^2 c_(s,e)^2))) E_(1,x)$.
+
+    For an electrostatic wave, Gauss's law is
+    $i k E_(1,x)=4 pi q_e n_(e,1)$.
+    Substitute the density response and cancel the nonzero factor
+    $i k E_(1,x)$:
+    $1=((4 pi n_0 q_e^2)/(m_e
+      (omega^2-omega_(c,e)^2-k^2 c_(s,e)^2)))
+      =(omega_(p,e)^2)/
+      (omega^2-omega_(c,e)^2-k^2 c_(s,e)^2)$.
+    Therefore
+    $omega^2=omega_(p,e)^2+omega_(c,e)^2+k^2 c_(s,e)^2
+      =omega_"UH"^2+k^2 c_(s,e)^2$.
     This is a warm-fluid local approximation near the upper-hybrid branch;
     the full electromagnetic warm tensor contains additional polarization
     terms.
 
     For the low-frequency one-fluid limit, start from continuity,
-    $pdv(rho,t)+div_(bold(r))(rho bold(u))=0$,
+    $pdv(rho,t)+div(rho bold(u))=0$,
     the ideal induction equation,
-    $pdv(bold(B),t)=curl_(bold(r))(bold(u)times bold(B))$,
+    $pdv(bold(B),t)=curl(bold(u)times bold(B))$,
     and the CGS MHD momentum equation
     $rho pdv(bold(u),t)
-      =-grad_(bold(r))p+
+      =-grad(p)+
       [curl_(bold(B))times bold(B)]/(4 pi)$.
     Linearize about $rho=rho_0$, $p=p_0$, $bold(B)=B_0 bold(e)_z$,
     and take a plane wave with $bold(k)=k bold(e)_x$ and
@@ -684,18 +718,22 @@
   )
 
   #rechenbeispiel[
-    For $n_0=qty("1.0e10", "cm^-3")$, $B_0=qty("100", "G")$,
+    Assume a homogeneous, quasineutral hydrogen plasma in the low-frequency,
+    strongly conducting ideal-MHD limit, with perpendicular and parallel
+    propagation compared in Gaussian CGS. Use
+    $n_0=qty("1.0e10", "cm^-3")$, $B_0=qty("100", "G")$,
+    $m_i=qty("1.673e-24", "g")$,
     $k_B T_e=k_B T_i=qty("1.602e-11", "erg")$ (10 eV), and isothermal
     $gamma_e=gamma_i=1$, determine $v_A$, the total-pressure sound speed
     $v_s$, and $v_m$. For $k=qty("1.0e-5", "cm^-1")$, report the parallel
     shear-Alfvén and perpendicular magnetosonic frequencies.
 
-    Numerical result: $v_A=2.18 dot 10^8 #unit("cm/s")$,
-    $v_s=4.38 dot 10^6 #unit("cm/s")$, and
-    $v_m=2.18 dot 10^8 #unit("cm/s")$ to the shown precision.
+    Numerical result: $v_A=qty("2.18e8", "cm/s")$,
+    $v_s=qty("4.38e6", "cm/s")$, and
+    $v_m=qty("2.18e8", "cm/s")$ to the shown precision.
     The two example frequencies are
-    $omega_A=2.18 dot 10^3 #unit("s^-1")$ and
-    $omega_m=2.18 dot 10^3 #unit("s^-1")$.
+    $omega_A=qty("2.18e3", "s^-1")$ and
+    $omega_m=qty("2.18e3", "s^-1")$.
   ]
 
   #interpretation(
@@ -841,8 +879,14 @@
 
   #rechenbeispiel[
     Classify two model orderings. Case A has
-    $C=0.02$, $I=50$, $K=0.05$, and $M=1/1836$.
-    Case B has $C=0.30$, $I=0.40$, $K=0.80$, and the same $M$.
+    #normalized-label[$C=qty("0.02", "1")$],
+    #normalized-label[$I=qty("50", "1")$],
+    #normalized-label[$K=qty("0.05", "1")$], and
+    #normalized-label[$M=qty("5.45e-4", "1")$]. Case B has
+    #normalized-label[$C=qty("0.30", "1")$],
+    #normalized-label[$I=qty("0.40", "1")$],
+    #normalized-label[$K=qty("0.80", "1")$], and the same
+    #normalized-label[$M=qty("5.45e-4", "1")$].
     State the simplest justified description and the first correction to add
     in each case.
 
