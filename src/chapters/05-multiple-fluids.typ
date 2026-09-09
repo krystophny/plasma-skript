@@ -273,6 +273,23 @@
     law is a separate closure choice.]
   )
 
+  #rechenbeispiel[
+    Context: a quasi-neutral hydrogen plasma has
+    $n_(e)=n_(i)=qty("1.0e10", "cm^-3")$, ion speed
+    $u_(i,x)=qty("2.0e7", "cm/s")$, electron speed
+    $u_(e,x)=qty("1.5e7", "cm/s")$, and
+    $e=qty("4.803e-10", "statC")$.
+
+    Assumptions: singly charged species, equal densities, and one-dimensional
+    flows along $x$.
+
+    Target: report the charge density and the total $x$-directed current
+    density.
+
+    Numerical result: $rho_q=0$ statcoulomb per #unit("cm^3") and
+    $j_x=qty("2.40e7", "statC")$ per #unit("cm^2") per #unit("s").
+  ]
+
   #interpretation(
     [What makes the equations coupled],
     [The electron and ion equations are separate, but they share
@@ -408,6 +425,27 @@
     $rho_(s)/L_perp << 1$.]
   )
 
+  #rechenbeispiel[
+    Context: in a local Cartesian frame, take
+    $bold(B)=qty("100", "G") bold(e)_(z)$,
+    $bold(E)=qty("1.00e-3", "statV/cm") bold(e)_(x)$,
+    $n_(i)=n_(e)=qty("1.0e8", "cm^-3")$, and
+    $grad p_(i)=grad p_(e)=qty("1.602e-6", "erg/cm^4") bold(e)_(x)$.
+    Use $e=qty("4.803e-10", "statC")$ and
+    $c=qty("2.998e10", "cm/s")$, with $q_i=+e$ and $q_e=-e$.
+
+    Assumptions: scalar pressure, locally uniform fields, and the
+    inertia-free perpendicular drift ordering.
+
+    Target: report the common electric drift and the ion and electron
+    diamagnetic drift velocities.
+
+    Numerical result: $bold(u)_(E times B)=-2.998 dot 10^5
+    #unit("cm/s") bold(e)_(y)$, $bold(u)_(*,i)=+1.00 dot 10^4
+    #unit("cm/s") bold(e)_(y)$, and
+    $bold(u)_(*,e)=-1.00 dot 10^4 #unit("cm/s") bold(e)_(y)$.
+  ]
+
   #interpretation(
     [Common and species-dependent drifts],
     [$bold(u)_(E times B)$ advects both species together, so it produces no
@@ -533,6 +571,24 @@
     requires the full continuity and momentum equations, boundary conditions,
     and the terms omitted in the local balance.]
   )
+
+  #rechenbeispiel[
+    Context: a quasi-neutral hydrogen plasma has
+    $bold(B)=qty("100", "G") bold(e)_(z)$ and total pressure gradient
+    $grad(p_(e)+p_(i))=qty("3.204e-6", "erg/cm^4") bold(e)_(x)$.
+    Use $c=qty("2.998e10", "cm/s")$ and neglect the charge-density
+    contribution to the common electric drift current.
+
+    Assumptions: local scalar-pressure drift ordering with
+    $rho_q approx 0$.
+
+    Target: report the diamagnetic current density and the leading-order
+    electric-drift current density.
+
+    Numerical result: $bold(j)_*=+9.61 dot 10^2 bold(e)_(y)$ statcoulomb per
+    #unit("cm^2") per #unit("s"), while
+    $bold(j)_(E times B)=0$ statcoulomb per #unit("cm^2") per #unit("s").
+  ]
 
   #interpretation(
     [Current without bulk advection],
@@ -708,6 +764,23 @@
     These identities give the summed momentum equation. If interspecies
     collisions are internal, their momentum sources cancel in the sum.]
   )
+
+  #rechenbeispiel[
+    Context: an isothermal electron population has reference density
+    $n_(e,0)=qty("1.0e10", "cm^-3")$, thermal energy
+    $k_B T_(e)=qty("4.806e-12", "erg")$, and a parallel potential
+    increase $phi-phi_0=qty("1.00e-2", "statV")$. Use
+    $e=qty("4.803e-10", "statC")$.
+
+    Assumptions: connected field line, negligible parallel electron inertia
+    and collisions, electrostatic parallel field, and uniform $T_(e)$.
+
+    Target: report the Boltzmann density ratio and the resulting electron
+    density.
+
+    Numerical result: $n_(e)/n_(e,0)=2.72$ (dimensionless) and
+    $n_(e)=qty("2.72e10", "cm^-3")$.
+  ]
 
   #interpretation(
     [What the one-fluid limit keeps],
