@@ -31,7 +31,7 @@ jobs:
         run: nix build .#
 
       - name: Verify the checkout and public artifact
-        run: bash scripts/verify-spec.sh result
+        run: nix run .#verify-spec -- result
 
       - name: Prepare the Pages artifact
         run: |
