@@ -290,12 +290,16 @@
 
   The velocity has the corresponding decomposition
 
-  $ bold(v) = bold(v)_"parallel" + bold(v)_"perp" = dv(bold(R),t) + dv(bold(rho),t) $ <motion-velocity-split>
+  $ bold(v) = dv(bold(r),t)
+    = dv(bold(R),t) + dv(bold(rho),t), quad
+    bold(v) = bold(v)_"parallel" + bold(v)_"perp" $ <motion-velocity-split>
 
   #equation-note[
-    Gaussian CGS. Every velocity is in #unit("cm/s"). The equality is a
-    scale-separated representation, not a claim that the guiding center is
-    exactly unique in an arbitrary field.
+    Gaussian CGS. Every velocity is in #unit("cm/s"). The first equality
+    follows from the position split; the second is the local decomposition
+    relative to $bold(B)$. The guiding-center derivative includes parallel
+    motion and slow drifts, so it is not generally identical to
+    $bold(v)_"parallel"$.
   ]
 
   For perpendicular gyromotion, define the magnetic moment
@@ -334,6 +338,21 @@
     energy balance therefore gives $dv(mu,t) approx 0$ when the field varies
     slowly over a gyroperiod and a gyroradius.]
   )
+
+  #rechenbeispiel[
+    A proton has $m_i=qty("1.673e-24", "g")$ and charge
+    $q_i=e=qty("4.803e-10", "statcoulomb")$. Use
+    $c=qty("2.998e10", "cm/s")$, an initial field
+    $B_0=qty("100", "G")$, a final field $B_1=qty("400", "G")$, and
+    $v_(perp,0)=qty("1.00e7", "cm/s")$. Assume that the field changes
+    adiabatically, $mu$ is conserved, and there is no electrostatic energy
+    exchange.
+
+    Target: report $v_(perp,1)$, $rho_0$, and $rho_1$.
+
+    Numerical result: $v_(perp,1)=qty("2.00e7", "cm/s")$,
+    $rho_0=qty("10.4", "cm")$, and $rho_1=qty("5.22", "cm")$.
+  ]
 
   #interpretation(
     [Fast and slow variables],
