@@ -1,6 +1,12 @@
 #import "@preview/frame-it:2.0.0": frames, frame-style, styles
 #import "@preview/unify:0.8.1": num, qty, unit, add-unit
 
+// Scientific visual labels use [1] for a dimensionless unit. Keeping the
+// suffix in one component makes normalized axes and legends consistent across
+// figures and their paged fallbacks.
+#let normalized-label(body) = [#body #h(0.25em) #text("[1]")]
+#let normalized-axis(body) = normalized-label(body)
+
 // Gaussian-CGS units are not part of unify's default SI catalogue. This
 // content is inserted by each build entry point before chapter content so the
 // registration is active when quantities are formatted.

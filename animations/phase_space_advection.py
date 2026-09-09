@@ -59,9 +59,9 @@ class PhaseSpaceAdvection(Scene):
             tips=False,
         ).shift(DOWN * 0.35 + LEFT * 0.25)
 
-        x_label = Text("x / L₀ (dimensionless)", color=MUTED, font_size=19)
+        x_label = Text("x / L₀ [1]", color=MUTED, font_size=19)
         x_label.next_to(axes.x_axis, DOWN, buff=0.22)
-        v_label = Text("v / v₀ (dimensionless)", color=MUTED, font_size=19)
+        v_label = Text("v / v₀ [1]", color=MUTED, font_size=19)
         v_label.rotate(PI / 2)
         v_label.next_to(axes.y_axis, LEFT, buff=0.2)
 

@@ -41,6 +41,12 @@ HTML-specific components have an equivalent paged fallback.
 - Every equation, numerical value, table, plot, animation, caption, axis,
   legend, and alternative description must label its unit system. A quantity
   without a unit is explicitly marked as dimensionless or normalized.
+- A simulation, diagram, or animation using dimensionless or normalized units
+  must show the unit as `[1]` after each normalized quantity in its visible
+  labels, for example `$x/lambda_D$ [1]`. The word `dimensionless` must not
+  appear in an axis, legend, or other in-graphic label. Captions and
+  alternative descriptions still state the normalization and its reference
+  scales.
 - CGS and normalized conventions must not be mixed silently. Temperature
   conventions, field conventions, and any conversion to SI must be stated at
   the point of use.
@@ -234,9 +240,10 @@ the definitions of its dimensionless variables and identify every reference
 scale needed to recover a dimensional result.
 
 Plots and animations must label normalized axes with the normalization itself,
-not only with a variable name. Numerical results must either be dimensional in
-CGS or explicitly say that they are dimensionless. A conversion to another
-system is supplementary and must not replace the primary CGS statement.
+followed by the unit syntax `[1]`, not only with a variable name. Numerical
+results must either be dimensional in CGS or explicitly say that they are
+dimensionless. A conversion to another system is supplementary and must not
+replace the primary CGS statement.
 
 ## 4. Knowledge checks
 
@@ -513,6 +520,8 @@ raster image. Use Lilaq when the reader needs to compare numerical or
 functional behavior. Use Manim when time evolution, orbit geometry, wave
 propagation, or sheath formation is materially easier to understand in motion.
 Every visual must answer a stated pedagogical need and have an alt description.
+For normalized visual quantities, use `[1]` as the displayed unit and omit
+`(dimensionless)` from axes, legends, and in-graphic labels.
 
 ## 8. Manim workflow
 
@@ -520,6 +529,8 @@ Each scene must:
 
 - use a deterministic parameter set and document whether quantities are
   dimensional or normalized,
+- append `[1]` to every normalized axis or other quantitative in-scene label;
+  do not write `(dimensionless)` in the scene,
 - have a stable scene name and output path,
 - include a still frame or poster asset,
 - expose the physical variables and conventions in nearby Typst prose,

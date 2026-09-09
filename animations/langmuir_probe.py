@@ -50,9 +50,9 @@ class LangmuirProbe(Scene):
             axis_config={"color": GRID, "stroke_width": 2},
             tips=False,
         ).shift(LEFT * 2.25 + DOWN * 0.2)
-        x_label = Text("probe bias u", color=MUTED, font_size=18)
+        x_label = Text("probe bias u [1]", color=MUTED, font_size=18)
         x_label.next_to(axes, DOWN, buff=0.12)
-        y_label = Text("I / (e Γₑ₀ A)", color=MUTED, font_size=18)
+        y_label = Text("I / (e Γₑ₀ A) [1]", color=MUTED, font_size=18)
         y_label.rotate(PI / 2)
         y_label.next_to(axes, LEFT, buff=0.12)
 

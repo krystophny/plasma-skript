@@ -51,9 +51,9 @@ class TwoStreamInstability(Scene):
             axis_config={"color": GRID, "stroke_width": 2},
             tips=False,
         ).shift(LEFT * 2.55 + DOWN * 0.25)
-        phase_x = Text("position / L₀", color=MUTED, font_size=18)
+        phase_x = Text("position / L₀ [1]", color=MUTED, font_size=18)
         phase_x.next_to(phase_axes, DOWN, buff=0.14)
-        phase_y = Text("velocity / v₀", color=MUTED, font_size=18)
+        phase_y = Text("velocity / v₀ [1]", color=MUTED, font_size=18)
         phase_y.rotate(PI / 2)
         phase_y.next_to(phase_axes, LEFT, buff=0.10)
         phase_label = Text("counter-streaming beams", color=INK, font_size=20)
@@ -73,9 +73,9 @@ class TwoStreamInstability(Scene):
                 for x in beam_x
             ]
         )
-        upper_label = Text("+v₀", color=BEAM_A, font_size=20)
+        upper_label = Text("+1 [1]", color=BEAM_A, font_size=20)
         upper_label.next_to(phase_axes.c2p(3.0, 0.86), RIGHT, buff=0.08)
-        lower_label = Text("−v₀", color=BEAM_B, font_size=20)
+        lower_label = Text("−1 [1]", color=BEAM_B, font_size=20)
         lower_label.next_to(phase_axes.c2p(3.0, -0.86), RIGHT, buff=0.08)
 
         def perturbation_points(amplitude, phase):
@@ -112,11 +112,11 @@ class TwoStreamInstability(Scene):
             tips=False,
         ).shift(RIGHT * 3.0 + DOWN * 0.25)
         growth_x = MathTex(
-            r"kv_0/\omega_p", color=MUTED, font_size=22
+            r"kv_0/\omega_p\ [1]", color=MUTED, font_size=22
         )
         growth_x.next_to(growth_axes, DOWN, buff=0.14)
         growth_y = MathTex(
-            r"\gamma/\omega_p", color=MUTED, font_size=22
+            r"\gamma/\omega_p\ [1]", color=MUTED, font_size=22
         )
         growth_y.rotate(PI / 2)
         growth_y.next_to(growth_axes, LEFT, buff=0.08)

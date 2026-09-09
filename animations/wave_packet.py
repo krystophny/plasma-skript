@@ -5,7 +5,7 @@ envelope:
 
     A(x, t) = exp(-(x - v_g t)^2 / (2 sigma^2)) cos(k (x - v_phi t))
 
-The carrier phase speed and envelope group speed are dimensionless visual
+The carrier phase speed and envelope group speed use unit [1] visual
 parameters. This is a deterministic teaching illustration, not a numerical
 solution of a plasma boundary-value problem or measured data.
 """
@@ -58,9 +58,9 @@ class WavePacketPropagation(Scene):
             tips=False,
         ).shift(DOWN * 0.35)
 
-        x_label = Text("x / L₀ (dimensionless)", color=MUTED, font_size=19)
+        x_label = Text("x / L₀ [1]", color=MUTED, font_size=19)
         x_label.next_to(axes, DOWN, buff=0.18)
-        y_label = Text("field amplitude", color=MUTED, font_size=19)
+        y_label = Text("field amplitude [1]", color=MUTED, font_size=19)
         y_label.rotate(PI / 2)
         y_label.to_edge(LEFT, buff=0.3).shift(UP * 0.6)
 
@@ -145,7 +145,7 @@ class WavePacketPropagation(Scene):
         legend = VGroup(
             Text("teal: carrier field", color=WAVE_COLOR, font_size=18),
             Text("orange: envelope", color=ENVELOPE_COLOR, font_size=18),
-            Text("markers: normalized speeds", color=MUTED, font_size=18),
+            Text("markers: normalized speeds [1]", color=MUTED, font_size=18),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.08)
         legend.to_corner(DL, buff=0.3)
 

@@ -56,7 +56,7 @@ class SheathFormation(Scene):
             color=GRID,
         ).shift(DOWN * 2.35 + LEFT * 0.45)
         domain_label = Text(
-            "distance from wall / λ₍D₎", color=MUTED, font_size=18
+            "distance from wall / λ₍D₎ [1]", color=MUTED, font_size=18
         )
         domain_label.next_to(domain, DOWN, buff=0.12)
 
@@ -84,7 +84,7 @@ class SheathFormation(Scene):
             axis_config={"color": GRID, "stroke_width": 2},
             tips=False,
         ).shift(DOWN * 0.65 + LEFT * 0.45)
-        profile_y = Text("normalized density", color=MUTED, font_size=18)
+        profile_y = Text("normalized density [1]", color=MUTED, font_size=18)
         profile_y.rotate(PI / 2)
         profile_y.next_to(profile_axes, LEFT, buff=0.13)
 
@@ -122,7 +122,7 @@ class SheathFormation(Scene):
             stroke_width=4,
         )
         potential_label = Text(
-            "−eφ / k₍B₎Tₑ", color=POTENTIAL, font_size=20
+            "−eφ / k₍B₎Tₑ [1]", color=POTENTIAL, font_size=20
         )
         potential_label.next_to(potential_axes, LEFT, buff=0.18)
 

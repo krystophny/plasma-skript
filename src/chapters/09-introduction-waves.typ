@@ -416,7 +416,7 @@
 
   #animation(
     "../media/wave-packet.mp4",
-    "A Gaussian wave packet with a visible carrier oscillation travels to the right. The slowly moving envelope is marked as the group-velocity scale, while a separate crest marker shows the faster phase motion. The normalized horizontal coordinate is position divided by a reference length, and the vertical field amplitude is dimensionless.",
+    "A Gaussian wave packet with a visible carrier oscillation travels to the right. The slowly moving envelope is marked as the group-velocity scale, while a separate crest marker shows the faster phase motion. The normalized horizontal coordinate is position divided by a reference length, and the vertical field amplitude uses unit [1].",
     caption: [
       A carrier and its envelope separate because the cold plasma branch is
       dispersive. The animation is a deterministic normalized illustration,

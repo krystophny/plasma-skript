@@ -134,8 +134,8 @@
     "A schematic begins with the full distribution f of position and velocity and then reveals four velocity moments: number density n, bulk velocity u, pressure tensor P, and heat flux q. Arrows indicate increasing moment order and show that the transport of one moment introduces the next, so a closure is required when the hierarchy is truncated.",
     caption: [
       Moment hierarchy from kinetic information to fluid fields. The animation
-      is schematic and dimensionless. It does not represent measured data or a
-      numerical solution.
+      uses unit [1] for its schematic quantities. It does not represent
+      measured data or a numerical solution.
     ],
     poster: "../media/moment-hierarchy.png",
   )

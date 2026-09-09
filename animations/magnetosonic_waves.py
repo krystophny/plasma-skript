@@ -30,7 +30,7 @@ class MagnetosonicWaves(Scene):
 
         title = Text("Warm magnetized-wave patterns", color=INK, font_size=32)
         subtitle = Text(
-            "schematic normalized illustration · patterns are not measurements",
+            "schematic normalized illustration · coordinates [1] · patterns are not measurements",
             color=MUTED,
             font_size=19,
         )

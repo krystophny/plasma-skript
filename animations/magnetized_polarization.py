@@ -69,9 +69,9 @@ class MagnetizedPolarization(Scene):
         )
         phasor_label = Text("transverse phasor plane", color=MUTED, font_size=20)
         phasor_label.next_to(phasor_circle, UP, buff=0.12)
-        x_label = Text("x", color=MUTED, font_size=18)
+        x_label = Text("x [1]", color=MUTED, font_size=18)
         x_label.next_to(phasor_x, RIGHT, buff=0.08)
-        y_label = Text("y", color=MUTED, font_size=18)
+        y_label = Text("y [1]", color=MUTED, font_size=18)
         y_label.next_to(phasor_y, UP, buff=0.08)
 
         def endpoint(angle, length=1.1):
@@ -144,7 +144,7 @@ class MagnetizedPolarization(Scene):
             stroke_width=2,
             buff=0,
         )
-        z_label = Text("propagation z", color=MUTED, font_size=19)
+        z_label = Text("propagation z [1]", color=MUTED, font_size=19)
         z_label.next_to(z_axis, DOWN, buff=0.12)
         input_label = Text("linear input", color=FIELD_COLOR, font_size=17)
         input_label.next_to(section_circles[0], LEFT, buff=0.12)

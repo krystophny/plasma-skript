@@ -22,7 +22,9 @@ Before changing files:
 - Keep waves and plasma sheaths as separate top-level chapters.
 - Use Gaussian CGS as the default dimensional convention. Label every unit,
   normalization, reference scale, and dimensionless quantity at its point of
-  use.
+  use. In a simulation, diagram, or animation using dimensionless units, put
+  `[1]` after each normalized visual quantity and never write
+  `(dimensionless)` in the visual label.
 - Use the `unify` Typst package for unit-bearing quantities and numerical
   results whenever its unit parser supports the notation.
 - Put exact exam wording in clearly labelled exam-prompt blocks with a source

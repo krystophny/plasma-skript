@@ -2,7 +2,7 @@
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
 #import "@preview/lilaq:0.6.0" as lq
 #import "@preview/physica:0.9.8": grad, pdv, curl
-#import "theme.typ": accent, blue, orange, muted
+#import "theme.typ": accent, blue, orange, muted, normalized-axis, normalized-label
 
 #let model-hierarchy = figure(
   alt: "A model hierarchy diagram. The full particle-field description is at the top. Arrows lead downward to kinetic, multiple-fluid, and single-fluid magnetohydrodynamic descriptions, each retaining fewer microscopic degrees of freedom.",
@@ -50,9 +50,9 @@
 ]
 
 #let debye-profile = figure(
-  alt: "A dimensionless plot of screened electrostatic potential versus distance measured in Debye lengths. The potential is largest at zero distance and decreases symmetrically toward zero as the distance exceeds several Debye lengths.",
+  alt: "A normalized plot of screened electrostatic potential versus distance measured in Debye lengths. The potential is largest at zero distance and decreases symmetrically toward zero as the distance exceeds several Debye lengths.",
   caption: [
-    Illustrative Debye screening profile. Both axes are dimensionless: the
+    Illustrative Debye screening profile. Both axes use unit #text("[1]"): the
     distance is normalized by the electron Debye length $lambda_D$, and the
     potential is normalized by its value $phi_0$ at the source.
   ],
@@ -60,8 +60,8 @@
   #lq.diagram(
     width: 10cm,
     height: 5.2cm,
-    xlabel: [$x / lambda_D$ (dimensionless)],
-    ylabel: [$phi / phi_0$ (dimensionless)],
+    xlabel: normalized-axis[$x / lambda_D$],
+    ylabel: normalized-axis[$phi / phi_0$],
     lq.plot(
       (-4, -3, -2, -1, 0, 1, 2, 3, 4),
       (0.018, 0.050, 0.135, 0.368, 1, 0.368, 0.135, 0.050, 0.018),
@@ -73,7 +73,7 @@
 ]
 
 #let maxwellian-profile = figure(
-  alt: "A dimensionless one-dimensional velocity plot compares a centered Maxwellian distribution with a second Maxwellian shifted toward positive velocity. The centered curve peaks at zero velocity, while the shifted curve peaks at positive normalized velocity and has the same Gaussian width.",
+  alt: "A normalized one-dimensional velocity plot compares a centered Maxwellian distribution with a second Maxwellian shifted toward positive velocity. The centered curve peaks at zero velocity, while the shifted curve peaks at positive normalized velocity and has the same Gaussian width.",
   caption: [
     Centered and drifting one-dimensional Maxwellians. The horizontal axis is
     velocity normalized by $v_"th"=sqrt(2 k_B T/m)$, and the vertical axis is
@@ -84,8 +84,8 @@
   #lq.diagram(
     width: 10cm,
     height: 5.2cm,
-    xlabel: [$v / v_"th"$ (dimensionless)],
-    ylabel: [$f / f_0$ (dimensionless)],
+    xlabel: normalized-axis[$v / v_"th"$],
+    ylabel: normalized-axis[$f / f_0$],
     lq.plot(
       (-3, -2.5, -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 2.5, 3),
       (0.011, 0.044, 0.135, 0.325, 0.607, 0.882, 1, 0.882, 0.607, 0.325, 0.135, 0.044, 0.011),
@@ -520,7 +520,7 @@
 }
 
 #let coulomb-cutoff = context {
-  let alt-description = "A Coulomb-scattering scale map shows the lower impact-parameter cutoff b ninety, set by strong ninety-degree deflection, and the upper cutoff at the Debye length. Their ratio defines the dimensionless plasma parameter and its Coulomb logarithm."
+  let alt-description = "A Coulomb-scattering scale map shows the lower impact-parameter cutoff b ninety, set by strong ninety-degree deflection, and the upper cutoff at the Debye length. Their ratio defines a plasma parameter with unit [1] and its Coulomb logarithm."
   let caption-text = [
     Coulomb scattering is accumulated between a strong-deflection scale
     $b_90$ and the shielding scale $lambda_D$. The logarithm
@@ -543,7 +543,7 @@
         node((1.35, -1), [Screening cutoff \
           $lambda_D$]),
         node((0, -2), [Coulomb logarithm \
-          $ln Lambda$]),
+          #normalized-label[$ln Lambda$]]),
         edge((0, 0), (-1.35, -1), [lower scale], "->"),
         edge((0, 0), (1.35, -1), [upper scale], "->"),
         edge((-1.35, -1), (0, -2), [ratio], "->"),
@@ -574,7 +574,7 @@
         #html.div(class: "mhd-arrow")[integrate over $b_90 < b < lambda_D$]
         #html.div(class: "mhd-node mhd-node-result")[
           #html.strong[Coulomb logarithm]
-          #html.span[$ln Lambda=ln(lambda_D/b_90)$]
+          #html.span[#normalized-label[$ln Lambda=ln(lambda_D/b_90)$]]
         ]
       ]
       #html.figcaption[#caption-text]
@@ -646,10 +646,10 @@
 }
 
 #let random-walk-diffusion = context {
-  let alt-description = "A dimensionless density plot compares two symmetric random-walk distributions. At one normalized diffusion time the profile is narrow and centered at zero; at four normalized diffusion times it is broader but has the same center, showing zero mean displacement and growing variance."
+  let alt-description = "A normalized density plot compares two symmetric random-walk distributions. At one normalized diffusion time the profile is narrow and centered at zero; at four normalized diffusion times it is broader but has the same center, showing zero mean displacement and growing variance."
   let caption-text = [
     Random-walk spreading keeps the mean position fixed while the variance
-    grows linearly with time. Both axes are dimensionless: position is scaled
+    grows linearly with time. Both axes use unit #text("[1]"): position is scaled
     by a reference length and density by the initial peak.
   ]
 
@@ -661,21 +661,21 @@
       #lq.diagram(
         width: 10cm,
         height: 5.2cm,
-        xlabel: [$x / L_0$ (dimensionless)],
-        ylabel: [$n / n_0$ (dimensionless)],
+        xlabel: normalized-axis[$x / L_0$],
+        ylabel: normalized-axis[$n / n_0$],
         lq.plot(
           (-4, -3, -2, -1, 0, 1, 2, 3, 4),
           (0.004, 0.018, 0.082, 0.368, 1, 0.368, 0.082, 0.018, 0.004),
           color: blue,
           mark: "o",
-          label: [$t / tau_D=1$],
+          label: [#normalized-label[$t / tau_D=1$]],
         ),
         lq.plot(
           (-4, -3, -2, -1, 0, 1, 2, 3, 4),
           (0.135, 0.325, 0.607, 0.882, 1, 0.882, 0.607, 0.325, 0.135),
           color: orange,
           mark: "+",
-          label: [$t / tau_D=4$],
+          label: [#normalized-label[$t / tau_D=4$]],
         ),
       )
     ]
@@ -692,11 +692,11 @@
         ]
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ideal")[
-            #html.strong[$t / tau_D=1$]
+            #html.strong[#normalized-label[$t / tau_D=1$]]
             #html.span[narrow density profile]
           ]
           #html.div(class: "mhd-node mhd-node-ohm")[
-            #html.strong[$t / tau_D=4$]
+            #html.strong[#normalized-label[$t / tau_D=4$]]
             #html.span[broader density profile]
           ]
         ]
@@ -778,7 +778,7 @@
 }
 
 #let cross-field-diffusion = context {
-  let alt-description = "A normalized plot shows perpendicular diffusion falling as magnetization increases. The horizontal axis is the dimensionless product of signed cyclotron frequency magnitude and collision time; the vertical axis is perpendicular diffusion divided by the unmagnetized diffusion coefficient. The curve starts at one and approaches zero as the inverse square of magnetization."
+  let alt-description = "A normalized plot shows perpendicular diffusion falling as magnetization increases. The horizontal axis is the signed cyclotron-frequency product with unit [1]; the vertical axis is perpendicular diffusion divided by the unmagnetized diffusion coefficient. The curve starts at one and approaches zero as the inverse square of magnetization."
   let caption-text = [
     Collisions enable cross-field steps by interrupting gyromotion. With
     $D_0=k_B T/(m nu)$, the classical single-species result is
@@ -793,8 +793,8 @@
       #lq.diagram(
         width: 10cm,
         height: 5.2cm,
-        xlabel: [$abs(Omega) / nu$ (dimensionless)],
-        ylabel: [$D_perp / D_0$ (dimensionless)],
+        xlabel: normalized-axis[$abs(Omega) / nu$],
+        ylabel: normalized-axis[$D_perp / D_0$],
         lq.plot(
           (0, 0.1, 0.3, 1, 3, 10),
           (1, 0.990, 0.917, 0.500, 0.100, 0.0099),
@@ -815,15 +815,15 @@
           #html.strong[Parallel motion]
           #html.span[$D_parallel=D_0$]
         ]
-        #html.div(class: "mhd-arrow")[increasing $abs(Omega)/nu$]
+        #html.div(class: "mhd-arrow")[increasing #normalized-label[$abs(Omega)/nu$]]
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ideal")[
             #html.strong[Weak magnetization]
-            #html.span[$D_perp approx D_0$]
+            #html.span[#normalized-label[$D_perp / D_0 approx 1$]]
           ]
           #html.div(class: "mhd-node mhd-node-ohm")[
             #html.strong[Strong magnetization]
-            #html.span[$D_perp approx D_0 (nu/Omega)^2$]
+            #html.span[#normalized-label[$D_perp / D_0 approx (nu/Omega)^2$]]
           ]
         ]
         #html.div(class: "mhd-node mhd-node-result")[
@@ -852,8 +852,8 @@
       #lq.diagram(
         width: 10cm,
         height: 5.2cm,
-        xlabel: [$B / B_0$ (dimensionless)],
-        ylabel: [$D_(perp)(B) / D_(perp)(B_0)$ (dimensionless)],
+        xlabel: normalized-axis[$B / B_0$],
+        ylabel: normalized-axis[$D_(perp)(B) / D_(perp)(B_0)$],
         lq.plot(
           (0.5, 1, 2, 4, 8),
           (4, 1, 0.25, 0.0625, 0.0156),
@@ -879,7 +879,7 @@
       )[
         #html.div(class: "mhd-node mhd-node-wide")[
           #html.strong[Fully ionized transport]
-          #html.span[normalized at $B=B_0$]
+          #html.span[normalized at #normalized-label[$B / B_0=1$]]
         ]
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ideal")[
@@ -986,28 +986,28 @@
       #lq.diagram(
         width: 10cm,
         height: 5.4cm,
-        xlabel: [$K=(k c)/omega_(p,e)$ (dimensionless)],
-        ylabel: [$W=omega / omega_(p,e)$ (dimensionless)],
+        xlabel: normalized-axis[$K=(k c)/omega_(p,e)$],
+        ylabel: normalized-axis[$W=omega / omega_(p,e)$],
         lq.plot(
           (0, 0.5, 1, 2, 3, 4),
           (0, 0.5, 1, 2, 3, 4),
           color: muted,
           mark: "o",
-          label: [vacuum $W=K$],
+          label: [vacuum #normalized-label[$W=K$]],
         ),
         lq.plot(
           (0, 0.5, 1, 2, 3, 4),
           (1, 1.118, 1.414, 2.236, 3.162, 4.123),
           color: blue,
           mark: "o",
-          label: [cold EM $W=sqrt(1+K^2)$],
+          label: [cold EM #normalized-label[$W=sqrt(1+K^2)$]],
         ),
         lq.plot(
           (0, 0.5, 1, 2, 3, 4),
           (1, 1, 1, 1, 1, 1),
           color: orange,
           mark: "+",
-          label: [cold electrostatic $W=1$],
+          label: [cold electrostatic #normalized-label[$W=1$]],
         ),
       )
     ]
@@ -1020,21 +1020,27 @@
       )[
         #html.div(class: "mhd-node mhd-node-wide")[
           #html.strong[Normalized axes]
-          #html.span[$K=(k c)/omega_(p,e)$ and $W=omega/omega_(p,e)$]
+          #html.span[
+            #normalized-label[$K=(k c)/omega_(p,e)$] and
+            #normalized-label[$W=omega/omega_(p,e)$]
+          ]
         ]
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ideal")[
             #html.strong[Vacuum]
-            #html.span[$W=K$]
+            #html.span[#normalized-label[$W=K$]]
           ]
           #html.div(class: "mhd-node mhd-node-ohm")[
             #html.strong[Cold electromagnetic]
-            #html.span[$W=sqrt(1+K^2)$, cutoff $W=1$]
+            #html.span[
+              #normalized-label[$W=sqrt(1+K^2)$], cutoff
+              #normalized-label[$W=1$]
+            ]
           ]
         ]
         #html.div(class: "mhd-node mhd-node-result")[
           #html.strong[Cold electrostatic]
-          #html.span[$W=1$, no group propagation]
+          #html.span[#normalized-label[$W=1$], no group propagation]
         ]
       ]
       #html.figcaption[#caption-text]
@@ -1170,7 +1176,7 @@
 }
 
 #let magnetized-parallel-dispersion = context {
-  let alt-description = "A normalized parallel-propagation dispersion plot compares the vacuum line with two circularly polarized cold-plasma branches. The horizontal axis is the dimensionless refractive index N = k c / omega and the vertical axis is W = omega / omega_(p,e). The branches begin at distinct cutoffs, approach the vacuum line at high frequency, and the lower-frequency resonant branch is identified as the cyclotron-sensitive branch. A horizontal line marks the longitudinal plasma oscillation."
+  let alt-description = "A normalized parallel-propagation dispersion plot compares the vacuum line with two circularly polarized cold-plasma branches. The horizontal axis is the refractive index N = k c / omega with unit [1], and the vertical axis is W = omega / omega_(p,e) with unit [1]. The branches begin at distinct cutoffs, approach the vacuum line at high frequency, and the lower-frequency resonant branch is identified as the cyclotron-sensitive branch. A horizontal line marks the longitudinal plasma oscillation."
   let caption-text = [
     Parallel propagation at fixed $Y=omega_(c,e)/omega_(p,e)=0.3$. The circular
     branches have different cutoffs because the magnetic field distinguishes
@@ -1187,14 +1193,14 @@
       #lq.diagram(
         width: 10cm,
         height: 5.4cm,
-        xlabel: [$N=(k c)/omega$ (dimensionless)],
-        ylabel: [$W=omega/omega_(p,e)$ (dimensionless)],
+        xlabel: normalized-axis[$N=(k c)/omega$],
+        ylabel: normalized-axis[$W=omega/omega_(p,e)$],
         lq.plot(
           (0, 0.5, 1, 2, 3, 4),
           (0, 0.5, 1, 2, 3, 4),
           color: muted,
           mark: "o",
-          label: [vacuum $W=N$],
+          label: [vacuum #normalized-label[$W=N$]],
         ),
         lq.plot(
           (0, 0.397, 0.667, 0.795, 0.885, 0.948, 0.971),
@@ -1215,7 +1221,7 @@
           (1, 1, 1, 1, 1),
           color: accent,
           mark: "+",
-          label: [longitudinal $W=1$],
+          label: [longitudinal #normalized-label[$W=1$]],
         ),
       )
     ]
@@ -1228,27 +1234,30 @@
       )[
         #html.div(class: "mhd-node mhd-node-wide")[
           #html.strong[Normalized axes]
-          #html.span[$N=(k c)/omega$, $W=omega/omega_(p,e)$, and
-            $Y=omega_(c,e)/omega_(p,e)=0.3$ (all dimensionless)]
+          #html.span[
+            #normalized-label[$N=(k c)/omega$],
+            #normalized-label[$W=omega/omega_(p,e)$], and
+            #normalized-label[$Y=omega_(c,e)/omega_(p,e)=0.3$]
+          ]
         ]
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ideal")[
             #html.strong[Vacuum]
-            #html.span[$W=N$]
+            #html.span[#normalized-label[$W=N$]]
           ]
           #html.div(class: "mhd-node mhd-node-ohm")[
             #html.strong[Circular $+$]
-            #html.span[cutoff $W=0.861$]
+            #html.span[cutoff #normalized-label[$W=0.861$]]
           ]
         ]
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ideal")[
             #html.strong[Circular $-$]
-            #html.span[cutoff $W=1.161$, cyclotron-sensitive continuation]
+            #html.span[cutoff #normalized-label[$W=1.161$], cyclotron-sensitive continuation]
           ]
           #html.div(class: "mhd-node mhd-node-result")[
             #html.strong[Longitudinal]
-            #html.span[$W=1$, no group propagation in the cold limit]
+            #html.span[#normalized-label[$W=1$], no group propagation in the cold limit]
           ]
         ]
       ]
@@ -1480,8 +1489,8 @@
       #lq.diagram(
         width: 10cm,
         height: 5.2cm,
-        xlabel: [$k v_A / omega_(c,i)$ (dimensionless)],
-        ylabel: [$omega / omega_(c,i)$ (dimensionless)],
+        xlabel: normalized-axis[$k v_A / omega_(c,i)$],
+        ylabel: normalized-axis[$omega / omega_(c,i)$],
         lq.plot(
           (0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2),
           (0, 0.25, 0.49, 0.72, 0.94, 1.15, 1.35, 1.55, 1.75),
@@ -1514,7 +1523,10 @@
       )[
         #html.div(class: "mhd-node mhd-node-wide")[
           #html.strong[Two-fluid low-frequency branches]
-          #html.span[normalized $omega$ versus normalized $k$]
+          #html.span[
+            #normalized-label[$omega / omega_(c,i)$] versus
+            #normalized-label[$k v_A / omega_(c,i)$]
+          ]
         ]
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ideal")[
@@ -1549,8 +1561,8 @@
       #lq.diagram(
         width: 10cm,
         height: 5.2cm,
-        xlabel: [$k lambda_D$ (dimensionless)],
-        ylabel: [$omega / omega_p$ (dimensionless)],
+        xlabel: normalized-axis[$k lambda_D$],
+        ylabel: normalized-axis[$omega / omega_p$],
         lq.plot(
           (0, 0.5, 1, 1.5, 2, 2.5, 3),
           (1, 1, 1, 1, 1, 1, 1),
@@ -1583,12 +1595,15 @@
       )[
         #html.div(class: "mhd-node mhd-node-wide")[
           #html.strong[Longitudinal response]
-          #html.span[normalized frequency versus $k lambda_D$]
+          #html.span[
+            #normalized-label[$omega/omega_p$] versus
+            #normalized-label[$k lambda_D$]
+          ]
         ]
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ideal")[
             #html.strong[Cold]
-            #html.span[$omega/omega_p=1$]
+            #html.span[#normalized-label[$omega/omega_p=1$]]
           ]
           #html.div(class: "mhd-node mhd-node-ohm")[
             #html.strong[Warm electron]
@@ -1671,7 +1686,7 @@
 #let warm-wave-ordering = context {
   let alt-description = "An ordering map starts from the cold magnetized wave model and branches according to the largest neglected effect: a collision frequency comparable to the wave frequency gives complex damping, ion inertia important below the ion cyclotron scale gives two-fluid or MHD branches, and a Debye-scale wave number or thermal pressure gives warm dispersion. If none is small, the model must be kinetic."
   let caption-text = [
-    Model selection is controlled by dimensionless orderings. Compare
+    Model selection is controlled by normalized orderings with unit #text("[1]"). Compare
     $nu/omega$, $omega/omega_(c,i)$, and $k lambda_D$ before interpreting a
     cold-plasma branch.
   ]
@@ -1687,11 +1702,11 @@
         edge-stroke: 1pt,
         node((0, 0), [Cold magnetized wave]),
         node((-1.45, -1), [Collisions \
-          $nu/omega$ not small]),
+          #normalized-label[$nu/omega$] not small]),
         node((0, -1), [Ion inertia \
-          $omega/omega_(c,i)$ small]),
+          #normalized-label[$omega/omega_(c,i)$] small]),
         node((1.45, -1), [Thermal pressure \
-          $k lambda_D$ not small]),
+          #normalized-label[$k lambda_D$] not small]),
         node((0, -2), [Complex, two-fluid, or warm response]),
         node((0, -3), [Kinetic treatment if scales overlap]),
         edge((0, 0), (-1.45, -1), [drag], "->"),
@@ -1717,15 +1732,15 @@
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ohm")[
             #html.strong[Collisions]
-            #html.span[$nu/omega$ not small → complex damping]
+            #html.span[#normalized-label[$nu/omega$] not small → complex damping]
           ]
           #html.div(class: "mhd-node mhd-node-ideal")[
             #html.strong[Ion inertia]
-            #html.span[$omega/omega_(c,i)$ small → two-fluid/MHD]
+            #html.span[#normalized-label[$omega/omega_(c,i)$] small → two-fluid/MHD]
           ]
           #html.div(class: "mhd-node mhd-node-hall")[
             #html.strong[Thermal pressure]
-            #html.span[$k lambda_D$ not small → warm dispersion]
+            #html.span[#normalized-label[$k lambda_D$] not small → warm dispersion]
           ]
         ]
         #html.div(class: "mhd-arrow")[if scales overlap: use kinetic response]
@@ -1751,8 +1766,8 @@
       #lq.diagram(
         width: 10cm,
         height: 5.2cm,
-        xlabel: [$k lambda_D$ (dimensionless)],
-        ylabel: [$omega_r / omega_p$ (dimensionless)],
+        xlabel: normalized-axis[$k lambda_D$],
+        ylabel: normalized-axis[$omega_r / omega_p$],
         lq.plot(
           (0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2),
           (1, 1, 1, 1, 1, 1, 1),
@@ -1778,12 +1793,15 @@
       )[
         #html.div(class: "mhd-node mhd-node-wide")[
           #html.strong[Hot isotropic response]
-          #html.span[normalized $omega_r$ versus $k lambda_D$]
+          #html.span[
+            #normalized-label[$omega_r / omega_p$] versus
+            #normalized-label[$k lambda_D$]
+          ]
         ]
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ideal")[
             #html.strong[Cold]
-            #html.span[$omega_r/omega_p=1$]
+            #html.span[#normalized-label[$omega_r/omega_p=1$]]
           ]
           #html.div(class: "mhd-node mhd-node-ohm")[
             #html.strong[Warm / kinetic]
@@ -1814,8 +1832,8 @@
       #lq.diagram(
         width: 10cm,
         height: 5.2cm,
-        xlabel: [$v / v_"th"$ (dimensionless)],
-        ylabel: [$f_0 / f_"max"$ (dimensionless)],
+        xlabel: normalized-axis[$v / v_"th"$],
+        ylabel: normalized-axis[$f_0 / f_"max"$],
         lq.plot(
           (-3, -2.5, -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 2.5, 3),
           (0.011, 0.044, 0.135, 0.325, 0.607, 0.882, 1, 0.882, 0.607, 0.325, 0.135, 0.044, 0.011),
@@ -1876,8 +1894,8 @@
       #lq.diagram(
         width: 10cm,
         height: 5.2cm,
-        xlabel: [$abs(k v_0) / omega_p$ (dimensionless)],
-        ylabel: [$gamma / omega_p$ (dimensionless)],
+        xlabel: normalized-axis[$abs(k v_0) / omega_p$],
+        ylabel: normalized-axis[$gamma / omega_p$],
         lq.plot(
           (0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0),
           (0, 0.168, 0.249, 0.307, 0.340, 0.344, 0.354, 0.331, 0.282, 0.205, 0),
@@ -1896,16 +1914,19 @@
       )[
         #html.div(class: "mhd-node mhd-node-wide")[
           #html.strong[Two-stream dispersion]
-          #html.span[normalized growth rate versus normalized wave number]
+          #html.span[
+            #normalized-label[$gamma/omega_p$] versus
+            #normalized-label[$abs(k v_0)/omega_p$]
+          ]
         ]
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ideal")[
             #html.strong[Unstable band]
-            #html.span[$0<abs(k v_0)/omega_p<1$]
+            #html.span[#normalized-label[$0<abs(k v_0)/omega_p<1$]]
           ]
           #html.div(class: "mhd-node mhd-node-ohm")[
             #html.strong[Fastest growth]
-            #html.span[$gamma_"max"/omega_p=1/(2 sqrt(2))$]
+            #html.span[#normalized-label[$gamma_"max"/omega_p=1/(2 sqrt(2))$]]
           ]
         ]
         #html.div(class: "mhd-arrow")[the lower frequency-squared branch becomes negative]
@@ -2055,28 +2076,28 @@
       #lq.diagram(
         width: 10cm,
         height: 5.2cm,
-        xlabel: [$x / lambda_D$ (dimensionless; wall at $0$)],
-        ylabel: [normalized density or potential],
+        xlabel: normalized-axis[$x / lambda_D$; wall at $0$],
+        ylabel: normalized-axis[normalized density or potential],
         lq.plot(
           (0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6),
           (0.12, 0.18, 0.27, 0.39, 0.53, 0.66, 0.76, 0.89, 0.97, 1.00),
           color: blue,
           mark: "o",
-          label: [$n_(e) / n_(0)$],
+          label: [#normalized-label[$n_(e) / n_(0)$]],
         ),
         lq.plot(
           (0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6),
           (0.57, 0.63, 0.70, 0.76, 0.81, 0.85, 0.89, 0.95, 0.99, 1.00),
           color: orange,
           mark: "+",
-          label: [$n_(i) / n_(0)$],
+          label: [#normalized-label[$n_(i) / n_(0)$]],
         ),
         lq.plot(
           (0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6),
           (2.80, 2.35, 1.92, 1.55, 1.20, 0.90, 0.66, 0.33, 0.12, 0.00),
           color: accent,
           mark: "x",
-          label: [$eta=-e phi/(k_B T_e)$],
+          label: [#normalized-label[$eta=-e phi/(k_B T_e)$]],
         ),
       )
     ]
@@ -2088,7 +2109,7 @@
         aria-label: alt-description,
       )[
         #html.div(class: "mhd-node mhd-node-wide")[
-          #html.strong[Wall at x = 0]
+          #html.strong[Wall at #normalized-label[$x / lambda_D=0$]]
           #html.span[the electron barrier is largest at the surface]
         ]
         #html.div(class: "mhd-branches")[
@@ -2126,8 +2147,8 @@
       #lq.diagram(
         width: 10cm,
         height: 5.2cm,
-        xlabel: [$u=e(phi_p-phi_"pl")/(k_B T_e)$ (dimensionless)],
-        ylabel: [$I/(e Gamma_(e,0) A)$ (dimensionless)],
+        xlabel: normalized-axis[$u=e(phi_p-phi_"pl")/(k_B T_e)$],
+        ylabel: normalized-axis[$I/(e Gamma_(e,0) A)$],
         lq.plot(
           (-4, -3.5, -3, -2.5, -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2),
           (0.040, 0.028, 0.008, -0.024, -0.077, -0.165, -0.310, -0.548, -0.942, -1.110, -1.220, -1.330, -1.440),

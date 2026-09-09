@@ -43,8 +43,8 @@ class ExBDrift(Scene):
             axis_config={"color": GRID, "stroke_width": 2},
             tips=False,
         ).shift(DOWN * 0.35 + LEFT * 0.35)
-        x_label = Text("x / ρ", color=MUTED, font_size=20).next_to(axes.x_axis, RIGHT, buff=0.15)
-        y_label = Text("y / ρ", color=MUTED, font_size=20).next_to(axes.y_axis, UP, buff=0.12)
+        x_label = Text("x / ρ [1]", color=MUTED, font_size=20).next_to(axes.x_axis, RIGHT, buff=0.15)
+        y_label = Text("y / ρ [1]", color=MUTED, font_size=20).next_to(axes.y_axis, UP, buff=0.12)
 
         e_arrow = Arrow(
             axes.c2p(-2.85, -1.65),

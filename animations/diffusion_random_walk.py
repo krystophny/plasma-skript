@@ -55,7 +55,7 @@ class DiffusionRandomWalk(Scene):
             axis_config={"color": GRID, "stroke_width": 2},
             tips=False,
         ).shift(DOWN * 0.1)
-        x_label = Text("x / L₀ (dimensionless)", color=MUTED, font_size=20)
+        x_label = Text("x / L₀ [1]", color=MUTED, font_size=20)
         x_label.next_to(axes.x_axis, DOWN, buff=0.25)
 
         rng = np.random.default_rng(8)

@@ -5,7 +5,7 @@ animation uses the normalized displacement
 
     xi / xi_0 = cos(t omega_p,e),
 
-where xi_0 is a reference displacement and t omega_p,e is dimensionless. It
+where xi_0 is a reference displacement and t omega_p,e has unit [1]. It
 is a conceptual visualization of the restoring-field argument, not measured
 data and not a particle-in-cell calculation.
 """
@@ -55,7 +55,7 @@ class PlasmaOscillation(Scene):
             axis_config={"color": GRID, "stroke_width": 2},
             tips=False,
         ).shift(DOWN * 0.55)
-        x_label = Text("x / L₀ (dimensionless)", color=MUTED, font_size=20)
+        x_label = Text("x / L₀ [1]", color=MUTED, font_size=20)
         x_label.next_to(axes.x_axis, DOWN, buff=0.25)
 
         x_positions = np.linspace(-4.0, 4.0, 9)

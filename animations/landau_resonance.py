@@ -50,9 +50,9 @@ class LandauResonance(Scene):
             axis_config={"color": GRID, "stroke_width": 2},
             tips=False,
         ).shift(LEFT * 2.15 + DOWN * 0.35)
-        phase_x = Text("position / L₀", color=MUTED, font_size=18)
+        phase_x = Text("position / L₀ [1]", color=MUTED, font_size=18)
         phase_x.next_to(phase_axes, DOWN, buff=0.14)
-        phase_y = Text("velocity / v₀", color=MUTED, font_size=18)
+        phase_y = Text("velocity / v₀ [1]", color=MUTED, font_size=18)
         phase_y.rotate(PI / 2)
         phase_y.next_to(phase_axes, LEFT, buff=0.12)
         phase_label = Text("wave and resonant particle", color=WAVE, font_size=19)
@@ -100,9 +100,9 @@ class LandauResonance(Scene):
             axis_config={"color": GRID, "stroke_width": 2},
             tips=False,
         ).shift(RIGHT * 3.15 + DOWN * 0.35)
-        distribution_x = Text("v / v₀", color=MUTED, font_size=18)
+        distribution_x = Text("v / v₀ [1]", color=MUTED, font_size=18)
         distribution_x.next_to(distribution_axes, DOWN, buff=0.14)
-        distribution_y = Text("f₀(v)", color=MUTED, font_size=18)
+        distribution_y = Text("f₀(v) [1]", color=MUTED, font_size=18)
         distribution_y.rotate(PI / 2)
         distribution_y.next_to(distribution_axes, LEFT, buff=0.10)
         distribution_label = Text(

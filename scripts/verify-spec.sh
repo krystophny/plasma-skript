@@ -117,6 +117,55 @@ for chapter in "${chapter_sources[@]}"; do
   fi
 done
 
+# Normalized visual quantities use the compact unit syntax [1]. The figure
+# source routes every normalized Lilaq axis and legend through shared helpers,
+# while animation sources keep the marker in their rendered label text. These
+# are source-level checks for a convention that a successful Typst or Manim
+# compile cannot detect by itself.
+figure_source="$repo_root/src/figures.typ"
+theme_source="$repo_root/src/theme.typ"
+require_file "$figure_source"
+require_file "$theme_source"
+if [[ -f "$figure_source" && -f "$theme_source" ]]; then
+  if ! rg -Fq '#let normalized-axis(body)' "$theme_source" \
+    || ! rg -Fq '#let normalized-label(body)' "$theme_source" \
+    || ! rg -Fq '#text("[1]")' "$theme_source"; then
+    fail "$theme_source does not define the normalized visual-label [1] helpers"
+  fi
+
+  figure_axes="$(rg -n '^[[:space:]]*(xlabel|ylabel):' "$figure_source" || true)"
+  normalized_figure_axes="$(rg -n '^[[:space:]]*(xlabel|ylabel):[[:space:]]+normalized-axis\[' "$figure_source" || true)"
+  figure_axis_count="$(printf '%s\n' "$figure_axes" | sed '/^$/d' | wc -l | tr -d '[:space:]')"
+  normalized_figure_axis_count="$(printf '%s\n' "$normalized_figure_axes" | sed '/^$/d' | wc -l | tr -d '[:space:]')"
+  if [[ "$figure_axis_count" -eq 0 ]]; then
+    fail "$figure_source has no axis labels to audit"
+  elif [[ "$figure_axis_count" -ne "$normalized_figure_axis_count" ]]; then
+    fail "$figure_source has an axis label without the normalized-axis [1] helper"
+  fi
+  if rg -n -i 'dimensionless' "$figure_source"; then
+    fail "$figure_source contains the word dimensionless in visual source"
+  fi
+  normalized_legend_without_helper="$(
+    rg -n '^[[:space:]]*label:' "$figure_source" \
+      | rg 'tau_D|W=|n_\(|eta=|gamma|omega/omega|lambda_D|nu/omega' \
+      | rg -v 'normalized-label' || true
+  )"
+  if [[ -n "$normalized_legend_without_helper" ]]; then
+    fail "$figure_source has a normalized legend without the normalized-label [1] helper"
+  fi
+fi
+
+for animation_source in "$repo_root"/animations/*.py; do
+  [[ -f "$animation_source" ]] || continue
+  if rg -n -i 'dimensionless' "$animation_source"; then
+    fail "$animation_source contains the word dimensionless in animation source"
+  fi
+  if rg -qi 'normalized' "$animation_source" \
+    && ! rg -Fq '[1]' "$animation_source"; then
+    fail "$animation_source documents normalized quantities without a [1] label"
+  fi
+done
+
 # Check the Git boundary in a worktree. Nix evaluates the same script from a
 # source snapshot without .git, so the artifact checks below remain authoritative
 # in that environment and this branch runs in the checkout-based CI job.
