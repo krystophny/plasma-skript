@@ -436,6 +436,19 @@
     volume change; it is not an optional correction.]
   )
 
+  #rechenbeispiel[
+    In an axisymmetric cylindrical plasma column, let the radial particle-flux
+    vector be $bold(Gamma)=Gamma_(r)(r) bold(e)_(r)$ with
+    $Gamma_(r)(r)=C/r$. Use
+    $C=qty("2.00e10", "cm^-1 s^-1")$, and evaluate the flux at
+    $r_1=qty("10.0", "cm")$ and $r_2=qty("20.0", "cm")$. Determine both
+    radial fluxes and $div bold(Gamma)$ for $r>0$.
+
+    Numerical result: $Gamma_(r)(r_1)=qty("2.00e9", "cm^-2 s^-1")$,
+    $Gamma_(r)(r_2)=qty("1.00e9", "cm^-2 s^-1")$, and
+    $div bold(Gamma)=0 #unit("cm^-3 s^-1")$.
+  ]
+
   #interpretation(
     [Read operators geometrically],
     [A gradient points in the direction of greatest scalar increase. A
