@@ -66,7 +66,7 @@
     Moving the drag to the left gives
     $-i omega m_"eff",s bold(u)_(s,1)
       =q_(s)(bold(E)_1+(bold(u)_(s,1) times bold(B)_(0))/c)$
-    with $m_"eff",s=m_(s)(1+i nu_s/omega)$. The sign of the imaginary part
+    with $m_"eff",s=m_(s)(1+(i nu_s)/omega)$. The sign of the imaginary part
     follows the stated Fourier convention.]
   )
 
@@ -94,19 +94,19 @@
     $(-i omega m_(s)+m_(s) nu_s)bold(u)_(s,1)
       =q_(s)(bold(E)_1+(bold(u)_(s,1) times bold(B)_(0))/c)$.
     Factor the coefficient as
-    $-i omega m_(s)(1+i nu_s/omega)
+    $-i omega m_(s)(1+(i nu_s)/omega)
       =-i omega m_"eff",s$.
     Thus the collisional equation has the same algebraic form as the
     collisionless equation with $m_s$ replaced by
-    $m_"eff",s=m_(s)(1+i nu_s/omega)$.
+    $m_"eff",s=m_(s)(1+(i nu_s)/omega)$.
 
     The species plasma-frequency factor becomes
     $(4 pi n_(s,0)q_s^2)/m_"eff",s$, and the signed gyrofrequency becomes
     $(q_s B_0)/(m_"eff",s c)$. Insert both into the cold transverse response.
     For the electron branch whose collisionless denominator is
     $omega(omega-omega_(c,e))$, the two substitutions combine:
-    $[omega_(p,e)^2/(1+i nu_e/omega)]/
-      [omega(omega-omega_(c,e)/(1+i nu_e/omega))]
+    $[omega_(p,e)^2/(1+(i nu_e)/omega)]/
+      [omega(omega-omega_(c,e)/(1+(i nu_e)/omega))]
       =omega_(p,e)^2/
       [omega(omega-omega_(c,e)+i nu_e)]$.
     This gives the stated collisional circular response.
@@ -115,10 +115,10 @@
     susceptibility is
     $omega_(p,e)^2/(omega(omega+i nu_e))
       approx omega_(p,e)^2/omega^2
-      (1-i nu_e/omega)$.
+      (1-(i nu_e)/omega)$.
     Therefore $N^2$ has a positive imaginary part in the chosen convention.
     Taking the square root gives $N=N_r+i N_i$ with $N_i>0$.
-    Since $k=omega N/c$, the plane-wave factor is
+    Since $k=(omega N)/c$, the plane-wave factor is
     $exp(i(k_r+i k_i)z-i omega t)
       =exp(i k_r z-i omega t)exp(-k_i z)$.
     The amplitude falls by $e^(-1)$ after $1/k_i$, while intensity,
@@ -162,7 +162,7 @@
   )
 
   #summary[
-    Linear drag can be represented by $m_"eff"=m(1+i nu/omega)$ in a
+    Linear drag can be represented by $m_"eff"=m(1+(i nu)/omega)$ in a
     time-harmonic cold response. The resulting $N$ and $k$ are complex:
     $k_r$ controls phase advance and $k_i$ controls spatial attenuation.
     Near resonances, the shortcut must be replaced by a collision model with
@@ -538,7 +538,7 @@
     ),
     (
       question: [Which term gives the warm plasma-oscillation branch its dispersion?],
-      answer: [The pressure perturbation $-grad p_(s,1)$ couples density variation to velocity through continuity, producing the $k^2 c_s^2$ term in the denominator.]
+      answer: [The pressure perturbation $-grad(p_(s,1))$ couples density variation to velocity through continuity, producing the $k^2 c_s^2$ term in the denominator.]
     ),
     (
       question: [Why does the two-fluid warm system have an ion-acoustic root?],
@@ -623,7 +623,7 @@
     $Omega_e=-omega_(c,e)$, the transverse momentum components are
     $-i omega u_(e,1,x)-Omega_e u_(e,1,y)
       =(q_e/m_e) E_(1,x)
-      -i k c_(s,e)^2 n_(e,1)/n_0$
+      -(i k c_(s,e)^2 n_(e,1))/n_0$
     and
     $Omega_e u_(e,1,x)-i omega u_(e,1,y)=0$.
     The second equation gives
@@ -631,7 +631,7 @@
     Insert this and the continuity relation into the first equation:
     $-i ((omega^2-Omega_e^2)/omega) u_(e,1,x)
       =(q_e/m_e) E_(1,x)
-      -i (k^2 c_(s,e)^2/omega) u_(e,1,x)$.
+      -i ((k^2 c_(s,e)^2)/omega) u_(e,1,x)$.
     Collect the velocity terms and multiply by $i$:
     $((omega^2-Omega_e^2-k^2 c_(s,e)^2)/omega) u_(e,1,x)
       =((i q_e)/m_e) E_(1,x)$.
@@ -834,7 +834,7 @@
   #details(
     [Derivation: recovering the neighboring models],
     [Begin with the collisional effective mass
-    $m_"eff"=m(1+i nu/omega)$. Let $nu -> 0$. Then
+    $m_"eff"=m(1+(i nu)/omega)$. Let $nu -> 0$. Then
     $m_"eff" -> m$, every dielectric coefficient becomes real in the
     collisionless model, and the complex wave number reduces to the cold
     magnetized result.
@@ -861,7 +861,7 @@
     common electric field, their relative current produces the magnetic force,
     and the weighted momentum sum gives
     $rho_0 pdv(bold(u),t)
-      =-grad p+[curl bold(B) times bold(B)]/(4 pi)$.
+      =-grad(p)+[curl(bold(B)) times bold(B)]/(4 pi)$.
     The induction equation becomes
     $pdv(bold(B),t)=curl(bold(u)times bold(B))$.
     Linearizing these equations gives the shear-Alfvén and magnetosonic

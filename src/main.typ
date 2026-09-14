@@ -1,4 +1,5 @@
-#import "theme.typ": page-shell, frame-style, styles, register-cgs-units
+#import "theme.typ": page-shell, frame-style, styles, register-cgs-units, normalized-label
+#import "@preview/physica:0.9.8": laplacian
 
 #register-cgs-units
 
@@ -178,26 +179,29 @@
       #html.dl[
         #html.dt[Gaussian CGS]
         #html.dd[
-          The default electromagnetic unit convention. In particular, the
-          magnetic part of the Lorentz force contains $bold(v) times bold(B)/c$
-          and electrostatic Poisson's equation contains $4 pi$.
+          The default electromagnetic unit convention. For a charge $q$, the
+          Lorentz force is
+          $bold(F)=q (bold(E) + ((bold(v) times bold(B))/c))$, and electrostatic
+          Poisson's equation for charge density $rho$ is
+          $laplacian(phi) = -4 pi rho$.
         ]
         #html.dt[Normalized quantity]
         #html.dd[
           A dimensionless quantity formed by dividing by a stated reference
-          scale, such as $x/lambda_D$ or $t omega_p$. Dimensional reconstruction
-          is given where the quantity is used.
+          scale, such as #normalized-label[$x/lambda_D$] or
+          #normalized-label[$t omega_p$]. Dimensional reconstruction is given
+          where the quantity is used.
         ]
         #html.dt[Gyrofrequency]
         #html.dd[
-          The positive rate $omega_c = abs(q)B/(m c)$ in Gaussian CGS. The
-          signed quantity $Omega = q B/(m c)$ retains charge orientation.
+          The positive rate $omega_c = (abs(q) B)/(m c)$ in Gaussian CGS. The
+          signed quantity $Omega = (q B)/(m c)$ retains charge orientation.
         ]
         #html.dt[Debye length]
         #html.dd[
           The equilibrium electrostatic response length. For a simple
-          electron--ion plasma, $lambda_D = sqrt(k_B T_e/(4 pi n_e e^2))$ in
-          Gaussian CGS.
+          electron--ion plasma with thermodynamic electron temperature $T_e$,
+          $lambda_D = sqrt((k_B T_e)/(4 pi n_e e^2))$ in Gaussian CGS.
         ]
         #html.dt[Closure]
         #html.dd[

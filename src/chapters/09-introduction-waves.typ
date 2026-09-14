@@ -77,16 +77,16 @@
 
   The species equations and Maxwell equations that are linearized are
 
-  $ pdv(n_s,t)+div_(bold(r))(n_s bold(u)_s)=0 $
+  $ pdv(n_s,t)+div(n_s bold(u)_s)=0 $
 
-  $ m_s n_s (pdv(bold(u)_s,t)+bold(u)_s dot grad_(bold(r))(bold(u)_s))
-    =q_s n_s (bold(E)+(bold(u)_s times bold(B))/c)-grad_(bold(r))(p_s) $
+  $ m_s n_s (pdv(bold(u)_s,t)+bold(u)_s dot grad(bold(u)_s))
+    =q_s n_s (bold(E)+(bold(u)_s times bold(B))/c)-grad(p_s) $
 
-  $ curl_(bold(r))(bold(E))=-(pdv(bold(B),t))/c, quad
-    curl_(bold(r))(bold(B))=((4 pi)/c) bold(j)+(pdv(bold(E),t))/c $
+  $ curl(bold(E))=-(pdv(bold(B),t))/c, quad
+    curl(bold(B))=((4 pi)/c) bold(j)+(pdv(bold(E),t))/c $
 
-  $ div_(bold(r))(bold(E))=4 pi rho_q, quad
-    div_(bold(r))(bold(B))=0 $
+  $ div(bold(E))=4 pi rho_q, quad
+    div(bold(B))=0 $
 
   where $rho_q=sum_s q_s n_s$ and
   $bold(j)=sum_s q_s n_s bold(u)_s$. For an adiabatic or isothermal closure,
@@ -98,18 +98,18 @@
     [Derivation: linearized Fourier system],
     [Insert the perturbation expansion into continuity. The equilibrium has
     no flow, so the product of two first-order quantities is second order:
-    $pdv(n_(s,1),t)+n_(s,0) div_(bold(r))(bold(u)_(s,1))=0$.
+    $pdv(n_(s,1),t)+n_(s,0) div(bold(u)_(s,1))=0$.
     The same expansion of momentum removes the convective product
-    $bold(u)_(s,1) dot grad bold(u)_(s,1)$ and the perturbed magnetic product
+    $bold(u)_(s,1) dot grad(bold(u)_(s,1))$ and the perturbed magnetic product
     $bold(u)_(s,1) times bold(B)_1$. The first-order momentum equation is
     $m_s n_(s,0) pdv(bold(u)_(s,1),t)
       =q_s n_(s,0)(bold(E)_1+
-      (bold(u)_(s,1) times bold(B)_0)/c)-grad_(bold(r))(p_(s,1))$.
+      (bold(u)_(s,1) times bold(B)_0)/c)-grad(p_(s,1))$.
 
     Apply the plane-wave replacements
-    $pdv(f,t) -> -i omega f$, $grad_(bold(r))(f) -> i bold(k) f$,
-    $div_(bold(r))(bold(A)) -> i bold(k) dot bold(A)$, and
-    $curl_(bold(r))(bold(A)) -> i bold(k) times bold(A)$. This gives
+    $pdv(f,t) -> -i omega f$, $grad(f) -> i bold(k) f$,
+    $div(bold(A)) -> i bold(k) dot bold(A)$, and
+    $curl(bold(A)) -> i bold(k) times bold(A)$. This gives
     $-i omega n_(s,1)+i n_(s,0) bold(k) dot bold(u)_(s,1)=0$
     and
     $-i omega m_s n_(s,0) bold(u)_(s,1)
@@ -128,7 +128,7 @@
     A homogeneous hydrogen plasma has equilibrium density
     $n_(e,0)=n_(i,0)=qty("1.0e10", "cm^-3")$, electron temperature energy
     $k_B T_e=qty("1.602e-12", "erg")$, and a density perturbation with
-    relative amplitude #normalized-label[$delta n_e/n_(e,0)=qty("2.0e-2", "1")$]. Use
+    relative amplitude #normalized-label[$(delta n_e)/n_(e,0)=qty("2.0e-2", "1")$]. Use
     $e=qty("4.803e-10", "statC")$, $m_e=qty("9.109e-28", "g")$, and a
     wavelength $lambda=qty("1.0e1", "cm")$ at angular frequency
     $omega=qty("1.0e10", "s^-1")$, with $k=(2 pi)/lambda$.
@@ -173,7 +173,7 @@
       question: [What does the plane-wave ansatz do to a time derivative and a spatial gradient?],
       answer: [For the convention $exp(i (bold(k) dot bold(r)-omega t))$,
       $pdv(f,t)$ becomes $-i omega f$ and
-      $grad_(bold(r))(f)$ becomes $i bold(k) f$ when acting on the amplitude.]
+      $grad(f)$ becomes $i bold(k) f$ when acting on the amplitude.]
     ),
     (
       question: [What is the difference between longitudinal and transverse polarization?],

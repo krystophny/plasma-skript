@@ -782,7 +782,7 @@
     $omega_"ce"=qty("1.76e9", "s^-1")$ as the positive electron gyrofrequency
     magnitude and $Omega_e=-omega_"ce"$. Let
     #normalized-label[$omega/omega_"ce"=qty("0.80", "1")$] and
-    #normalized-label[$k_"parallel" v_"te"/omega_"ce"=qty("1.50", "1")$],
+    #normalized-label[$(k_"parallel" v_"te")/omega_"ce"=qty("1.50", "1")$],
     with
     $v_"te"=qty("1.88e8", "cm/s")$. Report the resonant parallel velocities
     for $n=0$ and $n=-1$, normalized by $v_"te"$, and give

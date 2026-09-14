@@ -419,7 +419,7 @@
       (omega_(p,e)^2 (omega^2-omega_(p,e)^2)) /
       (omega^2 (omega^2-omega_"UH"^2))$.
     The extraordinary polarization ratio is
-    $E_x/E_y=i epsilon_(times)/epsilon_(perp)$, away from zeros of the
+    $E_x/E_y=(i epsilon_(times))/epsilon_(perp)$, away from zeros of the
     denominator.]
   )
 
@@ -428,7 +428,7 @@
     [The ordinary branch obeys
     $omega^2=omega_(p,e)^2+c^2 k^2$ and has the same cutoff as the cold
     unmagnetized transverse wave. The extraordinary branch obeys
-    $N_X^2=epsilon_(+) epsilon_(-)/epsilon_(perp)$,
+    $N_X^2=(epsilon_(+) epsilon_(-))/epsilon_(perp)$,
     with circular factors $epsilon_(s)$ from the parallel problem. Its
     denominator vanishes at $omega=omega_"UH"$, so the cold wave number
     diverges at the upper-hybrid resonance.]
@@ -457,7 +457,7 @@
     after choosing the positive-magnitude convention for the eigenvalue
     labels. Writing $d=omega^2-omega_(c,e)^2$ and
     $p=omega_(p,e)^2$, the extraordinary index is first
-    $N_X^2=((d-p)^2-(omega_(c,e)^2 p^2)/omega^2)/(d(d-p))$.
+    $N_X^2=((d-p)^2-((omega_(c,e)^2 p^2)/omega^2))/(d(d-p))$.
     Multiplying the two circular factors and simplifying this expression
     yields
     $N_X^2=1-
@@ -466,7 +466,7 @@
     The denominator is zero at $omega_"UH"^2=omega_(p,e)^2+omega_(c,e)^2$.
     The first row of the transverse block gives
     $epsilon_(perp) E_x-i epsilon_(times) E_y=0$,
-    hence $E_x/E_y=i epsilon_(times)/epsilon_(perp)$ and the generally
+    hence $E_x/E_y=(i epsilon_(times))/epsilon_(perp)$ and the generally
     elliptical extraordinary polarization.]
   )
 
@@ -497,7 +497,7 @@
   #summary[
     Perpendicular propagation splits into an ordinary branch with
     $N_O^2=epsilon_(parallel)$ and an extraordinary branch with
-    $N_X^2=epsilon_(+)epsilon_(-)/epsilon_(perp)$. The latter is elliptically
+    $N_X^2=(epsilon_(+)epsilon_(-))/epsilon_(perp)$. The latter is elliptically
     polarized in general and has an upper-hybrid resonance.
   ]
 

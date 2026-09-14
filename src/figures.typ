@@ -1,7 +1,7 @@
 #import "@preview/cetz:0.5.2"
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
 #import "@preview/lilaq:0.6.0" as lq
-#import "@preview/physica:0.9.8": grad, pdv, curl, dv
+#import "@preview/physica:0.9.8": grad, pdv, curl, dv, laplacian
 #import "theme.typ": accent, blue, orange, muted, normalized-axis, normalized-label
 
 #let model-hierarchy = figure(
@@ -76,7 +76,7 @@
   alt: "A normalized one-dimensional velocity plot compares a centered Maxwellian distribution with a second Maxwellian shifted toward positive velocity. The centered curve peaks at zero velocity, while the shifted curve peaks at positive normalized velocity and has the same Gaussian width.",
   caption: [
     Centered and drifting one-dimensional Maxwellians. The horizontal axis is
-    velocity normalized by $v_"th"=sqrt(2 k_B T/m)$, and the vertical axis is
+    velocity normalized by $v_"th"=sqrt((2 k_B T)/m)$, and the vertical axis is
     distribution value normalized by the centered peak. Markers and direct
     labels distinguish the curves independently of color.
   ],
@@ -223,7 +223,7 @@
         node((-1.45, -1), [Mass-weighted sum \
           $rho, bold(u), bold(P)$]),
         node((1.45, -1), [Species difference \
-          $bold(E)+bold(u)times bold(B)/c$]),
+          $bold(E)+(bold(u) times bold(B))/c$]),
         node((0, -2), [Single-fluid MHD \
           mass, momentum, induction]),
         edge((0, 0), (-1.45, -1), [sum], "->"),
@@ -250,7 +250,7 @@
           ]
           #html.div(class: "mhd-node mhd-node-ohm")[
             #html.strong[Species difference]
-            #html.span[$bold(E)+bold(u)times bold(B)/c$]
+            #html.span[$bold(E)+(bold(u) times bold(B))/c$]
           ]
         ]
         #html.div(class: "mhd-arrow")[↓ closure and ordering]
@@ -282,15 +282,15 @@
         node-stroke: 1pt,
         edge-stroke: 1pt,
         node((0, 0), [Generalized Ohm law \
-          $bold(E)+bold(u)times bold(B)/c$]),
+          $bold(E)+(bold(u) times bold(B))/c$]),
         node((-1.25, -1), [Hall \
-          $bold(j)times bold(B)/(e n c)$]),
+          $(bold(j) times bold(B))/(e n c)$]),
         node((1.25, -1), [Electron pressure \
-          $-grad p_(e)/(e n)$]),
+          $-(grad(p_(e)))/(e n)$]),
         node((-1.25, -2), [Resistive \
           $eta bold(j)$]),
         node((1.25, -2), [Electron inertia \
-          $m_(e) partial_t bold(j)/(e^2 n)$]),
+          $(m_(e) pdv(bold(j),t))/(e^2 n)$]),
         edge((0, 0), (-1.25, -1), [correction], "->"),
         edge((0, 0), (1.25, -1), [correction], "->"),
         edge((0, 0), (-1.25, -2), [correction], "->"),
@@ -306,17 +306,17 @@
       )[
         #html.div(class: "mhd-node mhd-node-wide")[
           #html.strong[Generalized Ohm law]
-          #html.span[$bold(E)+bold(u)times bold(B)/c$]
+          #html.span[$bold(E)+(bold(u) times bold(B))/c$]
         ]
         #html.div(class: "mhd-arrow")[four corrections are ordered separately]
         #html.div(class: "mhd-term-grid")[
           #html.div(class: "mhd-node mhd-node-hall")[
             #html.strong[Hall]
-            #html.span[$bold(j)times bold(B)/(e n c)$]
+            #html.span[$(bold(j) times bold(B))/(e n c)$]
           ]
           #html.div(class: "mhd-node")[
             #html.strong[Electron pressure]
-            #html.span[$-grad_(bold(r))(p_(e))/(e n)$]
+            #html.span[$-(grad(p_(e)))/(e n)$]
           ]
           #html.div(class: "mhd-node mhd-node-resistive")[
             #html.strong[Resistive]
@@ -324,7 +324,7 @@
           ]
           #html.div(class: "mhd-node")[
             #html.strong[Electron inertia]
-            #html.span[$m_(e) partial_t bold(j)/(e^2 n)$]
+            #html.span[$(m_(e) pdv(bold(j),t))/(e^2 n)$]
           ]
         ]
       ]
@@ -351,11 +351,11 @@
         node-stroke: 1pt,
         edge-stroke: 1pt,
         node((0, 0), [Induction equation \
-          $partial_t bold(B)=grad times (bold(u)times bold(B))+D_B nabla^2 bold(B)$]),
+          $partial_t bold(B)=curl(bold(u)times bold(B))+D_B laplacian(bold(B))$]),
         node((-1.35, -1), [Ideal \
           $R_m >> 1$]),
         node((1.35, -1), [Finite resistivity \
-          $D_B=c^2 eta/(4 pi)$]),
+          $D_B=(c^2 eta)/(4 pi)$]),
         node((-1.35, -2), [Frozen flux \
           field lines move with $bold(u)$]),
         node((1.35, -2), [Diffusion \
@@ -375,7 +375,7 @@
       )[
         #html.div(class: "mhd-node mhd-node-wide")[
           #html.strong[Induction equation]
-          #html.span[$pdv(bold(B),t)=curl_(bold(r))(bold(u)times bold(B))+D_(B)nabla^2 bold(B)$]
+          #html.span[$pdv(bold(B),t)=curl(bold(u)times bold(B))+D_(B) laplacian(bold(B))$]
         ]
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ideal")[
@@ -384,7 +384,7 @@
           ]
           #html.div(class: "mhd-node mhd-node-diffusion")[
             #html.strong[Finite resistivity]
-            #html.span[$D_B=c^2 eta/(4 pi)$; diffusion time $tau_D=L^2/D_B$]
+            #html.span[$D_B=(c^2 eta)/(4 pi)$; diffusion time $tau_D=L^2/D_B$]
           ]
         ]
         #html.div(class: "mhd-arrow")[advection dominates ↔ diffusion changes topology]
@@ -414,11 +414,11 @@
         node((0, 0), [Static MHD \
           $partial_t=0, bold(u)=bold(0)$]),
         node((-1.4, -1), [Pressure force \
-          $-grad p$]),
+          $-grad(p)$]),
         node((1.4, -1), [Magnetic force \
-          $bold(j)times bold(B)/c$]),
+          $(bold(j) times bold(B))/c$]),
         node((0, -2), [Force balance \
-          $grad p=bold(j)times bold(B)/c$]),
+          $grad(p)=(bold(j) times bold(B))/c$]),
         edge((0, 0), (-1.4, -1), [pressure], "->"),
         edge((0, 0), (1.4, -1), [magnetic], "->"),
         edge((-1.4, -1), (0, -2), [balance], "->"),
@@ -440,17 +440,17 @@
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-pressure")[
             #html.strong[Pressure force]
-            #html.span[$-grad_(bold(r))(p)$]
+            #html.span[$-grad(p)$]
           ]
           #html.div(class: "mhd-node mhd-node-magnetic")[
             #html.strong[Magnetic force]
-            #html.span[$bold(j)times bold(B)/c$]
+            #html.span[$(bold(j) times bold(B))/c$]
           ]
         ]
         #html.div(class: "mhd-arrow")[↓ equilibrium]
         #html.div(class: "mhd-node mhd-node-result")[
           #html.strong[Force balance]
-          #html.span[$grad p=bold(j)times bold(B)/c$]
+          #html.span[$grad(p)=(bold(j) times bold(B))/c$]
         ]
       ]
       #html.figcaption[#caption-text]
@@ -564,7 +564,7 @@
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-hall")[
             #html.strong[Strong-deflection cutoff]
-            #html.span[$b_90=Z e^2/(m_r v_"rel"^2)$]
+            #html.span[$b_90=(Z e^2)/(m_r v_"rel"^2)$]
           ]
           #html.div(class: "mhd-node mhd-node-ideal")[
             #html.strong[Shielding cutoff]
@@ -725,15 +725,15 @@
         node-stroke: 1pt,
         edge-stroke: 1pt,
         node((0, 0), [Density gradient \
-          $grad n$]),
+          $grad(n)$]),
         node((-1.35, -1), [Ion response \
-          $mu_i bold(E)-D_i grad n/n$]),
+          $mu_i bold(E)-D_i ((grad(n))/n)$]),
         node((1.35, -1), [Electron response \
-          $-mu_e bold(E)-D_e grad n/n$]),
+          $-mu_e bold(E)-D_e ((grad(n))/n)$]),
         node((0, -2), [Ambipolar field \
-          $bold(E)=(D_i-D_e)/(mu_i+mu_e) grad n/n$]),
+          $bold(E)=((D_i-D_e)/(mu_i+mu_e)) ((grad(n))/n)$]),
         node((0, -3), [Common flux \
-          $bold(Gamma)=-D_a grad n$]),
+          $bold(Gamma)=-D_a grad(n)$]),
         edge((0, 0), (-1.35, -1), [], "->"),
         edge((0, 0), (1.35, -1), [], "->"),
         edge((-1.35, -1), (0, -2), [balance], "->"),
@@ -750,26 +750,26 @@
       )[
         #html.div(class: "mhd-node mhd-node-wide")[
           #html.strong[Density gradient]
-          #html.span[$grad n$]
+          #html.span[$grad(n)$]
         ]
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ideal")[
             #html.strong[Ion response]
-            #html.span[$mu_i bold(E)-D_i grad n/n$]
+            #html.span[$mu_i bold(E)-D_i ((grad(n))/n)$]
           ]
           #html.div(class: "mhd-node mhd-node-ohm")[
             #html.strong[Electron response]
-            #html.span[$-mu_e bold(E)-D_e grad n/n$]
+            #html.span[$-mu_e bold(E)-D_e ((grad(n))/n)$]
           ]
         ]
         #html.div(class: "mhd-arrow")[equal particle flux]
         #html.div(class: "mhd-node mhd-node-result")[
           #html.strong[Ambipolar field]
-          #html.span[$bold(E)=(D_i-D_e)/(mu_i+mu_e) grad n/n$]
+          #html.span[$bold(E)=((D_i-D_e)/(mu_i+mu_e)) ((grad(n))/n)$]
         ]
         #html.div(class: "mhd-arrow")[quasi-neutral common flux]
         #html.div(class: "mhd-node mhd-node-wide")[
-          #html.strong[$bold(Gamma)=-D_a grad n$]
+          #html.strong[$bold(Gamma)=-D_a grad(n)$]
         ]
       ]
       #html.figcaption[#caption-text]
@@ -781,7 +781,7 @@
   let alt-description = "A normalized plot shows perpendicular diffusion falling as magnetization increases. The horizontal axis is the signed cyclotron-frequency product with unit [1]; the vertical axis is perpendicular diffusion divided by the unmagnetized diffusion coefficient. The curve starts at one and approaches zero as the inverse square of magnetization."
   let caption-text = [
     Collisions enable cross-field steps by interrupting gyromotion. With
-    $D_0=k_B T/(m nu)$, the classical single-species result is
+    $D_0=(k_B T)/(m nu)$, the classical single-species result is
     $D_perp/D_0=1/(1+(Omega/nu)^2)$.
   ]
 
@@ -1121,7 +1121,7 @@
         node-stroke: 1pt,
         edge-stroke: 1pt,
         node((0, 0), [Cold momentum \
-          $-i omega m_(s) bold(u)_(s)=q_(s)(bold(E)+bold(u)_(s) times bold(B)_(0)/c)$]),
+          $-i omega m_(s) bold(u)_(s)=q_(s)(bold(E)+(bold(u)_(s) times bold(B)_(0))/c)$]),
         node((-1.35, -1), [Transverse response \
           $epsilon_(perp), epsilon_(times)$]),
         node((1.35, -1), [Parallel response \
@@ -1146,7 +1146,7 @@
       )[
         #html.div(class: "mhd-node mhd-node-wide")[
           #html.strong[Cold momentum]
-          #html.span[$-i omega m_(s) bold(u)_(s)=q_(s)(bold(E)+bold(u)_(s) times bold(B)_(0)/c)$]
+          #html.span[$-i omega m_(s) bold(u)_(s)=q_(s)(bold(E)+(bold(u)_(s) times bold(B)_(0))/c)$]
         ]
         #html.div(class: "mhd-arrow")[split by direction]
         #html.div(class: "mhd-branches")[
@@ -1428,7 +1428,7 @@
         node((0, 0), [Cold response \
           $nu=0$, real $N$]),
         node((-1.1, -1), [Effective mass \
-          $m_"eff"=m(1+i nu/omega)$]),
+          $m_"eff"=m(1+(i nu)/omega)$]),
         node((1.1, -1), [Complex response \
           $N=N_r+i N_i$]),
         node((0, -2), [Phase + attenuation \
@@ -1454,7 +1454,7 @@
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ohm")[
             #html.strong[Complex effective mass]
-            #html.span[$m_"eff"=m(1+i nu/omega)$]
+            #html.span[$m_"eff"=m(1+(i nu)/omega)$]
           ]
           #html.div(class: "mhd-node mhd-node-hall")[
             #html.strong[Complex wave number]
@@ -1489,7 +1489,7 @@
       #lq.diagram(
         width: 10cm,
         height: 5.2cm,
-        xlabel: normalized-axis[$k v_A / omega_(c,i)$],
+        xlabel: normalized-axis[$(k v_A)/omega_(c,i)$],
         ylabel: normalized-axis[$omega / omega_(c,i)$],
         lq.plot(
           (0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2),
@@ -1525,7 +1525,7 @@
           #html.strong[Two-fluid low-frequency branches]
           #html.span[
             #normalized-label[$omega / omega_(c,i)$] versus
-            #normalized-label[$k v_A / omega_(c,i)$]
+            #normalized-label[$(k v_A)/omega_(c,i)$]
           ]
         ]
         #html.div(class: "mhd-branches")[
@@ -1642,7 +1642,7 @@
         node((-1.35, -1), [Magnetic tension \
           $v_A^2=B_0^2/(4 pi rho_0)$]),
         node((1.35, -1), [Pressure \
-          $v_s^2=gamma p_0/rho_0$]),
+          $v_s^2=(gamma p_0)/rho_0$]),
         node((0, -2), [Compression \
           $v_m^2=v_A^2+v_s^2$]),
         edge((0, 0), (-1.35, -1), [field restoring], "->"),
@@ -1669,7 +1669,7 @@
           ]
           #html.div(class: "mhd-node mhd-node-ohm")[
             #html.strong[Thermal pressure]
-            #html.span[$v_s^2=gamma p_0/rho_0$]
+            #html.span[$v_s^2=(gamma p_0)/rho_0$]
           ]
         ]
         #html.div(class: "mhd-arrow")[combine for perpendicular compression]
@@ -2063,7 +2063,7 @@
   let caption-text = [
     Schematic sheath profiles in normalized variables. The wall is at
     $x=0$, the plasma lies at increasing $x$, and
-    $eta=-e phi/(k_B T_e)$ is the positive electron barrier. The curves
+    $eta=-(e phi)/(k_B T_e)$ is the positive electron barrier. The curves
     illustrate the separation of electron and ion responses; they are not a
     self-consistent numerical solution for a particular discharge.
   ]
@@ -2097,7 +2097,7 @@
           (2.80, 2.35, 1.92, 1.55, 1.20, 0.90, 0.66, 0.33, 0.12, 0.00),
           color: accent,
           mark: "x",
-          label: [#normalized-label[$eta=-e phi/(k_B T_e)$]],
+          label: [#normalized-label[$eta=-(e phi)/(k_B T_e)$]],
         ),
       )
     ]
@@ -2134,7 +2134,7 @@
   let caption-text = [
     Idealized planar-probe characteristic with conventional current into the
     probe. The electron-retardation branch is exponential in the normalized
-    bias $u=e(phi_p-phi_"pl")/(k_B T_e)$, which makes its semilog slope a
+    bias $u=(e (phi_p-phi_"pl"))/(k_B T_e)$, which makes its semilog slope a
     temperature diagnostic. Real probes require geometry, sheath, magnetic,
     secondary-emission, and collection corrections.
   ]
@@ -2147,7 +2147,7 @@
       #lq.diagram(
         width: 10cm,
         height: 5.2cm,
-        xlabel: normalized-axis[$u=e(phi_p-phi_"pl")/(k_B T_e)$],
+        xlabel: normalized-axis[$u=(e (phi_p-phi_"pl"))/(k_B T_e)$],
         ylabel: normalized-axis[$I/(e Gamma_(e,0) A)$],
         lq.plot(
           (-4, -3.5, -3, -2.5, -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2),

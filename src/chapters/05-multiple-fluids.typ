@@ -176,13 +176,13 @@
 
   The species continuity equation is
 
-  $ pdv(n_(s), t) + div_(bold(r))(n_(s) bold(u)_(s)) = 0 $
+  $ pdv(n_(s), t) + div(n_(s) bold(u)_(s)) = 0 $
     <multiple-continuity>
 
   In conservative momentum form,
 
   $ pdv(rho_(s) bold(u)_(s), t)
-    + div_(bold(r))(rho_(s) bold(u)_(s) bold(u)_(s) + bold(P)_(s))
+    + div(rho_(s) bold(u)_(s) bold(u)_(s) + bold(P)_(s))
     = q_(s) n_(s) (bold(E) + (bold(u)_(s) times bold(B))/c)
     + bold(R)_(s) $ <multiple-momentum-conservative>
 
@@ -190,16 +190,16 @@
   the species material derivative:
 
   $ rho_(s) (pdv(bold(u)_(s), t)
-    + bold(u)_(s) dot grad_(bold(r))(bold(u)_(s)))
+    + bold(u)_(s) dot grad(bold(u)_(s)))
     = q_(s) n_(s) (bold(E) + (bold(u)_(s) times bold(B))/c)
-    - div_(bold(r))(bold(P)_(s)) + bold(R)_(s) $
+    - div(bold(P)_(s)) + bold(R)_(s) $
     <multiple-momentum-material>
 
   #equation-note[
     The momentum density is in #unit("g/cm^2/s"). Every term in the material
     equation is a force density in #unit("g") #unit("cm^-2")
     #unit("s^-2"). The tensor divergence becomes
-    $grad_(bold(r))(p_(s))$ only for an isotropic pressure tensor.
+    $grad(p_(s))$ only for an isotropic pressure tensor.
   ]
 
   Define the total species energy density and heat-flux vector by
@@ -213,31 +213,30 @@
 
   The corresponding energy balance is
 
-  $ pdv(W_(s), t) + div_(bold(r))
-    (W_(s) bold(u)_(s) + bold(P)_(s) dot bold(u)_(s)
+  $ pdv(W_(s), t) + div(W_(s) bold(u)_(s) + bold(P)_(s) dot bold(u)_(s)
       + bold(q)_(h,s))
     = q_(s)n_(s) bold(u)_(s) dot bold(E) + Q_(s) $
     <multiple-energy>
 
   The field equations are
 
-  $ div bold(E) = 4 pi rho_q, quad div bold(B) = 0 $
+  $ div(bold(E)) = 4 pi rho_q, quad div(bold(B)) = 0 $
     <multiple-gauss-laws>
 
-  $ curl bold(E) = -(pdv(bold(B), t))/c, quad
-    curl bold(B) = ((4 pi)/c) bold(j) + (pdv(bold(E), t))/c $
+  $ curl(bold(E)) = -(pdv(bold(B), t))/c, quad
+    curl(bold(B)) = ((4 pi)/c) bold(j) + (pdv(bold(E), t))/c $
     <multiple-maxwell>
 
   #details(
     [Derivation: from the kinetic equation to the fluid balances],
     [Use the conservative kinetic equation for species $s$,
-    $pdv(f_(s),t)+div_(bold(r))(f_(s)bold(v))
-      +grad_(bold(v)) dot(f_(s)bold(a)_(s))=C_(s)[f]$,
+    $pdv(f_(s),t)+div(f_(s)bold(v))
+      +div(f_(s)bold(a)_(s))=C_(s)[f]$,
     with
     $bold(a)_(s)=q_(s)/m_(s)(bold(E)+(bold(v) times bold(B))/c)$.
 
     First integrate over velocity. The time term becomes $pdv(n_(s),t)$ and
-    the spatial flux becomes $div_(bold(r))(n_(s)bold(u)_(s))$. The velocity
+    the spatial flux becomes $div(n_(s)bold(u)_(s))$. The velocity
     divergence is a vanishing surface term, and particle-conserving collisions
     have zero zeroth moment. This gives the continuity equation.
 
@@ -327,7 +326,7 @@
       pressure gradient?],
       answer: [When the pressure tensor is isotropic,
       $bold(P)_(s)=p_(s)bold(I)$, so that
-      $div bold(P)_(s)=grad p_(s)$. Isotropy is an additional model assumption.]
+      $div(bold(P)_(s))=grad(p_(s))$. Isotropy is an additional model assumption.]
     ),
     (
       question: [Why does the magnetic force not appear in the species energy
@@ -383,7 +382,7 @@
   perpendicular to the field:
 
   $ 0 approx q_(s)n_(s) (bold(E) + (bold(u)_(s,perp) times bold(B))/c)
-    - grad_(bold(r))(p_(s)) $ <multiple-perpendicular-balance>
+    - grad(p_(s)) $ <multiple-perpendicular-balance>
 
   Here the pressure gradient in this equation is understood to be its
   perpendicular projection. Solving for the perpendicular velocity gives
@@ -394,7 +393,7 @@
   $ bold(u)_(E times B) = (c (bold(E) times bold(B)))/(B^2) $
     <multiple-exb-drift>
 
-  $ bold(u)_(*,s) = (c (bold(B) times grad_(bold(r))(p_(s))))/(q_(s)n_(s)B^2) $ <multiple-diamagnetic-drift>
+  $ bold(u)_(*,s) = (c (bold(B) times grad(p_(s))))/(q_(s)n_(s)B^2) $ <multiple-diamagnetic-drift>
 
   #equation-note[
     Both velocities are in #unit("cm/s"). The electric drift is independent
@@ -407,15 +406,15 @@
     [Derivation: solve the perpendicular force balance],
     [Start with
     $q_(s)n_(s)(bold(E)+(bold(u)_(s,perp)times bold(B))/c)
-      =grad p_(s)$.
+      =grad(p_(s))$.
     Cross the equation with $bold(B)$ from the right. The identity
     $(bold(u)times bold(B))times bold(B)=-B^2 bold(u)_perp$ gives
     $q_(s)n_(s)bold(E)times bold(B)
       -(q_(s)n_(s)B^2 bold(u)_(s,perp))/c
-      =grad p_(s)times bold(B)$.
-    Rearranging and using $grad p times bold(B)=-bold(B)times grad p$ gives
+      =grad(p_(s))times bold(B)$.
+    Rearranging and using $grad(p) times bold(B)=-bold(B)times grad(p)$ gives
     $bold(u)_(s,perp)=(c (bold(E)times bold(B)))/(B^2)
-      +(c (bold(B)times grad p_(s)))/(q_(s)n_(s)B^2)$.
+      +(c (bold(B)times grad(p_(s))))/(q_(s)n_(s)B^2)$.
 
     The first term comes from the electric force and contains the factor
     $q_(s)$ on both sides of the force balance, so it is common to all
@@ -430,7 +429,7 @@
     $bold(B)=qty("100", "G") bold(e)_(z)$,
     $bold(E)=qty("1.00e-3", "statV/cm") bold(e)_(x)$,
     $n_(i)=n_(e)=qty("1.0e8", "cm^-3")$, and
-    $grad p_(i)=grad p_(e)=qty("1.602e-6", "erg/cm^4") bold(e)_(x)$.
+    $grad(p_(i))=grad(p_(e))=qty("1.602e-6", "erg/cm^4") bold(e)_(x)$.
     Use $e=qty("4.803e-10", "statC")$ and
     $c=qty("2.998e10", "cm/s")$, with $q_i=+e$ and $q_e=-e$.
 
@@ -484,7 +483,7 @@
     ),
     (
       question: [What happens to the pressure-gradient drift when
-      $grad p_(s)=bold(0)$?],
+      $grad(p_(s))=bold(0)$?],
       answer: [It vanishes. The species can still share a nonzero electric
       $E times B$ drift if a perpendicular electric field is present.]
     ),
@@ -509,7 +508,7 @@
   #unit-ledger[
     The current density is in statcoulomb per #unit("cm^2") per #unit("s").
     The pressure sum $p_(e)+p_(i)$ is in #unit("erg/cm^3"), and
-    $(c (bold(B)times grad p))/(B^2)$ has the same current-density unit in Gaussian
+    $(c (bold(B)times grad(p)))/(B^2)$ has the same current-density unit in Gaussian
     CGS after the charge and density factors cancel. All displayed drift
     velocities remain in #unit("cm/s").
   ]
@@ -526,18 +525,18 @@
 
   $ bold(j)_perp = sum_s q_(s)n_(s)bold(u)_(s,perp)
     = (rho_q c (bold(E) times bold(B)))/(B^2)
-      + (c sum_s (bold(B) times grad_(bold(r))(p_(s))))/(B^2) $
+      + (c sum_s (bold(B) times grad(p_(s))))/(B^2) $
     <multiple-current-sum>
 
   Under quasi-neutrality, the first term is small and the pressure term is
 
-  $ bold(j)_* = (c (bold(B) times grad_(bold(r))(p_(e)+p_(i))))/(B^2) $
+  $ bold(j)_* = (c (bold(B) times grad(p_(e)+p_(i))))/(B^2) $
     <multiple-diamagnetic-current>
 
   For scalar ideal-gas pressures, $p_(s)=n_(s) k_B T_(s)$. If
   $n_(e) approx n_(i) approx n$, then
 
-  $ grad(p_(e)+p_(i)) = k_B ((T_(e)+T_(i)) grad n
+  $ grad(p_(e)+p_(i)) = k_B ((T_(e)+T_(i)) grad(n)
     + n grad(T_(e)+T_(i))) $ <multiple-pressure-gradient>
 
   #equation-note[
@@ -551,10 +550,10 @@
     [Derivation: add the charge-weighted drift responses],
     [For each species,
     $q_(s)n_(s)bold(u)_(*,s)
-      =(c (bold(B)times grad p_(s)))/(B^2)$.
+      =(c (bold(B)times grad(p_(s))))/(B^2)$.
     The factors $q_(s)n_(s)$ cancel exactly against the denominator in the
     species diamagnetic velocity. Summing over electrons and ions gives
-    $bold(j)_*=(c (bold(B)times[grad p_(e)+grad p_(i)]))/(B^2)$.
+    $bold(j)_*=(c (bold(B)times[grad(p_(e))+grad(p_(i))]))/(B^2)$.
 
     The common drift instead gives
     $sum_s q_(s)n_(s)bold(u)_(E times B)
@@ -620,7 +619,7 @@
       question: [Why do the electron and ion diamagnetic currents add?],
       answer: [Their diamagnetic velocities have opposite signs, but each
       current is multiplied by its own charge. Since
-      $q_(s)n_(s)bold(u)_(*,s)=(c (bold(B)times grad p_(s)))/(B^2)$, both contributions
+      $q_(s)n_(s)bold(u)_(*,s)=(c (bold(B)times grad(p_(s))))/(B^2)$, both contributions
       point along the corresponding pressure-gradient cross-field direction.]
     ),
     (
@@ -686,21 +685,21 @@
   Projecting the species momentum equation gives
 
   $ rho_(s) (pdv(u_(parallel,s), t)
-    + bold(u)_(s) dot grad_(bold(r))(u_(parallel,s)))
-    = -bold(b) dot grad_(bold(r))(p_(s))
+    + bold(u)_(s) dot grad(u_(parallel,s)))
+    = -bold(b) dot grad(p_(s))
       + q_(s)n_(s) E_parallel + R_(parallel,s),
     quad E_parallel = bold(b) dot bold(E) $
     <multiple-parallel-equation>
 
   For inertialess, collisionless electrons with $q_(e)=-e$,
 
-  $ 0 = -bold(b) dot grad_(bold(r))(p_(e)) - e n_(e) E_parallel $
+  $ 0 = -bold(b) dot grad(p_(e)) - e n_(e) E_parallel $
     <multiple-electron-balance>
 
   With $p_(e)=n_(e) k_B T_(e)$ and uniform $T_(e)$, this becomes
 
-  $ E_parallel = -((k_B T_(e))/e) bold(b) dot grad_(bold(r))(ln n_(e)),
-    quad E_parallel=-bold(b) dot grad_(bold(r))(phi) $
+  $ E_parallel = -((k_B T_(e))/e) bold(b) dot grad(ln n_(e)),
+    quad E_parallel=-bold(b) dot grad(phi) $
     <multiple-boltzmann-field>
 
   and integration along a field line gives the electron Boltzmann relation
@@ -724,7 +723,7 @@
   Adding the species momentum equations then yields
 
   $ pdv(rho bold(u),t)
-    + div_(bold(r))(rho bold(u) bold(u)+bold(P)_(1))
+    + div(rho bold(u) bold(u)+bold(P)_(1))
     = rho_q bold(E) + (bold(j) times bold(B))/c
       + sum_s bold(R)_(s) $ <multiple-summed-momentum>
 
@@ -737,17 +736,17 @@
     [Dot the material momentum equation with $bold(b)$. Since
     $bold(b) dot (bold(u)_(s)times bold(B))=0$, the magnetic force disappears
     from the projection. The pressure contribution is
-    $-bold(b)dot div bold(P)_(s)$; for a scalar pressure this reduces to
-    $-bold(b)dot grad p_(s)$. The electric contribution is
+    $-bold(b)dot div(bold(P)_(s))$; for a scalar pressure this reduces to
+    $-bold(b)dot grad(p_(s))$. The electric contribution is
     $q_(s)n_(s)E_parallel$, and the projected collision source is
     $R_(parallel,s)=bold(b)dot bold(R)_(s)$.
 
     For electrons, set inertia and collisions to zero and insert
     $q_(e)=-e$. The balance is
-    $bold(b)dot grad p_(e)=-e n_(e)E_parallel$. Isothermal pressure gives
-    $bold(b)dot grad p_(e)=k_B T_(e)bold(b)dot grad n_(e)$, so
+    $bold(b)dot grad(p_(e))=-e n_(e)E_parallel$. Isothermal pressure gives
+    $bold(b)dot grad(p_(e))=k_B T_(e)bold(b)dot grad(n_(e))$, so
     $E_parallel=-((k_B T_(e))/e) bold(b)dot grad(ln n_(e))$. With
-    $E_parallel=-bold(b)dot grad phi$, integrate to obtain
+    $E_parallel=-bold(b)dot grad(phi)$, integrate to obtain
     $bold(b)dot grad(ln n_(e)-(e phi)/(k_B T_(e)))=0$, hence
     $n_(e)=n_(e,0)exp((e(phi-phi_0))/(k_B T_(e)))$ along the connected field line.
 

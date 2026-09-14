@@ -410,7 +410,7 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. $grad B$ has gauss per centimetre, the effective
+    Gaussian CGS is active. $grad(B)$ has gauss per centimetre, the effective
     force is in dynes, and all drift velocities are in #unit("cm/s").
     The symbols $mu$, $m$, $q$, $B$, and $c$ use the definitions of the prior
     section.
@@ -422,16 +422,16 @@
     The magnetic-moment force is the effective guiding-center force]
   )
 
-  $ bold(F)_mu = -mu grad B $ <motion-mu-force>
+  $ bold(F)_mu = -mu grad(B) $ <motion-mu-force>
 
   #equation-note[
     Gaussian CGS. $bold(F)_mu$ is in dynes when $mu$ is in energy per gauss and
-    $grad B$ in gauss per centimetre.
+    $grad(B)$ in gauss per centimetre.
   ]
 
   Inserting this force into the homogeneous-force drift gives
 
-  $ bold(v)_(grad B) = (c (bold(F)_mu times bold(B)))/(q B^2) = (c mu (bold(B) times grad B))/(q B^2) $ <motion-gradb-drift>
+  $ bold(v)_(grad B) = (c (bold(F)_mu times bold(B)))/(q B^2) = (c mu (bold(B) times grad(B)))/(q B^2) $ <motion-gradb-drift>
 
   #equation-note[
     Gaussian CGS. The drift is perpendicular to both $bold(B)$ and the field
@@ -464,10 +464,10 @@
   #details(
     [Derivation: grad-$B$ drift],
     [The guiding-center force from the adiabatic magnetic moment is
-    $bold(F)_mu=-mu grad B$. A perpendicular homogeneous force drifts at
+    $bold(F)_mu=-mu grad(B)$. A perpendicular homogeneous force drifts at
     $bold(v)_D=(c (bold(F) times bold(B)))/(q B^2)$. Substitute the magnetic-moment
-    force and use $-grad B times bold(B)=bold(B) times grad B$ to obtain
-    $bold(v)_(grad B)=(c mu (bold(B) times grad B))/(q B^2)$. The sign check follows
+    force and use $-grad(B) times bold(B)=bold(B) times grad(B)$ to obtain
+    $bold(v)_(grad B)=(c mu (bold(B) times grad(B)))/(q B^2)$. The sign check follows
     from reversing $q$ while holding $bold(B)$ fixed.]
   )
 
@@ -544,14 +544,14 @@
 
   #summary[
     Gradients and curvature create effective guiding-center forces. The force
-    drift turns $-mu grad B$ into grad-$B$ drift, while parallel inertia in a
+    drift turns $-mu grad(B)$ into grad-$B$ drift, while parallel inertia in a
     curved field produces curvature drift. Magnetic mirrors follow from
     conserving $mu$ while the field strength changes.
   ]
 
   #exam-prompts(
     (
-      [(f) How is the magnetic moment $mu$ defined and how does the grad-B-drift follow from $F = -mu grad B$?],
+      [(f) How is the magnetic moment $mu$ defined and how does the grad-B-drift follow from $F = -mu grad(B)$?],
       [(g) Draw and explain a magnetic mirror.],
       [(h) What is the curvature drift?],
       [(i) What drifts do you know in magnetized plasmas?],
@@ -570,7 +570,7 @@
     ),
     (
       question: [What is the common geometric direction of grad-$B$ drift?],
-      answer: [It is perpendicular to the local field and to $grad B$, with its sign set by the charge.],
+      answer: [It is perpendicular to the local field and to $grad(B)$, with its sign set by the charge.],
     ),
     (
       question: [What approximation must be checked before classifying a drift with guiding-center theory?],

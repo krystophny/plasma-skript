@@ -61,7 +61,7 @@
 
   The two transport mechanisms are separated conceptually. A spatial
   gradient produces a diffusive particle flux, schematically
-  $bold(G)_"diff"=-D grad_(bold(r))(n)$, while an external force produces a
+  $bold(G)_"diff"=-D grad(n)$, while an external force produces a
   drift velocity, schematically
   $bold(u)_"mob"=mu bold(F)$. For an electric force, the charge-weighted
   drift contributes to the current $bold(j)=sum_s q_(s)n_(s)bold(u)_(s)$.
@@ -164,7 +164,7 @@
     (
       question: [What distinguishes diffusion from force-driven mobility?],
       answer: [Diffusion is driven by a spatial gradient and has the schematic
-      flux $-D grad n$. Mobility is driven by an external force and produces a
+      flux $-D grad(n)$. Mobility is driven by an external force and produces a
       drift proportional to that force. Both coefficients depend on
       collisions.]
     ),

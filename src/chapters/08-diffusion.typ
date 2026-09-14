@@ -1,6 +1,6 @@
 #import "../theme.typ": *
 #import "../figures.typ": random-walk-diffusion, ambipolar-balance, cross-field-diffusion, diffusion-scalings
-#import "@preview/physica:0.9.8": div, grad, pdv
+#import "@preview/physica:0.9.8": div, grad, pdv, laplacian
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
@@ -59,7 +59,7 @@
     [Diffusion from a random walk],
     [For a one-dimensional step of magnitude $Delta x$ every $Delta t$, define
     $D=(Delta x)^2/(2 Delta t)$. The diffusive particle flux obeys Fick's law
-    $bold(Gamma)^(D)=-D grad_(bold(r))(n)$, and a system of size $L$ has
+    $bold(Gamma)^(D)=-D grad(n)$, and a system of size $L$ has
     the diffusion time
     $tau_"D"=L^2/D$. In three dimensions, the variance relation is
     $⟨abs(bold(r))^2⟩=6 D t$.]
@@ -85,13 +85,13 @@
     right-moving and left-moving populations sample densities displaced by
     one step. Expanding those densities to first order gives a net flux
     proportional to the negative density gradient:
-    $bold(Gamma)^(D)=-((Delta x)^2/(2 Delta t)) grad n=-D grad n$.
+    $bold(Gamma)^(D)=-((Delta x)^2/(2 Delta t)) grad(n)=-D grad(n)$.
     Particle conservation is
     $pdv(n,t)+div(bold(Gamma))=0$.
     Substitution yields the variable-coefficient diffusion equation
-    $pdv(n,t)=div(D grad n)$.
+    $pdv(n,t)=div(D grad(n))$.
     When $D$ is uniform, this reduces to
-    $pdv(n,t)=D nabla^2 n$.
+    $pdv(n,t)=D laplacian(n)$.
 
     For a point-like initial packet in one dimension, the normalized Green
     function is
@@ -110,8 +110,7 @@
     $bold(xi)=bold(r)/L_0$, $tau=t/tau_0$,
     $n_("norm")=n/n_0$, and $D_("norm")=D/D_0$.
     The diffusion equation then has the dimensionless form
-    $pdv(n_("norm"), tau)=div_(bold(xi))
-      (D_("norm") grad_(bold(xi))(n_("norm")))$.
+    $pdv(n_("norm"), tau)=div(D_("norm") grad(n_("norm")))$.
     For a system length $L$ with $L_("norm")=L/L_0$, the normalized
     diffusion time is $tau_"D"/tau_0=L_("norm")^2/D_("norm")$.
     Every dimensional result is recovered by restoring the stated reference
@@ -157,8 +156,8 @@
   #summary[
     Independent symmetric steps give $⟨x⟩=0$ but
     $⟨x^2⟩=2 D t$ in one dimension. Fick's law
-    $bold(Gamma)^(D)=-D grad n$ and particle conservation produce
-    $pdv(n,t)=div(D grad n)$, with the scale
+    $bold(Gamma)^(D)=-D grad(n)$ and particle conservation produce
+    $pdv(n,t)=div(D grad(n))$, with the scale
     $tau_"D"=L^2/D$.
   ]
 
@@ -172,7 +171,7 @@
     (
       question: [What physical statement is encoded by Fick's law?],
       answer: [The diffusive particle flux points down the density gradient:
-      $bold(Gamma)^(D)=-D grad n$. The coefficient $D$ measures the
+    $bold(Gamma)^(D)=-D grad(n)$. The coefficient $D$ measures the
       strength of that response.]
     ),
     (
@@ -222,8 +221,8 @@
   #definition(
     [Mobility and diffusion],
     [The species momentum equation is
-    $m_s n_s (pdv(bold(u)_s,t)+bold(u)_s dot grad bold(u)_s)
-      =q_s n_s bold(E)-grad p_s
+    $m_s n_s (pdv(bold(u)_s,t)+bold(u)_s dot grad(bold(u)_s))
+      =q_s n_s bold(E)-grad(p_s)
         -m_s n_s nu_s bold(u)_s$.
     In the steady small-drift limit,
     $bold(u)_s=mu_s^(q) bold(E)-D_s (grad n_s)/n_s$,
@@ -235,7 +234,7 @@
   #governing-law(
     [Weakly ionized drift-diffusion flux],
     [Multiplying the velocity law by $n_s$ gives
-    $bold(Gamma)_s=n_s mu_s^(q) bold(E)-D_s grad n_s$.
+    $bold(Gamma)_s=n_s mu_s^(q) bold(E)-D_s grad(n_s)$.
     If a positive mobility is preferred, define
     $mu_s=abs(q_s)/(m_s nu_s)$ and keep the sign of $q_s$ explicitly
     in the force term. The Einstein relation is
@@ -246,11 +245,11 @@
     [Derivation: collisional force balance],
     [Start with the species momentum equation and use the isothermal equation
     of state:
-    $grad p_s=k_B T_s grad n_s$.
+    $grad(p_s)=k_B T_s grad(n_s)$.
     On times longer than $nu_s^(-1)$, neglect the inertial terms and solve
     the remaining algebraic equation:
     $m_s n_s nu_s bold(u)_s
-      =q_s n_s bold(E)-k_B T_s grad n_s$.
+      =q_s n_s bold(E)-k_B T_s grad(n_s)$.
     Division by $m_s n_s nu_s$ gives
     $bold(u)_s=q_s/(m_s nu_s) bold(E)
       -(k_B T_s)/(m_s nu_s) (grad n_s)/n_s$.
@@ -294,7 +293,7 @@
 
   #summary[
     Neutral drag yields
-    $bold(Gamma)_s=n_s mu_s^(q) bold(E)-D_s grad n_s$ with
+    $bold(Gamma)_s=n_s mu_s^(q) bold(E)-D_s grad(n_s)$ with
     $mu_s^(q)=q_s/(m_s nu_s)$ and
     $D_s=(k_B T_s)/(m_s nu_s)$. The Einstein relation connects their
     magnitudes, while the sign of the force response remains set by $q_s$.
@@ -303,7 +302,7 @@
   #knowledge-check((
     (
       question: [Which term in the weakly ionized flux is driven by a density gradient?],
-      answer: [The Fick term $-D_s grad n_s$ is gradient driven. It points
+      answer: [The Fick term $-D_s grad(n_s)$ is gradient driven. It points
       down the density gradient and is distinct from the electric-force term.]
     ),
     (
@@ -361,8 +360,8 @@
   #definition(
     [Species fluxes and quasi-neutrality],
     [With positive mobility magnitudes, the unmagnetized fluxes are
-    $bold(Gamma)_i=mu_i n bold(E)-D_i grad n$ and
-    $bold(Gamma)_e=-mu_e n bold(E)-D_e grad n$.
+    $bold(Gamma)_i=mu_i n bold(E)-D_i grad(n)$ and
+    $bold(Gamma)_e=-mu_e n bold(E)-D_e grad(n)$.
     The current is
     $bold(j)=e (bold(Gamma)_i-bold(Gamma)_e)$.
     Quasi-neutral ambipolar transport imposes
@@ -375,7 +374,7 @@
     [Solving the equal-flux condition gives
     $bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) (grad n)/n$.
     Substitution into either species flux gives
-    $bold(Gamma)_a=-D_a grad n$ with
+    $bold(Gamma)_a=-D_a grad(n)$ with
     $D_a=(mu_i D_e+mu_e D_i)/(mu_i+mu_e)$.]
   )
 
@@ -383,13 +382,13 @@
     [Derivation: quasi-neutral flux balance],
     [For positive ions, the electric force drives a flux in the direction of
     $bold(E)$:
-    $bold(Gamma)_i=mu_i n bold(E)-D_i grad n$.
+    $bold(Gamma)_i=mu_i n bold(E)-D_i grad(n)$.
     Electrons have the opposite charge, so
-    $bold(Gamma)_e=-mu_e n bold(E)-D_e grad n$.
+    $bold(Gamma)_e=-mu_e n bold(E)-D_e grad(n)$.
     The current-free condition is
     $bold(0)=bold(j)=e(bold(Gamma)_i-bold(Gamma)_e)$.
     Equating the two fluxes and collecting the field terms gives
-    $(mu_i+mu_e)n bold(E)=(D_i-D_e)grad n$,
+    $(mu_i+mu_e)n bold(E)=(D_i-D_e)grad(n)$,
     hence
     $bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) (grad n)/n$.
 
@@ -398,7 +397,7 @@
       =((mu_i n (D_i-D_e))/(mu_i+mu_e)) ((grad n)/n)-D_i grad n$.
     Putting both terms over the common denominator produces
     $bold(Gamma)_i
-      =-(mu_i D_e+mu_e D_i)/(mu_i+mu_e) grad n$.
+      =-(mu_i D_e+mu_e D_i)/(mu_i+mu_e) grad(n)$.
     The same result follows from the electron flux, so define
     $D_a=(mu_i D_e+mu_e D_i)/(mu_i+mu_e)$.
 
@@ -416,7 +415,7 @@
     Gaussian CGS and let the ambipolar field adjust rapidly compared with the
     density evolution. Consider the plasma with
     $n=qty("1.0e10", "cm^-3")$,
-    $(grad n)/n=qty("-1.0e-2", "cm^-1")$, and
+    $(grad(n))/n=qty("-1.0e-2", "cm^-1")$, and
     $k_B T_i=k_B T_e=qty("1.602e-12", "erg")$.
     Use $m_i=qty("1.673e-24", "g")$,
     $m_e=qty("9.109e-28", "g")$,
@@ -513,8 +512,8 @@
     A signed transverse coefficient is
     $D_(s,H)=(D_s (Omega_s/nu_s))/(1+(Omega_s/nu_s)^2)$.
     The gradient contribution can be written
-    $bold(Gamma)_(s,perp)=-D_(s,perp)grad_perp n_s
-      +D_(s,H) hat(bold(b)) times grad_perp n_s$,
+    $bold(Gamma)_(s,perp)=-D_(s,perp)grad_(perp)(n_s)
+      +D_(s,H) hat(bold(b)) times grad_(perp)(n_s)$,
     in the chosen orientation convention.]
   )
 
@@ -676,13 +675,13 @@
   #definition(
     [Classical fully ionized diffusion],
     [The steady force balance and resistive Ohm law are
-    $bold(0)=-grad p+(bold(j) times bold(B))/c$ and
+    $bold(0)=-grad(p)+(bold(j) times bold(B))/c$ and
     $bold(j)=sigma (bold(E)+(bold(u) times bold(B))/c)$.
     The perpendicular velocity contains
     $bold(u)_perp=(c (bold(E) times bold(B)))/(B^2)
-      -(c^2 grad_perp p)/(sigma B^2)$.
+      -(c^2 grad_(perp)(p))/(sigma B^2)$.
     For $p=n k_(B)(T_e+T_i)$, the pressure-driven flux is
-    $bold(Gamma)_perp=-D_perp^("cl") grad_perp n$ with
+    $bold(Gamma)_perp=-D_perp^("cl") grad_(perp)(n)$ with
     $D_perp^("cl")=(n c^2 k_(B)(T_e+T_i))/(sigma B^2)$.]
   )
 
@@ -699,26 +698,26 @@
   #details(
     [Derivation: pressure-driven classical flux],
     [Start from
-    $bold(0)=-grad p+(bold(j) times bold(B))/c$
+    $bold(0)=-grad(p)+(bold(j) times bold(B))/c$
     and substitute
     $bold(j)=sigma(bold(E)+(bold(u) times bold(B))/c)$.
     The cross product identity
     $(bold(u) times bold(B)) times bold(B)=-B^2 bold(u)_perp$
     gives
-    $bold(0)=-grad_perp p
+    $bold(0)=-grad_(perp)(p)
       +(sigma (bold(E) times bold(B)))/c
       -(sigma B^2 bold(u)_perp)/(c^2)$.
     Solving for the perpendicular velocity yields
     $bold(u)_perp=(c (bold(E) times bold(B)))/(B^2)
-      -(c^2 grad_perp p)/(sigma B^2)$.
+      -(c^2 grad_(perp)(p))/(sigma B^2)$.
 
     Multiply by $n$. The first term is a common crossed-field drift and does
     not diffuse a uniform density. For an isothermal two-temperature hydrogen
     plasma,
-    $grad_perp p=k_(B)(T_e+T_i)grad_perp n$.
+    $grad_(perp)(p)=k_(B)(T_e+T_i)grad_(perp)(n)$.
     The pressure term in the particle flux is consequently
     $bold(Gamma)_perp^("diff")
-      =-(n c^2 k_(B)(T_e+T_i) grad_perp n)/(sigma B^2)$,
+      =-(n c^2 k_(B)(T_e+T_i) grad_(perp)(n))/(sigma B^2)$,
     which identifies
     $D_perp^("cl")=(n c^2 k_(B)(T_e+T_i))/(sigma B^2)$.
     The explicit $c^2$ is required because both the Lorentz force density and

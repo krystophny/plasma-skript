@@ -70,7 +70,7 @@
   <intro-thermal-speed>
 
   #details(
-    [Why the three-dimensional average is $3 k_B T_s / 2$],
+    [Why the three-dimensional average is $(3 k_B T_s)/2$],
     [Each Cartesian component of a Maxwellian has variance
     $⟨(v_j-u_(s,j))^2⟩ = (k_B T_s)/m_s$. Summing the three independent
     components gives
@@ -84,7 +84,7 @@
   #maxwellian-profile
 
   The conversion $1 #unit("eV") = 1.602176634 dot 10^(-12) #unit("erg")$
-  corresponds to $1 #unit("eV") / k_B approx 1.1605 dot 10^4$ K. Thus a
+  corresponds to $(1 #unit("eV"))/k_B approx 1.1605 dot 10^4$ K. Thus a
   statement such as $k_B T_e = 10 #unit("eV")$ identifies an energy scale of
   roughly $1.16 dot 10^5$ K, while the electron and ion temperatures may still
   differ. A temperature also does not specify the total heat content: that
@@ -120,7 +120,7 @@
     ),
     (
       question: [How does the chosen thermal-speed convention relate to $k_B T_s$?],
-      answer: [$v_("th,s")=sqrt((2 k_B T_s)/m_s)$, so the one-dimensional Gaussian width is set by $k_B T_s/m_s$ and the three-dimensional mean kinetic energy is $3 k_B T_s/2$.],
+      answer: [$v_("th,s")=sqrt((2 k_B T_s)/m_s)$, so the one-dimensional Gaussian width is set by $(k_B T_s)/m_s$ and the three-dimensional mean kinetic energy is $(3 k_B T_s)/2$.],
     ),
     (
       question: [Why can a plasma have separate electron and ion temperatures?],
@@ -177,7 +177,7 @@
   Maxwell's equations couple this source to the fields. Two source-free
   identities used repeatedly later are
 
-  $ div bold(B) = 0, quad curl bold(E) = -1/c pdv(bold(B), t) $ <intro-maxwell-identities>
+  $ div(bold(B)) = 0, quad curl(bold(E)) = -1/c pdv(bold(B), t) $ <intro-maxwell-identities>
 
   #equation-note[
     Gaussian CGS. $c$ is the speed of light in $upright("cm") dot upright("s")^(-1)$.
@@ -392,7 +392,7 @@
   #equation-note[
     Gaussian CGS. The factor $sqrt(2)$ follows from the convention
     $v_("th,e")=sqrt((2 k_B T_e)/m_e)$. If a source defines thermal speed as
-    $sqrt(k_B T_e/m_e)$, the same relation is written without that factor.
+    $sqrt((k_B T_e)/m_e)$, the same relation is written without that factor.
   ]
 
   A common collective ordering is the Debye number
@@ -527,7 +527,7 @@
     Gaussian CGS. $N$ is a number density in #unit("cm^-3"), $R$ is in cm,
     and $phi$ is in statvolt. The numerical factor depends on the assumed
     charge profile; the robust result is the scaling
-    $R$ proportional to $sqrt(k_B T_e/(N e^2))$.
+    $R$ proportional to $sqrt((k_B T_e)/(N e^2))$.
   ]
 
   #details(
@@ -813,10 +813,10 @@
       quad bold(j)(bold(r), t) = sum_a q_a bold(v)_(a)(t)
         delta(bold(r) - bold(r)_(a)(t)) $
 
-    $ div bold(E) = 4 pi rho_q, quad div bold(B) = 0 $
+    $ div(bold(E)) = 4 pi rho_q, quad div(bold(B)) = 0 $
 
-    $ curl bold(E) = -1/c pdv(bold(B), t),
-      quad curl bold(B) = (4 pi)/c bold(j) + 1/c pdv(bold(E), t) $
+    $ curl(bold(E)) = -1/c pdv(bold(B), t),
+      quad curl(bold(B)) = (4 pi)/c bold(j) + 1/c pdv(bold(E), t) $
 
     The discrete particle sources are coarse-grained when one passes to a
     kinetic distribution or to fluid moments. This is the sense in which the
@@ -835,7 +835,7 @@
 
   The collisionless phase-space balance has the conservative form
 
-  $ pdv(f_s, t) + div(f_s bold(v)) + grad_(bold(v)) dot (f_s bold(a)_s) = 0 $ <intro-kinetic-balance>
+  $ pdv(f_s, t) + div(f_s bold(v)) + div(f_s bold(a)_s) = 0 $ <intro-kinetic-balance>
 
   #equation-note[
     Gaussian CGS. This is a schematic collisionless kinetic equation. The

@@ -385,8 +385,8 @@
     [Convective derivative],
     [For a scalar $g(t,bold(r),bold(v))$, the derivative along a particle
     trajectory is
-    $ dv(g_(s),t,d:upright(D)) = pdv(g_(s),t) + bold(v) dot grad_(bold(r)) g_(s)
-    + bold(a)_s dot grad_(bold(v)) g_(s)$. It follows the particle through both
+    $ dv(g_(s),t,d:upright(D)) = pdv(g_(s),t) + bold(v) dot grad(g_(s))
+    + bold(a)_s dot pdv(g_(s),bold(v))$. It follows the particle through both
     real space and velocity space.]
   )
 
@@ -415,7 +415,7 @@
 
   The normalized free-streaming equation used in the animation is
 
-  $ pdv(f,tau) + bold(eta) dot grad_(bold(xi)) f = 0 $ <kinetic-normalized-streaming>
+  $ pdv(f,tau) + bold(eta) dot grad(f) = 0 $ <kinetic-normalized-streaming>
 
   #equation-note[
     Both $bold(xi)=bold(r)/L_0$ and $bold(eta)=bold(v)/v_0$ are dimensionless.
@@ -429,11 +429,11 @@
     [Let $g(t,bold(r),bold(v))$ be evaluated on
     $bold(r)=bold(r)(t)$ and $bold(v)=bold(v)(t)$. A small time step changes it
     by the partial time change plus the changes caused by both coordinates:
-    $d g = pdv(g,t) d t + grad_(bold(r)) g dot d bold(r)
-    + grad_(bold(v)) g dot d bold(v)$. Divide by $d t$ and insert
+    $d g = pdv(g,t) d t + grad(g) dot d bold(r)
+    + pdv(g,bold(v)) dot d bold(v)$. Divide by $d t$ and insert
     $dv(bold(r),t)=bold(v)$ and $dv(bold(v),t)=bold(a)_s$. The result is
-    $dv(g,t) = pdv(g,t) + bold(v) dot grad_(bold(r))g
-    + bold(a)_s dot grad_(bold(v))g$. At a fixed point, only $pdv(g,t)$ is
+    $dv(g,t) = pdv(g,t) + bold(v) dot grad(g)
+    + bold(a)_s dot pdv(g,bold(v))$. At a fixed point, only $pdv(g,t)$ is
     measured. Along a characteristic, all three terms contribute.]
   )
 
@@ -446,7 +446,7 @@
     $f bold(a)_s$. Dividing the balance by the cell volume and taking the
     cell-size limit gives
     $pdv(f,t) + div(f bold(v))
-    + grad_(bold(v)) dot (f bold(a)_s) = S$. Combining the two fluxes into
+    + div(f bold(a)_s) = S$. Combining the two fluxes into
     $bold(V)_z=(bold(v),bold(a)_s)$ gives the compact conservative form.]
   )
 
@@ -548,7 +548,7 @@
   The conservative kinetic equation is
 
   $ pdv(f_s,t) + div(f_s bold(v))
-    + grad_(bold(v)) dot (f_s bold(a)_s) = C_(s)[f] $ <kinetic-conservative>
+    + div(f_s bold(a)_s) = C_(s)[f] $ <kinetic-conservative>
 
   #equation-note[
     The first divergence is in real space and the gradient in the third term
@@ -559,16 +559,16 @@
 
   Expanding the two fluxes gives
 
-  $ div(f_s bold(v)) = bold(v) dot grad_(bold(r)) f_s
+  $ div(f_s bold(v)) = bold(v) dot grad(f_s)
     + f_s div(bold(v)), $ \
-  $ grad_(bold(v)) dot (f_s bold(a)_s)
-    = bold(a)_s dot grad_(bold(v)) f_s
-    + f_s grad_(bold(v)) dot bold(a)_s. $ <kinetic-product-rules>
+  $ div(f_s bold(a)_s)
+    = bold(a)_s dot pdv(f_s,bold(v))
+    + f_s div(bold(a)_s). $ <kinetic-product-rules>
 
   For prescribed Lorentz fields, $bold(v)$ has no dependence on position and
   $bold(a)_s$ has no dependence on velocity divergence:
 
-  $ div(bold(v)) = 0, quad grad_(bold(v)) dot bold(a)_s = 0. $ <kinetic-liouville>
+  $ div(bold(v)) = 0, quad div(bold(a)_s) = 0. $ <kinetic-liouville>
 
   #equation-note[
     These are the incompressibility conditions for the six-dimensional
@@ -578,14 +578,14 @@
 
   The convective form is therefore
 
-  $ dv(f_(s),t,d:upright(D)) = pdv(f_(s),t) + bold(v) dot grad_(bold(r)) f_(s)
-    + bold(a)_s dot grad_(bold(v)) f_(s) = C_(s)[f] $ <kinetic-convective>
+  $ dv(f_(s),t,d:upright(D)) = pdv(f_(s),t) + bold(v) dot grad(f_(s))
+    + bold(a)_s dot pdv(f_(s),bold(v)) = C_(s)[f] $ <kinetic-convective>
 
   When the collision operator is neglected, this becomes the Vlasov equation:
 
-  $ pdv(f_s,t) + bold(v) dot grad_(bold(r)) f_s
+  $ pdv(f_s,t) + bold(v) dot grad(f_s)
     + q_s/m_s (bold(E) + (bold(v) times bold(B))/c)
-      dot grad_(bold(v)) f_s = 0 $ <kinetic-vlasov>
+      dot pdv(f_s,bold(v)) = 0 $ <kinetic-vlasov>
 
   #equation-note[
     The Vlasov equation is collisionless, not force-free. Self-consistent
@@ -598,14 +598,14 @@
     [Derivation: conservative form to convective form],
     [Start with
     $pdv(f_s,t)+div(f_s bold(v))
-    +grad_(bold(v)) dot(f_s bold(a)_s)=C_(s)[f]$. Apply the product rule to the
+    +div(f_s bold(a)_s)=C_(s)[f]$. Apply the product rule to the
     spatial flux and to the velocity-space flux. The result is
-    $pdv(f_s,t)+bold(v) dot grad_(bold(r))f_s
-    +bold(a)_s dot grad_(bold(v))f_s
-    +f_s dot [div(bold(v))+grad_(bold(v)) dot bold(a)_s]=C_(s)[f]$.
+    $pdv(f_s,t)+bold(v) dot grad(f_s)
+    +bold(a)_s dot pdv(f_s,bold(v))
+    +f_s dot [div(bold(v))+div(bold(a)_s)]=C_(s)[f]$.
     For Lorentz motion, $div(bold(v))=0$ because $bold(v)$ is an independent
     velocity coordinate in the spatial divergence. Also
-    $grad_(bold(v)) dot bold(a)_s=0$: the electric acceleration is velocity
+    $div(bold(a)_s)=0$: the electric acceleration is velocity
     independent, and the magnetic acceleration is linear in $bold(v)$ with an
     antisymmetric cross-product matrix whose trace is zero. Removing the
     bracket gives the convective form.]
@@ -651,7 +651,7 @@
     (
       question: [What condition makes the two kinetic forms equivalent?],
       answer: [The phase-space characteristic flow must have zero divergence,
-      $div(bold(v))+grad_(bold(v)) dot bold(a)=0$. Lorentz motion satisfies
+      $div(bold(v))+div(bold(a))=0$. Lorentz motion satisfies
       this condition.],
     ),
     (
