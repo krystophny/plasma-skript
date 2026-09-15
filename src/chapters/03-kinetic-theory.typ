@@ -1,5 +1,5 @@
 #import "../theme.typ": *
-#import "../figures.typ": maxwellian-profile
+#import "../figures.typ": collision-paths, maxwellian-profile
 #import "@preview/physica:0.9.8": div, grad, pdv, dv
 #import "@preview/unify:0.8.1": qty, unit
 
@@ -96,6 +96,8 @@
   encounter. A plasma has a different collision geometry. Two charged
   particles interact through a Coulomb field, so many weak deflections can
   accumulate even when no single encounter is a large-angle event.
+
+  #collision-paths
 
   #assumption(
     [Small-angle Coulomb scattering],
@@ -251,6 +253,19 @@
     dividing by the total particle number and integrating over the chosen
     domain.]
   )
+
+  For any single-particle property $g(t,bold(r),bold(v))$, the local velocity
+  average is
+
+  $ ⟨g⟩_s = (1)/(n_s) integral_(RR^3)
+    g(t,bold(r),bold(v)) f_s(t,bold(r),bold(v)) dif^3 bold(v) $
+  <kinetic-local-average>
+
+  #equation-note[
+    The average is local in position. Setting $g=1$ gives one, while setting
+    $g=bold(v)$ gives the bulk velocity $bold(u)_s$. The factor
+    $(f_s)/(n_s)$ is a velocity-space probability density with units
+    #unit("s^3 cm^-3").]
 
   At a fixed position, the velocity integral gives the number density:
 

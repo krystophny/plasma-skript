@@ -103,6 +103,38 @@
   )
 ]
 
+#let collision-paths = figure(
+  alt: "A conceptual comparison of two normalized particle paths. The neutral-gas path is a zigzag made of straight flights separated by a few marked hard collisions. The plasma path bends smoothly through many small deflections distributed along the flight, with no isolated hard-sphere event. The paths are illustrative, not measured trajectories.",
+  caption: [
+    Collision geometry in a neutral gas and a weakly coupled plasma. The
+    horizontal distance and transverse displacement are normalized by the
+    reference mean free path $lambda_"ref"$ and use unit #text("[1]").
+    Markers and line shape distinguish the two interaction models without
+    relying on color.
+  ],
+)[
+  #lq.diagram(
+    width: 10cm,
+    height: 5.2cm,
+    xlabel: normalized-axis[$ell / lambda_"ref"$],
+    ylabel: normalized-axis[$y / lambda_"ref"$],
+    lq.plot(
+      (0, 0.8, 1.6, 2.4, 3.0, 3.8, 4.8, 5.8),
+      (0, 0, 0, 0.7, 0.7, -0.25, -0.25, 0.45),
+      color: blue,
+      mark: "o",
+      label: [neutral gas: hard collisions],
+    ),
+    lq.plot(
+      (0, 0.8, 1.6, 2.4, 3.0, 3.8, 4.8, 5.8),
+      (0, 0.08, 0.02, 0.18, 0.12, 0.28, 0.18, 0.34),
+      color: orange,
+      mark: "+",
+      label: [plasma: weak deflections],
+    ),
+  )
+]
+
 #let moment-hierarchy = figure(
   alt: "A hierarchy diagram starts with the full distribution function f of position and velocity and branches to progressively higher velocity moments: number density n, bulk velocity u, pressure tensor P, and heat flux q. Each lower-level description retains less velocity-space information and requires a closure for the next moment.",
   caption: [
