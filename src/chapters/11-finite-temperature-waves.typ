@@ -792,7 +792,7 @@
     The ordering parameters $C=nu/omega$, $I=omega/omega_(c,i)$,
     $K=k lambda_D$, and $M=m_e/m_i$ are dimensionless. Dimensional
     $nu$, $omega$, and $omega_(c,i)$ are in #unit("s^-1"); $k$ is in
-    #unit("cm^-1"); and $lambda_D$ and the thermal gyroradius
+    #unit("cm^-1"); and $lambda_D$ and the pressure-response gyroradius
     $rho_s=c_s/omega_(c,s)$ are in #unit("cm"). Particle and wave speeds are
     in #unit("cm/s").
   ]
