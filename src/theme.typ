@@ -294,6 +294,7 @@
     html.figure(class: "animation-figure")[
       #html.video(
         class: "animation-video",
+        aria-label: alt-description,
         controls: true,
         loop: true,
         muted: true,

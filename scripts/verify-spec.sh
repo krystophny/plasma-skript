@@ -205,6 +205,8 @@ else
   require_file "$site_dir/media/exb-drift.png"
   require_file "$site_dir/media/plasma-oscillation.mp4"
   require_file "$site_dir/media/plasma-oscillation.png"
+  require_file "$site_dir/media/debye-shielding.mp4"
+  require_file "$site_dir/media/debye-shielding.png"
   require_file "$site_dir/media/phase-space-advection.mp4"
   require_file "$site_dir/media/phase-space-advection.png"
   require_file "$site_dir/media/moment-hierarchy.mp4"
@@ -271,6 +273,8 @@ else
         my ($attrs, $body) = ($1, $2);
         die "video has no controls\n" unless $attrs =~ m{\bcontrols\b}i;
         die "video has no source\n" unless $attrs =~ m{\bsrc\s*=}i;
+        die "video has no accessible alternative description\n"
+          unless $attrs =~ m{\baria-label\s*=\s*"[^"]+"}i;
         $body =~ s{<[^>]+>}{}g;
         $body =~ s{&(?:nbsp|#160);}{ }gi;
         $body =~ s{\s+}{}g;

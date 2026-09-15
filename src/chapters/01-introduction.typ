@@ -612,6 +612,27 @@
 
   #debye-profile
 
+  #animation(
+    "../media/debye-shielding.mp4",
+    "A movement-based normalized 1D slab model shows blue circular electron markers starting uniformly, drifting toward a localized positive test charge, and gathering into a negative screening cloud while orange triangular ion markers remain fixed. The right-hand plots update with the markers: electron density develops a central excess and the electrostatic potential contracts from a broad initial profile to a localized screened profile. Position is shown as x divided by the Debye length with unit [1], and time as t divided by the relaxation time with unit [1]. The animation is a deterministic pedagogical relaxation model, not a full 3D particle-in-cell calculation.",
+    caption: [
+      Debye shielding through motion: mobile electrons rearrange around a
+      localized positive charge, and the self-consistent potential becomes
+      short-ranged. The markers and profiles use the same normalized 1D slab
+      model; the fixed ion background and the compensating box background are
+      part of the stated reduction.
+    ],
+    poster: "../media/debye-shielding.png",
+  )
+
+  The animation has a direct static reading. At the start, the electron
+  markers are uniformly distributed and the positive test charge produces a
+  broad electrostatic response. As the markers move toward the charge, their
+  negative density perturbation cancels the source field outside the central
+  region. The density excess and the shrinking potential profile are plotted
+  from the same evolving state, so the screening is caused by charge motion
+  rather than by a pre-drawn screened curve.
+
   #interpretation(
     [What the Debye length does not mean],
     [The Debye length is not a hard vacuum boundary and it does not make the

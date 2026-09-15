@@ -529,6 +529,9 @@ Each scene must:
 
 - use a deterministic parameter set and document whether quantities are
   dimensional or normalized,
+- render every in-scene prose label with the project-provided New Computer
+  Modern font (`NewComputerModern`), explicitly registered from the Nix-supplied
+  font file so rendering never depends on a host-installed fallback,
 - append `[1]` to every normalized axis or other quantitative in-scene label;
   do not write `(dimensionless)` in the scene,
 - have a stable scene name and output path,

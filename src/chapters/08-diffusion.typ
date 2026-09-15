@@ -73,12 +73,12 @@
     while its second moment is
     $⟨(Delta x)^2⟩=((Delta x)^2)/2+((-Delta x)^2)/2=(Delta x)^2$.
 
-    After $N=t/Delta t$ statistically independent steps, cross terms in the
+    After $N=t/(Delta t)$ statistically independent steps, cross terms in the
     square of the total displacement vanish because the individual means are
     zero. Therefore
     $⟨x⟩=0$ and
     $⟨x^2⟩=N(Delta x)^2
-      =(((Delta x)^2 t)/Delta t)=2 D t$,
+      =(((Delta x)^2 t)/(Delta t))=2 D t$,
     which defines the one-dimensional coefficient.
 
     To obtain the local flux, consider a cell of width $Delta x$. The
@@ -225,7 +225,7 @@
       =q_s n_s bold(E)-grad(p_s)
         -m_s n_s nu_s bold(u)_s$.
     In the steady small-drift limit,
-    $bold(u)_s=mu_s^(q) bold(E)-D_s (grad n_s)/n_s$,
+    $bold(u)_s=mu_s^(q) bold(E)-D_s ((grad(n_s))/n_s)$,
     where the signed mobility and diffusion coefficient are
     $mu_s^(q)=q_s/(m_s nu_s)$ and
     $D_s=(k_B T_s)/(m_s nu_s)$.]
@@ -252,7 +252,7 @@
       =q_s n_s bold(E)-k_B T_s grad(n_s)$.
     Division by $m_s n_s nu_s$ gives
     $bold(u)_s=q_s/(m_s nu_s) bold(E)
-      -(k_B T_s)/(m_s nu_s) (grad n_s)/n_s$.
+      -(k_B T_s)/(m_s nu_s) ((grad(n_s))/n_s)$.
 
     Identifying the first coefficient as the signed mobility
     $mu_s^(q)=q_s/(m_s nu_s)$ and the second as
@@ -372,7 +372,7 @@
   #governing-law(
     [Ambipolar field and diffusion coefficient],
     [Solving the equal-flux condition gives
-    $bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) (grad n)/n$.
+    $bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) ((grad(n))/n)$.
     Substitution into either species flux gives
     $bold(Gamma)_a=-D_a grad(n)$ with
     $D_a=(mu_i D_e+mu_e D_i)/(mu_i+mu_e)$.]
@@ -390,11 +390,11 @@
     Equating the two fluxes and collecting the field terms gives
     $(mu_i+mu_e)n bold(E)=(D_i-D_e)grad(n)$,
     hence
-    $bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) (grad n)/n$.
+    $bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) ((grad(n))/n)$.
 
     Insert this field into the ion flux:
     $bold(Gamma)_i
-      =((mu_i n (D_i-D_e))/(mu_i+mu_e)) ((grad n)/n)-D_i grad n$.
+      =((mu_i n (D_i-D_e))/(mu_i+mu_e)) ((grad(n))/n)-D_i grad(n)$.
     Putting both terms over the common denominator produces
     $bold(Gamma)_i
       =-(mu_i D_e+mu_e D_i)/(mu_i+mu_e) grad(n)$.
@@ -440,8 +440,8 @@
 
   #summary[
     Equal electron and ion particle fluxes give
-    $bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) (grad n)/n$ and
-    $bold(Gamma)_a=-D_a grad n$, where
+    $bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) ((grad(n))/n)$ and
+    $bold(Gamma)_a=-D_a grad(n)$, where
     $D_a=(mu_i D_e+mu_e D_i)/(mu_i+mu_e)$. Ambipolar diffusion is
     therefore a collective consequence of quasi-neutrality.
   ]

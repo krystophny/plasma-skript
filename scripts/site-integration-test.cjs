@@ -142,7 +142,16 @@ async function auditPage(page, pagePath, viewport) {
         const hasCaption = Boolean(
           video.closest("figure")?.querySelector("figcaption"),
         );
-        return !video.hasAttribute("controls") || !hasSource || !hasFallback || !hasCaption;
+        const hasAlternativeDescription = Boolean(
+          video.getAttribute("aria-label")?.trim(),
+        );
+        return (
+          !video.hasAttribute("controls") ||
+          !hasSource ||
+          !hasFallback ||
+          !hasCaption ||
+          !hasAlternativeDescription
+        );
       });
 
       return {

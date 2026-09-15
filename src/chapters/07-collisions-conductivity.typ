@@ -537,7 +537,7 @@
     temperature, apart from the weak density dependence hidden in
     $ln Lambda$. Its dominant temperature scaling is
     $eta_"Sp" ∝ T_"e"^(-3/2)$, while
-    $sigma_"Sp"$ scales as $T_"e"^(3/2)/ln Lambda$.]
+      $sigma_"Sp"$ scales as $T_"e"^(3/2)/(ln Lambda)$.]
   )
 
   #details(

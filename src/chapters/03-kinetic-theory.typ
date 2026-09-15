@@ -117,7 +117,7 @@
 
   #equation-note[
     Gaussian CGS is used in the electrostatic relation. The potential energy
-    of two charges is $q_a q_b/r$ in #unit("erg"), so $b_90$ is in
+    of two charges is $(q_a q_b)/r$ in #unit("erg"), so $b_90$ is in
     #unit("cm").]
 
   The small-angle contributions add a logarithmic weight over impact

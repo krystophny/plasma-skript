@@ -758,7 +758,7 @@
     $sum_s rho_(s)bold(V)_(s)=sum_s rho_(s)bold(u)_(s)-rho bold(u)=bold(0)$.
     Similarly,
     $sum_s q_(s)n_(s)bold(E)=rho_q bold(E)$ and
-    $sum_s (q_(s)n_(s)(bold(u)_(s)times bold(B)))/c
+    $(sum_s (q_(s)n_(s)(bold(u)_(s)times bold(B))))/c
       =(bold(j)times bold(B))/c$.
     These identities give the summed momentum equation. If interspecies
     collisions are internal, their momentum sources cancel in the sum.]

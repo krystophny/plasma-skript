@@ -14,6 +14,11 @@
   }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {inherit system;};
+      newComputerModern = pkgs.newcomputermodern;
+      newComputerModernFont = "${newComputerModern}/share/fonts/opentype/public/NewCM10-Regular.otf";
+      fontConfig = pkgs.makeFontsConf {
+        fontDirectories = [newComputerModern];
+      };
       typst = pkgs.typst.withPackages (ps: [
         ps.physica_0_9_8
         ps.cetz_0_5_2
@@ -34,6 +39,8 @@
         name = "plasma-build-site";
         runtimeInputs = [pkgs.bash pkgs.ffmpeg pkgs.manim typst];
         text = ''
+          export FONTCONFIG_FILE="${fontConfig}"
+          export PLASMA_NEW_COMPUTER_MODERN_FONT="${newComputerModernFont}"
           site_dir="''${SITE_DIR:-$PWD/public}"
           export SITE_DIR="$site_dir"
           exec bash "${self}/scripts/build-site.sh" "$@"
@@ -162,8 +169,11 @@
         nativeBuildInputs = [
           pkgs.ffmpeg
           pkgs.manim
+          newComputerModern
           typst
         ];
+        FONTCONFIG_FILE = fontConfig;
+        PLASMA_NEW_COMPUTER_MODERN_FONT = newComputerModernFont;
 
         buildPhase = ''
           runHook preBuild
@@ -202,9 +212,12 @@
         };
 
       devShells.default = pkgs.mkShell {
+        FONTCONFIG_FILE = fontConfig;
+        PLASMA_NEW_COMPUTER_MODERN_FONT = newComputerModernFont;
         packages = [
           typst
           pkgs.manim
+          newComputerModern
           pkgs.ffmpeg
           pkgs.alejandra
           pkgs.bash

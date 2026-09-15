@@ -493,10 +493,10 @@
     Finally expand the adiabatic invariant
     $p rho^(-gamma)=p_0 rho_0^(-gamma)+delta(p rho^(-gamma))$.
     The first-order perturbation is proportional to
-    $(delta p)/p_0-gamma (delta rho)/rho_0$. Its material derivative reduces to a
+    $(delta p)/p_0-gamma ((delta rho)/rho_0)$. Its material derivative reduces to a
     time derivative because the equilibrium is static. For perturbations
     initially satisfying the adiabatic relation, this quantity stays zero:
-    $(delta p)/p_0=gamma (delta rho)/rho_0$, or
+    $(delta p)/p_0=gamma ((delta rho)/rho_0)$, or
     $delta p=((gamma p_0)/rho_0)delta rho=c_(s)^2delta rho$.
     Every discarded product contains at least two perturbation factors.]
   )
@@ -516,7 +516,7 @@
     Context: a uniform equilibrium has
     $rho_0=qty("1.0e-14", "g/cm^3")$, $p_0=qty("1.0", "erg/cm^3")$,
     $gamma=5/3$, and a density perturbation
-    $delta rho/rho_0=0.010$.
+    $(delta rho)/rho_0=0.010$.
 
     Assumptions: ideal, adiabatic, small-amplitude MHD perturbations about a
     static uniform state.
@@ -525,7 +525,7 @@
 
     Numerical result: $c_(s)=qty("1.29e7", "cm/s")$,
     $delta p=qty("1.67e-2", "erg/cm^3")$, and
-    $delta p/p_0=0.0167$ (dimensionless).
+    $(delta p)/p_0=0.0167$ (dimensionless).
   ]
 
   #interpretation(
@@ -746,7 +746,7 @@
     ),
     (
       question: [How does the magnetic Reynolds number compare the timescales?],
-      answer: [$R_(m)=tau_(D)/tau_(A)=U L/D_(B)$. Thus $R_(m)>>1$ means
+      answer: [$R_(m)=tau_(D)/tau_(A)=(U L)/D_(B)$. Thus $R_(m)>>1$ means
       advection is faster than diffusion, while $R_(m)<<1$ means diffusion
       acts before the flow can transport the field across $L$.]
     ),
