@@ -111,20 +111,38 @@
 
   #details(
     [Derivation: central and raw second moments],
-    [Insert $bold(v)=bold(u)_s+bold(w)_s$ into the raw second moment. The
-    dyadic expansion is
-    $bold(v) bold(v) = bold(u)_s bold(u)_s
-      + bold(u)_s bold(w)_s + bold(w)_s bold(u)_s
-      + bold(w)_s bold(w)_s$. Integrating the two cross terms gives zero
-    because $integral bold(w)_s f_s dif^3 bold(v)=bold(0)$. The first term
-    gives $n_s bold(u)_s bold(u)_s$, and multiplication by $m_s$ gives
-    $rho_s bold(u)_s bold(u)_s$. The last term is the definition of
-    $bold(P)_s$. Therefore
-    $bold(M)_s=bold(P)_s+rho_s bold(u)_s bold(u)_s$.
+    [#derivation-step[Split velocity into bulk and random parts]
+    Insert
 
-    This decomposition is a dimensional check as well. Both terms are
-    momentum fluxes with units #unit("g") #unit("cm^-1") #unit("s^-2"), and
-    the central tensor vanishes for a cold delta-like velocity distribution.]
+    $ bold(v)=bold(u)_s+bold(w)_s $
+
+    into the raw second moment. The dyadic expansion is
+
+    $ bold(v) bold(v)=bold(u)_s bold(u)_s
+        +bold(u)_s bold(w)_s+bold(w)_s bold(u)_s
+        +bold(w)_s bold(w)_s .$
+
+    #derivation-step[Use the definition of the local mean]
+    By construction,
+
+    $ integral bold(w)_s f_s dif^3 bold(v)=bold(0) .$
+
+    The two cross terms therefore vanish. The bulk term gives
+    $n_s bold(u)_s bold(u)_s$, which becomes
+    $rho_s bold(u)_s bold(u)_s$ after multiplication by $m_s$.
+
+    #derivation-step[Identify the pressure tensor]
+    The remaining central term is the pressure tensor:
+
+    $ bold(P)_s=m_s integral bold(w)_s bold(w)_s f_s dif^3 bold(v) .$
+
+    Consequently,
+
+    $ bold(M)_s=bold(P)_s+rho_s bold(u)_s bold(u)_s .$
+
+    Both terms are momentum fluxes with units
+    #unit("g") #unit("cm^-1") #unit("s^-2"). The central tensor vanishes for
+    a cold delta-like velocity distribution.]
   )
 
   #moment-hierarchy
@@ -273,28 +291,40 @@
 
   #details(
     [Derivation: every term in the zeroth moment],
-    [Integrate the kinetic equation over a velocity-space domain
-    $V_v$ and then let its boundary tend to infinity. The first term is
-    $integral_(V_v) pdv(f_s,t) dif^3 bold(v)
-      = pdv(integral_(V_v) f_s dif^3 bold(v),t)$, which becomes
-    $pdv(n_s,t)$ when the domain contains the distribution. For the second
-    term, commute the spatial divergence with the velocity integral:
-    $integral_(V_v) div(f_s bold(v)) dif^3 bold(v)
-      = div(integral_(V_v) bold(v) f_s dif^3 bold(v))
-      = div(n_s bold(u)_s)$.
+    [#derivation-step[Integrate the temporal term]
+    Integrate the kinetic equation over a velocity-space domain $V_v$ and then
+    let its boundary tend to infinity:
 
-    Apply the divergence theorem in velocity space to the third term:
-    $integral_(V_v) div(f_s bold(a)_s) dif^3 bold(v)
-      = integral_("boundary V_v") f_s bold(a)_s dot d bold(S)_v$.
-    The boundary integral is zero when the distribution decays faster than the
-    surface measure grows. Finally, number-conserving collisions obey
-    $integral_(RR^3) C_(s)[f] dif^3 bold(v)=0$. Substituting these four results
-    yields the local continuity equation.
+    $ integral_(V_v) pdv(f_s,t) dif^3 bold(v)
+        =pdv(integral_(V_v) f_s dif^3 bold(v),t)
+        -> pdv(n_s,t) .$
 
-    In a finite spatial volume, integrating the local equation and applying
-    the spatial divergence theorem gives rate of change of particle number
-    equal to the negative outward flux. Therefore the local and integral forms
-    express the same conservation law.]
+    #derivation-step[Identify the spatial particle flux]
+    Commute the spatial divergence with the velocity integral:
+
+    $ integral_(V_v) div(f_s bold(v)) dif^3 bold(v)
+        =div(integral_(V_v) bold(v) f_s dif^3 bold(v))
+        =div(n_s bold(u)_s) .$
+
+    #derivation-step[Discard velocity-space and collision sources]
+    The velocity-space divergence becomes a boundary integral:
+
+    $ integral_(V_v) div(f_s bold(a)_s) dif^3 bold(v)
+        =integral_("boundary V_v") f_s bold(a)_s dot d bold(S)_v .$
+
+    It vanishes when the distribution decays faster than the surface measure
+    grows. Number-conserving collisions obey
+
+    $ integral_(RR^3) C_(s)[f] dif^3 bold(v)=0 .$
+
+    #derivation-step[Assemble the continuity equation]
+    Substituting the four terms yields
+
+    $ pdv(n_s,t)+div(n_s bold(u)_s)=0 .$
+
+    Integrating this local equation over a finite spatial volume gives a rate
+    of change equal to the negative outward particle flux. The local and
+    integral forms are therefore the same conservation law.]
   )
 
   #rechenbeispiel[
@@ -458,37 +488,50 @@
 
   #details(
     [Derivation: the first moment term by term],
-    [For the time term, commute the time derivative with the velocity
-    integral and use $m_s integral bold(v) f_s dif^3 bold(v)
-    =rho_s bold(u)_s$. For spatial streaming, use the dyadic identity in
-    components:
-    $m_s integral v_i pdv((v_j f_s),x_j) dif^3 bold(v)
-      =pdv((m_s integral v_i v_j f_s dif^3 bold(v)),x_j)$.
+    [#derivation-step[Evaluate the time and streaming terms]
+    Commute the time derivative with the velocity integral and use
+
+    $ m_s integral bold(v) f_s dif^3 bold(v)=rho_s bold(u)_s .$
+
+    For spatial streaming, the component identity is
+
+    $ m_s integral v_i pdv((v_j f_s),x_j) dif^3 bold(v)
+        =pdv((m_s integral v_i v_j f_s dif^3 bold(v)),x_j) .$
+
     This is the divergence of the raw second-moment tensor.
 
-    For the velocity-space force term, integrate each component by parts:
-    $m_s integral v_i pdv((a_(s,j)f_s),v_j) dif^3 bold(v)
-      =m_s integral_("boundary") v_i a_(s,j)f_s d S_j
-      -m_s integral pdv(v_i,v_j) a_(s,j)f_s dif^3 bold(v)$.
-    The surface term vanishes by assumption and
-    $pdv(v_i,v_j)=delta_(i j)$. Thus the result is
-    $-m_s integral a_(s,i) f_s dif^3 bold(v)$ on the left. Move it to the
-    right. Substituting the Lorentz acceleration gives
-    $q_s bold(E) integral f_s dif^3 bold(v)
-      +(q_s/c) (integral bold(v)f_s dif^3 bold(v)) times bold(B)$,
-    which is $q_s n_s (bold(E)+(bold(u)_s times bold(B))/c)$.
+    #derivation-step[Integrate the force term by parts]
+    For each component,
 
-    Finally insert $bold(v)=bold(u)_s+bold(w)_s$ into the raw second moment.
-    The terms linear in $bold(w)_s$ vanish, leaving directed momentum flux
-    $rho_s bold(u)_s bold(u)_s$ and random momentum flux $bold(P)_s$.
+    $ m_s integral v_i pdv((a_(s,j)f_s),v_j) dif^3 bold(v)
+        =m_s integral_("boundary") v_i a_(s,j)f_s d S_j
+        -m_s integral pdv(v_i,v_j) a_(s,j)f_s dif^3 bold(v) .$
 
-    To rewrite the conservative momentum equation in fluid-following form, use
-    the product identity
-    $pdv(rho_s bold(u)_s,t)+div(rho_s bold(u)_s bold(u)_s)
-      =rho_s (pdv(bold(u)_s,t)+bold(u)_s dot grad(bold(u)_s))
-      +bold(u)_s (pdv(rho_s,t)+div(rho_s bold(u)_s))$.
-    The final bracket is zero by mass continuity, so only the species material
-    acceleration remains on the left-hand side.]
+    The surface term vanishes and $pdv(v_i,v_j)=delta_(i j)$. The force term
+    is therefore $-m_s integral a_(s,i) f_s dif^3 bold(v)$ on the left.
+
+    #derivation-step[Insert the Lorentz acceleration]
+    Move the force term to the right. Substitution of the Lorentz acceleration
+    gives
+
+    $ q_s bold(E) integral f_s dif^3 bold(v)
+        +(q_s/c) (integral bold(v)f_s dif^3 bold(v)) times bold(B)
+        =q_s n_s (bold(E)+(bold(u)_s times bold(B))/c) .$
+
+    #derivation-step[Split the momentum flux and use continuity]
+    Insert $bold(v)=bold(u)_s+bold(w)_s$ into the raw second moment. The terms
+    linear in $bold(w)_s$ vanish, leaving
+
+    $ bold(M)_s=rho_s bold(u)_s bold(u)_s+bold(P)_s .$
+
+    Finally use
+
+    $ pdv(rho_s bold(u)_s,t)+div(rho_s bold(u)_s bold(u)_s)
+        =rho_s (pdv(bold(u)_s,t)+bold(u)_s dot grad(bold(u)_s))
+        +bold(u)_s (pdv(rho_s,t)+div(rho_s bold(u)_s)) .$
+
+    The final bracket is zero by mass continuity, so the conservative equation
+    becomes the species material-acceleration equation.]
   )
 
   #rechenbeispiel[
@@ -661,63 +704,96 @@
 
   #details(
     [Derivation: energy density and energy flux decomposition],
-    [Multiply the kinetic equation by $(m_s v^2)/2$ and integrate. The time
+    [#derivation-step[Weight the kinetic equation by particle energy]
+    Multiply the kinetic equation by $(m_s v^2)/2$ and integrate. The time
     derivative gives $pdv(W_s,t)$. The spatial streaming term gives
-    $div((m_s/2) integral v^2 bold(v) f_s dif^3 bold(v))$.
-    For the force term, integrate by parts in velocity:
-    $(m_s/2) integral v^2 div(f_s bold(a)_s) dif^3 bold(v)
-      =-(m_s/2) integral pdv(v^2,bold(v)) dot bold(a)_s f_s dif^3 bold(v)
-      =-m_s integral bold(v) dot bold(a)_s f_s dif^3 bold(v)$.
-    Substituting the Lorentz acceleration leaves
-    $-q_s bold(E) dot integral bold(v) f_s dif^3 bold(v)$ because the
-    magnetic term is zero. Move this term to the right and use
-    $integral bold(v)f_s dif^3 bold(v)=n_s bold(u)_s$.
 
-    To split the flux, use
-    $abs(bold(v))^2=abs(bold(u)_s)^2+2 bold(u)_s dot bold(w)_s
-      +abs(bold(w)_s)^2$
-    and $bold(v)=bold(u)_s+bold(w)_s$. The terms are: bulk kinetic energy
-    times $bold(u)_s$, internal energy times $bold(u)_s$, the cross term
-    $m_s integral (bold(u)_s dot bold(w)_s) bold(w)_s f_s dif^3 bold(v)
-    =bold(P)_s dot bold(u)_s$, and the remaining third central moment
-    $bold(q)_s$. Terms containing one unpaired $bold(w)_s$ vanish by the
-    definition of the local mean. The total is
-    $bold(F)_s=W_s bold(u)_s+bold(P)_s dot bold(u)_s+bold(q)_s$.
+    $ div((m_s/2) integral v^2 bold(v) f_s dif^3 bold(v)) .$
 
-    Finally, write $bold(P)_s$ in Cartesian components. Its divergence has
-    one spatial derivative for each tensor component. If
-    $P_(i j)=p_s delta_(i j)$, the sum reduces to
-    $pdv(p_s,x_i)$, which is $grad(p_s)$.]
+    #derivation-step[Evaluate the force work]
+    Integrating the force term by parts in velocity gives
+
+    $ (m_s/2) integral v^2 div(f_s bold(a)_s) dif^3 bold(v)
+        =-(m_s/2) integral pdv(v^2,bold(v)) dot bold(a)_s f_s dif^3 bold(v)
+        =-m_s integral bold(v) dot bold(a)_s f_s dif^3 bold(v) .$
+
+    The magnetic force does no work because
+    $bold(v) dot (bold(v) times bold(B))=0$. The remaining electric term is
+    $-q_s bold(E) dot integral bold(v) f_s dif^3 bold(v)$ on the left. Move it
+    to the right and use
+
+    $ integral bold(v)f_s dif^3 bold(v)=n_s bold(u)_s .$
+
+    #derivation-step[Split the energy flux]
+    Use
+
+    $ abs(bold(v))^2=abs(bold(u)_s)^2+2 bold(u)_s dot bold(w)_s
+        +abs(bold(w)_s)^2, quad
+      bold(v)=bold(u)_s+bold(w)_s .$
+
+    The terms separate into bulk kinetic energy transported by
+    $bold(u)_s$, internal energy transported by $bold(u)_s$, the pressure-work
+    cross term
+
+    $ m_s integral (bold(u)_s dot bold(w)_s) bold(w)_s f_s dif^3 bold(v)
+        =bold(P)_s dot bold(u)_s ,$
+
+    and the third central moment $bold(q)_s$. Terms with one unpaired
+    $bold(w)_s$ vanish by the definition of the local mean. The total energy
+    flux is
+
+    $ bold(F)_s=W_s bold(u)_s+bold(P)_s dot bold(u)_s+bold(q)_s .$
+
+    #derivation-step[Check the pressure divergence]
+    In Cartesian components,
+
+    $ (div(bold(P)_s))_i=sum_j pdv((P_s)_(i j),x_j) .$
+
+    If $P_(i j)=p_s delta_(i j)$, the sum reduces to
+    $pdv(p_s,x_i)$, which is $grad(p_s)$. A scalar pressure is therefore a
+    special isotropic closure.]
   )
 
   #details(
     [Derivation: internal-energy balance],
-    [Dot the momentum equation with $bold(u)_s$ and use mass continuity. The
+    [#derivation-step[Form the bulk kinetic-energy balance]
+    Dot the momentum equation with $bold(u)_s$ and use mass continuity. The
     bulk kinetic-energy balance is
 
-    $pdv((rho_s abs(bold(u)_s)^2)/2,t)
-      +div((rho_s abs(bold(u)_s)^2 bold(u)_s)/2)
-      +bold(u)_s dot div(bold(P)_s)
-      =q_s n_s bold(u)_s dot bold(E)+bold(u)_s dot bold(R)_s$.
+    $ pdv((rho_s abs(bold(u)_s)^2)/2,t)
+        +div((rho_s abs(bold(u)_s)^2 bold(u)_s)/2)
+        +bold(u)_s dot div(bold(P)_s)
+        =q_s n_s bold(u)_s dot bold(E)+bold(u)_s dot bold(R)_s .$
 
+    #derivation-step[Rewrite the pressure work]
     Use the product identity
-    $bold(u)_s dot div(bold(P)_s)
-      =div(bold(P)_s dot bold(u)_s)
-      -bold(P)_s:grad(bold(u)_s)$.
-    Subtract this bulk equation from the total energy equation. The electric
+
+    $ bold(u)_s dot div(bold(P)_s)
+        =div(bold(P)_s dot bold(u)_s)
+        -bold(P)_s:grad(bold(u)_s) .$
+
+    #derivation-step[Subtract from the total energy balance]
+    Subtract the bulk equation from the total energy equation. The electric
     work cancels, while collisional momentum transfer contributes to the
     internal-energy source:
-    $pdv(epsilon_s,t)+div(epsilon_s bold(u)_s+bold(q)_s)
-      +bold(P)_s:grad(bold(u)_s)
-      =Q_s-bold(u)_s dot bold(R)_s$.
 
+    $ pdv(epsilon_s,t)+div(epsilon_s bold(u)_s+bold(q)_s)
+        +bold(P)_s:grad(bold(u)_s)
+        =Q_s-bold(u)_s dot bold(R)_s .$
+
+    #derivation-step[Apply the isotropic adiabatic closure]
     For an isotropic three-dimensional pressure tensor,
-    $epsilon_s=(3 p_s)/2$ and
-    $bold(P)_s:grad(bold(u)_s)=p_s div(bold(u)_s)$. With no
-    heat flux and no net collisional internal heating, this becomes
-    $pdv(p_s,t)+bold(u)_s dot grad(p_s)
-      +(5 p_s)/3 div(bold(u)_s)=0$, the adiabatic pressure law used
-    by one common warm-fluid closure.]
+
+    $ epsilon_s=(3 p_s)/2, quad
+      bold(P)_s:grad(bold(u)_s)=p_s div(bold(u)_s) .$
+
+    With no heat flux and no net collisional internal heating, this becomes
+
+    $ pdv(p_s,t)+bold(u)_s dot grad(p_s)
+        +(5 p_s)/3 div(bold(u)_s)=0 .$
+
+    This is the adiabatic pressure law used by one common warm-fluid closure;
+    retaining anisotropy or heat flux requires the unclosed tensor equation.]
   )
 
   #rechenbeispiel[
@@ -880,24 +956,39 @@
 
   #details(
     [Derivation: where the collision term remains],
-    [Take the velocity moments of a general collision operator. The number
-    source is $S_("N,s")=integral C_(s)[f] dif^3 bold(v)$. For ordinary elastic
-    collisions within a species, $S_("N,s")=0$. The momentum source is
-    $bold(R)_s=m_s integral bold(v) C_(s)[f] dif^3 bold(v)$ and the energy source
-    is $Q_s=(m_s/2) integral v^2 C_(s)[f] dif^3 bold(v)$. Interspecies collisions
-    can give nonzero $bold(R)_s$ and $Q_s$ for each species. Conservation of
-    total momentum and energy is expressed by summing over all collision
-    partners: $sum_s bold(R)_s=bold(0)$ and $sum_s Q_s=0$ for an isolated
-    elastic system.
+    [#derivation-step[Define the collision moments]
+    For a general collision operator, the number, momentum, and energy sources
+    are respectively
 
+    $ S_("N,s")=integral C_(s)[f] dif^3 bold(v), quad
+      bold(R)_s=m_s integral bold(v) C_(s)[f] dif^3 bold(v), quad
+      Q_s=(m_s/2) integral v^2 C_(s)[f] dif^3 bold(v) .$
+
+    Ordinary elastic collisions within one species have
+    $S_("N,s")=0$. Interspecies collisions can give nonzero
+    $bold(R)_s$ and $Q_s$ for each species.
+
+    #derivation-step[Apply total conservation]
+    For an isolated elastic system, summing over all collision partners gives
+
+    $ sum_s bold(R)_s=bold(0), quad
+      sum_s Q_s=0 .$
+
+    Individual species equations may still contain exchange terms; only the
+    total balance removes them.
+
+    #derivation-step[Inspect the BGK example]
     For BGK relaxation, substitute
-    $C_("BGK")[f_s]=-nu_s dot (f_s-f_(M,s))$. Matching the density makes its zeroth
-    moment zero. Matching density, flow, and temperature additionally makes
-    the first and second collision moments zero. If a background is fixed or
-    only number is matched, the remaining moments represent momentum or
-    energy exchange with that background. The collision term therefore
-    disappears from a moment equation only after a conservation or closure
-    condition justifies that disappearance.]
+
+    $ C_("BGK")[f_s]=-nu_s dot (f_s-f_(M,s)) .$
+
+    Matching the density makes the zeroth moment zero. Matching density, flow,
+    and temperature additionally makes the first and second collision moments
+    zero. If a background is fixed or only number is matched, the remaining
+    moments represent momentum or energy exchange with that background.
+
+    The collision term therefore disappears from a moment equation only after
+    a conservation or closure condition justifies that step.]
   )
 
   #callout(

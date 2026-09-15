@@ -86,50 +86,65 @@
 
   #details(
     [Derivation: drag, complex susceptibility, and attenuation],
-    [Start from the linearized momentum equation with drag:
-    $-i omega m_(s) bold(u)_(s,1)
-      =q_(s)(bold(E)_1+(bold(u)_(s,1) times bold(B)_(0))/c)
-      -m_(s) nu_s bold(u)_(s,1)$.
-    Add $m_s nu_s bold(u)_(s,1)$ to both sides:
-    $(-i omega m_(s)+m_(s) nu_s)bold(u)_(s,1)
-      =q_(s)(bold(E)_1+(bold(u)_(s,1) times bold(B)_(0))/c)$.
-    Factor the coefficient as
-    $-i omega m_(s)(1+(i nu_s)/omega)
-      =-i omega m_"eff",s$.
-    Thus the collisional equation has the same algebraic form as the
-    collisionless equation with $m_s$ replaced by
-    $m_"eff",s=m_(s)(1+(i nu_s)/omega)$.
+    [#derivation-step[Introduce the effective mass]
+    Start from the linearized momentum equation with drag:
 
+    $ -i omega m_(s) bold(u)_(s,1)
+        =q_(s)(bold(E)_1+(bold(u)_(s,1) times bold(B)_(0))/c)
+        -m_(s) nu_s bold(u)_(s,1) .$
+
+    Move the drag term to the left:
+
+    $ (-i omega m_(s)+m_(s) nu_s)bold(u)_(s,1)
+        =q_(s)(bold(E)_1+(bold(u)_(s,1) times bold(B)_(0))/c) .$
+
+    Factor the coefficient:
+
+    $ -i omega m_(s)(1+(i nu_s)/omega)
+        =-i omega m_"eff",s ,$
+
+    where
+
+    $ m_"eff",s=m_(s)(1+(i nu_s)/omega) .$
+
+    #derivation-step[Insert the effective parameters into the cold response]
     The species plasma-frequency factor becomes
     $(4 pi n_(s,0)q_s^2)/m_"eff",s$, and the signed gyrofrequency becomes
     $(q_s B_0)/(m_"eff",s c)$. Insert both into the cold transverse response.
     For the electron branch whose collisionless denominator is
-    $omega(omega-omega_(c,e))$, the two substitutions combine:
-    $[omega_(p,e)^2/(1+(i nu_e)/omega)]/
-      [omega(omega-omega_(c,e)/(1+(i nu_e)/omega))]
-      =omega_(p,e)^2/
-      [omega(omega-omega_(c,e)+i nu_e)]$.
+    $omega(omega-omega_(c,e))$, the two substitutions combine to
+
+    $ [omega_(p,e)^2/(1+(i nu_e)/omega)]/
+        [omega(omega-omega_(c,e)/(1+(i nu_e)/omega))]
+        =omega_(p,e)^2/
+        [omega(omega-omega_(c,e)+i nu_e)] .$
+
     This gives the stated collisional circular response.
 
+    #derivation-step[Extract weak attenuation]
     Away from resonances and for $nu_e/omega << 1$, the unmagnetized
     susceptibility is
-    $omega_(p,e)^2/(omega(omega+i nu_e))
-      approx omega_(p,e)^2/omega^2
-      (1-(i nu_e)/omega)$.
-    Therefore $N^2$ has a positive imaginary part in the chosen convention.
-    Taking the square root gives $N=N_r+i N_i$ with $N_i>0$.
-    Since $k=(omega N)/c$, the plane-wave factor is
-    $exp(i(k_r+i k_i)z-i omega t)
-      =exp(i k_r z-i omega t)exp(-k_i z)$.
-    The amplitude falls by $e^(-1)$ after $1/k_i$, while intensity,
-    proportional to amplitude squared, falls by $e^(-1)$ after
-    $1/(2k_i)$.
 
-    The shortcut does not determine the collision operator's energy balance
-    or velocity dependence. Near a cyclotron or cutoff resonance, the
-    denominator is small and even a small $nu_s$ can control the response.
-    There the full collisional dielectric tensor, and often a kinetic model,
-    must be derived rather than inserted as a perturbative mass replacement.]
+    $ omega_(p,e)^2/(omega(omega+i nu_e))
+        approx omega_(p,e)^2/omega^2
+        (1-(i nu_e)/omega) .$
+
+    Therefore $N^2$ has a positive imaginary part in the chosen convention.
+    Taking the square root gives $N=N_r+i N_i$ with $N_i>0$. Since
+    $k=(omega N)/c,$
+
+    $ exp(i(k_r+i k_i)z-i omega t)
+        =exp(i k_r z-i omega t)exp(-k_i z) .$
+
+    The amplitude falls by $e^(-1)$ after $1/k_i$, while intensity, which is
+    proportional to amplitude squared, falls by $e^(-1)$ after $1/(2 k_i)$.
+
+    #derivation-step[State the validity boundary]
+    The shortcut does not determine the collision operator's energy balance or
+    velocity dependence. Near a cyclotron or cutoff resonance, the denominator
+    is small and even a small $nu_s$ can control the response. There the full
+    collisional dielectric tensor, and often a kinetic model, must be derived
+    rather than inserted as a perturbative mass replacement.]
   )
 
   #collisional-wave-response
@@ -267,57 +282,72 @@
 
   #details(
     [Derivation: species sum, circular factors, and low frequency],
-    [For each species, the cold transverse velocity response from the previous
-    chapter is inserted into $bold(j)_1=q_s n_(s,0) bold(u)_(s,1)$.
-    For electrons use the positive magnitude $omega_(c,e)$ and for ions use
-    $omega_(c,i)>0$. The transverse current sum gives
-    $epsilon_(perp)$ and $epsilon_(times)$ with the electron and ion terms
-    carrying opposite signs in the off-diagonal coefficient. Parallel motion
-    has no magnetic force, so the parallel response is the sum of the two
-    unmagnetized susceptibilities.
+    [#derivation-step[Sum the species responses]
+    Insert the cold transverse velocity response from the previous chapter
+    into
 
-    For parallel propagation the transverse determinant factors as
-    $N^2=epsilon_(perp)+epsilon_(times)$ or
-    $N^2=epsilon_(perp)-epsilon_(times)$.
-    Combine the electron and ion terms in either factor. For example, the
-    branch with an electron denominator $(omega-omega_(c,e))$ has the exact
-    species-sum structure
-    $1-
-      omega_(p,e)^2/[omega(omega-omega_(c,e))]
-      -omega_(p,i)^2/[omega(omega+omega_(c,i))]$.
+    $ bold(j)_1=sum_s q_s n_(s,0) bold(u)_(s,1) .$
+
+    Use the positive magnitudes $omega_(c,e)$ and $omega_(c,i)>0$ for
+    electrons and ions. The transverse current sum defines
+    $epsilon_(perp)$ and $epsilon_(times)$; the two species carry opposite
+    signs in the off-diagonal coefficient. Parallel motion feels no magnetic
+    force, so its response is the sum of the unmagnetized susceptibilities.
+
+    #derivation-step[Factor the parallel-propagation determinant]
+    For parallel propagation, the transverse determinant factors as
+
+    $ N^2=epsilon_(perp)+epsilon_(times) $ \
+    $ N^2=epsilon_(perp)-epsilon_(times) .$
+
+    Consider the factor with an electron denominator
+    $(omega-omega_(c,e))$. Its exact species-sum structure is
+
+    $ 1-omega_(p,e)^2/(omega (omega-omega_(c,e)))
+      -omega_(p,i)^2/(omega (omega+omega_(c,i))) .$
+
     Use
-    $omega_(p,i)^2/omega_(p,e)^2
-      =omega_(c,i)/omega_(c,e)$ and put the terms over a common denominator.
-    The numerator is
-    $omega_(p,e)^2(1+omega_(c,i)/omega_(c,e))$.
-    Since $omega_(c,i)/omega_(c,e)=m_e/m_i$ is small, retaining the
-    ion factors in the denominator while dropping this small numerator
-    correction gives
-    $N_"RH"^2 approx 1-
-      omega_(p,e)^2/
-      ((omega+omega_(c,i))(omega-omega_(c,e)))$.
+
+    $ omega_(p,i)^2/omega_(p,e)^2
+      =omega_(c,i)/omega_(c,e) ,$
+
+    put the terms over a common denominator, and note that the numerator is
+
+    $ omega_(p,e)^2(1+omega_(c,i)/omega_(c,e)) .$
+
+    Since $omega_(c,i)/omega_(c,e)=m_e/m_i$ is small, retain the ion factors
+    in the denominator but drop this small numerator correction:
+
+    $ N_"RH"^2 approx 1-
+      omega_(p,e)^2/((omega+omega_(c,i))(omega-omega_(c,e))) .$
+
     Interchanging the two circular senses gives the LH expression.
 
-    In the limit $omega << omega_(c,i) << omega_(c,e)$, both denominators
-    have the leading product $-omega_(c,e)omega_(c,i)$. Therefore
-    $N^2 approx 1+
-      omega_(p,e)^2/(omega_(c,e) omega_(c,i))$.
-    In a dense nonrelativistic plasma this term is much larger than one.
-    Use
-    $(omega_(c,e)omega_(c,i))/(omega_(p,e)^2)
-      =B_0^2/(4 pi n_0m_i c^2)$
-    to identify
-    $N^2 approx c^2/[B_0^2/(4 pi n_0m_i)]
-      =c^2/v_A^2$.
-    Since $N=(k c)/omega$, this gives $omega/k approx v_A$.
+    #derivation-step[Take the low-frequency limit]
+    When $omega << omega_(c,i) << omega_(c,e)$, both denominators have the
+    leading product $-omega_(c,e)omega_(c,i)$. Therefore
 
-    The RH branch is regular through the positive ion-cyclotron frequency
-    under this convention and develops a whistler-like continuation as the
+    $ N^2 approx 1+omega_(p,e)^2/(omega_(c,e)omega_(c,i)) .$
+
+    In a dense nonrelativistic plasma this term is much larger than one. Use
+
+    $ (omega_(c,e)omega_(c,i))/omega_(p,e)^2
+      =B_0^2/(4 pi n_0 m_i c^2) .$
+
+    It follows that
+
+    $ N^2 approx c^2/[B_0^2/(4 pi n_0 m_i)]=c^2/v_A^2 .$
+
+    Since $N=(k c)/omega$, the low-frequency phase speed is
+    $omega/k approx v_A.$
+
+    #derivation-step[Interpret the two circular branches]
+    Under this convention, the RH branch is regular through the positive
+    ion-cyclotron frequency and develops a whistler-like continuation as the
     frequency rises. The LH branch has a denominator that vanishes at
     $omega=omega_(c,i)$ and therefore supports an ion-cyclotron-sensitive
-    continuation. At frequencies far above both cyclotron scales, the ion
-    correction becomes negligible and the fixed-ion electron branches are
-    recovered.]
+    continuation. Far above both cyclotron scales, the ion correction becomes
+    negligible and the fixed-ion electron branches are recovered.]
   )
 
   #ion-wave-branches
@@ -440,61 +470,99 @@
 
   #details(
     [Derivation: pressure response and the two longitudinal roots],
-    [The linearized continuity equation is
-    $pdv(n_(s,1),t)+n_(s,0) div(bold(u)_(s,1))=0$.
-    For a plane wave with longitudinal velocity, it becomes
-    $-i omega n_(s,1)+i n_(s,0) k u_(s,1)=0$,
+    [#derivation-step[Obtain the species response]
+    The linearized continuity equation is
+
+    $ pdv(n_(s,1),t)+n_(s,0) div(bold(u)_(s,1))=0 .$
+
+    For a longitudinal plane wave it becomes
+
+    $ -i omega n_(s,1)+i n_(s,0) k u_(s,1)=0 ,$
+
     hence
-    $n_(s,1)/n_(s,0)=(k u_(s,1))/omega$.
+
+    $ n_(s,1)/n_(s,0)=(k u_(s,1))/omega .$
 
     The pressure perturbation is
-    $p_(s,1)=gamma_s k_B T_s n_(s,1)$, so the longitudinal momentum equation is
-    $-i omega m_s u_(s,1)
-      =q_s E_1-(i k gamma_s k_B T_s n_(s,1))/n_(s,0)$.
-    Substitute the continuity relation:
-    $-i omega m_s u_(s,1)
-      =q_s E_1-i (k^2 m_s c_s^2 u_(s,1))/omega$.
-    Move the pressure term to the left and multiply by $i$:
-    $m_(s)(omega-(k^2 c_s^2)/omega)u_(s,1)
-      =i q_s E_1$.
-    Therefore
-    $u_(s,1)=(i q_s omega E_1)/
-      [m_(s)(omega^2-k^2c_s^2)]$.
 
+    $ p_(s,1)=gamma_s k_B T_s n_(s,1) .$
+
+    The longitudinal momentum equation is therefore
+
+    $ -i omega m_s u_(s,1)
+      =q_s E_1-(i k gamma_s k_B T_s n_(s,1))/n_(s,0) .$
+
+    Use continuity and define
+    $c_s^2=(gamma_s k_B T_s)/m_s:$
+
+    $ -i omega m_s u_(s,1)
+      =q_s E_1-i (k^2 m_s c_s^2 u_(s,1))/omega .$
+
+    After moving the pressure term to the left and multiplying by $i$,
+
+    $ m_s(omega-(k^2 c_s^2)/omega)u_(s,1)=i q_s E_1 .$
+
+    Thus
+
+    $ u_(s,1)=(i q_s omega E_1)/(m_s (omega^2-k^2 c_s^2)) .$
+
+    #derivation-step[Construct the longitudinal susceptibility]
     The current or charge response is proportional to
-    $q_s n_(s,0)u_(s,1)$. Inserting it into
-    $bold(epsilon) dot bold(E)=bold(E)+((4 pi i)/omega)bold(j)$
-    gives the species susceptibility
-    $-omega_(p,s)^2/(omega^2-k^2c_s^2)$.
-    Summing species yields the displayed $epsilon_(parallel)$.
+    $q_s n_(s,0)u_(s,1)$. Insert it into
 
+    $ bold(epsilon) dot bold(E)=bold(E)+((4 pi i)/omega)bold(j) .$
+
+    The contribution of species $s$ is the susceptibility
+
+    $ -omega_(p,s)^2/(omega^2-k^2 c_s^2) .$
+
+    Summing over species gives the displayed longitudinal dielectric response
+    $epsilon_(parallel).$
+
+    #derivation-step[Identify the fixed-ion warm branch]
     For fixed ions, set the electron-only coefficient to zero:
-    $1-omega_(p,e)^2/(omega^2-k^2c_(s,e)^2)=0$.
-    Multiply by the denominator:
-    $omega^2-k^2c_(s,e)^2-omega_(p,e)^2=0$.
-    This is the warm plasma-oscillation branch. Using
-    $lambda_(D,e)^2=(k_B T_e)/(4 pi n_0e^2)$ and
-    $c_(s,e)^2=(gamma_e k_B T_e)/m_e$ gives
-    $c_(s,e)^2/omega_(p,e)^2=gamma_e lambda_(D,e)^2$.
 
-    For two species, multiply the longitudinal condition by both
+    $ 1-omega_(p,e)^2/(omega^2-k^2 c_(s,e)^2)=0 .$
+
+    Multiplication by the denominator gives
+
+    $ omega^2-k^2 c_(s,e)^2-omega_(p,e)^2=0 .$
+
+    This is the warm plasma-oscillation branch. The definitions
+
+    $ lambda_(D,e)^2=(k_B T_e)/(4 pi n_0 e^2) $ \
+    $ c_(s,e)^2=(gamma_e k_B T_e)/m_e $
+
+    imply
+
+    $ c_(s,e)^2/omega_(p,e)^2=gamma_e lambda_(D,e)^2 .$
+
+    #derivation-step[Separate the two-species roots]
+    For two mobile species, multiply the longitudinal condition by both
     denominators:
-    $(omega^2-k^2c_(s,e)^2)(omega^2-k^2c_(s,i)^2)
-      -omega_(p,e)^2(omega^2-k^2c_(s,i)^2)
-      -omega_(p,i)^2(omega^2-k^2c_(s,e)^2)=0$.
-    This is a quadratic equation in $omega^2$.
-    For the low-frequency root, terms of order $k^4c_(s,e)^2c_(s,i)^2$
-    are smaller than the plasma-frequency terms. Retain the terms of order
-    $omega^2$ and $k^2$:
-    $-(omega_(p,e)^2+omega_(p,i)^2)omega^2
-      +k^2[omega_(p,e)^2c_(s,i)^2
-      +omega_(p,i)^2c_(s,e)^2] approx 0$.
-    Solving gives the displayed ion-acoustic speed. Charge neutrality gives
-    $omega_(p,i)^2/omega_(p,e)^2=m_e/m_i$, so
-    $c_"ia"^2 approx c_(s,i)^2+(m_e/m_i)c_(s,e)^2
-      =(gamma_i k_B T_i)/m_i+(gamma_e k_B T_e)/m_i$.
-    The high-frequency root approaches the electron plasma-oscillation
-    branch.]
+
+    $ (omega^2-k^2 c_(s,e)^2)(omega^2-k^2 c_(s,i)^2)
+      -omega_(p,e)^2(omega^2-k^2 c_(s,i)^2)
+      -omega_(p,i)^2(omega^2-k^2 c_(s,e)^2)=0 .$
+
+    This is quadratic in $omega^2$. For the low-frequency root, terms of
+    order $k^4 c_(s,e)^2 c_(s,i)^2$ are smaller than the plasma-frequency
+    terms. Retaining the terms of order $omega^2$ and $k^2$ gives
+
+    $ -(omega_(p,e)^2+omega_(p,i)^2)omega^2
+      +k^2[omega_(p,e)^2 c_(s,i)^2
+      +omega_(p,i)^2 c_(s,e)^2] approx 0 .$
+
+    Solving gives the displayed ion-acoustic speed. Charge neutrality implies
+
+    $ omega_(p,i)^2/omega_(p,e)^2=m_e/m_i ,$
+
+    so
+
+    $ c_"ia"^2 approx c_(s,i)^2+(m_e/m_i)c_(s,e)^2
+      =(gamma_i k_B T_i)/m_i+(gamma_e k_B T_e)/m_i .$
+
+    The high-frequency root approaches the electron plasma-oscillation branch.]
   )
 
   #warm-longitudinal-modes
@@ -613,95 +681,115 @@
 
   #details(
     [Derivation: warm upper hybrid and magnetosonic restoring forces],
-    [For a perpendicular electrostatic-scale perturbation, take
-    $bold(k)=k bold(e)_x$, $bold(E)_1=E_(1,x) bold(e)_x$, and
+    [#derivation-step[Perpendicular warm-electron response]
+    Choose $bold(k)=k bold(e)_x$, $bold(E)_1=E_(1,x) bold(e)_x$, and
     $bold(B)_0=B_0 bold(e)_z$. Continuity gives
-    $-i omega n_(e,1)+i k n_0 u_(e,1,x)=0$,
-    hence $n_(e,1)/n_0=(k u_(e,1,x))/omega$.
+
+    $ -i omega n_(e,1)+i k n_0 u_(e,1,x)=0 $ \
+
+    and therefore
+
+    $ n_(e,1)/n_0=(k u_(e,1,x))/omega .$
 
     With the signed electron gyrofrequency
-    $Omega_e=-omega_(c,e)$, the transverse momentum components are
-    $-i omega u_(e,1,x)-Omega_e u_(e,1,y)
-      =(q_e/m_e) E_(1,x)
-      -(i k c_(s,e)^2 n_(e,1))/n_0$
-    and
-    $Omega_e u_(e,1,x)-i omega u_(e,1,y)=0$.
-    The second equation gives
-    $u_(e,1,y)=-i (Omega_e/omega) u_(e,1,x)$.
-    Insert this and the continuity relation into the first equation:
-    $-i ((omega^2-Omega_e^2)/omega) u_(e,1,x)
-      =(q_e/m_e) E_(1,x)
-      -i ((k^2 c_(s,e)^2)/omega) u_(e,1,x)$.
-    Collect the velocity terms and multiply by $i$:
-    $((omega^2-Omega_e^2-k^2 c_(s,e)^2)/omega) u_(e,1,x)
-      =((i q_e)/m_e) E_(1,x)$.
-    Thus
-    $u_(e,1,x)=((i q_e omega)/(m_e
-      (omega^2-omega_(c,e)^2-k^2 c_(s,e)^2))) E_(1,x)$,
-    and continuity gives
-    $n_(e,1)=((i n_0 q_e k)/(m_e
-      (omega^2-omega_(c,e)^2-k^2 c_(s,e)^2))) E_(1,x)$.
+    $Omega_e=-omega_(c,e)$, the transverse momentum equations are
 
+    $ -i omega u_(e,1,x)-Omega_e u_(e,1,y)
+      =(q_e/m_e) E_(1,x)-(i k c_(s,e)^2 n_(e,1))/n_0 $ \
+
+    and
+
+    $ Omega_e u_(e,1,x)-i omega u_(e,1,y)=0 .$
+
+    The second equation gives
+
+    $ u_(e,1,y)=-i (Omega_e/omega) u_(e,1,x) .$
+
+    Insert this relation and the continuity result into the first equation.
+    Collect the velocity terms and multiply by $i$:
+
+    $ ((omega^2-Omega_e^2-k^2 c_(s,e)^2)/omega) u_(e,1,x)
+      =((i q_e)/m_e) E_(1,x) .$
+
+    Hence
+
+    $ u_(e,1,x)=((i q_e omega)/(m_e
+      (omega^2-omega_(c,e)^2-k^2 c_(s,e)^2))) E_(1,x) ,$
+
+    and continuity gives
+
+    $ n_(e,1)=((i n_0 q_e k)/(m_e
+      (omega^2-omega_(c,e)^2-k^2 c_(s,e)^2))) E_(1,x) .$
+
+    #derivation-step[Close the electrostatic response]
     For an electrostatic wave, Gauss's law is
-    $i k E_(1,x)=4 pi q_e n_(e,1)$.
+
+    $ i k E_(1,x)=4 pi q_e n_(e,1) .$
+
     Substitute the density response and cancel the nonzero factor
-    $i k E_(1,x)$:
-    $1=((4 pi n_0 q_e^2)/(m_e
+    $i k E_(1,x):$
+
+    $ 1=((4 pi n_0 q_e^2)/(m_e
       (omega^2-omega_(c,e)^2-k^2 c_(s,e)^2)))
-      =(omega_(p,e)^2)/
-      (omega^2-omega_(c,e)^2-k^2 c_(s,e)^2)$.
-    Therefore
-    $omega^2=omega_(p,e)^2+omega_(c,e)^2+k^2 c_(s,e)^2
-      =omega_"UH"^2+k^2 c_(s,e)^2$.
-    This is a warm-fluid local approximation near the upper-hybrid branch;
-    the full electromagnetic warm tensor contains additional polarization
+      =(omega_(p,e)^2)/(omega^2-omega_(c,e)^2-k^2 c_(s,e)^2) .$
+
+    The warm upper-hybrid branch is therefore
+
+    $ omega^2=omega_(p,e)^2+omega_(c,e)^2+k^2 c_(s,e)^2
+      =omega_"UH"^2+k^2 c_(s,e)^2 .$
+
+    This is a local warm-fluid approximation near the upper-hybrid branch.
+    The full electromagnetic warm tensor contains additional polarization
     terms.
 
-    For the low-frequency one-fluid limit, start from continuity,
-    $pdv(rho,t)+div(rho bold(u))=0$,
-    the ideal induction equation,
-    $pdv(bold(B),t)=curl(bold(u)times bold(B))$,
-    and the CGS MHD momentum equation
-    $rho pdv(bold(u),t)
-      =-grad(p)+
-      [curl(bold(B))times bold(B)]/(4 pi)$.
-    Linearize about $rho=rho_0$, $p=p_0$, $bold(B)=B_0 bold(e)_z$,
-    and take a plane wave with $bold(k)=k bold(e)_x$ and
-    $bold(u)_1=u_x bold(e)_x$. Continuity gives
-    $-i omega rho_1+i k rho_0u_x=0$,
-    so
-    $rho_1=(rho_0 k u_x)/omega$.
-    The pressure closure gives
-    $p_1=v_s^2rho_1$.
+    #derivation-step[Recover the perpendicular MHD branch]
+    For the low-frequency one-fluid limit, use continuity,
+    $pdv(rho,t)+div(rho bold(u))=0$, the ideal induction equation,
+    $pdv(bold(B),t)=curl(bold(u)times bold(B))$, and the Gaussian-CGS MHD
+    momentum equation
 
-    The induction equation gives
-    $-i omega B_(1,z)=-i k B_0u_x$,
-    hence
-    $B_(1,z)=(B_0 k u_x)/omega$.
-    The $x$ component of the linearized momentum equation is
-    $-i omega rho_0u_x
-      =-i k p_1-i (k B_0B_(1,z))/(4 pi)$.
-    Substitute both perturbations:
-    $omega rho_(0)u_x
-      =k v_s^2 rho_(0)((k u_x)/omega)
-      +(k B_0)/(4 pi)((B_0 k u_x)/omega)$.
-    Multiply by $omega/(rho_0u_x)$:
-    $omega^2=k^2[v_s^2+B_0^2/(4 pi rho_0)]
-      =k^(2) (v_s^2+v_A^2)$.
-    Therefore the perpendicular compressional speed is
-    $v_m=sqrt(v_A^2+v_s^2)$.
+    $ rho pdv(bold(u),t)=-grad(p)+[curl(bold(B))times bold(B)]/(4 pi) .$
 
+    Linearize about $rho=rho_0$, $p=p_0$, and
+    $bold(B)=B_0 bold(e)_z$. For $bold(k)=k bold(e)_x$ and
+    $bold(u)_1=u_x bold(e)_x$, continuity gives
+
+    $ -i omega rho_1+i k rho_0u_x=0,
+      quad rho_1=(rho_0 k u_x)/omega .$
+
+    The pressure closure is $p_1=v_s^2rho_1$. The induction equation gives
+
+    $ -i omega B_(1,z)=-i k B_0u_x,
+      quad B_(1,z)=(B_0 k u_x)/omega .$
+
+    The $x$ component of momentum is
+
+    $ -i omega rho_0u_x=-i k p_1-i (k B_0B_(1,z))/(4 pi) .$
+
+    Substitute the density, pressure, and magnetic perturbations, then divide
+    by the nonzero factor $rho_0u_x/omega$:
+
+    $ omega^2=k^2[v_s^2+B_0^2/(4 pi rho_0)]
+      =k^2(v_s^2+v_A^2) .$
+
+    Thus the perpendicular compressional speed is
+
+    $ v_m=sqrt(v_A^2+v_s^2) .$
+
+    #derivation-step[Recover the shear-Alfvén branch]
     For a shear perturbation with
-    $bold(k)=k_"parallel" bold(e)_z$,
-    the pressure and density perturbations vanish to first order. The
-    induction and transverse momentum equations retain only magnetic tension:
-    $pdv(bold(u)_perp,t,2)
-      =v_A^2 pdv(bold(u)_perp,z,2)$.
+    $bold(k)=k_"parallel" bold(e)_z$, the pressure and density perturbations
+    vanish to first order. Induction and transverse momentum retain only
+    magnetic tension:
+
+    $ pdv(bold(u)_perp,t,2)=v_A^2 pdv(bold(u)_perp,z,2) .$
+
     A plane wave then satisfies
-    $omega^2=k_"parallel"^2v_A^2$.
-    The difference between this equation and the compressional equation is
-    geometric: tension bends field lines, while perpendicular compression
-    changes both density and magnetic-field strength.]
+
+    $ omega^2=k_"parallel"^2v_A^2 .$
+
+    Tension bends field lines, whereas perpendicular compression changes both
+    density and magnetic-field strength.]
   )
 
   #mhd-wave-speeds
@@ -833,46 +921,63 @@
 
   #details(
     [Derivation: recovering the neighboring models],
-    [Begin with the collisional effective mass
-    $m_"eff"=m(1+(i nu)/omega)$. Let $nu -> 0$. Then
-    $m_"eff" -> m$, every dielectric coefficient becomes real in the
-    collisionless model, and the complex wave number reduces to the cold
-    magnetized result.
+    [#derivation-step[Recover the collisionless model]
+    Begin with
 
-    Next take the fixed-ion limit. For a singly charged electron--ion plasma,
-    $omega_(c,i)/omega_(c,e)=m_e/m_i=M$ and
-    $omega_(p,i)^2/omega_(p,e)^2=M$. At fixed $omega$ with
-    $omega >> omega_(c,i)$, the ion denominators are regular and the ion
-    susceptibility is smaller by $M$ than the electron susceptibility.
-    Sending $M -> 0$ therefore removes the ion contribution and recovers the
-    fixed-ion tensor. This argument is not valid when $omega$ is also reduced
-    to the ion-cyclotron scale, because then the ion denominator is no longer
-    an order-one factor.
+    $ m_"eff"=m(1+(i nu)/omega) .$
 
-    For the warm limit, the pressure-corrected species susceptibility contains
-    $omega^2-k^2c_s^2$ instead of $omega^2$. Taking $T_s -> 0$ sends
-    $c_s -> 0$ and returns the cold denominator. Conversely, if
-    $k lambda_D$ becomes order unity, the pressure term changes the
-    longitudinal root by an order-one amount and cannot be treated as a
-    perturbation.
+    Let $nu -> 0$. Then $m_"eff" -> m$, every dielectric coefficient becomes
+    real in the collisionless model, and the complex wave number reduces to
+    the cold magnetized result.
 
-    Finally take $omega << omega_(c,i)$ while maintaining high conductivity
-    and quasineutrality. Electron and ion transverse drifts are tied by the
-    common electric field, their relative current produces the magnetic force,
-    and the weighted momentum sum gives
-    $rho_0 pdv(bold(u),t)
-      =-grad(p)+[curl(bold(B)) times bold(B)]/(4 pi)$.
+    #derivation-step[Take the fixed-ion limit]
+    For a singly charged electron--ion plasma, define
+
+    $ omega_(c,i)/omega_(c,e)=m_e/m_i=M, quad
+      omega_(p,i)^2/omega_(p,e)^2=M .$
+
+    At fixed $omega$ with $omega >> omega_(c,i)$, the ion denominators are
+    regular and the ion susceptibility is smaller by $M$ than the electron
+    susceptibility. Sending $M -> 0$ removes the ion contribution and
+    recovers the fixed-ion tensor. This argument fails when $omega$ is also
+    reduced to the ion-cyclotron scale, because the ion denominator is then no
+    longer an order-one factor.
+
+    #derivation-step[Recover the warm and cold pressure limits]
+    The pressure-corrected species susceptibility contains
+
+    $ omega^2-k^2c_s^2 $
+
+    instead of $omega^2$. Taking $T_s -> 0$ sends $c_s -> 0$ and returns the
+    cold denominator. Conversely, when $k lambda_D$ becomes order unity, the
+    pressure term changes the longitudinal root by an order-one amount and
+    cannot be treated as a perturbation.
+
+    #derivation-step[Recover the MHD endpoint]
+    Take $omega << omega_(c,i)$ while maintaining high conductivity and
+    quasineutrality. The weighted momentum sum gives
+
+    $ rho_0 pdv(bold(u),t)
+        =-grad(p)+[curl(bold(B)) times bold(B)]/(4 pi) .$
+
     The induction equation becomes
-    $pdv(bold(B),t)=curl(bold(u)times bold(B))$.
+
+    $ pdv(bold(B),t)=curl(bold(u)times bold(B)) .$
+
     Linearizing these equations gives the shear-Alfvén and magnetosonic
     dispersions derived in the previous section.
 
-    A fluid closure fails when a wave samples unresolved particle scales.
-    The Debye-scale condition is $k lambda_D <<1$ for cold quasineutral
-    motion. Magnetized finite-Larmor-radius corrections require
-    $k_perp rho_s <<1$. Resonant kinetic corrections become important near
-    $omega-k_"parallel"v_(parallel)=0$ or a cyclotron harmonic. These are
-    independent checks: satisfying one does not imply that the others hold.]
+    #derivation-step[Check the scale-ordering boundaries]
+    A fluid closure fails when a wave samples unresolved particle scales. The
+    independent checks are
+
+    $ k lambda_D <<1, quad
+      k_perp rho_s <<1, quad
+      omega-k_"parallel"v_(parallel) approx 0 $
+
+    for cold quasineutral motion, finite-Larmor-radius effects, and resonant
+    kinetic corrections respectively. Satisfying one condition does not imply
+    that the others hold.]
   )
 
   #warm-wave-ordering

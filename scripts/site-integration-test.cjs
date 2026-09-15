@@ -154,6 +154,52 @@ async function auditPage(page, pagePath, viewport) {
         );
       });
 
+      const readingColumn = document.querySelector(
+        ".site-main > h2, .site-main > h1",
+      );
+      const readingRect = readingColumn?.getBoundingClientRect();
+      const expandedDisclosureIssues = [];
+      let expandedDocumentOverflow = false;
+      for (const [index, detail] of details.entries()) {
+        const originalOpen = detail.open;
+        detail.open = true;
+        const detailRect = detail.getBoundingClientRect();
+        const directChildren = [...detail.children].filter(
+          (child) => child.tagName !== "SUMMARY",
+        );
+        const overwideChild = directChildren.find((child) => {
+          const childRect = child.getBoundingClientRect();
+          return (
+            childRect.left < detailRect.left - 2 ||
+            childRect.right > detailRect.right + 2
+          );
+        });
+
+        if (
+          detail.classList.contains("disclosure") &&
+          readingRect &&
+          (detailRect.left < readingRect.left - 2 ||
+            detailRect.right > readingRect.right + 2)
+        ) {
+          expandedDisclosureIssues.push(
+            `details ${index} is outside the reading column`,
+          );
+        }
+        if (overwideChild) {
+          expandedDisclosureIssues.push(
+            `details ${index} has an overwide child`,
+          );
+        }
+        if (
+          documentElement.scrollWidth >
+          documentElement.clientWidth + 1
+        ) {
+          expandedDocumentOverflow = true;
+        }
+
+        detail.open = originalOpen;
+      }
+
       return {
         documentWidth: documentElement.scrollWidth,
         documentClientWidth: documentElement.clientWidth,
@@ -162,6 +208,8 @@ async function auditPage(page, pagePath, viewport) {
         openDetails: details.filter((detail) => detail.open).length,
         missingImageAlt: images.length,
         invalidVideos: invalidVideos.length,
+        expandedDisclosureIssues,
+        expandedDocumentOverflow,
       };
     });
 
@@ -185,6 +233,12 @@ async function auditPage(page, pagePath, viewport) {
       recordFailure(
         `${pageLabel}: ${result.invalidVideos} animations lack controls, source, fallback, or caption`,
       );
+    }
+    for (const issue of result.expandedDisclosureIssues) {
+      recordFailure(`${pageLabel}: ${issue}`);
+    }
+    if (result.expandedDocumentOverflow) {
+      recordFailure(`${pageLabel}: expanded details cause document overflow`);
     }
     for (const message of consoleErrors) {
       recordFailure(`${pageLabel}: browser console error: ${message}`);

@@ -8,6 +8,7 @@
   --teal: #72d6c9;
   --blue: #4ea8de;
   --orange: #f2a65a;
+  --reading-width: 48rem;
 }
 
 * {
@@ -96,7 +97,7 @@ a {
 .site-main > ol,
 .site-main > ul,
 .site-main > div {
-  max-width: 48rem;
+  max-width: var(--reading-width);
   margin-inline: auto;
 }
 
@@ -368,6 +369,83 @@ dd {
   border-top: 1px solid var(--line);
 }
 
+/* Give every typed derivation the same width contract as paragraphs and
+   frames, including when a long derivation is expanded inside a section. */
+.disclosure {
+  width: min(100%, var(--reading-width));
+  max-width: var(--reading-width);
+  min-width: 0;
+  margin: 2rem auto;
+  box-sizing: border-box;
+}
+
+.disclosure summary {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.disclosure-body {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  padding: 1rem 0 0.35rem;
+  font-size: 1.08rem;
+  line-height: 1.72;
+}
+
+.disclosure-body > * {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.disclosure-body > p {
+  margin: 0 0 1.05rem;
+  overflow-wrap: anywhere;
+}
+
+.disclosure-body > p:last-child {
+  margin-bottom: 0;
+}
+
+.disclosure-body .derivation-step-label {
+  margin: 1.25rem 0 0.35rem;
+  color: var(--blue);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.84rem;
+  letter-spacing: 0.04em;
+}
+
+.disclosure-body .derivation-step-label:first-child {
+  margin-top: 0;
+}
+
+.disclosure-body .derivation-step-label + p {
+  margin-top: 0;
+}
+
+/* Display mathematics gets breathing room and remains locally scrollable when
+   its notation cannot be wrapped without changing its meaning. */
+.disclosure-body > math[display="block"] {
+  display: block;
+  max-width: 100%;
+  margin: 1.2rem 0;
+  padding-bottom: 0.2rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-color: var(--line) transparent;
+  scrollbar-width: thin;
+}
+
+.disclosure-body > math[display="block"]:first-child {
+  margin-top: 0;
+}
+
+.disclosure-body > math[display="block"]:last-child {
+  margin-bottom: 0;
+}
+
 .disclosure summary,
 .knowledge-check summary {
   padding: 0.75rem 0;
@@ -387,7 +465,7 @@ dd {
 }
 
 .equation-note {
-  max-width: 48rem;
+  max-width: var(--reading-width);
   margin: 0.65rem auto 1.6rem;
 }
 
@@ -459,6 +537,15 @@ main math[display="block"] {
   max-width: 100%;
   overflow-y: hidden;
   padding-bottom: 0.2rem;
+  white-space: nowrap;
+}
+
+/* A CSS block around exported MathML otherwise makes Chrome's direct math
+   children block-level, stacking a complete equation one symbol per line.
+   Keep the equation itself as the scroll container and its direct terms on
+   one mathematical line. Nested mrow/mfrac elements retain MathML layout. */
+main math[display="block"] > * {
+  display: inline math;
 }
 
 main math[display="block"]::-webkit-scrollbar,

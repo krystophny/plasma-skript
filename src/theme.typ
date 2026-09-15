@@ -157,7 +157,25 @@
   } else {
     html.details(open: false, class: "disclosure")[
       #html.summary[#title]
-      #body
+      #html.div(class: "disclosure-body")[#body]
+    ]
+  }
+}
+
+// Use a short step label when a derivation has several conceptual turns. The
+// label is part of the expanded explanation and does not hide any required
+// result in the interactive target.
+#let derivation-step(body) = context {
+  if target() == "paged" {
+    block(
+      width: 100%,
+      inset: (top: 0.55em, bottom: 0.15em),
+    )[
+      #strong[Step: #body]
+    ]
+  } else {
+    html.p(class: "derivation-step-label")[
+      #html.strong[Step: #body]
     ]
   }
 }

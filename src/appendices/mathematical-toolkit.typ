@@ -110,55 +110,89 @@
 
   #details(
     [Derivation: total energy from the kinetic equation],
-    [Start from the non-conservative form
-    $pdv(f_(s),t)+bold(v) dot grad(f_(s))
-      +bold(a)_s dot pdv(f_(s),bold(v))=C_(s)[f]$.
-    Since $bold(v)$ is independent of $bold(r)$, the streaming term may also
-    be written as $div(f_(s) bold(v))$. Set
-    $epsilon_(s)(bold(v))=(m_s abs(bold(v))^2)/2$ and integrate after
-    multiplication:
-    $integral epsilon_(s) pdv(f_(s),t) dif^3 bold(v)
+    [#derivation-step[Weight the kinetic equation]
+    Start from the non-conservative form
+
+    $ pdv(f_(s),t)+bold(v) dot grad(f_(s))
+      +bold(a)_s dot pdv(f_(s),bold(v))=C_(s)[f] .$
+
+    Since $bold(v)$ is independent of $bold(r)$, the streaming term is also
+    $div(f_(s) bold(v))$. Define the single-particle kinetic energy
+
+    $ epsilon_(s)(bold(v))=(m_s abs(bold(v))^2)/2 .$
+
+    Multiply the kinetic equation by this energy and integrate over all
+    velocity space:
+
+    $ integral epsilon_(s) pdv(f_(s),t) dif^3 bold(v)
       +integral epsilon_(s) div(f_(s) bold(v)) dif^3 bold(v)
       +integral epsilon_(s) bold(a)_s dot pdv(f_(s),bold(v)) dif^3 bold(v)
-      =integral epsilon_(s) C_(s)[f] dif^3 bold(v)$.
+      =integral epsilon_(s) C_(s)[f] dif^3 bold(v) .$
 
-    The first term is
-    $integral epsilon_(s) pdv(f_(s),t) dif^3 bold(v)
-      =pdv(integral epsilon_(s) f_(s) dif^3 bold(v),t)=pdv(W_s,t)$.
-    The second term commutes with the velocity integral:
-    $integral epsilon_(s) div(f_(s) bold(v)) dif^3 bold(v)
-      =div((m_s integral abs(bold(v))^2 bold(v) f_(s) dif^3 bold(v))/2)$.
+    #derivation-step[Evaluate the temporal and streaming terms]
+    The temporal term is
 
-    For the acceleration term, use the velocity-space product rule:
-    $epsilon_(s) bold(a)_s dot pdv(f_(s),bold(v))
+    $ integral epsilon_(s) pdv(f_(s),t) dif^3 bold(v)
+      =pdv(integral epsilon_(s) f_(s) dif^3 bold(v),t)=pdv(W_s,t) .$
+
+    The streaming term commutes with the velocity integral:
+
+    $ integral epsilon_(s) div(f_(s) bold(v)) dif^3 bold(v)
+      =div((m_s integral abs(bold(v))^2 bold(v) f_(s) dif^3 bold(v))/2) .$
+
+    #derivation-step[Integrate the acceleration term by parts]
+    Apply the velocity-space product rule:
+
+    $ epsilon_(s) bold(a)_s dot pdv(f_(s),bold(v))
       =pdv(epsilon_(s) f_(s) bold(a)_s,bold(v))
-        -f_(s) bold(a)_s dot pdv(epsilon_(s),bold(v))$.
-    Integrating the first term gives a surface integral at infinite speed,
-    $integral_("boundary V_v") epsilon_(s) f_(s) bold(a)_s dot d bold(S)_v$,
-    which is zero by the boundary assumption. Because
-    $pdv(epsilon_(s),bold(v))=m_s bold(v)$, the remaining term is
-    $-m_s integral f_(s) bold(a)_s dot bold(v) dif^3 bold(v)$.
-    Substitute the Lorentz acceleration:
-    $-q_s integral f_(s) bold(v) dot
-      (bold(E)+(bold(v) times bold(B))/c) dif^3 bold(v)$.
-    The magnetic contribution vanishes pointwise, leaving
-    $-q_s bold(E) dot integral bold(v) f_(s) dif^3 bold(v)
-      =-q_s n_s bold(E) dot bold(u)_s$.
-    Move this term to the right-hand side. Define the collision power
-    $Q_(s)=integral epsilon_(s) C_(s)[f] dif^3 bold(v)$ to obtain
-    $pdv(W_s,t)+div((m_s integral abs(bold(v))^2 bold(v) f_(s) dif^3 bold(v))/2)
-      =q_s n_s bold(E) dot bold(u)_s+Q_(s)$.
+        -f_(s) bold(a)_s dot pdv(epsilon_(s),bold(v)) .$
 
-    It remains to reduce the flux. Substitute
-    $bold(v)=bold(u)_s+bold(c)_s$ and expand
-    $abs(bold(v))^2=abs(bold(u)_s)^2+2 bold(u)_s dot bold(c)_s+abs(bold(c)_s)^2$.
+    The first term becomes the surface integral
+
+    $ integral_("boundary V_v") epsilon_(s) f_(s) bold(a)_s
+      dot d bold(S)_v ,$
+
+    which vanishes at infinite speed by the boundary assumption. Because
+    $pdv(epsilon_(s),bold(v))=m_s bold(v)$, the remaining term is
+
+    $ -m_s integral f_(s) bold(a)_s dot bold(v) dif^3 bold(v) .$
+
+    Insert the Lorentz acceleration. The magnetic contribution vanishes
+    pointwise, leaving
+
+    $ -q_s bold(E) dot integral bold(v) f_(s) dif^3 bold(v)
+      =-q_s n_s bold(E) dot bold(u)_s .$
+
+    Define the collision power
+
+    $ Q_(s)=integral epsilon_(s) C_(s)[f] dif^3 bold(v) .$
+
+    Moving the electric term to the right gives the conservative energy
+    equation
+
+    $ pdv(W_s,t)+div((m_s integral abs(bold(v))^2 bold(v) f_(s)
+      dif^3 bold(v))/2)=q_s n_s bold(E) dot bold(u)_s+Q_(s) .$
+
+    #derivation-step[Decompose the energy flux]
+    Substitute
+
+    $ bold(v)=bold(u)_s+bold(c)_s $ \
+    $ abs(bold(v))^2=abs(bold(u)_s)^2+2 bold(u)_s dot bold(c)_s
+      +abs(bold(c)_s)^2 .$
+
     The first-order random moment vanishes:
-    $integral bold(c)_s f_(s) dif^3 bold(v)=bold(0)$.
-    The terms that survive are
-    $(m_s integral abs(bold(v))^2 bold(v) f_(s) dif^3 bold(v))/2
-      =K_s bold(u)_s+U_s bold(u)_s+bold(P)_s dot bold(u)_s+bold(q)_s$.
-    Since $W_s=K_s+U_s$, this is
-    $W_s bold(u)_s+bold(P)_s dot bold(u)_s+bold(q)_s$.
+
+    $ integral bold(c)_s f_(s) dif^3 bold(v)=bold(0) .$
+
+    The surviving flux terms are
+
+    $ (m_s integral abs(bold(v))^2 bold(v) f_(s) dif^3 bold(v))/2
+      =K_s bold(u)_s+U_s bold(u)_s+bold(P)_s dot bold(u)_s+bold(q)_s .$
+
+    Since $W_s=K_s+U_s$, this becomes
+
+    $ W_s bold(u)_s+bold(P)_s dot bold(u)_s+bold(q)_s .$
+
     Substitution gives the stated total-energy equation.]
   )
 
@@ -179,26 +213,40 @@
 
   #details(
     [Derivation: subtract bulk energy and identify pressure work],
-    [The first moment of the kinetic equation is
-    $pdv(rho_s bold(u)_s,t)+div(rho_s bold(u)_s bold(u)_s+bold(P)_s)
-      =q_s n_s (bold(E)+(bold(u)_s times bold(B))/c)+bold(R)_s$.
-    Dot this equation with $bold(u)_s$. Using mass continuity, the bulk-energy
-    identity is
-    $pdv(K_s,t)+div(K_s bold(u)_s)
-      =q_s n_s bold(E) dot bold(u)_s-bold(u)_s dot
-      div(bold(P)_s)+bold(u)_s dot bold(R)_s$.
+    [#derivation-step[Start from the momentum balance]
+    The first moment of the kinetic equation is
 
+    $ pdv(rho_s bold(u)_s,t)+div(rho_s bold(u)_s bold(u)_s+bold(P)_s)
+        =q_s n_s (bold(E)+(bold(u)_s times bold(B))/c)+bold(R)_s .$
+
+    Dot this equation with $bold(u)_s$. Using mass continuity gives
+
+    $ pdv(K_s,t)+div(K_s bold(u)_s)
+        =q_s n_s bold(E) dot bold(u)_s
+        -bold(u)_s dot div(bold(P)_s)
+        +bold(u)_s dot bold(R)_s .$
+
+    #derivation-step[Subtract bulk energy from total energy]
     The total-energy equation contains the same electromagnetic power. Insert
-    $W_s=K_s+U_s$ and subtract the bulk identity. This yields
-    $pdv(U_s,t)+div(U_s bold(u)_s+bold(P)_s dot bold(u)_s+bold(q)_s)
-      =bold(u)_s dot div(bold(P)_s)+Q_(s)-bold(u)_s dot bold(R)_s$.
-    Apply the tensor product rule
-    $div(bold(P)_s dot bold(u)_s)
-      =bold(u)_s dot div(bold(P)_s)
-        +bold(P)_s:grad(bold(u)_s)$.
-    The first term cancels, leaving the internal-energy equation. For
-    $bold(P)_s=p_s bold(I)$, the contraction with the identity is the
-    divergence, so the isotropic limit follows immediately.]
+    $W_s=K_s+U_s$ and subtract the bulk identity:
+
+    $ pdv(U_s,t)+div(U_s bold(u)_s+bold(P)_s dot bold(u)_s+bold(q)_s)
+        =bold(u)_s dot div(bold(P)_s)
+        +Q_(s)-bold(u)_s dot bold(R)_s .$
+
+    #derivation-step[Rewrite pressure work]
+    Apply
+
+    $ div(bold(P)_s dot bold(u)_s)
+        =bold(u)_s dot div(bold(P)_s)
+        +bold(P)_s:grad(bold(u)_s) .$
+
+    The first term cancels, leaving the internal-energy equation with pressure
+    work and heat-flux transport. For $bold(P)_s=p_s bold(I)$,
+
+    $ bold(P)_s:grad(bold(u)_s)=p_s div(bold(u)_s) .$
+
+    This is the isotropic limit.]
   )
 
   #interpretation(
@@ -326,40 +374,45 @@
 
   #details(
     [Derivation: why scale factors enter],
-    [The gradient follows from the definition of a directional differential.
-    For a scalar field,
-    $d psi=grad(psi) dot d bold(r)
-      =sum_i (grad(psi))_(i) h_i d q_i$.
-    Independently, the chain rule gives
-    $d psi=sum_i pdv(psi,q_i) d q_i$.
-    Comparing coefficients yields
-    $(grad(psi))_(i)=pdv(psi,q_i)/(h_i)$.
+    [#derivation-step[Derive the gradient components]
+    The directional differential of a scalar field is
 
-    For divergence, surround a small coordinate cell by its six physical
-    faces. The volume is
-    $dif V=h_1 h_2 h_3 dif q_1 dif q_2 dif q_3$.
-    The outward flux through the pair of faces normal to
-    $bold(e)_(1)$ is the difference of
-    $h_2 h_3 A_(1)$ evaluated at the two $q_1$ faces, multiplied by
-    $dif q_2 dif q_3$. The two other face pairs are cyclic permutations.
-    Divide the sum of outward fluxes by $dif V$ and take the cell size to
-    zero:
-    $div(bold(A))=(pdv(h_2 h_3 A_(1),q_1)+pdv(h_3 h_1 A_(2),q_2)
-      +pdv(h_1 h_2 A_(3),q_3))/(h_1 h_2 h_3)$.
+    $ d psi=grad(psi) dot d bold(r)
+        =sum_i (grad(psi))_(i) h_i d q_i .$
 
-    For curl, use circulation around a small coordinate face. The face normal
-    to $bold(e)_(1)$ has physical area $h_2 h_3 dif q_2 dif q_3$.
-    The circulation of $bold(A)$ around its boundary is the difference of
-    the tangential line integrals of $h_3 A_(3)$ and $h_2 A_(2)$. Divide by
-    the face area and take the limit:
-    $(curl(bold(A)))_(1)=(pdv(h_3 A_(3),q_2)-pdv(h_2 A_(2),q_3))/(h_2 h_3)$.
-    Cyclic permutation gives the other two components.
+    The chain rule gives $d psi=sum_i pdv(psi,q_i) d q_i$. Comparing
+    coefficients yields
 
-    Finally apply $laplacian(psi)=div(grad(psi))$. Inserting the gradient
-    components into the divergence expression gives
-    $laplacian(psi)=(sum_i pdv(((h_j h_k)/h_i) pdv(psi,q_i),q_i))/(h_1 h_2 h_3)$.
-    This derivation also explains why the scale factors must be differentiated
-    when they vary with position.]
+    $ (grad(psi))_(i)=pdv(psi,q_i)/(h_i) .$
+
+    #derivation-step[Derive the divergence]
+    A small coordinate cell has physical volume
+
+    $ dif V=h_1 h_2 h_3 dif q_1 dif q_2 dif q_3 .$
+
+    The outward flux through the pair of faces normal to $bold(e)_(1)$ is the
+    difference of $h_2 h_3 A_(1)$ at the two faces, multiplied by
+    $dif q_2 dif q_3$. Cyclic permutations give the other faces. Divide the
+    total flux by $dif V$:
+
+    $ div(bold(A))=(pdv(h_2 h_3 A_(1),q_1)
+        +pdv(h_3 h_1 A_(2),q_2)
+        +pdv(h_1 h_2 A_(3),q_3))/(h_1 h_2 h_3) .$
+
+    #derivation-step[Derive curl and the Laplacian]
+    Circulation around the face normal to $bold(e)_(1)$ gives
+
+    $ (curl(bold(A)))_(1)
+        =(pdv(h_3 A_(3),q_2)-pdv(h_2 A_(2),q_3))/(h_2 h_3) .$
+
+    Cyclic permutation gives the other components. Finally insert
+    $laplacian(psi)=div(grad(psi)):$
+
+    $ laplacian(psi)=
+        (sum_i pdv(((h_j h_k)/h_i) pdv(psi,q_i),q_i))/(h_1 h_2 h_3) .$
+
+    The scale factors must be differentiated whenever they vary with
+    position; otherwise physical flux and circulation are misrepresented.]
   )
 
   #definition(
@@ -422,16 +475,35 @@
 
   #details(
     [Derivation: cylindrical radial conservation check],
-    [Take an axisymmetric purely radial vector
-    $bold(A)=A_(r)(r) bold(e)_(r)$. The cylindrical divergence reduces to
-    $div(bold(A))=(pdv(r A_(r),r))/r$.
+    [#derivation-step[Choose the radial flux]
+    Take an axisymmetric purely radial vector
+
+    $ bold(A)=A_(r)(r) bold(e)_(r) .$
+
+    #derivation-step[Compute the cylindrical surface flux]
+    The cylindrical divergence is
+
+    $ div(bold(A))=(pdv(r A_(r),r))/r .$
+
     The flux through a cylindrical surface of radius $r$ and length $L$ is
-    $Phi(r)=2 pi r L A_(r)(r)$. Its change between $r$ and $r+dif r$ is
-    $dif Phi=2 pi L pdv(r A_(r),r) dif r$.
-    The shell volume is $dif V=2 pi r L dif r$. Dividing gives
-    $dv(Phi,V)=(pdv(r A_(r),r))/r$, exactly the cylindrical divergence.
-    Thus the factor $1/r$ is the local conversion from radial flux change to
-    volume change; it is not an optional correction.]
+
+    $ Phi(r)=2 pi r L A_(r)(r) .$
+
+    Between $r$ and $r+dif r$,
+
+    $ dif Phi=2 pi L pdv(r A_(r),r) dif r ,$
+
+    while the shell volume is
+
+    $ dif V=2 pi r L dif r .$
+
+    #derivation-step[Compare flux change with volume]
+    Dividing gives
+
+    $ dv(Phi,V)=(pdv(r A_(r),r))/r ,$
+
+    exactly the cylindrical divergence. The factor $1/r$ converts radial
+    flux change into flux per physical volume; it is not optional.]
   )
 
   #rechenbeispiel[

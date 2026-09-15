@@ -71,14 +71,24 @@
 
   #details(
     [Why the three-dimensional average is $(3 k_B T_s)/2$],
-    [Each Cartesian component of a Maxwellian has variance
-    $⟨(v_j-u_(s,j))^2⟩ = (k_B T_s)/m_s$. Summing the three independent
-    components gives
-    $⟨(m_s (bold(v) - bold(u)_s)^2)/2⟩
-      = (m_s)/2 sum_j ⟨(v_j-u_(s,j))^2⟩
-      = (3 k_B T_s)/2$.
-    The convention $v_("th,s")=sqrt((2 k_B T_s)/m_s)$ is therefore a width
-    parameter, not the mean particle speed.]
+    [#derivation-step[Sum the independent velocity components]
+    Each Cartesian component of a Maxwellian has variance
+
+    $ ⟨(v_j-u_(s,j))^2⟩=(k_B T_s)/m_s .$
+
+    The three components are independent, so their kinetic-energy average is
+
+    $ ⟨(m_s (bold(v)-bold(u)_s)^2)/2⟩
+      =(m_s)/2 sum_j ⟨(v_j-u_(s,j))^2⟩
+      =(3 k_B T_s)/2 .$
+
+    #derivation-step[Interpret the thermal-speed convention]
+    The convention
+
+    $ v_("th,s")=sqrt((2 k_B T_s)/m_s) $
+
+    defines a width parameter of the distribution. It is not the mean particle
+    speed.]
   )
 
   #maxwellian-profile
@@ -406,13 +416,25 @@
 
   #details(
     [Why scale ratios come first],
-    [A model is selected by comparing its smallest resolved length with
-    $lambda_D$ and $rho_s$, and its fastest resolved time with
-    $omega_(p,s)^(-1)$ and $omega_(c,s)^(-1)$. A fluid model can be useful
-    even when it does not resolve every orbit, but only after the unresolved
-    motion has been averaged or closed. The ratios $lambda_D/L$,
-    $rho_s/L$, and $omega/omega_(c,s)$ are dimensionless only after the
-    system length $L$ and observation frequency $omega$ are stated.]
+    [#derivation-step[Compare resolved scales with kinetic scales]
+    Select a model by comparing its smallest resolved length with
+
+    $ lambda_D, quad rho_s .$
+
+    Compare its fastest resolved time with
+
+    $ omega_(p,s)^(-1), quad omega_(c,s)^(-1) .$
+
+    A fluid model can still be useful when it does not resolve every orbit,
+    but only after the unresolved motion has been averaged or closed.
+
+    #derivation-step[State the reference scales]
+    The ratios
+
+    $ lambda_D/L, quad rho_s/L, quad omega/omega_(c,s) $
+
+    are normalized quantities only after the system length $L$ and observation
+    frequency $omega$ have been specified.]
   )
 
   #debye-profile
@@ -532,19 +554,33 @@
 
   #details(
     [Derivation: potential scale of a uniformly charge-separated sphere],
-    [The enclosed charge at radius $r$ is
-    $Q(r) = (4 pi)/3 N e r^3$. Applying the Gaussian flux law to a sphere
-    gives $E(r) 4 pi r^2 = 4 pi Q(r)$ and therefore
-    $E(r) = (4 pi)/3 N e r$ inside the region. The potential at its boundary,
-    measured relative to infinity for the uniformly charged sphere, is
-    $phi(R) = Q(R)/R = (4 pi)/3 N e R^2$.
+    [#derivation-step[Compute the enclosed charge and field]
+    The enclosed charge at radius $r$ is
+
+    $ Q(r)=(4 pi)/3 N e r^3 .$
+
+    Applying the Gaussian flux law to a sphere gives
+
+    $ E(r) 4 pi r^2=4 pi Q(r) ,$
+
+    and hence
+
+    $ E(r)=(4 pi)/3 N e r .$
+
+    #derivation-step[Estimate the boundary potential]
+    Measured relative to infinity, the potential at the boundary of the
+    uniformly charged sphere is
+
+    $ phi(R)=Q(R)/R=(4 pi)/3 N e R^2 .$
+
     A thermal particle can cross or substantially rearrange the region when
-    its potential-energy scale $abs(e phi(R))$ is comparable to $k_B T_e$.
-    Solving that balance gives the displayed estimate. If $N$ is identified
-    with the background electron density $n_0$, the result is
-    $R approx sqrt(3) lambda_D$ for the electron Debye length. The order-one
-    factor is geometry-dependent, so this is a charge-separation estimate,
-    not a new hard boundary.]
+    $abs(e phi(R))$ is comparable to $k_B T_e$. Solving that balance gives the
+    displayed estimate. If $N=n_0$, then
+
+    $ R approx sqrt(3) lambda_D .$
+
+    The order-one factor depends on the charge geometry, so this is a
+    charge-separation estimate rather than a new hard boundary.]
   )
 
   #assumption(
@@ -595,19 +631,35 @@
 
   #details(
     [Derivation: from particle response to shielding],
-    [For a positive test potential, the electron potential energy is $-e phi$.
+    [#derivation-step[Linearize the electron response]
+    For a positive test potential, the electron potential energy is $-e phi$.
     The equilibrium Boltzmann factor is therefore
-    $exp((-(-e phi)) / (k_B T_e)) = exp((e phi) / (k_B T_e))$. Expand the exponential
-    to first order because $abs(e phi)/(k_B T_e) << 1$. With immobile ions,
-    $rho_q = e n_0 - e n_e$ becomes
-    $rho_q approx -(e^2 n_0 phi)/(k_B T_e)$. Insert this response into the
-    Gaussian-CGS Poisson equation. Defining the coefficient of $phi$ as
-    $lambda_D^(-2) = (4 pi n_0 e^2)/(k_B T_e)$ yields
-    $laplacian phi - phi/lambda_D^2 = 0$. In spherical symmetry, the decaying
-    source solution has the form $phi(r)$ proportional to
-    $exp(-r/lambda_D)/r$.
-    The exponential factor is the shielding result; the factor $1/r$ is the
-    unscreened geometric spreading of a point source.]
+
+    $ exp((-(-e phi))/(k_B T_e))=exp((e phi)/(k_B T_e)) .$
+
+    When $abs(e phi)/(k_B T_e) << 1$, expand it to first order:
+
+    $ n_e approx n_0 (1+(e phi)/(k_B T_e)) .$
+
+    With immobile ions, the charge density becomes
+
+    $ rho_q=e n_0-e n_e approx -(e^2 n_0 phi)/(k_B T_e) .$
+
+    #derivation-step[Insert the response into Poisson's equation]
+    Define the Debye coefficient by
+
+    $ lambda_D^(-2)=(4 pi n_0 e^2)/(k_B T_e) .$
+
+    Inserting the charge response into the Gaussian-CGS Poisson equation gives
+
+    $ laplacian phi-phi/lambda_D^2=0 .$
+
+    In spherical symmetry, the decaying source solution has the form
+
+    $ phi(r) "proportional to" exp(-r/lambda_D)/r .$
+
+    The exponential factor is the shielding; $1/r$ is the unscreened geometric
+    spreading of a point source.]
   )
 
   #debye-profile
@@ -735,15 +787,26 @@
 
   #details(
     [Derivation: the displacement oscillator],
-    [At equilibrium the positive ion and negative electron charge densities
+    [#derivation-step[Create the charge-separation field]
+    At equilibrium, positive ion and negative electron charge densities
     cancel. Shift the electron slab by $xi$. The overlap region remains nearly
-    neutral, while the two boundary layers carry sheet charges with magnitude
-    $e n_0 xi$. Gauss's law for two infinite sheets gives the uniform internal
-    field $E = 4 pi e n_0 xi$ in Gaussian CGS. An electron feels
-    $F = -e E$, hence $m_e dv(xi,t,2) = -4 pi n_0 e^2 xi$. The coefficient of $xi$
-    has units $upright("s")^(-2)$ and identifies the plasma-frequency square. The
-    displacement is therefore sinusoidal, $xi(t) = xi_0 cos(omega_(p,e) t +
-    delta)$, within the small-amplitude model.]
+    neutral, while the two boundary layers carry sheet charges of magnitude
+    $e n_0 xi.$
+
+    Gauss's law for two infinite sheets gives the uniform internal field
+
+    $ E=4 pi e n_0 xi .$
+
+    #derivation-step[Identify the oscillator]
+    An electron feels $F=-e E$, so
+
+    $ m_e dv(xi,t,2)=-4 pi n_0 e^2 xi .$
+
+    The coefficient of $xi$ has units of $upright("s")^(-2)$ and identifies the
+    square of the plasma frequency. Within the small-amplitude model,
+
+    $ xi(t)=xi_0 cos(omega_(p,e) t+delta) .$
+    ]
   )
 
   #animation(
@@ -886,12 +949,16 @@
 
   #details(
     [What a closure assumption does],
-    [The kinetic equation evolves a function of three position and three
-    velocity coordinates. A zeroth moment gives density, a first moment gives
-    bulk velocity, and a second central moment gives the pressure tensor. The
-    moment equations form a hierarchy because the equation for one moment
+    [#derivation-step[Identify the hierarchy]
+    The kinetic equation evolves a function of three position and three
+    velocity coordinates. Its zeroth moment gives density, its first moment
+    gives bulk velocity, and its second central moment gives the pressure
+    tensor.
+
+    #derivation-step[Choose a closure]
+    The moment equations form a hierarchy because the equation for one moment
     contains the next one. A fluid model closes that hierarchy by prescribing,
-    for example, an isotropic pressure, an equation of state, or a heat-flux
+    for example, isotropic pressure, an equation of state, or a heat-flux
     model. Each choice has a validity range that must be stated rather than
     hidden in notation.]
   )

@@ -79,28 +79,39 @@
 
   #details(
     [Derivation: path probability and the mean free path],
-    [During a path segment $dif ell$, a particle sweeps an effective volume
-    $sigma_(a b) dif ell$. The expected number of targets in that volume is
-    $n_b sigma_(a b) dif ell$, so the probability of one collision to first
-    order is $dif P=n_b sigma_(a b)dif ell$. If $P_(0)(ell)$ is the probability
-    of no collision, independent segments give
-    $dif P_0=-n_b sigma_(a b)P_0 dif ell$.
-    Integrating with $P_(0)(0)=1$ gives
-    $P_(0)(ell)=exp(-n_b sigma_(a b)ell)$.
+    [#derivation-step[Write the survival equation]
+    During a path segment $dif ell$, a particle sweeps an effective volume
+    $sigma_(a b) dif ell$. The expected number of targets is
+    $n_b sigma_(a b) dif ell$. If $P_(0)(ell)$ is the probability of no
+    collision, independent segments give
 
+    $ dif P_0=-n_b sigma_(a b)P_0 dif ell .$
+
+    With $P_(0)(0)=1$, integration gives
+
+    $ P_(0)(ell)=exp(-n_b sigma_(a b)ell) .$
+
+    #derivation-step[Compute the mean free path and rate]
     The mean distance is the survival-probability integral
-    $lambda_(a b)=integral_0^infinity P_(0)(ell) dif ell
-      =1/(n_b sigma_(a b))$.
-    A particle with relative speed $v_"rel"$ travels $dif ell=v_"rel"dif t$.
-    Therefore the rate is $nu_(a b)=n_b sigma_(a b)v_"rel"$ for a fixed
-    speed. Averaging over the relative-velocity distribution gives the
-    displayed rate $n_b ⟨sigma_(a b)v_"rel"⟩$ and
-    fixes the corresponding mean-free-path convention.
 
-    For a macroscopic length $L$, the dimensionless Knudsen number is
-    $K_"n"=lambda/L$. The collisional fluid ordering is $K_"n" << 1$;
-    $K_"n" approx 1$ marks a transition, and $K_"n" >> 1$ requires kinetic
-    or ballistic reasoning.]
+    $ lambda_(a b)=integral_0^infinity P_(0)(ell) dif ell
+      =1/(n_b sigma_(a b)) .$
+
+    For fixed relative speed, $dif ell=v_"rel" dif t$, so
+
+    $ nu_(a b)=n_b sigma_(a b)v_"rel" .$
+
+    Averaging over the relative-velocity distribution replaces the product by
+    $n_b ⟨sigma_(a b)v_"rel"⟩$ and fixes the corresponding convention for the
+    mean free path.
+
+    #derivation-step[Compare with a macroscopic length]
+    For length $L$, the Knudsen number is
+
+    $ K_"n"=lambda/L .$
+
+    The fluid ordering is $K_"n" << 1$, $K_"n" approx 1$ marks a transition,
+    and $K_"n" >> 1$ requires kinetic or ballistic reasoning.]
   )
 
   #collision-regimes
@@ -228,23 +239,34 @@
 
   #details(
     [Derivation: neutral drag from momentum transfer],
-    [A particle that suffers a collision changes its average directed momentum
-    by an amount proportional to $m_a bold(u)_a$ times the momentum-transfer
-    factor. In time $dif t$, the number of encounters per particle is
-    $nu_(a n)dif t$. Multiplying the momentum change per encounter by the
-    number density $n_a$ gives a force density proportional to
-    $-m_a n_a nu_(a n)(bold(u)_a-bold(u)_n)$.
+    [#derivation-step[Count momentum transfer]
+    A collision changes the average directed momentum by an amount that scales
+    as
 
-    The sign is restorative: the force vanishes when the charged species and
-    neutral background share a velocity. With stationary neutrals, it reduces
-    to $-m_a n_a nu_(a n)bold(u)_a$. The rate is a momentum-transfer rate,
-    not necessarily the frequency of every microscopic encounter.
+    $ Delta bold(p)_a "scales as" m_a (bold(u)_a-bold(u)_n) .$
 
-    Energy transfer has a separate mass-ratio dependence. An electron can
+    During $dif t$, the number of encounters per particle is
+    $nu_(a n)dif t$. Multiplying the momentum change by the charged-particle
+    density gives the force-density scaling
+
+    $ bold(R)_(a n) "scales as"
+      -m_a n_a nu_(a n)(bold(u)_a-bold(u)_n) .$
+
+    #derivation-step[Check the stationary-neutral limit]
+    The force is restorative: it vanishes when the charged species and neutral
+    background share a velocity. For stationary neutrals,
+
+    $ bold(R)_(a n)=-m_a n_a nu_(a n)bold(u)_a .$
+
+    The rate is a momentum-transfer rate, not necessarily the frequency of
+    every microscopic encounter.
+
+    #derivation-step[Separate momentum and energy relaxation]
+    Energy transfer has an additional mass-ratio dependence. An electron can
     reverse direction in an elastic encounter with a heavy neutral while
     transferring only a small fraction of its kinetic energy. Excitation and
-    ionization introduce inelastic energy-loss channels that must be added to
-    an energy equation rather than hidden inside a momentum drag coefficient.]
+    ionization are inelastic energy-loss channels; they belong in an energy
+    equation rather than being hidden inside the momentum-drag coefficient.]
   )
 
   #rechenbeispiel[
@@ -385,29 +407,48 @@
 
   #details(
     [Derivation: cumulative small-angle scattering],
-    [For $b >> b_90$, Rutherford scattering gives
-    $chi(b) approx (2 b_90)/b$. During $dif t$, the number of target ions with
-    impact parameters in the annulus $b$ to $b+dif b$ is proportional to
-    $n_"i"v_"rel" 2 pi b dif b dif t$. The squared transverse kick from each
-    event is proportional to $v_"rel"^2 chi(b)^2$. The rate of accumulated
-    squared deflection therefore has the scale
-    $dv(⟨Delta v_perp^2⟩,t)
-      ∝ n_"i"v_"rel"^3 b_90^2
-      integral_(b_90)^(lambda_D) dif b/b$.
-    The integral is
-    $ln(lambda_D/b_90)$, the Coulomb logarithm. The logarithm is why small
-    deflections cannot simply be discarded even though a single distant
-    encounter changes the velocity very little.
+    [#derivation-step[Accumulate deflection over impact parameters]
+    For $b >> b_90$, Rutherford scattering gives
 
-    For a Maxwellian electron population use
-    $⟨v_"e"⟩
-      =sqrt((8 k_B T_"e")/(pi m_"e"))$ in the rate convention. Insert
-    $omega_(p,e)^2=(4 pi n_"e"e^2)/m_"e"$ and the velocity scale into the
-    statistical scattering estimate. This yields the displayed
-    $nu_(e i) ∝ T_"e"^(-3/2)ln Lambda$ expression. The ratio of
-    distant to strong-scattering scales is large only when
-    $Lambda=n_"e"lambda_D^3 >> 1$; otherwise independent binary encounters
-    and a weak-coupling collision operator are not self-consistent.]
+    $ chi(b) approx (2 b_90)/b .$
+
+    During $dif t$, the number of target ions in the annulus from $b$ to
+    $b+dif b$ scales as
+
+    $ n_"i"v_"rel" 2 pi b dif b dif t .$
+
+    The squared transverse kick scales as $v_"rel"^2 chi(b)^2$. Hence the
+    accumulated squared deflection has the scale
+
+    $ dv(⟨Delta v_perp^2⟩,t) ∝ n_"i"v_"rel"^3 b_90^2
+      integral_(b_90)^(lambda_D) dif b/b .$
+
+    The integral is
+
+    $ ln(lambda_D/b_90) ,$
+
+    the Coulomb logarithm. Distant deflections therefore cannot be discarded
+    merely because each individual kick is small.
+
+    #derivation-step[Insert the Maxwellian velocity scale]
+    For Maxwellian electrons, use
+
+    $ ⟨v_"e"⟩=sqrt((8 k_B T_"e")/(pi m_"e")) .$
+
+    Insert this scale and
+
+    $ omega_(p,e)^2=(4 pi n_"e"e^2)/m_"e" .$
+
+    The statistical scattering estimate then gives the displayed scaling
+    $nu_(e i) ∝ T_"e"^(-3/2)ln Lambda.$
+
+    #derivation-step[State the weak-coupling condition]
+    The ratio of distant to strong-scattering scales is large only when
+
+    $ Lambda=n_"e"lambda_D^3 >> 1 .$
+
+    Otherwise independent binary encounters and a weak-coupling collision
+    operator are not self-consistent.]
   )
 
   #coulomb-cutoff
@@ -542,27 +583,45 @@
 
   #details(
     [Derivation: drag, current, and Spitzer scaling],
-    [Start with the electron--ion frictional force density
-    $bold(R)_"e i"=m_"e"n_"e"nu_"e i"
-      (bold(u)_"i"-bold(u)_"e")$.
-    For singly charged hydrogen and quasi-neutrality,
-    $bold(j)=e n_"e"(bold(u)_"i"-bold(u)_"e")$.
-    Divide the drag by the charge density scale $e n_"e"$:
-    $bold(R)_"e i"/(e n_"e")
-      =(m_"e"nu_"e i"bold(j))/(n_"e"e^2)$.
-    Identifying the coefficient of $bold(j)$ with the resistivity gives
-    $eta=(m_"e"nu_"e i")/(n_"e"e^2)$ and therefore
-    $sigma_"dc"=(n_"e"e^2)/(m_"e"nu_"e i")$.
+    [#derivation-step[Relate friction to current]
+    Start with the electron--ion frictional force density
 
-    Insert the Coulomb rate and
-    $omega_(p,e)^4=((4 pi n_"e"e^2)/m_"e")^2$:
-    $eta_"Sp"=m_"e"/(n_"e"e^2)
+    $ bold(R)_"e i"=m_"e"n_"e"nu_"e i"
+      (bold(u)_"i"-bold(u)_"e") .$
+
+    For singly charged hydrogen and quasi-neutrality,
+
+    $ bold(j)=e n_"e"(bold(u)_"i"-bold(u)_"e") .$
+
+    Dividing by the charge-density scale $e n_"e"$ gives
+
+    $ bold(R)_"e i"/(e n_"e")
+      =(m_"e"nu_"e i"bold(j))/(n_"e"e^2) .$
+
+    #derivation-step[Identify scalar resistivity and conductivity]
+    The coefficient of $bold(j)$ is the resistivity:
+
+    $ eta=(m_"e"nu_"e i")/(n_"e"e^2) .$
+
+    Its reciprocal is the DC conductivity:
+
+    $ sigma_"dc"=(n_"e"e^2)/(m_"e"nu_"e i") .$
+
+    #derivation-step[Insert the Coulomb rate]
+    Use
+
+    $ omega_(p,e)^4=((4 pi n_"e"e^2)/m_"e")^2 .$
+
+    Inserting the Coulomb rate gives
+
+    $ eta_"Sp"=m_"e"/(n_"e"e^2)
       [(sqrt(2)omega_(p,e)^4)/(64 pi n_"e")]
-      ((k_B T_"e")/m_"e")^(-3/2)ln Lambda$.
-    Cancelling the explicit density factors gives the displayed temperature
-    scaling and leaves only the weak logarithmic density dependence. The
-    cancellation does not mean that density is irrelevant to the plasma: it
-    changes current for a given drift and changes $Lambda$.]
+      ((k_B T_"e")/m_"e")^(-3/2)ln Lambda .$
+
+    Cancelling explicit density factors leaves the displayed temperature
+    scaling and only weak logarithmic density dependence. Density remains
+    physically important because it changes the current for a given drift and
+    changes $Lambda$.]
   )
 
   #rechenbeispiel[
@@ -704,35 +763,58 @@
 
   #details(
     [Derivation: DC and AC conductivity tensor],
-    [Let $a_"e"=nu_"e"-i omega$. Multiplying the harmonic momentum equation
-    by $n_"e"q_"e"$ and using $bold(j)=n_"e"q_"e"bold(u)_"e"$ gives
-    $bold(j)=(n_"e"q_"e"^2)/(m_"e"a_"e")bold(E)
-      + (Omega_"e"/a_"e")(bold(j)times hat(bold(z)))$.
+    [#derivation-step[Write the harmonic current equation]
+    Let $a_"e"=nu_"e"-i omega$. Multiplying the harmonic momentum equation by
+    $n_"e"q_"e"$ and using $bold(j)=n_"e"q_"e"bold(u)_"e"$ gives
+
+    $ bold(j)=(n_"e"q_"e"^2)/(m_"e"a_"e")bold(E)
+      +(Omega_"e"/a_"e")(bold(j)times hat(bold(z))) .$
+
     In components,
-    $J_x=sigma_0 E_x+(Omega_"e"/a_"e")J_y$ and
-    $J_y=sigma_0 E_y-(Omega_"e"/a_"e")J_x$ with
-    $sigma_0=(n_"e"q_"e"^2)/(m_"e"a_"e")$.
+
+    $ J_x=sigma_0 E_x+(Omega_"e"/a_"e")J_y, quad
+      J_y=sigma_0 E_y-(Omega_"e"/a_"e")J_x ,$
+
+    with
+
+    $ sigma_0=(n_"e"q_"e"^2)/(m_"e"a_"e") .$
+
+    #derivation-step[Invert the perpendicular response]
     Solving the two coupled equations gives
-    $sigma_"perp"=(n_"e"q_"e"^2 a_"e")
-      /(m_"e"(a_"e"^2+Omega_"e"^2))$,
-    $sigma_"H"=(n_"e"q_"e"^2 Omega_"e")
-      /(m_"e"(a_"e"^2+Omega_"e"^2))$, and
-    $sigma_"parallel"=(n_"e"q_"e"^2)/(m_"e"a_"e")$.
+
+    $ sigma_"perp"=(n_"e"q_"e"^2 a_"e")
+      /(m_"e"(a_"e"^2+Omega_"e"^2)), quad
+      sigma_"H"=(n_"e"q_"e"^2 Omega_"e")
+      /(m_"e"(a_"e"^2+Omega_"e"^2)) .$
+
+    The parallel entry is
+
+    $ sigma_"parallel"=(n_"e"q_"e"^2)/(m_"e"a_"e") .$
+
     Setting $omega=0$ recovers the displayed real DC tensor.
 
-    If ions are mobile, sum the response of every species. Define
-    $omega_(p,s)^2=(4 pi n_s q_s^2)/m_s$,
-    $Omega_s=(q_s B_0)/(m_s c)$, and
-    $a_s=nu_s-i omega$. In Gaussian CGS,
-    $sigma_"parallel"=1/(4 pi)sum_s (omega_(p,s)^2/a_s)$,
-    $sigma_"perp"=1/(4 pi)sum_s
-      (omega_(p,s)^2 a_s)/(a_s^2+Omega_s^2)$, and
-    $sigma_"H"=1/(4 pi)sum_s
-      (omega_(p,s)^2 Omega_s)/(a_s^2+Omega_s^2)$.
-    These sums are additive because the total current is
-    $bold(j)=sum_s n_s q_s bold(u)_s$. An electron-only model is appropriate
-    when the ions are effectively fixed on the frequency and collision scales;
-    at low frequency, ion motion can change every tensor entry.]
+    #derivation-step[Sum mobile species]
+    For mobile ions, define
+
+    $ omega_(p,s)^2=(4 pi n_s q_s^2)/m_s, quad
+      Omega_s=(q_s B_0)/(m_s c), quad a_s=nu_s-i omega .$
+
+    In Gaussian CGS, the species responses sum to
+
+    $ sigma_"parallel"=1/(4 pi)sum_s (omega_(p,s)^2/a_s) ,$
+
+    $ sigma_"perp"=1/(4 pi)sum_s
+      (omega_(p,s)^2 a_s)/(a_s^2+Omega_s^2) ,$
+
+    and
+
+    $ sigma_"H"=1/(4 pi)sum_s
+      (omega_(p,s)^2 Omega_s)/(a_s^2+Omega_s^2) .$
+
+    Additivity follows from $bold(j)=sum_s n_s q_s bold(u)_s$. An
+    electron-only model is appropriate only when ions are fixed on the
+    frequency and collision scales; at low frequency, ion motion can change
+    every tensor entry.]
   )
 
   #conductivity-tensor

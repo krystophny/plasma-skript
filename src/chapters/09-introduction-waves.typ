@@ -96,30 +96,50 @@
 
   #details(
     [Derivation: linearized Fourier system],
-    [Insert the perturbation expansion into continuity. The equilibrium has
-    no flow, so the product of two first-order quantities is second order:
-    $pdv(n_(s,1),t)+n_(s,0) div(bold(u)_(s,1))=0$.
-    The same expansion of momentum removes the convective product
-    $bold(u)_(s,1) dot grad(bold(u)_(s,1))$ and the perturbed magnetic product
-    $bold(u)_(s,1) times bold(B)_1$. The first-order momentum equation is
-    $m_s n_(s,0) pdv(bold(u)_(s,1),t)
-      =q_s n_(s,0)(bold(E)_1+
-      (bold(u)_(s,1) times bold(B)_0)/c)-grad(p_(s,1))$.
+    [#derivation-step[Classify the perturbation order]
+    The equilibrium has no flow. Consequently, products of two first-order
+    quantities are second order and do not appear in the linear problem. In
+    particular, the convective term and the perturbed magnetic force are
+    omitted at first order.
 
-    Apply the plane-wave replacements
-    $pdv(f,t) -> -i omega f$, $grad(f) -> i bold(k) f$,
-    $div(bold(A)) -> i bold(k) dot bold(A)$, and
-    $curl(bold(A)) -> i bold(k) times bold(A)$. This gives
-    $-i omega n_(s,1)+i n_(s,0) bold(k) dot bold(u)_(s,1)=0$
-    and
-    $-i omega m_s n_(s,0) bold(u)_(s,1)
+    #derivation-step[Linearize continuity and momentum]
+    The continuity equation becomes
+
+    $ pdv(n_(s,1),t)+n_(s,0) div(bold(u)_(s,1))=0 .$
+
+    The first-order momentum equation retains the equilibrium magnetic field
+    but not the product of two perturbations:
+
+    $ m_s n_(s,0) pdv(bold(u)_(s,1),t)
       =q_s n_(s,0)(bold(E)_1+
-      (bold(u)_(s,1) times bold(B)_0)/c)-i bold(k) p_(s,1)$.
-    Maxwell's equations become algebraic relations between the field
-    amplitudes, while the equilibrium neutrality removes the zeroth-order
-    charge density. A nontrivial amplitude exists only when the resulting
-    linear coefficient matrix is singular; that determinant is the
-    dispersion relation.]
+      (bold(u)_(s,1) times bold(B)_0)/c)-grad(p_(s,1)) .$
+
+    #derivation-step[Apply the plane-wave replacement]
+    For the convention
+    $exp(i (bold(k) dot bold(r)-omega t))$, replace derivatives by
+    algebraic operators:
+
+    $ pdv(f,t) -> -i omega f, quad
+      grad(f) -> i bold(k) f, quad
+      div(bold(A)) -> i bold(k) dot bold(A), quad
+      curl(bold(A)) -> i bold(k) times bold(A) .$
+
+    Thus continuity and momentum become
+
+    $ -i omega n_(s,1)+i n_(s,0) bold(k) dot bold(u)_(s,1)=0 $
+
+    and
+
+    $ -i omega m_s n_(s,0) bold(u)_(s,1)
+      =q_s n_(s,0)(bold(E)_1+
+      (bold(u)_(s,1) times bold(B)_0)/c)-i bold(k) p_(s,1) .$
+
+    #derivation-step[Form the dispersion condition]
+    Maxwell's equations receive the same algebraic replacement. Equilibrium
+    neutrality removes the zeroth-order charge density. The remaining linear
+    equations form a coefficient matrix for the field and fluid amplitudes.
+    A nonzero wave exists only when this matrix is singular; its determinant
+    is the dispersion relation.]
   )
 
   #wave-linearization
@@ -242,29 +262,47 @@
 
   #details(
     [Derivation: charge separation supplies the restoring force],
-    [For the electron charge $q_e=-e$, the cold linearized momentum equation
-    is $-i omega m_e bold(u)_(e,1)=-e bold(E)_1$.
-    The longitudinal continuity equation gives
-    $n_(e,1)=(n_0 (bold(k) dot bold(u)_(e,1)))/omega$.
-    For a parallel electric field, this is
-    $n_(e,1)=(n_0 k u_(e,1))/omega$.
+    [#derivation-step[Write the electron response]
+    For the electron charge $q_e=-e$, the cold linearized momentum equation is
 
-    Poisson's equation contains only the perturbed electron charge because
-    the ion background is fixed:
-    $i k E_1=4 pi rho_(q,1)=-4 pi e n_(e,1)$.
+    $ -i omega m_e bold(u)_(e,1)=-e bold(E)_1 .$
+
+    Longitudinal continuity gives
+
+    $ n_(e,1)=(n_0 (bold(k) dot bold(u)_(e,1)))/omega .$
+
+    For a field parallel to $bold(k)$, this reduces to
+
+    $ n_(e,1)=(n_0 k u_(e,1))/omega .$
+
+    #derivation-step[Close the charge--field loop]
+    The fixed ions do not contribute a perturbed charge. Poisson's equation
+    is therefore
+
+    $ i k E_1=4 pi rho_(q,1)=-4 pi e n_(e,1) .$
+
     Solving the momentum equation gives
-    $u_(e,1)=(-i e E_1)/(m_e omega)$.
-    Insert it into continuity and then Poisson:
-    $i k E_1=-4 pi e ((-i n_0 e k E_1)/(m_e omega^2))$.
-    Cancel the nonzero amplitude and the common factor $i k$:
-    $omega^2=(4 pi n_0 e^2)/m_e$.
 
-    The wave number disappeared because the cold model has no pressure
-    gradient and therefore no spatial restoring scale. If the ions also move,
-    repeat the same force-balance calculation for each species and sum their
-    charge responses. The result is
-    $omega_p^2=sum_s ((4 pi n_(s,0)q_s^2)/m_s)$; for hydrogen the ion term is
-    smaller by $m_e/m_i$.]
+    $ u_(e,1)=(-i e E_1)/(m_e omega) .$
+
+    Inserting this response into continuity and then Poisson gives
+
+    $ i k E_1=-4 pi e ((-i n_0 e k E_1)/(m_e omega^2)) .$
+
+    #derivation-step[Identify the collective frequency]
+    Cancel the nonzero field amplitude and the common factor $i k$:
+
+    $ omega^2=(4 pi n_0 e^2)/m_e .$
+
+    The wave number disappears because the cold model has no pressure
+    gradient and hence no spatial restoring scale. If the ions also move,
+    repeat the response calculation for every species and add their charge
+    responses. The result is
+
+    $ omega_p^2=sum_s ((4 pi n_(s,0)q_s^2)/m_s) .$
+
+    For hydrogen, the ion contribution is smaller than the electron term by
+    $m_e/m_i$.]
   )
 
   #rechenbeispiel[
@@ -381,34 +419,56 @@
 
   #details(
     [Derivation: current response and the transverse wave equation],
-    [The cold electron momentum response is again
-    $-i omega m_e bold(u)_(e,1)=-e bold(E)_1$,
-    so $bold(u)_(e,1)=(-i e bold(E)_1)/(m_e omega)$.
-    The perturbed current is therefore
-    $bold(j)_1=-e n_0 bold(u)_(e,1)
-      =(i n_0 e^2 bold(E)_1)/(m_e omega)$.
+    [#derivation-step[Compute the cold current response]
+    The cold electron momentum equation gives
 
-    For a transverse plane wave, Faraday's and Ampere's equations become
-    $bold(k) times bold(E)_1=(omega bold(B)_1)/c$
+    $ -i omega m_e bold(u)_(e,1)=-e bold(E)_1 ,$
+
+    and hence
+
+    $ bold(u)_(e,1)=(-i e bold(E)_1)/(m_e omega) .$
+
+    The perturbed current is
+
+    $ bold(j)_1=-e n_0 bold(u)_(e,1)
+      =(i n_0 e^2 bold(E)_1)/(m_e omega) .$
+
+    #derivation-step[Eliminate the magnetic amplitude]
+    For a transverse plane wave, Faraday's and Ampere's equations are
+
+    $ bold(k) times bold(E)_1=(omega bold(B)_1)/c $
+
     and
-    $bold(k) times bold(B)_1=-(omega bold(E)_1)/c
-      -(4 pi i bold(j)_1)/c$.
-    Substitute the first into the second and use
-    $bold(k) times (bold(k) times bold(E)_1)=-k^2 bold(E)_1$.
-    The result is
-    $(omega^2-c^2 k^2) bold(E)_1
-      =-4 pi i omega bold(j)_1$.
-    Inserting the current response on the right gives
-    $(omega^2-c^2 k^2) bold(E)_1
-      =omega_(p,e)^2 bold(E)_1$,
-    with $omega_(p,e)^2=(4 pi n_0e^2)/m_e$. A nonzero field amplitude then
-    requires $omega^2=omega_(p,e)^2+c^2 k^2$.
 
-    Dividing by $omega^2$ gives
-    $(k^2 c^2)/(omega^2)=1-omega_(p,e)^2/omega^2$,
-    which identifies the relative dielectric factor. Real $k$ requires
-    $omega>omega_(p,e)$. Below the cutoff, $k$ is imaginary and the field
-    is evanescent rather than a propagating bulk wave.]
+    $ bold(k) times bold(B)_1=-(omega bold(E)_1)/c
+      -(4 pi i bold(j)_1)/c .$
+
+    Substitute the first relation into the second and use
+
+    $ bold(k) times (bold(k) times bold(E)_1)=-k^2 bold(E)_1 .$
+
+    The resulting electric-field equation is
+
+    $ (omega^2-c^2 k^2) bold(E)_1=-4 pi i omega bold(j)_1 .$
+
+    #derivation-step[Read off the electromagnetic branch]
+    Insert the current response and define
+    $omega_(p,e)^2=(4 pi n_0 e^2)/m_e:$
+
+    $ (omega^2-c^2 k^2) bold(E)_1
+      =omega_(p,e)^2 bold(E)_1 .$
+
+    A nonzero field amplitude therefore requires
+
+    $ omega^2=omega_(p,e)^2+c^2 k^2 .$
+
+    Dividing by $omega^2$ identifies the relative dielectric factor:
+
+    $ (k^2 c^2)/(omega^2)=1-omega_(p,e)^2/omega^2 .$
+
+    Real $k$ requires $omega>omega_(p,e)$. Below the cutoff, $k$ is
+    imaginary and the field is evanescent rather than a propagating bulk
+    wave.]
   )
 
   #callout(
@@ -551,45 +611,76 @@
   )
   #details(
     [Derivation: warm-fluid susceptibility and ion sound],
-    [For one species in one dimension, the Fourier continuity equation is
-    $-i omega n_(s,1)+i k n_(s,0)u_(s,1)=0$,
-    hence $n_(s,1)=(k n_(s,0)u_(s,1))/omega$.
-    The longitudinal momentum equation with the pressure closure is
-    $-i omega m_s u_(s,1)=q_s E_1
-      -(i k gamma_s k_B T_s n_(s,1))/n_(s,0)$.
-    Substituting continuity and solving for the velocity gives
-    $u_(s,1)=(i q_s omega E_1)/
-      (m_(s)(omega^2-k^2 c_s^2))$.
+    [#derivation-step[Obtain the response of one warm species]
+    For one species in one dimension, Fourier continuity gives
+
+    $ -i omega n_(s,1)+i k n_(s,0)u_(s,1)=0 .$
+
     Therefore
-    $n_(s,1)=(i n_(s,0)q_s k E_1)/
-      (m_(s)(omega^2-k^2 c_s^2))$.
-    Poisson's equation is
-    $i k E_1=4 pi sum_s q_s n_(s,1)$.
-    Canceling $i k E_1$ and inserting the species response produces
-    $1=sum_s (4 pi n_(s,0)q_s^2)/
-      (m_(s)(omega^2-k^2 c_s^2))$,
-    which is the displayed dispersion relation.
-    For a high-frequency electron branch with fixed ions, the ion term is
-    omitted and the result is
-    $omega^2=omega_(p,e)^2+k^2 c_e^2$. For a low-frequency ion-acoustic
-    branch, neglect electron inertia in the electron momentum equation and
-    impose $n_(e,1)=n_(i,1)$ from quasi-neutrality. The electron pressure
-    supplies the electric field, while the ion inertia carries the wave.
-    Combining the two pressure responses yields
-    $omega^2=(k^2 (gamma_e k_B T_e+gamma_i k_B T_i))/m_i$.
-    The reduction requires $omega << omega_(p,e)$ and $k lambda_D << 1$;
-    otherwise charge separation or electron inertia cannot be discarded.
+
+    $ n_(s,1)=(k n_(s,0)u_(s,1))/omega .$
+
+    With the pressure closure, the longitudinal momentum equation is
+
+    $ -i omega m_s u_(s,1)=q_s E_1
+      -(i k gamma_s k_B T_s n_(s,1))/n_(s,0) .$
+
+    Define $c_s^2=(gamma_s k_B T_s)/m_s$. Substitution of continuity and
+    solution for the velocity gives
+
+    $ u_(s,1)=(i q_s omega E_1)/
+      (m_s (omega^2-k^2 c_s^2)) .$
+
+    The density response is consequently
+
+    $ n_(s,1)=(i n_(s,0)q_s k E_1)/
+      (m_s (omega^2-k^2 c_s^2)) .$
+
+    #derivation-step[Sum the species in Poisson's equation]
+    The longitudinal field obeys
+
+    $ i k E_1=4 pi sum_s q_s n_(s,1) .$
+
+    Cancel $i k E_1$ and insert the species response:
+
+    $ 1=sum_s (4 pi n_(s,0)q_s^2)/
+      (m_s (omega^2-k^2 c_s^2)) .$
+
+    This is the warm-fluid longitudinal dispersion relation.
+
+    #derivation-step[Select the two-fluid limits]
+    For a high-frequency electron branch with fixed ions, omit the ion term:
+
+    $ omega^2=omega_(p,e)^2+k^2 c_e^2 .$
+
+    For a low-frequency ion-acoustic branch, neglect electron inertia and
+    impose $n_(e,1)=n_(i,1)$ through quasi-neutrality. Electron pressure then
+    supplies the electric field and ion inertia carries the slow wave:
+
+    $ omega^2=(k^2 (gamma_e k_B T_e+gamma_i k_B T_i))/m_i .$
+
+    This reduction requires $omega << omega_(p,e)$ and
+    $k lambda_D << 1$. Without these orderings, electron inertia or charge
+    separation cannot be discarded.
+
+    #derivation-step[Compare with kinetic response]
     Kinetic theory replaces the fluid closure by a velocity-space response.
-    A standard unmagnetized electrostatic form is
-    $1+sum_s chi_(s)(omega,k)=0$ with
-    $chi_s=(2 omega_(p,s)^2)/(k^2 v_"th,s"^2)
-      (1+zeta_s Z(zeta_s))$ and
-    $zeta_s=omega/(k v_"th,s")$.
+    With $v_"th,s"=sqrt((2 k_B T_s)/m_s)$, a standard unmagnetized
+    electrostatic form is
+
+    $ 1+sum_s chi_(s)(omega,k)=0 ,$
+
+    where
+
+    $ chi_s=(2 omega_(p,s)^2)/(k^2 v_"th,s"^2)
+      (1+zeta_s Z(zeta_s)), quad
+      zeta_s=omega/(k v_"th,s") .$
+
     The analytically continued plasma-dispersion function $Z$ accounts for
-    resonant particles; its imaginary contribution gives collisionless
+    resonant particles. Its imaginary contribution produces collisionless
     damping or growth. A warm-fluid $gamma_s$ can reproduce selected
-    long-wavelength real-frequency limits, but it cannot reproduce this
-    resonant phase mixing.]
+    long-wavelength real-frequency limits, but it cannot reproduce resonant
+    phase mixing.]
   )
   #warm-kinetic-limits
 
@@ -683,29 +774,53 @@
   )
   #details(
     [Derivation: limiting-case checks],
-    [Start from the normalized transverse relation
-    $W^2=1+K^2$. In the long-wavelength limit $K -> 0$,
-    $W -> 1$, so $omega -> omega_(p,e)$ and
-    $v_"g"/c=K/W -> 0$. The formal phase velocity diverges because a
-    nearly spatially uniform oscillation has a finite frequency.
-    In the short-wavelength or high-frequency limit $K -> infinity$,
-    $W=sqrt(1+K^2) -> K$. Therefore
-    $v_"phi"/c=W/K -> 1$ and $v_"g"/c=K/W -> 1$; the plasma becomes
-    transparent and the branch approaches the vacuum line.
-    If the density tends to zero, $omega_(p,e) -> 0$ and the dimensional
-    relation becomes $omega=c k$. If the frequency is below the cutoff,
-    $omega<omega_(p,e)$, rearrangement gives
-    $k^2=(omega^2-omega_(p,e)^2)/c^2<0$. Write
-    $k=i alpha$ with
-    $alpha=sqrt(omega_(p,e)^2-omega^2)/c$; the spatial factor is
-    $exp(-alpha x)$ after choosing the decaying boundary solution. This is
-    an evanescent field, not a propagating bulk wave.
-    The cold electrostatic fixed-ion branch provides a second check:
-    $omega=omega_(p,e)$ for every $k$, so its group velocity vanishes.
-    Adding pressure changes this to
-    $omega^2=omega_(p,e)^2+k^2 c_e^2$ and therefore supplies spatial
-    propagation. Every plotted branch should be read together with the
-    approximation that produced it.]
+    [#derivation-step[Long-wavelength limit]
+    Start from the normalized transverse relation
+
+    $ W^2=1+K^2 .$
+
+    As $K -> 0$, $W -> 1$. Hence
+
+    $ omega -> omega_(p,e), quad v_"g"/c=K/W -> 0 .$
+
+    The phase velocity formally diverges because a nearly spatially uniform
+    oscillation has a finite frequency while its wave number tends to zero.
+
+    #derivation-step[Short-wavelength and vacuum limits]
+    As $K -> infinity$,
+
+    $ W=sqrt(1+K^2) -> K .$
+
+    Therefore
+
+    $ v_"phi"/c=W/K -> 1, quad v_"g"/c=K/W -> 1 .$
+
+    The plasma becomes transparent and the branch approaches the vacuum line.
+    The same result follows dimensionally when the density tends to zero,
+    because $omega_(p,e) -> 0$ and $omega=c k$.
+
+    #derivation-step[Below-cutoff behavior]
+    If $omega<omega_(p,e)$, then
+
+    $ k^2=(omega^2-omega_(p,e)^2)/c^2<0 .$
+
+    Write
+
+    $ k=i alpha, quad alpha=sqrt(omega_(p,e)^2-omega^2)/c .$
+
+    Choosing the decaying boundary solution gives the spatial factor
+    $exp(-alpha x)$. This is an evanescent field, not a propagating bulk
+    wave.
+
+    #derivation-step[Compare with the cold electrostatic branch]
+    The cold electrostatic fixed-ion branch has
+    $omega=omega_(p,e)$ for every $k$, so its group velocity vanishes. Adding
+    pressure changes the relation to
+
+    $ omega^2=omega_(p,e)^2+k^2 c_e^2 .$
+
+    Pressure therefore supplies spatial propagation. Every plotted branch
+    must be read together with the approximation that produced it.]
   )
   #wave-dispersion
   #rechenbeispiel[

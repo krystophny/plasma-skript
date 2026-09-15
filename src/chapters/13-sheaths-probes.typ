@@ -86,34 +86,57 @@
 
   #details(
     [Derivation: the one-sided Maxwellian flux],
-    [Choose the surface normal as the $z$ direction. The isotropic
+    [#derivation-step[Write the isotropic distribution]
+    Choose the surface normal as the $z$ direction. The three-dimensional
     Maxwellian is
-    $f_(s)(bold(v))=
+
+    $ f_(s)(bold(v))=
       n_s (m_s/(2 pi k_B T_s))^(3/2)
-      exp(-(m_s (v_x^2+v_y^2+v_z^2))/(2 k_B T_s))$.
-    Insert it into the half-space definition:
-    $Gamma_(s,0)=
+      exp(-(m_s (v_x^2+v_y^2+v_z^2))/(2 k_B T_s)) .$
+
+    Insert it into the half-space flux definition:
+
+    $ Gamma_(s,0)=
       integral_0^infinity integral_(-infinity)^infinity
       integral_(-infinity)^infinity
-      v_z f_(s)(bold(v)) dif v_x dif v_y dif v_z$.
+      v_z f_(s)(bold(v)) dif v_x dif v_y dif v_z .$
 
-    The two tangential Gaussian integrals each give
-    $integral_(-infinity)^infinity
+    #derivation-step[Evaluate the tangential integrals]
+    Each tangential Gaussian integral is
+
+    $ integral_(-infinity)^infinity
       exp(-(m_s v_x^2)/(2 k_B T_s)) dif v_x
-      =sqrt((2 pi k_B T_s)/m_s)$.
-    After both are evaluated, the remaining factor is
-    $Gamma_(s,0)=
+      =sqrt((2 pi k_B T_s)/m_s) .$
+
+    Evaluating both tangential integrals leaves
+
+    $ Gamma_(s,0)=
       n_s sqrt(m_s/(2 pi k_B T_s))
       integral_0^infinity v_z
-      exp(-(m_s v_z^2)/(2 k_B T_s)) dif v_z$.
+      exp(-(m_s v_z^2)/(2 k_B T_s)) dif v_z .$
 
-    Use $integral_0^infinity v exp(-a v^2) dif v=1/(2a)$ with
-    $a=m_s/(2 k_B T_s)$. The normal integral is $(k_B T_s)/m_s$, so
-    $Gamma_(s,0)=n_s sqrt((k_B T_s)/(2 pi m_s))$.
-    Substituting $v_"th,s"=sqrt((2 k_B T_s)/m_s)$ gives the second form.
-    The mean speed of the same three-dimensional Maxwellian is
-    $v_"mean,s"=sqrt((8 k_B T_s)/(pi m_s))$, which gives
-    $Gamma_(s,0)=(n_s v_"mean,s")/4$.]
+    #derivation-step[Evaluate the normal half-space integral]
+    Use
+
+    $ integral_0^infinity v exp(-a v^2) dif v=1/(2a), quad
+      a=m_s/(2 k_B T_s) .$
+
+    The normal integral is $(k_B T_s)/m_s$, so
+
+    $ Gamma_(s,0)=n_s sqrt((k_B T_s)/(2 pi m_s)) .$
+
+    With $v_"th,s"=sqrt((2 k_B T_s)/m_s)$, this becomes
+
+    $ Gamma_(s,0)=(n_s v_"th,s")/(2 sqrt(pi)) .$
+
+    The mean speed of the same Maxwellian is
+
+    $ v_"mean,s"=sqrt((8 k_B T_s)/(pi m_s)) ,$
+
+    which gives the equivalent form
+
+    $ Gamma_(s,0)=(n_s v_"mean,s")/4 .$
+    ]
   )
 
   #sheath-structure
@@ -234,89 +257,139 @@
 
   #details(
     [Derivation: Boltzmann response, ion flow, and the sheath edge],
-    [For a species in a static electrostatic potential, the stationary
+    [#derivation-step[Write the Boltzmann electron response]
+    For a species in a static electrostatic potential, the stationary
     Maxwell--Boltzmann response is
-    $n_(s)(phi)=n_(s,infinity)
-      exp(-(q_s phi)/(k_B T_s))$.
-    For electrons $q_e=-e$ and the plasma reference is $phi(infinity)=0$,
-    so $n_e=n_0 exp((e phi)/(k_B T_e))=n_0 exp(-eta)$.
 
-    For cold steady ions, the continuity equation is
-    $dv(n_i u_i,x)=0$.
-    Thus $n_i u_i=n_s u_s=Gamma_i$. The ion momentum equation is
-    $m_i u_i dv(u_i,x)=-e dv(phi,x)$.
-    Multiply by $u_i$ and use
-    $(u_i dv(u_i^2,x))/2=u_i^2 dv(u_i,x)$:
-    $dv((m_i u_i^2)/2+e phi,x)=0$.
-    At the edge, where $eta=0$, this gives
-    $(m_i u_i^2)/2+e phi=(m_i u_s^2)/2$.
+    $ n_(s)(phi)=n_(s,infinity)
+      exp(-(q_s phi)/(k_B T_s)) .$
+
+    For electrons $q_e=-e$ and with $phi(infinity)=0$ as the plasma
+    reference,
+
+    $ n_e=n_0 exp((e phi)/(k_B T_e))=n_0 exp(-eta) .$
+
+    #derivation-step[Use ion continuity and energy]
+    For cold steady ions,
+
+    $ dv(n_i u_i,x)=0, quad n_i u_i=n_s u_s=Gamma_i .$
+
+    The ion momentum equation is
+
+    $ m_i u_i dv(u_i,x)=-e dv(phi,x) .$
+
+    Multiplying by $u_i$ and integrating gives the conserved energy
+
+    $ dv((m_i u_i^2)/2+e phi,x)=0 .$
+
+    At the edge, where $eta=0$,
+
+    $ (m_i u_i^2)/2+e phi=(m_i u_s^2)/2 .$
+
     Since $e phi=-k_B T_e eta$,
-    $u_i^2=u_s^2+(2 k_B T_e eta)/m_i
-      =c_(s)^(2) (M^2+2 eta)$.
+
+    $ u_i^2=u_s^2+(2 k_B T_e eta)/m_i
+      =c_s^2 (M^2+2 eta) .$
+
     Continuity then gives
-    $n_i/n_s=u_s/u_i=M/(M^2+2 eta)^(1/2)$.
 
-    Poisson's equation in Gaussian CGS is
-    $div(bold(E))=4 pi rho_q
-      =4 pi e(n_i-n_e)$.
+    $ n_i/n_s=u_s/u_i=M/(M^2+2 eta)^(1/2) .$
+
+    #derivation-step[Nondimensionalize Poisson's equation]
+    In Gaussian CGS,
+
+    $ div(bold(E))=4 pi rho_q=4 pi e(n_i-n_e) .$
+
     In one dimension, $E_x=-dv(phi,x)$, so
-    $-dv(phi,x,2)=4 pi e(n_i-n_e)$.
-    With $phi=-((k_B T_e)/e) eta$ and
-    $x=lambda_D xi$, the left side is
-    $((k_B T_e)/(e lambda_D^2)) dv(eta,xi,2)$.
-    Use $lambda_D^2=(k_B T_e)/(4 pi n_0 e^2)$ and set $n_s=n_0$
-    at the ideal matching edge. The result is
-    $dv(eta,xi,2)=n_i/n_0-n_e/n_0
-      =M/(M^2+2 eta)^(1/2)-exp(-eta)$.
 
-    Expand both terms for small eta:
-    $M/(M^2+2 eta)^(1/2)
+    $ -dv(phi,x,2)=4 pi e(n_i-n_e) .$
+
+    Set $phi=-((k_B T_e)/e) eta$ and $x=lambda_D xi$. The left side becomes
+
+    $ ((k_B T_e)/(e lambda_D^2)) dv(eta,xi,2) .$
+
+    Using $lambda_D^2=(k_B T_e)/(4 pi n_0 e^2)$ and $n_s=n_0$ at the
+    ideal matching edge gives
+
+    $ dv(eta,xi,2)=n_i/n_0-n_e/n_0
+      =M/(M^2+2 eta)^(1/2)-exp(-eta) .$
+
+    #derivation-step[Expand at the sheath edge]
+    For small $eta$,
+
+    $ M/(M^2+2 eta)^(1/2)
       =(1+(2 eta)/(M^2))^(-1/2)
-      approx 1-eta/M^2$,
-    while $exp(-eta) approx 1-eta$. Their difference is
-    $(1-M^(-2))eta$. If $M<1$, the coefficient is negative and the
-    edge curvature has the wrong sign for a monotone positive barrier
-    attached to the plasma. Therefore $M>=1$. Equality is the sonic
-    threshold; additional ion temperature or kinetic effects modify the
-    sound speed and the generalized criterion.]
+      approx 1-eta/M^2 ,$
+
+    while
+
+    $ exp(-eta) approx 1-eta .$
+
+    Their difference is $(1-M^(-2))eta$. If $M<1$, the coefficient is
+    negative and the edge curvature has the wrong sign for a monotone
+    positive barrier attached to the plasma. Therefore $M>=1$. Equality is
+    the sonic threshold; ion temperature and kinetic effects modify the sound
+    speed and the generalized criterion.]
   )
 
   #details(
     [Derivation: electron-free planar edge and Child--Langmuir scaling],
-    [Near a sufficiently negative wall, take the electron density to be
-    negligible and write $V=-phi>0$ for the potential drop measured from
-    the plasma reference. Let $x$ increase from the wall toward the
-    sheath edge, and let the electron-free layer have thickness $d$.
-    Ion energy in the large-drop limit gives
-    $u_i approx sqrt((2 e V)/m_i)$.
-    With constant ion flux $Gamma_i=n_i u_i$, the ion density is
-    $n_i=Gamma_i sqrt(m_i/(2 e V))$.
+    [#derivation-step[Relate ion speed and density to the potential drop]
+    Near a sufficiently negative wall, take the electron density to be
+    negligible and write $V=-phi>0$ for the potential drop from the plasma
+    reference. Let $x$ increase from the wall toward the sheath edge, and let
+    the electron-free layer have thickness $d$.
 
-    Poisson's equation for $phi=-V$ is
-    $dv(V,x,2)
-      =4 pi e n_i
-      =C V^(-1/2)$,
-    where $C=4 pi Gamma_i sqrt((e m_i)/2)$.
-    Introduce the distance $s=d-x$ measured inward from the
-    electron-free edge toward the wall. Then $dv(V,s,2)=C V^(-1/2)$.
-    Multiply by $dv(V,s)$ and integrate:
-    $((dv(V,s))^2)/2=2 C V^(1/2)+C_1$.
-    At the edge $s=0$, $V=0$, and the idealized matching condition gives
-    $dv(V,s)=0$, so $C_1=0$. Take the positive branch and separate
-    variables:
-    $V^(-1/4) dv(V,s)=2 sqrt(C) dif s$.
-    Integration from the edge gives
-    $4/3 V^(3/4)=2 sqrt(C) s$,
-    hence
-    $V(s)=((9 C)/4)^(2/3) s^(4/3)$.
-    At the wall, $s=d$ and $V=V_w$, so
-    $V_w^(3/2)=((9 C)/4)d^2$.
-    Solving for the ion flux and multiplying by $e$ gives the
-    planar Child--Langmuir scaling in Gaussian CGS:
-    $J_i=e Gamma_i
-      =(sqrt((2 e)/m_i) V_w^(3/2))/(9 pi d^2)$.
+    In the large-drop limit, ion energy gives
+
+    $ u_i approx sqrt((2 e V)/m_i) .$
+
+    Constant ion flux $Gamma_i=n_i u_i$ then gives
+
+    $ n_i=Gamma_i sqrt(m_i/(2 e V)) .$
+
+    #derivation-step[Reduce Poisson's equation]
+    For $phi=-V$, Poisson's equation is
+
+    $ dv(V,x,2)=4 pi e n_i=C V^(-1/2) ,$
+
+    where $C=4 pi Gamma_i sqrt((e m_i)/2)$. Introduce the inward distance
+    $s=d-x$ measured from the electron-free edge toward the wall. The equation
+    becomes
+
+    $ dv(V,s,2)=C V^(-1/2) .$
+
+    #derivation-step[Integrate from the sheath edge]
+    Multiply by $dv(V,s)$ and integrate once:
+
+    $ ((dv(V,s))^2)/2=2 C V^(1/2)+C_1 .$
+
+    At the edge, $s=0$, $V=0$, and the idealized matching condition gives
+    $dv(V,s)=0$, so $C_1=0$. Taking the positive branch gives
+
+    $ V^(-1/4) dv(V,s)=2 sqrt(C) dif s .$
+
+    Integrating from the edge,
+
+    $ 4/3 V^(3/4)=2 sqrt(C) s ,$
+
+    and therefore
+
+    $ V(s)=((9 C)/4)^(2/3) s^(4/3) .$
+
+    #derivation-step[Evaluate the space-charge current]
+    At the wall, $s=d$ and $V=V_w$:
+
+    $ V_w^(3/2)=((9 C)/4)d^2 .$
+
+    Solving for the ion flux and multiplying by $e$ gives the planar
+    Child--Langmuir scaling in Gaussian CGS:
+
+    $ J_i=e Gamma_i
+      =(sqrt((2 e)/m_i) V_w^(3/2))/(9 pi d^2) .$
+
     This is a near-wall space-charge result. It does not replace the
-    Boltzmann-electron sheath equation across the whole boundary layer.]
+    Boltzmann-electron sheath equation across the complete boundary layer.]
   )
 
   #sheath-profile
@@ -439,38 +512,52 @@
 
   #details(
     [Derivation: electron transmission and the floating logarithm],
-    [Let the plasma potential be zero and the wall potential be
-    $phi_w<0$. An electron has potential energy $q_e phi=-e phi$, so an
-    electron arriving from the plasma reaches the wall only if its normal
-    kinetic energy exceeds the barrier $e abs(phi_w)$. For a Maxwellian,
-    the flux integral over the transmitted part of velocity space is
-    the unretarded flux times the Boltzmann factor:
-    $Gamma_(e)(phi_w)=Gamma_(e,0)
+    [#derivation-step[Compute the transmitted electron flux]
+    Let the plasma potential be zero and the wall potential be $phi_w<0$.
+    An electron has potential energy $q_e phi=-e phi$. It reaches the wall
+    only if its normal kinetic energy exceeds the barrier $e abs(phi_w)$.
+    Integrating the Maxwellian over the transmitted velocities multiplies the
+    unretarded flux by a Boltzmann factor:
+
+    $ Gamma_(e)(phi_w)=Gamma_(e,0)
       exp(-(e abs(phi_w))/(k_B T_e))
-      =Gamma_(e,0) exp((e phi_w)/(k_B T_e))$.
-    The equality uses $phi_w<0$.
+      =Gamma_(e,0) exp((e phi_w)/(k_B T_e)) .$
 
-    The conventional ion current density into the wall is positive,
-    $J_i=+e Gamma_i$, while electron charge transport is negative,
-    $J_e=-e Gamma_e$. Thus
-    $J(phi_w)=e Gamma_i-e Gamma_(e,0)
-      exp((e phi_w)/(k_B T_e))$.
-    At a floating surface no external circuit supplies current, so set
-    $J(phi_f)=0$:
-    $Gamma_(e,0) exp((e phi_f)/(k_B T_e))=Gamma_i$.
-    Divide by $Gamma_(e,0)$, take the natural logarithm, and multiply by
-    $(k_B T_e)/e$:
-    $phi_f=((k_B T_e)/e)ln(Gamma_i/Gamma_(e,0))$.
+    The final equality uses $phi_w<0$.
 
-    The cold-ion Bohm flux is
-    $Gamma_i=n_0 sqrt((k_B T_e)/m_i)$, while the thermal electron flux is
-    $Gamma_(e,0)=n_0 sqrt((k_B T_e)/(2 pi m_e))$.
-    Their ratio is $sqrt((2 pi m_e)/m_i)$. Substitution gives
-    $phi_f=((k_B T_e)/(2e))ln((2 pi m_e)/m_i)$.
+    #derivation-step[Write the net current]
+    Take ion current into the wall as positive and electron charge transport
+    as negative:
+
+    $ J_i=+e Gamma_i, quad J_e=-e Gamma_e .$
+
+    Thus
+
+    $ J(phi_w)=e Gamma_i-e Gamma_(e,0)
+      exp((e phi_w)/(k_B T_e)) .$
+
+    A floating surface has no external current, so $J(phi_f)=0$ and
+
+    $ Gamma_(e,0) exp((e phi_f)/(k_B T_e))=Gamma_i .$
+
+    Taking the logarithm gives
+
+    $ phi_f=((k_B T_e)/e)ln(Gamma_i/Gamma_(e,0)) .$
+
+    #derivation-step[Insert the ideal edge fluxes]
+    The cold-ion Bohm flux and the thermal electron flux are
+
+    $ Gamma_i=n_0 sqrt((k_B T_e)/m_i), quad
+      Gamma_(e,0)=n_0 sqrt((k_B T_e)/(2 pi m_e)) .$
+
+    Their ratio is $sqrt((2 pi m_e)/m_i)$. Therefore
+
+    $ phi_f=((k_B T_e)/(2e))ln((2 pi m_e)/m_i) .$
+
     For hydrogen, $(2 pi m_e)/m_i approx 0.00343$, whose logarithm is
-    approximately $-5.68$, and half of it is $-2.84$.
-    The numerical example then follows by evaluating the stated cgs
-    definitions; no additional probe geometry factor has been introduced.]
+    approximately $-5.68$. The ideal cold-ion floating potential is thus
+    approximately $-2.84 k_B T_e/e$. The numerical example evaluates these
+    stated CGS definitions without an additional probe-geometry factor.]
   )
   #rechenbeispiel[
     Use a hydrogen plasma with
@@ -592,33 +679,52 @@
   )
   #details(
     [Derivation: semilog temperature and density inversion],
-    [The negative-bias electron flux is
-    $Gamma_(e)(phi_p)=Gamma_(e,0)
-      exp((e (phi_p-phi_"pl"))/(k_B T_e))$.
-    The electron current is $I_e=-e A Gamma_e$. Its magnitude is
-    $abs(I_e)=e A Gamma_(e,0)
-      exp((e (phi_p-phi_"pl"))/(k_B T_e))$.
-    Take the natural logarithm:
-    $ln(abs(I_e))=ln(e A Gamma_(e,0))
-      +(e (phi_p-phi_"pl"))/(k_B T_e)$.
+    [#derivation-step[Linearize the retarding electron current]
+    The negative-bias electron flux is
+
+    $ Gamma_(e)(phi_p)=Gamma_(e,0)
+      exp((e (phi_p-phi_"pl"))/(k_B T_e)) .$
+
+    With $I_e=-e A Gamma_e$, its magnitude is
+
+    $ abs(I_e)=e A Gamma_(e,0)
+      exp((e (phi_p-phi_"pl"))/(k_B T_e)) .$
+
+    Taking the natural logarithm produces a straight line:
+
+    $ ln(abs(I_e))=ln(e A Gamma_(e,0))
+      +(e (phi_p-phi_"pl"))/(k_B T_e) .$
+
+    #derivation-step[Read temperature from the semilog slope]
     Differentiate with respect to probe potential:
-    $dv(ln(abs(I_e)),phi_p)=e/(k_B T_e)$.
-    Invert the slope to obtain
-    $k_B T_e=e (dv(ln(abs(I_e)),phi_p))^(-1)$.
-    If the voltage unit is volts and the energy unit is electron-volts,
-    the numerical value of $k_B T_e$ in eV is the inverse slope in
+
+    $ dv(ln(abs(I_e)),phi_p)=e/(k_B T_e) .$
+
+    Inverting the slope gives
+
+    $ k_B T_e=e (dv(ln(abs(I_e)),phi_p))^(-1) .$
+
+    If the voltage unit is volts and the energy unit is electron-volts, the
+    numerical value of $k_B T_e$ in eV is the inverse slope in
     #unit("V^-1").
 
-    At the extrapolated electron saturation reference, set
-    $abs(I_(e,0))=e A Gamma_(e,0)$.
+    #derivation-step[Read density from electron saturation]
+    At the extrapolated electron-saturation reference,
+
+    $ abs(I_(e,0))=e A Gamma_(e,0) .$
+
     The Maxwellian half-space flux is
-    $Gamma_(e,0)=n_e sqrt((k_B T_e)/(2 pi m_e))$.
-    Substitute and solve for density:
-    $n_e=abs(I_(e,0))/[
-      e A sqrt((k_B T_e)/(2 pi m_e))]$.
-    This inversion uses the measured current in a consistent charge-current
-    unit. In the numerical example, converting the cgs charge flux to
-    amperes gives the stated density.]
+
+    $ Gamma_(e,0)=n_e sqrt((k_B T_e)/(2 pi m_e)) .$
+
+    Solving for density gives
+
+    $ n_e=abs(I_(e,0))/
+      (e A sqrt((k_B T_e)/(2 pi m_e))) .$
+
+    The measured current and charge-current unit must be consistent. In the
+    numerical example, converting the CGS charge flux to amperes gives the
+    stated density.]
   )
   #probe-iv-characteristic
   #animation(
