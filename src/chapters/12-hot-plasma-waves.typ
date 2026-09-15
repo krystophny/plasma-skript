@@ -511,6 +511,221 @@
     ),
   ))
 
+  #section-title[Transverse kinetic waves] <hot-transverse-waves>
+
+  #lead[
+    The kinetic response is not restricted to electrostatic oscillations. For
+    a transverse electromagnetic wave, the magnetic part of the wave force
+    changes the velocity-space perturbation even when the equilibrium field is
+    zero. The resulting dispersion relation recovers the cold plasma cutoff,
+    while an anisotropic distribution can turn the transverse branch unstable.
+  ]
+
+  #objectives((
+    [derive the transverse kinetic response from the Vlasov and Maxwell equations],
+    [recover the cold unmagnetized electromagnetic dispersion relation],
+    [identify the pole that can produce transverse wave damping or growth],
+    [show how a perpendicular velocity-space anisotropy supplies free energy],
+  ))
+
+  #unit-ledger[
+    Gaussian CGS is active. The electric and magnetic perturbations are in
+    statvolt per #unit("cm") and #unit("G"), respectively. The wave number
+    $k$ is in #unit("cm^-1"), $omega$ and $omega_(p,s)$ are in #unit("s^-1"),
+    and particle speeds are in #unit("cm/s"). The phase-space density
+    $f_(s,0)$ is in #unit("cm^-6 s^3"); $c$ is in #unit("cm/s"). The ratios
+    $k c/omega_(p,s)$, $omega/omega_(p,s)$, and
+    $v_x^2/c^2$ are dimensionless.
+  ]
+
+  #assumption(
+    [Unmagnetized transverse plane wave],
+    [Use a homogeneous collisionless plasma with
+    $bold(B)_0=bold(0)$ and a small wave with
+    $bold(k)=k bold(e)_z$ and $bold(E)_1=E_(1,x) bold(e)_x$.
+    Then $bold(k) dot bold(E)_1=0$ and the wave magnetic field is determined
+    by Faraday's law. The equilibrium can be isotropic for the ordinary
+    branch or anisotropic when testing a free-energy-driven instability.]
+  )
+
+  #definition(
+    [Transverse polarization],
+    [A transverse mode has its electric field perpendicular to the propagation
+    direction. With the stated geometry, Faraday's law gives
+    $bold(B)_1=(c k)/(omega) E_(1,x) bold(e)_y$.
+    The perturbed current is obtained from the first velocity moment of
+    $f_(s,1)$, so the kinetic dielectric response depends on the full
+    equilibrium distribution rather than on density and temperature alone.]
+  )
+
+  #governing-law(
+    [Transverse kinetic dispersion relation],
+    [For a species equilibrium $f_(s,0)(bold(v))$, the transverse normal modes
+    satisfy
+    $k^2 c^2=omega^2+
+      sum_s (4 pi q_s^2)/(m_s)
+      integral_(RR^3) [
+        v_x pdv(f_(s,0)(bold(v)),v_x)+
+        (k v_x^2)/(omega-k v_z)
+          pdv(f_(s,0)(bold(v)),v_z)
+      ] dif^3 bold(v)$.
+    If the distribution decays at velocity-space infinity, integration by
+    parts gives the equivalent form
+    $k^2 c^2=omega^2-
+      sum_s omega_(p,s)^2-
+      sum_s (4 pi q_s^2 k^2)/(m_s)
+      integral_(RR^3) [
+        (v_x^2 f_(s,0)(bold(v)))/((omega-k v_z)^2)
+      ] dif^3 bold(v)$,
+    where $omega_(p,s)^2=(4 pi n_s q_s^2)/m_s$. The velocity integral uses
+    the causal contour when the pole $omega-k v_z=0$ lies on the integration
+    path.]
+  )
+
+  #details(
+    [Derivation: transverse current and cold limit],
+    [For the Fourier convention $exp(i (k z-omega t))$, the linearized Vlasov
+    equation for the transverse geometry is
+    $-i(omega-k v_z) f_(s,1)+
+      (q_s/m_s) E_(1,x) [
+        (1-(k v_z)/omega) pdv(f_(s,0),v_x)+
+        (k v_x)/omega pdv(f_(s,0),v_z)
+      ]=0$.
+    Solving for the distribution perturbation gives
+    $f_(s,1)=(-i q_s E_(1,x))/(m_s omega)
+      [
+        (omega-k v_z) pdv(f_(s,0),v_x)+
+        k v_x pdv(f_(s,0),v_z)
+      ]/(omega-k v_z)$.
+
+    The transverse current is
+    $J_(1,x)=sum_s q_s integral_(RR^3) v_x f_(s,1) dif^3 bold(v)$.
+    Substitution into the transverse component of Ampere's law gives
+    $k^2 c^2=omega^2+
+      sum_s (4 pi q_s^2)/(m_s) integral_(RR^3) [
+        v_x pdv(f_(s,0),v_x)+
+        (k v_x^2)/(omega-k v_z) pdv(f_(s,0),v_z)
+      ] dif^3 bold(v)$.
+
+    To integrate the second term by parts, use
+    $pdv((1)/(omega-k v_z),v_z)=k/((omega-k v_z)^2)$.
+    The boundary terms vanish for a decaying distribution, while
+    $integral_(RR^3) v_x pdv(f_(s,0),v_x) dif^3 bold(v)=-n_s$
+    and
+    $integral_(RR^3) (k v_x^2)/(omega-k v_z)
+      pdv(f_(s,0),v_z) dif^3 bold(v)=
+      -integral_(RR^3) [
+        (k^2 v_x^2 f_(s,0))/((omega-k v_z)^2)
+      ] dif^3 bold(v)$.
+    These identities produce the equivalent governing law.
+
+    For a cold equilibrium
+    $f_(s,0)=n_s delta(v_x) delta(v_y) delta(v_z)$,
+    the resonant integral containing $v_x^2$ vanishes in the distributional
+    limit. Therefore
+    $k^2 c^2=omega^2-sum_s omega_(p,s)^2$,
+    or $omega^2=k^2 c^2+sum_s omega_(p,s)^2$. This is the cold
+    electromagnetic cutoff already obtained from the fluid model.]
+  )
+
+  #governing-law(
+    [Anisotropic transverse instability],
+    [As a transparent example, take one equilibrium of the form
+    $f_(0)(bold(v))=delta(v_z) F(v_x,v_y)$ with
+    $n_0=integral_(RR^2) F(v_x,v_y) dif v_x dif v_y$ and
+    $〈v_x^2〉=(1/n_0) integral_(RR^2) v_x^2 F(v_x,v_y)
+      dif v_x dif v_y$.
+    The transverse relation becomes
+    $k^2 c^2=omega^2-omega_p^2 [1+(k^2 〈v_x^2〉)/(omega^2)]$.
+    Equivalently,
+    $omega^4-(k^2 c^2+omega_p^2)omega^2-
+      k^2 omega_p^2 〈v_x^2〉=0$.
+    The lower value of $omega^2$ is negative whenever
+    $〈v_x^2〉>0$, so this idealized anisotropy contains a growing transverse
+    mode. The instability is powered by the anisotropic velocity-space free
+    energy; it is not a property of an isotropic Maxwellian.]
+  )
+
+  #details(
+    [Derivation: the negative transverse branch],
+    [For the stated equilibrium, the pole denominator is independent of the
+    nonzero perpendicular velocities because $v_z=0$. The integrated form of
+    the dispersion relation therefore gives
+    $integral_(RR^3) [
+      (v_x^2 f_(0)(bold(v)))/((omega-k v_z)^2)
+    ] dif^3 bold(v)=n_0 〈v_x^2〉/omega^2$.
+    Inserting this result and
+    $omega_p^2=(4 pi n_0 e^2)/m_e$ yields the displayed quartic.
+
+    Set $Y=omega^2$. The two roots are
+    $Y_±=[(k^2 c^2+omega_p^2) ±
+      sqrt((k^2 c^2+omega_p^2)^2+
+        4 k^2 omega_p^2 〈v_x^2〉)]/2$.
+    Since the square root is larger than
+    $k^2 c^2+omega_p^2$ when $〈v_x^2〉>0$, $Y_-<0$.
+    Writing $omega=i gamma$ on the growing member gives
+    $gamma^2=[sqrt((k^2 c^2+omega_p^2)^2+
+        4 k^2 omega_p^2 〈v_x^2〉)-
+      (k^2 c^2+omega_p^2)]/2$.
+    A finite parallel temperature, collisions, magnetic field, or nonlinear
+    redistribution changes this idealized branch and must be included before
+    applying the formula to a particular plasma.]
+  )
+
+  #rechenbeispiel[
+    Use an electron plasma with $n_0=qty("1.0e10", "cm^-3")$,
+    $e=qty("4.803e-10", "statcoulomb")$,
+    $m_e=qty("9.109e-28", "g")$, and
+    $c=qty("2.998e10", "cm/s")$. Let
+    #normalized-label[$(k c)/omega_p=qty("0.50", "1")$] and
+    #normalized-label[ $〈v_x^2〉/c^2=qty("1.00e-2", "1")$ ].
+    Determine $k$, the wavelength, and the positive growth rate of the
+    anisotropic transverse branch.
+
+    Numerical result: $omega_p approx qty("5.64e9", "s^-1")$,
+    $k approx qty("9.41e-2", "cm^-1")$,
+    $lambda approx qty("66.8", "cm")$,
+    #normalized-label[$gamma/omega_p approx qty("4.47e-2", "1")$], and
+    $gamma approx qty("2.52e8", "s^-1")$.
+  ]
+
+  #interpretation(
+    [Transverse waves sample more than density],
+    [The cold cutoff depends only on the total plasma frequency. The kinetic
+    correction samples perpendicular velocity spread and the pole at the
+    parallel phase velocity. An isotropic distribution usually leaves the
+    ordinary high-frequency branch stable in the nonrelativistic model, while
+    anisotropy can release free energy into a transverse perturbation.]
+  )
+
+  #summary[
+    A transverse kinetic wave follows from the Vlasov response together with
+    Maxwell's equations. Its cold limit is
+    $omega^2=k^2 c^2+sum_s omega_(p,s)^2$; finite velocity spread adds a
+    resonant integral. An anisotropic distribution can make the lower
+    transverse branch have $omega^2<0$, producing growth from velocity-space
+    free energy.
+  ]
+
+  #knowledge-check((
+    (
+      question: [What distinguishes a transverse kinetic wave from the longitudinal calculation?],
+      answer: [The electric field is perpendicular to $bold(k)$, so the wave magnetic field contributes to the Lorentz force and the current must be coupled to Maxwell's transverse wave equation rather than only to Poisson's equation.]
+    ),
+    (
+      question: [Which limit gives the cold electromagnetic cutoff?],
+      answer: [Taking each equilibrium toward a cold velocity-space delta distribution removes the finite-velocity integral and gives $omega^2=k^2 c^2+sum_s omega_(p,s)^2$.]
+    ),
+    (
+      question: [Why does the transverse kinetic response contain a squared resonant denominator after integration by parts?],
+      answer: [The velocity derivative acts on the factor $1/(omega-k v_z)$, producing $k/((omega-k v_z)^2)$. The pole is therefore more sensitive to the causal contour and to particles near the phase velocity.]
+    ),
+    (
+      question: [What supplies the free energy in the anisotropic transverse example?],
+      answer: [The unequal velocity-space spread, represented here by a finite perpendicular second moment and a cold parallel direction, stores free energy that can be transferred to the growing transverse field.]
+    ),
+  ))
+
   #section-title[Two-stream instability] <two-stream-instability>
 
   #lead[
