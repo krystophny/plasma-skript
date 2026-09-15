@@ -221,7 +221,9 @@
     )[
       #strong[Exam connection — exact wording] \
       #emph[These prompts are study prompts, not an answer key.] \
-      #list(..prompts.map(prompt => [#prompt])) \
+      #for prompt in prompts [
+        #block[#prompt]
+      ]
       #text(size: 8pt, fill: muted)[Source: #source]
     ]
   } else {
@@ -230,7 +232,7 @@
       #html.p(class: "exam-note")[
         These prompts are study prompts, not an answer key.
       ]
-      #html.ol[
+      #html.ul(class: "exam-prompts-list")[
         #for prompt in prompts [
           #html.li[#prompt]
         ]

@@ -32,7 +32,7 @@
     title: [Single-particle motion],
     slug: "02-single-particle-motion",
     status: "drafted",
-    summary: [Gyromotion, homogeneous-force drifts, guiding centers, mirrors, and curvature.],
+    summary: [Gyromotion, homogeneous-force drifts, guiding centers, mirrors, polarization drift, and cyclotron resonance.],
   ),
   (
     number: 3,

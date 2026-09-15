@@ -334,10 +334,19 @@ dd {
 }
 
 .objectives ul,
-.exam-prompt ol,
+.exam-prompt ul,
 .knowledge-check ol {
   margin: 0.3rem 0 0;
   padding-left: 1.35rem;
+}
+
+.exam-prompt ul.exam-prompts-list {
+  padding-left: 0;
+  list-style: none;
+}
+
+.exam-prompt ul.exam-prompts-list li {
+  margin: 0.45rem 0;
 }
 
 .exam-note,

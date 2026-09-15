@@ -578,6 +578,311 @@
     ),
   ))
 
+  #section-title[Polarization drift in a slowly varying electric field] <motion-polarization>
+
+  #lead[
+    The $E times B$ drift is an instantaneous force balance. What happens
+    when the perpendicular electric field changes slowly in time? The orbit
+    center acquires an inertial correction so that its drift can follow the
+    changing field.
+  ]
+
+  #objectives((
+    [state the temporal ordering for the polarization-drift approximation],
+    [separate the static $E times B$ drift from the inertial correction],
+    [derive the polarization drift in a uniform magnetic field],
+    [interpret the species-summed polarization current],
+  ))
+
+  #unit-ledger[
+    Gaussian CGS is active. The electric field is in statvolt per centimetre,
+    the magnetic field is in gauss, mass is in grams, charge is in
+    statcoulomb, and all velocities are in #unit("cm/s"). The drive frequency
+    $omega_"d"$ and $Omega$ are in #unit("s^-1"). The ordering ratio
+    $omega_"d"/abs(Omega)$ is normalized and therefore carries unit [1].
+  ]
+
+  #assumption(
+    [Slowly varying perpendicular electric field],
+    [Take a uniform, time-independent $bold(B)=B bold(b)$ and a spatially
+    uniform perpendicular electric field whose characteristic drive
+    frequency satisfies $omega_"d"/abs(Omega) << 1$. The field changes slowly
+    compared with one gyroperiod, and the correction to the $E times B$ drift
+    remains small.]
+  )
+
+  For the perpendicular motion, separate the leading drift from the fast
+  gyromotion and its inertial correction:
+
+  $ bold(v)_perp = bold(v)_(E times B) + bold(v)_"pol" + bold(v)_"gyro" $ <motion-polarization-split>
+
+  The leading force balance is the familiar common drift
+
+  $ bold(v)_(E times B) = (c (bold(E)_perp times bold(B)))/(B^2) $ <motion-polarization-exb>
+
+  #equation-note[
+    Gaussian CGS. The leading drift is in #unit("cm/s") and follows the
+    instantaneous electric field. The notation $bold(v)_"gyro"$ denotes the
+    rapidly rotating residual motion, not an additional secular drift.
+  ]
+
+  The next-order orbit-center response is the polarization drift:
+
+  $ bold(v)_"pol" = (m c^2)/(q B^2) pdv(bold(E)_perp,t) $ <motion-polarization-drift>
+
+  #equation-note[
+    Gaussian CGS. The factor $1/q$ makes the polarization drift point in
+    opposite directions for positive and negative charges. Unlike the
+    $E times B$ drift, it depends on particle mass.
+  ]
+
+  #details(
+    [Derivation: inertial correction to the $E times B$ drift],
+    [Start with the perpendicular Lorentz equation for a uniform magnetic
+    field,
+    $m pdv(bold(v)_perp,t)=q (bold(E)_perp+
+      (bold(v)_perp times bold(B))/c)$.
+    Define $bold(v)_E=bold(v)_(E times B)$ so that
+    $bold(E)_perp+(bold(v)_E times bold(B))/c=bold(0)$.
+    Write the remaining slow correction as $bold(delta v)$ and keep the
+    leading inertial term:
+    $m pdv(bold(v)_E,t) = (q/c)(bold(delta v) times bold(B))$.
+
+    Cross this equation with $bold(B)$. Since the correction is perpendicular
+    to the field,
+    $(bold(delta v) times bold(B)) times bold(B)
+    =-B^2 bold(delta v)$, so
+    $bold(delta v)=(m c)/(q B^2)
+      (bold(B) times pdv(bold(v)_E,t))$.
+    The magnetic field is constant, hence
+    $pdv(bold(v)_E,t)=
+      (c (pdv(bold(E)_perp,t) times bold(B)))/(B^2)$.
+    Use $bold(B) times (bold(A) times bold(B))=B^2 bold(A)$ for
+    $bold(A) dot bold(B)=0$. The correction is therefore
+    $bold(delta v)=(m c^2)/(q B^2) pdv(bold(E)_perp,t)$.
+    The discarded term $m pdv(bold(delta v),t)$ is smaller by the ordering
+    $omega_"d"/abs(Omega)$, which establishes the validity condition.]
+  )
+
+  Summing over species gives a polarization current density
+
+  $ bold(j)_"pol" = sum_s n_(s,0) q_s bold(v)_"pol,s"
+    = (c^2)/(B^2) (sum_s n_(s,0) m_s)
+      pdv(bold(E)_perp,t) $ <motion-polarization-current>
+
+  #equation-note[
+    Gaussian CGS. The current density is in statcoulomb per #unit("cm^2") per
+    #unit("s"). The charge signs cancel in the species sum, so the mass
+    density weights the polarization current; in an electron--ion plasma the
+    ion contribution is usually larger.
+  ]
+
+  #rechenbeispiel[
+    Consider an electron in a uniform field $B=qty("100", "G")$. Use
+    $m_e=qty("9.109e-28", "g")$, $q_e=-qty("4.803e-10", "statcoulomb")$,
+    $c=qty("2.998e10", "cm/s")$, and a perpendicular drive
+    $bold(E)_perp(t)=qty("1.00", "statvolt/cm") cos(omega_"d" t) bold(e)_x$
+    with $omega_"d"=qty("1.00e5", "s^-1")$. Evaluate the polarization-drift
+    amplitude and the ordering ratio $omega_"d"/abs(Omega_e)$.
+
+    Assumptions: uniform Gaussian-CGS fields, collisionless motion, and the
+    slowly varying-field approximation.
+
+    Numerical result: $abs(v_"pol,e")=qty("1.70e4", "cm/s")$ and
+    #normalized-label[$omega_"d"/abs(Omega_e)=qty("5.69e-5", "1")$].
+  ]
+
+  #interpretation(
+    [Polarization is an inertial response],
+    [The $E times B$ drift transports both species together, whereas the
+    polarization drift separates their orbit centers when the electric field
+    changes. A growing electric field therefore produces a current even though
+    the leading $E times B$ drift carries no net current in a quasineutral
+    pair of species. The approximation fails when the field varies on the
+    gyrofrequency scale, where the full cyclotron response is needed.]
+  )
+
+  #summary[
+    For $omega_"d" << abs(Omega)$, a changing perpendicular electric field
+    adds $bold(v)_"pol"=(m c^2)/(q B^2) pdv(bold(E)_perp,t)$ to the common
+    $E times B$ drift. This correction is mass dependent and reverses with
+    charge, so it contributes to the polarization current.
+  ]
+
+  #knowledge-check((
+    (
+      question: [Which ordering makes the polarization-drift expansion valid?],
+      answer: [The electric-field drive must be slow compared with gyromotion:
+      $omega_"d"/abs(Omega) << 1$, with a uniform field over the orbit and a
+      small inertial correction.]
+    ),
+    (
+      question: [Why does the polarization drift depend on mass while the $E times B$ drift does not?],
+      answer: [The $E times B$ drift is an instantaneous electric--magnetic
+      force balance. The polarization drift is the velocity needed to supply
+      the inertia $m pdv(bold(v)_(E times B),t)$, so its coefficient contains
+      $m/q$.]
+    ),
+    (
+      question: [What is the direction of the electron polarization drift when $bold(E)_perp$ grows in the $bold(e)_x$ direction?],
+      answer: [It points in the negative $bold(e)_x$ direction because the
+      electron charge is negative, while the positive-ion response points in
+      the positive $bold(e)_x$ direction.]
+    ),
+    (
+      question: [What physical effect is missed if only the $E times B$ drift is retained?],
+      answer: [The model misses the species-opposite inertial response and the
+      associated polarization current generated by a time-varying electric
+      field.]
+    ),
+  ))
+
+  #section-title[Cyclotron resonance and circular polarization] <motion-cyclotron-resonance>
+
+  #lead[
+    The slow polarization approximation has a sharp boundary. How does a
+    rotating electric field exchange energy with a particle when its rotation
+    matches the particle's gyrofrequency? The answer is cyclotron resonance.
+  ]
+
+  #objectives((
+    [represent perpendicular motion with circular complex amplitudes],
+    [identify the circular polarization that couples to a given charge sign],
+    [locate the cyclotron-resonance denominator],
+    [state why an ideal collisionless resonance cannot predict unlimited physical energy],
+  ))
+
+  #unit-ledger[
+    Gaussian CGS is active. The angular frequency $omega$, signed gyrofrequency
+    $Omega=q B/(m c)$, and detuning are in #unit("s^-1"). The complex electric
+    field amplitude is in statvolt per centimetre, velocity in #unit("cm/s"),
+    and $i$ is the dimensionless imaginary unit with $i^2=-1$. The resonance
+    condition $omega/abs(Omega)=1$ is normalized and carries unit [1].
+  ]
+
+  #assumption(
+    [Uniform harmonic drive],
+    [Use a uniform, static $bold(B)=B bold(e)_z$ and a small transverse field
+    with time dependence $exp(-i omega t)$. Neglect collisions, field
+    gradients, radiation reaction, and relativistic corrections. The physical
+    field is the real part of the complex representation.]
+  )
+
+  #definition(
+    [Circular complex amplitudes],
+    [In the perpendicular plane define the clockwise combinations
+    $v_"cw"=v_x+i v_y$ and $E_"cw"=E_x+i E_y$, and the counterclockwise
+    combinations $v_"ccw"=v_x-i v_y$ and $E_"ccw"=E_x-i E_y$. For $q B>0$,
+    free gyromotion has $v_"cw"$ proportional to $exp(-i Omega t)$, so the
+    clockwise field is the resonant polarization.]
+  )
+
+  #governing-law(
+    [Circular cyclotron response],
+    [The perpendicular Lorentz equation becomes]
+  )
+
+  $ pdv(v_"cw",t) + i Omega v_"cw" = (q/m) E_"cw" $ <motion-cyclotron-response>
+
+  #equation-note[
+    Gaussian CGS. For a harmonic drive
+    $E_"cw"=tilde(E)_"cw" exp(-i omega t)$, the response amplitude is
+    $tilde(v)_"cw"=(q tilde(E)_"cw")/(i m (Omega-omega))$. The denominator
+    becomes small when the drive rotation matches the signed gyrofrequency.
+  ]
+
+  #details(
+    [Derivation: the resonant circular response],
+    [With $bold(B)=B bold(e)_z$, the perpendicular component equations are
+    $pdv(v_x,t)=(q/m) E_x+Omega v_y$ and
+    $pdv(v_y,t)=(q/m) E_y-Omega v_x$.
+    Add $i$ times the second equation to the first. The left-hand side is
+    $pdv(v_x+i v_y,t)+i Omega (v_x+i v_y)$, which gives
+    $pdv(v_"cw",t)+i Omega v_"cw"=(q/m)E_"cw"$.
+
+    Insert $E_"cw"(t)=tilde(E)_"cw" exp(-i omega t)$ and seek a particular
+    solution $v_"cw"(t)=tilde(v)_"cw" exp(-i omega t)$. Then
+    $-i omega tilde(v)_"cw"+i Omega tilde(v)_"cw"
+    =(q/m) tilde(E)_"cw"$, so
+    $tilde(v)_"cw"=(q tilde(E)_"cw")/(i m (Omega-omega))$.
+    The homogeneous solution is $v_"cw"=v_"cw",0 exp(-i Omega t)$.
+    Thus the forced response resonates when $omega=Omega$ for this
+    polarization.
+
+    Repeating the construction with $v_"ccw"=v_x-i v_y$ gives
+    $pdv(v_"ccw",t)-i Omega v_"ccw"=(q/m)E_"ccw"$ and a denominator
+    proportional to $omega+Omega$. For positive drive frequency, one of the
+    two circular polarizations is resonant at $omega=abs(Omega)$, with the
+    matching handedness determined by the sign of $q B$.]
+  )
+
+  A linearly polarized field is the sum of two counter-rotating circular
+  fields. Only the component with the matching handedness resonates, while
+  the other component remains off resonance. In a real plasma, collisions,
+  finite pulse duration, spatial inhomogeneity, and nonlinear effects limit
+  the energy transfer and broaden or shift the ideal resonance.
+
+  #rechenbeispiel[
+    In a uniform Gaussian-CGS field $B=qty("100", "G")$, determine the
+    positive resonant angular frequencies for an electron and a proton. Use
+    $e=qty("4.803e-10", "statcoulomb")$,
+    $m_e=qty("9.109e-28", "g")$, $m_i=qty("1.673e-24", "g")$, and
+    $c=qty("2.998e10", "cm/s")$. For each species, identify the circular
+    polarization that couples to the positive-frequency drive.
+
+    Assumptions: collisionless, nonrelativistic, uniform magnetic field and
+    ideal harmonic forcing.
+
+    Numerical result: $omega_"res,e"=qty("1.76e9", "s^-1")$ and
+    $omega_"res,i"=qty("9.58e5", "s^-1")$. The resonant polarization has the
+    handedness of the species' free gyromotion.
+  ]
+
+  #interpretation(
+    [Resonance is a model boundary],
+    [Far from resonance, the response can be expanded into the common $E times
+    B$ drift and the small polarization correction. Near
+    $omega=abs(Omega)$, that ordering fails: the drive remains phase coherent
+    with the orbit and transfers energy over many gyroperiods. A finite
+    collision rate or a finite interaction time must then be included before
+    predicting an amplitude or absorbed power.]
+  )
+
+  #summary[
+    Circular decomposition exposes the cyclotron denominator. A positive
+    frequency resonates with the circular polarization matching the free
+    gyromotion, at $omega=abs(Omega)$. The collisionless singularity marks the
+    limit of the slow-drift approximation rather than an unlimited physical
+    velocity.
+  ]
+
+  #knowledge-check((
+    (
+      question: [Why is circular polarization useful for diagnosing cyclotron resonance?],
+      answer: [It separates a rotating field into the two handednesses. Only
+      the component rotating with the free gyromotion has the small resonant
+      denominator.]
+    ),
+    (
+      question: [How does changing the sign of $q$ affect the resonant polarization?],
+      answer: [It reverses the signed gyrofrequency and therefore selects the
+      opposite circular handedness for a positive-frequency drive; the
+      positive resonance remains at $abs(Omega)$.]
+    ),
+    (
+      question: [What does the factor $1/(Omega-omega)$ predict as the drive approaches resonance?],
+      answer: [The ideal forced-response amplitude grows as the detuning tends
+      to zero. The divergence signals missing broadening or saturation physics,
+      such as collisions, finite pulse duration, or nonlinear motion.]
+    ),
+    (
+      question: [Why can a linearly polarized wave still heat a charged particle at cyclotron resonance?],
+      answer: [A linear polarization is the sum of two circular components. The
+      component with matching handedness supplies the resonant rotating force,
+      while the opposite component is nonresonant.]
+    ),
+  ))
+
   #chapter-nav(
     previous: (href: "01-introduction.html", title: [Introduction]),
     next: (href: "03-kinetic-theory.html", title: [Kinetic theory]),
