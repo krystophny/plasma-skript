@@ -116,11 +116,12 @@
   #lq.diagram(
     width: 10cm,
     height: 5.2cm,
+    legend: (position: (100% + .5em, 0%)),
     xlabel: normalized-axis[$ell / lambda_"ref"$],
     ylabel: normalized-axis[$y / lambda_"ref"$],
     lq.plot(
       (0, 0.8, 1.6, 2.4, 3.0, 3.8, 4.8, 5.8),
-      (0, 0, 0, 0.7, 0.7, -0.25, -0.25, 0.45),
+      (0, 0, 0, 0.34, 0.34, -0.25, -0.25, 0.22),
       color: blue,
       mark: "o",
       label: [neutral gas: hard collisions],
