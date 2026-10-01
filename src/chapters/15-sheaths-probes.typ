@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[13. Plasma sheaths and Langmuir probes] <plasma-sheaths>
+  #page-title[15. Plasma sheaths and Langmuir probes] <plasma-sheaths>
 
   #lead[
     A material boundary is not a passive edge of a plasma. Electrons and ions
@@ -27,9 +27,9 @@
   #section-title[Particle flux and the need for a sheath] <sheath-flux>
 
   #lead[
-    What reaches a surface when the nearby distribution is isotropic? The
-    answer is a one-sided velocity moment. Because the electron thermal speed
-    is much larger than the ion thermal speed, an initially uncharged wall
+    A surface collects the particles moving toward it, so the incoming flux
+    is a one-sided velocity moment. At comparable electron and ion
+    temperatures, the electron thermal speed is much larger, and an initially uncharged wall
     receives a much larger electron current. The resulting negative charging
     creates the barrier that defines a sheath.
   ]
@@ -53,7 +53,8 @@
 
   #assumption(
     [Isotropic distribution next to a planar surface],
-    [Take a locally planar boundary with outward normal $bold(e)_n$ and a
+    [Take a locally planar boundary with normal $bold(e)_n$ directed from
+    the plasma into the material and a
     distribution that is isotropic on the plasma side. The surface is
     collisionless over the collection distance, absorbs particles that reach
     it, and has no secondary emission in the first flux estimate. This
@@ -79,9 +80,9 @@
       =(n_s v_"th,s")/(2 sqrt(pi))
       =(n_s v_"mean,s")/4$,
     where $v_"th,s"=sqrt((2 k_B T_s)/m_s)$ and
-    $v_"mean,s"=sqrt((8 k_B T_s)/(pi m_s))$. Equal temperatures therefore
-    give $Gamma_(e,0)/Gamma_(i,0)=sqrt(m_i/m_e)$, even though the
-    equilibrium densities can be equal.]
+    $v_"mean,s"=sqrt((8 k_B T_s)/(pi m_s))$. At equal densities and
+    temperatures, $Gamma_(e,0)/Gamma_(i,0)=sqrt(m_i/m_e)$.
+    Equal particle densities therefore do not imply equal arrival rates.]
   )
 
   #details(
@@ -154,8 +155,8 @@
   #interpretation(
     [Flux imbalance charges the boundary],
     [At equal density and temperature, electrons arrive faster by the square
-    root of the ion-to-electron mass ratio. The first electron loss leaves a
-    negative wall charge. Its potential repels further electrons and attracts
+    root of the ion-to-electron mass ratio. Electrons lost by the plasma are
+    gained by the wall, leaving a negative wall charge. Its potential repels further electrons and attracts
     ions until the net current is compatible with the electrical boundary
     condition. The density equality in the plasma therefore does not imply
     equal wall fluxes.]
@@ -181,7 +182,7 @@
     ),
     (
       question: [What physical process starts the formation of a floating sheath?],
-      answer: [The initial electron flux is larger, so the wall loses negative charge and its potential becomes negative relative to the plasma. This potential filters electrons and accelerates ions.]
+      answer: [The initial electron flux is larger, so the wall gains electrons and its potential becomes negative relative to the plasma. This potential filters electrons and accelerates ions.]
     ),
     (
       question: [Which assumption makes the half-space flux formula a local estimate rather than a sheath solution?],
@@ -224,7 +225,9 @@
     charge $+e$, Boltzmann electrons with temperature $T_e$, no magnetic
     field, no collisions inside the sheath, and a steady ion flux. The
     sheath edge is an asymptotic matching region, not an infinitely sharp
-    physical discontinuity.]
+    physical discontinuity. The limit $x -> infinity$ represents the
+    sheath-edge reservoir in this local model; the presheath that joins it
+    to the bulk plasma is not included.]
   )
 
   #definition(
@@ -235,7 +238,11 @@
     $n_e/n_0=exp(-eta)$. Let $u_s$ and $n_s$ be the ion speed and density
     at the sheath edge, define
     $c_s=sqrt((k_B T_e)/m_i)$ and $M=u_s/c_s$, and take $eta=0$ at the
-    matching edge.]
+    matching edge, with $n_s=n_0$. Throughout this sheath model $u_i>0$ is
+    the inward ion speed: the signed velocity is $v_(i,x)=-u_i$ because $x$
+    increases away from the wall. The barrier $-e phi$ is positive electron
+    potential energy, although $phi$ itself is negative. Here the subscript
+    $s$ on $u_s$ and $n_s$ means “sheath edge,” rather than a species index.]
   )
 
   #governing-law(
@@ -278,7 +285,8 @@
 
     $ m_i u_i dv(u_i,x)=-e dv(phi,x) .$
 
-    Multiplying by $u_i$ and integrating gives the conserved energy
+    Since $u_i dv(u_i,x)=dv(u_i^2/2,x)$, direct integration gives the
+    conserved energy:
 
     $ dv((m_i u_i^2)/2+e phi,x)=0 .$
 
@@ -340,7 +348,10 @@
     reference. Let $x$ increase from the wall toward the sheath edge, and let
     the electron-free layer have thickness $d$.
 
-    In the large-drop limit, ion energy gives
+    The large-drop limit neglects the Bohm entry kinetic energy. Extending
+    this approximation to $V=0$ imposes zero injection speed there; this is
+    the idealized Child--Langmuir boundary, not an exact match to the Bohm
+    sheath, whose entry speed is finite. In this idealization ion energy gives
 
     $ u_i approx sqrt((2 e V)/m_i) .$
 
@@ -364,10 +375,11 @@
 
     $ ((dv(V,s))^2)/2=2 C V^(1/2)+C_1 .$
 
-    At the edge, $s=0$, $V=0$, and the idealized matching condition gives
+    At the idealized injection boundary, $s=0$, $V=0$, and the separately
+    imposed zero-field condition gives
     $dv(V,s)=0$, so $C_1=0$. Taking the positive branch gives
 
-    $ V^(-1/4) dv(V,s)=2 sqrt(C) dif s .$
+    $ V^(-1/4) dv(V,s)=2 sqrt(C) .$
 
     Integrating from the edge,
 
@@ -417,8 +429,9 @@
     [The Bohm condition is an attachment condition],
     [The criterion does not say that every ion in the plasma moves at exactly
     the sound speed. It says that the directed ion flow arriving at the
-    sheath edge must be at least sonic in the cold-ion model. The presheath
-    supplies this flow; the Debye-scale sheath then supplies the remaining
+    sheath edge must be at least sonic in the cold-ion model. The presheath,
+    a nearly quasineutral region connecting the bulk plasma to the sheath,
+    accelerates ions into this flow. The Debye-scale sheath then supplies the remaining
     potential drop and particle filtering.]
   )
 
@@ -447,7 +460,7 @@
     ),
     (
       question: [Why is the Child--Langmuir profile not the full sheath solution?],
-      answer: [It neglects the electron density and assumes a large ion potential drop. It describes an electron-free space-charge subregion near the wall, while the full sheath must match to a quasineutral plasma with both species present.]
+      answer: [It neglects electrons and entry kinetic energy, and imposes zero injection speed and field at zero drop. These idealized boundaries produce space-charge scaling; a Bohm sheath instead has finite ion entry speed and matches to a plasma with both species present.]
     ),
   ))
 
@@ -470,7 +483,7 @@
 
   #unit-ledger[
     The floating potential $phi_f$ is in #unit("statvolt") relative to the
-    plasma potential, and $(k_B T_e)/e$ is the corresponding potential scale.
+    sheath-edge plasma potential, and $(k_B T_e)/e$ is the corresponding potential scale.
     Fluxes are in #unit("cm^-2 s^-1"), current densities in
     statcoulomb per #unit("cm^2") per #unit("s"), and probe area is in
     #unit("cm^2"). The normalized wall bias
@@ -483,7 +496,9 @@
     at the sheath edge, cold ions entering at the sonic speed
     $c_s=sqrt((k_B T_e)/m_i)$, and an absorbing surface without secondary
     emission. Take conventional current into the wall as positive for ions:
-    $J=+e Gamma_i-e Gamma_e$. The plasma potential is the zero of $phi$.]
+    $J=+e Gamma_i-e Gamma_e$. Set the sheath-edge potential to zero and
+    let $n_0$ be the density there. A potential quoted relative to the bulk
+    plasma must additionally include the presheath potential drop.]
   )
 
   #definition(
@@ -513,7 +528,7 @@
   #details(
     [Derivation: electron transmission and the floating logarithm],
     [#derivation-step[Compute the transmitted electron flux]
-    Let the plasma potential be zero and the wall potential be $phi_w<0$.
+    Let the sheath-edge potential be zero and the wall potential be $phi_w<0$.
     An electron has potential energy $q_e phi=-e phi$. It reaches the wall
     only if its normal kinetic energy exceeds the barrier $e abs(phi_w)$.
     Integrating the Maxwellian over the transmitted velocities multiplies the
@@ -545,7 +560,7 @@
     $ phi_f=((k_B T_e)/e)ln(Gamma_i/Gamma_(e,0)) .$
 
     #derivation-step[Insert the ideal edge fluxes]
-    The cold-ion Bohm flux and the thermal electron flux are
+    The cold-ion Bohm flux and the unretarded thermal electron flux are
 
     $ Gamma_i=n_0 sqrt((k_B T_e)/m_i), quad
       Gamma_(e,0)=n_0 sqrt((k_B T_e)/(2 pi m_e)) .$
@@ -554,7 +569,7 @@
 
     $ phi_f=((k_B T_e)/(2e))ln((2 pi m_e)/m_i) .$
 
-    For hydrogen, $(2 pi m_e)/m_i approx 0.00343$, whose logarithm is
+    For hydrogen, $(2 pi m_e)/m_i approx 0.00342$, whose logarithm is
     approximately $-5.68$. The ideal cold-ion floating potential is thus
     approximately $-2.84 k_B T_e/e$. The numerical example evaluates these
     stated CGS definitions without an additional probe-geometry factor.]
@@ -643,7 +658,10 @@
   ]
   #assumption(
     [Ideal planar probe characteristic],
-    [Use a small absorbing planar probe in a stationary Maxwellian plasma.
+    [Use an absorbing probe that is small enough not to change the bulk
+    plasma, but whose collecting face is large compared with the sheath
+    thickness so that local planar collection applies. Take stationary
+    Maxwellian electrons and the stated cold-ion entry model.
     In the negative-bias branch, take the ion current as approximately
     saturated and the electron current as Boltzmann-retarded. Neglect
     magnetic-orbit effects, collisions in the sheath, secondary emission,
@@ -668,11 +686,15 @@
     [On the negative-bias side, write
     $I_(p)(u)=A [e Gamma_i-e Gamma_(e,0) exp(u)]$.
     The floating point is the zero of this curve. If
-    $I_e=-e A Gamma_e$ denotes the electron current alone, then the
+    $I_e=-e A Gamma_e$ denotes the electron current alone and
+    $I_(e,0)=e A Gamma_(e,0)>0$ its unretarded magnitude, then the
     electron-retarding branch satisfies
     $ln(abs(I_e)/I_(e,0))=u$.
     Its slope is therefore
-    $dv(ln(abs(I_e)),phi_p)=e/(k_B T_e)$.
+    $dv(ln(abs(I_e)/I_(e,0)),phi_p)=e/(k_B T_e)$.
+    Obtain $I_e$ by subtracting the estimated ion contribution
+    $I_i=e A Gamma_i$ from the measured signed current: $I_e=I_p-I_i$.
+    The logarithm is taken of the positive, dimensionless current ratio.
     The electron saturation scale gives
     $n_e=abs(I_(e,0))/[e A sqrt((k_B T_e)/(2 pi m_e))]$
     for the ideal planar collection model.]
@@ -690,19 +712,20 @@
     $ abs(I_e)=e A Gamma_(e,0)
       exp((e (phi_p-phi_"pl"))/(k_B T_e)) .$
 
-    Taking the natural logarithm produces a straight line:
+    Divide by the fixed reference $I_(e,0)=e A Gamma_(e,0)$ and take
+    the natural logarithm to obtain a straight line:
 
-    $ ln(abs(I_e))=ln(e A Gamma_(e,0))
-      +(e (phi_p-phi_"pl"))/(k_B T_e) .$
+    $ ln(abs(I_e)/I_(e,0))
+      =(e (phi_p-phi_"pl"))/(k_B T_e) .$
 
     #derivation-step[Read temperature from the semilog slope]
     Differentiate with respect to probe potential:
 
-    $ dv(ln(abs(I_e)),phi_p)=e/(k_B T_e) .$
+    $ dv(ln(abs(I_e)/I_(e,0)),phi_p)=e/(k_B T_e) .$
 
     Inverting the slope gives
 
-    $ k_B T_e=e (dv(ln(abs(I_e)),phi_p))^(-1) .$
+    $ k_B T_e=e (dv(ln(abs(I_e)/I_(e,0)),phi_p))^(-1) .$
 
     If the voltage unit is volts and the energy unit is electron-volts, the
     numerical value of $k_B T_e$ in eV is the inverse slope in
@@ -729,12 +752,19 @@
   #probe-iv-characteristic
   #animation(
     "../media/sheath-formation.mp4",
-    "A normalized planar-boundary illustration shows a quasineutral plasma, a marked sheath edge, a charge-separated sheath, and a material wall. Electron and ion density profiles separate in the sheath, the normalized negative potential-energy barrier grows toward the wall, a fast-electron marker reflects, and an ion marker reaches the wall. The animation is schematic and not a particle-in-cell simulation.",
+    "A prescribed planar sheath has its wall at x/lambdaD equal to zero and its edge at five. A positive electron-energy barrier rises toward the wall. Boltzmann-electron and cold-ion densities follow this potential; a subthreshold electron turns inside the barrier and an ion accelerates to the wall. Separate clocks resolve their transit times. The potential is prescribed rather than obtained from Poisson's equation.",
     caption: [
-      A surface charges until the potential barrier and directed ion flow
-      regulate the two collection fluxes. All coordinates and plotted
-      profiles are normalized; the animation is a visual guide to the
-      boundary conditions.
+      The prescribed profile uses $X=x/lambda_D$, edge $X=5$,
+      $eta=0.12 (5-X)^2$ inside the sheath, and $eta=0$ outside.
+      Densities follow $n_e/n_0=exp(-eta)$ and
+      $n_i/n_0=1.5/sqrt(1.5^2+2 eta)$; Poisson's equation is not solved.
+      The electron's entry normal energy is $0.9 k_B T_e$. The electron
+      clock is $(t sqrt((k_B T_e)/m_e))/lambda_D$ and the ion clock is
+      $(t c_s)/lambda_D$, so their displayed transit times are not comparable.
+      Physically the electron barrier is $-e phi>0$:
+      reflection requires normal kinetic energy below this barrier, while
+      sufficiently energetic electrons reach the wall. The equations above
+      use distance increasing away from the wall and positive inward ion speed.
     ],
     poster: "../media/sheath-formation.png",
   )
@@ -745,19 +775,23 @@
       Probe bias moves the operating point across collection regimes. The
       retarding branch carries the temperature information in its logarithmic
       slope, while the saturation scale carries the density information under
-      the stated collection model.
+      the stated collection model. This ideal planar illustration uses
+      $I_p/(e Gamma_(e,0) A)=0.058-exp(min(u,0))$: it is continuous at
+      zero bias and caps the electron contribution at its planar saturation
+      scale. Geometry-dependent rising collection branches require a different
+      model.
     ],
     poster: "../media/langmuir-probe.png",
   )
   #rechenbeispiel[
     A planar probe has area $A=qty("0.10", "cm^2")$. In its electron-retarding
     region, a fit gives
-    $dv(ln(abs(I_e)),phi_p)=qty("0.40", "V^-1")$.
+    $dv(ln(abs(I_e)/I_(e,0)),phi_p)=qty("0.40", "V^-1")$.
     The extrapolated zero-bias electron saturation current magnitude is
     $abs(I_(e,0))=qty("4.0", "mA")$. Use the ideal planar model and determine
-    the electron temperature in eV and density in #unit("cm^-3").
+    the electron temperature energy $k_B T_e$ in eV and density in #unit("cm^-3").
     Numerical result: $(k_B T_e)/e approx qty("2.50", "V")$, so
-    $T_e approx qty("2.50", "eV")$, and
+    $k_B T_e approx qty("2.50", "eV")$, and
     $n_e approx qty("9.44e9", "cm^-3")$.
   ]
   #interpretation(
@@ -773,13 +807,13 @@
     A Langmuir probe sweeps
     $u=(e (phi_p-phi_"pl"))/(k_B T_e)$ through ion saturation, electron
     retardation, and electron saturation. On the ideal retarding branch,
-    $dv(ln(abs(I_e)),phi_p)=e/(k_B T_e)$; the extrapolated saturation
+    $dv(ln(abs(I_e)/I_(e,0)),phi_p)=e/(k_B T_e)$; the extrapolated saturation
     scale then gives density after the collection area and model are fixed.
   ]
   #knowledge-check((
     (
       question: [Which part of an ideal probe characteristic carries the electron-temperature information?],
-      answer: [The logarithmic slope of the magnitude of the electron-retarding current is $e/(k_B T_e)$. The fit must exclude the ion and electron saturation regions.]
+      answer: [After subtracting the ion contribution, the slope of $ln(abs(I_e)/I_(e,0))$ against probe potential is $e/(k_B T_e)$. Fit only the electron-retarding region, excluding the ion and electron saturation regions.]
     ),
     (
       question: [What does the zero-current point represent on a floating probe?],
@@ -795,7 +829,7 @@
     ),
   ))
   #chapter-nav(
-    previous: (href: "12-hot-plasma-waves.html", title: [Hot plasma waves]),
+    previous: (href: "14-hot-plasma-waves.html", title: [Hot plasma waves]),
     next: (href: "../appendices/mathematical-toolkit.html", title: [Mathematical toolkit]),
   )
 ]

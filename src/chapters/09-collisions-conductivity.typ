@@ -4,12 +4,13 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[7. Collisions and plasma conductivity] <collisions-conductivity>
+  #page-title[9. Collisions and plasma conductivity] <collisions-conductivity>
 
   #lead[
-    Collisions are not merely a loss mechanism. They convert random thermal
-    motion into directed transport: inhomogeneity produces diffusion, while an
-    external force produces mobility and electrical current. This chapter
+    Gradients and external forces drive net transport; collisions set how
+    quickly momentum relaxes. Inhomogeneity produces diffusion, while an
+    external force produces mobility and electrical current. Collisions alone
+    create no net flux in a homogeneous equilibrium. This chapter
     builds the collision frequencies first and only then uses them in
     resistivity and conductivity models.
   ]
@@ -59,6 +60,11 @@
     $lambda_(a b)=1/(n_b sigma_(a b))$.]
   )
 
+  With a total scattering cross section, $tau_(a b)$ is a mean waiting time
+  between encounters. With a momentum-transfer cross section, it is a
+  transport relaxation time and $lambda_(a b)$ is a relaxation length;
+  many small-angle encounters can occur before directed momentum relaxes.
+
   The two transport mechanisms are separated conceptually. A spatial
   gradient produces a diffusive particle flux, schematically
   $bold(G)_"diff"=-D grad(n)$, while an external force produces a
@@ -67,6 +73,13 @@
   drift contributes to the current $bold(j)=sum_s q_(s)n_(s)bold(u)_(s)$.
   These are macroscopic summaries; the microscopic coefficient still depends
   on the collision operator and the ordering of scales.
+
+  Here $D$ is a particle diffusivity in #unit("cm^2/s"), and $bold(G)_"diff"$
+  is particle flux in #unit("cm^-2 s^-1"). The coefficient $mu$ in this
+  force-based definition is mobility, with units #unit("s/g"); it is not
+  the magnetic moment of Chapter 4. An electric-field mobility instead
+  relates velocity directly to the electric field and includes the charge
+  factor from the force.
 
   #assumption(
     [A dilute binary-collision model],
@@ -79,7 +92,11 @@
 
   #details(
     [Derivation: path probability and the mean free path],
-    [#derivation-step[Write the survival equation]
+    [Here $sigma_(a b)$ is the total event cross section at fixed relative
+    speed. The survival probability counts encounters, not momentum
+    relaxation weighted by scattering angle.
+
+    #derivation-step[Write the survival equation]
     During a path segment $dif ell$, a particle sweeps an effective volume
     $sigma_(a b) dif ell$. The expected number of targets is
     $n_b sigma_(a b) dif ell$. If $P_(0)(ell)$ is the probability of no
@@ -157,8 +174,10 @@
     (
       question: [What is the difference between collision time and collision frequency?],
       answer: [They are reciprocals under the same averaging convention:
-      $tau=1/nu$. The frequency counts effective momentum-transfer events per
-      #unit("s"); the time is the corresponding mean interval.]
+      $tau=1/nu$. For a total event cross section, these are the encounter
+      rate and mean waiting time. For a momentum-transfer cross section,
+      they describe directed-momentum relaxation, which can require many
+      small-angle encounters.]
     ),
     (
       question: [What are the Gaussian-CGS units of a collision cross section and mean free path?],
@@ -218,11 +237,14 @@
 
   The momentum-transfer cross section is the angle-weighted quantity:
 
-  $ sigma_"mt"(v)=integral (1-cos chi) (dif sigma)/(dif Omega) dif Omega $
+  $ sigma_"mt" (v)=integral (1-cos chi) (dif sigma)/(dif Omega) dif Omega $
 
-  It weights a scattering event by the fraction of directed momentum removed.
-  A collision that changes the direction only slightly can have a sizeable
-  total cross section but a small momentum-transfer cross section.
+  Here $chi$ is the deflection angle and $dif Omega$ is a solid-angle element;
+  neither angle carries a dimensional unit. The differential cross section
+  $(dif sigma)/(dif Omega)$ gives scattering area per unit solid angle.
+  The factor $1-cos chi$ weights each direction by its loss of forward
+  momentum. A scattering process dominated by small deflections can therefore
+  have a large total cross section but a small momentum-transfer cross section.
 
   #definition(
     [Neutral collision rate and drag],
@@ -354,7 +376,8 @@
     In Gaussian CGS, charge is in statcoulomb, reduced mass $m_r$ is in
     #unit("g"), relative speed is in #unit("cm/s"), and the impact parameter
     $b_90$ and Debye length $lambda_D$ are in #unit("cm"). The Coulomb
-    logarithm $ln Lambda$ and plasma parameter $Lambda$ are dimensionless;
+    cutoff logarithm $ln Lambda_"cut"$ and plasma parameter
+    $Lambda=n_"e"lambda_D^3$ are dimensionless, as is $ln Lambda$;
     thermal energy $k_B T_s$ is in #unit("erg"), and collision frequencies are
     in #unit("s^-1").
   ]
@@ -394,16 +417,30 @@
     [For impact parameters $b$ much larger than $b_90$, the deflection is
     small, $chi(b) approx (2 b_90)/b$. The screened upper cutoff is
     $b_"max" approx lambda_D$. The broad-impact-parameter measure is recorded
-    by
-    $Lambda=n_"e"lambda_D^3$ and
-    $ln Lambda=ln(lambda_D/b_90)$ up to the order-one convention used for the
-    lower cutoff. For the collision-frequency convention used here,
+    by $Lambda_"cut"=lambda_D/b_90$ and its logarithm
+    $ln Lambda_"cut"$. Separately, define $Lambda=n_"e"lambda_D^3$.
+    The approximate scattering-rate convention of Inan and Golkowski
+    (2011), Eq. (7.5), uses this plasma parameter @inan2011:
     $nu_(e i) approx (sqrt(2) omega_(p,e)^4)/(64 pi n_"e")
       ((k_B T_"e")/m_"e")^(-3/2) ln Lambda$,
     where $omega_(p,e)=sqrt((4 pi n_"e"e^2)/m_"e")$.
     The corresponding mean free path is
     $lambda_(e i)=⟨v_"e"⟩/nu_(e i)$.]
   )
+
+  These logarithms are not numerically equal. With the electron Debye length
+  $lambda_D=sqrt((k_B T_"e")/(4 pi n_"e"e^2))$ and the Maxwellian mean
+  speed used here, $Lambda_"cut"=32 Lambda$, so
+  $ln Lambda_"cut"=ln Lambda+ln(32)$. Treating the additive constant as
+  negligible is only a leading-log approximation when $ln Lambda$ is large
+  compared with it. The rate and numerical tasks below retain $ln Lambda$
+  and the cited approximate prefactor; the impact-parameter integral uses
+  $ln Lambda_"cut"$.
+
+  The plasma parameter $Lambda$ also differs from the Debye-sphere particle
+  count used in Chapter 1: $N_D=((4 pi)/3) Lambda$. Both are dimensionless and
+  express the many-particle screening condition. Keeping these definitions
+  separate avoids introducing an unintended factor into a quoted rate.
 
   #details(
     [Derivation: cumulative small-angle scattering],
@@ -421,11 +458,11 @@
     accumulated squared deflection has the scale
 
     $ dv(⟨Delta v_perp^2⟩,t) ∝ n_"i"v_"rel"^3 b_90^2
-      integral_(b_90)^(lambda_D) dif b/b .$
+      integral_(b_90)^(lambda_D) (dif b)/b .$
 
     The integral is
 
-    $ ln(lambda_D/b_90) ,$
+    $ ln(lambda_D/b_90)=ln Lambda_"cut" ,$
 
     the Coulomb logarithm. Distant deflections therefore cannot be discarded
     merely because each individual kick is small.
@@ -439,8 +476,10 @@
 
     $ omega_(p,e)^2=(4 pi n_"e"e^2)/m_"e" .$
 
-    The statistical scattering estimate then gives the displayed scaling
-    $nu_(e i) ∝ T_"e"^(-3/2)ln Lambda.$
+    This gives the scaling $nu_(e i) ∝ T_"e"^(-3/2)ln Lambda_"cut"$.
+    It does not fix a kinetic transport prefactor. The displayed textbook
+    estimate uses $ln Lambda$ instead, with the leading-log distinction
+    stated above.
 
     #derivation-step[State the weak-coupling condition]
     The ratio of distant to strong-scattering scales is large only when
@@ -464,7 +503,8 @@
 
     Assumptions: weak coupling $Lambda >> 1$, classical Coulomb scattering,
     a Debye upper cutoff, the heavy-ion approximation, and the Maxwellian
-    mean-speed convention stated above.
+    mean-speed convention and plasma-parameter logarithm $ln Lambda$ stated
+    above.
 
     Target: report $lambda_D$, $Lambda$, $ln Lambda$, $nu_(e i)$ using the
     collision-frequency convention above, and $lambda_(e i)$.
@@ -499,7 +539,8 @@
       question: [Why is the ninety-degree cross section not the complete Coulomb collision rate?],
       answer: [Distant encounters are much more numerous. Each gives a small
       deflection, but their squared kicks add over impact parameters and
-      produce the factor $ln Lambda$.]
+      produce the cutoff logarithm $ln Lambda_"cut"$. The cited rate estimate
+      instead uses the plasma-parameter logarithm $ln Lambda$.]
     ),
     (
       question: [How does the ninety-degree impact parameter scale with speed?],
@@ -527,8 +568,9 @@
   #lead[
     How does collisional drag become a resistivity? The current is a measure of
     relative charge-carrier motion, while drag removes that relative momentum.
-    Equating the two gives the resistivity directly; the collision model enters
-    only through the appropriate momentum-transfer frequency.
+    In a steady scalar response, the electric force balances that drag.
+    Expressing the drag in terms of current then gives the resistivity; the
+    collision model supplies the momentum-transfer frequency.
   ]
 
   #objectives((
@@ -542,7 +584,9 @@
     In Gaussian CGS, $bold(E)$ is in statvolt per #unit("cm"), current density
     $bold(j)$ is in statcoulomb per #unit("cm^2") per #unit("s"), resistivity
     $eta$ in $bold(E)=eta bold(j)$ is in #unit("s"), and conductivity
-    $sigma=1/eta$ is in #unit("s^-1"). The drag force density is in
+    $sigma=1/eta$ is in #unit("s^-1"). Here $sigma$ denotes conductivity;
+    the collision cross sections earlier in this chapter have area units.
+    The drag force density is in
     #unit("g") #unit("cm^-2") #unit("s^-2").
   ]
 
@@ -560,7 +604,7 @@
     [For a hydrogen plasma, the electron--ion drag force density can be written
     $bold(R)_"e i"=m_"e"n_"e"nu_"e i"
       (bold(u)_"i"-bold(u)_"e")$.
-    Since $bold(j)=e n_"e"(bold(u)_"i"-bold(u)_"e")$, the force per electron
+    Since $bold(j)=e n_"e" (bold(u)_"i"-bold(u)_"e")$, the force per electron
     charge density is $eta bold(j)$ with
     $eta=(m_"e"nu_"e i")/(n_"e"e^2)$.
     More generally use $nu=nu_"en"$ for a stationary neutral background or
@@ -591,7 +635,7 @@
 
     For singly charged hydrogen and quasi-neutrality,
 
-    $ bold(j)=e n_"e"(bold(u)_"i"-bold(u)_"e") .$
+    $ bold(j)=e n_"e" (bold(u)_"i"-bold(u)_"e") .$
 
     Dividing by the charge-density scale $e n_"e"$ gives
 
@@ -693,7 +737,8 @@
     current? It makes the response anisotropic. Current parallel to the field
     is not gyroscopically deflected, while perpendicular current is split into
     a dissipative Pedersen part and a nondissipative Hall part. At finite
-    frequency, inertia makes every entry complex.
+    frequency, the response is generally complex: current can have both an
+    amplitude change and a phase shift relative to the applied field.
   ]
 
   #objectives((
@@ -718,16 +763,25 @@
     $bold(B)=bold(B)_0+bold(B)_1$, $n_"e"=n_"e0"+n_"e1"$,
     $bold(E)_0=bold(0)$, and $bold(u)_"e0"=bold(0)$. Neglect pressure
     gradients in the homogeneous conductivity calculation. First take ions
-    as immobile, then add their current as a species sum. Use fields
+    as immobile. For the later independent species tensors, assume drag
+    against a prescribed stationary background, such as neutrals, or take
+    collisionless response. Mutual electron--ion drag with both species
+    mobile requires coupled momentum equations. Use fields
     proportional to $exp(-i omega t)$.]
   )
 
+  Direct-current (DC) response uses a steady field; alternating-current (AC)
+  response uses a field oscillating at angular frequency $omega$. With the
+  stated complex convention, the physical field and current are the real
+  parts of their harmonic representations. The factor $-i omega$ replaces
+  a time derivative.
+
   The linear electron momentum equation becomes
 
-  $m_"e"(nu_"e"-i omega)bold(u)_"e"
-    =q_"e"(bold(E)+(bold(u)_"e"times bold(B)_0)/c)$.
+  $m_"e" (nu_"e"-i omega)bold(u)_"e"
+    =q_"e" (bold(E)+(bold(u)_"e"times bold(B)_0)/c)$.
 
-  For an unmagnetized plasma, $bold(B)_0=bold(0)$, so
+  For unmagnetized DC response, set $bold(B)_0=bold(0)$ and $omega=0$, so
 
   $bold(j)=sigma_"dc"bold(E),
     quad sigma_"dc"=(n_"e"q_"e"^2)/(m_"e"nu_"e")$.
@@ -737,7 +791,9 @@
 
   $Omega_"e"=(q_"e"B_0)/(m_"e"c)$.
 
-  For DC response, set $omega=0$. The component equations are
+  For DC response, set $omega=0$. Write $J_x$, $J_y$, and $J_z$ for the
+  Cartesian components of the same current density $bold(j)$. The component
+  equations are
 
   $ J_x=sigma_"dc" E_x+(Omega_"e"/nu_"e")J_y,
     quad J_y=sigma_"dc" E_y-(Omega_"e"/nu_"e")J_x,
@@ -746,20 +802,31 @@
   Thus
 
   $ mat(J_x; J_y; J_z)
-    =mat(sigma_"perp", sigma_"H", 0;
-         -sigma_"H", sigma_"perp", 0;
-         0, 0, sigma_"parallel") mat(E_x; E_y; E_z), $
+    =mat(sigma_(perp), sigma_"H", 0;
+         -sigma_"H", sigma_(perp), 0;
+         0, 0, sigma_(parallel)) mat(E_x; E_y; E_z), $
 
   with
 
-  $ sigma_"parallel"=sigma_"dc",
-    quad sigma_"perp"=(sigma_"dc"nu_"e"^2)/(nu_"e"^2+Omega_"e"^2),
+  $ sigma_(parallel)=sigma_"dc",
+    quad sigma_(perp)=(sigma_"dc"nu_"e"^2)/(nu_"e"^2+Omega_"e"^2),
     quad sigma_"H"=(sigma_"dc"nu_"e"Omega_"e")
       /(nu_"e"^2+Omega_"e"^2) $
 
   The sign of $sigma_"H"$ follows the signed charge convention. Its magnitude
   describes current perpendicular to both the applied electric field and the
   background magnetic field.
+
+  In this DC tensor, $sigma_(perp)$ is the Pedersen conductivity: it gives
+  current along the perpendicular electric field. The Hall part gives a
+  current at right angles to it and supplies no electric work because its
+  current is perpendicular to the field. These labels describe two components
+  of the perpendicular response, not two additional particle populations.
+
+  The harmonic AC tensor follows from the same momentum balance with
+  $nu_"e"$ replaced by $nu_"e"-i omega$. Its complex entries encode both
+  response amplitude and phase. The derivation below also states when ion
+  and electron tensors can be added independently.
 
   #details(
     [Derivation: DC and AC conductivity tensor],
@@ -782,28 +849,29 @@
     #derivation-step[Invert the perpendicular response]
     Solving the two coupled equations gives
 
-    $ sigma_"perp"=(n_"e"q_"e"^2 a_"e")
-      /(m_"e"(a_"e"^2+Omega_"e"^2)), quad
+    $ sigma_(perp)=(n_"e"q_"e"^2 a_"e")
+      /(m_"e" (a_"e"^2+Omega_"e"^2)), quad
       sigma_"H"=(n_"e"q_"e"^2 Omega_"e")
-      /(m_"e"(a_"e"^2+Omega_"e"^2)) .$
+      /(m_"e" (a_"e"^2+Omega_"e"^2)) .$
 
     The parallel entry is
 
-    $ sigma_"parallel"=(n_"e"q_"e"^2)/(m_"e"a_"e") .$
+    $ sigma_(parallel)=(n_"e"q_"e"^2)/(m_"e"a_"e") .$
 
     Setting $omega=0$ recovers the displayed real DC tensor.
 
     #derivation-step[Sum mobile species]
-    For mobile ions, define
+    For mobile ions with independent stationary-background drag (or
+    collisionless response), define
 
     $ omega_(p,s)^2=(4 pi n_s q_s^2)/m_s, quad
       Omega_s=(q_s B_0)/(m_s c), quad a_s=nu_s-i omega .$
 
     In Gaussian CGS, the species responses sum to
 
-    $ sigma_"parallel"=1/(4 pi)sum_s (omega_(p,s)^2/a_s) ,$
+    $ sigma_(parallel)=1/(4 pi)sum_s (omega_(p,s)^2/a_s) ,$
 
-    $ sigma_"perp"=1/(4 pi)sum_s
+    $ sigma_(perp)=1/(4 pi)sum_s
       (omega_(p,s)^2 a_s)/(a_s^2+Omega_s^2) ,$
 
     and
@@ -811,7 +879,11 @@
     $ sigma_"H"=1/(4 pi)sum_s
       (omega_(p,s)^2 Omega_s)/(a_s^2+Omega_s^2) .$
 
-    Additivity follows from $bold(j)=sum_s n_s q_s bold(u)_s$. An
+    Current always adds as $bold(j)=sum_s n_s q_s bold(u)_s$, but these
+    independent Drude tensors also require the stated drag model. For mutual
+    collisions, $bold(R)_(e i)=m_e n_e nu_(e i)(bold(u)_i-bold(u)_e)$ and
+    $bold(R)_(i e)=-bold(R)_(e i)$ couple the species velocities; solve that
+    momentum-conserving system before summing its currents. An
     electron-only model is appropriate only when ions are fixed on the
     frequency and collision scales; at low frequency, ion motion can change
     every tensor entry.]
@@ -837,8 +909,8 @@
     entries.
 
     Numerical result: $Omega_"e"=qty("-1.76e9", "s^-1")$,
-    $sigma_"parallel"=qty("1.01e15", "s^-1")$,
-    $sigma_"perp"=qty("2.05e3", "s^-1")$, and
+    $sigma_(parallel)=qty("1.01e15", "s^-1")$,
+    $sigma_(perp)=qty("2.05e3", "s^-1")$, and
     $sigma_"H"=qty("-1.44e9", "s^-1")$.
   ]
 
@@ -855,8 +927,9 @@
   #summary[
     A magnetic field turns scalar Drude conductivity into a tensor with
     parallel, perpendicular/Pedersen, and Hall entries. In harmonic response
-    use $a_s=nu_s-i omega$; with mobile ions, add the species conductivity
-    tensors. Every entry is in #unit("s^-1") in Gaussian CGS and carries the
+    use $a_s=nu_s-i omega$; with mobile ions, the displayed species tensors
+    add for independent stationary-background drag or collisionless response.
+    Every entry is in #unit("s^-1") in Gaussian CGS and carries the
     signed-charge convention through $Omega_s$.
   ]
 
@@ -890,7 +963,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "06-mhd.html", title: [Single-fluid MHD]),
-    next: (href: "08-diffusion.html", title: [Diffusion]),
+    previous: (href: "08-mhd.html", title: [Single-fluid MHD]),
+    next: (href: "10-diffusion.html", title: [Diffusion]),
   )
 ]

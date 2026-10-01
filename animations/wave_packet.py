@@ -5,177 +5,95 @@ envelope:
 
     A(x, t) = exp(-(x - v_g t)^2 / (2 sigma^2)) cos(k (x - v_phi t))
 
-The carrier phase speed and envelope group speed use unit [1] visual
-parameters. This is a deterministic teaching illustration, not a numerical
-solution of a plasma boundary-value problem or measured data.
+with X = x/L0, tau = t/t0, A = E/E0, sigma/L0 = 1.15, k L0 = 5.2,
+v_g t0/L0 = 0.42 and v_phi t0/L0 = 0.90 (all unit [1]). The scene runs from
+tau = -5 to tau = 5, so the tracked crest X = 0.90 tau (the crest at the
+envelope center at tau = 0) enters at the rear of the packet and leaves
+through its front. This is a deterministic teaching illustration, not a
+numerical solution of a plasma boundary-value problem or measured data.
 """
 
 from manim import *
 import numpy as np
 
-
-BG = "#0B1220"
-INK = "#E8EEF7"
-MUTED = "#9BAAC0"
-GRID = "#51627A"
-WAVE_COLOR = "#72D6C9"
-ENVELOPE_COLOR = "#F2A65A"
-GROUP_COLOR = "#4EA8DE"
-PHASE_COLOR = "#D47BFF"
+from style import (
+    ACCENT, CURVE_WIDTH, E_FIELD, EASE, FAINT, LINEAR, MUTED, SKY,
+    THIN_WIDTH, StyledScene, axes, axis_labels, math, title,
+)
 
 
-class WavePacketPropagation(Scene):
-    """Show a carrier moving faster than its visible wave-packet envelope."""
+def packet_envelope(x, tau, sigma=1.15, group_speed=0.42):
+    """X=x/L0, tau=t/t0, sigma/L0=1.15, vg*t0/L0=0.42."""
+    return np.exp(-((np.asarray(x) - group_speed*tau)**2)/(2*sigma**2))
 
-    def construct(self):
-        self.camera.background_color = BG
 
-        title = Text("Phase and group velocity", color=INK, font_size=34)
-        subtitle = Text(
-            "normalized dispersive wave packet",
-            color=MUTED,
-            font_size=22,
-        )
-        title_group = VGroup(title, subtitle).arrange(
-            DOWN, aligned_edge=LEFT, buff=0.08
-        )
-        title_group.to_edge(UP, buff=0.3).to_edge(LEFT, buff=0.4)
+def packet_field(x, tau, sigma=1.15, group_speed=0.42, phase_speed=0.90, k=5.2):
+    """Prescribed ansatz E/E0, not an exact dispersive-wave solution; k=kdim*L0."""
+    return packet_envelope(x, tau, sigma, group_speed) * np.cos(k*(np.asarray(x) - phase_speed*tau))
 
-        formula = MathTex(
-            r"A = e^{-(x-v_g t)^2/(2\sigma^2)}"
-            r"\cos\!\left(k(x-v_\phi t)\right)",
-            color=WAVE_COLOR,
-            font_size=25,
-        )
-        formula.to_corner(UR, buff=0.35)
 
-        axes = Axes(
-            x_range=[-6.0, 6.0, 2.0],
-            y_range=[-1.35, 1.35, 0.5],
-            x_length=10.4,
-            y_length=4.7,
-            axis_config={"color": GRID, "stroke_width": 2},
-            tips=False,
-        ).shift(DOWN * 0.35)
+TAU_START = -5.0
+TAU_END = 5.0
 
-        x_label = Text("x / L₀ [1]", color=MUTED, font_size=19)
-        x_label.next_to(axes, DOWN, buff=0.18)
-        y_label = Text("field amplitude [1]", color=MUTED, font_size=19)
-        y_label.rotate(PI / 2)
-        y_label.to_edge(LEFT, buff=0.3).shift(UP * 0.6)
 
-        tracker = ValueTracker(0.0)
-        sigma = 1.15
-        wave_number = 5.2
-        group_speed = 0.42
-        phase_speed = 0.90
+class WavePacketPropagation(StyledScene):
+    """Show a carrier crest moving faster than its wave-packet envelope."""
 
-        def envelope(x, time):
-            return np.exp(-((x - group_speed * time) ** 2) / (2 * sigma**2))
+    def build(self):
+        heading = title("Phase and group velocity")
 
-        def wave_points(time):
-            xs = np.linspace(-6.0, 6.0, 360)
-            ys = envelope(xs, time) * np.cos(
-                wave_number * (xs - phase_speed * time)
+        ax = axes([-6.0, 6.0, 1.0], [-1.3, 1.3, 0.5], 11.6, 4.6).move_to(DOWN * 0.6)
+        ax_labels = axis_labels(ax, r"x/L_0\ [1]", r"E/E_0\ [1]")
+
+        group_speed, phase_speed = 0.42, 0.90
+        tracker = ValueTracker(TAU_START)
+        xs = np.linspace(-6.0, 6.0, 900)
+
+        def field_curve():
+            ys = packet_field(xs, tracker.get_value())
+            return VMobject(color=E_FIELD, stroke_width=CURVE_WIDTH - 0.5).set_points_smoothly(
+                [ax.c2p(x, y) for x, y in zip(xs, ys)])
+
+        def envelope_curve(sign):
+            ys = sign * packet_envelope(xs, tracker.get_value())
+            return VMobject(color=FAINT, stroke_width=THIN_WIDTH - 0.6).set_points_smoothly(
+                [ax.c2p(x, y) for x, y in zip(xs[::6], ys[::6])])
+
+        field = always_redraw(field_curve)
+        upper = always_redraw(lambda: envelope_curve(1))
+        lower = always_redraw(lambda: envelope_curve(-1))
+
+        def group_marker():
+            x = group_speed * tracker.get_value()
+            return DashedLine(ax.c2p(x, -1.2), ax.c2p(x, 1.2), color=SKY,
+                              stroke_width=THIN_WIDTH, dash_length=0.12)
+
+        def phase_marker():
+            tau = tracker.get_value()
+            x = phase_speed * tau
+            crest = ax.c2p(x, packet_field(x, tau))
+            return VGroup(
+                Line(ax.c2p(x, -1.2), ax.c2p(x, 1.2), color=ACCENT, stroke_width=THIN_WIDTH),
+                Dot(crest, radius=0.09, color=ACCENT),
             )
-            return [axes.c2p(x, y) for x, y in zip(xs, ys)]
 
-        wave = always_redraw(
-            lambda: VMobject(
-                stroke_color=WAVE_COLOR,
-                stroke_width=3,
-            ).set_points_as_corners(wave_points(tracker.get_value()))
-        )
+        g_mark = always_redraw(group_marker)
+        p_mark = always_redraw(phase_marker)
 
-        envelope_upper = always_redraw(
-            lambda: VMobject(
-                stroke_color=ENVELOPE_COLOR,
-                stroke_width=2,
-                stroke_opacity=0.95,
-            ).set_points_as_corners(
-                [
-                    axes.c2p(
-                        x,
-                        envelope(x, tracker.get_value()),
-                    )
-                    for x in np.linspace(-6.0, 6.0, 180)
-                ]
-            )
-        )
-        envelope_lower = always_redraw(
-            lambda: VMobject(
-                stroke_color=ENVELOPE_COLOR,
-                stroke_width=2,
-                stroke_opacity=0.95,
-            ).set_points_as_corners(
-                [
-                    axes.c2p(
-                        x,
-                        -envelope(x, tracker.get_value()),
-                    )
-                    for x in np.linspace(-6.0, 6.0, 180)
-                ]
-            )
-        )
+        # Stationary key: line style plus color identifies each marker.
+        key_g = VGroup(
+            DashedLine(ORIGIN, RIGHT * 0.6, color=SKY, stroke_width=THIN_WIDTH, dash_length=0.1),
+            math(r"v_g t_0/L_0 = 0.42\ [1]", color=SKY, size=30),
+        ).arrange(RIGHT, buff=0.2)
+        key_p = VGroup(
+            Line(ORIGIN, RIGHT * 0.6, color=ACCENT, stroke_width=THIN_WIDTH),
+            math(r"v_\varphi t_0/L_0 = 0.90\ [1]", color=ACCENT, size=30),
+        ).arrange(RIGHT, buff=0.2)
+        key = VGroup(key_g, key_p).arrange(DOWN, aligned_edge=LEFT, buff=0.18)
+        key.to_corner(UR, buff=0.55)
 
-        group_marker = always_redraw(
-            lambda: DashedLine(
-                axes.c2p(group_speed * tracker.get_value(), -1.15),
-                axes.c2p(group_speed * tracker.get_value(), 1.15),
-                color=GROUP_COLOR,
-                dash_length=0.12,
-                stroke_width=3,
-            )
-        )
-        phase_marker = always_redraw(
-            lambda: DashedLine(
-                axes.c2p(phase_speed * tracker.get_value(), -1.15),
-                axes.c2p(phase_speed * tracker.get_value(), 1.15),
-                color=PHASE_COLOR,
-                dash_length=0.12,
-                stroke_width=3,
-            )
-        )
-
-        group_label = Text("envelope: v_g", color=GROUP_COLOR, font_size=20)
-        group_label.to_edge(LEFT, buff=0.42).shift(DOWN * 1.05)
-        phase_label = Text("crest: v_phi", color=PHASE_COLOR, font_size=20)
-        phase_label.to_edge(RIGHT, buff=0.42).shift(DOWN * 1.05)
-
-        legend = VGroup(
-            Text("teal: carrier field", color=WAVE_COLOR, font_size=18),
-            Text("orange: envelope", color=ENVELOPE_COLOR, font_size=18),
-            Text("markers: normalized speeds [1]", color=MUTED, font_size=18),
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.08)
-        legend.to_corner(DL, buff=0.3)
-
-        observation = Text(
-            "the crest outruns the envelope in this dispersive illustration",
-            color=INK,
-            font_size=19,
-        )
-        observation.to_edge(DOWN, buff=0.30).to_edge(RIGHT, buff=0.35)
-
-        self.play(
-            FadeIn(title_group),
-            FadeIn(formula),
-            Create(axes),
-            FadeIn(VGroup(x_label, y_label)),
-        )
-        self.play(
-            Create(wave),
-            Create(envelope_upper),
-            Create(envelope_lower),
-            Create(group_marker),
-            Create(phase_marker),
-            FadeIn(group_label),
-            FadeIn(phase_label),
-            FadeIn(legend),
-            FadeIn(observation),
-        )
-        self.play(
-            tracker.animate.set_value(7.0),
-            run_time=8,
-            rate_func=linear,
-        )
-        self.wait(1)
+        self.play(FadeIn(heading), Create(ax), FadeIn(ax_labels), run_time=0.8, rate_func=EASE)
+        self.play(FadeIn(upper), FadeIn(lower), Create(field), run_time=0.8, rate_func=EASE)
+        self.play(FadeIn(g_mark), FadeIn(p_mark), FadeIn(key), run_time=0.5, rate_func=EASE)
+        self.play(tracker.animate.set_value(TAU_END), run_time=8.0, rate_func=LINEAR)
+        self.wait(1.4)

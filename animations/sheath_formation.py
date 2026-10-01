@@ -1,232 +1,136 @@
-"""Schematic visualization of a collisionless plasma sheath.
+"""Prescribed planar sheath: wall X=0, edge X=5, X=x/lambda_D.
 
-The scene is a normalized teaching illustration.  It shows the wall-side
-potential drop, the different electron and ion density responses, and the
-qualitative flux imbalance that charges a floating surface.  It is not a
-particle-in-cell calculation or a self-consistent numerical sheath solution.
+B=-e phi/(kB Te)=a(5-X)^2 inside the edge, zero outside; a=0.12.
+Boltzmann electrons and cold ions with edge Mach number M=1.5 give
+ne/n0=exp(-B), ni/n0=M/sqrt(M²+2B). These share one prescribed
+potential; Poisson's equation is NOT solved self-consistently.
+Separate electron and ion clocks resolve their different transit times.
 """
-
 from manim import *
 import numpy as np
 
+from style import (
+    CURVE_WIDTH, DOT_RADIUS, EASE, ELECTRON, FAINT, GRID, INK, ION, LINEAR,
+    MUTED, POTENTIAL, SMALL_SIZE, THIN_WIDTH, StyledScene, axes, label, math,
+    title,
+)
 
-BG = "#0B1220"
-INK = "#E8EEF7"
-MUTED = "#9BAAC0"
-GRID = "#51627A"
-ELECTRON = "#72D6C9"
-ION = "#F2A65A"
-POTENTIAL = "#4EA8DE"
-WALL = "#D98E5B"
+EDGE, CURVATURE, MACH, ELECTRON_ENERGY = 5.0, 0.12, 1.5, 0.9
 
 
-class SheathFormation(Scene):
-    """Show density separation and a potential barrier near a wall."""
+def barrier(x):
+    """Electron potential energy / kB Te, for X=x/lambda_D >= 0."""
+    return CURVATURE * np.maximum(EDGE - np.asarray(x), 0.0) ** 2
 
-    def construct(self):
-        self.camera.background_color = BG
 
-        title = Text("Plasma sheath formation", color=INK, font_size=34)
-        subtitle = Text(
-            "normalized planar boundary illustration · not a particle simulation",
-            color=MUTED,
-            font_size=19,
-        )
-        heading = VGroup(title, subtitle).arrange(
-            DOWN, aligned_edge=LEFT, buff=0.08
-        )
-        heading.to_edge(UP, buff=0.25).to_edge(LEFT, buff=0.38)
+def sheath_densities(x):
+    b = barrier(x)
+    return np.exp(-b), MACH / np.sqrt(MACH**2 + 2 * b)
 
-        wall = Rectangle(
-            width=0.52,
-            height=5.0,
-            fill_color=WALL,
-            fill_opacity=0.85,
-            stroke_color=WALL,
-            stroke_width=1,
-        ).to_edge(RIGHT, buff=0.45)
-        wall_label = Text("wall", color=INK, font_size=22).rotate(PI / 2)
-        wall_label.next_to(wall, RIGHT, buff=0.14)
 
-        domain = NumberLine(
-            x_range=[0, 8, 1],
-            length=8.55,
-            include_numbers=False,
-            include_ticks=False,
-            color=GRID,
-        ).shift(DOWN * 2.35 + LEFT * 0.45)
-        domain_label = Text(
-            "distance from wall / λ₍D₎ [1]", color=MUTED, font_size=18
-        )
-        domain_label.next_to(domain, DOWN, buff=0.12)
+def electron_position(tau):
+    """X for tau=t sqrt(kB Te/me)/lambda_D, one reflection inside sheath."""
+    w = np.sqrt(2 * CURVATURE)
+    return EDGE - np.sqrt(ELECTRON_ENERGY / CURVATURE) * np.sin(w * tau)
 
-        sheath_edge_x = domain.n2p(4.7)[0]
-        sheath_edge = DashedLine(
-            np.array([sheath_edge_x, -2.52, 0.0]),
-            np.array([sheath_edge_x, 2.05, 0.0]),
-            color=ION,
-            dash_length=0.12,
-            stroke_width=2,
-        )
-        sheath_edge_label = Text(
-            "sheath edge", color=ION, font_size=19
-        ).next_to(sheath_edge, UP, buff=0.08)
-        plasma_label = Text("quasineutral plasma", color=ELECTRON, font_size=21)
-        plasma_label.move_to(np.array([domain.n2p(2.0)[0], 1.84, 0.0]))
-        sheath_label = Text("charge-separated sheath", color=ION, font_size=21)
-        sheath_label.move_to(np.array([domain.n2p(6.1)[0], 1.84, 0.0]))
 
-        profile_axes = Axes(
-            x_range=[0, 8, 2],
-            y_range=[0, 1.35, 0.5],
-            x_length=8.55,
-            y_length=2.35,
-            axis_config={"color": GRID, "stroke_width": 2},
-            tips=False,
-        ).shift(DOWN * 0.65 + LEFT * 0.45)
-        profile_y = Text("normalized density [1]", color=MUTED, font_size=18)
-        profile_y.rotate(PI / 2)
-        profile_y.next_to(profile_axes, LEFT, buff=0.13)
+def ion_position(tau):
+    """X for tau=t cs/lambda_D, valid from entry until wall absorption."""
+    w = np.sqrt(2 * CURVATURE)
+    return EDGE - MACH / w * np.sinh(w * tau)
 
-        def electron_density(x):
-            return 1.0 if x <= 4.7 else np.exp(-0.72 * (x - 4.7))
 
-        def ion_density(x):
-            return 1.0 if x <= 4.7 else 1.0 / np.sqrt(1.0 + 0.55 * (x - 4.7))
+class SheathFormation(StyledScene):
+    """Electron reflection and ion acceleration in a prescribed sheath."""
 
-        electron_curve = profile_axes.plot(
-            electron_density, x_range=[0, 8], color=ELECTRON, stroke_width=4
-        )
-        ion_curve = profile_axes.plot(
-            ion_density, x_range=[0, 8], color=ION, stroke_width=4
-        )
-        electron_curve_label = Text(
-            "electrons", color=ELECTRON, font_size=18
-        ).move_to(profile_axes.c2p(6.35, 0.54))
-        ion_curve_label = Text("ions", color=ION, font_size=18).move_to(
-            profile_axes.c2p(6.4, 0.83)
-        )
+    def build(self):
+        heading = title("Planar sheath")
+        x_max = 8.0
+        w = np.sqrt(2 * CURVATURE)
 
-        potential_axes = Axes(
-            x_range=[0, 8, 2],
-            y_range=[-1.05, 0.15, 0.5],
-            x_length=8.55,
-            y_length=1.55,
-            axis_config={"color": GRID, "stroke_width": 2},
-            tips=False,
-        ).shift(DOWN * 2.05 + LEFT * 0.45)
-        potential_curve = potential_axes.plot(
-            lambda x: -0.93 * (max(x - 4.7, 0.0) / 3.3) ** (4.0 / 3.0),
-            x_range=[0, 8],
-            color=POTENTIAL,
-            stroke_width=4,
-        )
-        potential_label = Text(
-            "−eφ / k₍B₎Tₑ [1]", color=POTENTIAL, font_size=20
-        )
-        potential_label.next_to(potential_axes, LEFT, buff=0.18)
+        pot = axes([0, x_max, 1], [0, 3.2, 1], 10.4, 2.1).move_to([0.45, 1.2, 0])
+        dens = axes([0, x_max, 1], [0, 1.2, 0.5], 10.4, 1.7).move_to([0.45, -2.05, 0])
+        pot_ylab = math(r"-e\phi/k_BT_e\ [1]", color=POTENTIAL, size=30)
+        pot_ylab.next_to(pot.y_axis.get_top(), UP, buff=0.12).shift(RIGHT * 0.9)
+        dens_ylab = math(r"n/n_0\ [1]", color=MUTED, size=30)
+        dens_ylab.next_to(dens.y_axis.get_top(), UP, buff=0.12).shift(RIGHT * 0.8)
+        xlab = math(r"x/\lambda_D\ [1]", color=MUTED, size=30)
+        xlab.next_to(dens.x_axis.get_right(), DOWN, buff=0.18).align_to(dens.x_axis.get_right(), RIGHT)
 
-        flux_e_y = 1.06
-        flux_i_y = 0.78
-        e_arrow = Arrow(
-            np.array([domain.n2p(2.1)[0], flux_e_y, 0.0]),
-            np.array([domain.n2p(3.2)[0], flux_e_y, 0.0]),
-            color=ELECTRON,
-            stroke_width=3,
-            buff=0,
-        )
-        i_arrow = Arrow(
-            np.array([domain.n2p(2.1)[0], flux_i_y, 0.0]),
-            np.array([domain.n2p(5.7)[0], flux_i_y, 0.0]),
-            color=ION,
-            stroke_width=3,
-            buff=0,
-        )
-        e_flux_label = Text("fast electrons reflect", color=ELECTRON, font_size=18)
-        e_flux_label.next_to(e_arrow, UP, buff=0.06)
-        i_flux_label = Text("ions reach the wall", color=ION, font_size=18)
-        i_flux_label.next_to(i_arrow, DOWN, buff=0.06)
+        # Wall at X=0 (hatched bar) and sheath edge at X=5.
+        x0 = pot.c2p(0, 0)[0]
+        top, bottom = pot.c2p(0, 3.2)[1], dens.c2p(0, 0)[1]
+        wall = Rectangle(width=0.22, height=top - bottom, stroke_width=0,
+                         fill_color=GRID, fill_opacity=1).move_to([x0 - 0.11, (top + bottom) / 2, 0])
+        hatch = VGroup(*[Line([x0 - 0.22, y, 0], [x0, y + 0.2, 0], color=FAINT, stroke_width=1.5)
+                         for y in np.arange(bottom, top - 0.2, 0.22)])
+        wall_lab = label("wall", color=MUTED, size=SMALL_SIZE).next_to(wall, LEFT, buff=0.12)
+        ex = pot.c2p(EDGE, 0)[0]
+        edge = DashedLine([ex, bottom, 0], [ex, top, 0], color=FAINT,
+                          stroke_width=THIN_WIDTH, dash_length=0.1)
+        edge_lab = label("sheath edge", color=MUTED, size=SMALL_SIZE).next_to(edge, UP, buff=0.12)
 
-        self.e_progress = ValueTracker(0.0)
-        self.i_progress = ValueTracker(0.0)
-        e_particle = Dot(
-            np.array([domain.n2p(1.3)[0], flux_e_y, 0.0]),
-            radius=0.10,
-            color=ELECTRON,
-        )
-        ion_particle = Dot(
-            np.array([domain.n2p(1.3)[0], flux_i_y, 0.0]),
-            radius=0.10,
-            color=ION,
-        )
-        e_particle.add_updater(
-            lambda dot: dot.move_to(
-                np.array(
-                    [
-                        domain.n2p(
-                            1.3 + 2.7 * min(self.e_progress.get_value(), 1.0)
-                        )[0],
-                        flux_e_y,
-                        0.0,
-                    ]
-                )
-            )
-        )
-        ion_particle.add_updater(
-            lambda dot: dot.move_to(
-                np.array(
-                    [
-                        domain.n2p(
-                            1.3 + 4.8 * min(self.i_progress.get_value(), 1.0)
-                        )[0],
-                        flux_i_y,
-                        0.0,
-                    ]
-                )
-            )
-        )
-        charge_note = Text(
-            "initial electron loss charges the wall negative",
-            color=INK,
-            font_size=20,
-        ).to_edge(DOWN, buff=0.18)
+        potential = pot.plot(barrier, x_range=[0, x_max, 0.02], color=POTENTIAL, stroke_width=CURVE_WIDTH)
+        ne = dens.plot(lambda x: sheath_densities(x)[0], x_range=[0, x_max, 0.02],
+                       color=ELECTRON, stroke_width=CURVE_WIDTH)
+        ni = DashedVMobject(dens.plot(lambda x: sheath_densities(x)[1], x_range=[0, x_max, 0.02],
+                                      color=ION, stroke_width=CURVE_WIDTH), num_dashes=60)
+        ne_lab = math(r"n_e", color=ELECTRON, size=32).move_to(dens.c2p(0.75, 0.22))
+        ni_lab = math(r"n_i", color=ION, size=32).move_to(dens.c2p(0.75, 0.88))
 
-        self.play(FadeIn(heading), FadeIn(wall), FadeIn(wall_label))
-        self.play(
-            Create(domain),
-            FadeIn(domain_label),
-            FadeIn(plasma_label),
-            FadeIn(sheath_label),
-            Create(sheath_edge),
-            FadeIn(sheath_edge_label),
-        )
-        self.play(
-            Create(profile_axes),
-            Create(electron_curve),
-            Create(ion_curve),
-            FadeIn(profile_y),
-            FadeIn(electron_curve_label),
-            FadeIn(ion_curve_label),
-        )
-        self.play(
-            Create(potential_axes),
-            Create(potential_curve),
-            FadeIn(potential_label),
-            FadeIn(charge_note),
-        )
-        self.play(
-            Create(e_arrow),
-            Create(i_arrow),
-            FadeIn(e_flux_label),
-            FadeIn(i_flux_label),
-            FadeIn(e_particle),
-            FadeIn(ion_particle),
-        )
-        self.play(
-            self.e_progress.animate.set_value(1.0),
-            self.i_progress.animate.set_value(1.0),
-            run_time=3.5,
-            rate_func=linear,
-        )
-        self.play(self.e_progress.animate.set_value(0.0), run_time=1.8)
-        self.wait(1.0)
+        # Particle lane between the panels.
+        lane_y = -0.25
+        lane = Line(pot.c2p(0, 0) * [1, 0, 0] + [0, lane_y, 0],
+                    pot.c2p(x_max, 0) * [1, 0, 0] + [0, lane_y, 0], color=GRID, stroke_width=1.2)
+
+        def lane_point(x):
+            return np.array([pot.c2p(x, 0)[0], lane_y, 0])
+
+        clock = ValueTracker(0.0)
+
+        # Electron: total energy 0.9 kBTe, turns where the barrier equals it.
+        turn = EDGE - np.sqrt(ELECTRON_ENERGY / CURVATURE)
+        e_level = DashedLine(pot.c2p(turn, ELECTRON_ENERGY), pot.c2p(x_max, ELECTRON_ENERGY),
+                             color=ELECTRON, stroke_width=THIN_WIDTH, dash_length=0.08)
+        e_level_lab = math(r"\varepsilon_e/k_BT_e\ [1]=0.9", color=ELECTRON, size=28)
+        e_level_lab.next_to(e_level.get_end(), UP, buff=0.12).align_to(e_level.get_end(), RIGHT)
+        turn_mark = Dot(pot.c2p(turn, ELECTRON_ENERGY), radius=0.06, color=ELECTRON)
+        e_on_level = always_redraw(lambda: Dot(
+            pot.c2p(electron_position(clock.get_value()), ELECTRON_ENERGY),
+            radius=DOT_RADIUS + 0.03, color=ELECTRON))
+        electron = always_redraw(lambda: Dot(
+            lane_point(electron_position(clock.get_value())), radius=0.11, color=ELECTRON))
+
+        e_clock = VGroup(math(r"t\sqrt{k_BT_e/m_e}/\lambda_D\ [1] =", color=ELECTRON, size=28),
+                         DecimalNumber(0, num_decimal_places=1, color=ELECTRON, font_size=28))
+        e_clock.arrange(RIGHT, buff=0.15).to_corner(UR, buff=0.55)
+        e_clock[1].add_updater(lambda m: m.set_value(clock.get_value()))
+
+        self.play(FadeIn(heading), Create(pot), Create(dens), FadeIn(wall), FadeIn(hatch),
+                  FadeIn(VGroup(pot_ylab, dens_ylab, xlab, wall_lab)), run_time=0.9, rate_func=EASE)
+        self.play(Create(potential), Create(ne), Create(ni), FadeIn(edge), FadeIn(edge_lab),
+                  FadeIn(ne_lab), FadeIn(ni_lab), FadeIn(lane), run_time=1.0, rate_func=EASE)
+        self.play(FadeIn(e_level), FadeIn(e_level_lab), FadeIn(electron), FadeIn(e_on_level),
+                  FadeIn(e_clock), run_time=0.4, rate_func=EASE)
+        self.add(turn_mark)
+        self.play(clock.animate.set_value(PI / w), run_time=4.0, rate_func=LINEAR)
+
+        # Ion: enters at the Bohm-satisfying Mach number and falls to the wall.
+        arrival = np.arcsinh(EDGE * w / MACH) / w
+        e_ghost = Dot(lane_point(EDGE), radius=0.11, color=ELECTRON, fill_opacity=0.35)
+        ion = always_redraw(lambda: Triangle(color=ION, fill_opacity=1, stroke_width=0)
+                            .scale(0.13).move_to(lane_point(ion_position(clock.get_value()))))
+        i_clock = VGroup(math(r"t\,c_s/\lambda_D\ [1] =", color=ION, size=28),
+                         DecimalNumber(0, num_decimal_places=2, color=ION, font_size=28))
+        i_clock.arrange(RIGHT, buff=0.15).to_corner(UR, buff=0.55)
+        i_clock[1].add_updater(lambda m: m.set_value(clock.get_value()))
+        mach_lab = math(r"u_{\rm edge}=1.5\,c_s", color=ION, size=28)
+        mach_lab.next_to(lane_point(EDGE), DOWN, buff=0.2).shift(RIGHT * 1.3)
+
+        self.remove(electron, e_on_level)
+        self.add(e_ghost)
+        clock.set_value(0.0)
+        self.play(FadeOut(e_clock), FadeIn(i_clock), FadeIn(ion), FadeIn(mach_lab),
+                  run_time=0.5, rate_func=EASE)
+        self.play(clock.animate.set_value(arrival), run_time=3.5, rate_func=LINEAR)
+        self.wait(1.5)

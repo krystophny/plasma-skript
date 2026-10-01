@@ -3,8 +3,11 @@
 The plotted quantity is the particle position in normalized coordinates. The
 analytic path is
 
-    x / rho = -2.5 + 0.55 t + 0.65 cos(2 t)
-    y / rho = -0.8 + 0.65 sin(2 t),  0 <= t <= 8.
+    X = x/L0 = -2.35 + 0.55 tau + 0.65 cos(2 tau)
+    Y = y/L0 = -0.65 - 0.65 sin(2 tau),  0 <= tau=t/t0 <= 8.
+
+Here Omega*t0=2, cE/B=0.55 L0/t0, rho=0.65 L0, q>0,
+E along +y and B along +z. Thus X''=2Y', Y''=1.1-2X'.
 
 The circular part represents gyromotion and the linear part represents the
 guiding-center drift. It is a conceptual visualization, not measured data.
@@ -13,141 +16,90 @@ guiding-center drift. It is a conceptual visualization, not measured data.
 from manim import *
 import numpy as np
 
-
-BG = "#0B1220"
-INK = "#E8EEF7"
-MUTED = "#9BAAC0"
-GRID = "#51627A"
-E_COLOR = "#4EA8DE"
-B_COLOR = "#F2A65A"
-DRIFT_COLOR = "#72D6C9"
-PARTICLE_COLOR = "#F4F7FB"
+from style import (
+    B_FIELD, CURVE_WIDTH, DOT_RADIUS, E_FIELD, EASE, FAINT, INK, ION, LINEAR,
+    MUTED, SMALL_SIZE, THIN_WIDTH, StyledScene, axes, axis_labels, label, math,
+    title,
+)
 
 
-class ExBDrift(Scene):
-    """Show gyromotion and the rightward E x B guiding-center drift."""
+def particle_position(tau):
+    """Exact Lorentz orbit in units L0, with tau=t/t0."""
+    return np.array([-2.35 + 0.55 * tau + 0.65 * np.cos(2 * tau),
+                     -0.65 - 0.65 * np.sin(2 * tau)])
 
-    def construct(self):
-        self.camera.background_color = BG
 
-        title = Text("Charged-particle motion", color=INK, font_size=34)
-        subtitle = Text("gyromotion plus E × B guiding-center drift", color=MUTED, font_size=22)
-        title_group = VGroup(title, subtitle).arrange(DOWN, aligned_edge=LEFT, buff=0.08)
-        title_group.to_edge(UP, buff=0.35).to_edge(LEFT, buff=0.45)
+class ExBDrift(StyledScene):
+    """Show clockwise ion gyromotion and the rightward E x B drift."""
 
-        axes = Axes(
-            x_range=[-3.5, 3.8, 1],
-            y_range=[-2.3, 2.5, 1],
-            x_length=8.5,
-            y_length=5.4,
-            axis_config={"color": GRID, "stroke_width": 2},
-            tips=False,
-        ).shift(DOWN * 0.35 + LEFT * 0.35)
-        x_label = Text("x / ρ [1]", color=MUTED, font_size=20).next_to(axes.x_axis, RIGHT, buff=0.15)
-        y_label = Text("y / ρ [1]", color=MUTED, font_size=20).next_to(axes.y_axis, UP, buff=0.12)
+    def build(self):
+        heading = title("E × B drift")
 
-        e_arrow = Arrow(
-            axes.c2p(-2.85, -1.65),
-            axes.c2p(-2.85, 0.25),
-            color=E_COLOR,
-            stroke_width=5,
-            buff=0,
-        )
-        e_label = Text("E", color=E_COLOR, font_size=26).next_to(e_arrow, RIGHT, buff=0.12)
+        ax = axes([-3.5, 3.5, 1], [-2.0, 1.5, 1], 10.2, 5.1).move_to(DOWN * 0.55)
+        ax_labels = axis_labels(ax, r"x/L_0\ [1]", r"y/L_0\ [1]")
 
-        b_circle = Circle(radius=0.18, color=B_COLOR, stroke_width=3)
-        b_dot = Dot(radius=0.055, color=B_COLOR)
-        b_marker = VGroup(b_circle, b_dot).move_to(axes.c2p(2.85, 1.65))
-        b_label = Text("B out of page", color=B_COLOR, font_size=22).next_to(b_marker, LEFT, buff=0.14)
+        # Uniform B out of the page: a quiet lattice of dot-in-circle symbols.
+        b_marks = VGroup()
+        for x in np.arange(-2.5, 3.01, 1.0):
+            for y in (-1.9, 1.0):
+                mark = VGroup(
+                    Circle(radius=0.09, color=B_FIELD, stroke_width=1.6),
+                    Dot(radius=0.025, color=B_FIELD),
+                ).move_to(ax.c2p(x, y))
+                b_marks.add(mark)
+        b_marks.set_opacity(0.55)
+        b_label = math(r"\mathbf{B}\ \odot", color=B_FIELD, size=32)
+        b_label.next_to(ax.c2p(2.5, 1.0), UP, buff=0.18)
 
-        drift_arrow = Arrow(
-            axes.c2p(-1.8, 1.9),
-            axes.c2p(0.1, 1.9),
-            color=DRIFT_COLOR,
-            stroke_width=5,
-            buff=0,
-        )
-        drift_label = Text("E × B drift", color=DRIFT_COLOR, font_size=22).next_to(
-            drift_arrow, UP, buff=0.1
-        )
+        # Uniform E along +y.
+        e_arrows = VGroup(*[
+            Arrow(ax.c2p(-3.2, y0), ax.c2p(-3.2, y0 + 0.75), buff=0,
+                  color=E_FIELD, stroke_width=3, max_tip_length_to_length_ratio=0.22)
+            for y0 in (-1.75, -0.85)
+        ])
+        e_label = math(r"\mathbf{E}", color=E_FIELD, size=32)
+        e_label.next_to(e_arrows, LEFT, buff=0.15)
 
         tracker = ValueTracker(0)
-        center_start = np.array([-2.35, -0.65])
 
-        def center_coords():
-            return np.array([center_start[0] + 0.55 * tracker.get_value(), center_start[1]])
+        def center_point():
+            tau = tracker.get_value()
+            return ax.c2p(-2.35 + 0.55 * tau, -0.65)
 
-        def particle_coords():
-            t = tracker.get_value()
-            center = center_coords()
-            return center + 0.65 * np.array([np.cos(2 * t), np.sin(2 * t)])
+        def particle_point():
+            x, y = particle_position(tracker.get_value())
+            return ax.c2p(x, y)
 
-        def scene_point(coords):
-            return axes.c2p(coords[0], coords[1])
+        def orbit_curve():
+            tau = max(tracker.get_value(), 1e-3)
+            return ParametricFunction(
+                lambda s: ax.c2p(*particle_position(s)), t_range=[0, tau, 0.02],
+                color=ION, stroke_width=CURVE_WIDTH - 1)
 
-        particle_point = lambda: scene_point(particle_coords())
-        center_point = lambda: scene_point(center_coords())
+        center_track = DashedLine(ax.c2p(-2.35, -0.65), ax.c2p(2.05, -0.65),
+                                  color=FAINT, stroke_width=THIN_WIDTH, dash_length=0.1)
+        orbit = always_redraw(orbit_curve)
+        radius_line = always_redraw(lambda: Line(
+            center_point(), particle_point(), color=MUTED, stroke_width=1.6))
+        particle = always_redraw(lambda: VGroup(
+            Dot(particle_point(), radius=0.14, color=ION),
+            math("+", color="#0F1318", size=30).move_to(particle_point()),
+        ))
+        guiding_center = always_redraw(lambda: Dot(center_point(), radius=DOT_RADIUS, color=INK))
 
-        orbit = TracedPath(
-            particle_point,
-            stroke_color=DRIFT_COLOR,
-            stroke_width=4,
-        )
-        radius_line = always_redraw(
-            lambda: DashedLine(
-                center_point(),
-                particle_point(),
-                color=MUTED,
-                stroke_width=2,
-                dash_length=0.08,
-            )
-        )
-        particle = always_redraw(
-            lambda: Dot(particle_point(), radius=0.12, color=PARTICLE_COLOR)
-        )
-        guiding_center = always_redraw(
-            lambda: Dot(center_point(), radius=0.08, color=DRIFT_COLOR)
-        )
-        center_label = Text("guiding center", color=DRIFT_COLOR, font_size=18)
-        center_label.add_updater(
-            lambda mob: mob.next_to(center_point(), DOWN + RIGHT, buff=0.12)
-        )
-        particle_label = Text("q > 0", color=PARTICLE_COLOR, font_size=18)
-        particle_label.add_updater(
-            lambda mob: mob.next_to(particle_point(), UP + RIGHT, buff=0.1)
-        )
+        drift_arrow = Arrow(ax.c2p(-1.0, 0.35), ax.c2p(1.0, 0.35), buff=0,
+                            color=INK, stroke_width=3, max_tip_length_to_length_ratio=0.12)
+        drift_label = math(r"\mathbf{v}_E = c\,\mathbf{E}\times\mathbf{B}/B^2", color=INK, size=32)
+        drift_label.next_to(drift_arrow, UP, buff=0.15)
+        gc_label = label("guiding center", color=MUTED, size=SMALL_SIZE)
+        gc_label.add_updater(lambda m: m.move_to(center_point()).set_y(ax.c2p(0, -1.58)[1]))
 
-        legend = VGroup(
-            Text("• circular motion: magnetic force", color=MUTED, font_size=18),
-            Text("• translation: crossed-field drift", color=MUTED, font_size=18),
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.1)
-        legend.to_corner(DL, buff=0.35)
-
-        static = VGroup(
-            title_group,
-            axes,
-            x_label,
-            y_label,
-            e_arrow,
-            e_label,
-            b_marker,
-            b_label,
-            drift_arrow,
-            drift_label,
-            legend,
-        )
-        self.play(FadeIn(title_group), Create(axes), FadeIn(VGroup(x_label, y_label)))
-        self.play(
-            GrowArrow(e_arrow),
-            FadeIn(e_label),
-            FadeIn(b_marker),
-            FadeIn(b_label),
-            GrowArrow(drift_arrow),
-            FadeIn(drift_label),
-            FadeIn(legend),
-        )
-        self.add(orbit, radius_line, guiding_center, particle, center_label, particle_label)
-        self.play(tracker.animate.set_value(8), run_time=8, rate_func=linear)
-        self.wait(1)
-        self.play(FadeOut(static), FadeOut(orbit), FadeOut(radius_line), FadeOut(guiding_center))
-        self.play(FadeOut(particle), FadeOut(center_label), FadeOut(particle_label))
+        self.play(FadeIn(heading), Create(ax), FadeIn(ax_labels), run_time=0.8, rate_func=EASE)
+        self.play(LaggedStart(FadeIn(b_marks), FadeIn(b_label), GrowFromEdge(e_arrows, DOWN),
+                              FadeIn(e_label), GrowArrow(drift_arrow), FadeIn(drift_label),
+                              lag_ratio=0.15), run_time=0.9, rate_func=EASE)
+        self.play(FadeIn(center_track), FadeIn(guiding_center), FadeIn(radius_line),
+                  FadeIn(particle), FadeIn(gc_label), run_time=0.4, rate_func=EASE)
+        self.add(orbit)
+        self.play(tracker.animate.set_value(8), run_time=7.5, rate_func=LINEAR)
+        self.wait(1.5)

@@ -116,29 +116,41 @@ Source roles are deliberately separated.
 | `resources/books/` | Physics reference and derivation cross-checks | Reference only; private, never publish |
 | `resources/typst/` | Typst and package API reference | Implementation reference |
 
-The initial chapter sequence is:
+The chapter sequence, with the requested split of the opening material, is:
 
-1. Introduction, plasma state, scales, collective behavior, and model hierarchy
-2. Single-particle motion
-3. Kinetic theory of plasmas
-4. Moments of the Boltzmann equation
-5. Multiple-fluid theory
-6. Single-fluid theory and magnetohydrodynamics
-7. Collisions and plasma conductivity
-8. Plasma diffusion
-9. Introduction to waves in plasmas
-10. Waves in cold magnetized plasmas
-11. Collisions, ions, and finite-temperature effects on magnetized waves
-12. Waves in hot plasmas
-13. Plasma sheaths and Langmuir probes
+1. Introduction: plasma examples, characteristic scales, and model hierarchy
+2. Debye shielding
+3. Plasma oscillations
+4. Single-particle motion
+5. Kinetic theory of plasmas
+6. Moments of the Boltzmann equation
+7. Multiple-fluid theory
+8. Single-fluid theory and magnetohydrodynamics
+9. Collisions and plasma conductivity
+10. Plasma diffusion
+11. Introduction to waves in plasmas
+12. Waves in cold magnetized plasmas
+13. Collisions, ions, and finite-temperature effects on magnetized waves
+14. Waves in hot plasmas
+15. Plasma sheaths and Langmuir probes
 
-The first eight positions follow the content PDFs. The final five positions
+The opening material is split into three chapters at the author's request:
+an introduction with examples and a scale/model overview, followed by dedicated
+shielding and oscillation chapters. The introduction keeps the physical ideas
+and temperature conventions, with section links to quantitative treatments.
+Screening and coupling criteria belong in the shielding chapter; plasma-frequency
+relations belong in the oscillation chapter; orbit and combined numerical scale
+estimates belong in single-particle motion. Distribution formulas, microscopic
+field equations, and quantum-degeneracy criteria belong in kinetic theory;
+moment equations and closures belong in the moments chapter.
+This supersedes the former combined
+introduction. Subsequent topics retain the content-PDF order. The final five positions
 follow the corresponding wave and sheath chapters in the reference material
 until a later slide sequence is supplied. A conflict between the slide order
 and the books must be resolved in favor of the slide order.
 
 The chronological course map is followed by a supplemental mathematical
-toolkit. It is not a fourteenth physics chapter: it collects the energy-weighted
+toolkit. It is not a sixteenth physics chapter: it collects the energy-weighted
 second moment and coordinate-operator derivations used across the sequence.
 
 The content PDFs have been reviewed as rendered pages. The combined
@@ -161,8 +173,12 @@ rendered form when implementing a component.
 The visual source suggests the following internal progression. These are
 planning anchors, not mandatory subsection names:
 
-- Introduction: speed, energy, temperature, quasi-neutrality, plasma
-  oscillations, Debye shielding, characteristic scales, and model hierarchy.
+- Introduction: examples of plasmas, quasi-neutrality, speed, energy,
+  temperature, characteristic lengths and times, and model hierarchy.
+- Debye shielding: equilibrium electron response, screened Poisson equation,
+  the Debye length, and finite-source screening.
+- Plasma oscillations: electron displacement, the restoring electric field,
+  and the cold electron plasma frequency.
 - Single-particle motion: uniform-field gyration, `E × B` drift, nonuniform
   magnetic fields, gradient and curvature drifts, magnetic moment and mirrors,
   polarization drift, and cyclotron resonance.
@@ -192,7 +208,9 @@ copied prompts:
 
 | Area | The script must enable students to |
 | --- | --- |
-| Introduction | estimate characteristic scales, explain Debye shielding and plasma oscillations, distinguish model levels, and connect Boltzmann equilibria to plasma behavior |
+| Introduction | identify collective behavior, distinguish thermal and bulk motion, explain the role of observation scales, and navigate the model hierarchy |
+| Debye shielding | derive the screening length and assess collective and quasineutral orderings |
+| Plasma oscillations | derive the cold restoring response and relate its frequency to thermal and screening scales |
 | Single-particle motion | derive gyration and homogeneous-force drifts, use guiding-center assumptions, explain magnetic moments and mirrors, and classify common drifts |
 | Kinetic theory | interpret a distribution function, reason in phase space, relate mean free path to collisions, and distinguish convective and conservative kinetic equations |
 | Moments and closure | obtain fluid variables from a distribution, derive continuity and the structure of higher moment equations, interpret pressure tensors, and explain closure choices |
@@ -394,6 +412,13 @@ The authoring environment is defined by `flake.nix`:
 - `build-site` must render into a staging directory and publish it only after
   all animation, website, and PDF outputs succeed, preserving the previous
   complete bundle if a build fails.
+- `public-host` serves the existing site by default. It warns when local source
+  timestamps are newer than the built index, without rebuilding automatically.
+  Its explicit `--build` option builds before serving and must stop on build
+  failure. It builds and serves the same `SITE_DIR`, or `public/` by default.
+  `local-host` remains serve-only. When invoked from the
+  project root, development builds include the current working-tree sources,
+  including new files not yet added to Git.
 - The `verify-spec` app checks both the public artifact boundary and the
   source-level section contract: every chapter must provide matching section,
   objective, unit-ledger, summary, and knowledge-check blocks, with four

@@ -1,665 +1,183 @@
+/* Plasma physics lecture script: quiet, typographic reading layout.
+   Light by default, dark when the reader's system asks for it. */
+
 :root {
-  --bg: #0b1220;
-  --surface: #121d2e;
-  --surface-raised: #17263b;
-  --ink: #e8eef7;
-  --muted: #9baac0;
-  --line: #2a3c56;
-  --teal: #72d6c9;
-  --blue: #4ea8de;
-  --orange: #f2a65a;
-  --reading-width: 48rem;
+  color-scheme: light dark;
+  --bg: #fbfaf7;
+  --surface: #f3f1ec;
+  --ink: #1c1f23;
+  --ink-soft: #3a4048;
+  --muted: #6b7079;
+  --line: #e3e0d8;
+  --accent: #0e6b78;
+  --accent-soft: rgba(14, 107, 120, 0.08);
+  --blue: #2f5f93;
+  --orange: #a3530f;
+  --plot-surface: transparent;
+  --video-surface: #0f1318;
+  --reading-width: 42rem;
+  --wide-width: 52rem;
+  --serif: "Iowan Old Style", "Charter", "Bitstream Charter", "Sitka Text",
+    Cambria, Georgia, serif;
+  --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --math: "STIX Two Math", "Latin Modern Math", "New Computer Modern Math",
+    "Cambria Math", math;
 }
 
-* {
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111418;
+    --surface: #181c21;
+    --ink: #e4e6e9;
+    --ink-soft: #c5c9cf;
+    --muted: #8f969f;
+    --line: #2a2f36;
+    --accent: #6cc4c9;
+    --accent-soft: rgba(108, 196, 201, 0.08);
+    --blue: #8fb5e3;
+    --orange: #e3a368;
+    --plot-surface: #f7f6f2;
+  }
+}
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
   background: var(--bg);
   color: var(--ink);
-  font-family: Georgia, "Times New Roman", serif;
-  line-height: 1.65;
+  font-family: var(--serif);
+  font-size: 106.25%;
+  line-height: 1.62;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
+  background: var(--bg);
+}
+
+math {
+  font-family: var(--math);
 }
 
 a {
-  color: var(--teal);
-  text-decoration-thickness: 0.08em;
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
+  transition: text-decoration-color 0.15s ease;
 }
 
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+summary:focus-visible,
+a:focus-visible,
+button:focus-visible,
+video:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+/* ---------- Page frame ---------- */
+
 .site-shell {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
 .site-header,
-.site-main,
 .site-footer {
-  width: min(72rem, calc(100% - 3rem));
+  width: min(var(--wide-width), calc(100% - 2.5rem));
   margin-inline: auto;
 }
 
 .site-header {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
-  gap: 2rem;
-  padding: 1.4rem 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.brand,
-.site-nav,
-.hero-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
+  gap: 1.5rem;
+  padding: 1.6rem 0 1.2rem;
+  font-family: var(--sans);
+  font-size: 0.85rem;
 }
 
 .brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
   color: var(--ink);
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 .brand-mark {
-  display: inline-grid;
-  width: 2rem;
-  height: 2rem;
-  place-items: center;
-  border: 1px solid var(--teal);
-  border-radius: 0.55rem;
-  color: var(--teal);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.75rem;
+  display: none;
 }
 
 .site-nav {
+  display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
-  font-size: 0.95rem;
+  gap: 0.35rem 1.4rem;
 }
 
-.site-main {
-  padding: 4.5rem 0 5rem;
-}
-
-.site-main > h1,
-.site-main > h2,
-.site-main > p,
-.site-main > section,
-.site-main > figure,
-.site-main > aside,
-.site-main > ol,
-.site-main > ul,
-.site-main > div {
-  max-width: var(--reading-width);
-  margin-inline: auto;
-}
-
-.hero {
-  max-width: 58rem;
-  margin: 0 auto 5rem;
-  padding: 3rem;
-  border: 1px solid var(--line);
-  border-radius: 1.2rem;
-  background:
-    radial-gradient(circle at 90% 15%, #1d4050 0, transparent 33%),
-    linear-gradient(135deg, var(--surface), var(--bg));
-}
-
-.hero h1 {
-  max-width: 12ch;
-  margin: 0.2rem 0 1rem;
-  font-size: clamp(3rem, 8vw, 6rem);
-  line-height: 0.98;
-}
-
-.eyebrow,
-.card-kicker {
-  color: var(--teal);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.78rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.lede {
+.site-nav a {
   color: var(--muted);
-  font-size: 1.35rem;
-  line-height: 1.45;
-}
-
-.hero-actions a {
-  display: inline-block;
-  padding: 0.7rem 1rem;
-  border: 1px solid var(--teal);
-  border-radius: 0.6rem;
-  color: var(--ink);
   text-decoration: none;
 }
 
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  max-width: 58rem !important;
+.site-nav a:hover {
+  color: var(--ink);
 }
 
-.card {
-  min-height: 14rem;
-  padding: 1.6rem;
-  border: 1px solid var(--line);
-  border-radius: 0.9rem;
-  background: var(--surface);
-}
-
-.card-muted {
-  background: transparent;
-  color: var(--muted);
-}
-
-.card h2 {
-  margin-top: 0.3rem;
-}
-
-.roadmap {
-  margin-top: 4rem;
-}
-
-.roadmap ol {
-  padding-left: 1.5rem;
-  color: var(--muted);
-}
-
-.roadmap li::marker {
-  color: var(--teal);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-}
-
-.project-note {
-  max-width: 58rem !important;
-  margin: 0 auto 4rem;
-  padding: 1.2rem 1.4rem;
-  border: 1px solid var(--line);
-  border-left: 0.25rem solid var(--teal);
-  border-radius: 0 0.7rem 0.7rem 0;
-  background: var(--surface);
-}
-
-.project-note strong {
-  display: block;
-  margin-bottom: 0.35rem;
-  color: var(--teal);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.82rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.catalog {
-  max-width: 58rem !important;
-  margin-bottom: 5rem;
-}
-
-.catalog > h2,
-.content-sections > h2 {
-  margin-top: 0.3rem;
-}
-
-.chapter-list {
-  display: grid;
-  gap: 0.75rem;
-  padding: 0;
-  list-style: none;
-}
-
-.chapter-item {
-  display: grid;
-  grid-template-columns: 3.4rem 1fr;
-  gap: 1rem;
-  padding: 1.2rem;
-  border: 1px solid var(--line);
-  border-radius: 0.8rem;
-  background: var(--surface);
-}
-
-.chapter-number {
-  display: grid;
-  width: 2.6rem;
-  height: 2.6rem;
-  place-items: center;
-  border: 1px solid var(--teal);
-  border-radius: 0.55rem;
-  color: var(--teal);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.9rem;
-}
-
-.chapter-copy h3 {
-  margin: 0.1rem 0 0.35rem;
-  font-size: 1.25rem;
-}
-
-.chapter-copy p:last-child {
-  margin-bottom: 0;
-  color: var(--muted);
-}
-
-.content-sections {
-  max-width: 58rem !important;
-  margin-bottom: 5rem;
-}
-
-.content-sections > p:not(.eyebrow) {
-  color: var(--muted);
-}
-
-dl {
-  display: grid;
-  grid-template-columns: minmax(10rem, 0.35fr) 1fr;
-  margin: 1.5rem 0;
-  border-top: 1px solid var(--line);
-}
-
-dt,
-dd {
-  margin: 0;
-  padding: 1rem 0.8rem;
-  border-bottom: 1px solid var(--line);
-}
-
-dt {
-  color: var(--teal);
-  font-weight: 700;
-}
-
-dd {
-  color: var(--muted);
-}
-
-.objectives,
-.unit-ledger,
-.exam-prompt,
-.knowledge-check {
-  max-width: 48rem;
-  margin: 2rem auto;
-  padding: 1.1rem 1.35rem;
-  border-radius: 0.75rem;
-}
-
-.objectives {
-  border: 1px solid var(--teal);
-  background: color-mix(in srgb, var(--teal) 10%, var(--surface));
-}
-
-.unit-ledger {
-  border-left: 0.25rem solid var(--orange);
-  background: color-mix(in srgb, var(--orange) 10%, var(--surface));
-}
-
-.exam-prompt {
-  border: 1px solid var(--orange);
-  background: color-mix(in srgb, var(--orange) 10%, var(--surface));
-}
-
-.knowledge-check {
-  border: 1px solid var(--blue);
-  background: color-mix(in srgb, var(--blue) 10%, var(--surface));
-}
-
-.objectives h3,
-.exam-prompt h3,
-.knowledge-check h3,
-.unit-ledger strong {
-  display: block;
-  margin: 0 0 0.6rem;
-  color: var(--teal);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.82rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.unit-ledger strong,
-.exam-prompt h3 {
-  color: var(--orange);
-}
-
-.knowledge-check h3 {
-  color: var(--blue);
-}
-
-.objectives ul,
-.exam-prompt ul,
-.knowledge-check ol {
-  margin: 0.3rem 0 0;
-  padding-left: 1.35rem;
-}
-
-.exam-prompt ul.exam-prompts-list {
-  padding-left: 0;
-  list-style: none;
-}
-
-.exam-prompt ul.exam-prompts-list li {
-  margin: 0.45rem 0;
-}
-
-.exam-note,
-.source-note,
-.alt-note,
-.equation-note {
-  color: var(--muted);
-  font-size: 0.92rem;
-}
-
-.source-note {
-  margin-bottom: 0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-}
-
-.disclosure,
-.knowledge-check details {
-  margin-top: 0.8rem;
-  border-top: 1px solid var(--line);
-}
-
-/* Give every typed derivation the same width contract as paragraphs and
-   frames, including when a long derivation is expanded inside a section. */
-.disclosure {
-  width: min(100%, var(--reading-width));
-  max-width: var(--reading-width);
-  min-width: 0;
-  margin: 2rem auto;
-  box-sizing: border-box;
-}
-
-.disclosure summary {
-  min-width: 0;
-  max-width: 100%;
-  overflow-wrap: anywhere;
-}
-
-.disclosure-body {
-  box-sizing: border-box;
-  min-width: 0;
-  max-width: 100%;
-  padding: 1rem 0 0.35rem;
-  font-size: 1.08rem;
-  line-height: 1.72;
-}
-
-.disclosure-body > * {
-  box-sizing: border-box;
-  min-width: 0;
-  max-width: 100%;
-}
-
-.disclosure-body > p {
-  margin: 0 0 1.05rem;
-  overflow-wrap: anywhere;
-}
-
-.disclosure-body > p:last-child {
-  margin-bottom: 0;
-}
-
-.disclosure-body .derivation-step-label {
-  margin: 1.25rem 0 0.35rem;
-  color: var(--blue);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.84rem;
-  letter-spacing: 0.04em;
-}
-
-.disclosure-body .derivation-step-label:first-child {
-  margin-top: 0;
-}
-
-.disclosure-body .derivation-step-label + p {
-  margin-top: 0;
-}
-
-/* Display mathematics gets breathing room and remains locally scrollable when
-   its notation cannot be wrapped without changing its meaning. */
-.disclosure-body > math[display="block"] {
-  display: block;
-  max-width: 100%;
-  margin: 1.2rem 0;
-  padding-bottom: 0.2rem;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-color: var(--line) transparent;
-  scrollbar-width: thin;
-}
-
-.disclosure-body > math[display="block"]:first-child {
-  margin-top: 0;
-}
-
-.disclosure-body > math[display="block"]:last-child {
-  margin-bottom: 0;
-}
-
-.disclosure summary,
-.knowledge-check summary {
-  padding: 0.75rem 0;
-  color: var(--teal);
-  cursor: pointer;
-  font-weight: 700;
-}
-
-.disclosure[open],
-.knowledge-check details[open] {
-  padding-bottom: 0.5rem;
-}
-
-.disclosure[open] summary,
-.knowledge-check details[open] summary {
-  border-bottom: 1px solid var(--line);
-}
-
-.equation-note {
-  max-width: var(--reading-width);
-  margin: 0.65rem auto 1.6rem;
-}
-
-.chapter-nav {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  max-width: 48rem;
-  margin: 3rem auto 0;
-  padding-top: 1rem;
-  border-top: 1px solid var(--line);
-}
-
-.chapter-nav a {
-  max-width: 48%;
-}
-
-.alt-note {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  clip-path: inset(50%);
-  white-space: nowrap;
-  border: 0;
-}
-
-.bibliography {
-  margin-top: 1.5rem;
-  padding-left: 1.5rem;
-}
-
-.bibliography li {
-  margin: 0.75rem 0;
-  color: var(--muted);
-}
-
-main > div[class*="frame"],
-main > div[class*="box"] {
-  max-width: 48rem;
+.site-main {
+  flex: 1;
+  width: min(var(--reading-width), calc(100% - 2.5rem));
   margin-inline: auto;
+  padding: 3.5rem 0 4rem;
 }
 
-/* The HTML exporter preserves intrinsic diagram sizes and keeps MathML
-   expressions unbreakable. Contain both at the reading width without
-   changing MathML's native layout; long expressions remain pannable. */
-main svg,
-main img,
-main canvas {
-  max-width: 100%;
-  height: auto;
+.site-footer {
+  padding: 2rem 0 2.5rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.78rem;
 }
 
-main math[display="block"],
-main p,
-main li,
-main dt,
-main dd,
-main > div[id^="frame-wrapper-"] > figure > div:nth-child(2) {
-  overflow-x: auto;
-  scrollbar-color: var(--line) transparent;
-  scrollbar-width: thin;
-}
-
-main math[display="block"] {
-  max-width: 100%;
-  overflow-y: hidden;
-  padding-bottom: 0.2rem;
-  white-space: nowrap;
-}
-
-/* A CSS block around exported MathML otherwise makes Chrome's direct math
-   children block-level, stacking a complete equation one symbol per line.
-   Keep the equation itself as the scroll container and its direct terms on
-   one mathematical line. Nested mrow/mfrac elements retain MathML layout. */
-main math[display="block"] > * {
-  display: inline math;
-}
-
-main math[display="block"]::-webkit-scrollbar,
-main p::-webkit-scrollbar,
-main li::-webkit-scrollbar,
-main dt::-webkit-scrollbar,
-main dd::-webkit-scrollbar,
-main > div[id^="frame-wrapper-"] > figure > div:nth-child(2)::-webkit-scrollbar {
-  height: 0.45rem;
-}
-
-main math[display="block"]::-webkit-scrollbar-track,
-main p::-webkit-scrollbar-track,
-main li::-webkit-scrollbar-track,
-main dt::-webkit-scrollbar-track,
-main dd::-webkit-scrollbar-track,
-main > div[id^="frame-wrapper-"] > figure > div:nth-child(2)::-webkit-scrollbar-track {
-  background: var(--surface);
-}
-
-main math[display="block"]::-webkit-scrollbar-thumb,
-main p::-webkit-scrollbar-thumb,
-main li::-webkit-scrollbar-thumb,
-main dt::-webkit-scrollbar-thumb,
-main dd::-webkit-scrollbar-thumb,
-main > div[id^="frame-wrapper-"] > figure > div:nth-child(2)::-webkit-scrollbar-thumb {
-  background: var(--line);
-  border-radius: 999px;
-}
-
-/* Keep Frame-It headers readable when a long title has to wrap. */
-main > div[id^="frame-wrapper-"] > figure {
-  margin: 2rem 0;
-  break-inside: avoid;
-  page-break-inside: avoid;
-}
-
-@media print {
-  main > div[id^="frame-wrapper-"] {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-}
-
-main > div[id^="frame-wrapper-"] > figure > div:first-child {
-  display: flex !important;
-  align-items: flex-end !important;
-  flex-wrap: nowrap;
-  row-gap: 0.25rem;
-}
-
-main > div[id^="frame-wrapper-"] > figure > div:first-child > span:first-child {
-  min-width: 0;
-  flex: 0 1 auto;
-  overflow-wrap: anywhere;
-  line-height: 1.25;
-  border-top-right-radius: 5pt !important;
-}
-
-main > div[id^="frame-wrapper-"] > figure > div:first-child > span:nth-child(2) {
-  display: none !important;
-}
-
-main > div[id^="frame-wrapper-"] > figure > div:first-child > span:nth-child(3) {
-  flex: 0 0 auto;
-  margin-left: auto !important;
-  margin-right: 0.8em !important;
-  white-space: nowrap;
-}
-
-/* On narrow screens, keep the semantic counter in the header while allowing
-   a long title to wrap in the space that remains beside it. */
-@media (max-width: 42rem) {
-  main > div[id^="frame-wrapper-"] > figure > div:first-child {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) max-content;
-    align-items: end !important;
-    column-gap: 0;
-  }
-
-  main > div[id^="frame-wrapper-"] > figure > div:first-child > span:first-child {
-    grid-column: 1;
-    grid-row: 1;
-    width: auto;
-    flex: 1 1 auto;
-  }
-
-  main > div[id^="frame-wrapper-"] > figure > div:first-child > span:nth-child(3) {
-    grid-column: 2;
-    grid-row: 1;
-    justify-self: stretch;
-    margin-left: auto !important;
-    margin-right: 0.8em !important;
-  }
-}
-
-summary:focus-visible,
-a:focus-visible,
-button:focus-visible {
-  outline: 0.2rem solid var(--orange);
-  outline-offset: 0.2rem;
-}
+/* ---------- Typography ---------- */
 
 h1,
 h2,
 h3 {
   color: var(--ink);
-  line-height: 1.1;
-  overflow-wrap: anywhere;
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.012em;
+  overflow-wrap: break-word;
+  text-wrap: balance;
 }
 
 h1 {
-  margin-top: 0;
-  font-size: clamp(2.4rem, 5vw, 4rem);
+  margin: 0 0 1.2rem;
+  font-size: clamp(2.1rem, 5.2vw, 3rem);
+  letter-spacing: -0.022em;
 }
 
 .site-main > h1 > ol {
@@ -673,167 +191,820 @@ h1 {
 }
 
 .site-main > h1 > ol > li::before {
-  content: attr(value) ". ";
+  content: attr(value) " ";
+  margin-right: 0.35em;
+  color: var(--muted);
+  font-weight: 400;
 }
 
 h2 {
-  margin-top: 3rem;
-  font-size: 1.8rem;
+  margin: 4.2rem 0 0.9rem;
+  font-size: 1.6rem;
+}
+
+h3 {
+  margin: 2.4rem 0 0.6rem;
+  font-size: 1.15rem;
+}
+
+p,
+li,
+dd {
+  hyphens: auto;
+  text-wrap: pretty;
 }
 
 p {
-  font-size: 1.08rem;
+  margin: 0 0 1.05rem;
+}
+
+strong {
+  font-weight: 600;
 }
 
 code {
-  color: var(--orange);
+  padding: 0.05em 0.3em;
+  border-radius: 3px;
+  background: var(--surface);
+  font-family: var(--mono);
+  font-size: 0.86em;
 }
 
+.lede {
+  margin-bottom: 1.6rem;
+  color: var(--ink-soft);
+  font-size: 1.12rem;
+  line-height: 1.55;
+}
+
+h1 + .lede {
+  margin-bottom: 2.4rem;
+  color: var(--muted);
+  font-size: 1.2rem;
+}
+
+.eyebrow,
+.card-kicker {
+  margin: 0 0 0.4rem;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ---------- Teaching components ---------- */
+
+.objectives,
+.unit-ledger,
+.exam-prompt,
+.knowledge-check {
+  margin: 1.8rem 0;
+}
+
+.objectives h3,
+.knowledge-check h3,
+.exam-prompt h3,
+.unit-ledger > strong:first-child {
+  display: block;
+  margin: 0 0 0.5rem;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.objectives ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.objectives li {
+  position: relative;
+  margin: 0.2rem 0;
+  padding-left: 1.2rem;
+  color: var(--ink-soft);
+}
+
+.objectives li::before {
+  content: "";
+  position: absolute;
+  top: 0.72em;
+  left: 0.15rem;
+  width: 0.45rem;
+  height: 1.5px;
+  border-radius: 1px;
+  background: var(--accent);
+}
+
+.unit-ledger {
+  padding: 0.85rem 1rem;
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.unit-ledger > strong:first-child {
+  margin-bottom: 0.3rem;
+}
+
+.equation-note {
+  margin: -0.3rem 0 1.4rem;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.source-note,
+.exam-note {
+  margin: 0.6rem 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.exam-note {
+  margin: 0 0 0.6rem;
+  font-style: italic;
+}
+
+.exam-prompt {
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.exam-prompt ul.exam-prompts-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.exam-prompt ul.exam-prompts-list li {
+  margin: 0.45rem 0;
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--orange);
+}
+
+.knowledge-check {
+  margin-top: 2.6rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+}
+
+.knowledge-check ol {
+  margin: 0;
+  padding-left: 1.3rem;
+}
+
+.knowledge-check li {
+  margin: 0.8rem 0;
+  padding-left: 0.3rem;
+}
+
+.knowledge-check li::marker {
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.85em;
+}
+
+.knowledge-check details {
+  margin-top: 0.3rem;
+  color: var(--ink-soft);
+}
+
+.knowledge-check summary {
+  display: inline-block;
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  list-style: none;
+}
+
+.knowledge-check summary::-webkit-details-marker {
+  display: none;
+}
+
+.knowledge-check summary::after {
+  content: " +";
+}
+
+.knowledge-check details[open] summary::after {
+  content: " −";
+}
+
+.knowledge-check details[open] {
+  padding: 0.2rem 0 0.2rem 0.85rem;
+  border-left: 2px solid var(--line);
+}
+
+/* Collapsed derivations */
+
+.disclosure {
+  margin: 1.4rem 0 1.8rem;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.disclosure summary {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.75rem 0;
+  color: var(--ink-soft);
+  font-family: var(--sans);
+  font-size: 0.86rem;
+  font-weight: 500;
+  cursor: pointer;
+  list-style: none;
+}
+
+.disclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.disclosure summary::before {
+  content: "";
+  flex: none;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-right: 1.5px solid var(--accent);
+  border-bottom: 1.5px solid var(--accent);
+  transform: translateY(-0.12rem) rotate(-45deg);
+  transition: transform 0.18s ease;
+}
+
+.disclosure[open] summary::before {
+  transform: translateY(-0.2rem) rotate(45deg);
+}
+
+.disclosure summary:hover {
+  color: var(--ink);
+}
+
+.disclosure-body {
+  padding: 0.2rem 0 1.2rem;
+}
+
+.disclosure-body > * {
+  max-width: 100%;
+}
+
+.disclosure-body > p {
+  margin: 0.55rem 0;
+}
+
+.disclosure-body > p:last-child {
+  margin-bottom: 0;
+}
+
+.disclosure-body .derivation-step-label {
+  margin: 1.3rem 0 0.3rem;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+}
+
+.disclosure-body .derivation-step-label strong {
+  font-weight: 600;
+}
+
+.disclosure-body .derivation-step-label:first-child {
+  margin-top: 0.4rem;
+}
+
+.disclosure-body .derivation-step-label + p {
+  margin-top: 0.2rem;
+}
+
+.disclosure-body > math[display="block"] {
+  margin: 0.8rem 0;
+}
+
+.disclosure-body > math[display="block"]:first-child {
+  margin-top: 0.3rem;
+}
+
+.disclosure-body > math[display="block"]:last-child {
+  margin-bottom: 0;
+}
+
+/* Short boxed note used on a few pages */
 .callout {
   margin-block: 2rem;
-  padding: 1.2rem 1.4rem;
-  border-left: 0.25rem solid var(--teal);
-  border-radius: 0 0.7rem 0.7rem 0;
-  background: var(--surface-raised);
+  padding: 0.2rem 0 0.2rem 1.1rem;
+  border-left: 2px solid var(--accent);
 }
 
 .callout strong {
   display: block;
-  margin-bottom: 0.35rem;
-  color: var(--teal);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.82rem;
-  letter-spacing: 0.08em;
+  margin-bottom: 0.3rem;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
+/* ---------- Frame-It blocks ----------
+   Frame-It emits inline "boxy" styles. Keep its structure (flexible title
+   span, hidden empty connector, separate semantic counter) and render it as
+   a quiet ruled block. The frame kind is read from Frame-It's own color. */
+
+main div[id^="frame-wrapper-"] > figure {
+  --kind: var(--accent);
+  margin: 2rem 0;
+  padding: 0.15rem 0 0.15rem 1.15rem;
+  border-left: 2px solid var(--kind);
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+main div[id^="frame-wrapper-"] > figure:has(> div:first-child span[style*="#356aa0"]) {
+  --kind: var(--blue);
+}
+
+main div[id^="frame-wrapper-"] > figure:has(> div:first-child span[style*="#b86418"]) {
+  --kind: var(--orange);
+}
+
+main div[id^="frame-wrapper-"] > figure > div:first-child {
+  display: flex !important;
+  align-items: baseline !important;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  margin-bottom: 0.35rem;
+}
+
+main div[id^="frame-wrapper-"] > figure > div:first-child > span {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+}
+
+main div[id^="frame-wrapper-"] > figure > div:first-child > span:first-child {
+  min-width: 0;
+  flex: 0 1 auto;
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+main div[id^="frame-wrapper-"] > figure > div:first-child > span:nth-child(2) {
+  display: none !important;
+}
+
+main div[id^="frame-wrapper-"] > figure > div:first-child > span:nth-child(3) {
+  flex: 0 0 auto;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  color: var(--kind);
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+main div[id^="frame-wrapper-"] > figure > div:nth-child(2) {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  color: var(--ink-soft);
+}
+
+main div[id^="frame-wrapper-"] > figure > div:nth-child(2) > p:last-child {
+  margin-bottom: 0;
+}
+
+@media print {
+  main div[id^="frame-wrapper-"] {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+@media (max-width: 42rem) {
+  main div[id^="frame-wrapper-"] > figure > div:first-child {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    column-gap: 0.75rem;
+  }
+
+  main div[id^="frame-wrapper-"] > figure > div:first-child > span:first-child {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  main div[id^="frame-wrapper-"] > figure > div:first-child > span:nth-child(3) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+/* ---------- Math ----------
+   The HTML exporter keeps MathML expressions unbreakable. Contain them at the
+   reading width; long expressions scroll horizontally. */
+
+main svg,
+main img,
+main canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+main math[display="block"],
+main p,
+main li,
+main dt,
+main dd,
+main div[id^="frame-wrapper-"] > figure > div:nth-child(2) {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-color: var(--line) transparent;
+  scrollbar-width: thin;
+}
+
+main math[display="block"] {
+  max-width: 100%;
+  margin: 1.1rem 0;
+  padding: 0.15rem 0 0.25rem;
+  font-size: 1.06em;
+  white-space: nowrap;
+}
+
+/* A CSS block around exported MathML otherwise makes Chrome's direct math
+   children block-level, stacking a complete equation one symbol per line.
+   Keep the equation itself as the scroll container and its direct terms on
+   one mathematical line. Nested mrow/mfrac elements retain MathML layout. */
+main math[display="block"] > * {
+  display: inline math;
+}
+
+main ::-webkit-scrollbar {
+  height: 0.35rem;
+}
+
+main ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+main ::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 999px;
+}
+
+/* ---------- Figures, plots, animations ---------- */
+
+figure {
+  margin: 2.4rem 0;
+}
+
+figcaption {
+  padding: 0.8rem 0 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+/* Typst numbered-figure captions carry a "Figure n:" prefix span. */
+figcaption .prefix,
+figcaption > strong:first-child {
+  color: var(--ink-soft);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Lilaq SVGs carry dark axis text: keep each plot, including an external
+   legend, on a paper surface in both color schemes. */
+.quantitative-plot {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  padding: clamp(0.4rem, 2vw, 1rem);
+  border-radius: 6px;
+  background: var(--plot-surface);
+  color: #1c1f23;
+  overflow-x: auto;
+}
+
+.quantitative-plot svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+.concept-figure {
+  margin: 2.4rem auto;
+}
+
 .animation-figure {
-  margin-block: 2.5rem;
-  padding: 1rem;
-  border: 1px solid var(--line);
-  border-radius: 0.9rem;
-  background: #070d17;
+  margin: 2.6rem 0;
 }
 
 .animation-video {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 0.55rem;
-  background: #070d17;
+  border-radius: 8px;
+  background: var(--video-surface);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 8px 28px rgba(0, 0, 0, 0.08);
 }
 
-figcaption {
-  padding: 0.9rem 0.4rem 0.2rem;
+.alt-note {
+  display: block;
+  margin-top: 0.45rem;
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: 0.8rem;
+  opacity: 0.85;
 }
 
-.concept-figure {
-  margin: 1.5rem auto;
+/* ---------- Chapter navigation ---------- */
+
+.chapter-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 4.5rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--sans);
+  font-size: 0.88rem;
+}
+
+.chapter-nav a {
+  display: block;
+  padding: 0.6rem 0;
+  color: var(--ink-soft);
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.chapter-nav a:hover {
+  color: var(--accent);
+}
+
+.chapter-nav a:only-child:not(:first-child),
+.chapter-nav a:last-child:not(:only-child) {
+  grid-column: 2;
+  text-align: right;
+}
+
+.chapter-nav a:only-child {
+  grid-column: 2;
+  text-align: right;
+}
+
+/* ---------- Overview page ---------- */
+
+.hero {
+  margin: 1.5rem 0 4rem;
+}
+
+.hero .eyebrow {
+  margin-bottom: 1rem;
+}
+
+.hero h1 {
+  margin-bottom: 1rem;
+  font-size: clamp(2.6rem, 8vw, 4.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+.hero .lede {
+  max-width: 34rem;
+  color: var(--muted);
+  font-size: 1.2rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.6rem;
+  margin-top: 1.8rem;
+  font-family: var(--sans);
+  font-size: 0.92rem;
+}
+
+.hero-actions a {
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.hero-actions a:first-child {
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.hero-actions a:first-child:hover {
+  background: color-mix(in srgb, var(--accent) 85%, var(--ink));
+}
+
+.hero-actions a:not(:first-child) {
+  align-self: center;
+}
+
+.catalog,
+.content-sections {
+  margin-top: 4.5rem;
+}
+
+.catalog > h2,
+.content-sections > h2 {
+  margin-top: 0;
+}
+
+.content-sections > p:not(.eyebrow) {
+  color: var(--ink-soft);
+}
+
+.chapter-list {
+  margin: 1.6rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.chapter-item {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr);
+  gap: 0.5rem;
+  padding: 1.05rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.chapter-number {
+  padding-top: 0.12rem;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.chapter-copy h3 {
+  margin: 0;
+  font-size: 1.08rem;
+  font-weight: 600;
+}
+
+.chapter-copy h3 a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.chapter-copy h3 a:hover {
+  color: var(--accent);
+}
+
+.chapter-copy p {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+  font-size: 0.93rem;
+  line-height: 1.5;
+}
+
+.chapter-copy .card-kicker {
+  display: none;
+}
+
+dl {
+  margin: 1.4rem 0 0;
+}
+
+dt {
+  margin-top: 1.3rem;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+dd {
+  margin: 0.25rem 0 0;
+  color: var(--ink-soft);
+}
+
+.bibliography,
+#bibliography ul,
+#bibliography ol {
+  padding-left: 1.2rem;
+}
+
+#bibliography li,
+.bibliography li {
+  margin: 0.6rem 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+/* ---------- HTML concept diagrams ---------- */
+
+.model-figure {
+  max-width: 100% !important;
+}
+
+.model-figure-diagram {
+  padding: 1rem 0;
+}
+
+.hierarchy-fallback,
+.mhd-diagram {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 0.92rem;
 }
 
 .hierarchy-fallback {
-  display: grid;
-  max-width: 38rem;
-  gap: 0.55rem;
-  margin: 0 auto;
-  text-align: center;
+  max-width: 36rem;
 }
 
-.hierarchy-node {
-  padding: 0.7rem 0.9rem;
-  border: 1px solid var(--teal);
-  border-radius: 0.55rem;
+.mhd-diagram {
+  max-width: 40rem;
+}
+
+.hierarchy-node,
+.mhd-node {
+  --node: var(--accent);
+  min-width: 0;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--node);
+  border-radius: 6px;
   background: var(--surface);
 }
 
 .hierarchy-node strong,
-.hierarchy-node span {
-  display: block;
-}
-
-.hierarchy-node strong {
-  color: var(--teal);
-}
-
-.hierarchy-node span {
-  margin-top: 0.25rem;
-}
-
-.hierarchy-branches {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
-}
-
-.hierarchy-fields {
-  border-color: var(--orange);
-}
-
-.hierarchy-fields strong {
-  color: var(--orange);
-}
-
-.hierarchy-sums {
-  border-color: var(--blue);
-}
-
-.hierarchy-sums strong {
-  color: var(--blue);
-}
-
-.hierarchy-arrow {
-  color: var(--muted);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.88rem;
-}
-
-.mhd-diagram {
-  display: grid;
-  max-width: 42rem;
-  gap: 0.65rem;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.mhd-node {
-  min-width: 0;
-  padding: 0.7rem 0.9rem;
-  border: 1px solid var(--teal);
-  border-radius: 0.55rem;
-  background: var(--surface);
-}
-
-.mhd-node-wide {
-  border-color: var(--teal);
-}
-
+.hierarchy-node span,
 .mhd-node strong,
 .mhd-node span {
   display: block;
 }
 
+.hierarchy-node strong,
 .mhd-node strong {
-  color: var(--teal);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
+.hierarchy-node span,
 .mhd-node span {
-  margin-top: 0.25rem;
+  margin-top: 0.2rem;
+  color: var(--ink-soft);
 }
 
+.hierarchy-fields,
+.mhd-node-ohm,
+.mhd-node-hall,
+.mhd-node-magnetic,
+.mhd-node-resistive,
+.mhd-node-diffusion,
+.mhd-node-pressure {
+  --node: var(--orange);
+}
+
+.hierarchy-sums,
+.mhd-node-result,
+.mhd-node-ideal {
+  --node: var(--blue);
+}
+
+.hierarchy-arrow,
 .mhd-arrow {
   color: var(--muted);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.88rem;
+  font-family: var(--sans);
+  font-size: 0.8rem;
 }
 
+.hierarchy-branches,
 .mhd-branches,
 .mhd-term-grid {
   display: grid;
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
+.hierarchy-branches,
 .mhd-branches {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -842,86 +1013,75 @@ figcaption {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.mhd-node-ohm,
-.mhd-node-hall,
-.mhd-node-magnetic {
-  border-color: var(--orange);
-}
-
-.mhd-node-ohm strong,
-.mhd-node-hall strong,
-.mhd-node-magnetic strong {
-  color: var(--orange);
-}
-
-.mhd-node-result,
-.mhd-node-ideal {
-  border-color: var(--blue);
-}
-
-.mhd-node-result strong,
-.mhd-node-ideal strong {
-  color: var(--blue);
-}
-
-.mhd-node-resistive,
-.mhd-node-diffusion,
-.mhd-node-pressure {
-  border-color: var(--orange);
-}
-
-.mhd-node-resistive strong,
-.mhd-node-diffusion strong,
-.mhd-node-pressure strong {
-  color: var(--orange);
-}
+/* ---------- Narrow screens ---------- */
 
 @media (max-width: 42rem) {
+  html {
+    font-size: 100%;
+  }
+
+  .site-header {
+    flex-direction: column;
+    gap: 0.6rem;
+    padding-top: 1.2rem;
+  }
+
+  .site-header,
+  .site-main,
+  .site-footer {
+    width: calc(100% - 2rem);
+  }
+
+  .site-main {
+    padding-top: 2rem;
+  }
+
+  h2 {
+    margin-top: 3.2rem;
+    font-size: 1.4rem;
+  }
+
+  .hierarchy-branches,
   .mhd-branches,
   .mhd-term-grid {
     grid-template-columns: 1fr;
   }
-}
 
-@media (max-width: 42rem) {
-  .hierarchy-branches {
+  .chapter-nav {
     grid-template-columns: 1fr;
+  }
+
+  .chapter-nav a,
+  .chapter-nav a:only-child,
+  .chapter-nav a:last-child:not(:only-child) {
+    grid-column: 1;
+    text-align: left;
   }
 }
 
-.site-footer {
-  padding: 1.5rem 0 2.5rem;
-  border-top: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 0.9rem;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
 }
 
-@media (max-width: 720px) {
+@media print {
   .site-header,
-  .site-main,
-  .site-footer {
-    width: min(100% - 1.5rem, 48rem);
+  .site-footer,
+  .chapter-nav {
+    display: none;
   }
+}
 
-  .site-header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
+.brand a {
+  color: inherit;
+  text-decoration: none;
+}
 
-  .site-nav {
-    justify-content: flex-start;
-  }
-
-  .site-main {
-    padding-top: 2.5rem;
-  }
-
-  .hero {
-    margin-bottom: 3rem;
-    padding: 1.5rem;
-  }
-
-  .card-grid {
-    grid-template-columns: 1fr;
-  }
+.chapter-copy p,
+.hero .lede,
+h1 + .lede {
+  hyphens: manual;
 }

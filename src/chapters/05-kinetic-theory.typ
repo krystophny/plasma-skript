@@ -1,16 +1,17 @@
 #import "../theme.typ": *
 #import "../figures.typ": collision-paths, maxwellian-profile
-#import "@preview/physica:0.9.8": div, grad, pdv, dv
+#import "@preview/physica:0.9.8": div, grad, curl, pdv, dv
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[3. Kinetic theory of plasmas] <kinetic-theory>
+  #page-title[5. Kinetic theory of plasmas] <kinetic-theory>
 
   #lead[
-    A kinetic description keeps the position and velocity of every species in
-    one distribution function. It resolves the information that is averaged
-    away by fluid models while retaining a tractable description of a very
-    large particle ensemble.
+    Single-particle theory follows individual orbits. Kinetic theory instead
+    describes how many particles of each species occupy each range of
+    positions and velocities. One distribution function per species retains
+    velocity-space structure, such as beams and unequal spreads in different
+    directions, that a few fluid variables cannot fully describe.
   ]
 
   #callout(
@@ -67,9 +68,9 @@
 
   Therefore the mean free path and collision frequency are
 
-  $ lambda_"mfp", a b = 1/(n_b sigma_(a b)), quad
+  $ lambda_("mfp", a b) = 1/(n_b sigma_(a b)), quad
     nu_(a b) = n_b sigma_(a b) v_"rel", quad
-    lambda_"mfp", a b = v_"rel" / nu_(a b) $ <kinetic-mfp>
+    lambda_("mfp", a b) = v_"rel" / nu_(a b) $ <kinetic-mfp>
 
   #equation-note[
     The mean free path is in #unit("cm") and the collision frequency is in
@@ -129,8 +130,10 @@
     transport frequency, not a literal hard-sphere collision count.]
   )
 
-  For relative speed $v_"rel"$, reduced mass $m_r$, and impact parameter $b$,
-  the classical scale for a ninety-degree deflection is
+  The impact parameter $b$ is the perpendicular separation of the incoming,
+  undeflected relative trajectory from the scattering center. For relative
+  speed $v_"rel"$ and reduced mass $m_r$, the classical impact parameter for
+  a ninety-degree deflection is
 
   $ m_r v_"rel"^2 b_90 = abs(q_a q_b), quad
     b_90 = abs(q_a q_b)/(m_r v_"rel"^2), quad
@@ -153,6 +156,9 @@
     $ln Lambda$ is dimensionless. In a classical plasma, $b_"qm"$ may be
     omitted when the de Broglie wavelength is much smaller than $b_90$. The
     precise cutoffs depend on the collision operator and velocity average.
+    This is the cutoff-logarithm convention, denoted $ln Lambda_"cut"$ in
+    Chapter 9; that chapter separately defines the plasma parameter
+    $Lambda=n_e lambda_D^3$ for its cited approximate collision rate.
   ]
 
   A representative scaling for the deflection frequency of a test species
@@ -270,16 +276,18 @@
     [Species distribution function],
     [For species $s$, $f_(s)(t,bold(r),bold(v))$ is defined by
     $d N_s = f_s dif^3 bold(r) dif^3 bold(v)$. It is the number density in
-    six-dimensional phase space. A probability density is obtained only after
-    dividing by the total particle number and integrating over the chosen
-    domain.]
+    six-dimensional phase space: three position coordinates and three
+    velocity coordinates. Dividing $f_s$ by the total species particle number
+    in a chosen domain gives a probability density on that domain; its
+    integral over the domain is one. At a fixed position, a different
+    normalization, $f_s/n_s$, gives the local velocity probability density.]
   )
 
   For any single-particle property $g(t,bold(r),bold(v))$, the local velocity
   average is
 
   $ ⟨g⟩_s = (1)/(n_s) integral_(RR^3)
-    g(t,bold(r),bold(v)) f_s(t,bold(r),bold(v)) dif^3 bold(v) $
+    g(t,bold(r),bold(v)) f_(s)(t,bold(r),bold(v)) dif^3 bold(v) $
   <kinetic-local-average>
 
   #equation-note[
@@ -307,7 +315,8 @@
 
   #equation-note[
     $bold(w)$ is the random velocity measured in the local bulk frame. The
-    dyadic product $bold(w) bold(w)$ is a rank-two tensor. In Gaussian CGS,
+    dyadic product $bold(w) bold(w)$ has components $w_i w_j$: each pairs two
+    components of the random velocity. In Gaussian CGS,
     $bold(P)_s$ is a momentum-flux or pressure tensor with force-per-area
     units. Its scalar isotropic part is introduced in the moments chapter.
   ]
@@ -322,8 +331,10 @@
     Temperature is expressed through the thermal energy $k_B T_s$ in
     #unit("erg"). The one-dimensional standard deviation is
     $sqrt((k_B T_s)/m_s)$, while the parameter
-    $v_"th,s"=sqrt((2 k_B T_s)/m_s)$ is the most-probable-speed scale used in the
-    normalized plot below.]
+    $v_"th,s"=sqrt((2 k_B T_s)/m_s)$ is the thermal-speed convention from
+    Chapter 1. The plot below shows a one-component velocity distribution,
+    whose centered peak is at zero velocity. It is not the distribution of
+    speed magnitudes, which includes a velocity-space volume factor.]
 
   #details(
     [Derivation: normalization and central moments of a Maxwellian],
@@ -366,6 +377,38 @@
     cold delta distribution has the same density and flow moments but zero
     central pressure.]
   )
+
+  #details(
+    [Why the three-dimensional average is $(3 k_B T_s)/2$],
+    [#derivation-step[Sum the independent velocity components]
+    Each Cartesian component of a Maxwellian has variance
+
+    $ ⟨(v_j-u_(s,j))^2⟩=(k_B T_s)/m_s .$
+
+    The three components are independent, so their kinetic-energy average is
+
+    $ ⟨(m_s (bold(v)-bold(u)_s)^2)/2⟩
+      =(m_s)/2 sum_j ⟨(v_j-u_(s,j))^2⟩
+      =(3 k_B T_s)/2 .$
+
+    #derivation-step[Interpret the thermal-speed convention]
+    The convention
+
+    $ v_("th,s")=sqrt((2 k_B T_s)/m_s) $
+
+    defines a width parameter of the distribution. It is not the mean particle
+    speed.]
+  )
+
+  Thermodynamic temperature characterizes equilibrium. Away from equilibrium,
+  a kinetic temperature can still be defined by the second central velocity
+  moment, $3 k_B T_s=m_s lr(⟨ abs(bold(v)-bold(u)_s)^2 ⟩)$.
+  It measures random kinetic energy but does not specify the whole
+  distribution. If the velocity spread depends on direction, a single scalar
+  temperature does not capture that anisotropy; a pressure tensor is needed.
+  A species that has reached thermal equilibrium through collisions can be
+  described by the Maxwellian above, whereas a collisionless species may
+  retain beams or other non-Maxwellian structure.
 
   #maxwellian-profile
 
@@ -481,6 +524,8 @@
 
   #equation-note[
     Both $bold(xi)=bold(r)/L_0$ and $bold(eta)=bold(v)/v_0$ are dimensionless.
+    The time coordinate is $tau=t/tau_0$ with $tau_0=L_0/v_0$;
+    restore positions, velocities, and times with $L_0$, $v_0$, and $tau_0$.
     In the one-dimensional visualization, the vector equation reduces to
     $pdv(f,tau)+eta pdv(f,xi)=0$ with $xi=x/L_0$ and $eta=v/v_0$. The physical
     kinetic equation is three-dimensional in both position and velocity.
@@ -540,11 +585,13 @@
 
   #animation(
     "../media/phase-space-advection.mp4",
-    "A localized cloud of phase-space samples stretches and shifts to the right. The horizontal axis is position divided by L0 and the vertical axis is velocity divided by v0. Each sample keeps its velocity while its position advances, so faster samples move farther and the cloud shears. Horizontal characteristic arrows show the free-streaming phase-space flow.",
+    "A localized cloud of phase-space samples stretches and shifts to the right. The horizontal axis is position divided by L0 and the vertical axis is velocity divided by v0; time is normalized by L0/v0. Each sample keeps its velocity while its position advances, so faster samples move farther and the cloud shears. Horizontal characteristic arrows have lengths proportional to velocity.",
     caption: [
       Free streaming in one spatial and one velocity dimension. The
       visualization uses normalized variables and a deterministic sample of a
       distribution, not a particle simulation or measured data.
+      Arrow lengths are proportional to $eta=v/v_0$ and represent displacement
+      over the same normalized time interval.
     ],
     poster: "../media/phase-space-advection.png",
   )
@@ -553,16 +600,20 @@
     [Eulerian and Lagrangian pictures],
     [The Eulerian picture asks how the distribution at one fixed phase-space
     location changes. The Lagrangian picture follows a characteristic through
-    phase space. They describe the same physics because the chain rule accounts
-    for the flux of the characteristic through the fixed cell.]
+    phase space. In the free-streaming example, a particle keeps its velocity
+    and moves horizontally in the position--velocity plane. The distribution
+    at a fixed point can change as particles pass, even while its value along
+    each characteristic remains constant.]
   )
 
   #summary[
     A convective derivative follows a particle through position and velocity.
-    A conservative derivative follows the number balance through phase-space
-    cell faces. The distinction is a choice of viewpoint. The normalized
-    animation makes the spatial and velocity-space fluxes visible without
-    relying on motion alone for the physical conclusion.
+    A conservative balance counts particles entering and leaving phase-space
+    cells. Relating the two forms requires accounting for any compression of
+    the characteristic flow. The free-streaming animation isolates spatial
+    transport: velocities stay fixed and the cloud shears because faster
+    particles travel farther. Acceleration would also move particles through
+    velocity-space cell faces.
   ]
 
   #exam-prompts(
@@ -586,8 +637,11 @@
     ),
     (
       question: [When is the convective derivative of a distribution zero?],
-      answer: [It is zero along collisionless characteristics when no source,
-      sink, or collision term changes the distribution on the trajectory.],
+      answer: [It is zero without collisions or sources when the phase-space
+      flow is incompressible, as for Lorentz motion. In general,
+      $dv(f,t,d: upright(D))=-f (div_(bold(r))(bold(v))
+      +div_(bold(v))(bold(a)))$ along a source-free characteristic;
+      velocity-dependent drag can compress phase space.],
     ),
     (
       question: [Why does free streaming shear a phase-space cloud?],
@@ -621,6 +675,36 @@
     distribution density.
   ]
 
+  #strong[From discrete particles to a distribution] <kinetic-particle-model>
+
+  #details(
+    [Complete classical particle--field model],
+    [At the most complete classical level, every particle trajectory and both
+    electromagnetic fields are evolved self-consistently. In each particle's
+    force, its singular self-field is excluded or regularized; radiation
+    reaction is neglected in this nonrelativistic model:
+
+    $ dv(bold(r)_(a)(t), t) = bold(v)_(a)(t) $
+
+    $ m_a dv(bold(v)_(a)(t), t) = q_a [bold(E)(bold(r)_(a)(t), t)
+      + (bold(v)_(a)(t) times bold(B)(bold(r)_(a)(t), t))/c] $
+
+    $ rho_q (bold(r), t) = sum_a q_a delta(bold(r) - bold(r)_(a)(t)),
+      quad bold(j)(bold(r), t) = sum_a q_a bold(v)_(a)(t)
+        delta(bold(r) - bold(r)_(a)(t)) $
+
+    $ div(bold(E)) = 4 pi rho_q, quad div(bold(B)) = 0 $
+
+    $ curl(bold(E)) = -1/c pdv(bold(B), t),
+      quad curl(bold(B)) = (4 pi)/c bold(j) + 1/c pdv(bold(E), t) $
+
+    The discrete particle sources are coarse-grained when one passes to a
+    kinetic distribution or to fluid moments. This is the sense in which the
+    model is complete: all charged particles interact through the shared
+    electromagnetic fields, subject to the classical and nonrelativistic
+    assumptions stated here.]
+  )
+
   The electromagnetic acceleration follows from the Gaussian-CGS Lorentz
   force:
 
@@ -639,8 +723,9 @@
     + div(f_s bold(a)_s) = C_(s)[f] $ <kinetic-conservative>
 
   #equation-note[
-    The first divergence is in real space and the gradient in the third term
-    acts in velocity space. The equation is a number balance in phase space.
+    The first divergence acts on position at fixed velocity; the second acts
+    on velocity at fixed position. This convention also applies to the
+    expanded fluxes below. The equation is a number balance in phase space.
     The source $C_(s)[f]$ conserves the particle number of species $s$ for
     ordinary binary collisions.
   ]
@@ -653,8 +738,11 @@
     = bold(a)_s dot pdv(f_s,bold(v))
     + f_s div(bold(a)_s). $ <kinetic-product-rules>
 
-  For prescribed Lorentz fields, $bold(v)$ has no dependence on position and
-  $bold(a)_s$ has no dependence on velocity divergence:
+  Position and velocity are independent phase-space coordinates, so the
+  spatial divergence of $bold(v)$ vanishes. The Lorentz acceleration does
+  depend on velocity, but its velocity-space divergence vanishes: the
+  electric part translates velocities and the magnetic part rotates them
+  without compressing velocity-space volume. Thus
 
   $ div(bold(v)) = 0, quad div(bold(a)_s) = 0. $ <kinetic-liouville>
 
@@ -812,11 +900,15 @@
     [Static isothermal equilibrium],
     [Take a time-independent electrostatic potential, uniform temperature, no
     bulk flow, and a collision operator whose stationary state is the
-    Maxwellian. The equilibrium is local in position and isotropic in the
-    local rest frame.]
+    Maxwellian. For full multispecies collisional equilibrium the temperature
+    is common to all species; distinct species temperatures describe only
+    self-collision equilibrium or an approximation neglecting interspecies
+    energy exchange. The equilibrium is local in position and isotropic in
+    the local rest frame.]
   )
 
-  A species in this equilibrium has the energy-dependent distribution
+  Let $n_(0,s)$ be the species density where the reference potential is
+  $Phi=0$. A species in this equilibrium has the energy-dependent distribution
 
   $ f_("eq,s")(bold(r),bold(v)) = n_(0,s)
     (m_s/(2 pi k_B T_s))^(3/2)
@@ -887,6 +979,21 @@
     reference state and those departures.]
   )
 
+  #strong[Classical statistics and quantum degeneracy] <kinetic-degeneracy>
+
+  Classical statistics also have a validity boundary. For electrons, define
+  the degeneracy parameter $theta_e = (k_B T_e) / E_(F,e)$, with the
+  nonrelativistic Fermi energy
+
+  $ E_(F,e) = (ℏ^2 / (2 m_e)) (3 pi^2 n_e)^(2/3) $
+
+  #equation-note[
+    Gaussian CGS. $E_(F,e)$ and $k_B T_e$ are energies in #unit("erg"),
+    and $theta_e$ is dimensionless. The classical limit has $theta_e >> 1$;
+    $theta_e <= 1$ signals quantum degeneracy. White-dwarf interiors and
+    dense laser-compressed matter are representative settings.
+  ]
+
   #summary[
     Collisions drive elastic systems toward Maxwellian velocity distributions
     when sources and boundaries do not sustain non-equilibrium structure. A
@@ -894,12 +1001,21 @@
     factor. The ratios $nu tau$ and $K_"n"$ determine which kinetic information a
     reduced model may safely discard.]
 
+  #exam-prompts(
+    (
+      [(h) What is a quantum degenerate plasma and where does it appear?],
+      [(m) What is a Boltzmann distribution and how is it related to equilibrium states?],
+    ),
+    [Plasma Physics Exam.pdf, p. 1],
+  )
+
   #knowledge-check((
     (
       question: [What makes the Maxwellian a stationary collisional state?],
-      answer: [For elastic collisions at fixed local density, flow, and
-      temperature, the collision operator vanishes on the Maxwellian,
-      $C_(s)[f_(M,s)]=0$.],
+      answer: [The elastic self-collision operator vanishes on a local
+      Maxwellian. Full multispecies collisional equilibrium also requires
+      common mean flow and temperature; otherwise interspecies collisions
+      exchange momentum or energy even between Maxwellian species.],
     ),
     (
       question: [Why is $(q_s Phi)/(k_B T_s)$ dimensionless?],
@@ -920,7 +1036,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "02-single-particle-motion.html", title: [Single-particle motion]),
-    next: (href: "04-moments.html", title: [Moments]),
+    previous: (href: "04-single-particle-motion.html", title: [Single-particle motion]),
+    next: (href: "06-moments.html", title: [Moments]),
   )
 ]

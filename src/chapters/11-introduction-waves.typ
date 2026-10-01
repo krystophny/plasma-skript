@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[9. Introduction to waves in plasmas] <introduction-waves>
+  #page-title[11. Introduction to waves in plasmas] <introduction-waves>
 
   #lead[
     A plasma wave is a collective perturbation whose restoring force and
@@ -27,8 +27,8 @@
 
   #lead[
     How do we turn a nonlinear plasma model into a wave problem? Choose an
-    equilibrium, assign a small parameter to every perturbation, discard only
-    terms of second order in that parameter, and then test sinusoidal
+    equilibrium, assign a small parameter to every perturbation, retain terms
+    through first order in that parameter, and then test sinusoidal
     solutions. The discarded products are precisely where finite-amplitude
     wave coupling would enter.
   ]
@@ -56,7 +56,7 @@
     [Uniform, stationary, neutral equilibrium],
     [Use $n_s=n_(s,0)$, $bold(u)_(s,0)=bold(0)$, constant $p_(s,0)$, and
     $bold(E)_0=bold(0)$. The background magnetic field $bold(B)_0$ may be
-    retained for the general linear equation, but the unmagnetized chapters
+    retained for the general linear equation, but the unmagnetized examples
     below set $bold(B)_0=bold(0)$. Macroscopic charge neutrality means
     $sum_s q_s n_(s,0)=0$.]
   )
@@ -72,8 +72,22 @@
     $bold(A)_1(bold(r),t)=Re{tilde(bold(A))_1
     exp(i (bold(k) dot bold(r)-omega t))}$.
     The wave number $k=abs(bold(k))$ is in #unit("cm^-1") and the
-    frequency $omega$ is in #unit("s^-1").]
+    angular frequency $omega$ is in #unit("s^-1").]
   )
+
+  Polarization describes the direction and time evolution of the electric
+  perturbation. A longitudinal electric field is parallel to $bold(k)$;
+  a transverse one is perpendicular to it. For a plane wave at nonzero
+  frequency, a purely longitudinal field has no magnetic perturbation by
+  Faraday's law and is electrostatic in this sense. A transverse electric
+  wave has an accompanying magnetic perturbation even when the equilibrium
+  field is zero.
+
+  Acting on the complex plane wave, a time derivative multiplies its
+  amplitude by $-i omega$, and a spatial gradient multiplies it by
+  $i bold(k)$. These replacements turn the differential equations into
+  algebraic equations for the amplitudes. A dispersion relation specifies
+  which frequencies and wave vectors allow a nonzero solution.
 
   The species equations and Maxwell equations that are linearized are
 
@@ -92,7 +106,10 @@
   $bold(j)=sum_s q_s n_s bold(u)_s$. For an adiabatic or isothermal closure,
   the pressure perturbation is written
   $p_(s,1)=gamma_s k_B T_s n_(s,1)$, with the appropriate temperature
-  ordering stated explicitly.
+  ordering stated explicitly. The dimensionless coefficient $gamma_s$
+  specifies the pressure response; $gamma_s=1$ gives an isothermal response.
+  It must be chosen for the process being modeled, not inferred from small
+  amplitude alone.
 
   #details(
     [Derivation: linearized Fourier system],
@@ -417,6 +434,13 @@
     $v_"g"=(c^2 k)/omega$.]
   )
 
+  The relative dielectric factor $epsilon_(r)$ summarizes how the induced
+  electron current changes the electromagnetic response; vacuum has
+  $epsilon_(r)=1$. It is distinct from the small perturbation parameter
+  $epsilon$ used earlier. For a real drive frequency below the plasma
+  frequency, this factor is negative, so $k$ is imaginary. A boundary-driven
+  field then decays into the plasma instead of propagating as a bulk wave.
+
   #details(
     [Derivation: current response and the transverse wave equation],
     [#derivation-step[Compute the cold current response]
@@ -474,17 +498,26 @@
   #callout(
     [Pause and predict],
     [Before playing the animation, identify which marker should move faster:
-    the carrier crest or the packet envelope. The answer follows from the
+    the carrier phase or the packet envelope. The answer follows from the
     two velocities in the governing law.]
   )
 
   #animation(
     "../media/wave-packet.mp4",
-    "A Gaussian wave packet with a visible carrier oscillation travels to the right. The slowly moving envelope is marked as the group-velocity scale, while a separate crest marker shows the faster phase motion. The normalized horizontal coordinate is position divided by a reference length, and the vertical field amplitude uses unit [1].",
+    "A prescribed Gaussian envelope and cosine carrier travel rightward in normalized coordinates. A stationary key identifies the slower dashed envelope marker and faster solid carrier-phase marker. Position is x/L0 [1] and field amplitude is E/E0 [1]; this is an illustrative envelope ansatz, not an exact dispersive solution.",
     caption: [
-      A carrier and its envelope separate because the cold plasma branch is
-      dispersive. The animation is a deterministic normalized illustration,
-      not a measurement or a live parameter solver.
+      The prescribed carrier and envelope illustrate different phase and
+      group speeds. With $X=x/L_0$, $tau=t/t_0$, and $A=E/E_0$, the ansatz is
+      $A=exp(-(X-0.42 tau)^2/(2 (1.15)^2))
+        cos(5.2 (X-0.90 tau))$.
+      Here $L_0$, $t_0$, and $E_0$ are arbitrary reference length, time,
+      and field scales in Gaussian CGS; velocities are in units $L_0/t_0$.
+      Thus $sigma/L_0=1.15$, $k L_0=5.2$,
+      $(v_"g" t_0)/L_0=0.42$, and $(v_"phi" t_0)/L_0=0.90$ are
+      prescribed dimensionless parameters. This ansatz is not an exact
+      solution of the cold-plasma dispersion relation. The phase marker
+      follows a cosine maximum; the varying envelope shifts the maxima of
+      the total field.
     ],
     poster: "../media/wave-packet.png",
   )
@@ -534,8 +567,8 @@
     ),
     (
       question: [Why does the cold electromagnetic branch approach the vacuum branch at high frequency?],
-      answer: [When $omega >> omega_(p,e)$, the electron response changes too
-      slowly to modify the field strongly. The dielectric factor approaches
+      answer: [When $omega >> omega_(p,e)$, electron inertia makes the current
+      response small relative to the displacement current. The dielectric factor approaches
       one and $omega approx c k$.]
     ),
     (
@@ -546,7 +579,7 @@
     ),
   ))
 
-  #section-title[Cold-fluid wave equations and kinetic limits] <wave-kinetic-limits>
+  #section-title[Warm-fluid wave equations and kinetic limits] <wave-kinetic-limits>
 
   #lead[
     What changes when pressure and particle velocity spread are restored?
@@ -585,17 +618,24 @@
     [Define
     $c_s^2=(gamma_s k_B T_s)/m_s$ and
     $omega_(p,s)^2=(4 pi n_(s,0)q_s^2)/m_s$.
-    Here $c_s$ is a pressure-response speed, not necessarily the phase
-    velocity of a branch. The thermal-speed convention used for kinetic
+    Here the index $s$ labels a species: $c_e$ and $c_i$ are its electron
+    and ion pressure-response speeds. Neither is necessarily the phase
+    velocity of a collective branch. The thermal-speed convention used for kinetic
     comparisons is $v_"th,s"=sqrt((2 k_B T_s)/m_s)$.]
   )
 
   #definition(
     [Plasma-dispersion function convention],
-    [Use the dimensionless Fried--Conte function
+    [For a Maxwellian, the velocity integral in the kinetic response can be
+    expressed using the dimensionless Fried--Conte function
     $Z(zeta)=1/sqrt(pi) integral_(-infinity)^infinity
       exp(-x^2)/(x-zeta) dif x$,
-    with the contour prescribed by analytic continuation around the pole.
+    initially defined for $Im(zeta)>0$ and continued causally to real and
+    lower-half-plane frequencies. Here $x$ is a dimensionless integration
+    variable for velocity, not position. The argument $zeta$ compares phase
+    speed with thermal speed, as specified for each species below. For
+    $k>0$ and $exp(-i omega t)$, deform
+    the velocity contour below the pole as it crosses the real axis.
     The factor of two in the susceptibility below follows from the stated
     convention $v_"th,s"=sqrt((2 k_B T_s)/m_s)$.]
   )
@@ -606,7 +646,10 @@
     $1-sum_s omega_(p,s)^2/(omega^2-k^2 c_s^2)=0$.
     With fixed ions this gives
     $omega^2=omega_(p,e)^2+k^2 c_e^2$.
-    In the low-frequency quasi-neutral hydrogen limit,
+    In the low-frequency quasi-neutral hydrogen limit, requiring
+    $omega << omega_(p,e)$, $k lambda_D << 1$, and
+    $abs(omega/(k c_e)) << 1$ to neglect electron inertia relative to
+    electron pressure,
     $omega^2 approx (k^2 (gamma_e k_B T_e+gamma_i k_B T_i))/m_i$.]
   )
   #details(
@@ -659,13 +702,16 @@
 
     $ omega^2=(k^2 (gamma_e k_B T_e+gamma_i k_B T_i))/m_i .$
 
-    This reduction requires $omega << omega_(p,e)$ and
-    $k lambda_D << 1$. Without these orderings, electron inertia or charge
-    separation cannot be discarded.
+    This reduction requires $omega << omega_(p,e)$,
+    $k lambda_D << 1$, and $abs(omega/(k c_e)) << 1$.
+    The last condition follows by comparing $omega^2$ with $k^2 c_e^2$
+    in the electron susceptibility; it controls neglect of electron inertia
+    relative to pressure. The Debye ordering controls charge separation.
 
     #derivation-step[Compare with kinetic response]
     Kinetic theory replaces the fluid closure by a velocity-space response.
-    With $v_"th,s"=sqrt((2 k_B T_s)/m_s)$, a standard unmagnetized
+    For isotropic, non-drifting Maxwellian equilibria of each responding
+    species, with $v_"th,s"=sqrt((2 k_B T_s)/m_s)$, the unmagnetized
     electrostatic form is
 
     $ 1+sum_s chi_(s)(omega,k)=0 ,$
@@ -677,12 +723,21 @@
       zeta_s=omega/(k v_"th,s") .$
 
     The analytically continued plasma-dispersion function $Z$ accounts for
-    resonant particles. Its imaginary contribution produces collisionless
-    damping or growth. A warm-fluid $gamma_s$ can reproduce selected
+    resonant particles through causal continuation from $Im(omega)>0$.
+    Other distributions require their velocity-space integral rather than
+    this Maxwellian formula. The imaginary contribution describes resonant
+    energy exchange: the non-drifting Maxwellian response gives Landau
+    damping, while suitable non-equilibrium distributions can drive growth.
+    A warm-fluid $gamma_s$ can reproduce selected
     long-wavelength real-frequency limits, but it cannot reproduce resonant
     phase mixing.]
   )
   #warm-kinetic-limits
+
+  In the following example, $c_s$ denotes the collective ion-acoustic speed,
+  as is common in sound-wave notation. It is determined by electron pressure
+  and ion inertia for the stated cold-ion limit, rather than by the ion
+  pressure-response speed $c_i$ defined above.
 
   #rechenbeispiel[
     Assume an unmagnetized, electrostatic warm-fluid model with cold ions,
@@ -728,7 +783,8 @@
       question: [Which ordering justifies the quasi-neutral ion-acoustic limit?],
       answer: [The mode must be slow compared with the electron plasma
       response and long compared with the Debye scale:
-      $omega << omega_(p,e)$ and $k lambda_D << 1$.]
+      $omega << omega_(p,e)$ and $k lambda_D << 1$. Neglecting electron
+      inertia relative to pressure also requires $abs(omega/(k c_e)) << 1$.]
     ),
     (
       question: [What physical effect is absent from a finite warm-fluid closure?],
@@ -769,8 +825,10 @@
     [Use $K=(k c)/omega_(p,e)$ and $W=omega/omega_(p,e)$ for the cold
     electromagnetic branch. Then $W^2=1+K^2$,
     $v_"phi"/c=W/K$, and $v_"g"/c=K/W$.
-    The cutoff is the intercept $W=1$ at $K=0$. A vertical or horizontal
-    tangent has a direct velocity interpretation through these slopes.]
+    The cutoff is the intercept $W=1$ at $K=0$. The tangent slope
+    $dv(W,K)$ gives $v_"g"/c$; the slope of the line from the origin to a
+    point on the branch gives $v_"phi"/c=W/K$. These are different
+    geometric measurements of the same curve.]
   )
   #details(
     [Derivation: limiting-case checks],
@@ -878,7 +936,7 @@
     ),
   ))
   #chapter-nav(
-    previous: (href: "08-diffusion.html", title: [Diffusion]),
-    next: (href: "10-cold-magnetized-waves.html", title: [Cold magnetized waves]),
+    previous: (href: "10-diffusion.html", title: [Diffusion]),
+    next: (href: "12-cold-magnetized-waves.html", title: [Cold magnetized waves]),
   )
 ]

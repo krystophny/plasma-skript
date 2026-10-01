@@ -8,130 +8,132 @@ animation uses the normalized displacement
 where xi_0 is a reference displacement and t omega_p,e has unit [1]. It
 is a conceptual visualization of the restoring-field argument, not measured
 data and not a particle-in-cell calculation.
+
+For a displacement xi > 0 of the electron slab, a sheet of bare ions is
+exposed on the left and a sheet of excess electrons appears on the right, so
+the field between them points along +x: E = 4 pi e n0 xi. The electron force
+-eE points back toward equilibrium. Positions use L0 with xi_0/L0 = 0.55.
 """
 
 from manim import *
 import numpy as np
 
-
-BG = "#0B1220"
-INK = "#E8EEF7"
-MUTED = "#9BAAC0"
-GRID = "#51627A"
-ION_COLOR = "#4EA8DE"
-ELECTRON_COLOR = "#F2A65A"
-FIELD_COLOR = "#72D6C9"
+from style import (
+    BG, E_FIELD, EASE, ELECTRON, FAINT, INK, ION, LINEAR, MUTED, CURVE_WIDTH,
+    THIN_WIDTH, StyledScene, axes, axis_labels, math, title,
+)
 
 
-class PlasmaOscillation(Scene):
+def slab_state(tau):
+    """Return xi/xi0, E/(4 pi e n0 xi0), F/(4 pi e² n0 xi0)."""
+    return np.array([np.cos(tau), np.cos(tau), -np.cos(tau)])
+
+
+XI0 = 0.55          # xi_0 / L0
+HALF_WIDTH = 4.0    # slab half-width in L0
+ARROW_SCALE = 1.5   # Manim units per unit of E/E0 or F_e/(e E0)
+
+
+def _signed_arrow(start, length, color):
+    """Horizontal arrow of signed length; empty when the length vanishes."""
+    if abs(length) < 0.04:
+        return VMobject()
+    return Arrow(start, start + RIGHT * length, buff=0, color=color,
+                 stroke_width=5, max_tip_length_to_length_ratio=0.3,
+                 max_stroke_width_to_length_ratio=12)
+
+
+class PlasmaOscillation(StyledScene):
     """Show a collective electron displacement and its restoring field."""
 
-    def construct(self):
-        self.camera.background_color = BG
+    def build(self):
+        heading = title("Electron plasma oscillation")
+        formula = math(r"\xi/\xi_0=\cos\tau,\quad \tau=\omega_{pe}t", color=INK, size=34)
+        formula.to_corner(UR, buff=0.55)
 
-        title = Text("Electron plasma oscillation", color=INK, font_size=34)
-        subtitle = Text(
-            "normalized displacement against fixed ions",
-            color=MUTED,
-            font_size=22,
-        )
-        title_group = VGroup(title, subtitle).arrange(
-            DOWN, aligned_edge=LEFT, buff=0.08
-        )
-        title_group.to_edge(UP, buff=0.35).to_edge(LEFT, buff=0.45)
+        # --- slab view ---------------------------------------------------
+        slab_ax = axes([-5, 5, 1], [0, 1, 1], 10.5, 1.0).move_to(UP * 1.6)
+        slab_ax.y_axis.set_opacity(0)
+        x_lab = math(r"x/L_0\ [1]", color=MUTED, size=30)
+        x_lab.next_to(slab_ax.x_axis.get_right(), DOWN, buff=0.22).align_to(
+            slab_ax.x_axis.get_right(), RIGHT)
+        y_ion, y_el = 0.78, 0.38
 
-        formula = MathTex(
-            r"\xi/\xi_0 = \cos(t\,\omega_{p,e})",
-            color=FIELD_COLOR,
-            font_size=28,
-        )
-        formula.to_corner(UR, buff=0.42)
+        def p(x, y):
+            return slab_ax.c2p(x, y)
 
-        axes = Axes(
-            x_range=[-5.0, 5.0, 1.0],
-            y_range=[-1.0, 1.0, 1.0],
-            x_length=9.0,
-            y_length=1.2,
-            axis_config={"color": GRID, "stroke_width": 2},
-            tips=False,
-        ).shift(DOWN * 0.55)
-        x_label = Text("x / L₀ [1]", color=MUTED, font_size=20)
-        x_label.next_to(axes.x_axis, DOWN, buff=0.25)
-
-        x_positions = np.linspace(-4.0, 4.0, 9)
-        ions = VGroup(
-            *[
-                Triangle(
-                    color=ION_COLOR,
-                    fill_color=ION_COLOR,
-                    fill_opacity=1,
-                    stroke_width=1,
-                ).scale(0.11).move_to(axes.c2p(x, 0.18))
-                for x in x_positions
-            ]
-        )
-        electrons = VGroup(
-            *[
-                Dot(axes.c2p(x, -0.18), radius=0.09, color=ELECTRON_COLOR)
-                for x in x_positions
-            ]
-        )
+        columns = np.linspace(-HALF_WIDTH + 0.25, HALF_WIDTH - 0.25, 16)
+        ions = VGroup(*[
+            Triangle(color=ION, fill_color=ION, fill_opacity=1, stroke_width=0)
+            .scale(0.12).move_to(p(x, y_ion)) for x in columns
+        ])
 
         tracker = ValueTracker(0.0)
 
-        def displacement():
-            return 0.55 * np.cos(tracker.get_value())
+        def xi():
+            return XI0 * slab_state(tracker.get_value())[0]
 
-        for dot, x0 in zip(electrons, x_positions):
-            dot.add_updater(
-                lambda mob, x0=x0: mob.move_to(
-                    axes.c2p(x0 + displacement(), -0.18)
-                )
-            )
+        electrons = VGroup(*[Dot(p(x, y_el), radius=0.1, color=ELECTRON) for x in columns])
+        for dot, x0 in zip(electrons, columns):
+            dot.add_updater(lambda m, x0=x0: m.move_to(p(x0 + xi(), y_el)))
 
-        restoring_arrow = always_redraw(
-            lambda: Arrow(
-                axes.c2p(displacement(), -0.45),
-                axes.c2p(
-                    displacement() - (0.85 if displacement() >= 0 else -0.85),
-                    -0.45,
-                ),
-                color=FIELD_COLOR,
-                stroke_width=5,
-                buff=0,
-            )
+        def charge_sheets():
+            d = xi()
+            bottom, top = p(0, 0.15)[1], p(0, 1.0)[1]
+            group = VGroup()
+            if abs(d) < 0.02:
+                return group
+            # Uncovered ions (net +) on the trailing side, excess electrons
+            # (net -) on the leading side.
+            if d > 0:
+                plus_span, minus_span = (-HALF_WIDTH, -HALF_WIDTH + d), (HALF_WIDTH, HALF_WIDTH + d)
+            else:
+                plus_span, minus_span = (HALF_WIDTH + d, HALF_WIDTH), (-HALF_WIDTH + d, -HALF_WIDTH)
+            for (a, b), color, sign in ((plus_span, ION, "+"), (minus_span, ELECTRON, "-")):
+                left, right = p(a, 0)[0], p(b, 0)[0]
+                rect = Rectangle(width=right - left, height=top - bottom, stroke_width=0,
+                                 fill_color=color, fill_opacity=0.22)
+                rect.move_to([(left + right) / 2, (top + bottom) / 2, 0])
+                group.add(rect)
+                mark = math(sign, color=color, size=36)
+                mark.next_to(rect, UP, buff=0.08)
+                mark.set_opacity(min(1.0, abs(d) / (0.5 * XI0)))
+                group.add(mark)
+            return group
+
+        sheets = always_redraw(charge_sheets)
+
+        # --- field and force arrows ---------------------------------------
+        y_e, y_f = 0.05, -0.55
+        e_lab = math(r"E/E_0\ [1]", color=E_FIELD, size=32)
+        e_lab.move_to([-3.6, y_e, 0], aligned_edge=RIGHT)
+        f_lab = math(r"F_e/(eE_0)\ [1]", color=ELECTRON, size=32)
+        f_lab.move_to([-3.6, y_f, 0], aligned_edge=RIGHT)
+        center_tick = DashedLine([0, y_e + 0.35, 0], [0, y_f - 0.3, 0], color=FAINT,
+                                 stroke_width=1.4, dash_length=0.06)
+        e_arrow = always_redraw(lambda: _signed_arrow(
+            np.array([0, y_e, 0]), ARROW_SCALE * slab_state(tracker.get_value())[1], E_FIELD))
+        f_arrow = always_redraw(lambda: _signed_arrow(
+            np.array([0, y_f, 0]), ARROW_SCALE * slab_state(tracker.get_value())[2], ELECTRON))
+
+        # --- time trace ----------------------------------------------------
+        t_ax = axes([0, 4 * PI, PI], [-1.2, 1.2, 1], 10.0, 1.7).move_to(DOWN * 2.45 + RIGHT * 0.4)
+        t_labels = VGroup(
+            math(r"\tau\ [1]", color=MUTED, size=30).next_to(t_ax.x_axis.get_right(), RIGHT, buff=0.18),
+            math(r"\xi/\xi_0\ [1]", color=MUTED, size=30).next_to(t_ax.y_axis, LEFT, buff=0.2),
         )
-        # Keep labels in fixed, separated zones so the static poster remains
-        # legible at every phase of the oscillation.
-        field_label = Text("restoring field", color=FIELD_COLOR, font_size=20)
-        field_label.move_to(axes.c2p(3.0, -0.85))
+        trace = always_redraw(lambda: t_ax.plot(
+            lambda t: slab_state(t)[0], x_range=[0, max(tracker.get_value(), 1e-3), 0.03],
+            color=ELECTRON, stroke_width=CURVE_WIDTH - 1))
+        trace_dot = always_redraw(lambda: Dot(
+            t_ax.c2p(tracker.get_value(), slab_state(tracker.get_value())[0]),
+            radius=0.07, color=ELECTRON))
 
-        ions_label = Text("fixed ions", color=ION_COLOR, font_size=20)
-        ions_label.move_to(axes.c2p(-3.25, 0.65))
-        electrons_label = Text("electron slab", color=ELECTRON_COLOR, font_size=20)
-        electrons_label.move_to(axes.c2p(-3.25, -0.65))
-
-        legend = VGroup(
-            Text("triangles: fixed positive ions", color=MUTED, font_size=18),
-            Text("dots: electrons move together", color=MUTED, font_size=18),
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.1)
-        legend.to_corner(DL, buff=0.35)
-
-        self.play(
-            FadeIn(title_group),
-            FadeIn(formula),
-            Create(axes),
-            FadeIn(x_label),
-        )
-        self.play(
-            FadeIn(ions),
-            FadeIn(electrons),
-            FadeIn(ions_label),
-            FadeIn(electrons_label),
-            GrowArrow(restoring_arrow),
-            FadeIn(field_label),
-            FadeIn(legend),
-        )
-        self.add(*electrons, restoring_arrow, field_label)
-        self.play(tracker.animate.set_value(4 * PI), run_time=8, rate_func=linear)
-        self.wait(1)
+        self.play(FadeIn(heading), FadeIn(formula), Create(slab_ax.x_axis), FadeIn(x_lab),
+                  Create(t_ax), FadeIn(t_labels), run_time=0.8, rate_func=EASE)
+        self.play(FadeIn(ions), FadeIn(electrons), FadeIn(e_lab), FadeIn(f_lab),
+                  FadeIn(center_tick), FadeIn(sheets), FadeIn(e_arrow), FadeIn(f_arrow),
+                  run_time=0.6, rate_func=EASE)
+        self.add(trace, trace_dot)
+        self.play(tracker.animate.set_value(4 * PI), run_time=8, rate_func=LINEAR)
+        self.wait(1.2)

@@ -1,190 +1,123 @@
 """Schematic visualization of the cold symmetric two-stream instability.
 
-The growth curve uses the normalized cold-beam dispersion relation.  The
-phase-space panel is intentionally schematic; it highlights counter-streaming
-beams and the growing electrostatic perturbation rather than simulating a
-particle-in-cell system.
+All quantities are normalized: K = k v0/omega_p, X = x omega_p/v0,
+tau = omega_p t, E0 = me v0 omega_p/e, with omega_p based on the TOTAL beam
+density.  The growth curve is the cold symmetric dispersion relation
+1 = (1/2)/(omega-K)^2 + (1/2)/(omega+K)^2.  The field panel shows the purely
+growing linear eigenmode at K = sqrt(3/8), whose real frequency is zero.
+The beam panel shows the unperturbed counter-streaming electrons (v/v0 = +1
+and -1) as a fixed reference; it is not a particle-in-cell simulation.
 """
 
 from manim import *
 import numpy as np
 
-
-BG = "#0B1220"
-INK = "#E8EEF7"
-MUTED = "#9BAAC0"
-GRID = "#51627A"
-BEAM_A = "#4EA8DE"
-BEAM_B = "#F2A65A"
-GROWTH = "#72D6C9"
+from style import (
+    ACCENT, CURVE_WIDTH, DOT_RADIUS, E_FIELD, EASE, ELECTRON, FAINT, GREEN,
+    INK, LINEAR, MUTED, SMALL_SIZE, THIN_WIDTH, StyledScene, axes, label,
+    math, title,
+)
 
 
-class TwoStreamInstability(Scene):
-    """Show counter-streaming beams and their unstable wave-number band."""
+def growth_rate(k):
+    """gamma/omega_p for K=k v0/omega_p; omega_p uses TOTAL beam density."""
+    k = np.asarray(k)
+    return np.sqrt(np.maximum(0.0, 0.5*np.sqrt(1 + 8*k*k) - k*k - 0.5))
 
-    def construct(self):
-        self.camera.background_color = BG
 
-        title = Text("Two-stream instability", color=INK, font_size=34)
-        subtitle = Text(
-            "cold symmetric beams · normalized dispersion",
-            color=MUTED,
-            font_size=20,
-        )
-        heading = VGroup(title, subtitle).arrange(
-            DOWN, aligned_edge=LEFT, buff=0.08
-        )
-        heading.to_edge(UP, buff=0.28).to_edge(LEFT, buff=0.38)
+def two_stream_amplitude(tau, k=np.sqrt(3.0/8.0), initial=0.01):
+    """E amplitude / E0; tau=omega_p t, E0=me v0 omega_p/e, linear regime."""
+    return initial * np.exp(growth_rate(k) * np.asarray(tau))
 
-        dispersion_formula = MathTex(
-            r"D(\omega,k)=0",
-            color=GROWTH,
-            font_size=30,
-        )
-        dispersion_formula.to_corner(UR, buff=0.38)
 
-        phase_axes = Axes(
-            x_range=[-4.2, 4.2, 2],
-            y_range=[-1.6, 1.6, 1],
-            x_length=5.6,
-            y_length=3.9,
-            axis_config={"color": GRID, "stroke_width": 2},
-            tips=False,
-        ).shift(LEFT * 2.55 + DOWN * 0.25)
-        phase_x = Text("position / L₀ [1]", color=MUTED, font_size=18)
-        phase_x.next_to(phase_axes, DOWN, buff=0.14)
-        phase_y = Text("velocity / v₀ [1]", color=MUTED, font_size=18)
-        phase_y.rotate(PI / 2)
-        phase_y.next_to(phase_axes, LEFT, buff=0.10)
-        phase_label = Text("counter-streaming beams", color=INK, font_size=20)
-        phase_label.next_to(phase_axes, UP, buff=0.12)
+def two_stream_field(x, tau, k=np.sqrt(3.0/8.0), initial=0.01):
+    """Purely growing eigenmode: X=x omega_p/v0; real frequency is zero."""
+    return two_stream_amplitude(tau, k, initial) * np.sin(k * np.asarray(x))
 
-        stream_phase = ValueTracker(0.0)
-        beam_x = np.linspace(-3.8, 3.8, 11)
-        upper_dots = VGroup(
-            *[
-                Dot(phase_axes.c2p(x, 0.86), radius=0.075, color=BEAM_A)
-                for x in beam_x
-            ]
-        )
-        lower_dots = VGroup(
-            *[
-                Dot(phase_axes.c2p(x, -0.86), radius=0.075, color=BEAM_B)
-                for x in beam_x
-            ]
-        )
-        upper_label = Text("+1 [1]", color=BEAM_A, font_size=20)
-        upper_label.next_to(phase_axes.c2p(3.0, 0.86), RIGHT, buff=0.08)
-        lower_label = Text("−1 [1]", color=BEAM_B, font_size=20)
-        lower_label.next_to(phase_axes.c2p(3.0, -0.86), RIGHT, buff=0.08)
 
-        def perturbation_points(amplitude, phase):
-            return [
-                phase_axes.c2p(
-                    x,
-                    amplitude * np.sin(1.12 * x - phase),
-                )
-                for x in np.linspace(-3.8, 3.8, 220)
-            ]
+K_MAX = np.sqrt(3.0 / 8.0)
+WAVELENGTH = 2 * np.pi / K_MAX   # in X = x omega_p / v0
+TAU_END = 6.0
 
-        amplitude = ValueTracker(0.10)
-        wave = always_redraw(
-            lambda: VMobject(
-                stroke_color=GROWTH,
-                stroke_width=3,
-            ).set_points_as_corners(
-                perturbation_points(
-                    amplitude.get_value(), stream_phase.get_value()
-                )
-            )
-        )
-        perturbation_label = Text(
-            "electrostatic perturbation", color=GROWTH, font_size=18
-        )
-        perturbation_label.next_to(phase_axes.c2p(-2.6, 0.0), DOWN, buff=0.12)
 
-        growth_axes = Axes(
-            x_range=[0, 1.25, 0.25],
-            y_range=[0, 0.42, 0.1],
-            x_length=4.45,
-            y_length=3.9,
-            axis_config={"color": GRID, "stroke_width": 2},
-            tips=False,
-        ).shift(RIGHT * 3.0 + DOWN * 0.25)
-        growth_x = MathTex(
-            r"kv_0/\omega_p\ [1]", color=MUTED, font_size=22
-        )
-        growth_x.next_to(growth_axes, DOWN, buff=0.14)
-        growth_y = MathTex(
-            r"\gamma/\omega_p\ [1]", color=MUTED, font_size=22
-        )
-        growth_y.rotate(PI / 2)
-        growth_y.next_to(growth_axes, LEFT, buff=0.08)
-        growth_label = Text("unstable band", color=GROWTH, font_size=20)
-        growth_label.next_to(growth_axes, UP, buff=0.12)
+class TwoStreamInstability(StyledScene):
+    """Show counter-streaming beams, a growing mode and the unstable band."""
 
-        def growth_rate(x):
-            y = x * x
-            value = 0.5 * np.sqrt(1.0 + 8.0 * y) - y - 0.5
-            return np.sqrt(max(0.0, value))
+    def build(self):
+        heading = title("Two-stream instability")
+        half = WAVELENGTH
 
-        curve = growth_axes.plot(
-            growth_rate,
-            x_range=[0.0, 1.0],
-            color=GROWTH,
-            stroke_width=4,
-        )
-        stable_line = DashedLine(
-            growth_axes.c2p(1.0, 0.0),
-            growth_axes.c2p(1.0, 0.40),
-            color=BEAM_B,
-            dash_length=0.10,
-            stroke_width=2,
-        )
-        boundary_label = Text("boundary", color=BEAM_B, font_size=17)
-        boundary_label.next_to(stable_line, RIGHT, buff=0.06)
-        maximum = Dot(
-            growth_axes.c2p(np.sqrt(3.0 / 8.0), 1.0 / (2.0 * np.sqrt(2.0))),
-            radius=0.09,
-            color=BEAM_A,
-        )
-        maximum_label = MathTex(
-            r"\gamma_{\max}=\omega_p/(2\sqrt{2})",
-            color=BEAM_A,
-            font_size=20,
-        )
-        maximum_label.next_to(maximum, UP, buff=0.08)
+        # Beam panel: v/v0 against X, one row of electrons per beam.
+        beam_ax = axes([-half, half, 5], [-1.6, 1.6, 1], 6.4, 1.9,
+                       y_axis_config={"include_ticks": False})
+        beam_ax.move_to([-3.25, 1.05, 0])
+        beam_ylab = math(r"v/v_0\ [1]", color=MUTED, size=30)
+        beam_ylab.next_to(beam_ax.y_axis.get_top(), UP, buff=0.12)
 
-        footer = Text(
-            "growth occurs when the lower branch has ω² < 0",
-            color=INK,
-            font_size=20,
-        )
-        footer.to_edge(DOWN, buff=0.30)
+        tau = ValueTracker(0.0)
+        spacing = 2 * half / 14
 
-        self.play(FadeIn(heading), FadeIn(dispersion_formula))
-        self.play(
-            Create(phase_axes),
-            FadeIn(VGroup(phase_x, phase_y, phase_label)),
-            FadeIn(upper_dots),
-            FadeIn(lower_dots),
-            FadeIn(upper_label),
-            FadeIn(lower_label),
-            Create(wave),
-            FadeIn(perturbation_label),
-            Create(growth_axes),
-            FadeIn(VGroup(growth_x, growth_y, growth_label)),
-            Create(curve),
-            Create(stable_line),
-            FadeIn(boundary_label),
-            FadeIn(maximum),
-            FadeIn(maximum_label),
-            FadeIn(footer),
-        )
-        self.play(
-            amplitude.animate.set_value(0.82),
-            stream_phase.animate.set_value(2.5 * PI),
-            run_time=7.0,
-            rate_func=linear,
-        )
+        def beam_row(v):
+            def make():
+                shift = (v * tau.get_value()) % spacing
+                xs = np.arange(-half + shift, half, spacing)
+                return VGroup(*[Dot(beam_ax.c2p(x, v), radius=DOT_RADIUS, color=ELECTRON)
+                                for x in xs])
+            return always_redraw(make)
+
+        upper, lower = beam_row(1.0), beam_row(-1.0)
+        up_lab = math(r"+1", color=ELECTRON, size=30).next_to(beam_ax.c2p(half, 1.0), RIGHT, buff=0.2)
+        lo_lab = math(r"-1", color=ELECTRON, size=30).next_to(beam_ax.c2p(half, -1.0), RIGHT, buff=0.2)
+
+        # Field panel: growing standing pattern with fixed nodes.
+        field_ax = axes([-half, half, 5], [-0.1, 0.1, 0.05], 6.4, 2.1,
+                        y_axis_config={"include_ticks": False})
+        field_ax.move_to([-3.25, -1.95, 0])
+        field_ylab = math(r"E/E_0\ [1]", color=MUTED, size=30)
+        field_ylab.next_to(field_ax.y_axis.get_top(), UP, buff=0.12)
+        field_xlab = math(r"x\,\omega_p/v_0\ [1]", color=MUTED, size=30)
+        field_xlab.next_to(field_ax, DOWN, buff=0.1).align_to(field_ax, RIGHT)
+
+        wave = always_redraw(lambda: field_ax.plot(
+            lambda x: two_stream_field(x, tau.get_value()),
+            x_range=[-half, half, half / 120], color=E_FIELD, stroke_width=CURVE_WIDTH - 0.5))
+        nodes = VGroup(*[Dot(field_ax.c2p(x, 0), radius=0.05, color=INK)
+                         for x in np.arange(-half, half + 1e-6, half / 2)])
+
+        clock = VGroup(math(r"\omega_p t\ [1] =", color=MUTED, size=30),
+                       DecimalNumber(0, num_decimal_places=1, color=MUTED, font_size=30))
+        clock.arrange(RIGHT, buff=0.15)
+        clock.add_updater(lambda m: m[1].set_value(tau.get_value()))
+        clock.next_to(field_ax.c2p(-half, 0.1), RIGHT, buff=0.0).shift(UP * 0.05 + RIGHT * 0.35)
+
+        # Growth-rate panel.
+        g_ax = axes([0, 1.35, 0.25], [0, 0.4, 0.1], 4.8, 4.6)
+        g_ax.move_to([3.85, -0.45, 0])
+        g_xlab = math(r"k v_0/\omega_p\ [1]", color=MUTED, size=30)
+        g_xlab.next_to(g_ax.x_axis, DOWN, buff=0.6)
+        g_ylab = math(r"\gamma/\omega_p\ [1]", color=MUTED, size=30)
+        g_ylab.next_to(g_ax.y_axis.get_top(), UP, buff=0.12)
+        curve = g_ax.plot(growth_rate, x_range=[0.0, 1.0, 0.002], color=GREEN,
+                          stroke_width=CURVE_WIDTH)
+        band = g_ax.get_area(curve, x_range=[0.0, 1.0], color=GREEN, opacity=0.12)
+        one_tick = math("1", color=MUTED, size=28).next_to(g_ax.c2p(1.0, 0), DOWN, buff=0.15)
+        g_peak = 1 / (2 * np.sqrt(2))
+        peak = Dot(g_ax.c2p(K_MAX, g_peak), radius=0.09, color=ACCENT)
+        peak_guide = DashedLine(g_ax.c2p(K_MAX, 0), g_ax.c2p(K_MAX, g_peak),
+                                color=FAINT, stroke_width=THIN_WIDTH, dash_length=0.08)
+        peak_lab = math(r"\gamma_{\max}/\omega_p\ [1]=1/(2\sqrt{2})", color=ACCENT, size=30)
+        peak_lab.next_to(peak, UP, buff=0.18)
+        k_lab = math(r"\sqrt{3/8}", color=MUTED, size=28).next_to(g_ax.c2p(K_MAX, 0), DOWN, buff=0.15)
+        stable_lab = label("stable", color=MUTED, size=SMALL_SIZE)
+        stable_lab.move_to(g_ax.c2p(1.18, 0.04))
+
+        self.play(FadeIn(heading), Create(beam_ax), Create(field_ax), Create(g_ax),
+                  FadeIn(VGroup(beam_ylab, field_ylab, field_xlab, g_xlab, g_ylab)),
+                  run_time=0.9, rate_func=EASE)
+        self.play(FadeIn(upper), FadeIn(lower), FadeIn(up_lab), FadeIn(lo_lab),
+                  Create(curve), FadeIn(band), FadeIn(one_tick), FadeIn(stable_lab),
+                  run_time=1.0, rate_func=EASE)
+        self.play(FadeIn(peak_guide), FadeIn(peak), FadeIn(peak_lab), FadeIn(k_lab),
+                  FadeIn(wave), FadeIn(nodes), FadeIn(clock), run_time=0.6, rate_func=EASE)
+        self.play(tau.animate.set_value(TAU_END), run_time=7.0, rate_func=LINEAR)
         self.wait(1.5)

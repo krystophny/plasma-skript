@@ -1,177 +1,164 @@
 """Schematic warm magnetized-wave comparison.
 
 The scene compares three normalized patterns rather than solving a particular
-boundary-value problem: a compressive sound wave, a transverse shear Alfvén
-wave, and a compressional magnetosonic wave.  The warm-fluid speed relation
+boundary-value problem: a compressive sound wave (k parallel to B0), a
+transverse shear Alfven wave (k parallel to B0, displacement along y), and a
+compressional fast magnetosonic wave (k perpendicular to B0, B0 out of the
+page). The warm-fluid speed relation for perpendicular propagation
 
     v_m^2 = v_A^2 + v_s^2
 
 is shown as a model connection, not as dimensional simulation data.
+
+Normalization: X = x/L0, tau = t/t0, displacements in L0, speeds in L0/t0
+(all unit [1]): v_s = 0.6, v_A = 1, v_m = sqrt(1.36), k L0 = 1.25.
+Longitudinal displacement xi_x = 0.32 sin(kx - omega t) gives the density
+perturbation dn/n0 = -d xi_x/dx; in the fast wave the frozen-in flux tubes
+move with the plasma, so dB/B0 = dn/n0. Small markers below each row sit at
+the compression maxima (sound, fast) or displacement crests (shear) and move
+at the respective phase speed.
 """
 
 from manim import *
 import numpy as np
 
-
-BG = "#0B1220"
-INK = "#E8EEF7"
-MUTED = "#9BAAC0"
-GRID = "#51627A"
-PRESSURE = "#F2A65A"
-FIELD = "#72D6C9"
-MAGNETIC = "#4EA8DE"
+from style import (
+    ACCENT, B_FIELD, CURVE_WIDTH, EASE, GRID, INK, LINEAR, MUTED, ORANGE,
+    THIN_WIDTH, StyledScene, label, math, title,
+)
 
 
-class MagnetosonicWaves(Scene):
-    """Compare pressure, shear-Alfvén, and magnetosonic wave patterns."""
+def wave_phase(x, tau, mode, sound_speed=0.6, alfven_speed=1.0, wave_number=1.25):
+    """kx-omega*t: x/L0, tau=t/t0, speeds in L0/t0, k in 1/L0.
 
-    def construct(self):
-        self.camera.background_color = BG
+    Sound is parallel to B0; shear has k parallel B0 along x;
+    fast magnetosonic is perpendicular to B0, with cfast²=cs²+vA².
+    """
+    speeds = {"sound": sound_speed, "shear": alfven_speed,
+              "fast": np.sqrt(sound_speed**2 + alfven_speed**2)}
+    return wave_number * (np.asarray(x) - speeds[mode] * tau)
 
-        title = Text("Warm magnetized-wave patterns", color=INK, font_size=32)
-        subtitle = Text(
-            "schematic normalized illustration · coordinates [1] · patterns are not measurements",
-            color=MUTED,
-            font_size=19,
-        )
-        heading = VGroup(title, subtitle).arrange(DOWN, aligned_edge=LEFT, buff=0.08)
-        heading.to_edge(UP, buff=0.25).to_edge(LEFT, buff=0.38)
 
-        formula = MathTex(
-            r"v_m^2 = v_A^2 + v_s^2",
-            color=FIELD,
-            font_size=30,
-        )
-        formula.to_corner(UR, buff=0.38)
+def shear_displacement(x, y, tau, amplitude=0.18):
+    """Return (xi_x,xi_y)/L0, independent of y: divergence exactly zero."""
+    return np.array([np.zeros_like(np.asarray(x), dtype=float),
+                     amplitude * np.sin(wave_phase(x, tau, "shear"))])
+
+
+def longitudinal_displacement(x, tau, mode, amplitude=0.32):
+    """xi_x/L0 for the compressive rows; dn/n0 = -d xi_x/dx."""
+    return amplitude * np.sin(wave_phase(x, tau, mode))
+
+
+X_MIN, X_MAX = -5.0, 5.0
+SCREEN_LEFT, SCALE = -2.75, 0.92   # screen x = SCREEN_LEFT + SCALE (X - X_MIN)
+ROW_Y = (1.55, -0.45, -2.45)
+
+
+def sx(x):
+    return SCREEN_LEFT + SCALE * (np.asarray(x) - X_MIN)
+
+
+class MagnetosonicWaves(StyledScene):
+    """Compare pressure, shear-Alfven, and magnetosonic wave patterns."""
+
+    def build(self):
+        heading = title("Sound, Alfvén and magnetosonic waves")
+        formula = math(r"v_m^2 = v_A^2 + v_s^2", color=INK, size=36)
+        formula.to_corner(UR, buff=0.55)
 
         tracker = ValueTracker(0.0)
-        x_values = np.linspace(-5.0, 5.0, 260)
-        row_y = [1.75, 0.0, -1.75]
-        row_titles = [
-            ("sound", PRESSURE),
-            ("shear Alfvén", FIELD),
-            ("magnetosonic", MAGNETIC),
+        k = 1.25
+
+        names = [
+            ("sound", r"\mathbf{k}\parallel\mathbf{B}_0", r"v_s t_0/L_0 = 0.6\ [1]"),
+            ("shear Alfvén", r"\mathbf{k}\parallel\mathbf{B}_0", r"v_A t_0/L_0 = 1\ [1]"),
+            ("fast magnetosonic", r"\mathbf{k}\perp\mathbf{B}_0", r"v_m t_0/L_0 = 1.17\ [1]"),
         ]
+        row_labels = VGroup()
+        for (name, geom, speed), y in zip(names, ROW_Y):
+            block = VGroup(
+                label(name, color=INK, size=28),
+                math(geom, color=MUTED, size=28),
+                math(speed, color=MUTED, size=26),
+            ).arrange(DOWN, aligned_edge=LEFT, buff=0.12)
+            block.move_to([-6.55, y, 0], aligned_edge=LEFT)
+            row_labels.add(block)
 
-        separators = VGroup(
-            *[
-                Line(
-                    np.array([-5.45, y - 0.78, 0.0]),
-                    np.array([5.45, y - 0.78, 0.0]),
-                    color=GRID,
-                    stroke_width=1,
-                    stroke_opacity=0.55,
-                )
-                for y in [1.0, -0.75]
-            ]
-        )
+        def frame_line(y):
+            return Line([sx(X_MIN), y - 0.62, 0], [sx(X_MAX), y - 0.62, 0],
+                        color=GRID, stroke_width=1.2)
 
-        labels = VGroup()
-        for (label, color), y in zip(row_titles, row_y):
-            label_text = Text(label, color=color, font_size=22)
-            label_text.to_edge(LEFT, buff=0.4).move_to(
-                np.array([label_text.get_center()[0], y + 0.56, 0.0])
-            )
-            labels.add(label_text)
+        baselines = VGroup(*[frame_line(y) for y in ROW_Y])
 
-        def graph(points, color, width=3):
-            return VMobject(stroke_color=color, stroke_width=width).set_points_as_corners(
-                points
-            )
+        # Row 1: sound. Fluid elements (dots) displaced along x = along B0.
+        cols = np.arange(X_MIN + 0.2, X_MAX, 0.4)
+        sound_y = ROW_Y[0]
+        b_guides = VGroup(*[
+            Line([sx(X_MIN), sound_y + dy, 0], [sx(X_MAX), sound_y + dy, 0],
+                 color=B_FIELD, stroke_width=1.2, stroke_opacity=0.45)
+            for dy in (-0.33, 0.33)
+        ])
 
-        def sound_points(time):
-            y0 = row_y[0]
-            return [
-                np.array([x, y0 + 0.42 * np.cos(1.25 * x - 0.72 * time), 0.0])
-                for x in x_values
-            ]
+        def sound_dots():
+            xs = cols + longitudinal_displacement(cols, tracker.get_value(), "sound")
+            return VGroup(*[
+                Dot([sx(x), sound_y + dy, 0], radius=0.055, color=ORANGE)
+                for x in xs for dy in (-0.18, 0.0, 0.18)
+            ])
 
-        def magnetic_points(time):
-            y0 = row_y[2]
-            return [
-                np.array([x, y0 + 0.50 * np.cos(0.86 * x - 0.43 * time), 0.0])
-                for x in x_values
-            ]
+        # Row 2: shear Alfven. Field lines bend along y, no compression.
+        shear_y = ROW_Y[1]
+        line_x = np.linspace(X_MIN, X_MAX, 240)
 
-        sound_wave = always_redraw(
-            lambda: graph(sound_points(tracker.get_value()), PRESSURE)
-        )
-        sound_reference = DashedLine(
-            np.array([-5.0, row_y[0], 0.0]),
-            np.array([5.0, row_y[0], 0.0]),
-            color=GRID,
-            dash_length=0.12,
-            stroke_width=2,
-        )
-        magnetic_wave = always_redraw(
-            lambda: graph(magnetic_points(tracker.get_value()), MAGNETIC)
-        )
-        magnetic_reference = DashedLine(
-            np.array([-5.0, row_y[2], 0.0]),
-            np.array([5.0, row_y[2], 0.0]),
-            color=GRID,
-            dash_length=0.12,
-            stroke_width=2,
-        )
+        def shear_lines():
+            group = VGroup()
+            disp = shear_displacement(line_x, 0.0, tracker.get_value(), amplitude=0.3)[1]
+            for dy in (-0.3, 0.0, 0.3):
+                pts = [[sx(x), shear_y + dy + SCALE * d, 0] for x, d in zip(line_x, disp)]
+                group.add(VMobject(color=B_FIELD, stroke_width=THIN_WIDTH + 0.4).set_points_smoothly(pts))
+            return group
 
-        field_lines = VGroup()
-        for base_x in np.linspace(-4.6, 4.6, 8):
-            def line_points(time, x0=base_x):
-                ys = np.linspace(-0.52, 0.52, 90)
-                xs = x0 + 0.48 * np.sin(2.6 * ys + 0.55 * x0 - 0.58 * time)
-                return [
-                    np.array([x, row_y[1] + y, 0.0])
-                    for x, y in zip(xs, ys)
-                ]
+        # Row 3: fast wave. Frozen-in flux tubes (B0 out of page) move with the plasma.
+        fast_y = ROW_Y[2]
+        tube_cols = np.arange(X_MIN + 0.25, X_MAX, 0.5)
 
-            field_lines.add(
-                always_redraw(
-                    lambda time_tracker=tracker, fn=line_points: graph(
-                        fn(time_tracker.get_value()), FIELD, width=2.5
-                    )
-                )
-            )
+        def fast_tubes():
+            xs = tube_cols + longitudinal_displacement(tube_cols, tracker.get_value(), "fast")
+            group = VGroup()
+            for x in xs:
+                for dy in (-0.22, 0.22):
+                    p = [sx(x), fast_y + dy, 0]
+                    group.add(Circle(radius=0.09, color=B_FIELD, stroke_width=1.8).move_to(p),
+                              Dot(p, radius=0.03, color=B_FIELD))
+            return group
 
-        k_arrows = VGroup()
-        for y in row_y:
-            arrow = Arrow(
-                np.array([-4.8, y - 0.52, 0.0]),
-                np.array([-4.0, y - 0.52, 0.0]),
-                color=GRID,
-                stroke_width=2,
-                buff=0,
-            )
-            arrow_label = Text("k", color=MUTED, font_size=17)
-            arrow_label.next_to(arrow, DOWN, buff=0.04)
-            k_arrows.add(VGroup(arrow, arrow_label))
+        def phase_markers():
+            tau = tracker.get_value()
+            group = VGroup()
+            # compression maxima: kx - wt = pi (mod 2 pi); shear crest: pi/2.
+            for mode, y, target in (("sound", ROW_Y[0], np.pi), ("shear", ROW_Y[1], np.pi / 2),
+                                    ("fast", ROW_Y[2], np.pi)):
+                speed = {"sound": 0.6, "shear": 1.0, "fast": np.sqrt(1.36)}[mode]
+                base = (target / k + speed * tau)
+                period = 2 * np.pi / k
+                for n in range(-4, 5):
+                    x = base + n * period
+                    if X_MIN + 0.1 < x < X_MAX - 0.1:
+                        group.add(Triangle(color=ACCENT, fill_opacity=1, stroke_width=0)
+                                  .scale(0.09).move_to([sx(x), y - 0.62, 0]))
+            return group
 
-        notes = VGroup(
-            Text("pressure / density compression", color=MUTED, font_size=17),
-            Text("field-line displacement; nearly incompressible", color=MUTED, font_size=17),
-            Text("pressure and magnetic compression add", color=MUTED, font_size=17),
-        )
-        for note, y in zip(notes, row_y):
-            note.to_edge(RIGHT, buff=0.4).move_to(
-                np.array([note.get_center()[0], y - 0.58, 0.0])
-            )
+        x_lab = math(r"x/L_0\ [1]", color=MUTED, size=28)
+        x_lab.next_to([sx(X_MAX), ROW_Y[2] - 0.62, 0], DOWN, buff=0.15).align_to([sx(X_MAX), 0, 0], RIGHT)
 
-        observation = Text(
-            "finite temperature supplies pressure restoring force",
-            color=INK,
-            font_size=20,
-        )
-        observation.to_edge(DOWN, buff=0.25)
+        dots, lines, tubes = (always_redraw(f) for f in (sound_dots, shear_lines, fast_tubes))
+        markers = always_redraw(phase_markers)
 
-        self.play(FadeIn(heading), FadeIn(formula), Create(separators), FadeIn(labels))
-        self.play(
-            Create(sound_reference),
-            Create(sound_wave),
-            Create(magnetic_reference),
-            Create(magnetic_wave),
-            Create(field_lines),
-            FadeIn(k_arrows),
-            FadeIn(notes),
-            FadeIn(observation),
-        )
-        self.play(tracker.animate.set_value(2 * PI), run_time=8, rate_func=linear)
-        self.wait(1)
+        self.play(FadeIn(heading), FadeIn(formula), run_time=0.7, rate_func=EASE)
+        self.play(LaggedStart(*[FadeIn(b, shift=RIGHT * 0.2) for b in row_labels], lag_ratio=0.2),
+                  FadeIn(baselines), FadeIn(x_lab), run_time=1.0, rate_func=EASE)
+        self.play(FadeIn(b_guides), FadeIn(dots), Create(lines), FadeIn(tubes), FadeIn(markers),
+                  run_time=0.8, rate_func=EASE)
+        self.play(tracker.animate.set_value(8.0), run_time=8.0, rate_func=LINEAR)
+        self.wait(1.0)

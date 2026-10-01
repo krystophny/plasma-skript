@@ -7,6 +7,9 @@
 #let normalized-label(body) = [#body #h(0.25em) #text("[1]")]
 #let normalized-axis(body) = normalized-label(body)
 
+// Chapter links target a section in HTML and the same label in the print PDF.
+#let chapter-link(anchor, body) = link(label(anchor), body)
+
 // Gaussian-CGS units are not part of unify's default SI catalogue. This
 // content is inserted by each build entry point before chapter content so the
 // registration is active when quantities are formatted.
@@ -97,8 +100,7 @@
       #html.link(rel: "stylesheet", href: stylesheet)
       #html.header(class: "site-header")[
         #html.div(class: "brand")[
-          #html.span(class: "brand-mark")[PL]
-          #html.span[Plasma physics]
+          #link(overview)[Plasma Physics]
         ]
         #html.nav(class: "site-nav", aria-label: "Primary navigation")[
           #link(overview)[Overview]
@@ -107,7 +109,11 @@
           #link(bibliography)[Bibliography]
         ]
       ]
-      #html.main(class: "site-main")[#body]
+      // Each web page is read on its own, so frame numbers restart per page.
+      #html.main(class: "site-main")[
+        #counter(figure.where(kind: "frame")).update(0)
+        #body
+      ]
       #html.footer(class: "site-footer")[
         Lecture notes in Typst, visualizations rendered with Manim. Authors:
         Christopher Albert and Maximilian Philipp.

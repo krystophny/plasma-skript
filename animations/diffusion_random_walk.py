@@ -5,144 +5,109 @@ The walkers use normalized coordinates
     xi = x / L_0
     tau = t / tau_0
 
-and take symmetric steps.  The scene is a conceptual visualization of
-diffusive spreading, not a Monte-Carlo transport calculation or measured data.
+and take symmetric steps of magnitude 0.34 per unit tau, so the ensemble
+variance grows as <xi^2> = 2 D_* tau with D_* = 0.34^2 / 2 = 0.0578.  The
+space-time diagram shows every walker path, three highlighted paths, the
+finite-sample mean and the envelope +-sqrt(2 D_* tau).  The scene is a
+conceptual visualization of diffusive spreading, not a Monte-Carlo transport
+calculation or measured data.
 """
 
 from manim import *
 import numpy as np
 
-
-BG = "#0B1220"
-INK = "#E8EEF7"
-MUTED = "#9BAAC0"
-GRID = "#51627A"
-WALKER_COLOR = "#4EA8DE"
-TRACE_COLOR = "#72D6C9"
-FORMULA_COLOR = "#F2A65A"
+from style import (
+    ACCENT, CURVE_WIDTH, EASE, ELECTRON, FAINT, GREEN, INK, LINEAR, MUTED,
+    THIN_WIDTH, StyledScene, axes, axis_labels, math, title,
+)
 
 
-class DiffusionRandomWalk(Scene):
+STEP = 0.34
+N_WALKERS = 36
+N_STEPS = 18
+
+
+def walker_positions(seed=8):
+    """Seeded symmetric walks; row i holds xi_i at tau = 0, 1, ..., N_STEPS."""
+    rng = np.random.default_rng(seed)
+    steps = rng.choice([-1.0, 1.0], size=(36, 18))
+    return np.concatenate([np.zeros((36, 1)), 0.34 * np.cumsum(steps, axis=1)], axis=1)
+
+
+def diffusion_coefficient(step=0.34, duration=1.0):
+    """D_* = step^2 / (2 duration) for a symmetric walk."""
+    return step * step / (2 * duration)
+
+
+class DiffusionRandomWalk(StyledScene):
     """Show symmetric walkers spreading while their mean stays near zero."""
 
-    def construct(self):
-        self.camera.background_color = BG
+    def build(self):
+        heading = title("Random walk and diffusion")
 
-        title = Text("Random walk to diffusion", color=INK, font_size=34)
-        subtitle = Text(
-            "normalized one-dimensional transport",
-            color=MUTED,
-            font_size=22,
-        )
-        title_group = VGroup(title, subtitle).arrange(
-            DOWN, aligned_edge=LEFT, buff=0.08
-        )
-        title_group.to_edge(UP, buff=0.35).to_edge(LEFT, buff=0.45)
+        ax = axes([-3.5, 3.5, 1], [0, 18, 3], 8.6, 5.6).move_to([-1.35, -0.45, 0])
+        ax_labels = axis_labels(ax, r"\xi = x/L_0\ [1]", r"\tau = t/\tau_0\ [1]")
 
-        formula = MathTex(
-            r"\langle x\rangle = 0,\qquad "
-            r"\langle x^2\rangle = 2D t",
-            color=FORMULA_COLOR,
-            font_size=28,
-        )
-        formula.to_corner(UR, buff=0.42)
+        d_star = diffusion_coefficient()
+        laws = VGroup(
+            math(r"\langle \xi \rangle = 0", color=GREEN, size=34),
+            math(r"\langle \xi^2 \rangle = 2D_*\tau", color=ACCENT, size=34),
+            math(rf"D_* = {d_star:.4f}\ [1]", color=MUTED, size=30),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.35)
+        laws.move_to([5.0, 0.6, 0])
 
-        axes = Axes(
-            x_range=[-5.2, 5.2, 1.0],
-            y_range=[-1.0, 1.0, 1.0],
-            x_length=10.0,
-            y_length=1.3,
-            axis_config={"color": GRID, "stroke_width": 2},
-            tips=False,
-        ).shift(DOWN * 0.1)
-        x_label = Text("x / L₀ [1]", color=MUTED, font_size=20)
-        x_label.next_to(axes.x_axis, DOWN, buff=0.25)
+        positions = walker_positions()
+        tracker = ValueTracker(0.0)
 
-        rng = np.random.default_rng(8)
-        n_walkers = 36
-        n_steps = 18
-        steps = rng.choice([-1.0, 1.0], size=(n_walkers, n_steps))
-        positions = np.concatenate(
-            [np.zeros((n_walkers, 1)), 0.34 * np.cumsum(steps, axis=1)],
-            axis=1,
-        )
-        y_offsets = np.linspace(-0.45, 0.45, n_walkers)
-        step_tracker = ValueTracker(0.0)
+        def xi_at(index, tau):
+            k = min(int(np.floor(tau)), N_STEPS - 1)
+            frac = min(tau - k, 1.0)
+            return positions[index, k] + frac * (positions[index, k + 1] - positions[index, k])
 
-        def current_position(index):
-            step = min(int(round(step_tracker.get_value())), n_steps)
-            return axes.c2p(positions[index, step], y_offsets[index])
+        def path(index, color, width, opacity=1.0):
+            tau_now = tracker.get_value()
+            knots = [k for k in range(N_STEPS + 1) if k < tau_now]
+            points = [ax.c2p(positions[index, k], k) for k in knots]
+            points.append(ax.c2p(xi_at(index, tau_now), tau_now))
+            if len(points) < 2:
+                points.insert(0, ax.c2p(0, 0))
+            return VMobject(stroke_color=color, stroke_width=width,
+                            stroke_opacity=opacity).set_points_as_corners(points)
 
-        walkers = VGroup()
-        for index in range(n_walkers):
-            walker = Dot(
-                current_position(index),
-                radius=0.055,
-                color=WALKER_COLOR,
-            )
-            walker.add_updater(
-                lambda mob, index=index: mob.move_to(current_position(index))
-            )
-            walkers.add(walker)
+        highlighted = (3, 15, 27)
+        faint_paths = VGroup(*[
+            always_redraw(lambda i=i: path(i, ELECTRON, 1.2, 0.25))
+            for i in range(N_WALKERS) if i not in highlighted
+        ])
+        bold_paths = VGroup(*[
+            always_redraw(lambda i=i: path(i, INK, 2.6)) for i in highlighted
+        ])
+        walkers = always_redraw(lambda: VGroup(*[
+            Dot(ax.c2p(xi_at(i, tracker.get_value()), tracker.get_value()),
+                radius=0.06, color=ELECTRON)
+            for i in range(N_WALKERS)
+        ]))
 
-        traces = VGroup()
-        for index in (3, 15, 27):
-            traces.add(
-                TracedPath(
-                    lambda index=index: walkers[index].get_center(),
-                    stroke_color=TRACE_COLOR,
-                    stroke_width=3,
-                    dissipating_time=None,
-                )
-            )
+        def mean_curve():
+            tau_now = max(tracker.get_value(), 1e-3)
+            taus = np.linspace(0, tau_now, 120)
+            pts = [ax.c2p(np.mean([xi_at(i, t) for i in range(N_WALKERS)]), t) for t in taus]
+            return VMobject(stroke_color=GREEN, stroke_width=CURVE_WIDTH - 1).set_points_as_corners(pts)
 
-        origin = DashedLine(
-            axes.c2p(0, -0.72),
-            axes.c2p(0, 0.72),
-            color=MUTED,
-            stroke_width=2,
-        )
-        origin_label = Text("initial position", color=MUTED, font_size=18)
-        origin_label.next_to(origin, UP, buff=0.1)
+        def envelope(sign):
+            tau_now = max(tracker.get_value(), 1e-3)
+            return DashedVMobject(ParametricFunction(
+                lambda t: ax.c2p(sign * np.sqrt(2 * d_star * t), t),
+                t_range=[0, tau_now, tau_now / 80], color=ACCENT, stroke_width=THIN_WIDTH),
+                num_dashes=max(2, int(4 + 1.6 * tau_now)))
 
-        time_label = always_redraw(
-            lambda: Text(
-                f"step {min(int(round(step_tracker.get_value())), n_steps)} / {n_steps}",
-                color=INK,
-                font_size=21,
-            ).to_corner(DR, buff=0.38)
-        )
-        observation = Text(
-            "symmetric steps: displacement cancels, variance grows",
-            color=TRACE_COLOR,
-            font_size=21,
-        )
-        observation.to_edge(DOWN, buff=0.52)
+        mean_path = always_redraw(mean_curve)
+        envelopes = VGroup(always_redraw(lambda: envelope(1)), always_redraw(lambda: envelope(-1)))
 
-        legend = VGroup(
-            Text("blue dots: walkers", color=MUTED, font_size=18),
-            Text("teal traces: selected paths", color=MUTED, font_size=18),
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.1)
-        legend.to_corner(DL, buff=0.35)
+        self.play(FadeIn(heading), Create(ax), FadeIn(ax_labels), run_time=0.8, rate_func=EASE)
+        self.play(LaggedStart(*[FadeIn(m, shift=LEFT * 0.1) for m in laws], lag_ratio=0.25),
+                  run_time=0.8, rate_func=EASE)
+        self.add(faint_paths, envelopes, bold_paths, mean_path, walkers)
+        self.play(tracker.animate.set_value(N_STEPS), run_time=9, rate_func=LINEAR)
+        self.wait(1.4)
 
-        self.play(
-            FadeIn(title_group),
-            FadeIn(formula),
-            Create(axes),
-            FadeIn(x_label),
-            Create(origin),
-            FadeIn(origin_label),
-        )
-        self.play(
-            FadeIn(walkers),
-            FadeIn(legend),
-            FadeIn(observation),
-            FadeIn(time_label),
-        )
-        self.add(*traces)
-        self.play(
-            step_tracker.animate.set_value(n_steps),
-            run_time=9,
-            rate_func=linear,
-        )
-        self.wait(1)

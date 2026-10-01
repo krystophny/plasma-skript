@@ -57,7 +57,11 @@
     $bold(a)_s=(q_s/m_s)(bold(E)+(bold(v) times bold(B))/c)$. The distribution
     and the velocity-space flux $f_(s) bold(a)_s$ vanish sufficiently rapidly
     as $abs(bold(v)) -> infinity$, so surface terms at infinite speed are
-    zero. Collisions may exchange energy between species, but their weighted
+    zero. Require species-number-conserving collisions,
+    $integral C_(s)[f] dif^3 bold(v)=0$, so
+    $pdv(rho_s,t)+div(rho_s bold(u)_s)=0$. Ionization and recombination
+    are excluded from the internal-energy balance below.
+    Collisions may exchange energy between species, but their weighted
     integral is retained as a source rather than silently discarded.]
   )
 
@@ -92,8 +96,9 @@
   )
 
   #equation-note[
-    The three terms in the energy flux have distinct meanings: bulk energy
-    advection $W_s bold(u)_s$, pressure work transport $bold(P)_s dot
+    The three terms in the energy flux have distinct meanings: advection of
+    total particle kinetic energy $W_s bold(u)_s$ (bulk plus internal),
+    pressure work transport $bold(P)_s dot
     bold(u)_s$, and random-energy transport $bold(q)_s$. They must not be
     merged into a scalar heat flux unless isotropy and a closure have been
     stated.
@@ -141,11 +146,19 @@
       =div((m_s integral abs(bold(v))^2 bold(v) f_(s) dif^3 bold(v))/2) .$
 
     #derivation-step[Integrate the acceleration term by parts]
-    Apply the velocity-space product rule:
+    Write the contracted velocity divergence explicitly as
+    $div_(bold(v))(bold(A))=sum_j pdv(A_(j),v_(j))$.
+    The velocity-space product rule is
 
     $ epsilon_(s) bold(a)_s dot pdv(f_(s),bold(v))
-      =pdv(epsilon_(s) f_(s) bold(a)_s,bold(v))
-        -f_(s) bold(a)_s dot pdv(epsilon_(s),bold(v)) .$
+      =div_(bold(v))(epsilon_(s) f_(s) bold(a)_s)
+        -f_(s) bold(a)_s dot pdv(epsilon_(s),bold(v))
+        -epsilon_(s) f_(s) div_(bold(v))(bold(a)_s) .$
+
+    For the Lorentz acceleration, $div_(bold(v))(bold(a)_s)=0$:
+    the electric field is independent of velocity and the magnetic linear
+    map is antisymmetric, hence has zero trace. The last term therefore
+    vanishes.
 
     The first term becomes the surface integral
 
@@ -219,7 +232,8 @@
     $ pdv(rho_s bold(u)_s,t)+div(rho_s bold(u)_s bold(u)_s+bold(P)_s)
         =q_s n_s (bold(E)+(bold(u)_s times bold(B))/c)+bold(R)_s .$
 
-    Dot this equation with $bold(u)_s$. Using mass continuity gives
+    Dot this equation with $bold(u)_s$. The number-conserving assumption
+    gives $pdv(rho_s,t)+div(rho_s bold(u)_s)=0$, so the product rule yields
 
     $ pdv(K_s,t)+div(K_s bold(u)_s)
         =q_s n_s bold(E) dot bold(u)_s
@@ -255,9 +269,9 @@
     together. The internal form isolates compressional work, anisotropic shear
     work, and heat-flux transport. A fluid model closes this equation only
     after choosing how $bold(P)_s$, $bold(q)_s$, and $Q_(s)$ are represented.
-    In a collisionless plasma, $Q_(s)$ can vanish for the total energy of all
-    species while energy is still exchanged between species or between fields
-    and particles. For collisional species exchange, the internal source is
+    When $C_(s)[f]=0$, both $Q_(s)=0$ and $bold(R)_s=bold(0)$ for each
+    species. Energy exchange with the fields enters through electric work,
+    not a collision source. For collisional species exchange, the internal source is
     $Q_(s)-bold(u)_s dot bold(R)_s$: total collisional power and bulk momentum
     transfer must be separated.]
   )
@@ -266,7 +280,7 @@
     Weighting the kinetic equation by $(m_s abs(bold(v))^2)/2$ gives a total
     energy balance. Velocity-space integration by parts turns the Lorentz
     force into electric work; the magnetic part does no work. Decomposing
-    velocity into bulk plus random motion separates bulk advection, pressure
+    velocity into bulk plus random motion separates total-energy advection, pressure
     work, and heat-flux transport. The next omitted moment is therefore a
     closure choice, not an algebraic accident.
   ]
@@ -321,7 +335,7 @@
 
   #assumption(
     [Orthogonal curvilinear coordinates],
-    [Let $(q_1,q_2,q_3)$ be orthogonal coordinates with unit basis vectors
+    [Let $(q_1,q_2,q_3)$ be right-handed orthogonal coordinates with unit basis vectors
     $bold(e)_(1)$, $bold(e)_(2)$, and $bold(e)_(3)$. Define scale factors by
     $d bold(r)=sum_i h_i d q_i bold(e)_(i)$. The basis is orthonormal at each
     point, but it may vary with position. Components $A_(i)$ are physical
@@ -337,6 +351,8 @@
     and
     $"spherical:" (q_1,q_2,q_3)=(r,theta,phi),
       (h_1,h_2,h_3)=(1,r,r sin(theta))$.
+    In spherical coordinates $theta$ is the polar angle from positive $z$,
+    and $phi$ is the azimuth measured from positive $x$ toward positive $y$.
     The volume element is $dif V=h_1 h_2 h_3 dif q_1 dif q_2 dif q_3$.]
   )
 
@@ -558,7 +574,7 @@
     ),
   ))
 
-  #chapter-nav(previous: (href: "../chapters/13-sheaths-probes.html", title: [Plasma sheaths and Langmuir probes]))
+  #chapter-nav(previous: (href: "../chapters/15-sheaths-probes.html", title: [Plasma sheaths and Langmuir probes]))
 ]
 
 #appendix

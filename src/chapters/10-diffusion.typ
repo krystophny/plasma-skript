@@ -4,12 +4,14 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[8. Plasma diffusion] <plasma-diffusion>
+  #page-title[10. Plasma diffusion] <plasma-diffusion>
 
   #lead[
     Diffusion is the macroscopic signature of many small changes in particle
-    trajectories. Collisions randomize a particle's direction; gradients bias
-    the resulting random walk toward lower density. Magnetic fields do not
+    trajectories. Collisions randomize particle directions. Across a density
+    gradient, more particles arrive from the dense side than from the dilute
+    side, producing a net flux toward lower density even when individual
+    steps are symmetric. Magnetic fields do not
     remove diffusion, but they make the transport direction dependent.
     This transport hierarchy follows the standard collisional and magnetized
     plasma description in @bittencourt2004.
@@ -44,6 +46,8 @@
     coefficient $D$ is in #unit("cm^2/s"), and particle flux
     $bold(Gamma)$ is in #unit("cm^-2/s"). The normalized variables
     $xi=x/L_0$ and $tau=t/tau_0$ are dimensionless.
+    In the one-dimensional Green function, $N_0=integral_(-infinity)^infinity
+    n(x,t) dif x$ is the conserved column density in #unit("cm^-2").
   ]
 
   #assumption(
@@ -60,10 +64,18 @@
     [For a one-dimensional step of magnitude $Delta x$ every $Delta t$, define
     $D=(Delta x)^2/(2 Delta t)$. The diffusive particle flux obeys Fick's law
     $bold(Gamma)^(D)=-D grad(n)$, and a system of size $L$ has
-    the diffusion time
-    $tau_"D"=L^2/D$. In three dimensions, the variance relation is
+    the characteristic diffusion time
+    $tau_"D"=L^2/D$. This is a scale estimate; a precise decay time also
+    depends on geometry and boundary conditions. For particles starting at
+    the origin with the same diffusivity in all three directions, the
+    variance relation is
     $⟨abs(bold(r))^2⟩=6 D t$.]
   )
+
+  Angle brackets denote an ensemble average over possible random walks.
+  A finite collection of walkers need not have exactly zero mean at each
+  time. The ensemble variance describes spreading around the starting point,
+  not a directed displacement of the whole cloud.
 
   #details(
     [Derivation: from step statistics to the diffusion equation],
@@ -101,7 +113,7 @@
     $ pdv(n,t)=div(D grad(n)) .$
 
     For uniform $D$, this reduces to $pdv(n,t)=D laplacian(n)$. A point-like
-    initial packet in one dimension has normalized Green function
+    initial sheet $n(x,0)=N_0 delta(x)$ has Green-function solution
 
     $ n(x,t)=N_0/sqrt(4 pi D t) exp(-x^2/(4 D t)) .$
 
@@ -117,6 +129,7 @@
     variables
     $bold(xi)=bold(r)/L_0$, $tau=t/tau_0$,
     $n_("norm")=n/n_0$, and $D_("norm")=D/D_0$.
+    Spatial derivatives below act on $bold(xi)$, not dimensional position.
     The diffusion equation then has the dimensionless form
     $pdv(n_("norm"), tau)=div(D_("norm") grad(n_("norm")))$.
     For a system length $L$ with $L_("norm")=L/L_0$, the normalized
@@ -129,11 +142,16 @@
 
   #animation(
     "../media/diffusion-random-walk.mp4",
-    "A normalized one-dimensional ensemble of walkers starts at the same position and takes reproducible symmetric steps. As time advances, the blue walkers spread to both sides while their mean position remains near the origin. Teal traces show selected paths, and the displayed relation states that the variance grows as two times the diffusion coefficient times time.",
+    "Thirty-six one-dimensional walkers start at the origin and take eighteen seeded symmetric steps. Position is xi=x/L0 and time is tau=t/tau0, with step magnitude 0.34 and step duration 1 in these normalized units. The ensemble mean is zero, while the finite sample fluctuates. Selected path traces show spreading; the ensemble variance is 2 D-star tau with D-star=0.0578.",
     caption: [
-      Random-walk spreading: the mean displacement cancels while the variance
-      grows. The animation is a deterministic normalized illustration, not a
-      Monte-Carlo transport calculation or measured data.
+      Random-walk spreading from 36 walkers taking 18 seeded independent
+      symmetric steps. With $xi=x/L_0$ and $tau=t/tau_0$, each step has
+      magnitude $Delta xi=0.34$ [1] and duration $Delta tau=1$ [1]. The
+      displayed $D_*=D tau_0/L_0^2=0.0578$ [1] is the coefficient
+      $D_("norm")$ defined above. Restore dimensional steps as
+      $Delta x=0.34 L_0$ and $Delta t=tau_0$. The ensemble mean is zero and
+      its variance is $2 D_* tau$; finite-sample means and variances fluctuate.
+      This is an illustrative random-walk model, not measured plasma data.
     ],
     poster: "../media/diffusion-random-walk.png",
   )
@@ -214,16 +232,20 @@
     In Gaussian CGS, $q_s$ is in statcoulomb, $m_s$ in #unit("g"), collision
     frequency $nu_s$ in #unit("s^-1"), temperature energy $k_B T_s$ in
     #unit("erg"), mobility $mu_s$ has units of velocity divided by electric
-    field, and $D_s$ is in #unit("cm^2/s"). The flux remains in
+    field, #unit("cm^2/statV/s"), and $D_s$ is in #unit("cm^2/s"). This
+    electric-field mobility includes charge, unlike the force-based mobility
+    introduced in Chapter 9. The flux remains in
     #unit("cm^-2/s").
   ]
 
   #assumption(
     [Local, isothermal neutral drag],
-    [Use a weakly ionized plasma with a prescribed neutral background, a
+    [Use a weakly ionized plasma with a prescribed stationary neutral background, a
     constant momentum-transfer frequency $nu_s$, small drift relative to the
     thermal speed, and no magnetic field in this section. Let the species
-    pressure be $p_s=n_s k_B T_s$ and neglect inertia on the collision time.]
+    pressure be $p_s=n_s k_B T_s$, with spatially uniform $T_s$, and consider
+    evolution slow compared with the momentum-relaxation time $1/nu_s$.
+    Neglect inertia in that regime.]
   )
 
   #definition(
@@ -244,8 +266,10 @@
     [Multiplying the velocity law by $n_s$ gives
     $bold(Gamma)_s=n_s mu_s^(q) bold(E)-D_s grad(n_s)$.
     If a positive mobility is preferred, define
-    $mu_s=abs(q_s)/(m_s nu_s)$ and keep the sign of $q_s$ explicitly
-    in the force term. The Einstein relation is
+    $mu_s=abs(q_s)/(m_s nu_s)$. The electric drift is then along the field
+    for positive charges and opposite to it for electrons; multiply the
+    mobility by the charge sign, not by the charge magnitude again.
+    The Einstein relation is
     $D_s=(mu_s k_B T_s)/abs(q_s)$.]
   )
 
@@ -332,8 +356,9 @@
     (
       question: [Why must the charge sign be kept separate from the positive mobility magnitude?],
       answer: [Electrons and ions drift in opposite directions under the same
-      electric field. Writing $mu_s=abs(q_s)/(m_s nu_s)$ and retaining $q_s$
-      in the force term prevents that sign from being lost.]
+      electric field. With $mu_s=abs(q_s)/(m_s nu_s)$, the electric drift
+      is $+mu_s bold(E)$ for positive ions and $-mu_s bold(E)$ for electrons.
+      The charge magnitude is already included in $mu_s$.]
     ),
     (
       question: [When is the scalar Einstein relation insufficient?],
@@ -347,9 +372,10 @@
 
   #lead[
     Electrons usually diffuse faster than ions because their mass is smaller.
-    A plasma cannot tolerate sustained charge separation, however. A small
-    electric field develops until the species carry the same particle flux.
-    This coupled transport is ambipolar diffusion.
+    The resulting charge separation creates an electric field that couples
+    their transport. With zero-current boundary conditions in the transport
+    direction, the field adjusts until the species carry the same particle
+    flux. This coupled transport is ambipolar diffusion.
   ]
 
   #objectives((
@@ -369,8 +395,10 @@
 
   #assumption(
     [Quasi-neutral, singly charged hydrogen],
-    [Use $n_i approx n_e=n$, $q_i=+e$, $q_e=-e$, equal isothermal
-    temperatures within each species, and no externally imposed current.
+    [Use $n_i approx n_e=n$, $q_i=+e$, $q_e=-e$, spatially uniform
+    temperatures within each species, and zero current in the transport
+    direction, fixed by the boundary conditions. The temperatures of the
+    two species may differ.
     The electron and ion drift-diffusion coefficients are evaluated locally,
     and the ambipolar field adjusts faster than the density profile evolves.]
   )
@@ -382,10 +410,17 @@
     $bold(Gamma)_e=-mu_e n bold(E)-D_e grad(n)$.
     The current is
     $bold(j)=e (bold(Gamma)_i-bold(Gamma)_e)$.
-    Quasi-neutral ambipolar transport imposes
+    The zero-current closure used here imposes
     $bold(j)=bold(0)$, equivalently
     $bold(Gamma)_i=bold(Gamma)_e$.]
   )
+
+  Charge conservation gives $pdv(rho_q,t)+div(bold(j))=0$. Maintaining
+  quasi-neutrality therefore constrains the leading current divergence;
+  it does not require $bold(j)=bold(0)$. In one-dimensional steady transport,
+  current is spatially constant, and a zero-current boundary sets that
+  constant to zero. This additional condition gives the equal fluxes used
+  below.
 
   #governing-law(
     [Ambipolar field and diffusion coefficient],
@@ -472,18 +507,20 @@
 
   #interpretation(
     [Quasi-neutrality couples otherwise unequal rates],
-    [The ambipolar field is not an externally prescribed equilibrium field.
-    It is the small electrostatic correction required to prevent the faster
-    species from running ahead. The total particle flux can remain finite
-    even though the net current is approximately zero.]
+    [The ambipolar field is generated by the species' unequal diffusion. A
+    small departure from charge neutrality can support a field strong enough
+    to slow the faster species and accelerate the slower one. Their equal
+    particle fluxes point in the same direction: opposite charges cancel in
+    the current, while both populations continue to spread.]
   )
 
   #summary[
     Equal electron and ion particle fluxes give
     $bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) ((grad(n))/n)$ and
     $bold(Gamma)_a=-D_a grad(n)$, where
-    $D_a=(mu_i D_e+mu_e D_i)/(mu_i+mu_e)$. Ambipolar diffusion is
-    therefore a collective consequence of quasi-neutrality.
+    $D_a=(mu_i D_e+mu_e D_i)/(mu_i+mu_e)$. Ambipolar diffusion here
+    follows from quasi-neutrality together with the zero-current
+    boundary condition.
   ]
 
   #knowledge-check((
@@ -538,7 +575,8 @@
   #assumption(
     [Uniform magnetic field and isotropic drag],
     [Use a locally uniform $bold(B)=B hat(bold(b))$, a scalar collision
-    frequency, small drift, and a time-independent field. Pressure gradients
+    frequency for drag against stationary neutrals, small drift, spatially
+    uniform species temperature, and a time-independent field. Pressure gradients
     and electric fields vary slowly over one gyration. Curvature, mirrors,
     finite orbit widths, and turbulence are postponed.]
   )
@@ -615,6 +653,18 @@
     $D_(s,perp) approx nu_s rho_("1D,s")^2$; it is not the thermal gyroradius
     convention used elsewhere in this script.]
   )
+
+  For constant field direction $bold(b)$ and constant $D_(s,H)$, the
+  Hall-like gradient flux $D_(s,H) bold(b) times grad(n_s)$ has zero
+  divergence, since mixed spatial derivatives commute. It does not by itself
+  broaden a density packet. Spatial variation of the coefficient or field
+  direction, and boundary fluxes, can change that conclusion.
+
+  The formal collisionless limit requires care. At fixed nonzero magnetic
+  field, the classical perpendicular coefficient tends to zero. The parallel
+  formula instead grows as $1/nu_s$; once the mean free path is comparable
+  to the system length, local diffusion along the field no longer applies.
+  Particles then retain memory of their motion and boundaries.
 
   #cross-field-diffusion
 
@@ -721,7 +771,9 @@
     [Quasi-neutral, weakly coupled fluid transport],
     [Use a fully ionized, quasi-neutral hydrogen plasma with a scalar
     conductivity, a locally uniform magnetic field, and steady perpendicular
-    force balance. The classical result neglects turbulent fluctuations and
+    force balance. Take each species temperature to be spatially uniform,
+    though the electron and ion temperatures may differ. The classical result
+    neglects turbulent fluctuations and
     finite-orbit neoclassical geometry. Bohm transport is presented only as
     an empirical comparison.]
   )
@@ -748,6 +800,12 @@
     so $D_perp^(B) ∝ B^(-1)$. The numerical factor is empirical and
     should not be mistaken for a derivation from the collisional model.]
   )
+
+  The coefficient here describes particle transport. It is different from
+  the magnetic diffusivity $D_(B)$ of Chapter 8, which describes resistive
+  smoothing of the magnetic field. In $D_perp^(B)$ above, the superscript
+  labels the Bohm estimate. The identical diffusion units do not make these
+  coefficients interchangeable.
 
   #details(
     [Derivation: pressure-driven classical flux],
@@ -875,11 +933,11 @@
 
   #chapter-nav(
     previous: (
-      href: "07-collisions-conductivity.html",
+      href: "09-collisions-conductivity.html",
       title: [Collisions and conductivity],
     ),
     next: (
-      href: "09-introduction-waves.html",
+      href: "11-introduction-waves.html",
       title: [Introduction to waves],
     ),
   )

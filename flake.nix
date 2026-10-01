@@ -28,11 +28,24 @@
         ps.unify_0_8_1
       ]);
       playwrightCore = pkgs.playwright-driver;
+      physicsPython = pkgs.python3.withPackages (ps: [ps.numpy]);
+      physicsCheckApp = pkgs.writeShellApplication {
+        name = "plasma-check-physics";
+        runtimeInputs = [physicsPython typst];
+        text = ''
+          python ${self}/scripts/check-physics.py "$@"
+          typst query --root ${self} ${self}/scripts/check-figures.typ '<physics-check>'
+        '';
+      };
       siteIntegrationRunner = pkgs.writeShellApplication {
         name = "plasma-site-integration-test";
         runtimeInputs = [pkgs.nodejs];
         text = ''
-          exec node /etc/plasma-site-integration-test.cjs "$@"
+          export PLAYWRIGHT_CORE_PATH="${playwrightCore}"
+          ${pkgs.lib.optionalString pkgs.stdenv.hostPlatform.isLinux ''
+            export CHROMIUM_EXECUTABLE_PATH="''${CHROMIUM_EXECUTABLE_PATH:-${pkgs.chromium}/bin/chromium}"
+          ''}
+          exec node ${self}/scripts/site-integration-test.cjs "$@"
         '';
       };
       buildSiteApp = pkgs.writeShellApplication {
@@ -43,6 +56,11 @@
           export PLASMA_NEW_COMPUTER_MODERN_FONT="${newComputerModernFont}"
           site_dir="''${SITE_DIR:-$PWD/public}"
           export SITE_DIR="$site_dir"
+          # Build the working tree when invoked from the project root, including
+          # new chapter files that have not been added to Git yet.
+          if [[ -f "$PWD/flake.nix" && -f "$PWD/src/main.typ" && -f "$PWD/scripts/build-site.sh" ]]; then
+            exec bash "$PWD/scripts/build-site.sh" "$@"
+          fi
           exec bash "${self}/scripts/build-site.sh" "$@"
         '';
       };
@@ -64,14 +82,41 @@
       mkHostApp = {
         name,
         bind,
+        offerBuild ? false,
       }: let
         hostScript = pkgs.writeShellApplication {
           inherit name;
-          runtimeInputs = [pkgs.python3];
+          runtimeInputs = [pkgs.python3] ++ pkgs.lib.optional offerBuild pkgs.findutils;
           text = ''
             site_dir="''${SITE_DIR:-public}"
+            ${pkgs.lib.optionalString offerBuild ''
+              build_requested=false
+              host_args=()
+              for arg in "$@"; do
+                if [[ "$arg" == "--build" ]]; then
+                  build_requested=true
+                else
+                  host_args+=("$arg")
+                fi
+              done
+              set -- "''${host_args[@]}"
+              if [[ "$build_requested" == true ]]; then
+                echo "Building website before serving..."
+                SITE_DIR="$site_dir" ${buildSiteApp}/bin/plasma-build-site
+              elif [[ -f "$site_dir/index.html" && -d "$PWD/src" && -d "$PWD/animations" && -f "$PWD/scripts/build-site.sh" ]]; then
+                newer_source="$(find "$PWD/src" "$PWD/animations" "$PWD/scripts/build-site.sh" "$PWD/flake.nix" "$PWD/flake.lock" \
+                  -type f ! -path '*/__pycache__/*' -newer "$site_dir/index.html" -print -quit)"
+                if [[ -n "$newer_source" ]]; then
+                  echo "Warning: the site may be stale; source files are newer than index.html." >&2
+                  echo "To rebuild explicitly, run: nix run .#public-host -- --build (plus your port/options)." >&2
+                fi
+              fi
+            ''}
             if [[ ! -d "$site_dir" ]]; then
               echo "Site directory '$site_dir' does not exist; build the site first." >&2
+              ${pkgs.lib.optionalString offerBuild ''
+              echo "Run: nix run .#public-host -- --build" >&2
+            ''}
               exit 1
             fi
 
@@ -87,7 +132,10 @@
         };
       in {
         type = "app";
-        meta.description = "Serve the generated site on ${bind}";
+        meta.description =
+          if offerBuild
+          then "Serve the site on ${bind}; use --build to rebuild first"
+          else "Serve the generated site on ${bind}";
         program = "${hostScript}/bin/${name}";
       };
       nixosIntegrationTest = pkgs.testers.nixosTest {
@@ -132,6 +180,16 @@
       formatter = pkgs.alejandra;
 
       apps = {
+        check-site = {
+          type = "app";
+          meta.description = "Audit a served site at mobile, tablet and wide viewports";
+          program = "${siteIntegrationRunner}/bin/plasma-site-integration-test";
+        };
+        check-physics = {
+          type = "app";
+          meta.description = "Check animation models against independent physics oracles";
+          program = "${physicsCheckApp}/bin/plasma-check-physics";
+        };
         build-site = {
           type = "app";
           meta.description = "Build the public Typst website and media";
@@ -158,6 +216,7 @@
         public-host = mkHostApp {
           name = "public-host";
           bind = "0.0.0.0";
+          offerBuild = true;
         };
       };
 
@@ -191,6 +250,14 @@
 
       checks =
         {
+          physics =
+            pkgs.runCommand "plasma-physics-check" {
+              nativeBuildInputs = [physicsPython typst];
+            } ''
+              python ${self}/scripts/check-physics.py
+              typst query --root ${self} ${self}/scripts/check-figures.typ '<physics-check>'
+              touch "$out"
+            '';
           site = self.packages.${system}.default;
 
           spec =

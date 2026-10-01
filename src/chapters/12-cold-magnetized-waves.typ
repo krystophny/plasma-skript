@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[10. Waves in cold magnetized plasmas] <cold-magnetized-waves>
+  #page-title[12. Waves in cold magnetized plasmas] <cold-magnetized-waves>
 
   #lead[
     A static magnetic field turns the isotropic plasma response into a tensor.
@@ -17,10 +17,11 @@
 
   #callout(
     [The magnetic field selects a basis],
-    [A cold magnetized plasma does not merely shift one scalar dielectric
-    constant. It couples the two transverse field components, leaves the
-    parallel response distinct, and therefore creates different wave branches
-    for different polarization and propagation direction.]
+    [The magnetic field couples electric-field components perpendicular to
+    $bold(B)_0$ and leaves the parallel response distinct. The wave vector
+    $bold(k)$ supplies a second direction: a component perpendicular to
+    $bold(B)_0$ need not be transverse to the wave. Keep these two geometries
+    separate when identifying polarization.]
   )
 
   #section-title[Cold magnetized response and the dielectric tensor] <magnetized-dielectric>
@@ -88,6 +89,14 @@
     The off-diagonal coefficient changes sign with the charge convention.]
   )
 
+  Each tensor column gives the response to one electric-field component.
+  The coefficients $epsilon_(perp)$ and $epsilon_(parallel)$ describe
+  response perpendicular and parallel to the background magnetic field;
+  $epsilon_(times)$ couples the two perpendicular directions. The symbol
+  $times$ in its subscript is a label, not an instruction to take another
+  cross product. The identity part is the vacuum response, and the remaining
+  terms describe the induced plasma current.
+
   #governing-law(
     [Magnetized Maxwell wave equation],
     [For a plane wave, Maxwell's equations reduce to
@@ -105,36 +114,36 @@
     [#derivation-step[Resolve the cold momentum equation]
     The linearized cold momentum equation is
 
-    $ -i omega m_s bold(u)_(s,1)=q_s(
+    $ -i omega m_s bold(u)_(s,1)=q_s (
       bold(E)_1+(bold(u)_(s,1) times bold(B)_0)/c) .$
 
     With $bold(B)_0=B_0 bold(e)_z$, the transverse components form a coupled
     two-by-two system:
 
-    $ -i omega bold(u)_(s,1,x)-Omega_s bold(u)_(s,1,y)
-      =(q_s/m_s) bold(E)_(1,x) $
+    $ -i omega u_(s,1,x)-Omega_s u_(s,1,y)
+      =(q_s/m_s) E_(1,x) $
 
     and
 
-    $ Omega_s bold(u)_(s,1,x)-i omega bold(u)_(s,1,y)
-      =(q_s/m_s) bold(E)_(1,y) .$
+    $ Omega_s u_(s,1,x)-i omega u_(s,1,y)
+      =(q_s/m_s) E_(1,y) .$
 
     The parallel component is independent:
 
-    $ -i omega bold(u)_(s,1,z)=(q_s/m_s) bold(E)_(1,z) .$
+    $ -i omega u_(s,1,z)=(q_s/m_s) E_(1,z) .$
 
     #derivation-step[Invert the transverse response]
     Inverting the transverse system gives
 
-    $ bold(u)_(s,1,x)=((i q_s omega)/(m_s (omega^2-Omega_s^2)))
-      bold(E)_(1,x)
-      -((q_s Omega_s)/(m_s (omega^2-Omega_s^2))) bold(E)_(1,y) ,$
+    $ u_(s,1,x)=((i q_s omega)/(m_s (omega^2-Omega_s^2)))
+      E_(1,x)
+      -((q_s Omega_s)/(m_s (omega^2-Omega_s^2))) E_(1,y) ,$
 
     and
 
-    $ bold(u)_(s,1,y)=((q_s Omega_s)/(m_s (omega^2-Omega_s^2)))
-      bold(E)_(1,x)
-      +((i q_s omega)/(m_s (omega^2-Omega_s^2))) bold(E)_(1,y) .$
+    $ u_(s,1,y)=((q_s Omega_s)/(m_s (omega^2-Omega_s^2)))
+      E_(1,x)
+      +((i q_s omega)/(m_s (omega^2-Omega_s^2))) E_(1,y) .$
 
     Multiply by $q_s n_(s,0)$ and sum over species to obtain $bold(j)_1$.
     The transverse entries are coupled because the Lorentz force rotates the
@@ -275,7 +284,7 @@
     [Circular eigenmodes],
     [For an electron plasma with fixed ions, define the circular eigenmode
     label $s=+1$ or $s=-1$ by
-    $bold(E)_(1,y)=-i s bold(E)_(1,x)$.
+    $E_(1,y)=-i s E_(1,x)$.
     The corresponding refractive indices are
     $N_(s)^2=epsilon_(s)=epsilon_(perp)-s epsilon_(times)
       =1-omega_(p,e)^2/(omega(omega+s omega_(c,e)))$.
@@ -283,6 +292,12 @@
     the $s=-1$ branch has a cyclotron-sensitive denominator at
     $omega=omega_(c,e)$.]
   )
+
+  In these circular-mode formulas, $s$ labels polarization rather than
+  particle species. The factor $-i s$ specifies equal amplitudes with a
+  quarter-cycle phase difference between the two electric components.
+  This algebraic convention fixes the rotation sense without relying on
+  an unstated viewing direction.
 
   #governing-law(
     [Parallel dispersion and cutoffs],
@@ -322,7 +337,7 @@
     along positive $z$. Use its positive magnitude $omega_(c,e)$ and the
     circular basis
 
-    $ bold(E)_(1,y)=-i s bold(E)_(1,x) .$
+    $ E_(1,y)=-i s E_(1,x) .$
 
     The two indices become
 
@@ -351,11 +366,19 @@
     If the plasma varies slowly along the ray, use the local wave-number
     difference instead:
 
-    $ theta_F=(integral (k_+(z)-k_-(z)) d z)/2 .$
+    $ theta_F=(integral (k_+(z)-k_-(z)) dif z)/2 .$
     ]
   )
 
   #magnetized-parallel-dispersion
+
+  Faraday rotation compares two circular modes at the same frequency.
+  When both propagate without attenuation and have equal amplitudes, their
+  superposition remains linearly polarized. Different wave numbers rotate
+  its polarization axis with distance; at a fixed position that axis remains
+  fixed as the electric vector oscillates. If one component is evanescent or
+  attenuated differently, the equal-amplitude linear-polarization picture
+  no longer applies.
 
   #callout(
     [Pause and predict],
@@ -369,12 +392,17 @@
 
   #animation(
     "../media/magnetized-polarization.mp4",
-    "Two circular eigenmode phasors rotate at different normalized phase rates. Their equal-amplitude superposition is represented by transverse polarization arrows at successive positions along the propagation direction, and the arrows rotate progressively with distance. The animation is a deterministic illustration of Faraday rotation, not a measurement or a ray-tracing calculation.",
+    "Two equal-amplitude circular fields rotate with opposite senses at one temporal frequency. Their vector sum oscillates along a fixed linear axis at each position; those axes rotate with propagation distance. Dashed axes and distinct tip shapes identify polarization and components without relying on color. The fields and coordinates are normalized.",
     caption: [
       Faraday rotation: a linearly polarized wave can be decomposed into two
       circular eigenmodes. Because the magnetic field gives them different
       wave numbers, their relative phase changes along the path and the
-      polarization plane rotates.
+      polarization plane rotates. The prescribed illustration uses
+      $k_+ L_0=1.2$, $k_- L_0=0.8$, and $omega t_0=1$, with each component
+      of amplitude $E_0/2$. Here $L_0$, $t_0$, and $E_0$ are reference
+      length, time, and electric-field scales in Gaussian CGS. At fixed
+      position the polarization axis is stationary in time; these prescribed
+      wave numbers illustrate superposition rather than a fitted plasma.
     ],
     poster: "../media/magnetized-polarization.png",
   )
@@ -391,7 +419,7 @@
 
     Numerical result: #normalized-label[$N_+=qty("0.963", "1")$],
     #normalized-label[$N_-=qty("0.955", "1")$], and
-    $theta_F=qty("2.47e-2", "rad")=qty("1.42", "deg")$.
+    $theta_F=qty("2.45e-2", "rad")=qty("1.41", "deg")$.
   ]
 
   #interpretation(
@@ -435,8 +463,9 @@
     Turning the wave vector perpendicular to the magnetic field changes which
     field component is decoupled. The ordinary mode has its electric field
     parallel to the background field and therefore sees the unmagnetized
-    plasma response. The extraordinary mode lives in the coupled transverse
-    plane and contains a characteristic upper-hybrid resonance.
+    plasma response. The extraordinary mode has electric components in the
+    plane perpendicular to the background field, including a component along
+    the wave vector, and contains an upper-hybrid resonance.
   ]
 
   #objectives((
@@ -594,7 +623,7 @@
     ),
     (
       question: [What distinguishes the extraordinary mode from the ordinary mode?],
-      answer: [The extraordinary mode has electric-field components in the coupled transverse plane. Its index contains both circular factors and its polarization is generally elliptical.]
+      answer: [Its electric field lies in the plane perpendicular to $bold(B)_0$, with components both along and across $bold(k)$. Its index contains both circular factors and its polarization is generally elliptical.]
     ),
     (
       question: [What is the upper-hybrid frequency in the cold fixed-ion model?],
@@ -659,6 +688,18 @@
     The upper sign defines $N_+$ and the lower sign defines $N_-$; their
     polarization and longitudinal content vary continuously with $theta$.]
   )
+
+  Here $S$, $D$, and $P$ are dimensionless dielectric abbreviations; $D$
+  is not a diffusion coefficient and $P$ is not pressure. The parameters
+  $X_(omega)$ and $Y_(omega)$ use the wave frequency as their reference,
+  whereas the earlier $W$ and $Y$ use the plasma frequency. Their relations
+  are $X_(omega)=1/W^2$ and $Y_(omega)=Y/W$.
+
+  The two roots give possible wave numbers at a specified frequency and
+  angle. For each root, the matrix also determines the relative electric-field
+  components. Following those components is necessary to identify a physical
+  branch; the plus or minus sign in a scalar root alone is not a universal
+  polarization name.
 
   #details(
     [Derivation: oblique matrix and limiting geometry],
@@ -769,7 +810,7 @@
   #knowledge-check((
     (
       question: [Why can the oblique wave matrix not be reduced to the parallel transverse block?],
-      answer: [Both $k_"parallel"$ and $k_"perp"$ are nonzero. The geometric part of Maxwell's equation then couples $E_x$ and $E_z$ in addition to the dielectric coupling of $E_x$ and $E_y$.]
+      answer: [Both $k_(parallel)$ and $k_(perp)$ are nonzero. The geometric part of Maxwell's equation then couples $E_x$ and $E_z$ in addition to the dielectric coupling of $E_x$ and $E_y$.]
     ),
     (
       question: [How many electromagnetic refractive-index roots does the cold oblique determinant provide?],
@@ -804,7 +845,8 @@
 
   #unit-ledger[
     The normalized frequency $W=omega/omega_(p,e)$ and magnetization
-    $Y=omega_(c,e)/omega_(p,e)$ are dimensionless. The refractive index $N$
+    $Y=omega_(c,e)/omega_(p,e)$ are dimensionless. Define the normalized wave
+    number $K=(k c)/omega_(p,e)=W N$. The refractive index $N$
     and angle $theta$ are dimensionless; dimensional $k$ is in
     #unit("cm^-1"), $omega$ in #unit("s^-1"), and wavelengths in
     #unit("cm").
@@ -823,7 +865,9 @@
     [Cutoff, resonance, and propagation test],
     [A cutoff is a point where $N^2=0$, so $k=0$. A resonance is a singular
     response where the cold dispersion relation drives $N^2$ to infinity or
-    a dielectric denominator to zero. For a real frequency, $N^2>0$ gives a
+    a dielectric denominator to zero. A pole in an individual dielectric
+    entry need not survive in every mode: check the complete dispersion
+    relation for cancellations. For a real frequency, $N^2>0$ gives a
     real propagating wave number, whereas $N^2<0$ gives an imaginary wave
     number and spatial evanescence. The sign test is necessary but not
     sufficient: one must also check polarization and the approximation's
@@ -837,9 +881,10 @@
     The perpendicular extraordinary resonance is
     $W_"UH"=sqrt(1+Y^2)$, while the ordinary cutoff is $W=1$.
     When $Y -> 0$, both circular modes merge into the unmagnetized transverse
-    branch $W^2=1+N^2$ from the previous chapter. When $W$ is much larger
-    than unity, all cold branches approach the vacuum relation $W=N$ where
-    they propagate.]
+    branch $W^2=1+K^2$ from the previous chapter, where $K=W N$.
+    At frequencies much larger than both plasma and cyclotron frequencies,
+    the propagating electromagnetic branches approach $N -> 1$, or
+    equivalently $W approx K$.]
   )
 
   #details(
@@ -849,9 +894,10 @@
 
     $ N^2=1-1/W^2 ,$
 
-    which is the cold unmagnetized electromagnetic branch
+    so multiplying by $W^2$ and using $K=W N$ gives the cold
+    unmagnetized electromagnetic branch
 
-    $ W^2=1+N^2 .$
+    $ W^2=1+K^2 .$
 
     The longitudinal branch remains $W=1$ in the cold fixed-ion limit, so its
     zero group velocity is recovered as well.
@@ -875,8 +921,10 @@
     stopband intervals. Determine the correct interval by evaluating the sign
     of $N_X^2$ between adjacent landmarks, not by guessing from mode names.
     If density or magnetic field varies along a path, a local cutoff can
-    reflect or mode-convert a wave. A WKB treatment additionally requires the
-    background scale length to be long compared with the local wavelength.
+    reflect or mode-convert a wave. Approximating the wave locally by a plane
+    wave additionally requires the background scale length to be long compared
+    with the local wavelength; this condition fails near a cutoff where the
+    wavelength grows without bound.
 
     #derivation-step[Return to the physical ordering]
     If $k lambda_D$ is not small, pressure and kinetic dispersion matter. If
@@ -946,7 +994,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "09-introduction-waves.html", title: [Introduction to waves]),
-    next: (href: "11-finite-temperature-waves.html", title: [Finite-temperature waves]),
+    previous: (href: "11-introduction-waves.html", title: [Introduction to waves]),
+    next: (href: "13-finite-temperature-waves.html", title: [Finite-temperature waves]),
   )
 ]

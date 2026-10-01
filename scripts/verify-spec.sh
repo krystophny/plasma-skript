@@ -31,18 +31,20 @@ done
 # section is still missing one of its required teaching anchors.
 chapter_sources=(
   01-introduction
-  02-single-particle-motion
-  03-kinetic-theory
-  04-moments
-  05-multiple-fluids
-  06-mhd
-  07-collisions-conductivity
-  08-diffusion
-  09-introduction-waves
-  10-cold-magnetized-waves
-  11-finite-temperature-waves
-  12-hot-plasma-waves
-  13-sheaths-probes
+  02-debye-shielding
+  03-plasma-oscillations
+  04-single-particle-motion
+  05-kinetic-theory
+  06-moments
+  07-multiple-fluids
+  08-mhd
+  09-collisions-conductivity
+  10-diffusion
+  11-introduction-waves
+  12-cold-magnetized-waves
+  13-finite-temperature-waves
+  14-hot-plasma-waves
+  15-sheaths-probes
 )
 
 count_matches() {
@@ -186,18 +188,20 @@ else
   require_file "$site_dir/styles.css"
   for chapter in \
     01-introduction \
-    02-single-particle-motion \
-    03-kinetic-theory \
-    04-moments \
-    05-multiple-fluids \
-    06-mhd \
-    07-collisions-conductivity \
-    08-diffusion \
-    09-introduction-waves \
-    10-cold-magnetized-waves \
-    11-finite-temperature-waves \
-    12-hot-plasma-waves \
-    13-sheaths-probes; do
+    02-debye-shielding \
+    03-plasma-oscillations \
+    04-single-particle-motion \
+    05-kinetic-theory \
+    06-moments \
+    07-multiple-fluids \
+    08-mhd \
+    09-collisions-conductivity \
+    10-diffusion \
+    11-introduction-waves \
+    12-cold-magnetized-waves \
+    13-finite-temperature-waves \
+    14-hot-plasma-waves \
+    15-sheaths-probes; do
     require_file "$site_dir/chapters/$chapter.html"
   done
   require_file "$site_dir/appendices/mathematical-toolkit.html"
@@ -207,6 +211,8 @@ else
   require_file "$site_dir/media/plasma-oscillation.png"
   require_file "$site_dir/media/debye-shielding.mp4"
   require_file "$site_dir/media/debye-shielding.png"
+  require_file "$site_dir/media/debye-potential-reduction.mp4"
+  require_file "$site_dir/media/debye-potential-reduction.png"
   require_file "$site_dir/media/phase-space-advection.mp4"
   require_file "$site_dir/media/phase-space-advection.png"
   require_file "$site_dir/media/moment-hierarchy.mp4"

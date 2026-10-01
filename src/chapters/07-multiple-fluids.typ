@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[5. Multiple-fluid theory of plasmas] <multiple-fluids>
+  #page-title[7. Multiple-fluid theory of plasmas] <multiple-fluids>
 
   #lead[
     A plasma can contain several interpenetrating fluids at the same position.
@@ -18,8 +18,9 @@
     [A multiple-fluid model is obtained by taking moments of one kinetic
     equation for each species. The electric and magnetic fields couple the
     species, while pressure and collision terms can remain species-specific.
-    A one-fluid model is a later sum of these equations; it is not a synonym
-    for quasi-neutrality.]
+    Summing the species equations gives total-fluid balances, but further
+    assumptions are needed to close a one-fluid model. Quasi-neutrality alone
+    does not supply those assumptions.]
   )
 
   #section-title[Species-resolved plasma variables] <multiple-definitions>
@@ -115,7 +116,7 @@
 
   #interpretation(
     [Quasi-neutrality is not one-fluid motion],
-    [Debye-scale charge separation can be small while the electron and ion
+    [The net charge density on bulk scales can be small while electron and ion
     flows differ substantially. Quasi-neutrality removes a large charge-density
     imbalance from the bulk ordering; it does not remove species momentum,
     pressure, or current.]
@@ -221,7 +222,9 @@
     $grad(p_(s))$ only for an isotropic pressure tensor.
   ]
 
-  Define the total species energy density and heat-flux vector by
+  As in Chapter 6, $bold(w)_(s)=bold(v)-bold(u)_(s)$ is the random velocity
+  relative to the species flow. Define the total species kinetic-energy
+  density and heat-flux vector by
 
   $ W_(s) = (rho_(s) bold(u)_(s)^2)/2 + epsilon_(s), quad
     epsilon_(s) = (m_(s) integral bold(w)_(s)^2 f_(s) dif^3 bold(v))/2 $
@@ -229,6 +232,10 @@
 
   $ bold(q)_(h,s) = (m_(s) integral bold(w)_(s)^2 bold(w)_(s)
     f_(s) dif^3 bold(v))/2 $ <multiple-heat-flux>
+
+  The subscript $h$ labels heat flux, distinguishing this vector from particle
+  charge $q_(s)$. The energy $W_(s)$ contains bulk and random kinetic energy;
+  electromagnetic field energy is separate.
 
   The corresponding energy balance is
 
@@ -421,11 +428,12 @@
   Let $bold(b)=bold(B)/B$ and project the species momentum balance
   perpendicular to the field:
 
-  $ 0 approx q_(s)n_(s) (bold(E) + (bold(u)_(s,perp) times bold(B))/c)
-    - grad(p_(s)) $ <multiple-perpendicular-balance>
+  $ 0 approx q_(s)n_(s) (bold(E)_perp + (bold(u)_(s,perp) times bold(B))/c)
+    - grad_perp p_(s) $ <multiple-perpendicular-balance>
 
-  Here the pressure gradient in this equation is understood to be its
-  perpendicular projection. Solving for the perpendicular velocity gives
+  Here $bold(E)_perp=bold(E)-bold(b)(bold(b)dot bold(E))$ and
+  $grad_perp=grad-bold(b)(bold(b)dot grad)$ are perpendicular projections.
+  Solving for the perpendicular velocity gives
 
   $ bold(u)_(s,perp) = bold(u)_(E times B) + bold(u)_(*,s) $
     <multiple-drift-decomposition>
@@ -438,7 +446,8 @@
   #equation-note[
     Both velocities are in #unit("cm/s"). The electric drift is independent
     of species, while the diamagnetic drift changes sign with $q_(s)$ and
-    depends on the species pressure gradient. If the pressure is uniform,
+    depends on the species pressure gradient. The star labels the diamagnetic
+    contribution; it is not a complex conjugate. If the pressure is uniform,
     $bold(u)_(*,s)=bold(0)$.
   ]
 
@@ -447,8 +456,8 @@
     [#derivation-step[Write the perpendicular force balance]
     Start with
 
-    $ q_(s)n_(s)(bold(E)+(bold(u)_(s,perp)times bold(B))/c)
-        =grad(p_(s)) .$
+    $ q_(s)n_(s)(bold(E)_perp+(bold(u)_(s,perp)times bold(B))/c)
+        =grad_perp p_(s) .$
 
     #derivation-step[Eliminate the magnetic cross product]
     Cross the equation with $bold(B)$ from the right. The identity
@@ -470,10 +479,16 @@
 
     The first term is the common electric drift because $q_(s)$ cancels from
     the electric force balance. The second is the charge-dependent
-    diamagnetic drift. The neglected perpendicular inertia is small when
-    $L_perp$ is much larger than the species gyroradius:
+    diamagnetic drift. The spatial ordering requires the pressure-gradient
+    scale $L_perp$ to be much larger than the species gyroradius $r_(L,s)$,
+    both measured in centimetres:
 
-    $ rho_(s)/L_perp << 1 . $]
+    $ r_(L,s)/L_perp << 1 . $
+
+    This dimensionless inequality supports a local orbit average. Neglecting
+    inertia also requires slow evolution and small convective acceleration
+    relative to the retained forces, as assumed above. Here $r_(L,s)$ denotes
+    orbit size; $rho_(s)$ continues to denote mass density.]
   )
 
   #rechenbeispiel[
@@ -499,11 +514,12 @@
 
   #interpretation(
     [Common and species-dependent drifts],
-    [$bold(u)_(E times B)$ advects both species together, so it produces no
-    current in a quasi-neutral plasma. The pressure-gradient drift points in
-    opposite directions for ions and electrons because their charges have
-    opposite signs. Those counter-streaming responses are the seed of the
-    diamagnetic current.]
+    [$bold(u)_(E times B)$ advects both species together, so its current
+    cancels to leading order under quasi-neutrality. For pressure gradients
+    pointing in the same direction, the diamagnetic velocities of ions and
+    electrons point oppositely. These are local fluid velocity moments;
+    they need not represent motion of the orbit centers. Charge-weighting
+    them gives the diamagnetic current discussed in the next section.]
   )
 
   #summary[
@@ -598,6 +614,15 @@
     leading-order charge density remains nearly zero.
   ]
 
+  For example, take uniform $bold(B)=B bold(e)_(z)$, no electric field,
+  constant temperature, and a density increasing with $x$ over many
+  gyroradii. More gyro-orbits centered on the dense side cross a given point
+  than do orbits centered on the dilute side. Their opposite local velocities
+  therefore do not cancel: positive ions have a mean velocity along
+  $+bold(e)_(y)$ and electrons along $-bold(e)_(y)$. The guiding centers have
+  no perpendicular drift in this uniform field. The local velocity moment
+  records the imbalance of orbit crossings, not migration of their centers.
+
   #details(
     [Derivation: add the charge-weighted drift responses],
     [#derivation-step[Charge-weight one species]
@@ -656,10 +681,12 @@
 
   #interpretation(
     [Current without bulk advection],
-    [A current can be present without a comparable center-of-mass flow. The
-    $E times B$ motion is common and mainly advects the plasma, while the
-    diamagnetic responses are counter-streaming species motions. This is why
-    the total current and the mass velocity must remain separate variables.]
+    [Current weights each species flow by charge; mass flux weights it by
+    mass. They therefore describe different aspects of the same distribution.
+    In the uniform-field example, unequal orbit crossings produce a local
+    diamagnetic current even though the guiding centers do not drift across
+    the field. A local flow moment alone does not establish transport across
+    the pressure profile.]
   )
 
   #summary[
@@ -736,8 +763,9 @@
 
   #assumption(
     [Parallel ordering],
-    [Let $bold(b)=bold(B)/B$ and neglect the magnetic part of the Lorentz force
-    after projection along $bold(b)$. For the scalar parallel-velocity form,
+    [Let $bold(b)=bold(B)/B$. The magnetic part of the Lorentz force has zero
+    projection along $bold(b)$ exactly. Use scalar species pressures in the
+    displayed parallel equation. For the scalar parallel-velocity form,
     take the field direction as locally fixed on the scale of interest;
     otherwise retain $bold(b) dot pdv(bold(u)_(s),t)$ and the associated
     field-line geometry rather than replacing it by a derivative of
@@ -771,6 +799,10 @@
 
   $ n_(e) = n_(e,0) exp((e (phi-phi_0))/(k_B T_(e))) $
     <multiple-boltzmann-response>
+
+  Here $n_(e,0)$ is the density at a reference point with potential $phi_0$
+  on the same field line. Parallel balance fixes the density variation along
+  that line; it does not set a common reference density for all field lines.
 
   The exact one-fluid definitions are
 
@@ -918,7 +950,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "04-moments.html", title: [Moments]),
-    next: (href: "06-mhd.html", title: [Single-fluid MHD]),
+    previous: (href: "06-moments.html", title: [Moments]),
+    next: (href: "08-mhd.html", title: [Single-fluid MHD]),
   )
 ]

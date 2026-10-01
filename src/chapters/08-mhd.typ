@@ -4,15 +4,15 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[6. Single-fluid theory and magnetohydrodynamics] <single-fluid-mhd>
+  #page-title[8. Single-fluid theory and magnetohydrodynamics] <single-fluid-mhd>
 
   #lead[
-    A single-fluid plasma model keeps the mass-weighted motion of all species
-    and treats the magnetic field as a dynamical continuum variable. It is
-    useful only after the species differences have been ordered: charge
-    separation is small, collisions or inertia control the current response,
-    and the pressure and heat flux have been closed. This chapter makes those
-    reductions explicit before using the compact name MHD.
+    Chapter 7 combined species equations into total-fluid balances. To obtain
+    magnetohydrodynamics (MHD), we also need an equation for the electric
+    field and assumptions that close pressure and heat transport. The resulting
+    model evolves the bulk flow together with the magnetic field. Its ideal
+    and resistive forms apply when charge separation and the omitted species
+    effects are small on the length and time scales of interest.
   ]
 
   #callout(
@@ -272,6 +272,12 @@
   electron-pressure or ambipolar response, collisional resistivity, and the
   leading electron-inertia response in a slowly varying bulk frame.
 
+  The left side is the electric field seen by the moving bulk fluid to
+  nonrelativistic order. The Hall term appears because electrons carry the
+  current relative to that fluid; the pressure term supplies the field needed
+  to balance electron pressure. Resistive drag opposes relative motion, while
+  electron inertia matters when the current changes rapidly.
+
   For a linear electron--ion drag law, the force on electrons is
 
   $ bold(R)_(e) = m_(e)n nu_(e i)
@@ -283,7 +289,8 @@
   $ eta = (m_(e)nu_(e i))/(n e^2),
     quad sigma = 1/eta = (n e^2)/(m_(e)nu_(e i)) $ <mhd-spitzer-resistivity>
 
-  Here $nu_(e i)$ is the electron--ion momentum-transfer frequency. The
+  Here $nu_(e i)$ is the electron--ion momentum-transfer frequency, and
+  $sigma$ is the scalar conductivity in #unit("s^-1"). The
   frequency itself depends on the collision model and plasma state; the later
   collisions chapter supplies that kinetic input. In this chapter, the key
   point is that resistivity is drag per current, not an independent force.
@@ -412,9 +419,10 @@
       question: [When is the Hall term important?],
       answer: [It matters when
       $(bold(j)times bold(B))/(e n c)$ is not small compared with the bulk
-      electric field. It is enhanced by large current, strong field, or low
-      density and is absent only after a scale ordering justifies neglecting
-      it.]
+      electric field. Relative to magnetic advection, its magnitude is set
+      by $abs(bold(j)_perp)/(e n abs(bold(u)_perp))$: the common factor $B/c$
+      cancels. Increasing $B$ alone does not increase this ratio. A scale
+      ordering must justify neglecting the Hall term.]
     ),
     (
       question: [What is the ideal-MHD electric-field condition in Gaussian CGS?],
@@ -457,9 +465,16 @@
     number large enough for ideal induction. Close the pressure with the
     explicit material-derivative form
     $pdv(p rho^(-gamma),t)+bold(u) dot grad(p rho^(-gamma))=0$.
+    The dimensionless adiabatic index $gamma$ specifies the pressure response
+    to compression; $gamma=5/3$ is the isotropic monatomic choice.
     For the linearized equations,
     take a static uniform equilibrium
-    $(rho_0,p_0,bold(B)_0)$ with no equilibrium current or pressure gradient.]
+    $(rho_0,p_0,bold(B)_0)$ with no equilibrium current or pressure gradient.
+    The displayed pressure-density closure further selects initially
+    isentropic perturbations, meaning no initial entropy perturbation:
+    $delta p-c_(s)^2 delta rho=0$. General
+    adiabatic perturbations conserve this difference in time but need not
+    set it to zero.]
   )
 
   The nonlinear ideal-MHD equations are
@@ -503,6 +518,11 @@
   $ delta p = c_(s)^2 delta rho,
     quad c_(s)^2=(gamma p_0)/rho_0 $ <mhd-linear-closure>
 
+  Here the subscript in $c_(s)$ labels sound speed, not a particle species.
+  Linearization keeps the response proportional to one perturbation and
+  discards products of perturbations. The pressure relation also uses the
+  initial entropy assumption; it does not follow from small amplitude alone.
+
   #details(
     [Derivation: linearize the ideal-MHD system],
     [#derivation-step[Linearize continuity]
@@ -545,8 +565,9 @@
 
     $ (delta p)/p_0-gamma ((delta rho)/rho_0) .$
 
-    Its material derivative reduces to a time derivative, so initially
-    adiabatic perturbations satisfy
+    Its material derivative reduces to a time derivative, so
+    $pdv(delta p-c_(s)^2 delta rho,t)=0$. Initially isentropic perturbations
+    therefore satisfy
 
     $ (delta p)/p_0=gamma ((delta rho)/rho_0), quad
       delta p=((gamma p_0)/rho_0)delta rho=c_(s)^2delta rho .$
@@ -556,10 +577,12 @@
 
   #animation(
     "../media/exb-drift.mp4",
-    "A charged particle gyros around a magnetic-field direction while its guiding center translates with the common electric drift. The axes are normalized by the reference gyroradius; the electric field points upward and the magnetic field points out of the page. The animation illustrates the shared perpendicular advection that becomes the ideal bulk constraint, not a full MHD solution.",
+    "A positive charge gyrates clockwise around a guiding center translating rightward with the common electric drift. Position axes are x/L0 and y/L0 [1], using reference length L0. The electric field points upward and the magnetic field out of the page. This illustrates perpendicular advection, not a full MHD solution.",
     caption: [
       Common $E times B$ advection as a visual bridge to ideal MHD. The
-      animation is a deterministic normalized illustration; it does not show
+      reference length $L_0$ and time $t_0$ give the gyroradius ratio $r_L/L_0=0.65$,
+      $Omega t_0=2$, and $v_D t_0/L_0=0.55$, all with unit [1], as in
+      Chapter 4. The animation is a deterministic illustration; it does not show
       the linearized MHD perturbation equations or measured data.
     ],
     poster: "../media/exb-drift.png",
@@ -690,11 +713,18 @@
 
   $ R_(m) = (U L)/D_(B) = tau_(D)/tau_(A) $ <mhd-magnetic-reynolds>
 
-  For $R_(m) >> 1$, advection dominates and the approximate diffusion time is
-  long. For a characteristic structure of size $L$, the finite-resistivity
+  For $R_(m) >> 1$, the flow crosses the scale $L$ much sooner than
+  resistivity smooths magnetic structure on that scale. This compares two
+  times; it does not say that diffusion is slow on every observation time.
+  For a characteristic structure of size $L$, the finite-resistivity
   diffusion estimate is
 
   $ tau_(D) approx L^2/D_(B) = (4 pi L^2)/(c^2 eta) $ <mhd-diffusion-time>
+
+  In the ideal limit, follow a loop of fluid elements and a surface spanning
+  that loop. The magnetic flux through the moving surface stays constant
+  even as the surface stretches or bends. The local field strength can still
+  change: frozen flux does not mean a static or spatially uniform field.
 
   #details(
     [Derivation: induction equation and frozen magnetic flux],
@@ -758,7 +788,7 @@
     Their ratio is
 
     $ (U L)/D_(B)=R_(m)
-        =(L/U)/(L^2/D_(B))=tau_(D)/tau_(A) .$
+        =(L^2/D_(B))/(L/U)=tau_(D)/tau_(A) .$
 
     This magnetic Reynolds number compares advection with resistive
     diffusion.]
@@ -867,7 +897,7 @@
 
   #assumption(
     [Static isotropic equilibrium],
-    [Set $pdv(rho,t)=bold(0)$ and $bold(u)=bold(0)$, neglect gravity and the
+    [Set $pdv(rho,t)=0$ and $bold(u)=bold(0)$, neglect gravity and the
     bulk electric force under quasi-neutrality, use scalar pressure, and use
     reduced Ampere's law. The magnetic field remains divergence-free. These
     assumptions describe magnetohydrostatics, not a general time-dependent
@@ -919,9 +949,10 @@
 
   $ beta = (8 pi p)/(B^2) $ <mhd-beta>
 
-  Low $beta$ means magnetic pressure dominates thermal pressure; high $beta$
-  means pressure gradients can strongly reshape the field or require stronger
-  currents for equilibrium.
+  Low $beta$ means magnetic pressure exceeds thermal pressure; high $beta$
+  means the reverse. This local ratio compares pressures, not their gradients.
+  The forces also depend on spatial variation and field-line curvature, so
+  $beta$ alone does not determine an equilibrium or its stability.
 
   #definition(
     [Two canonical pinch geometries],
@@ -1121,14 +1152,14 @@
     (
       question: [What does a large plasma beta indicate?],
       answer: [A large $beta=(8 pi p)/(B^2)$ means thermal pressure exceeds magnetic
-      pressure in the chosen local scales. Magnetic stresses may still balance
-      it, but a stronger field curvature or current response is generally
-      required.]
+      pressure locally. Whether magnetic stresses can balance its gradient
+      also depends on the pressure profile, field geometry, and boundary
+      conditions; the ratio alone does not decide force balance.]
     ),
   ))
 
   #chapter-nav(
-    previous: (href: "05-multiple-fluids.html", title: [Multiple fluids]),
-    next: (href: "07-collisions-conductivity.html", title: [Collisions and conductivity]),
+    previous: (href: "07-multiple-fluids.html", title: [Multiple fluids]),
+    next: (href: "09-collisions-conductivity.html", title: [Collisions and conductivity]),
   )
 ]

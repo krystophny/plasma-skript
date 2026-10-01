@@ -3,7 +3,7 @@
 #import "@preview/physica:0.9.8": grad, pdv, dv
 
 #let chapter = [
-  #page-title[2. Single-particle motion] <single-particle-motion>
+  #page-title[4. Single-particle motion] <single-particle-motion>
 
   #lead[
     The single-particle model prescribes electromagnetic fields and follows
@@ -39,8 +39,9 @@
   $ m dv(bold(v),t) = q (bold(E) + (bold(v) times bold(B)) / c) $ <motion-lorentz-force>
 
   #equation-note[
-    Gaussian CGS. Both terms inside the parentheses are accelerative field
-    contributions after multiplication by $q$. The force is in dynes.
+    Gaussian CGS. Multiplying each field term by $q$ gives its contribution
+    to the force, in dynes. Dividing the total force by $m$ gives the
+    particle acceleration.
   ]
 
   The instantaneous power supplied by the fields is
@@ -60,33 +61,44 @@
   #equation-note[
     Gaussian CGS. $Omega$ is a signed angular frequency in $upright("s")^(-1)$. The
     parallel velocity is constant, so the full orbit is a helix unless
-    $v_"parallel" = 0$.
+    $v_parallel = 0$.
   ]
 
   #details(
     [Derivation: circular motion and the gyroradius],
     [#derivation-step[Balance magnetic bending and inertia]
-    The magnetic force is perpendicular to $bold(v)_"perp"$, so it supplies
-    centripetal acceleration without changing $v_"perp"$. Equating magnitudes,
+    The magnetic force is perpendicular to $bold(v)_perp$, so it supplies
+    centripetal acceleration without changing $v_perp$. Equating magnitudes,
 
-    $ (m v_"perp"^2)/rho=(abs(q) v_"perp" B)/c ,$
+    $ (m v_perp^2)/rho=(abs(q) v_perp B)/c ,$
 
     gives
 
-    $ rho=(m c v_"perp")/(abs(q) B)=v_"perp"/omega_c, quad
+    $ rho=(m c v_perp)/(abs(q) B)=v_perp/omega_c, quad
       omega_c=(abs(q) B)/(m c) .$
 
     #derivation-step[Integrate the component motion]
     Solving the perpendicular component equations gives, for the chosen
     coordinate orientation,
 
-    $ v_x=v_"perp" cos(Omega t+delta), quad
-      v_y=-v_"perp" sin(Omega t+delta) .$
+    $ v_x=v_perp cos(Omega t+delta), quad
+      v_y=-v_perp sin(Omega t+delta) .$
 
     Integrating once gives a circle in the perpendicular plane plus a constant
     guiding-center position. Reversing $q$ reverses the sign of $Omega$ and
     therefore reverses the sense of rotation, while the radius is unchanged.]
   )
+
+  The guiding center is the center of the circular orbit in the perpendicular
+  plane. Its radius is $rho=v_perp/omega_c$, where $omega_c=abs(Omega)$ is
+  the positive gyrofrequency. Thus a faster perpendicular particle has a
+  larger orbit, while a stronger field bends the same particle more tightly.
+
+  For species $s$, write the signed frequency as $Omega_s=(q_s B)/(m_s c)$
+  and its positive magnitude as $omega_(c,s)=abs(Omega_s)$. Both are angular
+  frequencies in #unit("s^-1"). A thermal orbit estimate uses
+  $v_(perp,s)=v_("th,s")=sqrt((2 k_B T_s)/m_s)$ in #unit("cm/s"),
+  giving $rho_s=v_("th,s")/omega_(c,s)$ in #unit("cm").
 
   #gyroradius-geometry
 
@@ -99,10 +111,62 @@
     self-consistently.]
   )
 
+  #strong[Comparing orbit and collective scales] <motion-scale-estimates>
+
+  The following estimates compare orbit sizes with the
+  #chapter-link("intro-debye-shielding")[Debye length]
+  and #chapter-link("oscillation-scales")[plasma frequency].
+  Each measures a different response; a small screening length alone does
+  not justify averaging over a particle orbit.
+
+  #rechenbeispiel[
+    Context: use a hydrogen plasma with $n_e = qty("1e14", "cm^-3")$,
+    $T_e = qty("1e6", "K")$, $T_i = qty("1e6", "K")$, and
+    $B = qty("1e4", "G")$. Assume singly charged ions, $n_i = n_e$, and use
+    $m_e = qty("9.109e-28", "g")$,
+    $m_i = qty("1.673e-24", "g")$, $e = 4.803 dot 10^(-10)$ statcoulomb,
+    $k_B = qty("1.381e-16", "erg/K")$, and
+    $c = qty("2.998e10", "cm/s")$. Take the perpendicular speed to be the
+    thermal speed, $v_(perp,s) = v_("th,s") = sqrt((2 k_B T_s)/m_s)$, for each
+    species.
+
+    Target: report $lambda_D$, $omega_(p,e)$, $rho_e$, and $rho_i$.
+
+    Numerical result: $lambda_D = qty("6.9e-4", "cm")$,
+    $omega_(p,e) = qty("5.6e11", "s^-1")$,
+    $rho_e = qty("3.1e-3", "cm")$, and $rho_i = qty("1.3e-1", "cm")$.
+    These values are dimensional Gaussian-CGS results.
+  ]
+
+  #rechenbeispiel[
+    Context: use a representative thermonuclear hydrogen plasma with
+    $n_e = qty("1e14", "cm^-3")$, $T_e = qty("1e8", "K")$,
+    $T_i = qty("1e8", "K")$, and $B = qty("5e4", "G")$. Assume
+    singly charged ions, $n_i = n_e$. Use
+    $m_e = qty("9.109e-28", "g")$,
+    $m_i = qty("1.673e-24", "g")$, $e = 4.803 dot 10^(-10)$ statcoulomb,
+    $k_B = qty("1.381e-16", "erg/K")$, and
+    $c = qty("2.998e10", "cm/s")$. Take the perpendicular speed to be the
+    thermal speed, $v_(perp,s) = v_("th,s") = sqrt((2 k_B T_s)/m_s)$, for each
+    species.
+
+    Target: report $lambda_D$, $omega_(p,e)$, $omega_(c,e)$,
+    $omega_(c,i)$, $rho_e$, and $rho_i$.
+
+    Numerical result: $k_B T_e approx qty("8.62", "keV")$,
+    $lambda_D = qty("6.9e-3", "cm")$,
+    $omega_(p,e) = qty("5.6e11", "s^-1")$,
+    $omega_(c,e) = qty("8.8e11", "s^-1")$,
+    $omega_(c,i) = qty("4.8e8", "s^-1")$,
+    $rho_e = qty("6.3e-3", "cm")$, and
+    $rho_i = qty("2.7e-1", "cm")$. These are rough dimensional
+    Gaussian-CGS values for a hot confined plasma.
+  ]
+
   #summary[
     The Lorentz force separates energy transfer by $bold(E)$ from magnetic
     bending. In a uniform $bold(B)$ field the perpendicular motion is circular
-    with radius $rho = v_"perp"/omega_c$, while the parallel motion is uniform.
+    with radius $rho = v_perp/omega_c$, while the parallel motion is uniform.
   ]
 
   #exam-prompts(
@@ -113,21 +177,26 @@
     [Plasma Physics Exam.pdf, p. 2],
   )
 
+  #exam-prompts(
+    ([(j) Give rough values of particle density, temperature, plasma frequency, gyrofrequency (electrons, ions) and Debye length and gyroradius (thermal electrons, ion) in a thermonuclear plasma.],),
+    [Plasma Physics Exam.pdf, p. 1],
+  )
+
   #knowledge-check((
     (
       question: [Which part of the Lorentz force changes a particle's kinetic energy?],
       answer: [Only $q bold(E)$ can do work. The magnetic force is perpendicular to the instantaneous velocity and has zero power.],
     ),
     (
-      question: [How does the gyroradius scale with particle mass at fixed $v_"perp"$ and $B$?],
-      answer: [It is proportional to $m$, because $rho = (m c v_"perp")/(abs(q)B)$ in Gaussian CGS.],
+      question: [How does the gyroradius scale with particle mass at fixed $v_perp$ and $B$?],
+      answer: [It is proportional to $m$, because $rho = (m c v_perp)/(abs(q)B)$ in Gaussian CGS.],
     ),
     (
       question: [What changes when the sign of $q$ changes in a uniform magnetic field?],
       answer: [The signed gyrofrequency and the sense of rotation change. The gyroradius magnitude and kinetic energy do not.],
     ),
     (
-      question: [What limiting orbit results when $v_"perp"$ tends to zero?],
+      question: [What limiting orbit results when $v_perp$ tends to zero?],
       answer: [The gyroradius tends to zero and only uniform motion parallel to the magnetic field remains in the ideal uniform-field model.],
     ),
   ))
@@ -149,18 +218,18 @@
   #unit-ledger[
     Gaussian CGS is active. The homogeneous force $bold(F)$ is in dynes,
     $bold(B)$ in gauss, $q$ in statcoulomb, and drift velocity in
-    #unit("cm/s"). A drift ratio such as $v_D/v_"perp"$ is dimensionless
+    #unit("cm/s"). A drift ratio such as $v_D/v_perp$ is dimensionless
     only after both speeds use the same reference state.
   ]
 
   Resolve the electric field into components parallel and perpendicular to the
   magnetic field, with $bold(b) = bold(B)/B$:
 
-  $ bold(E) = E_"parallel" bold(b) + bold(E)_"perp", quad
-    m dv(v_"parallel",t) = q E_"parallel" $ <motion-electric-decomposition>
+  $ bold(E) = E_parallel bold(b) + bold(E)_perp, quad
+    m dv(v_parallel,t) = q E_parallel $ <motion-electric-decomposition>
 
   #equation-note[
-    $E_"parallel"$ is the scalar component along $bold(B)$. It accelerates a
+    $E_parallel$ is the scalar component along $bold(B)$. It accelerates a
     particle along the field. The perpendicular component participates in
     gyromotion and, when static and homogeneous, in the common $E times B$
     drift derived below.
@@ -169,10 +238,11 @@
   #assumption(
     [Uniform crossed-field ordering],
     [Take uniform, time-independent $bold(B)$ and a constant force with
-    $bold(F) dot bold(B) = 0$. The force may be an electric force, pressure
-    force, gravity-like force, or another prescribed homogeneous force. The
-    drift is the slow orbit-center velocity after the fast gyromotion is
-    averaged.
+    $bold(F) dot bold(B) = 0$. The force may be electric, gravitational, or
+    another prescribed force on the particle. Averaging over gyromotion
+    leaves a constant orbit-center velocity. The pressure-gradient force
+    used later in fluid theory acts on a population; it is not an additional
+    microscopic force on an isolated particle.
   ]
   )
 
@@ -227,10 +297,12 @@
 
   #animation(
     "../media/exb-drift.mp4",
-    "A positive charge follows a circular orbit while its guiding center translates to the right. The axes are normalized by the reference gyroradius. The electric field points upward, the magnetic field points out of the page, and the orbit-center translation is labelled E cross B drift.",
+    "A positive charge gyrates clockwise around a guiding center translating rightward. Position axes are x/L0 and y/L0 [1]. The electric field points upward and the magnetic field out of the page; the drift is E cross B.",
     caption: [
       Gyromotion plus the Gaussian-CGS $E times B$ drift. The trajectory is a
-      deterministic normalized illustration, not measured data.
+      deterministic normalized illustration, not measured data. With reference
+      length $L_0$ and time $t_0$, it uses $Omega t_0=2$,
+      $rho/L_0=0.65$, and $v_D t_0/L_0=0.55$, all dimensionless.
     ],
     poster: "../media/exb-drift.png",
   )
@@ -285,7 +357,8 @@
 
   #unit-ledger[
     Gaussian CGS is active. Let $L_B$ denote the magnetic-field variation
-    length in cm and $omega_c^(-1)$ the gyroperiod in seconds. The ordering
+    length in cm and $omega_c^(-1)$ the characteristic gyration time in
+    seconds; the gyroperiod is $(2 pi)/omega_c$. The ordering
     parameters $rho/L_B$ and $omega_"slow"/omega_c$ are dimensionless.
     Magnetic moment is defined below in the corresponding Gaussian-CGS
     energy-per-field convention.
@@ -314,28 +387,35 @@
 
   $ bold(v) = dv(bold(r),t)
     = dv(bold(R),t) + dv(bold(rho),t), quad
-    bold(v) = bold(v)_"parallel" + bold(v)_"perp" $ <motion-velocity-split>
+    bold(v) = bold(v)_parallel + bold(v)_perp $ <motion-velocity-split>
 
   #equation-note[
     Gaussian CGS. Every velocity is in #unit("cm/s"). The first equality
     follows from the position split; the second is the local decomposition
     relative to $bold(B)$. The guiding-center derivative includes parallel
     motion and slow drifts, so it is not generally identical to
-    $bold(v)_"parallel"$.
+    $bold(v)_parallel$.
   ]
 
   For perpendicular gyromotion, define the magnetic moment
 
-  $ mu = (m v_"perp"^2)/(2 B) $ <motion-magnetic-moment>
+  $ mu = (m v_perp^2)/(2 B) $ <motion-magnetic-moment>
 
   #equation-note[
     Gaussian CGS. $mu$ is an energy divided by magnetic field. It is an
-    adiabatic invariant under the stated slow-variation ordering.
+    adiabatic invariant under the stated slow-variation ordering: it remains
+    approximately constant as the particle samples a slowly changing field.
+    Here “adiabatic” refers to the separation of orbit and field-variation
+    scales, rather than a thermodynamic no-heat-exchange condition.
   ]
 
   #details(
     [Derivation: magnetic moment and adiabatic invariance],
-    [#derivation-step[Compute the magnetic moment of one orbit]
+    [For this energy argument, take a static magnetic configuration with no
+    electric work at the retained order. Keep leading parallel motion along
+    the field when evaluating the sampled change in $B$.
+
+    #derivation-step[Compute the magnetic moment of one orbit]
     For one circular orbit, the gyroperiod and orbit area are
 
     $ T_"c"=(2 pi)/omega_c, quad S=pi rho^2 .$
@@ -349,7 +429,7 @@
 
     $ mu=(I_"gyro" S)/c
       =(abs(q) omega_c rho^2)/(2 c)
-      =(m v_"perp"^2)/(2 B) .$
+      =(m v_perp^2)/(2 B) .$
 
     Here $mu$ is the positive scalar magnitude; the gyration produces a
     diamagnetic vector dipole.
@@ -357,31 +437,37 @@
     #derivation-step[Use the averaged mirror force]
     Let $s$ measure distance along a field line. The averaged mirror force is
 
-    $ F_"parallel"=-mu pdv(B,s), quad
-      m dv(v_"parallel",t)=-mu pdv(B,s) .$
+    $ F_parallel=-mu pdv(B,s), quad
+      m dv(v_parallel,t)=-mu pdv(B,s) .$
 
-    Since $dv(s,t)=v_"parallel"$, the particle samples the field according to
+    Since $dv(s,t)=v_parallel$, the particle samples the field according to
 
-    $ dv(B,t)=v_"parallel" pdv(B,s) .$
+    $ dv(B,t)=v_parallel pdv(B,s) .$
 
     Therefore the parallel kinetic energy changes as
 
-    $ dv((m v_"parallel"^2)/2,t)
-      =-mu v_"parallel" pdv(B,s) .$
+    $ dv((m v_parallel^2)/2,t)
+      =-mu v_parallel pdv(B,s) .$
 
     #derivation-step[Show adiabatic conservation]
     The magnetic part changes according to
 
-    $ dv(mu B,t)=B dv(mu,t)+mu v_"parallel" pdv(B,s) .$
+    $ dv(mu B,t)=B dv(mu,t)+mu v_parallel pdv(B,s) .$
 
     Adding the two balances gives
 
-    $ dv((m v_"parallel"^2)/2+mu B,t)=B dv(mu,t) .$
+    $ dv((m v_parallel^2)/2+mu B,t)=B dv(mu,t) .$
 
-    In the leading-order slowly varying-field approximation, the total
+    In this static, leading-order guiding-center approximation, the total
     guiding-center energy is conserved, so $dv(mu,t) approx 0$. The ordering
     requires the field to vary little over one gyroperiod and one gyroradius.]
   )
+
+  This static mirror argument transfers energy between parallel and
+  perpendicular motion. In a slowly time-varying magnetic field, $mu$ can
+  remain invariant while an induced electric field supplies energy: the
+  increase of $mu B$ is then betatron acceleration, and total kinetic energy
+  need not be conserved.
 
   #rechenbeispiel[
     A proton has $m_i=qty("1.673e-24", "g")$ and charge
@@ -409,7 +495,7 @@
   #summary[
     Guiding-center theory requires small orbit size and slow field variation.
     The decomposition $bold(r)=bold(R)+bold(rho)$ separates gyromotion from
-    center motion, and $mu=(m v_"perp"^2)/(2B)$ is conserved approximately in the
+    center motion, and $mu=(m v_perp^2)/(2B)$ is conserved approximately in the
     adiabatic regime.
   ]
 
@@ -431,7 +517,7 @@
     ),
     (
       question: [What happens to $mu$ if $B$ increases adiabatically while it remains invariant?],
-      answer: [The perpendicular kinetic energy $(m v_"perp"^2)/2 = mu B$ increases in proportion to $B$, so $v_"perp"$ increases as $sqrt(B)$.],
+      answer: [The perpendicular kinetic energy $(m v_perp^2)/2 = mu B$ increases in proportion to $B$, so $v_perp$ increases as $sqrt(B)$.],
     ),
     (
       question: [Give one process that can break magnetic-moment conservation.],
@@ -473,7 +559,8 @@
     $grad(B)$ in gauss per centimetre.
   ]
 
-  Inserting this force into the homogeneous-force drift gives
+  Because the field varies little across an orbit, the local perpendicular
+  part of this force can be inserted into the homogeneous-force drift:
 
   $ bold(v)_(grad B) = (c (bold(F)_mu times bold(B)))/(q B^2) = (c mu (bold(B) times grad(B)))/(q B^2) $ <motion-gradb-drift>
 
@@ -486,7 +573,7 @@
   Denote the local radius-of-curvature vector by $bold(R)_c$ and its magnitude
   by $R_c$. The effective centrifugal force is
 
-  $ bold(F)_"curv" = -(m v_"parallel"^2 bold(R)_c)/(R_c^2) $ <motion-curvature-force>
+  $ bold(F)_"curv" = -(m v_parallel^2 bold(R)_c)/(R_c^2) $ <motion-curvature-force>
 
   #equation-note[
     Gaussian CGS. The effective centrifugal force is in dynes. The vector
@@ -497,7 +584,7 @@
   Define the curvature vector $bold(kappa) = bold(R)_c/R_c^2$ and the field
   unit vector $bold(b) = bold(B)/B$. Applying the same force-drift map gives
 
-  $ bold(v)_"curv" = (c (bold(F)_"curv" times bold(B)))/(q B^2) = (c m v_"parallel"^2)/(q B) (bold(b) times bold(kappa)) $ <motion-curvature-drift>
+  $ bold(v)_"curv" = (c (bold(F)_"curv" times bold(B)))/(q B^2) = (c m v_parallel^2)/(q B) (bold(b) times bold(kappa)) $ <motion-curvature-drift>
 
   #equation-note[
     Gaussian CGS. The curvature drift is in #unit("cm/s"). The sign of $q$
@@ -536,13 +623,14 @@
     nearly constant total kinetic energy, parallel energy decreases. The
     parallel velocity can reach zero, after which the particle reverses and is
     reflected without a collision. The pitch angle determines whether the
-    particle reaches the high-field region.]
+    particle reaches the high-field region. The pitch angle is the angle
+    between the velocity and the local magnetic field.]
   )
 
   Let $s$ measure distance along a field line. The magnetic-moment force has a
   parallel component
 
-  $ m dv(v_"parallel",t) = F_"parallel" = -mu pdv(B,s) $ <motion-mirror-force>
+  $ m dv(v_parallel,t) = F_parallel = -mu pdv(B,s) $ <motion-mirror-force>
 
   #equation-note[
     The derivative $pdv(B,s)$ is taken along the field-line coordinate $s$.
@@ -553,7 +641,13 @@
   In a static magnetic field with no electrostatic potential, the effective
   parallel energy is
 
-  $ K = (m v_"parallel"^2)/2 + mu B(s) = "const." $ <motion-mirror-energy>
+  $ K = (m v_parallel^2)/2 + mu B(s) = "const." $ <motion-mirror-energy>
+
+  In this one-dimensional description, $mu B(s)$ acts as a potential for
+  parallel motion, although it is physically the perpendicular kinetic
+  energy. A particle reflects when this term grows to equal $K$, leaving
+  no parallel kinetic energy. Particles with too little perpendicular
+  energy reach the maximum field without reflecting; they form the loss cone.
 
   #details(
     [Derivation: mirror reflection and the loss cone],
@@ -561,29 +655,29 @@
     Along a field line, the chain rule gives
 
     $ dv(B(s(t)),t)=dv(s,t) pdv(B,s)
-      =v_"parallel" pdv(B,s) .$
+      =v_parallel pdv(B,s) .$
 
     The parallel kinetic energy therefore obeys
 
-    $ dv((m v_"parallel"^2)/2,t)
-      =m v_"parallel" dv(v_"parallel",t)
-      =-mu v_"parallel" pdv(B,s) .$
+    $ dv((m v_parallel^2)/2,t)
+      =m v_parallel dv(v_parallel,t)
+      =-mu v_parallel pdv(B,s) .$
 
     If $dv(mu,t)=0$, the magnetic energy changes as
 
-    $ dv(mu B,t)=mu v_"parallel" pdv(B,s) .$
+    $ dv(mu B,t)=mu v_parallel pdv(B,s) .$
 
     The two terms cancel, proving conservation of
 
-    $ K=(m v_"parallel"^2)/2+mu B .$
+    $ K=(m v_parallel^2)/2+mu B .$
 
     #derivation-step[Find the mirror point]
     At the initial point, use
 
-    $ v_"perp",0=v_0 sin alpha_0, quad
-      v_"parallel",0=v_0 cos alpha_0 .$
+    $ v_(perp,0)=v_0 sin alpha_0, quad
+      v_(parallel,0)=v_0 cos alpha_0 .$
 
-    At the mirror point $B_m$, $v_"parallel"$ is zero. Conservation of $K$
+    At the mirror point $B_m$, $v_parallel$ is zero. Conservation of $K$
     and $mu$ gives
 
     $ mu B_m=(m v_0^2)/2, quad
@@ -605,6 +699,8 @@
     A particle starts in a minimum field $B_0 = qty("100", "G")$ and sees a
     maximum field $B_"max" = qty("500", "G")$. Determine the critical pitch
     angle $alpha_"c"$ separating reflected particles from the loss cone.
+    Here $0 <= alpha_0 <= pi/2$ is the acute pitch angle to the direction of
+    approach, in a static field with no electric work.
 
     Numerical result: $alpha_"c" = 26.6 degree$. Particles with
     $alpha_0 >= alpha_"c"$ reflect in this ideal adiabatic model.
@@ -776,7 +872,7 @@
     Consider an electron in a uniform field $B=qty("100", "G")$. Use
     $m_e=qty("9.109e-28", "g")$, $q_e=-qty("4.803e-10", "statcoulomb")$,
     $c=qty("2.998e10", "cm/s")$, and a perpendicular drive
-    $bold(E)_perp(t)=qty("1.00", "statvolt/cm") cos(omega_"d" t) bold(e)_x$
+    $bold(E)_perp (t)=qty("1.00", "statvolt/cm") cos(omega_"d" t) bold(e)_x$
     with $omega_"d"=qty("1.00e5", "s^-1")$. Evaluate the polarization-drift
     amplitude and the ordering ratio $omega_"d"/abs(Omega_e)$.
 
@@ -902,8 +998,8 @@
     #derivation-step[Insert a harmonic drive]
     Use
 
-    $ E_"cw"(t)=tilde(E)_"cw" exp(-i omega t), quad
-      v_"cw"(t)=tilde(v)_"cw" exp(-i omega t) .$
+    $ E_"cw" (t)=tilde(E)_"cw" exp(-i omega t), quad
+      v_"cw" (t)=tilde(v)_"cw" exp(-i omega t) .$
 
     The forced amplitude satisfies
 
@@ -914,7 +1010,7 @@
 
     $ tilde(v)_"cw"=(q tilde(E)_"cw")/(i m (Omega-omega)) .$
 
-    The homogeneous solution is $v_"cw",0 exp(-i Omega t)$. The forced
+    The homogeneous solution is $v_("cw",0) exp(-i Omega t)$. The forced
     response therefore resonates at $omega=Omega$ for this polarization.
 
     #derivation-step[Reverse the circular polarization]
@@ -951,8 +1047,9 @@
 
   #interpretation(
     [Resonance is a model boundary],
-    [Far from resonance, the response can be expanded into the common $E times
-    B$ drift and the small polarization correction. Near
+    [When the drive frequency is much smaller than the gyrofrequency, the
+    response can be expanded into the common $E times B$ drift and the small
+    polarization correction. Near
     $omega=abs(Omega)$, that ordering fails: the drive remains phase coherent
     with the orbit and transfers energy over many gyroperiods. A finite
     collision rate or a finite interaction time must then be included before
@@ -995,7 +1092,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "01-introduction.html", title: [Introduction]),
-    next: (href: "03-kinetic-theory.html", title: [Kinetic theory]),
+    previous: (href: "03-plasma-oscillations.html", title: [Plasma oscillations]),
+    next: (href: "05-kinetic-theory.html", title: [Kinetic theory]),
   )
 ]

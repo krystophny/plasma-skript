@@ -54,6 +54,13 @@ manim render \
   -qm \
   --format=mp4 \
   --media_dir "$manim_media" \
+  "$repo_root/animations/debye_potential.py" \
+  DebyePotentialReduction
+
+manim render \
+  -qm \
+  --format=mp4 \
+  --media_dir "$manim_media" \
   "$repo_root/animations/phase_space_advection.py" \
   PhaseSpaceAdvection
 
@@ -123,6 +130,7 @@ manim render \
 exb_video_path="$(find "$manim_media" -type f -name 'ExBDrift.mp4' -print -quit)"
 oscillation_video_path="$(find "$manim_media" -type f -name 'PlasmaOscillation.mp4' -print -quit)"
 debye_shielding_video_path="$(find "$manim_media" -type f -name 'DebyeShielding.mp4' -print -quit)"
+debye_potential_video_path="$(find "$manim_media" -type f -name 'DebyePotentialReduction.mp4' -print -quit)"
 phase_space_video_path="$(find "$manim_media" -type f -name 'PhaseSpaceAdvection.mp4' -print -quit)"
 moment_hierarchy_video_path="$(find "$manim_media" -type f -name 'MomentHierarchy.mp4' -print -quit)"
 diffusion_random_walk_video_path="$(find "$manim_media" -type f -name 'DiffusionRandomWalk.mp4' -print -quit)"
@@ -133,13 +141,14 @@ landau_resonance_video_path="$(find "$manim_media" -type f -name 'LandauResonanc
 two_stream_video_path="$(find "$manim_media" -type f -name 'TwoStreamInstability.mp4' -print -quit)"
 sheath_formation_video_path="$(find "$manim_media" -type f -name 'SheathFormation.mp4' -print -quit)"
 langmuir_probe_video_path="$(find "$manim_media" -type f -name 'LangmuirProbe.mp4' -print -quit)"
-if [[ -z "$exb_video_path" || -z "$oscillation_video_path" || -z "$debye_shielding_video_path" || -z "$phase_space_video_path" || -z "$moment_hierarchy_video_path" || -z "$diffusion_random_walk_video_path" || -z "$wave_packet_video_path" || -z "$magnetized_polarization_video_path" || -z "$magnetosonic_waves_video_path" || -z "$landau_resonance_video_path" || -z "$two_stream_video_path" || -z "$sheath_formation_video_path" || -z "$langmuir_probe_video_path" ]]; then
+if [[ -z "$exb_video_path" || -z "$oscillation_video_path" || -z "$debye_shielding_video_path" || -z "$debye_potential_video_path" || -z "$phase_space_video_path" || -z "$moment_hierarchy_video_path" || -z "$diffusion_random_walk_video_path" || -z "$wave_packet_video_path" || -z "$magnetized_polarization_video_path" || -z "$magnetosonic_waves_video_path" || -z "$landau_resonance_video_path" || -z "$two_stream_video_path" || -z "$sheath_formation_video_path" || -z "$langmuir_probe_video_path" ]]; then
   echo "Manim did not produce all expected animation videos" >&2
   exit 1
 fi
 cp "$exb_video_path" "$site_dir/media/exb-drift.mp4"
 cp "$oscillation_video_path" "$site_dir/media/plasma-oscillation.mp4"
 cp "$debye_shielding_video_path" "$site_dir/media/debye-shielding.mp4"
+cp "$debye_potential_video_path" "$site_dir/media/debye-potential-reduction.mp4"
 cp "$phase_space_video_path" "$site_dir/media/phase-space-advection.mp4"
 cp "$moment_hierarchy_video_path" "$site_dir/media/moment-hierarchy.mp4"
 cp "$diffusion_random_walk_video_path" "$site_dir/media/diffusion-random-walk.mp4"
@@ -166,6 +175,11 @@ ffmpeg -loglevel error -y \
   -frames:v 1 \
   -vf "scale=960:-1" \
   "$site_dir/media/debye-shielding.png"
+ffmpeg -loglevel error -y \
+  -ss 8.5 -i "$debye_potential_video_path" \
+  -frames:v 1 \
+  -vf "scale=960:-1" \
+  "$site_dir/media/debye-potential-reduction.png"
 ffmpeg -loglevel error -y \
   -ss 4.0 -i "$phase_space_video_path" \
   -frames:v 1 \

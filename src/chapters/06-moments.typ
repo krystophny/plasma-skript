@@ -4,15 +4,14 @@
 #import "@preview/unify:0.8.1": unit
 
 #let chapter = [
-  #page-title[4. Moments of the Boltzmann equation] <moments>
+  #page-title[6. Moments of the Boltzmann equation] <moments>
 
   #lead[
-    The kinetic distribution contains far more information than a fluid model
-    needs for every question. Velocity moments compress that information into
-    fields such as density, flow, pressure, and heat flux. This reduction is
-    powerful because the first few moments have direct physical meaning. It is
-    also incomplete because the transport equation for one moment usually
-    introduces the next one.
+    Many plasma problems concern density, flow, or energy transport rather
+    than the full velocity distribution. Velocity moments turn the kinetic
+    equation from Chapter 5 into evolution equations for these fluid fields.
+    The reduction remains incomplete: the transport equation for one moment
+    usually introduces a higher moment, so a finite model needs a closure.
   ]
 
   #callout(
@@ -47,8 +46,9 @@
     #unit("g") #unit("cm^-2") #unit("s^-1"), and pressure is in
     #unit("g") #unit("cm^-1") #unit("s^-2"), equivalently dyn per square
     centimetre. The symbols $bold(u)_s$, $bold(P)_s$, and $bold(q)_s$ below
-    denote velocity, pressure tensor, and heat-flux vector, respectively. A
-    moment index is not a unit.
+    denote velocity, pressure tensor, and heat-flux vector, respectively. The
+    bold heat-flux symbol $bold(q)_s$ is distinct from the scalar particle
+    charge $q_s$.
   ]
 
   #definition(
@@ -79,7 +79,8 @@
     $rho_q approx 0$ while carrying a nonzero current.
   ]
 
-  The first velocity moment defines the species fluid velocity:
+  The first velocity moment is the particle flux. Dividing it by number
+  density defines the species fluid velocity:
 
   $ bold(u)_s = (1/n_s) integral_(RR^3) bold(v) f_s dif^3 bold(v), quad
     bold(j)_s = q_s n_s bold(u)_s $ <moments-fluid-velocity>
@@ -103,7 +104,9 @@
     additional assumption rather than a consequence of taking a moment.
   ]
 
-  The raw second moment contains both directed flow and random motion:
+  “Raw” moments use the laboratory velocity $bold(v)$; “central” moments use
+  the velocity relative to the local flow. The raw second moment therefore
+  contains both directed flow and random motion:
 
   $ bold(M)_s = m_s integral_(RR^3)
     bold(v) bold(v) f_s dif^3 bold(v)
@@ -149,11 +152,13 @@
 
   #animation(
     "../media/moment-hierarchy.mp4",
-    "A schematic begins with the full distribution f of position and velocity and then reveals four velocity moments: number density n, bulk velocity u, pressure tensor P, and heat flux q. Arrows indicate increasing moment order and show that the transport of one moment introduces the next, so a closure is required when the hierarchy is truncated.",
+    "A schematic reduces the distribution function to number density, bulk velocity, pressure tensor, and the full third central moment tensor. Heat flux is identified as a contraction of the third central tensor. Arrows show how each transport equation introduces a higher moment and therefore requires closure.",
     caption: [
       Moment hierarchy from kinetic information to fluid fields. The animation
-      uses unit [1] for its schematic quantities. It does not represent
-      measured data or a numerical solution.
+      labels dimensional Gaussian-CGS quantities, not normalized fields.
+      The full third central tensor $Q_(i j k)$ contains more information
+      than heat flux $q_i=(1/2) sum_j Q_(i j j)$.
+      This is a schematic, not measured data or a numerical solution.
     ],
     poster: "../media/moment-hierarchy.png",
   )
@@ -244,7 +249,9 @@
     source would add a nonzero right-hand side and must be stated separately.]
   )
 
-  Start from the conservative kinetic equation for the species:
+  Start from the conservative kinetic equation for the species. As in
+  Chapter 5, the streaming divergence acts on position and the acceleration
+  divergence acts on velocity:
 
   $ pdv(f_s,t) + div(f_s bold(v))
     + div(f_s bold(a)_s) = C_(s)[f] $ <moments-kinetic-balance>
@@ -310,7 +317,7 @@
     The velocity-space divergence becomes a boundary integral:
 
     $ integral_(V_v) div(f_s bold(a)_s) dif^3 bold(v)
-        =integral_("boundary V_v") f_s bold(a)_s dot d bold(S)_v .$
+        =integral_(partial V_v) f_s bold(a)_s dot d bold(S)_v .$
 
     It vanishes when the distribution decays faster than the surface measure
     grows. Number-conserving collisions obey
@@ -348,7 +355,9 @@
     [The term $pdv(n_s,t)$ measures accumulation at a fixed position. The
     divergence $div(n_s bold(u)_s)$ measures net outward particle
     flux. If the flow converges, the divergence is negative and the density
-    increases. If the flow is incompressible and steady, both terms vanish.]
+    increases. This is the divergence of particle flux, which depends on
+    both density and velocity. Even an incompressible velocity field can
+    transport a density gradient past a fixed observer.]
   )
 
   #summary[
@@ -455,8 +464,10 @@
     = div(rho_s bold(u)_s bold(u)_s + bold(P)_s) $ \
   <moments-momentum-flux-split>
 
-  The force term is handled by integration by parts in velocity space. In
-  components, with repeated Cartesian indices summed,
+  Integration by parts transfers the velocity derivative from the force flux
+  to the weight $m_s bold(v)$; the assumed boundary decay removes the surface
+  term. In components, with repeated Cartesian indices summed and
+  $delta_(i j)$ equal to one for $i=j$ and zero otherwise,
 
   $ m_s integral v_i pdv((a_(s,j) f_s),v_j) dif^3 bold(v)
     = -m_s integral delta_(i j) a_(s,j) f_s dif^3 bold(v)
@@ -483,7 +494,10 @@
     $rho_s (pdv(bold(u)_s,t)+bold(u)_s dot grad(bold(u)_s))
       = q_s n_s (bold(E)+(bold(u)_s times bold(B))/c)
       -div(bold(P)_s) + bold(R)_s$. Every term has force-density
-    units in #unit("g") #unit("cm^-2") #unit("s^-2").
+    units in #unit("g") #unit("cm^-2") #unit("s^-2"). The acceleration
+    now follows a fluid element moving at $bold(u)_s$, rather than an
+    individual particle moving at $bold(v)$. Pressure accounts for the
+    momentum transport caused by their velocity difference.
   ]
 
   #details(
@@ -595,10 +609,10 @@
   #section-title[Second moment: energy and heat transport] <moments-energy>
 
   #lead[
-    The second kinetic moment measures energy transport. Its bulk part follows
-    the fluid velocity, its pressure part performs reversible work during
-    compression, and its third central moment carries heat relative to the
-    moving fluid.
+    Contracting the second moment to a scalar gives kinetic-energy density.
+    Some of that energy is in the bulk flow and some is in random motion.
+    Their combined flux contains transport by the flow, pressure work, and
+    heat carried relative to the moving fluid.
   ]
 
   #objectives((
@@ -634,7 +648,9 @@
     W_s = (rho_s abs(bold(u)_s)^2)/2 + epsilon_s $ \
   <moments-energy-density>
 
-  The heat-flux vector is the third central moment
+  Randomly moving particles also carry kinetic energy relative to the flow.
+  Weighting their random velocity by that energy gives the heat-flux vector,
+  a contraction of the mass-weighted third central tensor:
 
   $ bold(q)_s = (m_s/2) integral_(RR^3)
     abs(bold(w)_s)^2 bold(w)_s f_s dif^3 bold(v) $ \
@@ -670,7 +686,7 @@
   $ bold(F)_s = W_s bold(u)_s + bold(P)_s dot bold(u)_s + bold(q)_s $ \
   <moments-energy-flux-split>
 
-  Thus the energy or heat-transport equation is
+  Thus the total kinetic-energy equation is
 
   $ pdv(W_s,t) + div(W_s bold(u)_s + bold(P)_s dot bold(u)_s + bold(q)_s)
     = q_s n_s bold(u)_s dot bold(E) + Q_s $ \
@@ -766,7 +782,8 @@
         =q_s n_s bold(u)_s dot bold(E)+bold(u)_s dot bold(R)_s .$
 
     #derivation-step[Rewrite the pressure work]
-    Use the product identity
+    The colon denotes a double contraction: multiply corresponding tensor
+    components and sum both indices. Use the product identity
 
     $ bold(u)_s dot div(bold(P)_s)
         =div(bold(P)_s dot bold(u)_s)
@@ -809,16 +826,17 @@
     density, and total kinetic-energy density $W_i$.
 
     Numerical result: $epsilon_i=0.240 #unit("erg/cm^3")$,
-    $W_"bulk",i=0.837 #unit("erg/cm^3")$, and
+    $W_("bulk",i)=0.837 #unit("erg/cm^3")$, and
     $W_i=1.08 #unit("erg/cm^3")$.
   ]
 
   #interpretation(
     [Why does the hierarchy continue?],
     [The continuity equation needs the first moment. The momentum equation
-    needs the second moment. The energy equation needs the third central moment
-    $bold(q)_s$, and its own transport equation would introduce a fourth
-    moment. Exact kinetic information therefore generates an infinite moment
+    needs the second moment. The scalar energy equation needs the contracted
+    third central moment $bold(q)_s$; evolving a general anisotropic pressure
+    tensor requires the full third central tensor. Its evolution introduces
+    fourth moments. Exact kinetic information therefore generates an infinite moment
     hierarchy. A finite fluid system exists only after a constitutive closure.]
   )
 
@@ -883,8 +901,9 @@
   #unit-ledger[
     Gaussian CGS is active for all dimensional quantities. The collision
     frequency $nu_s$ is in #unit("s^-1"), while $f_s$, its Maxwellian
-    reference $f_(M,s)$, and the collision operator have the phase-space units
-    defined earlier. Closure parameters such as $gamma$, the Knudsen number,
+    reference $f_(M,s)$ have units #unit("s^3 cm^-6"). The collision operator
+    has units of distribution per time, #unit("s^2 cm^-6").
+    Closure parameters such as $gamma$, the Knudsen number,
     and $nu_s tau$ are dimensionless. A closure is not a unit conversion.
   ]
 
@@ -930,14 +949,16 @@
     + gamma p_s div(bold(u)_s) = 0, quad gamma=5/3 $ \
   <moments-polytropic-law>
 
-  It replaces the need to evolve a separate heat-transport equation, but it is
-  an assumption about unresolved energy exchange. A prescribed isothermal
-  temperature is another closure, with different physics.
+  This pressure law closes the model without evolving heat flux as an
+  independent variable. It describes compression with no heat transport or
+  internal heating under the stated isotropic assumptions. An isothermal
+  closure instead holds temperature fixed, so compression requires energy
+  exchange to maintain that temperature.
 
   #definition(
     [BGK relaxation model],
-    [An empirical collision model replaces the detailed collision integral by
-    relaxation toward a local Maxwellian:
+    [The Bhatnagar--Gross--Krook (BGK) model replaces the detailed collision
+    integral by relaxation toward a local Maxwellian:
     $C_("BGK")[f_s] = -nu_s (f_s-f_(M,s))$. Here $nu_s$ is a model collision
     frequency and $f_(M,s)$ is chosen to share selected local moments with
     $f_s$. The model is useful for explaining relaxation and for constructing
@@ -1019,8 +1040,11 @@
     [Choosing a closure],
     [Use a cold closure when thermal pressure is asymptotically small for the
     phenomenon of interest. Use an isotropic warm closure when collisions or
-    rapid gyrophase mixing erase directional pressure differences and an
-    equation of state is credible. Retain a tensor pressure or return to
+    another isotropization mechanism erase directional pressure differences
+    and an equation of state is credible. Gyrophase mixing only removes
+    dependence on the angle around $bold(B)$: a gyrotropic distribution can
+    still have $p_parallel != p_perp$. Retain both pressures, a general tensor,
+    or return to
     kinetic theory when anisotropy, heat flux, resonances, or boundary layers
     are dynamically important.]
   )
@@ -1069,7 +1093,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "03-kinetic-theory.html", title: [Kinetic theory]),
-    next: (href: "05-multiple-fluids.html", title: [Multiple fluids]),
+    previous: (href: "05-kinetic-theory.html", title: [Kinetic theory]),
+    next: (href: "07-multiple-fluids.html", title: [Multiple fluids]),
   )
 ]

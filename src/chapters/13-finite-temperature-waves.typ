@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[11. Collisions, ions, and finite-temperature effects on magnetized waves] <finite-temperature-waves>
+  #page-title[13. Collisions, ions, and finite-temperature effects on magnetized waves] <finite-temperature-waves>
 
   #lead[
     The cold magnetized response is a useful organizing limit, not a universal
@@ -36,7 +36,7 @@
     [insert a linear collision frequency into the time-harmonic momentum equation],
     [interpret the collision term as a complex effective mass],
     [identify the real and imaginary parts of a collisional wave number],
-    [state why the effective-mass shortcut fails near a strong resonance],
+    [distinguish the exact drag substitution from a weak-collision expansion],
   ))
 
   #unit-ledger[
@@ -51,7 +51,9 @@
     [Linear drag as a collisional model],
     [Use a homogeneous, cold, magnetized equilibrium and the Fourier convention
     $exp(i (bold(k) dot bold(r)-omega t))$. Represent collisions by a
-    velocity-independent drag $-m_s nu_s bold(u)_1$. This is a deliberately
+    velocity-independent drag $-m_s nu_s bold(u)_1$ against a stationary
+    background. If the collision partner also moves, its velocity must enter
+    the relative drag. This is a deliberately
     simple momentum-transfer model; energy exchange, velocity-dependent
     Coulomb operators, and boundary collisions require a more detailed
     kinetic treatment.]
@@ -64,24 +66,29 @@
       bold(E)_1+(bold(u)_(s,1) times bold(B)_(0))/c)
       -m_(s) nu_s bold(u)_(s,1)$.
     Moving the drag to the left gives
-    $-i omega m_"eff",s bold(u)_(s,1)
+    $-i omega m_("eff",s) bold(u)_(s,1)
       =q_(s)(bold(E)_1+(bold(u)_(s,1) times bold(B)_(0))/c)$
-    with $m_"eff",s=m_(s)(1+(i nu_s)/omega)$. The sign of the imaginary part
-    follows the stated Fourier convention.]
+    with $m_("eff",s)=m_(s)(1+(i nu_s)/omega)$. The sign of the imaginary part
+    follows the stated Fourier convention. For nonzero $omega$, this is an
+    exact algebraic rewrite of the stated constant-drag equation, including
+    near cyclotron resonance. The complex mass is a way to combine inertia
+    and drag; the physical particle mass remains $m_s$.]
   )
 
   #governing-law(
     [Complex refractive index],
     [The cold tensor formulas can be reused with $m_s$ replaced by
-    $m_"eff",s$ when the drag model is valid. For the
+    $m_("eff",s)$ when the drag model is valid. For the
     cyclotron-sensitive electron circular branch, one convenient convention is
     $N_"RH"^2=1-
       omega_(p,e)^2/(omega(omega-omega_(c,e)+i nu_e))$.
-    In a homogeneous medium write $N=N_r+i N_i$ and
+    For a wave driven at real positive $omega$ in a homogeneous medium,
+    write $N=N_r+i N_i$ and
     $k=(omega N)/c=k_r+i k_i$. The field factor is
     $exp(i k z-i omega t)=exp(i k_r z-i omega t) exp(-k_i z)$,
     so $k_i>0$ is amplitude attenuation and $1/(2 k_i)$ is the intensity
-    attenuation length.]
+    attenuation length along positive $z$. This describes spatial decay;
+    temporal damping instead uses a complex frequency at real wave number.]
   )
 
   #details(
@@ -101,16 +108,16 @@
     Factor the coefficient:
 
     $ -i omega m_(s)(1+(i nu_s)/omega)
-        =-i omega m_"eff",s ,$
+        =-i omega m_("eff",s) ,$
 
     where
 
-    $ m_"eff",s=m_(s)(1+(i nu_s)/omega) .$
+    $ m_("eff",s)=m_(s)(1+(i nu_s)/omega) .$
 
     #derivation-step[Insert the effective parameters into the cold response]
     The species plasma-frequency factor becomes
-    $(4 pi n_(s,0)q_s^2)/m_"eff",s$, and the signed gyrofrequency becomes
-    $(q_s B_0)/(m_"eff",s c)$. Insert both into the cold transverse response.
+    $(4 pi n_(s,0)q_s^2)/m_("eff",s)$, and the signed gyrofrequency becomes
+    $(q_s B_0)/(m_("eff",s) c)$. Insert both into the cold transverse response.
     For the electron branch whose collisionless denominator is
     $omega(omega-omega_(c,e))$, the two substitutions combine to
 
@@ -140,11 +147,15 @@
     proportional to amplitude squared, falls by $e^(-1)$ after $1/(2 k_i)$.
 
     #derivation-step[State the validity boundary]
-    The shortcut does not determine the collision operator's energy balance or
-    velocity dependence. Near a cyclotron or cutoff resonance, the denominator
-    is small and even a small $nu_s$ can control the response. There the full
-    collisional dielectric tensor, and often a kinetic model, must be derived
-    rather than inserted as a perturbative mass replacement.]
+    The effective-mass substitution remains exact for constant linear drag.
+    An expansion of the circular denominator instead requires
+    $nu_e << abs(omega-omega_(c,e))$, not merely $nu_e << omega$.
+    Near resonance retain the full complex denominator. Near a cutoff,
+    expanding its square root also fails if the imaginary correction is
+    comparable to the real $N^2$. A direct solution of the same drag tensor
+    gives the same result as the effective-mass substitution. A more realistic
+    collision operator is needed only when the physical model must include
+    velocity dependence, energy exchange, or coupled species momentum.]
   )
 
   #collisional-wave-response
@@ -165,7 +176,7 @@
     #normalized-label[$N approx qty("0.959", "1")+i qty("2.07e-3", "1")$],
     $k_r approx qty("6.40e-1", "cm^-1")$,
     $k_i approx qty("1.38e-3", "cm^-1")$, and the amplitude attenuation
-    length is approximately $qty("7.25e2", "cm")$.
+    length is approximately $qty("7.23e2", "cm")$.
   ]
 
   #interpretation(
@@ -180,8 +191,9 @@
     Linear drag can be represented by $m_"eff"=m(1+(i nu)/omega)$ in a
     time-harmonic cold response. The resulting $N$ and $k$ are complex:
     $k_r$ controls phase advance and $k_i$ controls spatial attenuation.
-    Near resonances, the shortcut must be replaced by a collision model with
-    the correct velocity and energy dependence.
+    Near resonances retain the full drag response; a weak-collision expansion
+    can fail even though the effective-mass rewrite remains exact. The drag
+    model's physical adequacy must be assessed separately.
   ]
 
   #knowledge-check((
@@ -272,12 +284,13 @@
     For $omega << omega_(c,i)$ both approach
     $N^2 approx 1+
       omega_(p,e)^2/(omega_(c,e)omega_(c,i))
-      =c^2/v_A^2$,
+      approx c^2/v_A^2$,
     where
     $v_A=B_0/sqrt(4 pi rho_0)
       =(c sqrt(omega_(c,e) omega_(c,i)))/omega_(p,e)$
-    and $rho_0 approx n_0 m_i$. Thus $omega approx k v_A$ at low
-    frequency.]
+    and $rho_0 approx n_0 m_i$. The last approximation also requires
+    $v_A << c$, so the added unity is negligible. In this nonrelativistic
+    limit, $omega approx k v_A$ at low frequency.]
   )
 
   #details(
@@ -364,7 +377,7 @@
 
     Numerical result: $omega_(c,i)=qty("9.58e5", "s^-1")$,
     $v_A=qty("2.18e8", "cm/s")$,
-    $k=qty("4.40e-4", "cm^-1")$, and
+    $k=qty("4.39e-4", "cm^-1")$, and
     $lambda=qty("1.43e4", "cm")$.
   ]
 
@@ -429,16 +442,24 @@
 
   #assumption(
     [Warm-fluid pressure closure],
-    [Use a homogeneous unmagnetized or principal-direction perturbation with
+    [Use a homogeneous unmagnetized longitudinal perturbation, or one with
+    both $bold(k)$ and $bold(E)_1$ parallel to $bold(B)_0$, with
     $p_(s,1)=gamma_s k_B T_s n_(s,1)$. Define
-    $c_s^2=(gamma_s k_B T_s)/m_s$. The closure is local and fluid-like; it
+    $c_s^2=(gamma_s k_B T_s)/m_s$. Here $s$ labels a species; below,
+    $c_(s,e)$ and $c_(s,i)$ denote the electron and ion pressure-response
+    speeds. They are distinct from the collective ion-acoustic speed.
+    The closure is local and fluid-like; it
     requires $k lambda_D$ to remain small enough that kinetic phase mixing is
-    not the leading correction.]
+    not the leading correction. Small $k lambda_D$ alone does not choose
+    $gamma_s$: the closure must match the thermal response. For collisionless
+    Maxwellian Langmuir waves the leading warm correction has $gamma_e=3$;
+    an isothermal closure is a different model. Perpendicular longitudinal
+    response retains the cyclotron term derived in the next section.]
   )
 
   #definition(
     [Warm longitudinal response],
-    [For a longitudinal perturbation, the pressure-corrected susceptibility is
+    [For a longitudinal perturbation, the pressure-corrected dielectric coefficient is
     $epsilon_(parallel)=1-
       sum_s omega_(p,s)^2/
       (omega^2-k^2 c_s^2)$.
@@ -500,7 +521,7 @@
 
     After moving the pressure term to the left and multiplying by $i$,
 
-    $ m_s(omega-(k^2 c_s^2)/omega)u_(s,1)=i q_s E_1 .$
+    $ m_s (omega-(k^2 c_s^2)/omega)u_(s,1)=i q_s E_1 .$
 
     Thus
 
@@ -574,6 +595,9 @@
     $k_B T_e=qty("1.602e-11", "erg")$ (the same energy as
     $qty("10", "eV")$), $e=qty("4.803e-10", "statcoulomb")$,
     $m_e=qty("9.109e-28", "g")$, and $gamma_e=1$.
+    This is a formal isothermal-closure calculation outside the controlled
+    small-$k lambda_D$ regime; its result requires kinetic comparison before
+    interpretation as a collisionless plasma wave.
     At #normalized-label[$k lambda_(D,e)=qty("0.80", "1")$], determine
     $lambda_(D,e)$, $k$, and the
     normalized warm plasma-oscillation frequency.
@@ -585,8 +609,10 @@
 
   #interpretation(
     [Temperature creates a communication length],
-    [The cold plasma frequency is local because pressure is absent. The warm
-    term couples neighboring density elements over a Debye-scale wavelength.
+    [Without pressure, each cold-fluid density displacement oscillates at the
+    same plasma frequency. The pressure gradient couples neighboring density
+    perturbations and introduces wave-number dependence. Its relative
+    contribution is $gamma_e k^2 lambda_(D,e)^2$ on the fixed-ion branch.
     Once $k lambda_D$ is not small, the fluid branch must be compared with
     kinetic phase mixing rather than extrapolated indefinitely.]
   )
@@ -621,8 +647,9 @@
   #section-title[Warm transverse waves and magnetosonic motion] <warm-magnetosonic-waves>
 
   #lead[
-    Pressure also modifies transverse wave motion, but the correction depends
-    on geometry. Near the upper-hybrid frequency it adds a warm spatial
+    Pressure also modifies waves propagating across the magnetic field, but
+    propagation direction and electric-field polarization must be distinguished.
+    Near the upper-hybrid frequency it adds a warm spatial
     correction to the extraordinary branch. At much lower frequency, mobile
     ions and nearly ideal conductivity reorganize the wave into MHD motion:
     magnetic tension gives shear-Alfvén waves, while pressure and magnetic
@@ -646,10 +673,17 @@
 
   #assumption(
     [Warm-fluid and ideal-MHD limits],
-    [Use the warm-fluid pressure closure for the upper-hybrid correction.
+    [Use the warm-fluid pressure closure for the upper-hybrid correction,
+    with fixed ions, $bold(k) perp bold(B)_0$, and an electrostatic
+    perturbation $bold(E)_1 parallel bold(k)$. This is the longitudinal
+    approximation near the extraordinary branch's upper-hybrid resonance.
     For the low-frequency MHD derivation assume quasineutrality,
     $omega << omega_(c,i)$, $k lambda_D << 1$, a single bulk velocity, and
     sufficiently large conductivity that the ideal induction law applies.
+    The bulk velocity is mass-weighted. The relative drift remains through
+    $bold(j)=e n (bold(u)_i-bold(u)_e)$ and Ampere's law; Hall and relative
+    inertial corrections are ordered small, rather than setting the current
+    to zero.
     Use an adiabatic closure $p_1=v_s^2 rho_1$ with
     $v_s^2=(gamma p_0)/rho_0$.]
   )
@@ -660,21 +694,21 @@
     $v_A=B_0/sqrt(4 pi rho_0)$,
     $v_s=sqrt((gamma p_0)/rho_0)$, and
     $v_m=sqrt(v_A^2+v_s^2)$
-    for perpendicular compressional motion. $v_A$ is magnetic tension
-    divided by mass inertia, $v_s$ is the pressure-wave speed, and $v_m$ is
+    for perpendicular compressional motion. The square $v_A^2$ is magnetic
+    tension per unit mass density, $v_s$ is the pressure-wave speed, and $v_m$ is
     their warm perpendicular combination.]
   )
 
   #governing-law(
     [Warm upper-hybrid and MHD branches],
-    [Near the perpendicular upper-hybrid branch, the warm-fluid correction
-    gives the local relation
+    [In the perpendicular electrostatic approximation near the upper-hybrid
+    branch, the warm-fluid correction gives
     $omega^2=omega_"UH"^2+k^2 c_(s,e)^2$
     in the simple electron pressure ordering. At low frequency, ideal MHD
     gives the shear-Alfvén branch
-    $omega^2=k_"parallel"^2 v_A^2$
+    $omega^2=k_(parallel)^2 v_A^2$
     and the perpendicular compressional branch
-    $omega^2=k_"perp"^2(v_A^2+v_s^2)$.
+    $omega^2=k_(perp)^2(v_A^2+v_s^2)$.
     The latter is often called the magnetosonic or magnetosonic-Alfvén
     branch.]
   )
@@ -750,7 +784,9 @@
 
     $ rho pdv(bold(u),t)=-grad(p)+[curl(bold(B))times bold(B)]/(4 pi) .$
 
-    Linearize about $rho=rho_0$, $p=p_0$, and
+    This momentum equation is written to first order about a static
+    equilibrium; the advective acceleration is second order in the
+    perturbations. Linearize about $rho=rho_0$, $p=p_0$, and
     $bold(B)=B_0 bold(e)_z$. For $bold(k)=k bold(e)_x$ and
     $bold(u)_1=u_x bold(e)_x$, continuity gives
 
@@ -778,7 +814,7 @@
 
     #derivation-step[Recover the shear-Alfvén branch]
     For a shear perturbation with
-    $bold(k)=k_"parallel" bold(e)_z$, the pressure and density perturbations
+    $bold(k)=k_(parallel) bold(e)_z$, the pressure and density perturbations
     vanish to first order. Induction and transverse momentum retain only
     magnetic tension:
 
@@ -786,7 +822,7 @@
 
     A plane wave then satisfies
 
-    $ omega^2=k_"parallel"^2v_A^2 .$
+    $ omega^2=k_(parallel)^2v_A^2 .$
 
     Tension bends field lines, whereas perpendicular compression changes both
     density and magnetic-field strength.]
@@ -796,11 +832,16 @@
 
   #animation(
     "../media/magnetosonic-waves.mp4",
-    "The animation compares three normalized schematic patterns. A sound wave is shown as pressure or density compression, a shear Alfvén wave as transverse displacement of otherwise nearly parallel magnetic field lines, and a magnetosonic wave as combined pressure and magnetic compression. The patterns are illustrative and do not represent dimensional simulation data.",
+    "Three normalized ideal-MHD patterns share length and time scales. Sound propagates along the background field. The shear Alfvén pattern has wave vector and background field along x, displacement along y independent of y, and zero displacement divergence. The perpendicular fast magnetosonic pattern shows density and magnetic compression and travels faster than either separate sound or Alfvén speed.",
     caption: [
       Warm magnetized-wave patterns: pressure compression, shear-Alfvén field
-      displacement, and compressional magnetosonic motion. The animation is a
-      schematic visual companion to $v_m^2=v_A^2+v_s^2$.
+      displacement, and perpendicular compressional magnetosonic motion.
+      All panels use $X=x/L_0$ and $tau=t/t_0$, with reference speed
+      $L_0/t_0$. Their dimensionless speeds are
+      $(v_s t_0)/L_0=0.6$, $(v_A t_0)/L_0=1$, and
+      $(v_m t_0)/L_0=sqrt(1.36)$; the common wave number is $k L_0=1.25$.
+      The prescribed linear patterns illustrate $v_m^2=v_A^2+v_s^2$;
+      $L_0$ and $t_0$ are arbitrary reference length and time in Gaussian CGS.
     ],
     poster: "../media/magnetosonic-waves.png",
   )
@@ -856,7 +897,7 @@
     ),
     (
       question: [Which assumptions are needed to use the ideal-MHD wave equations?],
-      answer: [The plasma must be quasineutral and strongly conducting, ions and electrons must share a bulk velocity, the frequency must be below the ion-inertia scale, and the perturbation must remain on fluid scales.]
+      answer: [Use a quasineutral, strongly conducting plasma with a mass-weighted bulk velocity, frequencies below the ion-inertia scale, and fluid length scales. Retain the relative species drift as the current in Ampere's law, while ordering Hall and relative inertial corrections small. Exact equality of electron and ion velocities would incorrectly remove that current.]
     ),
   ))
 
@@ -909,12 +950,13 @@
   #governing-law(
     [Controlled limits],
     [The branches must satisfy four checks:
-    (1) $nu -> 0$ makes $N$ real and recovers the collisionless cold tensor;
+    (1) $nu -> 0$ recovers the lossless cold tensor away from poles;
+    $N$ is real on propagating branches but imaginary in stopbands;
     (2) $m_i -> infinity$ or $I -> infinity$ recovers the fixed-ion branches;
     (3) $T_s -> 0$ or $K -> 0$ removes the pressure correction; and
     (4) $omega << omega_(c,i)$ with high conductivity reduces the
     two-fluid system to MHD, with $v_A$ and $v_m$ as the leading speeds.
-    If $k rho_s$ is not small, $omega-k_"parallel"v_(parallel)$ approaches
+    If $k rho_s$ is not small, $omega-k_(parallel)v_(parallel)$ approaches
     zero, or the distribution is strongly non-Maxwellian, a kinetic
     susceptibility is required even when the fluid equations look closed.]
   )
@@ -926,9 +968,12 @@
 
     $ m_"eff"=m(1+(i nu)/omega) .$
 
-    Let $nu -> 0$. Then $m_"eff" -> m$, every dielectric coefficient becomes
-    real in the collisionless model, and the complex wave number reduces to
-    the cold magnetized result.
+    Let $nu -> 0$ at real frequency away from poles. Then $m_"eff" -> m$
+    and the cold dielectric tensor is Hermitian: its diagonal coefficients
+    are real and its gyrotropic off-diagonal entries remain imaginary complex
+    conjugates. Absorption vanishes, but a stopband with $N^2<0$ still has
+    imaginary $k$ and spatial evanescence. Real $N$ is recovered only on
+    propagating branches.
 
     #derivation-step[Take the fixed-ion limit]
     For a singly charged electron--ion plasma, define
@@ -973,10 +1018,11 @@
 
     $ k lambda_D <<1, quad
       k_perp rho_s <<1, quad
-      omega-k_"parallel"v_(parallel) approx 0 $
+      abs(omega/k_(parallel)) >> abs(v_(parallel)) $
 
     for cold quasineutral motion, finite-Larmor-radius effects, and resonant
-    kinetic corrections respectively. Satisfying one condition does not imply
+    kinetic corrections respectively, with $v_(parallel)$ a thermal parallel
+    speed. Satisfying one condition does not imply
     that the others hold.]
   )
 
@@ -1020,7 +1066,7 @@
   #knowledge-check((
     (
       question: [Which limit removes collisional attenuation?],
-      answer: [Taking $nu/omega -> 0$ makes the effective mass real, removes the imaginary part of the susceptibility, and recovers a real refractive index away from other resonances.]
+      answer: [Taking $nu -> 0$ at fixed real frequency away from poles removes collisional absorption and recovers the Hermitian cold tensor. Propagating branches have real $N$, while lossless stopbands can retain imaginary $N$ and evanescence.]
     ),
     (
       question: [Why does the fixed-ion limit fail at low frequency?],
@@ -1037,7 +1083,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "10-cold-magnetized-waves.html", title: [Cold magnetized waves]),
-    next: (href: "12-hot-plasma-waves.html", title: [Hot plasma waves]),
+    previous: (href: "12-cold-magnetized-waves.html", title: [Cold magnetized waves]),
+    next: (href: "14-hot-plasma-waves.html", title: [Hot plasma waves]),
   )
 ]

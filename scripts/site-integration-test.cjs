@@ -13,18 +13,20 @@ const { chromium } = require(
 const pages = [
   "/index.html",
   "/chapters/01-introduction.html",
-  "/chapters/02-single-particle-motion.html",
-  "/chapters/03-kinetic-theory.html",
-  "/chapters/04-moments.html",
-  "/chapters/05-multiple-fluids.html",
-  "/chapters/06-mhd.html",
-  "/chapters/07-collisions-conductivity.html",
-  "/chapters/08-diffusion.html",
-  "/chapters/09-introduction-waves.html",
-  "/chapters/10-cold-magnetized-waves.html",
-  "/chapters/11-finite-temperature-waves.html",
-  "/chapters/12-hot-plasma-waves.html",
-  "/chapters/13-sheaths-probes.html",
+  "/chapters/02-debye-shielding.html",
+  "/chapters/03-plasma-oscillations.html",
+  "/chapters/04-single-particle-motion.html",
+  "/chapters/05-kinetic-theory.html",
+  "/chapters/06-moments.html",
+  "/chapters/07-multiple-fluids.html",
+  "/chapters/08-mhd.html",
+  "/chapters/09-collisions-conductivity.html",
+  "/chapters/10-diffusion.html",
+  "/chapters/11-introduction-waves.html",
+  "/chapters/12-cold-magnetized-waves.html",
+  "/chapters/13-finite-temperature-waves.html",
+  "/chapters/14-hot-plasma-waves.html",
+  "/chapters/15-sheaths-probes.html",
   "/appendices/mathematical-toolkit.html",
 ];
 
@@ -35,13 +37,15 @@ const viewports = [
 ];
 
 const screenshotTargets = new Map([
-  ["/chapters/01-introduction.html", "main figure:has(svg)"],
-  ["/chapters/04-moments.html", 'main math[display="block"]'],
+  ["/chapters/01-introduction.html", "main figure:has(.model-figure-diagram)"],
+  ["/chapters/02-debye-shielding.html", "main figure:has(svg)"],
+  ["/chapters/03-plasma-oscillations.html", "main video"],
+  ["/chapters/06-moments.html", 'main math[display="block"]'],
   [
-    "/chapters/10-cold-magnetized-waves.html",
+    "/chapters/12-cold-magnetized-waves.html",
     'main > div[id^="frame-wrapper-"]',
   ],
-  ["/chapters/13-sheaths-probes.html", "main video"],
+  ["/chapters/15-sheaths-probes.html", "main video"],
   [
     "/appendices/mathematical-toolkit.html",
     'main > div[id^="frame-wrapper-"]',
@@ -126,6 +130,78 @@ async function auditPage(page, pagePath, viewport) {
       document.fonts ? document.fonts.ready : Promise.resolve(),
     );
     await page.waitForTimeout(100);
+
+    if (pagePath === "/chapters/01-introduction.html") {
+      const diagramCounts = await page.evaluate(() => {
+        const visibleDiagrams = () => [...document.querySelectorAll(".model-figure svg")]
+          .filter((svg) => svg.getBoundingClientRect().width > 0).length;
+        const withStylesheet = visibleDiagrams();
+        const externalSheets = [...document.styleSheets]
+          .filter((sheet) => sheet.href)
+          .map((sheet) => [sheet, sheet.disabled]);
+        try {
+          // The single diagram must remain visible without external CSS.
+          for (const [sheet] of externalSheets) sheet.disabled = true;
+          return {
+            total: document.querySelectorAll(".model-figure svg").length,
+            withStylesheet,
+            withoutStylesheet: visibleDiagrams(),
+          };
+        } finally {
+          for (const [sheet, disabled] of externalSheets) sheet.disabled = disabled;
+        }
+      });
+      for (const [condition, count] of Object.entries(diagramCounts)) {
+        if (count !== 1) {
+          recordFailure(`${pageLabel}: expected one model diagram ${condition}, found ${count}`);
+        }
+      }
+    }
+
+    // The reading order is observable behavior: headings and navigation must
+    // agree with the fifteen-chapter course sequence, including the new split.
+    const chapterPages = pages.filter((path) => path.startsWith("/chapters/"));
+    const chapterIndex = chapterPages.indexOf(pagePath);
+    if (chapterIndex >= 0) {
+      const heading = await page.locator("main h1").evaluate((element) => {
+        const item = element.querySelector("ol > li");
+        // List markers are rendered, but excluded from innerText by browsers.
+        const number = item
+          ? Number(item.getAttribute("value") || item.parentElement.getAttribute("start") || 1)
+          : Number(element.innerText.match(/^(\d+)\./)?.[1]);
+        return { number, title: element.innerText };
+      });
+      if (heading.number !== chapterIndex + 1) {
+        recordFailure(`${pageLabel}: incorrect chapter number in ${heading.title}`);
+      }
+      const navigation = await page.locator(".chapter-nav a").evaluateAll(
+        (links) => links.map((link) => new URL(link.href).pathname),
+      );
+      const expected = [
+        ...(chapterIndex > 0 ? [chapterPages[chapterIndex - 1]] : []),
+        chapterPages[chapterIndex + 1] || "/appendices/mathematical-toolkit.html",
+      ];
+      if (JSON.stringify(navigation) !== JSON.stringify(expected)) {
+        recordFailure(`${pageLabel}: chapter navigation does not follow reading order`);
+      }
+    }
+    if (pagePath === "/index.html") {
+      const contents = await page.locator("#contents a").evaluateAll(
+        (links) => links.map((link) => new URL(link.href).pathname)
+          .filter((path) => path.startsWith("/chapters/")),
+      );
+      if (JSON.stringify(contents) !== JSON.stringify(chapterPages)) {
+        recordFailure(`${pageLabel}: contents omit or misorder a chapter`);
+      }
+    }
+    if (pagePath === "/chapters/01-introduction.html") {
+      const movedSections = page.getByRole("heading", {
+        name: /^(Debye shielding|Electron plasma oscillations)$/,
+      });
+      if (await movedSections.count()) {
+        recordFailure(`${pageLabel}: dedicated topics remain sections of the introduction`);
+      }
+    }
 
     const result = await page.evaluate(() => {
       const documentElement = document.documentElement;
@@ -251,6 +327,55 @@ async function auditPage(page, pagePath, viewport) {
     }
     for (const message of badResponses) {
       recordFailure(`${pageLabel}: bad response: ${message}`);
+    }
+
+    // Opt-in evidence for visual debugging: capture every figure, and seek
+    // real served videos rather than accepting their posters as playback.
+    if (process.env.SITE_AUDIT_FIGURES === "1" && viewport.name === "wide") {
+      const figures = page.locator("main figure");
+      for (let index = 0; index < await figures.count(); index += 1) {
+        const figure = figures.nth(index);
+        if (!await figure.isVisible()) continue;
+        const stem = screenshotName(pagePath, `figure-${index}`).replace(/\.png$/, "");
+        await figure.screenshot({ path: path.join(artifactDir, `${stem}.png`) });
+        screenshotCount += 1;
+        const video = figure.locator("video");
+        if (await video.count()) {
+          // The simple preview server does not implement byte ranges.
+          // Decode its complete response as a blob for deterministic seeking;
+          // this verifies served media, not HTTP range-request support.
+          await video.evaluate(async (element) => {
+            const response = await fetch(element.currentSrc || element.src);
+            if (!response.ok) throw new Error(`video fetch failed: ${response.status}`);
+            element.src = URL.createObjectURL(await response.blob());
+            element.load();
+          });
+          for (const fraction of [0.25, 0.75]) {
+            await video.scrollIntoViewIfNeeded();
+            await video.evaluate(async (element, fraction) => {
+              element.muted = true;
+              await element.play();
+              element.pause();
+              await new Promise((resolve, reject) => {
+                const timer = setTimeout(() => reject(new Error("video seek timed out")), 15000);
+                element.addEventListener("seeked", () => { clearTimeout(timer); resolve(); }, { once: true });
+                const seek = () => { element.currentTime = fraction * element.duration; };
+                if (element.readyState >= 1) seek();
+                else {
+                  element.addEventListener("loadedmetadata", seek, { once: true });
+                  element.load();
+                }
+              });
+              if (Math.abs(element.currentTime - fraction * element.duration) > 0.15) {
+                throw new Error(`video did not reach requested frame: ${element.currentTime}/${element.duration}`);
+              }
+            }, fraction);
+            await page.waitForTimeout(150);
+            await video.screenshot({ path: path.join(artifactDir, `${stem}-video-${fraction}.png`) });
+            screenshotCount += 1;
+          }
+        }
+      }
     }
 
     const targetSelector = screenshotTargets.get(pagePath);

@@ -1,22 +1,24 @@
 #import "theme.typ": page-shell, frame-style, styles, register-cgs-units, normalized-label
-#import "@preview/physica:0.9.8": laplacian
+#import "@preview/physica:0.9.8": laplacian, dv
 
 #register-cgs-units
 
 #show: frame-style(styles.boxy)
 #import "chapters/01-introduction.typ": chapter as introduction
-#import "chapters/02-single-particle-motion.typ": chapter as motion
-#import "chapters/03-kinetic-theory.typ": chapter as kinetic
-#import "chapters/04-moments.typ": chapter as moments
-#import "chapters/05-multiple-fluids.typ": chapter as multiple-fluids
-#import "chapters/06-mhd.typ": chapter as mhd
-#import "chapters/07-collisions-conductivity.typ": chapter as collisions
-#import "chapters/08-diffusion.typ": chapter as diffusion
-#import "chapters/09-introduction-waves.typ": chapter as introduction-waves
-#import "chapters/10-cold-magnetized-waves.typ": chapter as cold-waves
-#import "chapters/11-finite-temperature-waves.typ": chapter as finite-temperature-waves
-#import "chapters/12-hot-plasma-waves.typ": chapter as hot-waves
-#import "chapters/13-sheaths-probes.typ": chapter as sheaths
+#import "chapters/02-debye-shielding.typ": chapter as debye-shielding
+#import "chapters/03-plasma-oscillations.typ": chapter as plasma-oscillations
+#import "chapters/04-single-particle-motion.typ": chapter as motion
+#import "chapters/05-kinetic-theory.typ": chapter as kinetic
+#import "chapters/06-moments.typ": chapter as moments
+#import "chapters/07-multiple-fluids.typ": chapter as multiple-fluids
+#import "chapters/08-mhd.typ": chapter as mhd
+#import "chapters/09-collisions-conductivity.typ": chapter as collisions
+#import "chapters/10-diffusion.typ": chapter as diffusion
+#import "chapters/11-introduction-waves.typ": chapter as introduction-waves
+#import "chapters/12-cold-magnetized-waves.typ": chapter as cold-waves
+#import "chapters/13-finite-temperature-waves.typ": chapter as finite-temperature-waves
+#import "chapters/14-hot-plasma-waves.typ": chapter as hot-waves
+#import "chapters/15-sheaths-probes.typ": chapter as sheaths
 #import "appendices/mathematical-toolkit.typ": appendix as mathematical-toolkit
 
 #let chapters = (
@@ -25,89 +27,103 @@
     title: [Introduction, plasma state, and model hierarchy],
     slug: "01-introduction",
     status: "drafted",
-    summary: [Scales, collective behavior, Debye shielding, oscillations, and model selection.],
+    summary: [Plasma examples, temperature, characteristic lengths and times, and model selection.],
   ),
   (
     number: 2,
+    title: [Debye shielding],
+    slug: "02-debye-shielding",
+    status: "drafted",
+    summary: [Boltzmann response, the Debye length, screened potentials, and finite spherical sources.],
+  ),
+  (
+    number: 3,
+    title: [Plasma oscillations],
+    slug: "03-plasma-oscillations",
+    status: "drafted",
+    summary: [Electron displacement, the restoring electric field, and the cold plasma frequency.],
+  ),
+  (
+    number: 4,
     title: [Single-particle motion],
-    slug: "02-single-particle-motion",
+    slug: "04-single-particle-motion",
     status: "drafted",
     summary: [Gyromotion, homogeneous-force drifts, guiding centers, mirrors, polarization drift, and cyclotron resonance.],
   ),
   (
-    number: 3,
+    number: 5,
     title: [Kinetic theory of plasmas],
-    slug: "03-kinetic-theory",
+    slug: "05-kinetic-theory",
     status: "drafted",
     summary: [Collisions, distribution functions, phase space, kinetic balance, and model limits.],
   ),
   (
-    number: 4,
+    number: 6,
     title: [Moments of the Boltzmann equation],
-    slug: "04-moments",
+    slug: "06-moments",
     status: "drafted",
     summary: [Velocity moments, continuity, momentum and energy transport, and closure.],
   ),
   (
-    number: 5,
+    number: 7,
     title: [Multiple-fluid theory of plasmas],
-    slug: "05-multiple-fluids",
+    slug: "07-multiple-fluids",
     status: "drafted",
     summary: [Two-fluid hydrogen plasma, species forces, and diamagnetic current.],
   ),
   (
-    number: 6,
+    number: 8,
     title: [Single-fluid theory and magnetohydrodynamics],
-    slug: "06-mhd",
+    slug: "08-mhd",
     status: "drafted",
     summary: [MHD variables, Ohm's law, frozen flux, diffusion, and equilibrium.],
   ),
   (
-    number: 7,
+    number: 9,
     title: [Collisions and plasma conductivity],
-    slug: "07-collisions-conductivity",
+    slug: "09-collisions-conductivity",
     status: "drafted",
     summary: [Neutral and Coulomb collisions, Spitzer resistivity, and DC or AC conductivity tensors.],
   ),
   (
-    number: 8,
+    number: 10,
     title: [Plasma diffusion],
-    slug: "08-diffusion",
+    slug: "10-diffusion",
     status: "drafted",
     summary: [Random walks, ambipolar transport, cross-field diffusion, and classical or Bohm-like limits.],
   ),
   (
-    number: 9,
+    number: 11,
     title: [Introduction to waves in plasmas],
-    slug: "09-introduction-waves",
+    slug: "11-introduction-waves",
     status: "drafted",
     summary: [Linearization, plasma oscillations, electromagnetic dispersion, and kinetic limits.],
   ),
   (
-    number: 10,
+    number: 12,
     title: [Waves in cold magnetized plasmas],
-    slug: "10-cold-magnetized-waves",
+    slug: "12-cold-magnetized-waves",
     status: "drafted",
     summary: [Cold dielectric tensor, circular and principal modes, oblique propagation, cutoffs, and resonances.],
   ),
   (
-    number: 11,
+    number: 13,
     title: [Collisions, ions, and finite-temperature effects on magnetized waves],
-    slug: "11-finite-temperature-waves",
+    slug: "13-finite-temperature-waves",
     status: "drafted",
     summary: [Collisional damping, ion-cyclotron and Alfvén branches, warm dispersion, and model ordering.],
   ),
   (
-    number: 12,
+    number: 14,
     title: [Waves in hot plasmas],
-    slug: "12-hot-plasma-waves",
+    slug: "14-hot-plasma-waves",
     status: "drafted",
     summary: [Vlasov response, velocity-space resonances, Landau damping, two-stream growth, and hot magnetized harmonics.],
   ),
   (
-    number: 13,
+    number: 15,
     title: [Plasma sheaths and Langmuir probes],
-    slug: "13-sheaths-probes",
+    slug: "15-sheaths-probes",
     status: "drafted",
     summary: [Particle flux, Bohm sheath entry, floating surfaces, and Langmuir-probe diagnostics.],
   ),
@@ -116,42 +132,29 @@
 #document("index.html", title: [Plasma Physics])[
   #page-shell(stylesheet: "styles.css", root: true)[
     #html.div(class: "hero")[
-      #html.p(class: "eyebrow")[Graduate lecture script]
+      #html.p(class: "eyebrow")[Graduate lecture notes]
       #html.h1[Plasma Physics]
       #html.p(class: "lede")[
-        A Typst-based, web-first script for reasoning from single-particle
-        orbits to collective waves, transport, and plasma sheaths.
+        From single-particle orbits to collective waves, transport, and
+        plasma sheaths.
       ]
       #html.div(class: "hero-actions")[
-        #link("chapters/01-introduction.html")[Start with the introduction →]
-        #link("chapters/02-single-particle-motion.html")[Open motion chapter →]
+        #link("chapters/01-introduction.html")[Start reading]
+        #link("#contents")[Contents]
       ]
-    ]
-
-    #html.section(class: "project-note")[
-      #html.strong[Reading contract]
-      Each section states its physical question, learning objectives,
-      definitions, Gaussian-CGS unit convention, derivation, visual or
-      Rechenbeispiel, limits, summary, exam connection, and four-question
-      knowledge check. Optional derivations are collapsed in the website.
-      Animations have controls, captions, and alternative descriptions.
     ]
 
     #html.section(class: "catalog", id: "contents")[
-      #html.p(class: "eyebrow")[Contents]
-      #html.h2[Chronological course map]
+      #html.h2[Contents]
       #html.p[
-        The order follows the rendered course-material sequence. Waves and
-        plasma sheaths are separate top-level chapters. A supplemental
-        mathematical toolkit follows the course map without changing its
-        chronology.
+        Each section states its question, assumptions, and units, and ends
+        with a short knowledge check. Optional derivations are collapsed.
       ]
       #html.ol(class: "chapter-list")[
         #for item in chapters [
           #html.li(class: "chapter-item")[
             #html.div(class: "chapter-number")[#item.number]
             #html.div(class: "chapter-copy")[
-              #html.p(class: "card-kicker")[Chapter #item.number · #item.status]
               #html.h3[
                 #link("chapters/" + item.slug + ".html")[#item.title]
               ]
@@ -182,8 +185,9 @@
           The default electromagnetic unit convention. For a charge $q$, the
           Lorentz force is
           $bold(F)=q (bold(E) + ((bold(v) times bold(B))/c))$, and electrostatic
-          Poisson's equation for charge density $rho$ is
-          $laplacian(phi) = -4 pi rho$.
+          Poisson's equation for charge density $rho_q$ is
+          $laplacian(phi) = -4 pi rho_q$. The symbol $rho$ without the
+          subscript denotes mass density.
         ]
         #html.dt[Normalized quantity]
         #html.dd[
@@ -199,9 +203,41 @@
         ]
         #html.dt[Debye length]
         #html.dd[
-          The equilibrium electrostatic response length. For a simple
-          electron--ion plasma with thermodynamic electron temperature $T_e$,
+          The electron screening length when ions do not respond and the
+          electrons have thermodynamic temperature $T_e$ is
           $lambda_D = sqrt((k_B T_e)/(4 pi n_e e^2))$ in Gaussian CGS.
+          If several classical species respond with Boltzmann densities,
+          $lambda_D^(-2)=sum_s (4 pi n_s q_s^2)/(k_B T_s)$.
+        ]
+        #html.dt[Thermal speed and distribution]
+        #html.dd[
+          The convention is $v_("th,s")=sqrt((2 k_B T_s)/m_s)$;
+          a centered Maxwellian varies as $exp(-v^2/v_("th,s")^2)$.
+          The three-velocity distribution satisfies
+          $integral f_(s) dif^3 bold(v)=n_s$. A one-velocity marginal
+          integrates over the other two velocity components; it is not a slice.
+        ]
+        #html.dt[Wave convention]
+        #html.dd[
+          Perturbations use $exp(i (bold(k) dot bold(r)-omega t))$.
+          With $omega=omega_r+i gamma$, positive $gamma$ means temporal
+          growth. For real frequency and propagation toward increasing $z$,
+          $k=k_r+i k_i$ with $k_i>0$ means spatial attenuation.
+        ]
+        #html.dt[Wave-number normalization]
+        #html.dd[
+          The refractive index is #normalized-label[$N=(k c)/omega$].
+          A different coordinate is #normalized-label[$K=(k c)/omega_p$],
+          with #normalized-label[$W=omega/omega_p$] and $K=N W$.
+          In vacuum $N=1$, equivalently $W=K$; these axes are not interchangeable.
+        ]
+        #html.dt[Gyroangle]
+        #html.dd[
+          With $bold(B)_0=B_0 bold(e)_z$, the usual counterclockwise angle
+          defined by $v_x=v_perp cos(theta)$ and $v_y=v_perp sin(theta)$
+          obeys $dv(theta,t)=-Omega_s$. The hot-plasma harmonic expansion
+          explicitly uses the opposite orientation; its signed frequency
+          and harmonic labels must be read with that definition.
         ]
         #html.dt[Closure]
         #html.dd[
@@ -254,51 +290,59 @@
   #page-shell(stylesheet: "../styles.css")[#introduction]
 ]
 
-#document("chapters/02-single-particle-motion.html", title: [Single-particle motion])[
+#document("chapters/02-debye-shielding.html", title: [Debye shielding])[
+  #page-shell(stylesheet: "../styles.css")[#debye-shielding]
+]
+
+#document("chapters/03-plasma-oscillations.html", title: [Plasma oscillations])[
+  #page-shell(stylesheet: "../styles.css")[#plasma-oscillations]
+]
+
+#document("chapters/04-single-particle-motion.html", title: [Single-particle motion])[
   #page-shell(stylesheet: "../styles.css")[#motion]
 ]
 
-#document("chapters/03-kinetic-theory.html", title: [Kinetic theory])[
+#document("chapters/05-kinetic-theory.html", title: [Kinetic theory])[
   #page-shell(stylesheet: "../styles.css")[#kinetic]
 ]
 
-#document("chapters/04-moments.html", title: [Moments])[
+#document("chapters/06-moments.html", title: [Moments])[
   #page-shell(stylesheet: "../styles.css")[#moments]
 ]
 
-#document("chapters/05-multiple-fluids.html", title: [Multiple fluids])[
+#document("chapters/07-multiple-fluids.html", title: [Multiple fluids])[
   #page-shell(stylesheet: "../styles.css")[#multiple-fluids]
 ]
 
-#document("chapters/06-mhd.html", title: [Single-fluid MHD])[
+#document("chapters/08-mhd.html", title: [Single-fluid MHD])[
   #page-shell(stylesheet: "../styles.css")[#mhd]
 ]
 
-#document("chapters/07-collisions-conductivity.html", title: [Collisions and conductivity])[
+#document("chapters/09-collisions-conductivity.html", title: [Collisions and conductivity])[
   #page-shell(stylesheet: "../styles.css")[#collisions]
 ]
 
-#document("chapters/08-diffusion.html", title: [Diffusion])[
+#document("chapters/10-diffusion.html", title: [Diffusion])[
   #page-shell(stylesheet: "../styles.css")[#diffusion]
 ]
 
-#document("chapters/09-introduction-waves.html", title: [Introduction to waves])[
+#document("chapters/11-introduction-waves.html", title: [Introduction to waves])[
   #page-shell(stylesheet: "../styles.css")[#introduction-waves]
 ]
 
-#document("chapters/10-cold-magnetized-waves.html", title: [Cold magnetized waves])[
+#document("chapters/12-cold-magnetized-waves.html", title: [Cold magnetized waves])[
   #page-shell(stylesheet: "../styles.css")[#cold-waves]
 ]
 
-#document("chapters/11-finite-temperature-waves.html", title: [Finite-temperature waves])[
+#document("chapters/13-finite-temperature-waves.html", title: [Finite-temperature waves])[
   #page-shell(stylesheet: "../styles.css")[#finite-temperature-waves]
 ]
 
-#document("chapters/12-hot-plasma-waves.html", title: [Hot plasma waves])[
+#document("chapters/14-hot-plasma-waves.html", title: [Hot plasma waves])[
   #page-shell(stylesheet: "../styles.css")[#hot-waves]
 ]
 
-#document("chapters/13-sheaths-probes.html", title: [Sheaths and probes])[
+#document("chapters/15-sheaths-probes.html", title: [Sheaths and probes])[
   #page-shell(stylesheet: "../styles.css")[#sheaths]
 ]
 
