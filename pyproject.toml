@@ -1,0 +1,9 @@
+[project]
+name = "plasma-skript"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["sympy>=1.13", "pytest>=8", "numpy>=1.26"]
+
+[tool.pytest.ini_options]
+testpaths = ["derivations"]
+python_files = ["ch*.py"]
