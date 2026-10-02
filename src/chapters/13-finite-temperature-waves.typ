@@ -819,11 +819,11 @@
 
   #animation(
     "../media/magnetosonic-waves.mp4",
-    "Three normalized ideal-MHD patterns share length and time scales. Sound propagates along the background field. The shear Alfvén pattern has wave vector and background field along x, displacement along y independent of y, and zero displacement divergence. The perpendicular fast magnetosonic pattern shows density and magnetic compression and travels faster than either separate sound or Alfvén speed.",
+    "Three normalized ideal-MHD patterns run one after the other in the same row, each from the same phase, and share length and time scales; the video ends on a still of all three final states stacked. Sound propagates along the background field. The shear Alfvén pattern has wave vector and background field along x, displacement along y independent of y, and zero displacement divergence. The perpendicular fast magnetosonic pattern shows density and magnetic compression and travels faster than either separate sound or Alfvén speed.",
     caption: [
       Warm magnetized-wave patterns: pressure compression, shear-Alfvén field
       displacement, and perpendicular compressional magnetosonic motion.
-      All panels use $X=x/L_0$ and $tau=t/t_0$, with reference speed
+      All patterns use $X=x/L_0$ and $tau=t/t_0$, with reference speed
       $L_0/t_0$. Their dimensionless speeds are
       $(v_s t_0)/L_0=0.6$, $(v_A t_0)/L_0=1$, and
       $(v_m t_0)/L_0=sqrt(1.36)$; the common wave number is $k L_0=1.25$.

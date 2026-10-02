@@ -573,6 +573,13 @@ Each scene must:
 - include a still frame or poster asset,
 - expose the physical variables and conventions in nearby Typst prose,
 - avoid relying on color or motion alone,
+- never animate two different systems or parameter cases side by side at the
+  same time, because no one can follow both: run case A at full width, then
+  case B in the same layout from the same initial state, and optionally end on
+  a still side-by-side pair of the final states, without motion, held for
+  about 3 s; linked views of one system (e.g. phase space and the histogram of
+  the same ensemble, or particles and the density profile of the same
+  simulation) may still run together,
 - render successfully inside `nix develop`, and
 - be checked against a simple analytical or numerical expectation.
 

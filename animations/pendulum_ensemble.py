@@ -19,9 +19,11 @@ which conserves p_i^2 + p_j^2 and therefore the total energy.  Pair events
 form a Poisson process (mean nu N dt / 2 per step), applied after each
 Stoermer-Verlet (leapfrog) step; theta is wrapped to [-pi, pi).
 
-Both panels use the same seed and initial blob; only nu differs:
-nu = 0.005 (left, nu << omega_0) and nu = 1 (right, nu >~ omega_0).
-The lower panels show the histogram of H against the Gibbs density
+Both runs use the same seed and initial blob; only nu differs:
+nu = 0.004 (nu << omega_0) and nu = 1 (nu >~ omega_0).  They are shown one
+after the other in the same full-width layout, then side by side as a still
+of the two final states.  The lower panel shows the histogram of H against
+the Gibbs density
 g(H) exp(-H/T) / Z, with g(H) the density of states (g = 4 K(H/2) inside the
 separatrix, 8 K(2/H) / sqrt(2H) outside) and T fixed by requiring that the
 canonical <H> equal the conserved mean energy per member.  The ensemble is a
@@ -162,14 +164,81 @@ def energy_histogram(theta, p, edges):
 
 # (start, end) in t omega_0 and run time in seconds of each linear segment:
 # a slow first segment resolves the shearing, a faster one the slow relaxation.
-SEGMENTS = ((0.0, 120.0, 16.0), (120.0, 480.0, 18.0))
+SEGMENTS = ((0.0, 120.0, 10.0), (120.0, 480.0, 12.0))
 H_MAX = 6.0
 F_MAX = 1.6
 P_MAX = 3.6
+FINAL_HOLD = 3.0
+
+
+def ensemble_panel(x_center, width, run, tag, temperature, edges, index):
+    """Phase space on top, f(H) against Gibbs below, for one run.
+
+    Returns (static VGroup, dynamic Group, phase-space axes); index() gives the
+    sample shown by the cloud and the histogram.
+    """
+    thetas, momenta = run
+    ph = axes([-PI, PI, PI / 2], [-P_MAX, P_MAX, 1], width, 3.0).move_to([x_center, 1.1, 0])
+    ph_labels = axis_labels(ph, r"\theta\ [1]", r"p\ [1]")
+    ph_labels[0].next_to(ph, DOWN, buff=0.12)
+    ticks = VGroup(*[
+        math(t, color=MUTED, size=24).next_to(ph.c2p(x, -P_MAX), DOWN, buff=0.12)
+        for t, x in ((r"-\pi", -PI), (r"\pi", PI))])
+
+    def level(h, sign, x_rng):
+        return ph.plot(lambda x: sign * np.sqrt(max(2 * (h - 1 + np.cos(x)), 0.0)),
+                       x_range=x_rng, color=FAINT, stroke_width=1.3, stroke_opacity=0.6)
+
+    contours = VGroup()
+    for h in (0.4, 1.0, 1.5, 2.6, 3.6, 5.0):
+        xm = np.arccos(1 - h) if h < 2 else PI
+        for s in (1, -1):
+            contours.add(level(h, s, [-xm, xm, xm / 60]))
+    separatrix = VGroup(*[
+        DashedVMobject(ph.plot(lambda x, s=s: 2 * s * np.cos(x / 2), x_range=[-PI, PI],
+                               color=MUTED, stroke_width=THIN_WIDTH), num_dashes=40)
+        for s in (1, -1)])
+
+    hx = axes([0, H_MAX, 1], [0, F_MAX, 0.5], width, 1.75).move_to([x_center, -2.15, 0])
+    hx_labels = axis_labels(hx, r"H\ [1]", r"f(H)\ [1]")
+    hx_labels[1].next_to(hx.y_axis.get_top(), UP, buff=0.1)
+    sep_mark = DashedLine(hx.c2p(2, 0), hx.c2p(2, F_MAX), color=MUTED,
+                          stroke_width=THIN_WIDTH, dash_length=0.08)
+    sep_tick = math("2", color=MUTED, size=24).next_to(hx.c2p(2, 0), DOWN, buff=0.12)
+    grid_h = np.linspace(0.02, H_MAX, 300)
+    gibbs = hx.plot_line_graph(grid_h, np.minimum(gibbs_energy_density(grid_h, temperature), F_MAX),
+                               line_color=ACCENT, stroke_width=THIN_WIDTH, add_vertex_dots=False)
+    label_tag = math(tag, size=36).move_to([x_center, 3.22, 0]).align_to(ph, LEFT)
+
+    origin = ph.c2p(0, 0)
+    e_theta, e_p = ph.c2p(1, 0) - origin, ph.c2p(0, 1) - origin
+    rgba = np.append(color_to_rgb(ELECTRON), 1.0)
+
+    def move_cloud(mob):
+        k = index()
+        keep = np.abs(momenta[k]) < P_MAX
+        mob.points = (origin + np.outer(thetas[k][keep], e_theta)
+                      + np.outer(momenta[k][keep], e_p))
+        mob.rgbas = np.tile(rgba, (len(mob.points), 1))
+
+    cloud = PMobject(stroke_width=2.6).add_updater(move_cloud)
+    move_cloud(cloud)
+
+    def histogram():
+        k = index()
+        f = np.minimum(energy_histogram(thetas[k], momenta[k], edges), F_MAX)
+        xs = np.repeat(edges, 2)
+        ys = np.concatenate([[0.0], np.repeat(f, 2), [0.0]])
+        return Polygon(*[hx.c2p(x, y) for x, y in zip(xs, ys)], color=ELECTRON,
+                       stroke_width=1.6, fill_color=ELECTRON, fill_opacity=0.35)
+
+    static = VGroup(ph, hx, ph_labels, hx_labels, ticks, sep_tick, contours, separatrix,
+                    sep_mark, gibbs, label_tag)
+    return static, Group(cloud, always_redraw(histogram)), ph
 
 
 class PendulumEnsemble(StyledScene):
-    """Same pendulum ensemble, weakly collisional (left) and collisional (right)."""
+    """Same pendulum ensemble, weakly collisional, then collisional, then both final states."""
 
     def build(self):
         fps = config.frame_rate
@@ -179,85 +248,44 @@ class PendulumEnsemble(StyledScene):
         temperature = gibbs_temperature(np.mean(pendulum_energy(theta0, p0)))
         edges = np.linspace(0.0, H_MAX, 49)
         runs = [simulate_ensemble(nu, times) for nu in (NU_WEAK, NU_STRONG)]
+        tags = (r"\nu \ll \omega_0", r"\nu \gtrsim \omega_0")
         tracker = ValueTracker(0.0)
+        last = len(times) - 1
 
         def index():
-            return min(len(times) - 1, int(np.searchsorted(times, tracker.get_value() - 1e-9)))
-
-        panels = Group()
-        for column, (x_center, (thetas, momenta), tag) in enumerate(zip(
-                (-3.45, 3.45), runs, (r"\nu \ll \omega_0", r"\nu \gtrsim \omega_0"))):
-            ph = axes([-PI, PI, PI / 2], [-P_MAX, P_MAX, 1], 5.6, 3.0).move_to([x_center, 1.1, 0])
-            ph_labels = axis_labels(ph, r"\theta\ [1]", r"p\ [1]")
-            ph_labels[0].next_to(ph, DOWN, buff=0.12)
-            ticks = VGroup(*[
-                math(t, color=MUTED, size=24).next_to(ph.c2p(x, -P_MAX), DOWN, buff=0.12)
-                for t, x in ((r"-\pi", -PI), (r"\pi", PI))])
-
-            def level(h, sign, x_rng):
-                return ph.plot(lambda x: sign * np.sqrt(max(2 * (h - 1 + np.cos(x)), 0.0)),
-                               x_range=x_rng, color=FAINT, stroke_width=1.3, stroke_opacity=0.6)
-
-            contours = VGroup()
-            for h in (0.4, 1.0, 1.5, 2.6, 3.6, 5.0):
-                xm = np.arccos(1 - h) if h < 2 else PI
-                for s in (1, -1):
-                    contours.add(level(h, s, [-xm, xm, xm / 60]))
-            separatrix = VGroup(*[
-                DashedVMobject(ph.plot(lambda x, s=s: 2 * s * np.cos(x / 2), x_range=[-PI, PI],
-                                       color=MUTED, stroke_width=THIN_WIDTH), num_dashes=40)
-                for s in (1, -1)])
-
-            hx = axes([0, H_MAX, 1], [0, F_MAX, 0.5], 5.6, 1.75).move_to([x_center, -2.15, 0])
-            hx_labels = axis_labels(hx, r"H\ [1]", r"f(H)\ [1]")
-            hx_labels[1].next_to(hx.y_axis.get_top(), UP, buff=0.1)
-            sep_mark = DashedLine(hx.c2p(2, 0), hx.c2p(2, F_MAX), color=MUTED,
-                                  stroke_width=THIN_WIDTH, dash_length=0.08)
-            sep_tick = math("2", color=MUTED, size=24).next_to(hx.c2p(2, 0), DOWN, buff=0.12)
-            grid_h = np.linspace(0.02, H_MAX, 300)
-            gibbs = hx.plot_line_graph(grid_h, np.minimum(gibbs_energy_density(grid_h, temperature), F_MAX),
-                                       line_color=ACCENT, stroke_width=THIN_WIDTH, add_vertex_dots=False)
-            label_tag = math(tag, size=36).move_to([x_center, 3.22, 0]).align_to(ph, LEFT)
-
-            origin = ph.c2p(0, 0)
-            e_theta, e_p = ph.c2p(1, 0) - origin, ph.c2p(0, 1) - origin
-            rgba = np.append(color_to_rgb(ELECTRON), 1.0)
-
-            def move_cloud(mob, thetas=thetas, momenta=momenta, origin=origin,
-                           e_theta=e_theta, e_p=e_p):
-                k = index()
-                keep = np.abs(momenta[k]) < P_MAX
-                mob.points = (origin + np.outer(thetas[k][keep], e_theta)
-                              + np.outer(momenta[k][keep], e_p))
-                mob.rgbas = np.tile(rgba, (len(mob.points), 1))
-
-            cloud = PMobject(stroke_width=2.6).add_updater(move_cloud)
-            move_cloud(cloud)
-
-            def histogram(thetas=thetas, momenta=momenta, hx=hx):
-                k = index()
-                f = np.minimum(energy_histogram(thetas[k], momenta[k], edges), F_MAX)
-                xs = np.repeat(edges, 2)
-                ys = np.concatenate([[0.0], np.repeat(f, 2), [0.0]])
-                return Polygon(*[hx.c2p(x, y) for x, y in zip(xs, ys)], color=ELECTRON,
-                               stroke_width=1.6, fill_color=ELECTRON, fill_opacity=0.35)
-
-            panels.add(VGroup(ph, hx, ph_labels, hx_labels, ticks, sep_tick, contours, separatrix,
-                              sep_mark, gibbs, label_tag),
-                       Group(cloud, always_redraw(histogram)))
+            return min(last, int(np.searchsorted(times, tracker.get_value() - 1e-9)))
 
         readout = VGroup(math(r"\omega_0 t =", color=MUTED, size=30),
                          DecimalNumber(0, num_decimal_places=0, color=MUTED, font_size=30))
-        readout.arrange(RIGHT, buff=0.15).move_to([0, 3.22, 0]).align_to(panels[2][0], RIGHT)
+        readout.arrange(RIGHT, buff=0.15)
         readout[1].add_updater(lambda d: d.set_value(tracker.get_value()))
 
-        dynamics = Group(panels[1], panels[3])
-        self.play(*[Create(p[0]) for p in (panels[0], panels[2])],
-                  *[Create(p[1]) for p in (panels[0], panels[2])], run_time=1.0, rate_func=EASE)
-        self.play(*[FadeIn(VGroup(*p[2:])) for p in (panels[0], panels[2])], FadeIn(readout),
-                  run_time=0.8, rate_func=EASE)
-        self.add(dynamics)
-        self.wait(1.0)
-        for _, end, run in SEGMENTS:
-            self.play(tracker.animate.set_value(end), run_time=run, rate_func=LINEAR)
-        self.wait(1.5)
+        # Sequential runs in one full-width layout, both from the same blob.
+        # The axes are shared; only the nu label and the ensemble change.
+        views = [ensemble_panel(0.0, 11.6, run, tag, temperature, edges, index)
+                 for run, tag in zip(runs, tags)]
+        base = list(views[0][0][:-1])
+        readout.move_to([0, 3.22, 0]).align_to(views[0][2], RIGHT)
+        self.play(Create(base[0]), Create(base[1]), run_time=1.0, rate_func=EASE)
+        self.play(*[FadeIn(m) for m in base[2:]], FadeIn(readout), run_time=0.8, rate_func=EASE)
+        for case, (static, dynamic, _) in enumerate(views):
+            tag = static[-1]
+            if case:
+                old_tag, old_dynamic = views[case - 1][0][-1], views[case - 1][1]
+                self.play(FadeOut(old_dynamic), FadeOut(old_tag), run_time=0.5, rate_func=EASE)
+                tracker.set_value(0.0)
+            self.play(FadeIn(dynamic), FadeIn(tag), run_time=0.5, rate_func=EASE)
+            self.wait(0.6)
+            for _, end, run_time in SEGMENTS:
+                self.play(tracker.animate.set_value(end), run_time=run_time, rate_func=LINEAR)
+            self.wait(0.8)
+
+        # Still pair of the two final states; nothing moves.
+        pair = [ensemble_panel(x, 5.6, run, tag, temperature, edges, lambda: last)
+                for x, run, tag in zip((-3.45, 3.45), runs, tags)]
+        readout[1].clear_updaters()
+        self.play(*[FadeOut(m) for m in base], FadeOut(views[1][0][-1]), FadeOut(views[1][1]),
+                  readout.animate.align_to(pair[1][2], RIGHT), run_time=0.6, rate_func=EASE)
+        self.play(*[FadeIn(Group(static, dynamic)) for static, dynamic, _ in pair],
+                  run_time=0.6, rate_func=EASE)
+        self.wait(FINAL_HOLD)

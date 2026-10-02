@@ -105,7 +105,7 @@
 
   #animation(
     "../media/collective-response.mp4",
-    "Two panels with the same particle positions. Left, neutral gas: a test particle flies straight and changes direction sharply at three contact collisions; only the struck neutrals start to move. Right, plasma: a positive test charge passes through resting electrons; arrows show an attractive force on every electron within about one to two Debye lengths of it at each moment, and its own path bends only slightly under the sum of many weak pulls.",
+    "Two runs, one after the other, in the same panel with the same particle positions. First, neutral gas: a test particle flies straight and changes direction sharply at three contact collisions; only the struck neutrals start to move. Then, plasma: a positive test charge passes through resting electrons; arrows show an attractive force on every electron within about one to two Debye lengths of it at each moment, and its own path bends only slightly under the sum of many weak pulls. The video ends on a still of both final states side by side.",
     caption: [
       Range of the interaction. Neutral gas: hard spheres of equal mass
       that interact only at contact. Plasma: a positive test charge and
