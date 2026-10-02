@@ -334,7 +334,9 @@ Accessibility is part of content correctness, not a later styling pass.
 ### 5.1 Graphics
 
 - Every non-decorative image, plot, diagram, path drawing, and visualization
-  must have a concise alternative description.
+  must have a concise alternative description. It is exposed to assistive
+  technology only (alt text, `aria-label`, video fallback content) and is
+  never rendered as visible text below a figure or video.
 - Use Typst's semantic `figure(alt: ...)` mechanism for graphics without their
   own alternative-description parameter. Put the figure markup at the point
   where it belongs in the reading order.

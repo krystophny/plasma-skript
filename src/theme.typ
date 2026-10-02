@@ -298,8 +298,7 @@
         stroke: 1pt + muted,
       )[
         #emph[Animation available in the website build.] \
-        #visible-caption \
-        #emph[Static reading: #alt-description]
+        #visible-caption
       ]
     ]
   } else {
@@ -318,10 +317,7 @@
       )[
         #alt-description
       ]
-      #html.figcaption[
-        #visible-caption
-        #html.span(class: "alt-note")[Alternative description: #alt-description]
-      ]
+      #html.figcaption[#visible-caption]
     ]
   }
 }
