@@ -27,8 +27,12 @@
 // A plot of a derived result: plot_<name>() in derivations/chapters/chNN_*.py
 // lambdifies the tested SymPy expression and writes
 // derivations/build/fig/<name>.svg (used here) and .pdf (used by the slides).
+// Image alt text: the plot's name in words; the enclosing figure's `alt`
+// carries the full description.
+#let plot-alt(name) = "Plot: " + name.replace("_", " ").replace("-", " ")
 #let derived-plot(name, width: 9cm) = context {
-  let img = image("/derivations/build/fig/" + name + ".svg", width: width)
+  let img = image("/derivations/build/fig/" + name + ".svg", width: width,
+    alt: plot-alt(name))
   if target() == "paged" { align(center, img) }
   else { html.div(class: "quantitative-plot", img) }
 }
@@ -36,14 +40,14 @@
 // Each panel is drawn at its native width (si.figure size), so the text size
 // matches a single derived plot.
 #let derived-plot-pair(left, right, width: 6.6cm) = context {
-  let path(name) = "/derivations/build/fig/" + name + ".svg"
+  let img(name) = image("/derivations/build/fig/" + name + ".svg", width: width,
+    alt: plot-alt(name))
   if target() == "paged" {
-    align(center, grid(columns: 2, column-gutter: 0.8cm,
-      image(path(left), width: width), image(path(right), width: width)))
+    align(center, grid(columns: 2, column-gutter: 0.8cm, img(left), img(right)))
   } else {
     html.div(style: "display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;",
-      html.div(class: "quantitative-plot", image(path(left), width: width))
-      + html.div(class: "quantitative-plot", image(path(right), width: width)))
+      html.div(class: "quantitative-plot", img(left))
+      + html.div(class: "quantitative-plot", img(right)))
   }
 }
 #let samples(lo, hi, n: 80) = range(n + 1).map(i => lo + (hi - lo) * i / n)
@@ -240,7 +244,7 @@
 )[#derived-plot-pair("debye_potential", "debye_sphere_potential")]
 
 #let debye-regime-map = figure(
-  alt: "Log-log plane of electron density from 10 to the 6 to 10 to the 32 per cubic metre and electron temperature from 0.01 eV to 100 keV. Three dashed lines of slope one mark Debye lengths of 100 m, 1 cm and 1 micrometre. A solid line of slope one third marks N_D equal to one; the shaded region below it, at high density and low temperature, has N_D below one. Five example plasmas, ionosphere, H II region, solar corona, Hall thruster and tokamak core, all lie far above that line.",
+  alt: "Log-log plane of electron density from 10 to the 6 to 10 to the 32 per cubic metre and electron temperature from 0.01 eV to 100 keV. Three dashed lines of slope one mark Debye lengths of 100 m, 0.01 m and 1 micrometre. A solid line of slope one third marks N_D equal to one; the shaded region below it, at high density and low temperature, has N_D below one. Five example plasmas, ionosphere, H II region, solar corona, Hall thruster and tokamak core, all lie far above that line.",
   caption: [
     Where the collective ordering holds. Dashed: $lambda_D = L$, i.e.
     $k_B T_e = e^2 n_e L^2\/epsilon_0$, for three system sizes $L$; plasmas
