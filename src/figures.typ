@@ -88,7 +88,7 @@
 )
 
 #let web-model-map() = context {
-  set text(font: "New Computer Modern", size: 11pt, fill: rgb("#1c1f23"))
+  set text(font: "Libertinus Serif", size: 11pt, fill: rgb("#1c1f23"))
   let note(body) = text(size: 10.5pt, fill: rgb("#4a5058"), style: "italic", body)
   let detail(body) = text(size: 9.5pt, fill: rgb("#4a5058"), body)
   let box(pos, body, name) = node(pos, align(center, body), name: name,

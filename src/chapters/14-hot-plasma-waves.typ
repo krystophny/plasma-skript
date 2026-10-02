@@ -748,15 +748,15 @@
     equilibrium of the form
     $f_(0)(bold(v))=delta(v_z) F(v_x,v_y)$ with
     $n_0=integral_(RR^2) F(v_x,v_y) dif v_x dif v_y$ and
-    $〈v_x^2〉=(1/n_0) integral_(RR^2) v_x^2 F(v_x,v_y)
+    $⟨v_x^2⟩=(1/n_0) integral_(RR^2) v_x^2 F(v_x,v_y)
       dif v_x dif v_y$.
     The transverse relation becomes
-    $k^2 c^2=omega^2-omega_p^2 [1+(k^2 〈v_x^2〉)/(omega^2)]$.
+    $k^2 c^2=omega^2-omega_p^2 [1+(k^2 ⟨v_x^2⟩)/(omega^2)]$.
     Equivalently,
     $omega^4-(k^2 c^2+omega_p^2)omega^2-
-      k^2 omega_p^2 〈v_x^2〉=0$.
+      k^2 omega_p^2 ⟨v_x^2⟩=0$.
     The lower value of $omega^2$ is negative whenever
-    $k != 0$ and $〈v_x^2〉>0$, so this idealized anisotropy contains a growing transverse
+    $k != 0$ and $⟨v_x^2⟩>0$, so this idealized anisotropy contains a growing transverse
     mode. The instability is powered by the anisotropic velocity-space free
     energy.]
   )
@@ -770,7 +770,7 @@
 
     $ integral_(RR^3) [
         (v_x^2 f_(0)(bold(v)))/((omega-k v_z)^2)
-      ] dif^3 bold(v)=n_0 〈v_x^2〉/omega^2 .$
+      ] dif^3 bold(v)=n_0 ⟨v_x^2⟩/omega^2 .$
 
     Inserting this result together with
 
@@ -783,16 +783,16 @@
 
     $ Y_±=[(k^2 c^2+omega_p^2) ±
         sqrt((k^2 c^2+omega_p^2)^2+
-          4 k^2 omega_p^2 〈v_x^2〉)]/2 .$
+          4 k^2 omega_p^2 ⟨v_x^2⟩)]/2 .$
 
     Since the square root is larger than $k^2 c^2+omega_p^2$ when
-    $k != 0$ and $〈v_x^2〉>0$, the lower root satisfies $Y_-<0$.
+    $k != 0$ and $⟨v_x^2⟩>0$, the lower root satisfies $Y_-<0$.
 
     #derivation-step[Convert the negative root to a growth rate]
     Writing $omega=i gamma$ on the growing member gives
 
     $ gamma^2=[sqrt((k^2 c^2+omega_p^2)^2+
-          4 k^2 omega_p^2 〈v_x^2〉)-
+          4 k^2 omega_p^2 ⟨v_x^2⟩)-
         (k^2 c^2+omega_p^2)]/2 .$
 
     Thus the idealized anisotropy produces exponential growth. A finite
@@ -808,7 +808,7 @@
     $epsilon_0=qty("8.854e-12", "F/m")$, and
     $c=qty("2.998e8", "m/s")$. Let
     #normalized-label[$(k c)/omega_p=qty("0.50", "1")$] and
-    #normalized-label[ $〈v_x^2〉/c^2=qty("1.00e-2", "1")$ ].
+    #normalized-label[ $⟨v_x^2⟩/c^2=qty("1.00e-2", "1")$ ].
     Determine $k$, the wavelength, and the positive growth rate of the
     anisotropic transverse branch.
 

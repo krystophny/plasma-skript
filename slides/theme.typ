@@ -142,12 +142,13 @@
 }
 
 // An animation poster on the media band, linked to the video; the play mark
-// sits at the same place on every linked page.
+// sits at the same place on every linked page. The 16:9 poster spans all
+// twelve columns (257 mm x 144.6 mm), within the band's 150 mm height.
 #let animation-page(slug, name, section: none) = {
   let url = animation-url(name)
   slide(section: section, link-to: url)[
-    #place(top + left, dx: col-x(2), dy: if section == none { title-band } else { 0mm },
-      link(url, image(poster-path(slug), width: cols(10))))
+    #place(top + left, dy: if section == none { title-band } else { 0mm },
+      link(url, image(poster-path(slug), width: text-width)))
   ]
 }
 

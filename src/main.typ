@@ -361,3 +361,6 @@
 ]
 
 #asset("styles.css", read("styles.css"))
+#asset("fonts/LibertinusMath-Regular.otf",
+  read("../fonts/LibertinusMath-Regular.otf", encoding: none))
+#asset("fonts/OFL.txt", read("../fonts/OFL.txt"))

@@ -1,6 +1,14 @@
 /* Plasma physics lecture script: quiet, typographic reading layout.
    Light by default, dark when the reader's system asks for it. */
 
+/* Maths in Libertinus Math, as in the print PDF, the slides, and the plots.
+   Served from fonts/ next to this stylesheet (SIL OFL, fonts/OFL.txt). */
+@font-face {
+  font-family: "Libertinus Math";
+  src: url("fonts/LibertinusMath-Regular.otf") format("opentype");
+  font-display: swap;
+}
+
 :root {
   color-scheme: light dark;
   --bg: #fbfaf7;
@@ -24,8 +32,8 @@
   --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
     Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --math: "STIX Two Math", "Latin Modern Math", "New Computer Modern Math",
-    "Cambria Math", math;
+  --math: "Libertinus Math", "STIX Two Math", "Latin Modern Math",
+    "New Computer Modern Math", "Cambria Math", math;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -31,18 +31,19 @@
   plot-name: "debye_potential",
 )
 
-// Finite source: the script's comparison pair, then LIVE.
+// 2.2 Finite charge distribution: the script's comparison pair, then LIVE.
 #plot-pair("debye_potential", "debye_sphere_potential",
+  section: "debye-finite-source",
   right-caption: [$R$~radius of the charged sphere])
 #blanks(2)
 
-// Plasma parameter: illustration, LIVE, summary, regime map.
-#slide[
+// 2.3 Plasma parameter: illustration, LIVE, summary, regime map.
+#slide(section: "debye-collective-validity")[
   #at(1, 6, align(center)[$N_D approx 3$])
   #at(7, 6, align(center)[$N_D approx 300$])
   #at(1, 6, y: 14mm, debye-sphere(3, 11, 3.4mm, exact: true))
   #at(7, 6, y: 14mm, debye-sphere(300, 5, 1.5mm))
-  #at(1, 12, y: 14mm + cols(6) + 8mm, text(fill: muted)[$N_D$ electrons
+  #at(1, 12, y: 14mm + cols(6) + 4mm, text(fill: muted)[$N_D$ electrons
     in a sphere of radius $lambda_D$])
 ]
 #blanks(2)

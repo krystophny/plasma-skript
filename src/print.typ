@@ -21,6 +21,9 @@
 
 #set page(paper: "a4", margin: 2.2cm)
 #set par(justify: true)
+// Maths in Libertinus Math to match the Libertinus Serif text, the lecture
+// slides, and the plots (fonts/; compile with --font-path fonts).
+#show math.equation: set text(font: "Libertinus Math")
 
 #align(center)[
   #text(size: 24pt, weight: "bold")[Plasma Physics]

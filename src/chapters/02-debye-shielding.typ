@@ -159,6 +159,48 @@
 
   #debye-screened-point
 
+  #summary[
+    Debye shielding is a linear equilibrium response: the Boltzmann electron
+    density modifies Poisson's equation and introduces the length $lambda_D$.
+    The derivation depends on weak potential, mobile electrons, and a stationary
+    ion background.
+  ]
+
+  #exam-prompts(
+    (
+      [(d) A spherical region of complete charge separation has a potential $Phi(r) = (N q_e / epsilon_0) r^2$ at its boundary. What size can such a region roughly have in a thermal plasma of temperature $T$ (potential energy = thermal energy)?],
+      [(e) Describe and give an overview of the derivation for Debye shielding.],
+    ),
+    [Plasma Physics Exam.pdf, p. 1],
+  )
+
+  #knowledge-check((
+    (
+      question: [Why does a positive electrostatic potential increase the equilibrium electron density in the Boltzmann response?],
+      answer: [An electron has charge $-e$, so its potential energy is $-e phi$. A positive $phi$ lowers that energy and produces the factor $exp((e phi) / (k_B T_e))$.],
+    ),
+    (
+      question: [Which approximation turns the exponential Boltzmann response into a linear screening equation?],
+      answer: [The weak-potential ordering $abs(e phi) << k_B T_e$ permits a first-order expansion of the exponential.],
+    ),
+    (
+      question: [What happens to the screened potential at distances much larger than $lambda_D$ in this model?],
+      answer: [The exponential factor suppresses it, so the localized electrostatic influence is small compared with the unscreened $1/r$ field.],
+    ),
+    (
+      question: [Give one situation in which the linear Debye-shielding derivation should not be used without modification.],
+      answer: [A potential comparable to or larger than $(k_B T_e)/e$, a time-dependent kinetic response, or a boundary within the shielding region violates the stated assumptions.],
+    ),
+  ))
+
+  #section-title[Finite charge distribution] <debye-finite-source>
+
+  #objectives((
+    [derive the bare potential of a uniformly charged sphere from Gauss's law],
+    [match the screened interior and exterior solutions at the source boundary],
+    [separate the source-size effect from the exponential screening factor],
+  ))
+
   #definition(
     [Finite spherical test charge],
     [To separate the size of the source from the plasma response, let the test
@@ -341,7 +383,44 @@
     number, and kinetic non-equilibrium require a more complete model.]
   )
 
-  #strong[Collective validity] <debye-collective-validity>
+  #summary[
+    A uniformly charged sphere of radius $R$ and charge $Q$ has a bare
+    potential that is quadratic in the radius $r$ inside the source and equal
+    to the Coulomb potential $Q/(4 pi epsilon_0 r)$ outside it. In the
+    linearized Debye--Hückel model, the screened potential $phi_"D"$ is
+    regular inside the source and equals $B e^(-r/lambda_D)/r$ outside, where
+    continuity of potential and radial field at $r=R$ fixes the coefficient
+    $B$. The source size sets the amplitude near $r=R$, and the electron
+    response supplies the exterior factor $e^(-r/lambda_D)$. Linearization
+    holds everywhere when $(3 e Q)/(8 pi epsilon_0 R k_B T_e) << 1$.
+  ]
+
+  #knowledge-check((
+    (
+      question: [Use Gauss's law to find the bare field inside the uniform sphere. How large is the bare potential at the center compared with its value at the surface $r=R$?],
+      answer: [The enclosed charge is $Q r^3/R^3$, so $E_"C" = (Q r)/(4 pi epsilon_0 R^3)$ grows linearly with $r$. Integrating this field from $r$ to $R$ and adding the surface value $Q/(4 pi epsilon_0 R)$ gives $phi_"C" (0) = (3 Q)/(8 pi epsilon_0 R)$, which is $3/2$ of the surface value and finite.],
+    ),
+    (
+      question: [A positive source keeps its charge $Q$ while its radius $R$ is halved. How does the sufficient condition for linearization change?],
+      answer: [The parameter $(3 e Q)/(8 pi epsilon_0 R k_B T_e)$ is the bare potential energy $e phi_"C" (0)$ at the center divided by the electron thermal energy $k_B T_e$, and it scales as $1/R$. Halving $R$ doubles it, so the same margin of validity requires half the charge or twice the electron temperature.],
+    ),
+    (
+      question: [What does the exterior coefficient $B$ become when $R -> 0$ at fixed $Q$, and which earlier result does the exterior potential then reproduce?],
+      answer: [$B -> Q/(4 pi epsilon_0)$, so the exterior potential becomes $Q e^(-r/lambda_D)/(4 pi epsilon_0 r)$, the screened point charge of the previous section. The finite-source correction is contained entirely in $B$.],
+    ),
+    (
+      question: [With $kappa = 1/lambda_D$, explain why the interior solution uses $sinh(kappa r)/r$, the exterior solution uses $e^(-kappa r)/r$, and two conditions at $r=R$ suffice to fix them.],
+      answer: [The interior solution must stay finite at $r=0$, and $sinh(kappa r)/r -> kappa$ there, while $e^(-kappa r)/r$ diverges. The exterior solution must decay at infinity, which excludes the growing $e^(kappa r)/r$. Each region then carries one free amplitude, $A$ and $B$, and continuity of $phi_"D"$ and of $dv(phi_"D", r)$ at $r=R$ gives two equations for them.],
+    ),
+  ))
+
+  #section-title[Plasma parameter] <debye-collective-validity>
+
+  #objectives((
+    [compute the Debye number from the electron density and the Debye length],
+    [relate the coupling parameter $Gamma_s$ to the Debye number],
+    [decide from $N_D$, $Gamma_s$ and $lambda_D/L$ whether a collective, quasineutral description applies],
+  ))
 
   The Debye number counts electrons within a sphere of radius $lambda_D$.
   A smooth collective description requires this number to be large:
@@ -378,36 +457,32 @@
   #debye-regime-map
 
   #summary[
-    Debye shielding is a linear equilibrium response: the Boltzmann electron
-    density modifies Poisson's equation and introduces the length $lambda_D$.
-    The derivation depends on weak potential, mobile electrons, and a stationary
-    ion background.
+    The Debye number $N_D = (4 pi)/3 n_e lambda_D^3$ counts the electrons in a
+    sphere of radius $lambda_D$, and a smooth collective field requires
+    $N_D >> 1$. The coupling parameter $Gamma_s$ compares the Coulomb energy of
+    two particles of species $s$ at the mean spacing $a_s$ with their thermal
+    energy $k_B T_s$, and an ideal plasma has $Gamma_s << 1$. For electrons,
+    $Gamma_e N_D^(2/3) = 1/3$, independent of $n_e$ and $T_e$, so weak coupling and
+    a large Debye number are one condition. Bulk quasineutrality additionally
+    requires $lambda_D/L << 1$ for the system or gradient length $L$.
   ]
-
-  #exam-prompts(
-    (
-      [(d) A spherical region of complete charge separation has a potential $Phi(r) = (N q_e / epsilon_0) r^2$ at its boundary. What size can such a region roughly have in a thermal plasma of temperature $T$ (potential energy = thermal energy)?],
-      [(e) Describe and give an overview of the derivation for Debye shielding.],
-    ),
-    [Plasma Physics Exam.pdf, p. 1],
-  )
 
   #knowledge-check((
     (
-      question: [Why does a positive electrostatic potential increase the equilibrium electron density in the Boltzmann response?],
-      answer: [An electron has charge $-e$, so its potential energy is $-e phi$. A positive $phi$ lowers that energy and produces the factor $exp((e phi) / (k_B T_e))$.],
+      question: [How does $N_D$ scale with the electron density $n_e$ at fixed $T_e$, and with $T_e$ at fixed $n_e$? Which corner of the density--temperature plane violates $N_D >> 1$?],
+      answer: [Since $lambda_D$ is proportional to $sqrt(T_e/n_e)$, $N_D$ is proportional to $n_e lambda_D^3$ and hence to $T_e^(3/2) n_e^(-1/2)$. Dense, cold plasmas reach $N_D approx 1$, the shaded high-density, low-temperature region of the regime map.],
     ),
     (
-      question: [Which approximation turns the exponential Boltzmann response into a linear screening equation?],
-      answer: [The weak-potential ordering $abs(e phi) << k_B T_e$ permits a first-order expansion of the exponential.],
+      question: [Show that $Gamma_e N_D^(2/3)$ contains neither $n_e$ nor $T_e$, using $a_e = (3/(4 pi n_e))^(1/3)$ and $lambda_D^2 = (epsilon_0 k_B T_e)/(n_e e^2)$.],
+      answer: [$Gamma_e = e^2/(4 pi epsilon_0 k_B T_e) ((4 pi n_e)/3)^(1/3)$ and $N_D^(2/3) = ((4 pi n_e)/3)^(2/3) (epsilon_0 k_B T_e)/(n_e e^2)$. In the product, $e^2$, $epsilon_0$ and $k_B T_e$ cancel, and the density factors combine to $n_e/n_e$, leaving a pure number. A large $N_D$ therefore implies $Gamma_e << 1$, and conversely.],
     ),
     (
-      question: [What happens to the screened potential at distances much larger than $lambda_D$ in this model?],
-      answer: [The exponential factor suppresses it, so the localized electrostatic influence is small compared with the unscreened $1/r$ field.],
+      question: [A plasma has $N_D >> 1$ and $Gamma_e << 1$, but its size $L$ is comparable to $lambda_D$. Which condition fails, and which modeling assumption must be dropped?],
+      answer: [The ordering $lambda_D/L << 1$ fails. Screening layers then span the whole system, and bulk quasineutrality cannot be assumed. The collective field remains smooth because $N_D >> 1$ still holds.],
     ),
     (
-      question: [Give one situation in which the linear Debye-shielding derivation should not be used without modification.],
-      answer: [A potential comparable to or larger than $(k_B T_e)/e$, a time-dependent kinetic response, or a boundary within the shielding region violates the stated assumptions.],
+      question: [The line $lambda_D = L$ in the density--temperature plane is $k_B T_e = (e^2 n_e L^2)/epsilon_0$. On which side is the bulk quasineutral, and how does the line move when $L$ doubles?],
+      answer: [Quasineutral bulk requires $lambda_D < L$, which is $k_B T_e < (e^2 n_e L^2)/epsilon_0$, the side of higher density at given temperature. Doubling $L$ multiplies the temperature on the line by four at each density, so the quasineutral region grows.],
     ),
   ))
 
