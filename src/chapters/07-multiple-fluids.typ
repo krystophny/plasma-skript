@@ -250,7 +250,7 @@
         (bold(E)+bold(v) times bold(B)) . $
 
     #derivation-step[Take the zeroth moment]
-    Integrating over velocity gives $pdv(n_(s),t)$ from the time term and
+    Integrating over velocity gives $pdv(n_(s),t, style: "horizontal")$ from the time term and
     $div(n_(s)bold(u)_(s))$ from spatial streaming. The velocity divergence is
     a vanishing surface term, and particle-conserving collisions have zero
     zeroth moment. This gives the species continuity equation.
@@ -283,8 +283,11 @@
     $ bold(R)_(s)=m_(s) integral bold(v)C_(s)[f] dif^3 bold(v) . $
 
     #derivation-step[Take the energy moment]
-    Multiply by $(m_(s)v^2)/2$. After integration by parts, the force work is
-    $-m_(s) integral bold(v) dot bold(a)_(s) f_(s)dif^3 bold(v)$. The magnetic
+    Multiply by $m_(s)v^2\/2$. After integration by parts, the force work is
+
+    $ -m_(s) integral bold(v) dot bold(a)_(s) f_(s)dif^3 bold(v) . $
+
+    The magnetic
     contribution vanishes because
     $bold(v) dot (bold(v) times bold(B))=0$, while the electric contribution
     is $q_(s)n_(s)bold(u)_(s)dot bold(E)$.
@@ -399,7 +402,7 @@
     leading balance.]
   )
 
-  Let $bold(b)=bold(B)/B$ and project the species momentum balance
+  Let $bold(b)=bold(B)\/B$ and project the species momentum balance
   perpendicular to the field:
 
   $ 0 approx q_(s)n_(s) (bold(E)_perp + bold(u)_(s,perp) times bold(B))
@@ -507,13 +510,13 @@
     (
       question: [Which term makes the electric drift common to both species?],
       answer: [The electric force is proportional to $q_(s)$, which cancels
-      the $1/q_(s)$ introduced when the perpendicular Lorentz balance is
-      solved. Thus $bold(u)_(E times B)=(bold(E)times bold(B))/(B^2)$.]
+      the $1\/q_(s)$ introduced when the perpendicular Lorentz balance is
+      solved. Thus $bold(u)_(E times B)=bold(E)times bold(B)\/B^2$.]
     ),
     (
       question: [How does reversing the charge affect the diamagnetic drift?],
       answer: [It reverses $bold(u)_(*,s)$ because the drift is proportional to
-      $1/q_(s)$. The pressure gradient and magnetic-field directions remain
+      $1\/q_(s)$. The pressure gradient and magnetic-field directions remain
       unchanged.]
     ),
     (
@@ -655,7 +658,10 @@
   #summary[
     Charge-weighting converts opposite diamagnetic velocities into additive
     current contributions. In a quasi-neutral hydrogen plasma,
-    $bold(j)_*=(bold(B)times grad(p_(e)+p_(i)))/(B^2)$, while the common electric
+
+    $ bold(j)_*=(bold(B)times grad(p_(e)+p_(i)))/(B^2) , $
+
+    while the common electric
     drift contributes only through the small charge density. The current is a
     response to the pressure gradient; its interpretation as transport needs
     the full fluid balance and boundary conditions.
@@ -674,7 +680,10 @@
       question: [Why do the electron and ion diamagnetic currents add?],
       answer: [Their diamagnetic velocities have opposite signs, but each
       current is multiplied by its own charge. Since
-      $q_(s)n_(s)bold(u)_(*,s)=(bold(B)times grad(p_(s)))/(B^2)$, both contributions
+
+      $ q_(s)n_(s)bold(u)_(*,s)=(bold(B)times grad(p_(s)))/(B^2) , $
+
+      both contributions
       point along the corresponding pressure-gradient cross-field direction.]
     ),
     (
@@ -717,11 +726,11 @@
 
   #assumption(
     [Parallel ordering],
-    [Let $bold(b)=bold(B)/B$. The magnetic part of the Lorentz force has zero
+    [Let $bold(b)=bold(B)\/B$. The magnetic part of the Lorentz force has zero
     projection along $bold(b)$ exactly. Use scalar species pressures in the
     displayed parallel equation. For the scalar parallel-velocity form,
     take the field direction as locally fixed on the scale of interest;
-    otherwise retain $bold(b) dot pdv(bold(u)_(s),t)$ and the associated
+    otherwise retain $bold(b) dot pdv(bold(u)_(s),t, style: "horizontal")$ and the associated
     field-line geometry rather than replacing it by a derivative of
     $u_(parallel,s)$. Keep inertia and collisions until a further limit is
     stated. The Boltzmann response below additionally assumes negligible
@@ -852,7 +861,7 @@
     Target: report the Boltzmann density ratio and the resulting electron
     density.
 
-    Numerical result: $n_(e)/n_(e,0)=2.72$ (dimensionless) and
+    Numerical result: $n_(e)\/n_(e,0)=2.72$ (dimensionless) and
     $n_(e)=qty("2.72e16", "m^-3")$.
   ]
 
@@ -885,7 +894,9 @@
       answer: [Negligible parallel electron inertia and collisions, scalar
       isothermal pressure, electrostatic parallel balance, and a connected
       field line lead to
-      $n_(e)/n_(e,0)=exp((e(phi-phi_0))/(k_B T_(e)))$.]
+
+      $ n_(e)/n_(e,0)=exp((e(phi-phi_0))/(k_B T_(e))) . $
+      ]
     ),
     (
       question: [What is the one-fluid velocity?],

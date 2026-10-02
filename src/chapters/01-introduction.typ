@@ -241,7 +241,7 @@
   temperature and mean random kinetic energy.
 
   The conversion $1 #unit("eV") = 1.602176634 dot 10^(-19) #unit("J")$
-  corresponds to $(1 #unit("eV"))/k_B approx 1.1605 dot 10^4$ K. Thus a
+  corresponds to $1 #unit("eV")\/k_B approx 1.1605 dot 10^4$ K. Thus a
   statement such as $k_B T_e = 10 #unit("eV")$ identifies an energy scale of
   roughly $1.16 dot 10^5$ K, while the electron and ion temperatures may still
   differ. A temperature also does not specify the total heat content: that
@@ -263,7 +263,7 @@
   #summary[
     Speed sets the single-particle kinetic energy, while temperature sets the
     width and average energy of an equilibrium distribution. The script uses
-    $v_("th,s")=sqrt((2 k_B T_s)/m_s)$ and treats electron and ion temperatures
+    $v_("th,s")=sqrt(2 k_B T_s\/m_s)$ and treats electron and ion temperatures
     as separate quantities unless an equilibration assumption is stated.
   ]
 
@@ -281,7 +281,7 @@
     ),
     (
       question: [How does the chosen thermal-speed convention relate to $k_B T_s$?],
-      answer: [$v_("th,s")=sqrt((2 k_B T_s)/m_s)$. At fixed mass, multiplying thermal energy by four doubles this characteristic speed.],
+      answer: [$v_("th,s")=sqrt(2 k_B T_s\/m_s)$. At fixed mass, multiplying thermal energy by four doubles this characteristic speed.],
     ),
     (
       question: [Why can a plasma have separate electron and ion temperatures?],

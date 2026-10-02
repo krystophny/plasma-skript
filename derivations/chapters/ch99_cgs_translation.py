@@ -169,8 +169,8 @@ assert abs(float(N_D_si / N_D_g) - 1) < 1e-12
 si.check(lambda_g * CM, lambda_si)
 
 section("Electronvolt", "cgs-translation.typ:86")
-agrees(E_SI, sp.Rational(1602176634, 10**28), ":87", lhs=sp.Symbol("eV") / sp.Symbol("J"))
-agrees(E_SI / ERG, sp.Rational(1602176634, 10**21), ":87", lhs=sp.Symbol("eV") / erg)
+agrees(E_SI, sp.Rational(1602176634, 10**28), ":88", lhs=sp.Symbol("eV") / sp.Symbol("J"))
+agrees(E_SI / ERG, sp.Rational(1602176634, 10**21), ":88", lhs=sp.Symbol("eV") / erg)
 show(sp.Eq(sp.Symbol("eV") / erg, sp.Float(float(E_SI / ERG), 10)))
 
 # %%

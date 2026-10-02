@@ -48,7 +48,7 @@ def given(values, *more):
 
 
 # %% Random walk
-section("Random walk", "10-diffusion.typ:90")
+section("Random walk", "10-diffusion.typ:94")
 M1, x_rms, N = sp.symbols("xbar x_rms N")
 M2 = x_rms**2
 note("Steps of", sp.Tuple(dx, -dx), "with probability 1/2 each; average position", M1,
@@ -59,19 +59,19 @@ for steps in range(1, 7):
     mean_square = sum(sum(p) ** 2 for p in paths) * dx**2 / len(paths)
     if steps == 6:
         note("For", sp.Eq(N, steps), "(N = 1 ... 5 asserted):")
-        agrees(mean, 0, ":85", lhs=M1)
-        agrees(mean_square, steps * dx**2, ":88", lhs=M2)
+        agrees(mean, 0, ":89", lhs=M1)
+        agrees(mean_square, steps * dx**2, ":92", lhs=M2)
     else:
         assert mean == 0 and sp.simplify(mean_square - steps * dx**2) == 0
 note("After a time", t, "with the diffusion coefficient", D, ":")
 show(sp.Eq(N, t / dt))
 show(sp.Eq(D, dx**2 / (2 * dt)))
-agrees_with((N * dx**2).subs(N, t / dt), 2 * D * t, {D: dx**2 / (2 * dt)}, ":94", lhs=M2)
+agrees_with((N * dx**2).subs(N, t / dt), 2 * D * t, {D: dx**2 / (2 * dt)}, ":98", lhs=M2)
 has_unit(dx**2 / (2 * dt), u.meter**2 / u.second)
 has_unit(L**2 / D, u.second)                    # tau_D = L^2/D
 
 # %% Fick's law and the diffusion equation
-section("Fick's law and the diffusion equation", "10-diffusion.typ:102")
+section("Fick's law and the diffusion equation", "10-diffusion.typ:106")
 n_x = sp.Function("n")
 x0 = sp.Symbol("x_0", real=True)
 Gamma = sp.Symbol("Gamma")
@@ -79,37 +79,37 @@ note("Half of each neighbouring cell crosses", x0, "in", dt, ":")
 crossing = show(sp.Eq(Gamma, (n_x(x0 - dx / 2) * dx / 2 - n_x(x0 + dx / 2) * dx / 2) / dt)).rhs
 note("Expand the densities to second order in", dx)
 leading = sp.simplify(sp.series(crossing, dx, 0, 3).removeO().doit())
-agrees(leading, -(dx**2 / (2 * dt)) * sp.Derivative(n_x(x0), x0), ":104", lhs=Gamma)
+agrees(leading, -(dx**2 / (2 * dt)) * sp.Derivative(n_x(x0), x0), ":108", lhs=Gamma)
 D_x, n_xt = field("D", x), field("n", x, t)
 note("Conservation with the flux", sp.Eq(Gamma, -D_x * Partial(n_xt, x)), ":")
-agrees(-Partial(-D_x * Partial(n_xt, x), x).doit(), Partial(D_x * Partial(n_xt, x), x), ":113",
+agrees(-Partial(-D_x * Partial(n_xt, x), x).doit(), Partial(D_x * Partial(n_xt, x), x), ":117",
        lhs=Partial(n_xt, t))
 
 # %% Green function
-section("Green function of the diffusion equation", "10-diffusion.typ:116")
+section("Green function of the diffusion equation", "10-diffusion.typ:120")
 N0, tp = sp.symbols("N_0 t", positive=True)
 GREEN = N0 / sp.sqrt(4 * sp.pi * D * tp) * sp.exp(-x**2 / (4 * D * tp))   # also plotted below
 n_G = sp.Symbol("n_G")
 show(sp.Eq(n_G, GREEN))
 note("It solves the diffusion equation, conserves the column", N0, "and starts point-like:")
-agrees(sp.diff(GREEN, tp) - D * sp.diff(GREEN, x, 2), 0, ":118",
+agrees(sp.diff(GREEN, tp) - D * sp.diff(GREEN, x, 2), 0, ":122",
        lhs=sp.Derivative(n_G, tp) - D * sp.Derivative(n_G, (x, 2)))
 column = sp.Integral(GREEN, (x, -sp.oo, sp.oo))
-agrees(column.doit(), N0, ":118", lhs=sp.Integral(n_G, (x, -sp.oo, sp.oo)))
-agrees(sp.limit(GREEN.subs(x, 1), tp, 0, "+"), 0, ":118",
+agrees(column.doit(), N0, ":122", lhs=sp.Integral(n_G, (x, -sp.oo, sp.oo)))
+agrees(sp.limit(GREEN.subs(x, 1), tp, 0, "+"), 0, ":122",
        lhs=sp.Limit(sp.Function("n_G")(1, tp), tp, 0, "+"))
 spread = sp.Integral(x**2 * GREEN, (x, -sp.oo, sp.oo)) / N0
-agrees(spread.doit(), 2 * D * tp, ":120", lhs=M2)
+agrees(spread.doit(), 2 * D * tp, ":124", lhs=M2)
 y, z = sp.symbols("y z", real=True)
 G3 = GREEN * GREEN.subs(x, y) * GREEN.subs(x, z) / N0**2
 r_rms = sp.Symbol("r_rms")
 note("Three independent directions:")
 agrees(sp.integrate((x**2 + y**2 + z**2) * G3, (x, -sp.oo, sp.oo), (y, -sp.oo, sp.oo),
-                    (z, -sp.oo, sp.oo)) / N0, 6 * D * tp, ":121", lhs=r_rms**2)
+                    (z, -sp.oo, sp.oo)) / N0, 6 * D * tp, ":125", lhs=r_rms**2)
 has_unit(N0 / sp.sqrt(D * t0), u.meter**-3, {N0: u.meter**-2})
 
 # %% Normalized variables
-section("Normalized diffusion variables", "10-diffusion.typ:132")
+section("Normalized diffusion variables", "10-diffusion.typ:137")
 L0, tau0, n0, xi, tau = sp.symbols("L_0 tau_0 n_0 xi tau", positive=True)
 D_norm, L_norm = sp.symbols("D_norm L_norm", positive=True)
 Nf = sp.Function("N")
@@ -118,23 +118,23 @@ density = n0 * Nf(x / L0, t / tau0)
 residual = sp.diff(density, t) - D_norm * L0**2 / tau0 * sp.diff(density, x, 2)
 residual = sp.simplify(residual.subs({x: xi * L0, t: tau * tau0}) * tau0 / n0)
 agrees(residual.doit(), sp.Derivative(Nf(xi, tau), tau) - D_norm * sp.Derivative(Nf(xi, tau), (xi, 2)),
-       ":134", lhs=tau0 / n0 * (sp.Derivative(field("n", x, t), t) - D * sp.Derivative(field("n", x, t), (x, 2))))
+       ":140", lhs=tau0 / n0 * (sp.Derivative(field("n", x, t), t) - D * sp.Derivative(field("n", x, t), (x, 2))))
 tau_D = sp.Symbol("tau_D")
-agrees((L_norm * L0) ** 2 / (D_norm * L0**2 / tau0) / tau0, L_norm**2 / D_norm, ":136", lhs=tau_D / tau0)
+agrees((L_norm * L0) ** 2 / (D_norm * L0**2 / tau0) / tau0, L_norm**2 / D_norm, ":142", lhs=tau_D / tau0)
 note("Animation: steps of 0.34 in", xi, "per unit of", tau)
 D_star = sp.Symbol("D_*")
-close_to(ratio(D_star, 0.34**2 / 2), 0.0578, source=":150")
+close_to(ratio(D_star, 0.34**2 / 2), 0.0578, source=":156")
 
 # %% Example: random-walk diffusion
-section("Example: random-walk diffusion", "10-diffusion.typ:161")
+section("Example: random-walk diffusion", "10-diffusion.typ:167")
 walk = {dx: 2.0e-3 * u.meter, dt: 1.0e-7 * u.second, L: 0.1 * u.meter}
 given(walk)
 D_walk = evaluate(D, dx**2 / (2 * dt), walk, u.meter**2 / u.second)
-close_to(D_walk, 2.0e1, source=":166")
-close_to(evaluate(tau_D, L**2 / (dx**2 / (2 * dt)), walk, u.second), 5.0e-4, source=":168")
+close_to(D_walk, 2.0e1, source=":172")
+close_to(evaluate(tau_D, L**2 / (dx**2 / (2 * dt)), walk, u.second), 5.0e-4, source=":174")
 
 # %% Mobility and diffusion
-section("Mobility and diffusion", "10-diffusion.typ:286")
+section("Mobility and diffusion", "10-diffusion.typ:294")
 q, nu, m, T = sp.symbols("q_s nu_s m_s T_s", positive=True)   # q > 0 here; sign handled below
 UNITS.update({q: u.coulomb, nu: u.second**-1, m: u.kilogram, T: u.kelvin})
 n_s = sp.Symbol("n_s", positive=True)
@@ -146,25 +146,25 @@ friction = show(sp.Eq(m * n_s * nu * u_s, q_signed * n_s * E - k_B * T * g_s))
 drift = sp.solve(friction, u_s)[0]
 mobility = {mu_s: q_signed / (m * nu), D_s: k_B * T / (m * nu)}
 note("Mobility", sp.Eq(mu_s, mobility[mu_s]), "and diffusion coefficient", sp.Eq(D_s, mobility[D_s]))
-agrees_with(drift, mu_s * E - D_s * g_s / n_s, mobility, ":286", lhs=u_s)
+agrees_with(drift, mu_s * E - D_s * g_s / n_s, mobility, ":294", lhs=u_s)
 Gamma_s = sp.Symbol("Gamma_s")
-agrees_with(n_s * drift, n_s * mu_s * E - D_s * g_s, mobility, ":267", lhs=Gamma_s)
+agrees_with(n_s * drift, n_s * mu_s * E - D_s * g_s, mobility, ":275", lhs=Gamma_s)
 note("Einstein relation, with", sp.Eq(sp.Abs(mu_s), q / (m * nu)), ":")
-agrees((k_B * T / (m * nu)) / (q / (m * nu)), k_B * T / q, ":304", lhs=D_s / sp.Abs(mu_s))
+agrees((k_B * T / (m * nu)) / (q / (m * nu)), k_B * T / q, ":312", lhs=D_s / sp.Abs(mu_s))
 has_unit(q / (m * nu), u.meter**2 / u.volt / u.second)
 has_unit(k_B * T / (m * nu), u.meter**2 / u.second)
 
 # %% Example: electron mobility
-section("Example: electron mobility and diffusion", "10-diffusion.typ:312")
+section("Example: electron mobility and diffusion", "10-diffusion.typ:320")
 electron = {nu: 1.0e8 / u.second, T: 2.0 * u.electronvolt / u.boltzmann_constant}
 note("Electrons,", sp.Eq(nu, rounded(electron[nu])), ",", sp.Eq(k_B * T, 2.0 * u.electronvolt))
 mu_e, D_e = sp.symbols("mu_e D_e")
 close_to(evaluate(mu_e, e / (m_e * nu), electron, u.meter**2 / (u.volt * u.second)), 1.76e3,
-         source=":320")
-close_to(evaluate(D_e, k_B * T / (m_e * nu), electron, u.meter**2 / u.second), 3.52e3, source=":323")
+         source=":328")
+close_to(evaluate(D_e, k_B * T / (m_e * nu), electron, u.meter**2 / u.second), 3.52e3, source=":331")
 
 # %% Ambipolar diffusion
-section("Ambipolar diffusion", "10-diffusion.typ:448")
+section("Ambipolar diffusion", "10-diffusion.typ:458")
 mui, mue, Di, De, n_a = sp.symbols("mu_i mu_e D_i D_e n", positive=True)
 E_x, g_n = sp.symbols("E g", real=True)          # field and density gradient along x
 GAMMA_I = mui * n_a * E_x - Di * g_n             # shared with the plot below
@@ -177,21 +177,21 @@ show(sp.Eq(Gamma_i, GAMMA_I))
 show(sp.Eq(Gamma_e, GAMMA_E))
 note("Zero current,", sp.Eq(Gamma_i, Gamma_e), ", fixes the field:")
 field_a = sp.solve(sp.Eq(GAMMA_I, GAMMA_E), E_x)[0]
-agrees(field_a, E_AMB, ":457", lhs=E_a)
+agrees(field_a, E_AMB, ":467", lhs=E_a)
 note("Insert into either flux:")
 show(sp.Eq(D_a, D_AMB))
-agrees_with(sp.simplify(GAMMA_I.subs(E_x, field_a)), -D_a * g_n, {D_a: D_AMB}, ":470", lhs=Gamma_i)
-agrees_with(sp.simplify(GAMMA_E.subs(E_x, field_a)), -D_a * g_n, {D_a: D_AMB}, ":470", lhs=Gamma_e)
+agrees_with(sp.simplify(GAMMA_I.subs(E_x, field_a)), -D_a * g_n, {D_a: D_AMB}, ":480", lhs=Gamma_i)
+agrees_with(sp.simplify(GAMMA_E.subs(E_x, field_a)), -D_a * g_n, {D_a: D_AMB}, ":480", lhs=Gamma_e)
 eps = sp.Symbol("epsilon", positive=True)
 note("Light electrons,", sp.Eq(mui, eps * mue), ", to first order in", eps, ":")
 expansion = sp.series(D_AMB.subs(mui, eps * mue), eps, 0, 2).removeO()
-agrees(expansion, Di + eps * (De - Di), ":479", lhs=D_a)
+agrees(expansion, Di + eps * (De - Di), ":489", lhs=D_a)
 note("The stated", Di + eps * De, "differs by", eps * Di, ", negligible against", Di, ":")
-agrees(sp.limit((expansion - (Di + eps * De)) / Di, eps, 0), 0, ":479",
+agrees(sp.limit((expansion - (Di + eps * De)) / Di, eps, 0), 0, ":489",
        lhs=sp.Limit((D_a - (Di + eps * De)) / Di, eps, 0))
 
 # %% Example: ambipolar field and flux
-section("Example: ambipolar field and flux", "10-diffusion.typ:483")
+section("Example: ambipolar field and flux", "10-diffusion.typ:493")
 nu_i, nu_e, m_p = sp.symbols("nu_i nu_e m_p", positive=True)
 T_a, gradient = sp.symbols("T g_n", positive=True)
 hydrogen = {mui: e / (m_p * nu_i), mue: e / (m_e * nu_e), Di: k_B * T_a / (m_p * nu_i),
@@ -203,14 +203,14 @@ note("Hydrogen,", sp.Eq(k_B * T_a, 1.0 * u.electronvolt), ",", sp.Eq(nu_i, round
      sp.Eq(g_n / n_a, -1 / u.meter))
 in_kg = {m_e: u.convert_to(u.electron_rest_mass, u.kilogram)}        # sums need kg
 close_to(evaluate(E_a, E_AMB.subs(hydrogen), {**discharge, **in_kg}, u.volt / u.meter), 0.897,
-         source=":497")
+         source=":507")
 D_a_value = evaluate(D_a, D_AMB.subs(hydrogen), {**discharge, **in_kg}, u.meter**2 / u.second)
-close_to(D_a_value, 1.82e1, source=":501")
+close_to(D_a_value, 1.82e1, source=":511")
 close_to(evaluate(sp.Abs(Gamma_a), -D_AMB.subs(hydrogen) * g_n, {**discharge, **in_kg},
-                  1 / (u.meter**2 * u.second)), 1.82e17, source=":504")
+                  1 / (u.meter**2 * u.second)), 1.82e17, source=":514")
 
 # %% Magnetized diffusion
-section("Diffusion across a magnetic field", "10-diffusion.typ:594")
+section("Diffusion across a magnetic field", "10-diffusion.typ:611")
 OM = sp.Symbol("Omega_s", real=True)
 D_S = k_B * T / (m * nu)                         # unmagnetized D_s (line 304), shared with plots
 D_PERP = D_S / (1 + (OM / nu) ** 2)              # line 626
@@ -238,25 +238,25 @@ D_perp, D_H, Gamma_x = Named("D_perp"), sp.Symbol("D_H"), sp.Symbol("Gamma_x")
 coefficients = {D_perp: D_PERP, D_H: D_HALL}
 show(sp.Eq(D_perp, D_PERP))
 show(sp.Eq(D_H, D_HALL))
-agrees_with(flux[0], -D_perp * g_x - D_H * g_y, coefficients, ":618", lhs=Gamma_x)
+agrees_with(flux[0], -D_perp * g_x - D_H * g_y, coefficients, ":635", lhs=Gamma_x)
 assert sp.simplify(flux[1] - (-D_PERP * g_y + D_HALL * g_x)) == 0
-agrees(k_B * T * nu / (m * (nu**2 + OM**2)), D_S * nu**2 / (nu**2 + OM**2), ":626", lhs=D_perp)
+agrees(k_B * T * nu / (m * (nu**2 + OM**2)), D_S * nu**2 / (nu**2 + OM**2), ":643", lhs=D_perp)
 note("Strong field,", sp.Eq(nu, eps * OM), ", to leading order in", eps, ":")
 lead = sp.series(D_PERP.subs(OM, nu / eps) / D_S, eps, 0, 3).removeO()
-agrees(lead, eps**2, ":635", lhs=D_perp / D_s)
+agrees(lead, eps**2, ":652", lhs=D_perp / D_s)
 rho_th = sp.Symbol("rho_th")
 note("Thermal gyroradius", sp.Eq(rho_th, sp.sqrt(2 * k_B * T / m) / OM), ":")
-agrees_with(D_S * (nu / OM) ** 2, nu / 2 * rho_th**2, {rho_th: sp.sqrt(2 * k_B * T / m) / OM}, ":650",
+agrees_with(D_S * (nu / OM) ** 2, nu / 2 * rho_th**2, {rho_th: sp.sqrt(2 * k_B * T / m) / OM}, ":667",
             lhs=D_perp)
 note("The Hall flux is divergence free for constant", D_H, ":")
 X_, Y_ = sp.symbols("X Y", real=True)
 n_XY = sp.Function("n")(X_, Y_)
 hall = [-D_HALL * sp.diff(n_XY, Y_), D_HALL * sp.diff(n_XY, X_)]
-agrees(sp.diff(hall[0], X_) + sp.diff(hall[1], Y_), 0, ":657",
+agrees(sp.diff(hall[0], X_) + sp.diff(hall[1], Y_), 0, ":674",
        lhs=sp.Derivative(-D_H * sp.Derivative(n_XY, Y_), X_) + sp.Derivative(D_H * sp.Derivative(n_XY, X_), Y_))
 
 # %% Example: magnetized electron diffusion
-section("Example: magnetized electron diffusion", "10-diffusion.typ:665")
+section("Example: magnetized electron diffusion", "10-diffusion.typ:682")
 magnetized = {B_m: 1.0e-2 * u.tesla, nu: 1.0e7 / u.second, T: 1.0 * u.electronvolt / u.boltzmann_constant}
 note("Electrons,", sp.Eq(B_m, rounded(magnetized[B_m])), ",", sp.Eq(nu, rounded(magnetized[nu])), ",",
      sp.Eq(k_B * T, 1.0 * u.electronvolt))
@@ -266,17 +266,17 @@ in_base = {e: u.convert_to(u.elementary_charge, base), m_e: u.convert_to(u.elect
 gyro = sp.Abs(e * B_m / m_e)
 Omega_e, D_par = sp.Symbol("Omega_e"), Named("D_parallel")
 gyro_value = evaluate(sp.Abs(Omega_e), gyro, magnetized, u.second**-1)
-close_to(gyro_value, 1.76e9, source=":678")
+close_to(gyro_value, 1.76e9, source=":695")
 electrons = {m: m_e, OM: e * B_m / m_e}
 D_par_value = evaluate(D_par, D_S.subs(electrons), magnetized, u.meter**2 / u.second)
-close_to(D_par_value, 1.76e4, source=":680")
+close_to(D_par_value, 1.76e4, source=":697")
 D_perp_value = evaluate(D_perp, D_PERP.subs(electrons), {**magnetized, **in_base},
                         u.meter**2 / u.second)
-close_to(D_perp_value, 0.569, source=":683")
-close_to(ratio(D_perp / D_par, D_perp_value / D_par_value), 3.23e-5, source=":686")
+close_to(D_perp_value, 0.569, source=":700")
+close_to(ratio(D_perp / D_par, D_perp_value / D_par_value), 3.23e-5, source=":703")
 
 # %% Classical cross-field diffusion
-section("Classical cross-field diffusion", "10-diffusion.typ:818")
+section("Classical cross-field diffusion", "10-diffusion.typ:839")
 sig, B_f, n_f = sp.symbols("sigma B n", positive=True)
 Te, Ti = sp.symbols("T_e T_i", positive=True)
 D_CL = n_f * k_B * (Te + Ti) / (sig * B_f**2)    # classical, line 849 (shared with plots)
@@ -291,29 +291,29 @@ for eq in ohm + force_balance:
     show(eq)
 solved = sp.solve([fb.subs({j_x: ohm[0].rhs, j_y: ohm[1].rhs}) for fb in force_balance], [u_x, u_y],
                   dict=True)[0]
-agrees(solved[u_x], E_2 * B_f / B_f**2 - p_x / (sig * B_f**2), ":831", lhs=u_x)
-agrees(solved[u_y], -E_1 * B_f / B_f**2 - p_y / (sig * B_f**2), ":831", lhs=u_y)
+agrees(solved[u_x], E_2 * B_f / B_f**2 - p_x / (sig * B_f**2), ":852", lhs=u_x)
+agrees(solved[u_y], -E_1 * B_f / B_f**2 - p_y / (sig * B_f**2), ":852", lhs=u_y)
 note("The second term with", sp.Eq(sp.Symbol("p"), n_f * k_B * (Te + Ti)), "at uniform temperatures,",
      sp.Eq(p_x, k_B * (Te + Ti) * sp.Symbol("g_n")), ":")
 g_n2 = sp.Symbol("g_n", real=True)
 diffusive = n_f * (-(k_B * (Te + Ti) * g_n2) / (sig * B_f**2))
 D_cl = Named("D_perp,cl")
-agrees(sp.simplify(-diffusive / g_n2), D_CL, ":849", lhs=D_cl)
+agrees(sp.simplify(-diffusive / g_n2), D_CL, ":870", lhs=D_cl)
 has_unit(D_CL, u.meter**2 / u.second)
 eta = sp.Symbol("eta", positive=True)
-agrees(D_CL.subs(sig, 1 / eta), eta * n_f * k_B * (Te + Ti) / B_f**2, ":852", lhs=D_cl)
+agrees(D_CL.subs(sig, 1 / eta), eta * n_f * k_B * (Te + Ti) / B_f**2, ":873", lhs=D_cl)
 D_B = Named("D_perp,B")
 note("Empirical Bohm estimate")
 show(sp.Eq(D_B, D_BOHM))
 has_unit(D_BOHM, u.meter**2 / u.second)
 note("Scalings with B: classical as the -2 power, Bohm as the -1 power")
-agrees(sp.simplify(B_f * sp.diff(D_CL, B_f) / D_CL), -2, ":858",
+agrees(sp.simplify(B_f * sp.diff(D_CL, B_f) / D_CL), -2, ":879",
        lhs=B_f * sp.Derivative(D_cl, B_f) / D_cl)
-agrees(sp.simplify(B_f * sp.diff(D_BOHM, B_f) / D_BOHM), -1, ":797",
+agrees(sp.simplify(B_f * sp.diff(D_BOHM, B_f) / D_BOHM), -1, ":818",
        lhs=B_f * sp.Derivative(D_B, B_f) / D_B)
 
 # %% Example: classical and Bohm diffusion
-section("Example: classical and Bohm diffusion", "10-diffusion.typ:860")
+section("Example: classical and Bohm diffusion", "10-diffusion.typ:881")
 worked = {n_f: 1.0e16 / u.meter**3, Te: 10 * u.electronvolt / u.boltzmann_constant,
           Ti: 10 * u.electronvolt / u.boltzmann_constant, sig: 1.0e5 * u.siemens / u.meter,
           B_f: 1.0e-2 * u.tesla, L: 1.0 * u.meter}
@@ -321,11 +321,11 @@ note("Input", sp.Eq(n_f, rounded(worked[n_f])), ",", sp.Eq(k_B * Te, 10 * u.elec
      sp.Eq(k_B * Ti, 10 * u.electronvolt), ",", sp.Eq(sig, rounded(worked[sig])), ",",
      sp.Eq(B_f, rounded(worked[B_f])), ",", sp.Eq(L, worked[L]))
 classical = evaluate(D_cl, D_CL, worked, u.meter**2 / u.second)
-close_to(classical, 3.20e-3, source=":876")
+close_to(classical, 3.20e-3, source=":897")
 bohm = evaluate(D_B, D_BOHM, worked, u.meter**2 / u.second)
-close_to(bohm, 6.25e1, source=":879")
-close_to(ratio(D_B / D_cl, bohm / classical), 1.95e4, source=":882")
-close_to(evaluate(sp.Symbol("tau_D"), L**2 / D_CL, worked, u.second), 3.12e2, source=":885")
+close_to(bohm, 6.25e1, source=":900")
+close_to(ratio(D_B / D_cl, bohm / classical), 1.95e4, source=":903")
+close_to(evaluate(sp.Symbol("tau_D"), L**2 / D_CL, worked, u.second), 3.12e2, source=":909")
 
 # %% Plot: random-walk diffusion
 # Green function at t = tau_D and 4 tau_D: the rms width doubles, the peak halves.

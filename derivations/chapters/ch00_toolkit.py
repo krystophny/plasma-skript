@@ -50,7 +50,7 @@ def over_c(weight):
 
 
 # %% Energy moments
-section("Energy moments", "mathematical-toolkit.typ:66")
+section("Energy moments", "mathematical-toolkit.typ:72")
 u_vec, c_vec = sp.Matrix(U3), sp.Matrix(C3)
 v_vec = u_vec + c_vec
 K, U_int, p = sp.symbols("K_s U_s p")
@@ -62,16 +62,16 @@ show(sp.Eq(m * over_c(c_x * c_y), P[0, 1]))
 K_expr = show(sp.Eq(K, m * n * u_vec.dot(u_vec) / 2)).rhs
 U_expr = show(sp.Eq(U_int, P.trace() / 2)).rhs
 second_moment = moment(m * v_vec.dot(v_vec) / 2)
-agrees(second_moment - K_expr - U_expr + K + U_int, K + U_int, ":79", lhs=m / 2 * over_c(v_vec.dot(v_vec)))
+agrees(second_moment - K_expr - U_expr + K + U_int, K + U_int, ":91", lhs=m / 2 * over_c(v_vec.dot(v_vec)))
 assert sp.expand(second_moment - (K_expr + U_expr)) == 0
 note("Isotropic pressure,", sp.Eq(sp.Symbol("P_s"), p * sp.Symbol("I")))
-agrees((p * sp.eye(3)).trace() / 2, sp.Rational(3, 2) * p, ":219", lhs=U_int)
+agrees((p * sp.eye(3)).trace() / 2, sp.Rational(3, 2) * p, ":239", lhs=U_int)
 rho, speed = sp.symbols("rho u", positive=True)
 check(rho * speed**2 / 2, rho * speed**2 / 2, unit=u.joule / u.meter**3,
       units={rho: u.kilogram / u.meter**3, speed: u.meter / u.second})
 
 # %% Energy-flux decomposition
-section("Energy-flux decomposition", "mathematical-toolkit.typ:192")
+section("Energy-flux decomposition", "mathematical-toolkit.typ:208")
 heat = [moment(m * c_vec.dot(c_vec) * c_vec[k] / 2) for k in range(3)]  # q_s definition
 q_x = sp.Symbol("q_x")
 Q_x = sp.Symbol("Q_x")
@@ -81,13 +81,13 @@ show(sp.Eq(Q_x, m / 2 * over_c(v_vec.dot(v_vec) * v_vec[0])))
 P_dot_u = P * u_vec
 fluxes = [moment(m * v_vec.dot(v_vec) * v_vec[k] / 2) for k in range(3)]
 in_symbols = fluxes[0] - (K_expr + U_expr) * U3[0] - heat[0] + (K + U_int) * U3[0] + q_x
-agrees(in_symbols, (K + U_int) * U3[0] + P_dot_u[0] + q_x, ":207", lhs=Q_x)
+agrees(in_symbols, (K + U_int) * U3[0] + P_dot_u[0] + q_x, ":223", lhs=Q_x)
 for k in range(3):
     assert sp.expand(fluxes[k] - (K_expr * U3[k] + U_expr * U3[k] + P_dot_u[k] + heat[k])) == 0  # :202
     assert sp.expand(fluxes[k] - ((K_expr + U_expr) * U3[k] + P_dot_u[k] + heat[k])) == 0  # :207
 
 # %% Lorentz work by parts
-section("Lorentz work by parts", "mathematical-toolkit.typ:117")
+section("Lorentz work by parts", "mathematical-toolkit.typ:131")
 V3 = sp.symbols("v_x v_y v_z", real=True)
 E3, B3 = sp.symbols("E_x E_y E_z", real=True), sp.symbols("B_x B_y B_z", real=True)
 v, E_vec, B_vec = sp.Matrix(V3), sp.Matrix(E3), sp.Matrix(B3)
@@ -101,11 +101,11 @@ assert sp.expand(energy * a.dot(grad_v(f)) - (div_v(energy * f * a) - f * a.dot(
                                                 - energy * f * div_v(a))) == 0
 note("Integrate the Lorentz term by parts; the acceleration field is divergence-free in velocity:")
 divergence = sp.Add(*[sp.Derivative(a[i], V3[i]) for i in range(3)], evaluate=False)
-agrees(sp.expand(divergence.doit()), 0, ":153", lhs=divergence)
+agrees(sp.expand(divergence.doit()), 0, ":169", lhs=divergence)
 a_components = sp.Matrix(sp.symbols("a_x a_y a_z"))
 f_value = sp.Symbol("f")
 note("The remaining term", -m * f_value * a_components.dot(v), "loses its magnetic part pointwise:")
-agrees(sp.expand(-m * f_value * a.dot(v)), -q * f_value * E_vec.dot(v), ":171")
+agrees(sp.expand(-m * f_value * a.dot(v)), -q * f_value * E_vec.dot(v), ":187")
 note("Concrete check with a shifted Maxwellian", sp.Function("f_M")(*V3))
 T, k_B = sp.symbols("T k_B", positive=True)
 f_M = maxwellian(n, m, k_B * T, V3, U3)
@@ -113,7 +113,7 @@ work = velocity_integral(energy * a.dot(grad_v(f_M)), V3, U3)
 f_M_sym = sp.Function("f_M")(*V3)
 I_a = sp.Symbol("I_a")
 show(sp.Eq(I_a, sp.Integral(energy * a_components.dot(grad_v(f_M_sym)), *[(x, -sp.oo, sp.oo) for x in V3])))
-agrees(work, -q * n * E_vec.dot(u_vec), ":176", lhs=I_a)
+agrees(work, -q * n * E_vec.dot(u_vec), ":192", lhs=I_a)
 
 # %% Fluid energy balances: setup
 # Each balance is displayed in one dimension (fields of t and x, P = P_xx);
@@ -140,29 +140,29 @@ rho1, u1, P1, n1, E1, R1, U1, q1, Q1 = (one_d(name) for name in ("rho", "u", "P"
 K1 = rho1 * u1**2 / 2
 
 # %% Bulk kinetic-energy equation
-section("Bulk kinetic-energy equation", "mathematical-toolkit.typ:228")
+section("Bulk kinetic-energy equation", "mathematical-toolkit.typ:248")
 note("Momentum balance and continuity in one dimension (the magnetic force has no x component)")
 momentum = show(sp.Eq(sp.Derivative(rho1 * u1, t) + sp.Derivative(rho1 * u1**2 + P1, x), q * n1 * E1 + R1))
 continuity = show(sp.Eq(sp.Derivative(rho1, t) + sp.Derivative(rho1 * u1, x), 0))
 note("Multiply the momentum balance by", u1, "and subtract", u1**2 / 2, "times continuity:")
 residuals = u1 * (momentum.lhs - momentum.rhs).doit() - u1**2 / 2 * continuity.lhs.doit()
 bulk = sp.Derivative(K1, t) + sp.Derivative(K1 * u1, x)
-agrees(sp.expand(bulk.doit() - residuals), q * n1 * E1 * u1 - u1 * P1.diff(x) + u1 * R1, ":238", lhs=bulk)
+agrees(sp.expand(bulk.doit() - residuals), q * n1 * E1 * u1 - u1 * P1.diff(x) + u1 * R1, ":258", lhs=bulk)
 assert sp.expand(u_f.dot(momentum_3d) - u_f.dot(u_f) / 2 * continuity_3d - bulk_3d) == 0
 
 # %% Pressure work
-section("Pressure-work identity", "mathematical-toolkit.typ:250")
+section("Pressure-work identity", "mathematical-toolkit.typ:270")
 pressure_flux = sp.Derivative(P1 * u1, x)
-agrees(pressure_flux.doit(), u1 * P1.diff(x) + P1 * u1.diff(x), ":254", lhs=pressure_flux)
+agrees(pressure_flux.doit(), u1 * P1.diff(x) + P1 * u1.diff(x), ":274", lhs=pressure_flux)
 assert sp.expand(div3(P_f * u_f) - (u_f.dot(div_tensor(P_f)) + P_grad_u)) == 0
 p_f = field("p")
 note("For isotropic pressure", sp.Eq(sp.Symbol("P"), p_f * sp.Symbol("I")), "the pressure work",
      "P:grad u in three dimensions is")
 isotropic = sum((p_f * sp.eye(3))[i, j] * sp.diff(u_f[i], R3[j]) for i in range(3) for j in range(3))
-agrees(isotropic, p_f * div3(u_f), ":261")
+agrees(isotropic, p_f * div3(u_f), ":281")
 
 # %% Internal-energy equation
-section("Internal-energy equation", "mathematical-toolkit.typ:212")
+section("Internal-energy equation", "mathematical-toolkit.typ:229")
 W1 = one_d("W")
 note("Total energy in one dimension, with", sp.Eq(W1, sp.Symbol("K") + U1))
 total = show(sp.Eq(sp.Derivative(W1, t) + sp.Derivative(W1 * u1 + P1 * u1 + q1, x), q * n1 * E1 * u1 + Q1))
@@ -171,7 +171,7 @@ note("Subtract the bulk kinetic-energy equation:")
 bulk_residual = (bulk - (q * n1 * E1 * u1 - u1 * P1.diff(x) + u1 * R1)).doit()
 internal = sp.Derivative(U1, t) + sp.Derivative(U1 * u1 + q1, x)
 agrees(sp.expand(internal.doit() - ((total.lhs - total.rhs).doit() - bulk_residual)),
-       -P1 * u1.diff(x) + Q1 - u1 * R1, ":216", lhs=internal)
+       -P1 * u1.diff(x) + Q1 - u1 * R1, ":236", lhs=internal)
 assert sp.expand(total_3d - bulk_3d - internal_3d) == 0
 pressure_work_flux = sp.Symbol("Pu")
 check(pressure_work_flux, pressure_work_flux, unit=u.watt / u.meter**2,
@@ -228,7 +228,7 @@ def is_zero(expr):
 
 
 # %% Scale factors
-section("Scale factors", "mathematical-toolkit.typ:344")
+section("Scale factors", "mathematical-toolkit.typ:371")
 h_1, h_2, h_3 = sp.symbols("h_1 h_2 h_3")
 note("Each scale factor is the length of the derivative of the position vector along its coordinate")
 for name, (qs, pos, h_printed) in SYSTEMS.items():
@@ -236,7 +236,7 @@ for name, (qs, pos, h_printed) in SYSTEMS.items():
     show(sp.Eq(sp.Tuple(h_1, h_2, h_3), sp.Tuple(*h)), name)
     for derived, printed, symbol in zip(h, h_printed, (h_1, h_2, h_3)):
         if printed != 1:
-            agrees(derived, printed, ":353", lhs=symbol)
+            agrees(derived, printed, ":382", lhs=symbol)
         else:
             assert sp.simplify(derived - printed) == 0
     cols = [pos.diff(qq) for qq in qs]  # coordinate directions are orthogonal
@@ -244,7 +244,7 @@ for name, (qs, pos, h_printed) in SYSTEMS.items():
         assert sp.simplify(cols[i].dot(cols[j])) == 0
 
 # %% Orthogonal-coordinate operators
-section("Orthogonal-coordinate operators", "mathematical-toolkit.typ:358")
+section("Orthogonal-coordinate operators", "mathematical-toolkit.typ:390")
 X, Y, Z = sp.symbols("X Y Z", real=True)
 psi_test = X**2 * Y + Y * Z**3 + X * Z
 A_test = sp.Matrix([X * Y, Y * Z**2, X**2 * Z])
@@ -273,42 +273,42 @@ note("Gradient, divergence, curl and Laplacian match the oracle in Cartesian, cy
 show(sp.Eq(laplacian(sp.Symbol("psi")), lap_c))
 
 # %% Cylindrical and spherical forms
-section("Cylindrical and spherical forms", "mathematical-toolkit.typ:448")
+section("Cylindrical and spherical forms", "mathematical-toolkit.typ:497")
 psi = sp.Function("psi")
 A_fn = [sp.Function(f"A_{i}") for i in (1, 2, 3)]
 note("Cylindrical", sp.Tuple(r, ph, zc), ", printed at :453-456")
 qs, _, h = SYSTEMS["cylindrical"]
 s_c, A_c = psi(*qs), [a_i(*qs) for a_i in A_fn]
 agrees(div_g(A_c, qs, h), sp.diff(r * A_c[0], r) / r + sp.diff(A_c[1], ph) / r + sp.diff(A_c[2], zc),
-       ":454", lhs=div(sp.Symbol("A")))
+       ":505", lhs=div(sp.Symbol("A")))
 agrees(lap_g(s_c, qs, h), sp.diff(r * sp.diff(s_c, r), r) / r + sp.diff(s_c, ph, 2) / r**2
-       + sp.diff(s_c, zc, 2), ":456", lhs=laplacian(sp.Symbol("psi")))
-agrees(grad_g(s_c, qs, h)[1], sp.diff(s_c, ph) / r, ":455", lhs=sp.Function("grad_phi")(sp.Symbol("psi")))
+       + sp.diff(s_c, zc, 2), ":507", lhs=laplacian(sp.Symbol("psi")))
+agrees(grad_g(s_c, qs, h)[1], sp.diff(s_c, ph) / r, ":506", lhs=sp.Function("grad_phi")(sp.Symbol("psi")))
 note("Spherical", sp.Tuple(r, th, ph), ", printed at :468-474")
 qs, _, h = SYSTEMS["spherical"]
 s_s, A_s = psi(*qs), [a_i(*qs) for a_i in A_fn]
 agrees(div_g(A_s, qs, h), sp.diff(r**2 * A_s[0], r) / r**2 + sp.diff(sp.sin(th) * A_s[1], th)
-       / (r * sp.sin(th)) + sp.diff(A_s[2], ph) / (r * sp.sin(th)), ":470", lhs=div(sp.Symbol("A")))
+       / (r * sp.sin(th)) + sp.diff(A_s[2], ph) / (r * sp.sin(th)), ":528", lhs=div(sp.Symbol("A")))
 agrees(lap_g(s_s, qs, h), sp.diff(r**2 * sp.diff(s_s, r), r) / r**2
        + sp.diff(sp.sin(th) * sp.diff(s_s, th), th) / (r**2 * sp.sin(th))
-       + sp.diff(s_s, ph, 2) / (r**2 * sp.sin(th) ** 2), ":474", lhs=laplacian(sp.Symbol("psi")))
+       + sp.diff(s_s, ph, 2) / (r**2 * sp.sin(th) ** 2), ":532", lhs=laplacian(sp.Symbol("psi")))
 gradient = grad_g(s_s, qs, h)
-agrees(gradient[1], sp.diff(s_s, th) / r, ":469", lhs=sp.Function("grad_theta")(sp.Symbol("psi")))
-agrees(gradient[2], sp.diff(s_s, ph) / (r * sp.sin(th)), ":469", lhs=sp.Function("grad_phi")(sp.Symbol("psi")))
+agrees(gradient[1], sp.diff(s_s, th) / r, ":526", lhs=sp.Function("grad_theta")(sp.Symbol("psi")))
+agrees(gradient[2], sp.diff(s_s, ph) / (r * sp.sin(th)), ":526", lhs=sp.Function("grad_phi")(sp.Symbol("psi")))
 
 # %% Identity checks
-section("Identity checks", "mathematical-toolkit.typ:479")
+section("Identity checks", "mathematical-toolkit.typ:537")
 note("Spherical coordinates, arbitrary", s_s, "and", sp.Tuple(*A_s))
 A_sym, psi_sym = sp.Symbol("A"), sp.Symbol("psi")
-agrees(sp.simplify(div_g(curl_g(A_s, qs, h), qs, h)), 0, ":486", lhs=div(curl(A_sym)))
+agrees(sp.simplify(div_g(curl_g(A_s, qs, h), qs, h)), 0, ":544", lhs=div(curl(A_sym)))
 curl_grad = [sp.simplify(component) for component in curl_g(grad_g(s_s, qs, h), qs, h)]
-agrees(sp.Matrix(curl_grad).norm(), 0, ":488", lhs=curl(grad(psi_sym)))
+agrees(sp.Matrix(curl_grad).norm(), 0, ":546", lhs=curl(grad(psi_sym)))
 C = sp.Symbol("C")
 note("Inverse-square radial field", sp.Eq(sp.Symbol("A_r"), C / r**2))
-agrees(div_g([C / r**2, 0, 0], qs, h), 0, ":490", lhs=div(A_sym))
+agrees(div_g([C / r**2, 0, 0], qs, h), 0, ":548", lhs=div(A_sym))
 
 # %% Cylindrical flux check
-section("Cylindrical flux check", "mathematical-toolkit.typ:492")
+section("Cylindrical flux check", "mathematical-toolkit.typ:550")
 L = sp.Symbol("L", positive=True)
 A_r = sp.Function("A_r")(r)
 Phi, volume = sp.Function("Phi")(r), sp.Function("V")(r)
@@ -317,12 +317,12 @@ flux_r = show(sp.Eq(Phi, 2 * sp.pi * r * L * A_r)).rhs  # :506
 shell = show(sp.Eq(sp.Derivative(volume, r), 2 * sp.pi * r * L)).rhs  # :514
 flux_per_volume = sp.simplify(sp.diff(flux_r, r) / shell)
 qs, _, h = SYSTEMS["cylindrical"]
-agrees(flux_per_volume, div_g([A_r, 0, 0], qs, h), ":519",
+agrees(flux_per_volume, div_g([A_r, 0, 0], qs, h), ":577",
        lhs=sp.Derivative(Phi, r) / sp.Derivative(volume, r))
-agrees(flux_per_volume, sp.diff(r * A_r, r) / r, ":502", lhs=div(sp.Symbol("A")))
+agrees(flux_per_volume, sp.diff(r * A_r, r) / r, ":560", lhs=div(sp.Symbol("A")))
 
 # %% Worked example: radial flux C/r
-section("Worked example: radial flux C/r", "mathematical-toolkit.typ:520")
+section("Worked example: radial flux C/r", "mathematical-toolkit.typ:578")
 C_flux = sp.Symbol("C", positive=True)
 Gamma = sp.Symbol("Gamma_r")
 flux_density = show(sp.Eq(Gamma, C_flux / r)).rhs
@@ -331,8 +331,8 @@ example = {C_flux: 2e12 / (u.meter * u.second)}
 note("Input", sp.Eq(C_flux, example[C_flux], evaluate=False))
 for radius, printed in [(0.1 * u.meter, 2e13), (0.2 * u.meter, 1e13)]:
     value = evaluate(sp.Function("Gamma_r")(radius), flux_density, {**example, r: radius}, FLUX_UNIT)
-    close_to(value, printed, rtol=1e-12, source=":533")
-agrees(sp.diff(r * flux_density, r) / r, 0, ":534", lhs=div(sp.Symbol("Gamma")))
+    close_to(value, printed, rtol=1e-12, source=":591")
+agrees(sp.diff(r * flux_density, r) / r, 0, ":592", lhs=div(sp.Symbol("Gamma")))
 
 # %%
 if __name__ == "__main__":

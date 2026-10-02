@@ -17,7 +17,7 @@
   #callout(
     [Relax one ordering at a time],
     [A reliable extension of a cold-plasma result starts by naming the small
-    parameter that is being released. Compare $nu/omega$, $omega/omega_(c,i)$,
+    parameter that is being released. Compare $nu\/omega$, $omega\/omega_(c,i)$,
     and $k lambda_D$ before choosing a collisional, two-fluid, warm-fluid, or
     kinetic description.]
   )
@@ -40,7 +40,7 @@
   #unit-ledger[
     The damping rate is in #unit("s^-1"), and wave numbers $k_r$ and $k_i$ are
     in #unit("m^-1"). The effective mass has units #unit("kg"), while $N$ and
-    $m_"eff"/m$ are dimensionless.
+    $m_"eff"\/m$ are dimensionless.
   ]
 
   #assumption(
@@ -57,13 +57,17 @@
   #definition(
     [Complex effective mass],
     [With the drag term included, write the time-harmonic momentum equation as
-    $-i omega m_(s) bold(u)_(s,1)=q_(s)(
+
+    $ -i omega m_(s) bold(u)_(s,1)=q_(s)(
       bold(E)_1+bold(u)_(s,1) times bold(B)_(0))
-      -m_(s) nu_s bold(u)_(s,1)$.
+      -m_(s) nu_s bold(u)_(s,1) . $
+
     Moving the drag to the left gives
-    $-i omega m_("eff",s) bold(u)_(s,1)
-      =q_(s)(bold(E)_1+bold(u)_(s,1) times bold(B)_(0))$
-    with $m_("eff",s)=m_(s)(1+(i nu_s)/omega)$. The sign of the imaginary part
+
+    $ -i omega m_("eff",s) bold(u)_(s,1)
+      =q_(s)(bold(E)_1+bold(u)_(s,1) times bold(B)_(0)) $
+
+    with $m_("eff",s)=m_(s)(1+i nu_s\/omega)$. The sign of the imaginary part
     follows the stated Fourier convention. For nonzero $omega$, this is an
     exact algebraic rewrite of the stated constant-drag equation, including
     near cyclotron resonance. The complex mass is a way to combine inertia
@@ -75,13 +79,17 @@
     [The cold tensor formulas can be reused with $m_s$ replaced by
     $m_("eff",s)$ when the drag model is valid. For the
     cyclotron-sensitive electron circular branch, one convenient convention is
-    $N_"RH"^2=1-
-      omega_(p,e)^2/(omega(omega-omega_(c,e)+i nu_e))$.
+
+    $ N_"RH"^2=1-
+      omega_(p,e)^2/(omega(omega-omega_(c,e)+i nu_e)) . $
+
     For a wave driven at real positive $omega$ in a homogeneous medium,
     write $N=N_r+i N_i$ and
-    $k=(omega N)/c=k_r+i k_i$. The field factor is
-    $exp(i k z-i omega t)=exp(i k_r z-i omega t) exp(-k_i z)$,
-    so $k_i>0$ is amplitude attenuation and $1/(2 k_i)$ is the intensity
+    $k=omega N\/c=k_r+i k_i$. The field factor is
+
+    $ exp(i k z-i omega t)=exp(i k_r z-i omega t) exp(-k_i z) , $
+
+    so $k_i>0$ is amplitude attenuation and $1\/(2 k_i)$ is the intensity
     attenuation length along positive $z$. This describes spatial decay;
     temporal damping instead uses a complex frequency at real wave number.]
   )
@@ -111,8 +119,8 @@
 
     #derivation-step[Insert the effective parameters into the cold response]
     The species plasma-frequency factor becomes
-    $(n_(s,0)q_s^2)/(epsilon_0 m_("eff",s))$, and the signed gyrofrequency becomes
-    $(q_s B_0)/m_("eff",s)$. Insert both into the cold transverse response.
+    $n_(s,0)q_s^2\/(epsilon_0 m_("eff",s))$, and the signed gyrofrequency becomes
+    $q_s B_0\/m_("eff",s)$. Insert both into the cold transverse response.
     For the electron branch whose collisionless denominator is
     $omega(omega-omega_(c,e))$, the two substitutions combine to
 
@@ -124,7 +132,7 @@
     This gives the stated collisional circular response.
 
     #derivation-step[Extract weak attenuation]
-    Away from resonances and for $nu_e/omega << 1$, the unmagnetized
+    Away from resonances and for $nu_e\/omega << 1$, the unmagnetized
     susceptibility is
 
     $ omega_(p,e)^2/(omega(omega+i nu_e))
@@ -133,13 +141,13 @@
 
     Therefore $N^2$ has a positive imaginary part in the chosen convention.
     Taking the square root gives $N=N_r+i N_i$ with $N_i>0$. Since
-    $k=(omega N)/c,$
+    $k=omega N\/c,$
 
     $ exp(i(k_r+i k_i)z-i omega t)
         =exp(i k_r z-i omega t)exp(-k_i z) . $
 
-    The amplitude falls by $e^(-1)$ after $1/k_i$, while intensity, which is
-    proportional to amplitude squared, falls by $e^(-1)$ after $1/(2 k_i)$.
+    The amplitude falls by $e^(-1)$ after $1\/k_i$, while intensity, which is
+    proportional to amplitude squared, falls by $e^(-1)$ after $1\/(2 k_i)$.
 
     #derivation-step[State the validity boundary]
     The effective-mass substitution remains exact for constant linear drag.
@@ -162,12 +170,12 @@
     $omega_(p,e)=qty("5.64e9", "s^-1")$,
     $omega=qty("2.00e10", "s^-1")$, and a constant
     $nu_e=qty("1.00e9", "s^-1")$. In the high-frequency weak-collision
-    approximation, estimate the effective-mass ratio $m_"eff",e/m_e$,
+    approximation, estimate the effective-mass ratio $m_("eff",e)\/m_e$,
     $k_r$, $k_i$, and the amplitude attenuation length for the unmagnetized
     branch.
 
     Numerical result:
-    #normalized-label[$m_"eff",e/m_e=qty("1.00", "1")+i qty("5.00e-2", "1")$],
+    #normalized-label[$m_("eff",e)\/m_e=qty("1.00", "1")+i qty("5.00e-2", "1")$],
     #normalized-label[$N approx qty("0.959", "1")+i qty("2.07e-3", "1")$],
     $k_r approx qty("64.0", "m^-1")$,
     $k_i approx qty("1.38e-1", "m^-1")$, and the amplitude attenuation
@@ -182,7 +190,7 @@
   )
 
   #summary[
-    Linear drag can be represented by $m_"eff"=m(1+(i nu)/omega)$ in a
+    Linear drag can be represented by $m_"eff"=m(1+i nu\/omega)$ in a
     time-harmonic cold response. The resulting $N$ and $k$ are complex:
     $k_r$ controls phase advance and $k_i$ controls spatial attenuation.
     Near resonances retain the full drag response; a weak-collision expansion
@@ -235,7 +243,7 @@
     [Two-fluid electron--ion response],
     [Use a neutral, homogeneous hydrogen plasma with $n_(e,0)=n_(i,0)=n_0$,
     no pressure and no collisions for the first branch calculation. Retain
-    both electron and ion inertia, use $m_e/m_i << 1$, and keep
+    both electron and ion inertia, use $m_e\/m_i << 1$, and keep
     $bold(B)_0=B_0 bold(e)_z$. The labels RH and LH follow the present
     Fourier and viewing convention; they denote circular eigenvalues.]
   )
@@ -243,41 +251,56 @@
   #definition(
     [Two-fluid dielectric coefficients],
     [The species sum gives
-    $epsilon_(perp)=1-
+
+    $ epsilon_(perp)=1-
       [omega_(p,e)^2/(omega^2-omega_(c,e)^2)
-      +omega_(p,i)^2/(omega^2-omega_(c,i)^2)]$,
-    $epsilon_(times)=
+      +omega_(p,i)^2/(omega^2-omega_(c,i)^2)] , $
+
+    $ epsilon_(times)=
       -(omega_(c,e) omega_(p,e)^2)/(omega (omega^2-omega_(c,e)^2))
-      +(omega_(c,i) omega_(p,i)^2)/(omega (omega^2-omega_(c,i)^2))$,
+      +(omega_(c,i) omega_(p,i)^2)/(omega (omega^2-omega_(c,i)^2)) , $
+
     and
-    $epsilon_(parallel)=1-
-      [omega_(p,e)^2+omega_(p,i)^2]/omega^2$.
+
+    $ epsilon_(parallel)=1-
+      [omega_(p,e)^2+omega_(p,i)^2]/omega^2 . $
+
     This is the signed-$Omega_s$ convention from the previous chapter: for
     $bold(B)_0$ along positive $z$, the electron contribution is negative and
     the ion contribution is positive. Charge neutrality and singly charged
     species imply
-    $omega_(p,i)^2/omega_(p,e)^2=m_e/m_i
-      =omega_(c,i)/omega_(c,e)$.]
+
+    $ omega_(p,i)^2/omega_(p,e)^2=m_e/m_i
+      =omega_(c,i)/omega_(c,e) . $
+    ]
   )
 
   #governing-law(
     [Circular branches and the Alfvén limit],
     [For parallel propagation, the two circular branches can be written,
-    to leading order in $m_e/m_i$, as
-    $N_"RH"^2 approx 1-
+    to leading order in $m_e\/m_i$, as
+
+    $ N_"RH"^2 approx 1-
       omega_(p,e)^2/
-      ((omega+omega_(c,i))(omega-omega_(c,e)))$
+      ((omega+omega_(c,i))(omega-omega_(c,e))) $
+
     and
-    $N_"LH"^2 approx 1-
+
+    $ N_"LH"^2 approx 1-
       omega_(p,e)^2/
-      ((omega-omega_(c,i))(omega+omega_(c,e)))$.
+      ((omega-omega_(c,i))(omega+omega_(c,e))) . $
+
     For $omega << omega_(c,i)$ both approach
-    $N^2 approx 1+
+
+    $ N^2 approx 1+
       omega_(p,e)^2/(omega_(c,e)omega_(c,i))
-      approx c^2/v_A^2$,
+      approx c^2/v_A^2 , $
+
     where
-    $v_A=B_0/sqrt(mu_0 rho_0)
-      =(c sqrt(omega_(c,e) omega_(c,i)))/omega_(p,e)$
+
+    $ v_A=B_0/sqrt(mu_0 rho_0)
+      =(c sqrt(omega_(c,e) omega_(c,i)))/omega_(p,e) $
+
     and $rho_0 approx n_0 m_i$. The last approximation also requires
     $v_A << c$, so the added unity is negligible. In this nonrelativistic
     limit, $omega approx k v_A$ at low frequency.]
@@ -318,7 +341,7 @@
 
     $ omega_(p,e)^2(1+omega_(c,i)/omega_(c,e)) . $
 
-    Since $omega_(c,i)/omega_(c,e)=m_e/m_i$ is small, retain the ion factors
+    Since $omega_(c,i)\/omega_(c,e)=m_e\/m_i$ is small, retain the ion factors
     in the denominator but drop this small numerator correction:
 
     $ N_"RH"^2 approx 1-
@@ -342,8 +365,8 @@
 
     $ N^2 approx c^2/[B_0^2/(mu_0 n_0 m_i)]=c^2/v_A^2 . $
 
-    Since $N=(k c)/omega$, the low-frequency phase speed is
-    $omega/k approx v_A.$
+    Since $N=k c\/omega$, the low-frequency phase speed is
+    $omega\/k approx v_A.$
 
     #derivation-step[Interpret the two circular branches]
     Under this convention, the RH branch is regular through the positive
@@ -363,8 +386,8 @@
     $B_0=qty("1.0e-2", "T")$, $m_i=qty("1.673e-27", "kg")$,
     and $e=qty("1.602e-19", "C")$. Consider a parallel
     low-frequency wave at
-    #normalized-label[$omega/omega_(c,i)=qty("0.10", "1")$]. Determine
-    $omega_(c,i)$, $v_A$, $k approx omega/v_A$, and the wavelength.
+    #normalized-label[$omega\/omega_(c,i)=qty("0.10", "1")$]. Determine
+    $omega_(c,i)$, $v_A$, $k approx omega\/v_A$, and the wavelength.
 
     Numerical result: $omega_(c,i)=qty("9.58e5", "s^-1")$,
     $v_A=qty("2.18e6", "m/s")$,
@@ -395,7 +418,7 @@
     ),
     (
       question: [How does the Alfvén speed arise from the parallel circular dispersion?],
-      answer: [In the low-frequency limit the circular refractive index becomes $N^2 approx c^2/v_A^2$. Combining this with $N=(k c)/omega$ gives the nondispersive relation $omega=k v_A$.]
+      answer: [In the low-frequency limit the circular refractive index becomes $N^2 approx c^2\/v_A^2$. Combining this with $N=k c\/omega$ gives the nondispersive relation $omega=k v_A$.]
     ),
     (
       question: [What distinguishes the ion-cyclotron and whistler-like continuations?],
@@ -424,7 +447,7 @@
   ))
 
   #unit-ledger[
-    The normalized combination $k lambda_D$ and the ratio $omega/omega_p$ are
+    The normalized combination $k lambda_D$ and the ratio $omega\/omega_p$ are
     dimensionless.
   ]
 
@@ -433,7 +456,7 @@
     [Use a homogeneous unmagnetized longitudinal perturbation, or one with
     both $bold(k)$ and $bold(E)_1$ parallel to $bold(B)_0$, with
     $p_(s,1)=gamma_s k_B T_s n_(s,1)$. Define
-    $c_s^2=(gamma_s k_B T_s)/m_s$. Here $s$ labels a species; below,
+    $c_s^2=gamma_s k_B T_s\/m_s$. Here $s$ labels a species; below,
     $c_(s,e)$ and $c_(s,i)$ denote the electron and ion pressure-response
     speeds. They are distinct from the collective ion-acoustic speed.
     The closure is local and fluid-like; it
@@ -448,14 +471,14 @@
   #definition(
     [Warm longitudinal response],
     [For a longitudinal perturbation, the pressure-corrected dielectric coefficient is
-    $epsilon_(parallel)=1-
-      sum_s omega_(p,s)^2/
-      (omega^2-k^2 c_s^2)$.
+    $epsilon_(parallel)=1- sum_s omega_(p,s)^2\/(omega^2-k^2 c_s^2)$.
     For fixed ions and warm electrons this gives
-    $omega^2=omega_(p,e)^2+k^2 c_(s,e)^2
-      =omega_(p,e)^2(1+gamma_e k^2 lambda_(D,e)^2)$,
+
+    $ omega^2=omega_(p,e)^2+k^2 c_(s,e)^2
+      =omega_(p,e)^2(1+gamma_e k^2 lambda_(D,e)^2) , $
+
     with
-    $lambda_(D,e)^2=(epsilon_0 k_B T_e)/(n_0e^2)$ for an isothermal electron
+    $lambda_(D,e)^2=epsilon_0 k_B T_e\/(n_0e^2)$ for an isothermal electron
     reference.]
   )
 
@@ -464,16 +487,23 @@
     [The fixed-ion warm branch is
     $omega^2=omega_(p,e)^2+k^2 c_(s,e)^2$.
     When both species move, the longitudinal condition is
-    $1-
+
+    $ 1-
       omega_(p,e)^2/(omega^2-k^2 c_(s,e)^2)
-      -omega_(p,i)^2/(omega^2-k^2 c_(s,i)^2)=0$.
+      -omega_(p,i)^2/(omega^2-k^2 c_(s,i)^2)=0 . $
+
     Its low-frequency root has
-    $omega^2 approx
+
+    $ omega^2 approx
       (k^2 (omega_(p,e)^2 c_(s,i)^2
       +omega_(p,i)^2 c_(s,e)^2))/
-      (omega_(p,e)^2+omega_(p,i)^2)$.
+      (omega_(p,e)^2+omega_(p,i)^2) . $
+
     For a hydrogen plasma this is approximately
-    $omega^2=(k^2 gamma k_(B)(T_e+T_i))/m_i$ when the same adiabatic
+
+    $ omega^2=(k^2 gamma k_(B)(T_e+T_i))/m_i $
+
+    when the same adiabatic
     convention is used for both species.]
   )
 
@@ -502,7 +532,7 @@
       =q_s E_1-(i k gamma_s k_B T_s n_(s,1))/n_(s,0) . $
 
     Use continuity and define
-    $c_s^2=(gamma_s k_B T_s)/m_s:$
+    $c_s^2=gamma_s k_B T_s\/m_s:$
 
     $ -i omega m_s u_(s,1)
       =q_s E_1-i (k^2 m_s c_s^2 u_(s,1))/omega . $
@@ -592,7 +622,7 @@
 
     Numerical result: $lambda_(D,e)=qty("2.35e-4", "m")$,
     $k=qty("3.40e3", "m^-1")$, and
-    #normalized-label[$omega/omega_(p,e)=qty("1.28", "1")$].
+    #normalized-label[$omega\/omega_(p,e)=qty("1.28", "1")$].
   ]
 
   #interpretation(
@@ -653,7 +683,7 @@
 
   #unit-ledger[
     The speeds $v_A$, $v_s$, and $v_m$ are in #unit("m/s"). The ratios
-    $omega/omega_(c,i)$ and $k lambda_D$ are dimensionless.
+    $omega\/omega_(c,i)$ and $k lambda_D$ are dimensionless.
   ]
 
   #assumption(
@@ -670,14 +700,14 @@
     inertial corrections are ordered small, rather than setting the current
     to zero.
     Use an adiabatic closure $p_1=v_s^2 rho_1$ with
-    $v_s^2=(gamma p_0)/rho_0$.]
+    $v_s^2=gamma p_0\/rho_0$.]
   )
 
   #definition(
     [Alfvén, sound, and magnetosonic speeds],
     [Define
-    $v_A=B_0/sqrt(mu_0 rho_0)$,
-    $v_s=sqrt((gamma p_0)/rho_0)$, and
+    $v_A=B_0\/sqrt(mu_0 rho_0)$,
+    $v_s=sqrt(gamma p_0\/rho_0)$, and
     $v_m=sqrt(v_A^2+v_s^2)$
     for perpendicular compressional motion. The square $v_A^2$ is magnetic
     tension per unit mass density, $v_s$ is the pressure-wave speed, and $v_m$ is
@@ -763,8 +793,8 @@
 
     #derivation-step[Recover the perpendicular MHD branch]
     For the low-frequency one-fluid limit, use continuity,
-    $pdv(rho,t)+div(rho bold(u))=0$, the ideal induction equation,
-    $pdv(bold(B),t)=curl(bold(u)times bold(B))$, and the MHD
+    $pdv(rho,t, style: "horizontal")+div(rho bold(u))=0$, the ideal induction equation,
+    $pdv(bold(B),t, style: "horizontal")=curl(bold(u)times bold(B))$, and the MHD
     momentum equation
 
     $ rho pdv(bold(u),t)=-grad(p)+[curl(bold(B))times bold(B)]/mu_0 . $
@@ -788,7 +818,7 @@
     $ -i omega rho_0u_x=-i k p_1-i (k B_0B_(1,z))/mu_0 . $
 
     Substitute the density, pressure, and magnetic perturbations, then divide
-    by the nonzero factor $rho_0u_x/omega$:
+    by the nonzero factor $rho_0u_x\/omega$:
 
     $ omega^2=k^2[v_s^2+B_0^2/(mu_0 rho_0)]
       =k^2(v_s^2+v_A^2) . $
@@ -821,10 +851,10 @@
     caption: [
       Warm magnetized-wave patterns: pressure compression, shear-Alfvén field
       displacement, and perpendicular compressional magnetosonic motion.
-      All patterns use $X=x/L_0$ and $tau=t/t_0$, with reference speed
-      $L_0/t_0$. Their dimensionless speeds are
-      $(v_s t_0)/L_0=0.6$, $(v_A t_0)/L_0=1$, and
-      $(v_m t_0)/L_0=sqrt(1.36)$; the common wave number is $k L_0=1.25$.
+      All patterns use $X=x\/L_0$ and $tau=t\/t_0$, with reference speed
+      $L_0\/t_0$. Their dimensionless speeds are
+      $v_s t_0\/L_0=0.6$, $v_A t_0\/L_0=1$, and
+      $v_m t_0\/L_0=sqrt(1.36)$; the common wave number is $k L_0=1.25$.
       The prescribed linear patterns illustrate $v_m^2=v_A^2+v_s^2$;
       $L_0$ and $t_0$ are arbitrary reference length (#unit("m")) and time
       (#unit("s")).
@@ -903,11 +933,11 @@
   ))
 
   #unit-ledger[
-    The ordering parameters $C=nu/omega$, $I=omega/omega_(c,i)$,
-    $K=k lambda_D$, and $M=m_e/m_i$ are dimensionless. Dimensional
+    The ordering parameters $C=nu\/omega$, $I=omega\/omega_(c,i)$,
+    $K=k lambda_D$, and $M=m_e\/m_i$ are dimensionless. Dimensional
     $nu$, $omega$, and $omega_(c,i)$ are in #unit("s^-1"); $k$ is in
     #unit("m^-1"); and $lambda_D$ and the pressure-response gyroradius
-    $rho_s=c_s/omega_(c,s)$ are in #unit("m"). Particle and wave speeds are
+    $rho_s=c_s\/omega_(c,s)$ are in #unit("m"). Particle and wave speeds are
     in #unit("m/s").
   ]
 
@@ -1054,7 +1084,7 @@
     ),
     (
       question: [Why does the fixed-ion limit fail at low frequency?],
-      answer: [Reducing the frequency to the ion-cyclotron scale makes the ion response resonant or order one even though $m_e/m_i$ is small. The small mass ratio alone does not remove ion inertia.]
+      answer: [Reducing the frequency to the ion-cyclotron scale makes the ion response resonant or order one even though $m_e\/m_i$ is small. The small mass ratio alone does not remove ion inertia.]
     ),
     (
       question: [What does $k lambda_D$ measure in the model hierarchy?],

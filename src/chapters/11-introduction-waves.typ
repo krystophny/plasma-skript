@@ -41,7 +41,7 @@
 
   #unit-ledger[
     The phase $bold(k) dot bold(r)-omega t$ and normalized variables such as
-    $omega/omega_(p,e)$ are dimensionless.
+    $omega\/omega_(p,e)$ are dimensionless.
   ]
 
   #assumption(
@@ -61,8 +61,10 @@
     $bold(E)=epsilon bold(E)_1$, and
     $bold(B)=bold(B)_0+epsilon bold(B)_1$.
     A complex amplitude represents the real field through
-    $bold(A)_1(bold(r),t)=Re{tilde(bold(A))_1
-    exp(i (bold(k) dot bold(r)-omega t))}$.
+
+    $ bold(A)_1(bold(r),t)=Re{tilde(bold(A))_1
+      exp(i (bold(k) dot bold(r)-omega t))} . $
+
     The wave number $k=abs(bold(k))$ is in #unit("m^-1") and the
     angular frequency $omega$ is in #unit("s^-1").]
   )
@@ -157,29 +159,29 @@
     A homogeneous hydrogen plasma has equilibrium density
     $n_(e,0)=n_(i,0)=qty("1.0e16", "m^-3")$, electron temperature energy
     $k_B T_e=qty("1.0", "eV")=qty("1.602e-19", "J")$, and a density perturbation with
-    relative amplitude #normalized-label[$(delta n_e)/n_(e,0)=qty("2.0e-2", "1")$]. Use
+    relative amplitude #normalized-label[$delta n_e\/n_(e,0)=qty("2.0e-2", "1")$]. Use
     $e=qty("1.602e-19", "C")$, $m_e=qty("9.109e-31", "kg")$,
     $epsilon_0=qty("8.854e-12", "F/m")$, and a
     wavelength $lambda=qty("0.10", "m")$ at angular frequency
-    $omega=qty("1.0e10", "s^-1")$, with $k=(2 pi)/lambda$.
+    $omega=qty("1.0e10", "s^-1")$, with $k=2 pi\/lambda$.
 
     Assumptions: cold fixed-ion ordering for the plasma-frequency estimate
     and small-amplitude perturbation.
 
     Target: report the perturbation parameter, Debye-scale ordering
-    $k lambda_D$, and frequency ordering $omega/omega_(p,e)$.
+    $k lambda_D$, and frequency ordering $omega\/omega_(p,e)$.
 
     Numerical result: #normalized-label[$epsilon=qty("2.0e-2", "1")$],
     $lambda_D=qty("7.43e-5", "m")$,
     #normalized-label[$k lambda_D=qty("4.67e-3", "1")$],
     $omega_(p,e)=qty("5.64e9", "s^-1")$, and
-    #normalized-label[$omega/omega_(p,e)=qty("1.77", "1")$].
+    #normalized-label[$omega\/omega_(p,e)=qty("1.77", "1")$].
   ]
 
   #interpretation(
     [Amplitude ordering and regime ratios],
     [The small parameter controls amplitudes, while the ratios
-    $omega/(k v_"th")$, $omega/omega_(p,e)$, and
+    $omega\/(k v_"th")$, $omega\/omega_(p,e)$, and
     $k lambda_D$ control the physical regime. A perturbation can be small
     and still be kinetic, magnetized, or strongly dispersive.]
   )
@@ -202,7 +204,7 @@
     (
       question: [What does the plane-wave ansatz do to a time derivative and a spatial gradient?],
       answer: [For the convention $exp(i (bold(k) dot bold(r)-omega t))$,
-      $pdv(f,t)$ becomes $-i omega f$ and
+      $pdv(f,t, style: "horizontal")$ becomes $-i omega f$ and
       $grad(f)$ becomes $i bold(k) f$ when acting on the amplitude.]
     ),
     (
@@ -239,7 +241,7 @@
 
   #unit-ledger[
     The plasma frequency $omega_(p,e)$ is in #unit("s^-1"). The normalized
-    displacement $xi/xi_0$ and time $omega_(p,e) t$ are dimensionless.
+    displacement $xi\/xi_0$ and time $omega_(p,e) t$ are dimensionless.
   ]
 
   #assumption(
@@ -253,7 +255,7 @@
   #definition(
     [Electron plasma frequency],
     [The electron plasma frequency is
-    $omega_(p,e)=sqrt((n_0 e^2)/(epsilon_0 m_e))$.
+    $omega_(p,e)=sqrt(n_0 e^2\/(epsilon_0 m_e))$.
     It is a local collective frequency. Since the cold longitudinal
     dispersion relation contains no $k$, this idealized oscillation has no
     group propagation.]
@@ -262,9 +264,9 @@
   #governing-law(
     [Cold electrostatic plasma oscillation],
     [For a longitudinal perturbation with fixed ions,
-    $omega^2=omega_(p,e)^2=(n_0 e^2)/(epsilon_0 m_e)$.
+    $omega^2=omega_(p,e)^2=n_0 e^2\/(epsilon_0 m_e)$.
     If every species is allowed to move coherently, the restoring frequency
-    becomes $omega_p^2=sum_s ((n_(s,0) q_s^2)/(epsilon_0 m_s))$.]
+    becomes $omega_p^2=sum_s (n_(s,0) q_s^2\/(epsilon_0 m_s))$.]
   )
 
   #details(
@@ -309,7 +311,7 @@
     $ omega_p^2=sum_s ((n_(s,0)q_s^2)/(epsilon_0 m_s)) . $
 
     For hydrogen, the ion contribution is smaller than the electron term by
-    $m_e/m_i$.]
+    $m_e\/m_i$.]
   )
 
   #rechenbeispiel[
@@ -321,7 +323,7 @@
     $m_e=qty("9.109e-31", "kg")$, and
     $epsilon_0=qty("8.854e-12", "F/m")$.
     Determine the electron plasma frequency and its ordinary frequency
-    $f_p=omega_(p,e)/(2 pi)$.
+    $f_p=omega_(p,e)\/(2 pi)$.
 
     Numerical result:
     $omega_(p,e)=qty("5.64e9", "s^-1")$ and
@@ -339,7 +341,7 @@
 
   #summary[
     A displaced cold electron population creates a charge-separation field.
-    This gives $omega_(p,e)^2=(n_0 e^2)/(epsilon_0 m_e)$.
+    This gives $omega_(p,e)^2=n_0 e^2\/(epsilon_0 m_e)$.
     The frequency is collective and local in the cold fixed-ion limit; ion
     inertia adds the corresponding ion plasma-frequency contribution.
   ]
@@ -360,7 +362,7 @@
     (
       question: [How does allowing the ions to move change the collective frequency?],
       answer: [Each mobile species contributes
-      $(n_(s,0)q_s^2)/(epsilon_0 m_s)$ to the
+      $n_(s,0)q_s^2\/(epsilon_0 m_s)$ to the
       squared collective frequency. The ion contribution is usually small
       because the ion mass is large.]
     ),
@@ -390,7 +392,7 @@
 
   #unit-ledger[
     The velocities $v_"phi"$ and $v_"g"$ are in #unit("m/s"). The dielectric
-    factor $epsilon_(r)$, $(k c)/omega_(p,e)$, and $omega/omega_(p,e)$ are
+    factor $epsilon_(r)$, $k c\/omega_(p,e)$, and $omega\/omega_(p,e)$ are
     dimensionless.
   ]
 
@@ -405,7 +407,7 @@
   #definition(
     [Phase and group velocity],
     [For a branch $omega(k)$ with $k>0$, define
-    $v_"phi"=omega/k$ and $v_"g"=dv(omega,k)$.
+    $v_"phi"=omega\/k$ and $v_"g"=dv(omega,k, style: "horizontal")$.
     Phase velocity tracks a constant phase surface. For a narrow-band packet
     in a weakly dispersive medium, group velocity describes the motion of its
     envelope; energy and information transport require the full causal
@@ -415,12 +417,12 @@
   #governing-law(
     [Cold electromagnetic branch],
     [The electron current produces
-    $epsilon_(r)(omega)=1-omega_(p,e)^2/omega^2$ and
+    $epsilon_(r)(omega)=1-omega_(p,e)^2\/omega^2$ and
     $k^2 c^2=omega^2 epsilon_(r)$.
     Equivalently,
     $omega^2=omega_(p,e)^2+c^2 k^2$,
-    $v_"phi"=c sqrt(1+omega_(p,e)^2/(c^2 k^2))$, and
-    $v_"g"=(c^2 k)/omega$.]
+    $v_"phi"=c sqrt(1+omega_(p,e)^2\/(c^2 k^2))$, and
+    $v_"g"=c^2 k\/omega$.]
   )
 
   The relative dielectric factor $epsilon_(r)$ summarizes how the induced
@@ -456,7 +458,7 @@
     $ bold(k) times bold(B)_1=-(omega bold(E)_1)/c^2
       -i mu_0 bold(j)_1 , $
 
-    with $c^2=1/(mu_0 epsilon_0)$.
+    with $c^2=1\/(mu_0 epsilon_0)$.
 
     Substitute the first relation into the second and use
 
@@ -468,7 +470,7 @@
 
     #derivation-step[Read off the electromagnetic branch]
     Insert the current response and define
-    $omega_(p,e)^2=(n_0 e^2)/(epsilon_0 m_e):$
+    $omega_(p,e)^2=n_0 e^2\/(epsilon_0 m_e):$
 
     $ (omega^2-c^2 k^2) bold(E)_1
       =omega_(p,e)^2 bold(E)_1 . $
@@ -498,13 +500,13 @@
     "A prescribed Gaussian envelope and cosine carrier travel rightward in normalized coordinates. A stationary key identifies the slower dashed envelope marker and faster solid carrier-phase marker. Position is x/L0 [1] and field amplitude is E/E0 [1].",
     caption: [
       The prescribed carrier and envelope illustrate different phase and
-      group speeds. With $X=x/L_0$, $tau=t/t_0$, and $A=E/E_0$, the ansatz is
+      group speeds. With $X=x\/L_0$, $tau=t\/t_0$, and $A=E\/E_0$, the ansatz is
       $A=exp(-(X-0.42 tau)^2/(2 (1.15)^2))
         cos(5.2 (X-0.90 tau))$.
       Here $L_0$, $t_0$, and $E_0$ are arbitrary reference length, time,
-      and field scales; velocities are in units $L_0/t_0$.
-      Thus $sigma/L_0=1.15$, $k L_0=5.2$,
-      $(v_"g" t_0)/L_0=0.42$, and $(v_"phi" t_0)/L_0=0.90$ are
+      and field scales; velocities are in units $L_0\/t_0$.
+      Thus $sigma\/L_0=1.15$, $k L_0=5.2$,
+      $v_"g" t_0\/L_0=0.42$, and $v_"phi" t_0\/L_0=0.90$ are
       prescribed dimensionless parameters. This ansatz is not an exact
       solution of the cold-plasma dispersion relation. The phase marker
       follows a cosine maximum; the varying envelope shifts the maxima of
@@ -516,15 +518,15 @@
   #rechenbeispiel[
     Assume the homogeneous, cold, collisionless, unmagnetized, fixed-ion
     transverse electromagnetic model. A cold electromagnetic
-    wave has #normalized-label[ $omega/omega_(p,e)=2$] in a plasma with
+    wave has #normalized-label[ $omega\/omega_(p,e)=2$] in a plasma with
     $omega_(p,e)=qty("5.64e9", "s^-1")$ and
     $c=qty("2.998e8", "m/s")$.
     Determine $k$, the phase velocity, the group velocity, and the wavelength.
 
     Numerical result:
-    #normalized-label[$(k c)/omega_(p,e)=qty("1.732", "1")$],
-    #normalized-label[$v_"phi"/c=qty("1.155", "1")$],
-    #normalized-label[$v_"g"/c=qty("0.866", "1")$],
+    #normalized-label[$k c\/omega_(p,e)=qty("1.732", "1")$],
+    #normalized-label[$v_"phi"\/c=qty("1.155", "1")$],
+    #normalized-label[$v_"g"\/c=qty("0.866", "1")$],
     $k=qty("32.6", "m^-1")$, and
     $lambda=qty("0.193", "m")$.
   ]
@@ -547,7 +549,7 @@
   #knowledge-check((
     (
       question: [What is the physical meaning of the phase velocity?],
-      answer: [It is $v_"phi"=omega/k$, the speed of a constant phase surface.
+      answer: [It is $v_"phi"=omega\/k$, the speed of a constant phase surface.
       It need not equal the speed of a localized pulse or of information.]
     ),
     (
@@ -589,8 +591,8 @@
 
   #unit-ledger[
     Thermal speed and ion-acoustic speed are in #unit("m/s"), and
-    $lambda_D=sqrt((epsilon_0 k_B T_e)/(n_0 e^2))$ is in #unit("m"). The phase
-    parameters $k lambda_D$ and $omega/(k v_"th,s")$ are dimensionless.
+    $lambda_D=sqrt(epsilon_0 k_B T_e\/(n_0 e^2))$ is in #unit("m"). The phase
+    parameters $k lambda_D$ and $omega\/(k v_"th,s")$ are dimensionless.
   ]
 
   #assumption(
@@ -605,20 +607,22 @@
   #definition(
     [Warm-fluid scales],
     [Define
-    $c_s^2=(gamma_s k_B T_s)/m_s$ and
-    $omega_(p,s)^2=(n_(s,0)q_s^2)/(epsilon_0 m_s)$.
+    $c_s^2=gamma_s k_B T_s\/m_s$ and
+    $omega_(p,s)^2=n_(s,0)q_s^2\/(epsilon_0 m_s)$.
     Here the index $s$ labels a species: $c_e$ and $c_i$ are its electron
     and ion pressure-response speeds. Neither is necessarily the phase
     velocity of a collective branch. The thermal-speed convention used for kinetic
-    comparisons is $v_"th,s"=sqrt((2 k_B T_s)/m_s)$.]
+    comparisons is $v_"th,s"=sqrt(2 k_B T_s\/m_s)$.]
   )
 
   #definition(
     [Plasma-dispersion function convention],
     [For a Maxwellian, the velocity integral in the kinetic response can be
     expressed using the dimensionless Fried--Conte function
-    $Z(zeta)=1/sqrt(pi) integral_(-infinity)^infinity
-      exp(-x^2)/(x-zeta) dif x$,
+
+    $ Z(zeta)=1/sqrt(pi) integral_(-infinity)^infinity
+      exp(-x^2)/(x-zeta) dif x , $
+
     initially defined for $Im(zeta)>0$ and continued causally to real and
     lower-half-plane frequencies. Here $x$ is a dimensionless integration
     variable for velocity, not position. The argument $zeta$ compares phase
@@ -626,20 +630,22 @@
     $k>0$ and $exp(-i omega t)$, deform
     the velocity contour below the pole as it crosses the real axis.
     The factor of two in the susceptibility below follows from the stated
-    convention $v_"th,s"=sqrt((2 k_B T_s)/m_s)$.]
+    convention $v_"th,s"=sqrt(2 k_B T_s\/m_s)$.]
   )
 
   #governing-law(
     [Warm electrostatic fluid dispersion],
     [The longitudinal two-species warm-fluid dispersion relation is
-    $1-sum_s omega_(p,s)^2/(omega^2-k^2 c_s^2)=0$.
+    $1-sum_s omega_(p,s)^2\/(omega^2-k^2 c_s^2)=0$.
     With fixed ions this gives
     $omega^2=omega_(p,e)^2+k^2 c_e^2$.
     In the low-frequency quasi-neutral hydrogen limit, requiring
     $omega << omega_(p,e)$, $k lambda_D << 1$, and
-    $abs(omega/(k c_e)) << 1$ to neglect electron inertia relative to
+    $abs(omega\/(k c_e)) << 1$ to neglect electron inertia relative to
     electron pressure,
-    $omega^2 approx (k^2 (gamma_e k_B T_e+gamma_i k_B T_i))/m_i$.]
+
+    $ omega^2 approx (k^2 (gamma_e k_B T_e+gamma_i k_B T_i))/m_i . $
+    ]
   )
   #details(
     [Derivation: warm-fluid susceptibility and ion sound],
@@ -657,7 +663,7 @@
     $ -i omega m_s u_(s,1)=q_s E_1
       -(i k gamma_s k_B T_s n_(s,1))/n_(s,0) . $
 
-    Define $c_s^2=(gamma_s k_B T_s)/m_s$. Substitution of continuity and
+    Define $c_s^2=gamma_s k_B T_s\/m_s$. Substitution of continuity and
     solution for the velocity gives
 
     $ u_(s,1)=(i q_s omega E_1)/
@@ -692,7 +698,7 @@
     $ omega^2=(k^2 (gamma_e k_B T_e+gamma_i k_B T_i))/m_i . $
 
     This reduction requires $omega << omega_(p,e)$,
-    $k lambda_D << 1$, and $abs(omega/(k c_e)) << 1$.
+    $k lambda_D << 1$, and $abs(omega\/(k c_e)) << 1$.
     The last condition follows by comparing $omega^2$ with $k^2 c_e^2$
     in the electron susceptibility; it controls neglect of electron inertia
     relative to pressure. The Debye ordering controls charge separation.
@@ -700,7 +706,7 @@
     #derivation-step[Compare with kinetic response]
     Kinetic theory replaces the fluid closure by a velocity-space response.
     For isotropic, non-drifting Maxwellian equilibria of each responding
-    species, with $v_"th,s"=sqrt((2 k_B T_s)/m_s)$, the unmagnetized
+    species, with $v_"th,s"=sqrt(2 k_B T_s\/m_s)$, the unmagnetized
     electrostatic form is
 
     $ 1+sum_s chi_(s)(omega,k)=0 , $
@@ -752,7 +758,7 @@
   #summary[
     Pressure adds $k$-dependent restoring forces. The warm-fluid longitudinal
     response obeys
-    $1-sum_s omega_(p,s)^2/(omega^2-k^2 c_s^2)=0$,
+    $1-sum_s omega_(p,s)^2\/(omega^2-k^2 c_s^2)=0$,
     whose limits include warm Langmuir and ion-acoustic waves. Kinetic
     response adds resonant velocity-space physics and collisionless damping.
   ]
@@ -772,7 +778,7 @@
       answer: [The mode must be slow compared with the electron plasma
       response and long compared with the Debye scale:
       $omega << omega_(p,e)$ and $k lambda_D << 1$. Neglecting electron
-      inertia relative to pressure also requires $abs(omega/(k c_e)) << 1$.]
+      inertia relative to pressure also requires $abs(omega\/(k c_e)) << 1$.]
     ),
     (
       question: [What physical effect is absent from a finite warm-fluid closure?],
@@ -794,8 +800,8 @@
     [identify when a branch is evanescent or when a fluid model has left its ordering],
   ))
   #unit-ledger[
-    The normalized axes use $K=(k c)/omega_(p,e)$ and
-    $W=omega/omega_(p,e)$, both dimensionless. The reconstructed wave number
+    The normalized axes use $K=k c\/omega_(p,e)$ and
+    $W=omega\/omega_(p,e)$, both dimensionless. The reconstructed wave number
     is in #unit("m^-1"), frequency in #unit("s^-1"), and velocities in
     #unit("m/s"). For warm electrostatic checks, $K_D=k lambda_D$ is also
     dimensionless.
@@ -809,12 +815,12 @@
   )
   #definition(
     [Dimensionless dispersion coordinates],
-    [Use $K=(k c)/omega_(p,e)$ and $W=omega/omega_(p,e)$ for the cold
+    [Use $K=k c\/omega_(p,e)$ and $W=omega\/omega_(p,e)$ for the cold
     electromagnetic branch. Then $W^2=1+K^2$,
-    $v_"phi"/c=W/K$, and $v_"g"/c=K/W$.
+    $v_"phi"\/c=W\/K$, and $v_"g"\/c=K\/W$.
     The cutoff is the intercept $W=1$ at $K=0$. The tangent slope
-    $dv(W,K)$ gives $v_"g"/c$; the slope of the line from the origin to a
-    point on the branch gives $v_"phi"/c=W/K$. These are different
+    $dv(W,K, style: "horizontal")$ gives $v_"g"\/c$; the slope of the line from the origin to a
+    point on the branch gives $v_"phi"\/c=W\/K$. These are different
     geometric measurements of the same curve.]
   )
   #details(
@@ -878,8 +884,8 @@
     $omega_(p,e)=qty("5.64e9", "s^-1")$; the lower-frequency drive is
     evanescent with $alpha=qty("13.3", "m^-1")$. The higher-frequency
     drive is propagating with $k=qty("32.7", "m^-1")$,
-    #normalized-label[$v_"phi"/c=qty("1.15", "1")$], and
-    #normalized-label[$v_"g"/c=qty("0.866", "1")$].
+    #normalized-label[$v_"phi"\/c=qty("1.15", "1")$], and
+    #normalized-label[$v_"g"\/c=qty("0.866", "1")$].
   ]
   #interpretation(
     [Cutoff, slope, and asymptote checks],
@@ -903,8 +909,8 @@
     ),
     (
       question: [How can the slope of a dispersion curve be used physically?],
-      answer: [The local slope $dv(omega,k)$ is the group velocity for a
-      narrow-band packet. It is distinct from the ratio $omega/k$, which is
+      answer: [The local slope $dv(omega,k, style: "horizontal")$ is the group velocity for a
+      narrow-band packet. It is distinct from the ratio $omega\/k$, which is
       the phase velocity.]
     ),
     (

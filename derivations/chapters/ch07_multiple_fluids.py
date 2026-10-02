@@ -133,7 +133,7 @@ note("Faraday keeps the divergence of B constant:")
 agrees(div(curl(E)), 0, ":251", lhs=sum(Partial(-curl(E)[k], X[k]) for k in range(3)))
 
 # %% Example: current
-section("Example: current with equal densities", "07-multiple-fluids.typ:308")
+section("Example: current with equal densities", "07-multiple-fluids.typ:311")
 n_0, j_x, rho_qx = sp.symbols("n_0 j_x rho_q")
 plasma = {n_0: 1.0e16 / u.meter**3, u_i: 2.0e5 * u.meter / u.second,
           u_e: 1.5e5 * u.meter / u.second}
@@ -142,10 +142,10 @@ equal = {n_e: n_0, n_i: n_0}
 assert sp.simplify(charge.rhs.subs(charges).subs(equal)) == 0
 show(sp.Eq(rho_q, charge.rhs.subs(charges).subs(equal)))
 close_to(evaluate(j_x, current.rhs.subs(charges).subs(equal), plasma, u.ampere / u.meter**2),
-         80.1, source=":330")
+         80.1, source=":333")
 
 # %% Perpendicular drift
-section("Perpendicular drift balance", "07-multiple-fluids.typ:407")
+section("Perpendicular drift balance", "07-multiple-fluids.typ:410")
 q_, n_ = sp.symbols("q_s n_s", nonzero=True)
 Bv, Ev = sp.symbols("B_x B_y B_z", real=True), sp.symbols("E_x E_y E_z", real=True)
 Gp = sp.symbols("g_x g_y g_z", real=True)          # components of grad p_s
@@ -172,13 +172,13 @@ for eq in balance_z:
 solution = sp.solve(balance_z, [ux, uy], dict=True)[0]
 for k, sym in enumerate((ux, uy)):
     expected = (drift_ExB[k] + drift_dia[k]).subs(along_z).subs(Bv[2], Bz)
-    agrees(solution[sym], expected, ":440", lhs=sym)
+    agrees(solution[sym], expected, ":443", lhs=sym)
 note("The first term is the E x B drift, the second the diamagnetic drift")
 has_unit(Em / Bm, u.meter / u.second)
 has_unit(ps / (Ls * qs * ns * Bm), u.meter / u.second)
 
 # %% Example: drifts
-section("Example: E x B and diamagnetic drifts", "07-multiple-fluids.typ:472")
+section("Example: E x B and diamagnetic drifts", "07-multiple-fluids.typ:475")
 E_0, B_0, g_0, n0_ = sp.symbols("E_0 B_0 g_0 n_0", positive=True)
 E_vec, B_vec, g_vec = [E_0, 0, 0], [0, 0, B_0], [g_0, 0, 0]
 slab = {E_0: 30.0 * u.volt / u.meter, B_0: 0.0100 * u.tesla,
@@ -188,12 +188,12 @@ ExB, Bxg = cross(E_vec, B_vec), cross(B_vec, g_vec)
 assert ExB[0] == ExB[2] == 0 and Bxg[0] == Bxg[2] == 0
 speed = u.meter / u.second
 u_E, u_si, u_se = (sp.Symbol(s) for s in ("u_ExB,y", "u_*i,y", "u_*e,y"))
-close_to(evaluate(u_E, ExB[1] / B_0**2, slab, speed), -3.00e3, source=":496")
-close_to(evaluate(u_si, Bxg[1] / (e * n0_ * B_0**2), slab, speed), 1.00e2, source=":500")
-close_to(evaluate(u_se, Bxg[1] / (-e * n0_ * B_0**2), slab, speed), -1.00e2, source=":503")
+close_to(evaluate(u_E, ExB[1] / B_0**2, slab, speed), -3.00e3, source=":499")
+close_to(evaluate(u_si, Bxg[1] / (e * n0_ * B_0**2), slab, speed), 1.00e2, source=":503")
+close_to(evaluate(u_se, Bxg[1] / (-e * n0_ * B_0**2), slab, speed), -1.00e2, source=":506")
 
 # %% Diamagnetic current
-section("Diamagnetic current", "07-multiple-fluids.typ:561")
+section("Diamagnetic current", "07-multiple-fluids.typ:564")
 qe, qi, ne_, ni_ = sp.symbols("q_e q_i n_e n_i", nonzero=True)
 ge, gi = sp.symbols("g_ex g_ey g_ez", real=True), sp.symbols("g_ix g_iy g_iz", real=True)
 drift = lambda qq, nn, g: [drift_ExB[i] + cross(Bv, g)[i] / (qq * nn * B2) for i in range(3)]
@@ -208,27 +208,27 @@ note("Sum of", sp.Mul(q_, n_), "times the drift over e and i; general B asserted
 jx = sp.Symbol("j_x")
 show(sp.Eq(jx, J_perp[0].subs(along_z).subs(Bv[2], Bz)))
 agrees(J_perp[0].subs(along_z).subs(Bv[2], Bz),
-       stated[0].subs(along_z).subs(Bv[2], Bz), ":592", lhs=jx)
+       stated[0].subs(along_z).subs(Bv[2], Bz), ":595", lhs=jx)
 note("Quasi-neutral,", sp.Eq(charge_s, 0), ": only the diamagnetic current remains")
 agrees(sp.simplify(J_perp[0].subs(neutral).subs(along_z).subs(Bv[2], Bz)),
-       cross([0, 0, Bz], g_sum)[0] / Bz**2, ":596", lhs=jx)
+       cross([0, 0, Bz], g_sum)[0] / Bz**2, ":599", lhs=jx)
 note("Ideal-gas pressures with equal densities", sp.Eq(sp.Symbol("p_s"), sp.Symbol("n") * k_B * sp.Symbol("T_s")))
 nf, Te, Ti = field("n"), field("T_e"), field("T_i")
 pressure = Partial(nf * k_B * Te + nf * k_B * Ti, x)
-agrees(pressure.doit(), k_B * ((Te + Ti) * Partial(nf, x) + nf * Partial(Te + Ti, x)), ":602",
+agrees(pressure.doit(), k_B * ((Te + Ti) * Partial(nf, x) + nf * Partial(Te + Ti, x)), ":605",
        lhs=pressure)
 has_unit(ps / (Ls * Bm), u.ampere / u.meter**2)
 
 # %% Example: diamagnetic current
-section("Example: diamagnetic current density", "07-multiple-fluids.typ:633")
+section("Example: diamagnetic current density", "07-multiple-fluids.typ:636")
 j_star = sp.Symbol("j_*,y")
 gradient = {g_0: 3.204e-5 * u.pascal / u.meter, B_0: 0.0100 * u.tesla}
 given(gradient)
 close_to(evaluate(j_star, Bxg[1] / B_0**2, gradient, u.ampere / u.meter**2), 3.20e-3,
-         source=":668")
+         source=":674")
 
 # %% Parallel momentum equation
-section("Parallel momentum equation", "07-multiple-fluids.typ:737")
+section("Parallel momentum equation", "07-multiple-fluids.typ:746")
 p = field("p_s")
 b = sp.symbols("b_x b_y b_z", real=True)          # constant unit vector along B
 B_mag = sp.Symbol("B", positive=True)
@@ -241,19 +241,19 @@ rhs = [q_s * n * (E[i] + cross(U, B_field)[i]) - Partial(p, X[i]) + R[i] for i i
 show(sp.Eq(L[0], lhs[0]))
 show(sp.Eq(Fv[0], rhs[0]))
 note("The magnetic force has no component along b:")
-agrees(sp.expand(dot(b, cross(U, B_field))), 0, ":775", lhs=dot(b, cross(U, B_field)))
+agrees(sp.expand(dot(b, cross(U, B_field))), 0, ":784", lhs=dot(b, cross(U, B_field)))
 u_par, E_par, R_par = field("u_parallel"), field("E_parallel"), field("R_parallel")
 parallel = {u_par: dot(b, U), E_par: dot(b, E), R_par: dot(b, R)}
 note("Project both sides on b, with", sp.Eq(u_par, dot(b, U)), "and likewise", E_par, "and", R_par)
 agrees_with(sp.expand(dot(b, lhs)),
             rho * (Partial(u_par, t) + sum(U[j] * Partial(u_par, X[j]) for j in range(3))),
-            parallel, ":777", lhs=dot(b, L))
+            parallel, ":786", lhs=dot(b, L))
 agrees_with(sp.expand(dot(b, rhs)),
             -sum(b[j] * Partial(p, X[j]) for j in range(3)) + q_s * n * E_par + R_par,
-            parallel, ":777", lhs=dot(b, Fv))
+            parallel, ":786", lhs=dot(b, Fv))
 
 # %% Boltzmann relation
-section("Electron Boltzmann relation", "07-multiple-fluids.typ:757")
+section("Electron Boltzmann relation", "07-multiple-fluids.typ:766")
 s_ = sp.Symbol("s", real=True)                     # arc length along b
 T_e = sp.Symbol("T_e", positive=True)
 n_s = sp.Function("n_e", positive=True)(s_)
@@ -263,7 +263,7 @@ note("Inertialess, collisionless electrons along the field line")
 electron = show(sp.Eq(0, -Partial(n_s * k_B * T_e, s_) - e * n_s * E_s))
 E_solved = sp.solve(electron.doit(), E_s)[0]
 show(sp.Eq(E_s, E_solved))
-agrees(E_solved, -(k_B * T_e / e) * Partial(sp.log(n_s), s_), ":787", lhs=E_s)
+agrees(E_solved, -(k_B * T_e / e) * Partial(sp.log(n_s), s_), ":796", lhs=E_s)
 note("Insert the potential and integrate along the field line")
 show(sp.Eq(E_s, -Partial(phi, s_)))
 ode = show(sp.Eq(sp.Derivative(n_s, s_), sp.solve(sp.Eq(-sp.Derivative(phi, s_), E_solved),
@@ -272,12 +272,12 @@ phi0, n_e0 = sp.symbols("phi_0 n_e0", real=True)
 solution = show(sp.dsolve(ode, n_s))
 constant = sp.solve(sp.Eq(solution.rhs.subs(phi, phi0), n_e0), sp.Symbol("C1"), dict=True)[0]
 profile = solution.rhs.subs(constant)
-agrees(profile, n_e0 * sp.exp(e * (phi - phi0) / (k_B * T_e)), ":793", lhs=n_s)
+agrees(profile, n_e0 * sp.exp(e * (phi - phi0) / (k_B * T_e)), ":802", lhs=n_s)
 assert sp.simplify(profile.subs(phi, phi0) - n_e0) == 0
 has_unit(k_B * Ts / (e * Ls), u.volt / u.meter)
 
 # %% One-fluid momentum
-section("One-fluid momentum equation", "07-multiple-fluids.typ:779")
+section("One-fluid momentum equation", "07-multiple-fluids.typ:788")
 species = ("e", "i")
 mass_s = {s: sp.Symbol(f"m_{s}", positive=True) for s in species}
 charge_q = {s: sp.Symbol(f"q_{s}", real=True) for s in species}
@@ -340,12 +340,12 @@ show(sp.Eq(rho1, d1["rho"]))
 show(sp.Eq(ux1[0], d1["u"][0]))
 show(sp.Eq(V1["e"][0], d1["vel"]["e"][0] - ux1[0]))
 note("Relative velocities carry no net momentum")
-agrees(sp.simplify(sum(mass_s[s] * d1["dens"][s] * d1["V"][s][0] for s in species)), 0, ":868",
+agrees(sp.simplify(sum(mass_s[s] * d1["dens"][s] * d1["V"][s][0] for s in species)), 0, ":877",
        lhs=sum(mass_s[s] * d1["dens"][s] * V1[s][0] for s in species))
 note("so the momentum flux splits into bulk and relative parts")
 agrees_with(sum(mass_s[s] * d1["dens"][s] * d1["vel"][s][0] ** 2 for s in species),
             rho1 * ux1[0] ** 2 + sum(mass_s[s] * d1["dens"][s] * V1[s][0] ** 2 for s in species),
-            names, ":863", lhs=sum(mass_s[s] * d1["dens"][s] * d1["vel"][s][0] ** 2
+            names, ":872", lhs=sum(mass_s[s] * d1["dens"][s] * d1["vel"][s][0] ** 2
                                    for s in species))
 show(sp.Eq(P11, sum(field(f"P_{s}xx", t, x) + mass_s[s] * d1["dens"][s] * V1[s][0] ** 2
                     for s in species)))
@@ -354,10 +354,10 @@ note("Sum of the species momentum equations", sp.Eq(M_e + M_i, 0), ":")
 agrees_with(d1["total"][0],
             Partial(rho1 * ux1[0], t) + Partial(rho1 * ux1[0] ** 2 + P11, x)
             - rhoq1 * d1["E"][0] - cross(j1, d1["B"])[0] - sum(d1["R"][s][0] for s in species),
-            names, ":815", lhs=M_e + M_i)
+            names, ":824", lhs=M_e + M_i)
 
 # %% Example: Boltzmann density
-section("Example: Boltzmann density ratio", "07-multiple-fluids.typ:847")
+section("Example: Boltzmann density ratio", "07-multiple-fluids.typ:856")
 phi1, n_e = sp.symbols("phi_1 n_e")
 probe = {phi1: 3.00 * u.volt, phi0: 0 * u.volt, T_e: 3.00 * u.elementary_charge * u.volt / u.boltzmann_constant,
          n_e0: 1.0e16 / u.meter**3}
@@ -365,10 +365,10 @@ note("Input", sp.Eq(phi1 - phi0, 3.00 * u.volt), ",", sp.Eq(k_B * T_e, 3.00 * u.
      ",", sp.Eq(n_e0, rounded(probe[n_e0])))
 rise = show(sp.Eq(n_e, sp.powsimp(profile.subs(phi, phi1))))
 density = evaluate(n_e, rise.rhs, probe, u.meter**-3)
-close_to(density, 2.72e16, source=":893")
+close_to(density, 2.72e16, source=":904")
 ratio = sp.Symbol("n_e/n_e0")
 show(sp.Eq(ratio, sp.Float(density / 1.0e16, 3)))
-close_to(density / 1.0e16, 2.72, source=":889")
+close_to(density / 1.0e16, 2.72, source=":900")
 
 # %%
 if __name__ == "__main__":

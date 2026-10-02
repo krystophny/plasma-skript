@@ -48,12 +48,15 @@
   #assumption(
     [Kinetic equation and velocity-space boundary],
     [For species $s$, use a smooth kinetic equation with acceleration
-    $bold(a)_s=(q_s/m_s)(bold(E)+bold(v) times bold(B))$. The distribution
+    $bold(a)_s=(q_s\/m_s)(bold(E)+bold(v) times bold(B))$. The distribution
     and the velocity-space flux $f_(s) bold(a)_s$ vanish sufficiently rapidly
     as $abs(bold(v)) -> infinity$, so surface terms at infinite speed are
     zero. Require species-number-conserving collisions,
-    $integral C_(s)[f] dif^3 bold(v)=0$, so
-    $pdv(rho_s,t)+div(rho_s bold(u)_s)=0$. Ionization and recombination
+
+    $ integral C_(s)[f] dif^3 bold(v)=0 , $
+
+    so
+    $pdv(rho_s,t, style: "horizontal")+div(rho_s bold(u)_s)=0$. Ionization and recombination
     are excluded from the internal-energy balance below.
     Collisions may exchange energy between species, but their weighted
     integral is retained as a source.]
@@ -62,19 +65,28 @@
   #definition(
     [Bulk and thermal variables],
     [The species flow velocity and random velocity are
-    $bold(u)_s=(integral bold(v) f_(s) dif^3 bold(v))/(n_s)$ and
+
+    $ bold(u)_s=(integral bold(v) f_(s) dif^3 bold(v))/(n_s) $
+
+    and
     $bold(c)_s=bold(v)-bold(u)_s$. Define the bulk kinetic-energy density,
     internal-energy density, pressure tensor, and heat-flux vector by
-    $K_s=(rho_s abs(bold(u)_s)^2)/2$,
-    $U_s=(tr bold(P)_s)/2$,
-    $bold(P)_s=m_s integral bold(c)_s bold(c)_s f_(s) dif^3 bold(v)$, and
-    $bold(q)_s=(m_s integral abs(bold(c)_s)^2 bold(c)_s f_(s) dif^3 bold(v))/2$.
+    $K_s=rho_s abs(bold(u)_s)^2\/2$,
+    $U_s=tr bold(P)_s\/2$,
+
+    $ bold(P)_s=m_s integral bold(c)_s bold(c)_s f_(s) dif^3 bold(v) , quad "and" quad
+      bold(q)_s=(m_s integral abs(bold(c)_s)^2 bold(c)_s f_(s) dif^3 bold(v))/2 . $
+
     Here $bold(c)_s bold(c)_s$ is a dyadic product. The total second moment is
-    $W_s=K_s+U_s=(m_s integral abs(bold(v))^2 f_(s) dif^3 bold(v))/2$.
+
+    $ W_s=K_s+U_s=(m_s integral abs(bold(v))^2 f_(s) dif^3 bold(v))/2 . $
+
     For a collision operator $C_(s)[f]$, define the collisional momentum
     transfer and kinetic-energy transfer by
-    $bold(R)_s=m_s integral bold(v) C_(s)[f] dif^3 bold(v)$ and
-    $Q_(s)=(m_s integral abs(bold(v))^2 C_(s)[f] dif^3 bold(v))/2$.
+
+    $ bold(R)_s=m_s integral bold(v) C_(s)[f] dif^3 bold(v) quad "and" quad
+      Q_(s)=(m_s integral abs(bold(v))^2 C_(s)[f] dif^3 bold(v))/2 . $
+
     The source $bold(R)_s$ is in #unit("N m^-3") and $Q_(s)$ is in
     #unit("W m^-3").]
   )
@@ -82,8 +94,10 @@
   #governing-law(
     [Species total-energy equation],
     [The energy-weighted kinetic equation gives
-    $pdv(W_s,t)+div((W_s) bold(u)_s+bold(P)_s dot bold(u)_s+bold(q)_s)
-      =q_s n_s bold(E) dot bold(u)_s+Q_(s)$,
+
+    $ pdv(W_s,t)+div((W_s) bold(u)_s+bold(P)_s dot bold(u)_s+bold(q)_s)
+      =q_s n_s bold(E) dot bold(u)_s+Q_(s) , $
+
     where $Q_(s)$ is the collisional rate of kinetic-energy transfer to
     species $s$ in #unit("W m^-3"). The magnetic force is absent from
     the power term because $bold(v) dot (bold(v) times bold(B))=0$.]
@@ -100,7 +114,7 @@
 
   #callout(
     [Derivation route],
-    [Multiply the kinetic equation by $(m_s abs(bold(v))^2)/2$, integrate over
+    [Multiply the kinetic equation by $m_s abs(bold(v))^2\/2$, integrate over
     all velocity space, commute time and space derivatives with the integral,
     integrate the acceleration term by parts in velocity, then decompose
     $bold(v)=bold(u)_s+bold(c)_s$. The collapsed derivation gives each step
@@ -141,7 +155,9 @@
 
     #derivation-step[Integrate the acceleration term by parts]
     Write the contracted velocity divergence explicitly as
-    $div_(bold(v))(bold(A))=sum_j pdv(A_(j),v_(j))$.
+
+    $ div_(bold(v))(bold(A))=sum_j pdv(A_(j),v_(j)) . $
+
     The velocity-space product rule is
 
     $ epsilon_(s) bold(a)_s dot pdv(f_(s),bold(v))
@@ -160,7 +176,7 @@
       dot d bold(S)_v , $
 
     which vanishes at infinite speed by the boundary assumption. Because
-    $pdv(epsilon_(s),bold(v))=m_s bold(v)$, the remaining term is
+    $pdv(epsilon_(s),bold(v), style: "horizontal")=m_s bold(v)$, the remaining term is
 
     $ -m_s integral f_(s) bold(a)_s dot bold(v) dif^3 bold(v) . $
 
@@ -207,15 +223,19 @@
     [Internal-energy equation],
     [Subtracting the bulk kinetic-energy equation obtained by dotting the
     species momentum equation with $bold(u)_s$ gives
-    $pdv(U_s,t)+div(U_s bold(u)_s+bold(q)_s)
+
+    $ pdv(U_s,t)+div(U_s bold(u)_s+bold(q)_s)
       =-bold(P)_s:grad(bold(u)_s)+Q_(s)
-        -bold(u)_s dot bold(R)_s$.
+      -bold(u)_s dot bold(R)_s . $
+
     The double contraction is
-    $bold(P)_s:grad(bold(u)_s)
-      =sum_(i,j) (P_s)_(i j) pdv((u_s)_(i),r_(j))$.
+
+    $ bold(P)_s:grad(bold(u)_s)
+      =sum_(i,j) (P_s)_(i j) pdv((u_s)_(i),r_(j)) . $
+
     For an isotropic pressure tensor $bold(P)_s=p_s bold(I)$, the pressure
     work reduces to $p_s div(bold(u)_s)$ and
-    $U_s=(3 p_s)/2$ in three spatial dimensions.]
+    $U_s=3 p_s\/2$ in three spatial dimensions.]
   )
 
   #details(
@@ -227,7 +247,7 @@
         =q_s n_s (bold(E)+bold(u)_s times bold(B))+bold(R)_s . $
 
     Dot this equation with $bold(u)_s$. The number-conserving assumption
-    gives $pdv(rho_s,t)+div(rho_s bold(u)_s)=0$, so the product rule yields
+    gives $pdv(rho_s,t, style: "horizontal")+div(rho_s bold(u)_s)=0$, so the product rule yields
 
     $ pdv(K_s,t)+div(K_s bold(u)_s)
         =q_s n_s bold(E) dot bold(u)_s
@@ -271,7 +291,7 @@
   )
 
   #summary[
-    Weighting the kinetic equation by $(m_s abs(bold(v))^2)/2$ gives a total
+    Weighting the kinetic equation by $m_s abs(bold(v))^2\/2$ gives a total
     energy balance. Velocity-space integration by parts turns the Lorentz
     force into electric work; the magnetic part does no work. Decomposing
     velocity into bulk plus random motion separates total-energy advection, pressure
@@ -286,7 +306,11 @@
     ),
     (
       question: [Which term transports random kinetic energy relative to the species flow?],
-      answer: [The heat-flux vector $bold(q)_s=(m_s integral abs(bold(c)_s)^2 bold(c)_s f_(s) dif^3 bold(v))/2$ transports random energy. It is a third central velocity moment and needs a closure in a truncated fluid model.],
+      answer: [The heat-flux vector
+
+      $ bold(q)_s=(m_s integral abs(bold(c)_s)^2 bold(c)_s f_(s) dif^3 bold(v))/2 $
+
+      transports random energy. It is a third central velocity moment and needs a closure in a truncated fluid model.],
     ),
     (
       question: [What assumption removes the velocity-space surface term in the energy derivation?],
@@ -294,7 +318,7 @@
     ),
     (
       question: [How does isotropic pressure simplify the internal-energy equation?],
-      answer: [With $bold(P)_s=p_s bold(I)$, the tensor contraction becomes $bold(P)_s:grad(bold(u)_s)=p_s div(bold(u)_s)$ and the internal energy is $U_s=(3p_s)/2$ in three dimensions.],
+      answer: [With $bold(P)_s=p_s bold(I)$, the tensor contraction becomes $bold(P)_s:grad(bold(u)_s)=p_s div(bold(u)_s)$ and the internal energy is $U_s=3p_s\/2$ in three dimensions.],
     ),
   ))
 
@@ -339,11 +363,16 @@
     [Metric scale factors],
     [The scale factors $h_i$ convert coordinate increments to physical line
     elements. The three systems used most often here are
-    $"Cartesian:" (q_1,q_2,q_3)=(x,y,z), (h_1,h_2,h_3)=(1,1,1)$,
-    $"cylindrical:" (q_1,q_2,q_3)=(r,phi,z), (h_1,h_2,h_3)=(1,r,1)$,
+
+    $ "Cartesian:" (q_1,q_2,q_3)=(x,y,z), (h_1,h_2,h_3)=(1,1,1) , $
+
+    $ "cylindrical:" (q_1,q_2,q_3)=(r,phi,z), (h_1,h_2,h_3)=(1,r,1) , $
+
     and
-    $"spherical:" (q_1,q_2,q_3)=(r,theta,phi),
-      (h_1,h_2,h_3)=(1,r,r sin(theta))$.
+
+    $ "spherical:" (q_1,q_2,q_3)=(r,theta,phi),
+      (h_1,h_2,h_3)=(1,r,r sin(theta)) . $
+
     In spherical coordinates $theta$ is the polar angle from positive $z$,
     and $phi$ is the azimuth measured from positive $x$ toward positive $y$.
     The volume element is $dif V=h_1 h_2 h_3 dif q_1 dif q_2 dif q_3$.]
@@ -353,13 +382,20 @@
     [Orthogonal-coordinate operators],
     [For a scalar $psi$ and vector
     $bold(A)=sum_i A_(i) bold(e)_(i)$, the operators are
-    $grad(psi)=sum_i (bold(e)_(i)/h_i) pdv(psi,q_i)$,
-    $div(bold(A))=(sum_i pdv((h_j h_k A_(i)),q_i))/(h_1 h_2 h_3)$,
+
+    $ grad(psi)=sum_i (bold(e)_(i)/h_i) pdv(psi,q_i) , $
+
+    $ div(bold(A))=(sum_i pdv((h_j h_k A_(i)),q_i))/(h_1 h_2 h_3) , $
+
     where $(i,j,k)$ cycles through $(1,2,3)$, and
-    $curl(bold(A))=sum_i (bold(e)_(i)/(h_j h_k))
-      (pdv(h_k A_(k),q_j)-pdv(h_j A_(j),q_k))$.
+
+    $ curl(bold(A))=sum_i (bold(e)_(i)/(h_j h_k))
+      (pdv(h_k A_(k),q_j)-pdv(h_j A_(j),q_k)) . $
+
     The scalar Laplacian is
-    $laplacian(psi)=(sum_i pdv(((h_j h_k)/h_i) pdv(psi,q_i),q_i))/(h_1 h_2 h_3)$.
+
+    $ laplacian(psi)=(sum_i pdv(((h_j h_k)/h_i) pdv(psi,q_i),q_i))/(h_1 h_2 h_3) . $
+
     Each derivative is with respect to the displayed coordinate, while the
     scale factors account for physical distance and area.]
   )
@@ -367,7 +403,10 @@
   #equation-note[
     In the cyclic formulas, for the component with index $i$, the remaining
     indices $(j,k)$ are taken in cyclic order. For example, the first curl
-    component is $(pdv(h_3 A_(3),q_2)-pdv(h_2 A_(2),q_3))/(h_2 h_3)$.
+    component is
+
+    $ (pdv(h_3 A_(3),q_2)-pdv(h_2 A_(2),q_3))/(h_2 h_3) . $
+
     Writing the scale factors explicitly is safer than importing a Cartesian
     formula and inserting $r$ by intuition.
   ]
@@ -389,7 +428,7 @@
     $ d psi=grad(psi) dot d bold(r)
         =sum_i (grad(psi))_(i) h_i d q_i . $
 
-    The chain rule gives $d psi=sum_i pdv(psi,q_i) d q_i$. Comparing
+    The chain rule gives $d psi=sum_i pdv(psi,q_i, style: "horizontal") d q_i$. Comparing
     coefficients yields
 
     $ (grad(psi))_(i)=pdv(psi,q_i)/(h_i) . $
@@ -427,14 +466,21 @@
   #definition(
     [Cartesian specialization],
     [For $(x,y,z)$, all scale factors are one:
-    $grad(psi)=bold(e)_x pdv(psi,x)+bold(e)_y pdv(psi,y)+bold(e)_z pdv(psi,z)$,
-    $div(bold(A))=pdv(A_(x),x)+pdv(A_(y),y)+pdv(A_(z),z)$,
+
+    $ grad(psi)=bold(e)_x pdv(psi,x)+bold(e)_y pdv(psi,y)+bold(e)_z pdv(psi,z) , $
+
+    $ div(bold(A))=pdv(A_(x),x)+pdv(A_(y),y)+pdv(A_(z),z) , $
+
     and
-    $laplacian(psi)=pdv(psi,x,2)+pdv(psi,y,2)+pdv(psi,z,2)$.
+
+    $ laplacian(psi)=pdv(psi,x,2)+pdv(psi,y,2)+pdv(psi,z,2) . $
+
     The Cartesian curl is
-    $curl(bold(A))=bold(e)_x [pdv(A_(z),y)-pdv(A_(y),z)]
+
+    $ curl(bold(A))=bold(e)_x [pdv(A_(z),y)-pdv(A_(y),z)]
       +bold(e)_y [pdv(A_(x),z)-pdv(A_(z),x)]
-      +bold(e)_z [pdv(A_(y),x)-pdv(A_(x),y)]$.
+      +bold(e)_z [pdv(A_(y),x)-pdv(A_(x),y)] . $
+
     These are the local forms used in most linear wave derivations.]
   )
 
@@ -443,11 +489,16 @@
     [For $(r,phi,z)$, the physical line element is
     $d bold(r)=d r bold(e)_(r)+r d phi bold(e)_(phi)+d z bold(e)_(z)$.
     Therefore
-    $grad(psi)=bold(e)_(r) pdv(psi,r)+(bold(e)_(phi)/r) pdv(psi,phi)+bold(e)_(z) pdv(psi,z)$,
-    $div(bold(A))=(pdv(r A_(r),r))/r+(pdv(A_(phi),phi))/r+pdv(A_(z),z)$,
+
+    $ grad(psi)=bold(e)_(r) pdv(psi,r)+(bold(e)_(phi)/r) pdv(psi,phi)+bold(e)_(z) pdv(psi,z) , $
+
+    $ div(bold(A))=(pdv(r A_(r),r))/r+(pdv(A_(phi),phi))/r+pdv(A_(z),z) , $
+
     and
-    $laplacian(psi)=(pdv(r pdv(psi,r),r))/r+pdv(psi,phi,2)/(r^2)+pdv(psi,z,2)$.
-    In an axisymmetric state $pdv(psi,phi)=0$, so the cylindrical area factor
+
+    $ laplacian(psi)=(pdv(r pdv(psi,r),r))/r+pdv(psi,phi,2)/(r^2)+pdv(psi,z,2) . $
+
+    In an axisymmetric state $pdv(psi,phi, style: "horizontal")=0$, so the cylindrical area factor
     remains in the radial divergence even though the azimuthal derivative
     disappears.]
   )
@@ -455,18 +506,25 @@
   #definition(
     [Spherical specialization],
     [For $(r,theta,phi)$, the physical line element is
-    $d bold(r)=d r bold(e)_(r)+r d theta bold(e)_(theta)
-      +r sin(theta) d phi bold(e)_(phi)$.
+
+    $ d bold(r)=d r bold(e)_(r)+r d theta bold(e)_(theta)
+      +r sin(theta) d phi bold(e)_(phi) . $
+
     The gradient and divergence are
-    $grad(psi)=bold(e)_(r) pdv(psi,r)+(bold(e)_(theta)/r) pdv(psi,theta)
-      +(bold(e)_(phi)/(r sin(theta))) pdv(psi,phi)$,
-    $div(bold(A))=(pdv(r^2 A_(r),r))/(r^2)
+
+    $ grad(psi)=bold(e)_(r) pdv(psi,r)+(bold(e)_(theta)/r) pdv(psi,theta)
+      +(bold(e)_(phi)/(r sin(theta))) pdv(psi,phi) , $
+
+    $ div(bold(A))=(pdv(r^2 A_(r),r))/(r^2)
       +(pdv(sin(theta) A_(theta),theta))/(r sin(theta))
-      +(pdv(A_(phi),phi))/(r sin(theta))$,
+      +(pdv(A_(phi),phi))/(r sin(theta)) , $
+
     and the scalar Laplacian is
-    $laplacian(psi)=(pdv(r^2 pdv(psi,r),r))/(r^2)
+
+    $ laplacian(psi)=(pdv(r^2 pdv(psi,r),r))/(r^2)
       +(pdv(sin(theta) pdv(psi,theta),theta))/(r^2 sin(theta))
-      +pdv(psi,phi,2)/(r^2 sin(theta)^2)$.
+      +pdv(psi,phi,2)/(r^2 sin(theta)^2) . $
+
     The factors $r^2$ and $sin(theta)$ express the changing physical area of
     spherical coordinate surfaces.]
   )
@@ -476,7 +534,7 @@
     [The coordinate formulas must satisfy
     $div(curl(bold(A)))=0$ and $curl(grad(psi))=bold(0)$ whenever the fields
     are sufficiently smooth. A purely radial inverse-square flux in spherical
-    geometry has $A_(r)=C/(r^2)$ and zero divergence away from the origin,
+    geometry has $A_(r)=C\/r^2$ and zero divergence away from the origin,
     because $r^2 A_(r)=C$. A constant scalar has zero gradient and zero
     Laplacian in every coordinate system. These checks catch missing metric
     factors before a plasma equilibrium or wave equation is trusted.]
@@ -511,14 +569,14 @@
 
     $ dv(Phi,V)=(pdv(r A_(r),r))/r , $
 
-    exactly the cylindrical divergence. The factor $1/r$ converts radial
+    exactly the cylindrical divergence. The factor $1\/r$ converts radial
     flux change into flux per physical volume.]
   )
 
   #rechenbeispiel[
     In an axisymmetric cylindrical plasma column, let the radial particle-flux
     vector be $bold(Gamma)=Gamma_(r)(r) bold(e)_(r)$ with
-    $Gamma_(r)(r)=C/r$. Use
+    $Gamma_(r)(r)=C\/r$. Use
     $C=qty("2.00e12", "m^-1 s^-1")$, and evaluate the flux at
     $r_1=qty("0.100", "m")$ and $r_2=qty("0.200", "m")$. Determine both
     radial fluxes and $div(bold(Gamma))$ for $r>0$.
@@ -534,8 +592,11 @@
     divergence measures net outward flux density from a small physical volume.
     A curl measures circulation per physical area. The scale factors ensure
     that these meanings survive a coordinate change. In a normalized model,
-    one may later set #normalized-label[$xi=r/L$] and obtain
-    $pdv(psi,r)=(pdv(psi,xi))/L$, but the reference length $L$ in
+    one may later set #normalized-label[$xi=r\/L$] and obtain
+
+    $ pdv(psi,r)=(pdv(psi,xi))/L , $
+
+    but the reference length $L$ in
     #unit("m") must be stated explicitly.]
   )
 
@@ -550,8 +611,12 @@
 
   #knowledge-check((
     (
-      question: [Why does the cylindrical divergence contain $1/r$?],
-      answer: [A radial shell has volume proportional to $r dif r$, while its outward surface flux is proportional to $r A_(r)$. Their ratio gives $(pdv(r A_(r),r))/r$, including the changing circumference.],
+      question: [Why does the cylindrical divergence contain $1\/r$?],
+      answer: [A radial shell has volume proportional to $r dif r$, while its outward surface flux is proportional to $r A_(r)$. Their ratio gives
+
+      $ (pdv(r A_(r),r))/r , $
+
+      including the changing circumference.],
     ),
     (
       question: [What does the factor $r sin(theta)$ represent in spherical coordinates?],
@@ -563,7 +628,11 @@
     ),
     (
       question: [How would a normalized radial coordinate change the gradient?],
-      answer: [If #normalized-label[$xi=r/L$] with stated reference length $L$ in #unit("m"), then $pdv(psi,r)=(pdv(psi,xi))/L$. Each physical gradient component therefore carries the inverse length scale, which must be recorded before a normalized operator is used.],
+      answer: [If #normalized-label[$xi=r\/L$] with stated reference length $L$ in #unit("m"), then
+
+      $ pdv(psi,r)=(pdv(psi,xi))/L . $
+
+      Each physical gradient component therefore carries the inverse length scale, which must be recorded before a normalized operator is used.],
     ),
   ))
 

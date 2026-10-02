@@ -41,7 +41,7 @@
   ))
 
   #unit-ledger[
-    The dielectric coefficients and refractive index $N=(k c)/omega$ are
+    The dielectric coefficients and refractive index $N=k c\/omega$ are
     dimensionless.
   ]
 
@@ -58,10 +58,10 @@
     [Signed gyrofrequency and plasma frequency],
     [For species $s$, define the signed gyrofrequency and the positive plasma
     frequency by
-    $Omega_s=(q_s B_0)/m_s$ and
-    $omega_(p,s)^2=(n_(s,0) q_s^2)/(epsilon_0 m_s)$.
+    $Omega_s=q_s B_0\/m_s$ and
+    $omega_(p,s)^2=n_(s,0) q_s^2\/(epsilon_0 m_s)$.
     For electrons it is useful to reserve
-    $omega_(c,e)=(abs(q_e) B_0)/m_e>0$
+    $omega_(c,e)=abs(q_e) B_0\/m_e>0$
     for the cyclotron-frequency magnitude. The sign of $q_e$ remains in the
     transverse polarization convention.]
   )
@@ -69,21 +69,25 @@
   #definition(
     [Cold dielectric tensor],
     [The current response is represented by
-    $bold(epsilon)_(p) dot bold(E)_1=bold(E)_1+(i/(omega epsilon_0)) bold(j)_1$,
+    $bold(epsilon)_(p) dot bold(E)_1=bold(E)_1+(i\/(omega epsilon_0)) bold(j)_1$,
     so that $bold(epsilon)_(p)=bold(I)+sum_s bold(chi)_s$ with species
-    susceptibility $bold(chi)_s=bold(sigma)_s/(-i omega epsilon_0)$ for the
+    susceptibility $bold(chi)_s=bold(sigma)_s\/(-i omega epsilon_0)$ for the
     species conductivity $bold(sigma)_s$ defined by $bold(j)_(s,1)=bold(sigma)_s dot bold(E)_1$,
     with
-    $bold(epsilon)_(p)=mat(
+
+    $ bold(epsilon)_(p)=mat(
       epsilon_(perp), -i epsilon_(times), 0;
       i epsilon_(times), epsilon_(perp), 0;
-      0, 0, epsilon_(parallel))$.
+      0, 0, epsilon_(parallel)) . $
+
     For several species,
-    $epsilon_(perp)=1-sum_s omega_(p,s)^2/(omega^2-Omega_s^2)$,
-    $epsilon_(times)=sum_s
-      ((Omega_s omega_(p,s)^2)/(omega (omega^2-Omega_s^2)))$,
+    $epsilon_(perp)=1-sum_s omega_(p,s)^2\/(omega^2-Omega_s^2)$,
+
+    $ epsilon_(times)=sum_s
+      ((Omega_s omega_(p,s)^2)/(omega (omega^2-Omega_s^2))) , $
+
     and
-    $epsilon_(parallel)=1-sum_s omega_(p,s)^2/omega^2$.
+    $epsilon_(parallel)=1-sum_s omega_(p,s)^2\/omega^2$.
     The off-diagonal coefficient changes sign with the charge convention.]
   )
 
@@ -98,11 +102,15 @@
   #governing-law(
     [Magnetized Maxwell wave equation],
     [For a plane wave, Maxwell's equations reduce to
-    $bold(k) times (bold(k) times bold(E)_1)
-      +omega^2/c^2 bold(epsilon)_(p) dot bold(E)_1=bold(0)$.
+
+    $ bold(k) times (bold(k) times bold(E)_1)
+      +omega^2/c^2 bold(epsilon)_(p) dot bold(E)_1=bold(0) . $
+
     Equivalently,
-    $bold(k)(bold(k) dot bold(E)_1)-k^2 bold(E)_1
-      +omega^2/c^2 bold(epsilon)_(p) dot bold(E)_1=bold(0)$.
+
+    $ bold(k)(bold(k) dot bold(E)_1)-k^2 bold(E)_1
+      +omega^2/c^2 bold(epsilon)_(p) dot bold(E)_1=bold(0) . $
+
     The dispersion relation is the condition that the associated coefficient
     matrix has zero determinant.]
   )
@@ -167,7 +175,7 @@
       -i mu_0 bold(j)_1 . $
 
     Substitute the first relation into the second, eliminate $bold(j)_1$ by
-    the dielectric definition with $mu_0 epsilon_0=1/c^2$, and use
+    the dielectric definition with $mu_0 epsilon_0=1\/c^2$, and use
 
     $ bold(k) times (bold(k) times bold(E)_1)
       =bold(k)(bold(k) dot bold(E)_1)-k^2 bold(E)_1 . $
@@ -190,7 +198,7 @@
 
     Numerical result: $omega_(p,e)=qty("5.64e9", "s^-1")$,
     $omega_(c,e)=qty("1.76e9", "s^-1")$, and
-    #normalized-label[$omega_(c,e)/omega_(p,e)=qty("0.312", "1")$].
+    #normalized-label[$omega_(c,e)\/omega_(p,e)=qty("0.312", "1")$].
   ]
 
   #rechenbeispiel[
@@ -235,7 +243,7 @@
     ),
     (
       question: [Why is the parallel dielectric coefficient different from the transverse coefficient?],
-      answer: [The magnetic force vanishes for motion parallel to $bold(B)_0$. Parallel motion therefore responds with the unmagnetized factor $1-sum_s omega_(p,s)^2/omega^2$, while transverse motion contains the gyrofrequency denominators.]
+      answer: [The magnetic force vanishes for motion parallel to $bold(B)_0$. Parallel motion therefore responds with the unmagnetized factor $1-sum_s omega_(p,s)^2\/omega^2$, while transverse motion contains the gyrofrequency denominators.]
     ),
     (
       question: [What mathematical condition selects a wave mode?],
@@ -261,9 +269,9 @@
   ))
 
   #unit-ledger[
-    The refractive index $N=(k c)/omega$, normalized frequency is
-    $W=omega/omega_(p,e)$, and magnetization is
-    $Y=omega_(c,e)/omega_(p,e)$; all three are dimensionless. The dimensional
+    The refractive index $N=k c\/omega$, normalized frequency is
+    $W=omega\/omega_(p,e)$, and magnetization is
+    $Y=omega_(c,e)\/omega_(p,e)$; all three are dimensionless. The dimensional
     $k$ is in #unit("m^-1"), $omega$ and $omega_(c,e)$ are in
     #unit("s^-1"), and phase or group velocities are in #unit("m/s").
   ]
@@ -283,8 +291,10 @@
     label $s=+1$ or $s=-1$ by
     $E_(1,y)=-i s E_(1,x)$.
     The corresponding refractive indices are
-    $N_(s)^2=epsilon_(s)=epsilon_(perp)-s epsilon_(times)
-      =1-omega_(p,e)^2/(omega(omega+s omega_(c,e)))$.
+
+    $ N_(s)^2=epsilon_(s)=epsilon_(perp)-s epsilon_(times)
+      =1-omega_(p,e)^2/(omega(omega+s omega_(c,e))) . $
+
     Thus the $s=+1$ branch has the lower positive-frequency cutoff, while
     the $s=-1$ branch has a cyclotron-sensitive denominator at
     $omega=omega_(c,e)$.]
@@ -301,9 +311,13 @@
     [The longitudinal branch is
     $epsilon_(parallel)=0 quad => quad omega=omega_(p,e)$.
     The two transverse circular branches are
-    $N_(s)^2=epsilon_(s)=1-omega_(p,e)^2/(omega(omega+s omega_(c,e)))$.
+
+    $ N_(s)^2=epsilon_(s)=1-omega_(p,e)^2/(omega(omega+s omega_(c,e))) . $
+
     Their positive-frequency cutoffs satisfy $N_(s)=0$ and are
-    $omega_"cut,s"=(sqrt(omega_(c,e)^2+4 omega_(p,e)^2)-s omega_(c,e))/2$.
+
+    $ omega_"cut,s"=(sqrt(omega_(c,e)^2+4 omega_(p,e)^2)-s omega_(c,e))/2 . $
+
     A real $N$ denotes bulk propagation in this idealized model; $N^2<0$
     denotes an evanescent branch.]
   )
@@ -311,7 +325,7 @@
   #details(
     [Derivation: circular factorization and Faraday rotation],
     [#derivation-step[Factor the parallel wave matrix]
-    For parallel propagation, divide the wave matrix by $omega^2/c^2$:
+    For parallel propagation, divide the wave matrix by $omega^2\/c^2$:
 
     $ mat(
       epsilon_(perp)-N^2, -i epsilon_(times), 0;
@@ -396,7 +410,7 @@
       wave numbers, their relative phase changes along the path and the
       polarization plane rotates. The prescribed illustration uses
       $k_+ L_0=1.2$, $k_- L_0=0.8$, and $omega t_0=1$, with each component
-      of amplitude $E_0/2$. Here $L_0$, $t_0$, and $E_0$ are reference
+      of amplitude $E_0\/2$. Here $L_0$, $t_0$, and $E_0$ are reference
       length, time, and electric-field scales. The transverse
       panel shows the highlighted position $z=3 L_0$. At fixed
       position the polarization axis is stationary in time; the wave numbers
@@ -413,7 +427,9 @@
     $omega_(c,e)=qty("1.76e9", "s^-1")$, and a parallel wave with
     $omega=qty("2.00e10", "s^-1")$ crossing a path of
     $L=qty("0.10", "m")$, determine the two refractive indices and the
-    Faraday-rotation angle $theta_F=((k_+-k_-)L)/2$.
+    Faraday-rotation angle
+
+    $ theta_F=((k_+-k_-)L)/2 . $
 
     Numerical result: #normalized-label[$N_+=qty("0.963", "1")$],
     #normalized-label[$N_-=qty("0.955", "1")$], and
@@ -475,8 +491,8 @@
 
   #unit-ledger[
     The angle $theta$ is dimensionless and measured in radians. The refractive
-    index $N=(k c)/omega$, $W=omega/omega_(p,e)$, and
-    $Y=omega_(c,e)/omega_(p,e)$ are dimensionless. Dimensional $k$ is in
+    index $N=k c\/omega$, $W=omega\/omega_(p,e)$, and
+    $Y=omega_(c,e)\/omega_(p,e)$ are dimensionless. Dimensional $k$ is in
     #unit("m^-1"), $omega$ in #unit("s^-1"), and wavelengths in #unit("m").
   ]
 
@@ -492,16 +508,20 @@
   #definition(
     [Ordinary and extraordinary indices],
     [For the ordinary mode, $bold(E)_1$ is parallel to $bold(B)_0$ and
-    $N_O^2=epsilon_(parallel)=1-omega_(p,e)^2/omega^2$.
+    $N_O^2=epsilon_(parallel)=1-omega_(p,e)^2\/omega^2$.
     The extraordinary mode is polarized in the $x-y$ plane and has
-    $N_X^2=(epsilon_(perp)^2-epsilon_(times)^2)/epsilon_(perp)$.
+
+    $ N_X^2=(epsilon_(perp)^2-epsilon_(times)^2)/epsilon_(perp) . $
+
     Define the upper-hybrid frequency by
     $omega_"UH"=sqrt(omega_(p,e)^2+omega_(c,e)^2)$; then
-    $N_X^2=1-
+
+    $ N_X^2=1-
       (omega_(p,e)^2 (omega^2-omega_(p,e)^2)) /
-      (omega^2 (omega^2-omega_"UH"^2))$.
+      (omega^2 (omega^2-omega_"UH"^2)) . $
+
     The extraordinary polarization ratio is
-    $E_x/E_y=(i epsilon_(times))/epsilon_(perp)$, away from zeros of the
+    $E_x\/E_y=i epsilon_(times)\/epsilon_(perp)$, away from zeros of the
     denominator.]
   )
 
@@ -510,7 +530,7 @@
     [The ordinary branch obeys
     $omega^2=omega_(p,e)^2+c^2 k^2$ and has the same cutoff as the cold
     unmagnetized transverse wave. The extraordinary branch obeys
-    $N_X^2=(epsilon_(+) epsilon_(-))/epsilon_(perp)$,
+    $N_X^2=epsilon_(+) epsilon_(-)\/epsilon_(perp)$,
     with circular factors $epsilon_(s)$ from the parallel problem. Its
     denominator vanishes at $omega=omega_"UH"$, so the cold wave number
     diverges at the upper-hybrid resonance.]
@@ -610,7 +630,7 @@
   #summary[
     Perpendicular propagation splits into an ordinary branch with
     $N_O^2=epsilon_(parallel)$ and an extraordinary branch with
-    $N_X^2=(epsilon_(+)epsilon_(-))/epsilon_(perp)$. The latter is elliptically
+    $N_X^2=epsilon_(+)epsilon_(-)\/epsilon_(perp)$. The latter is elliptically
     polarized in general and has an upper-hybrid resonance.
   ]
 
@@ -652,8 +672,8 @@
 
   #unit-ledger[
     The propagation angle $theta$ is dimensionless. Use
-    $N=(k c)/omega$, $X_(omega)=omega_(p,e)^2/omega^2$, and
-    $Y_(omega)=omega_(c,e)/omega$, all dimensionless. The dimensional wave
+    $N=k c\/omega$, $X_(omega)=omega_(p,e)^2\/omega^2$, and
+    $Y_(omega)=omega_(c,e)\/omega$, all dimensionless. The dimensional wave
     number $k$ is in #unit("m^-1") and frequency $omega$ in
     #unit("s^-1").
   ]
@@ -671,18 +691,22 @@
     [Oblique wave matrix and Appleton--Hartree roots],
     [With $S=epsilon_(perp)$, $D=epsilon_(times)$, and
     $P=epsilon_(parallel)$, the normalized wave matrix is
-    $mat(
+
+    $ mat(
       S-N^2 cos^2 theta, -i D, N^2 sin theta cos theta;
       i D, S-N^2, 0;
       N^2 sin theta cos theta, 0, P-N^2 sin^2 theta)
-      mat(E_x;E_y;E_z)=mat(0;0;0)$.
+      mat(E_x;E_y;E_z)=mat(0;0;0) . $
+
     Its determinant gives two electromagnetic roots. For one cold electron
     species they can be written in the Appleton--Hartree form
-    $N_(plus.minus)^2=1-(X_(omega)) /
+
+    $ N_(plus.minus)^2=1-(X_(omega)) /
       (1-(Y_(omega)^2 sin^2 theta)/(2(1-X_(omega)) )
       plus.minus sqrt(
-        ((Y_(omega)^2 sin^2 theta)/(2(1-X_(omega))))^2
-        +Y_(omega)^2 cos^2 theta))$.
+      ((Y_(omega)^2 sin^2 theta)/(2(1-X_(omega))))^2
+      +Y_(omega)^2 cos^2 theta)) . $
+
     The upper sign defines $N_+$ and the lower sign defines $N_-$; their
     polarization and longitudinal content vary continuously with $theta$.]
   )
@@ -691,7 +715,7 @@
   is not a diffusion coefficient and $P$ is not pressure. The parameters
   $X_(omega)$ and $Y_(omega)$ use the wave frequency as their reference,
   whereas the earlier $W$ and $Y$ use the plasma frequency. Their relations
-  are $X_(omega)=1/W^2$ and $Y_(omega)=Y/W$.
+  are $X_(omega)=1\/W^2$ and $Y_(omega)=Y\/W$.
 
   The two roots give possible wave numbers at a specified frequency and
   angle. For each root, the matrix also determines the relative electric-field
@@ -710,7 +734,7 @@
     $ bold(k)(bold(k) dot bold(E)_1)-k^2 bold(E)_1
       +omega^2/c^2 bold(epsilon)_(p) dot bold(E)_1=bold(0) . $
 
-    After division by $omega^2/c^2$, the geometric term contributes
+    After division by $omega^2\/c^2$, the geometric term contributes
 
     $ -N^2 cos^2 theta E_x+N^2 sin theta cos theta E_z $
 
@@ -765,7 +789,7 @@
 
     #derivation-step[Check the parallel and perpendicular endpoints]
     For $theta=0$, the matrix separates into the longitudinal factor $P$ and
-    circular transverse factors $S plus.minus D$. For $theta=pi/2$, the $z$
+    circular transverse factors $S plus.minus D$. For $theta=pi\/2$, the $z$
     component decouples as the ordinary mode and the $x-y$ block produces the
     extraordinary mode. Without its endpoint polarization, an algebraic root
     can be assigned to the wrong physical branch.]
@@ -777,9 +801,9 @@
     Assume a homogeneous, cold, collisionless, fixed-ion electron response
     with uniform $bold(B)_0$ and oblique propagation. Use the
     normalized parameters
-    #normalized-label[ $Y=omega_(c,e)/omega_(p,e)=qty("0.30", "1")$],
-    #normalized-label[$W=omega/omega_(p,e)=qty("1.50", "1")$], and
-    $theta=pi/4$ radians. Evaluate the two
+    #normalized-label[ $Y=omega_(c,e)\/omega_(p,e)=qty("0.30", "1")$],
+    #normalized-label[$W=omega\/omega_(p,e)=qty("1.50", "1")$], and
+    $theta=pi\/4$ radians. Evaluate the two
     Appleton--Hartree refractive indices.
 
     Numerical result: #normalized-label[ $X_(omega)=qty("0.444", "1")$],
@@ -839,9 +863,9 @@
   ))
 
   #unit-ledger[
-    The normalized frequency $W=omega/omega_(p,e)$ and magnetization
-    $Y=omega_(c,e)/omega_(p,e)$ are dimensionless. Define the normalized wave
-    number $K=(k c)/omega_(p,e)=W N$. The refractive index $N$
+    The normalized frequency $W=omega\/omega_(p,e)$ and magnetization
+    $Y=omega_(c,e)\/omega_(p,e)$ are dimensionless. Define the normalized wave
+    number $K=k c\/omega_(p,e)=W N$. The refractive index $N$
     and angle $theta$ are dimensionless; dimensional $k$ is in
     #unit("m^-1"), $omega$ in #unit("s^-1"), and wavelengths in
     #unit("m").
@@ -871,8 +895,10 @@
 
   #governing-law(
     [Normalized landmarks],
-    [For $Y=omega_(c,e)/omega_(p,e)$, the parallel circular cutoffs are
-    $W_"cut,s"=(sqrt(Y^2+4)-s Y)/2$.
+    [For $Y=omega_(c,e)\/omega_(p,e)$, the parallel circular cutoffs are
+
+    $ W_"cut,s"=(sqrt(Y^2+4)-s Y)/2 . $
+
     The perpendicular extraordinary resonance is
     $W_"UH"=sqrt(1+Y^2)$, while the ordinary cutoff is $W=1$.
     When $Y -> 0$, both circular modes merge into the unmagnetized transverse
@@ -934,7 +960,7 @@
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, fixed-ion electron response
     with uniform $bold(B)_0$. Let
-    #normalized-label[$Y=omega_(c,e)/omega_(p,e)=qty("0.30", "1")$].
+    #normalized-label[$Y=omega_(c,e)\/omega_(p,e)=qty("0.30", "1")$].
     Determine the normalized circular cutoffs and upper-hybrid resonance,
     then classify the ordinary and extraordinary modes at
     #normalized-label[$W=qty("0.90", "1")$],

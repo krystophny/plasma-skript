@@ -459,10 +459,10 @@
   alt: "Momentum-transfer weight per logarithmic interval of impact parameter, in units of 4 pi b90 squared, versus b/b90 on a logarithmic axis from 0.01 to 1e8. The weight rises from zero below b90, is flat at one for every decade above b90, and is cut to zero at the Debye length, lambda_D/b90 = 4.2e6. The shaded area equals ln Lambda_cut, about 15.2.",
   caption: [
     Momentum transfer per logarithmic interval of impact parameter,
-    $2 pi b^2 (1-cos chi)$ with $tan(chi\/2)=b_90/b$, in units of
+    $2 pi b^2 (1-cos chi)$ with $tan(chi\/2)=b_90\/b$, in units of
     $4 pi b_90^2$. Above $b_90$ every decade of $b$ contributes equally
     until screening cuts the integral at $lambda_D$, so the shaded area is a
-    logarithm, $ln Lambda_"cut"$. Here $lambda_D/b_90=4.2 times 10^6$ from the
+    logarithm, $ln Lambda_"cut"$. Here $lambda_D\/b_90=4.2 times 10^6$ from the
     example below: $ln Lambda_"cut" approx 15.2=ln Lambda+ln 32$.
   ],
 )[
@@ -473,9 +473,9 @@
   alt: "Two panels on identical axes: DC conductivity of one species divided by the parallel conductivity, versus magnetization |Omega_s|/nu_s on a logarithmic axis from 0.01 to 100, with the parallel value one as a gray dotted line. Left: the Pedersen conductivity (blue, solid) falls from one to zero, passing one half at |Omega_s| = nu_s. Right: the Hall magnitude (orange, dashed) rises from zero to its maximum of one half at |Omega_s| = nu_s and falls again.",
   caption: [
     DC conductivity tensor of one species, Pedersen (left) and Hall (right)
-    on the same axes: $sigma_perp/sigma_parallel=1/(1+X^2)$ and
-    $abs(sigma_"H")/sigma_parallel=X/(1+X^2)$ with
-    $X=abs(Omega_s)/nu_s$. Weakly magnetized, the current follows
+    on the same axes: $sigma_perp\/sigma_parallel=1\/(1+X^2)$ and
+    $abs(sigma_"H")\/sigma_parallel=X\/(1+X^2)$ with
+    $X=abs(Omega_s)\/nu_s$. Weakly magnetized, the current follows
     $bold(E)$; at $abs(Omega_s)=nu_s$ (dot) Pedersen and Hall are equal;
     strongly magnetized, both vanish while $sigma_parallel$ is unchanged.
     The sign of $sigma_"H"$ follows the sign of $q_s$.
@@ -488,9 +488,9 @@
   alt: "Two Gaussian density profiles n/n0 versus x/L0, at t = tau_D (blue, solid) and t = 4 tau_D (orange, dashed). Double arrows mark plus and minus the rms width. From the first to the second time the rms width doubles and the peak halves, while the area stays the same.",
   caption: [
     A conserved pulse spreads by diffusion:
-    $n/n_0=tau^(-1/2) exp(-xi^2/(4 tau))$ with $xi=x/L_0$, $tau=t/tau_D$,
-    $tau_D=L_0^2/D$, and $n_0=N_0/(sqrt(4 pi) L_0)$. From $t=tau_D$ to
-    $t=4 tau_D$ the rms width $⟨x^2⟩^(1/2)=sqrt(2 D t)$ (arrows) doubles and
+    $n\/n_0=tau^(-1\/2) exp(-xi^2\/(4 tau))$ with $xi=x\/L_0$, $tau=t\/tau_D$,
+    $tau_D=L_0^2\/D$, and $n_0=N_0\/(sqrt(4 pi) L_0)$. From $t=tau_D$ to
+    $t=4 tau_D$ the rms width $⟨x^2⟩^(1\/2)=sqrt(2 D t)$ (arrows) doubles and
     the peak halves; the area $N_0$ is conserved.
   ],
 )[
@@ -514,10 +514,10 @@
   alt: "Log-log plot of perpendicular diffusion D_perp divided by the unmagnetized coefficient D_s versus magnetization |Omega_s|/nu_s from 0.01 to 1000. The curve is flat at one for weak magnetization and falls with slope minus two, as (nu_s/Omega_s) squared, beyond |Omega_s| = nu_s. A marked point at |Omega_s|/nu_s = 176 shows the worked electron example, about 3e-5.",
   caption: [
     Gyration suppresses diffusion across $bold(B)$:
-    $D_(s,perp)/D_s=1/(1+(Omega_s/nu_s)^2)$ with
-    $D_s=(k_B T_s)/(m_s nu_s)$, the unmagnetized and parallel coefficient.
-    Beyond $abs(Omega_s)=nu_s$ it falls as $(nu_s/Omega_s)^2$. The point is
-    the electron example below, $D_perp/D_parallel=3.23 times 10^(-5)$.
+    $D_(s,perp)\/D_s=1\/(1+(Omega_s\/nu_s)^2)$ with
+    $D_s=k_B T_s\/(m_s nu_s)$, the unmagnetized and parallel coefficient.
+    Beyond $abs(Omega_s)=nu_s$ it falls as $(nu_s\/Omega_s)^2$. The point is
+    the electron example below, $D_perp\/D_parallel=3.23 times 10^(-5)$.
   ],
 )[
   #derived-plot("cross-field-diffusion", width: 10cm)
@@ -636,7 +636,7 @@
         node((0, 0), [Cold fluid \
           no pressure]),
         node((0, 1), [Warm fluid \
-          $c_s^2=(gamma_s k_B T_s)/m_s$]),
+          $c_s^2=gamma_s k_B T_s\/m_s$]),
         node((0, 2), [Kinetic response \
           $Z(zeta_s)$]),
         edge((0, 0), (0, 1), [pressure closure], "->"),
@@ -657,7 +657,7 @@
         #html.div(class: "mhd-arrow")[add pressure closure]
         #html.div(class: "mhd-node mhd-node-result")[
           #html.strong[Warm fluid]
-          #html.span[$c_s^2=(gamma_s k_B T_s)/m_s$]
+          #html.span[$c_s^2=gamma_s k_B T_s\/m_s$]
         ]
         #html.div(class: "mhd-arrow")[resolve velocity space]
         #html.div(class: "mhd-node mhd-node-wide")[
@@ -747,7 +747,7 @@
   alt: "Cold parallel dispersion, normalized frequency W against K=kc/omega_pe at Y=0.3. The s=+1 branch starts at the cutoff W=0.861, the s=-1 branch at W=1.161; both approach the dotted vacuum line W=K. Below the electron cyclotron resonance W=0.3 the s=-1 whistler branch rises from zero and flattens toward the resonance.",
   caption: [
     Cold fixed-ion parallel propagation at
-    #normalized-label[$Y=omega_(c,e)/omega_(p,e)=0.3$], from
+    #normalized-label[$Y=omega_(c,e)\/omega_(p,e)=0.3$], from
     $N_s^2=1-1/(W(W+s Y))$ with $K=W N_s$. The two circular modes have
     different cutoffs $W_"cut,s"=(sqrt(Y^2+4)-s Y)/2$ (dots); only $s=-1$
     has the cyclotron resonance $W=Y$, below which it propagates as the
@@ -760,7 +760,7 @@
   let caption-text = [
     Oblique propagation is represented by $bold(k)=k (sin theta bold(e)_x+cos theta bold(e)_z)$,
     with $bold(B)_0$ along $z$. The angle is a model parameter: $theta=0$ is
-    parallel propagation and $theta=pi/2$ is perpendicular propagation.
+    parallel propagation and $theta=pi\/2$ is perpendicular propagation.
   ]
 
   if target() == "paged" {
@@ -829,7 +829,7 @@
   alt: "Two panels on identical axes, perpendicular propagation at Y=0.3: squared refractive index N^2 against W=omega/omega_pe. Left, the ordinary mode (dashed). Right, the extraordinary mode (solid). The ordinary mode crosses zero at its cutoff W=1. The extraordinary mode crosses zero at W=0.861, diverges at the upper-hybrid resonance W=1.044, returns from minus infinity and crosses zero again at W=1.161. The shaded region N^2<0 is evanescent.",
   caption: [
     Perpendicular cold modes, ordinary (left) and extraordinary (right), at
-    #normalized-label[$Y=omega_(c,e)/omega_(p,e)=0.3$], the values of the
+    #normalized-label[$Y=omega_(c,e)\/omega_(p,e)=0.3$], the values of the
     following example. Cutoffs are zeros of $N^2$ (dots), the upper-hybrid
     resonance is a pole of $N_X^2$; between a resonance and the next cutoff
     the extraordinary mode is evanescent (shaded, $N^2<0$).
@@ -855,7 +855,7 @@
         node((0, 0), [Cold response \
           $nu=0$, propagating: real $N$]),
         node((-1.1, 1), [Effective mass \
-          $m_"eff"=m(1+(i nu)/omega)$]),
+          $m_"eff"=m(1+i nu\/omega)$]),
         node((1.1, 1), [Complex response \
           $N=N_r+i N_i$]),
         node((0, 2), [Phase + attenuation \
@@ -881,7 +881,7 @@
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-ohm")[
             #html.strong[Complex effective mass]
-            #html.span[$m_"eff"=m(1+(i nu)/omega)$]
+            #html.span[$m_"eff"=m(1+i nu\/omega)$]
           ]
           #html.div(class: "mhd-node mhd-node-hall")[
             #html.strong[Complex wave number]
@@ -904,7 +904,7 @@
   alt: "Normalized cold two-fluid parallel dispersion, W=omega/omega_ci against K=k v_A/omega_ci. Both circular branches start along the dotted Alfvén line W=K. The RH whistler branch bends above it; the LH branch bends below and approaches the ion cyclotron resonance W=1.",
   caption: [
     Cold parallel two-fluid branches for $omega << omega_(c,e)$ and
-    $v_A << c$, with $K=(k v_A)/omega_(c,i)$ and $W=omega/omega_(c,i)$:
+    $v_A << c$, with $K=k v_A\/omega_(c,i)$ and $W=omega\/omega_(c,i)$:
     $W_"RH"=(K^2+sqrt(K^4+4 K^2))/2$ and
     $W_"LH"=(sqrt(K^4+4 K^2)-K^2)/2$. Both start as Alfvén waves; LH
     stops at the ion cyclotron resonance, RH continues as the whistler.
@@ -916,13 +916,13 @@
   alt: "Two panels, both roots of the two-species warm-fluid longitudinal dispersion relation against K=k lambda_De. Left, the electron plasma wave in units of omega_pe: it starts at 1 and approaches the dotted thermal line omega=k c_se. Right, the ion-acoustic branch in units of omega_pi: it rises along the dotted line omega=k c_s and levels off at the ion plasma frequency, marked by a horizontal line.",
   caption: [
     The two roots of the warm two-species longitudinal relation for
-    isothermal electrons ($gamma_e=1$), cold ions and $m_i/m_e=1836$, with
+    isothermal electrons ($gamma_e=1$), cold ions and $m_i\/m_e=1836$, with
     $K=k lambda_(D,e)$. Left, the electron plasma wave in units of
     $omega_(p,e)$ follows $omega^2 approx omega_(p,e)^2(1+K^2)$. Right, the
     ion-acoustic branch in units of $omega_(p,i)$ rises as $omega approx k c_s$
     and saturates at $omega_(p,i)$ for $K >> 1$, where the fluid closure is
     no longer controlled. The two frequency scales differ by
-    $sqrt(m_i/m_e) approx 43$.
+    $sqrt(m_i\/m_e) approx 43$.
   ],
 )[#derived-plot-pair("warm-langmuir-branch", "ion-acoustic-branch")]
 
@@ -945,9 +945,9 @@
         node((0, 0), [Warm MHD \
           pressure + magnetic field]),
         node((-1.35, 1), [Magnetic pressure \
-          $v_A^2=B_0^2/(mu_0 rho_0)$]),
+          $v_A^2=B_0^2\/(mu_0 rho_0)$]),
         node((1.35, 1), [Pressure \
-          $v_s^2=(gamma p_0)/rho_0$]),
+          $v_s^2=gamma p_0\/rho_0$]),
         node((0, 2), [Compression \
           $v_m^2=v_A^2+v_s^2$]),
         edge((0, 0), (-1.35, 1), [field restoring], "->"),
@@ -970,11 +970,11 @@
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-hall")[
             #html.strong[Magnetic pressure]
-            #html.span[$v_A^2=B_0^2/(mu_0 rho_0)$]
+            #html.span[$v_A^2=B_0^2\/(mu_0 rho_0)$]
           ]
           #html.div(class: "mhd-node mhd-node-ohm")[
             #html.strong[Thermal pressure]
-            #html.span[$v_s^2=(gamma p_0)/rho_0$]
+            #html.span[$v_s^2=gamma p_0\/rho_0$]
           ]
         ]
         #html.div(class: "mhd-arrow")[combine for perpendicular compression]
@@ -992,7 +992,7 @@
   let alt-description = "An ordering map starts from the cold magnetized wave model and branches according to the largest neglected effect: a collision frequency comparable to the wave frequency gives complex damping, ion inertia important below the ion cyclotron scale gives two-fluid or MHD branches, and a Debye-scale wave number or thermal pressure gives warm dispersion. If none is small, the model must be kinetic."
   let caption-text = [
     Model selection is controlled by normalized orderings with unit #text("[1]"). Compare
-    $nu/omega$, $omega/omega_(c,i)$, and $k lambda_D$ before interpreting a
+    $nu\/omega$, $omega\/omega_(c,i)$, and $k lambda_D$ before interpreting a
     cold-plasma branch.
   ]
 
@@ -1059,9 +1059,9 @@
   alt: "Two side-by-side panels against a=k lambda_De from 0.12 to 0.6. Left: real frequency of the exact Maxwellian Langmuir root and the Bohm-Gross asymptote; they agree for small a and separate beyond about 0.25. Right: damping rate of the exact root and the weak-damping asymptote; both are negligible below a of about 0.2, the asymptote overestimates near 0.3 and saturates, while the exact rate keeps growing.",
   caption: [
     Exact complex root $omega=omega_r+i gamma$ (real part left, damping rate right) of
-    $epsilon_L=1+(1+zeta Z(zeta))/a^2=0$ for one electron Maxwellian,
+    $epsilon_L=1+(1+zeta Z(zeta))\/a^2=0$ for one electron Maxwellian,
     $a=k lambda_(D,e)$, against the asymptotes
-    $omega_r/omega_(p,e)=sqrt(1+3a^2)$ and
+    $omega_r\/omega_(p,e)=sqrt(1+3a^2)$ and
     $gamma/omega_(p,e)=-sqrt(pi\/8) a^(-3) exp(-1\/(2a^2)-3\/2)$.
     The asymptotes hold for $a lt.tilde 0.25$; beyond, the wave is
     strongly damped and only the full root is meaningful.
@@ -1071,11 +1071,11 @@
 #let hot-velocity-space-slopes = context {
   let alt-description = "A normalized velocity-space plot compares a Maxwellian distribution, which decreases through a marked positive phase velocity, with a bump-on-tail distribution that has a positive slope near the same region. A negative slope supports Landau damping; a positive slope can support wave growth."
   let caption-text = [
-    One-dimensional velocity marginals, with $xi=v/v_"th"$,
-    $v_"th"=sqrt((2 k_B T_e)/m_e)$ and $F_"ref"=n_0/(sqrt(pi) v_"th")$.
-    The Maxwellian is $F/F_"ref"=exp(-xi^2)$; the equal-density
+    One-dimensional velocity marginals, with $xi=v\/v_"th"$,
+    $v_"th"=sqrt(2 k_B T_e\/m_e)$ and $F_"ref"=n_0\/(sqrt(pi) v_"th")$.
+    The Maxwellian is $F\/F_"ref"=exp(-xi^2)$; the equal-density
     mixture is $0.9 exp(-xi^2)+0.2 exp(-4(xi-2)^2)$.
-    At the marked $v_phi/v_"th"=1.7$, near the steepest positive slope of
+    At the marked $v_phi\/v_"th"=1.7$, near the steepest positive slope of
     the mixture, their slopes have opposite signs.
     A positive slope can supply growth; a full dispersion calculation is
     still needed. Both axes use unit #text("[1]").
@@ -1107,10 +1107,10 @@
   alt: "Two-stream growth rate gamma/omega_p against K=|k v_0|/omega_p. The rate rises from zero, peaks at 1/(2 sqrt 2) for K=sqrt(3/8) (marked), and falls to zero at the band edge K=1; larger K is stable.",
   caption: [
     Cold symmetric equal-density electron beams with immobile ions;
-    $omega_p$ uses the total electron density and $K=abs(k v_0)/omega_p$.
+    $omega_p$ uses the total electron density and $K=abs(k v_0)\/omega_p$.
     The unstable root gives
     $gamma/omega_p=sqrt((sqrt(1+8 K^2)-1-2 K^2)/2)$ for $0<K<1$,
-    with the maximum $1/(2 sqrt(2))$ at $K=sqrt(3/8)$.
+    with the maximum $1\/(2 sqrt(2))$ at $K=sqrt(3\/8)$.
   ],
 )[#derived-plot("two-stream-growth", width: 9.5cm)]
 
@@ -1241,9 +1241,9 @@
     Potential (left) and densities (right) from the Poisson solution of the sheath equation
     $eta''=M/sqrt(M^2+2 eta)-exp(-eta)$ for ions entering at the Bohm speed
     ($M=1$), integrated from a hydrogen wall at the floating potential
-    $eta_w=-ln sqrt((2 pi m_e)/m_i)=2.84$, with
-    $eta=-(e phi)/(k_B T_e)$ and $x$ measured from the wall. Boltzmann
-    electrons $n_e/n_0=exp(-eta)$ are depleted faster than the cold ions
+    $eta_w=-ln sqrt(2 pi m_e\/m_i)=2.84$, with
+    $eta=-e phi\/(k_B T_e)$ and $x$ measured from the wall. Boltzmann
+    electrons $n_e\/n_0=exp(-eta)$ are depleted faster than the cold ions
     $n_i/n_0=M/sqrt(M^2+2 eta)$, so the sheath carries positive space charge.
   ],
 )[#derived-plot-pair("sheath-potential", "sheath-densities")]

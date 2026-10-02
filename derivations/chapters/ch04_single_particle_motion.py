@@ -355,28 +355,28 @@ note("Rotating components", sp.Eq(v_cw, v_x + sp.I * v_y), "and", sp.Eq(v_ccw, v
 rotating = {v_x: (v_cw + v_ccw) / 2, v_y: (v_cw - v_ccw) / (2 * sp.I),
             E_x: (E_cw + E_ccw) / 2, E_y: (E_cw - E_ccw) / (2 * sp.I)}
 agrees(sp.expand((lorentz_x + sp.I * lorentz_y).subs(rotating)), q / m * E_cw - sp.I * Omega * v_cw,
-       ":993", lhs=sp.Derivative(sp.Function("v_cw")(t), t))
+       ":996", lhs=sp.Derivative(sp.Function("v_cw")(t), t))
 agrees(sp.expand((lorentz_x - sp.I * lorentz_y).subs(rotating)), q / m * E_ccw + sp.I * Omega * v_ccw,
-       ":1016", lhs=sp.Derivative(sp.Function("v_ccw")(t), t))
+       ":1019", lhs=sp.Derivative(sp.Function("v_ccw")(t), t))
 omega, E_t, v_t = sp.symbols("omega E_t v_t")
 note("Harmonic drive", sp.exp(-sp.I * omega * t), ": the time derivative becomes", -sp.I * omega)
 co_rotating = show(sp.Eq(-sp.I * omega * v_t, q / m * E_t - sp.I * Omega * v_t))
-agrees(sp.solve(co_rotating, v_t)[0], q * E_t / (sp.I * m * (Omega - omega)), ":1008", lhs=v_t)
+agrees(sp.solve(co_rotating, v_t)[0], q * E_t / (sp.I * m * (Omega - omega)), ":1011", lhs=v_t)
 counter_rotating = show(sp.Eq(-sp.I * omega * v_t, q / m * E_t + sp.I * Omega * v_t))
-agrees(sp.solve(counter_rotating, v_t)[0], sp.I * q * E_t / (m * (omega + Omega)), ":1016", lhs=v_t)
+agrees(sp.solve(counter_rotating, v_t)[0], sp.I * q * E_t / (m * (omega + Omega)), ":1019", lhs=v_t)
 note("Free gyration for", sp.Gt(q * B, 0), "rotates clockwise:")
 free = v_perp * sp.cos(Omega * t) - sp.I * v_perp * sp.sin(Omega * t)
 assert sp.simplify((free - v_perp * sp.exp(-sp.I * Omega * t)).rewrite(sp.exp)) == 0
 show(sp.Eq(v_cw, v_perp * sp.exp(-sp.I * Omega * t)))
 
 # %% Worked example: cyclotron resonance
-section("Worked example: cyclotron resonance", "04-single-particle-motion.typ:1008")
+section("Worked example: cyclotron resonance", "04-single-particle-motion.typ:1011")
 note("Resonance at", sp.Eq(omega, Omega), "for", sp.Eq(B, 0.01 * u.tesla, evaluate=False))
 weak_field = {B: 0.01 * u.tesla}
 omega_res_e = evaluate(sp.Symbol("omega_res,e"), e * B / m_e, weak_field, 1 / u.second)
-close_to(omega_res_e, 1.76e9, rtol=rounding_rtol("1.76e9"), source=":1039")
+close_to(omega_res_e, 1.76e9, rtol=rounding_rtol("1.76e9"), source=":1042")
 omega_res_i = evaluate(sp.Symbol("omega_res,i"), e * B / m_p, weak_field, 1 / u.second)
-close_to(omega_res_i, 9.58e5, rtol=rounding_rtol("9.58e5"), source=":1039")
+close_to(omega_res_i, 9.58e5, rtol=rounding_rtol("9.58e5"), source=":1042")
 
 # %%
 if __name__ == "__main__":

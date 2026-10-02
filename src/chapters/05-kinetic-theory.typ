@@ -102,7 +102,7 @@
     $ integral_0^infinity ell p(ell) dif ell=1/(n_b sigma_(a b)) . $
 
     A particle traveling at $v_"rel"$ samples this length in a mean time
-    $lambda_"mfp"/v_"rel"$. The inverse time is therefore
+    $lambda_"mfp"\/v_"rel"$. The inverse time is therefore
 
     $ nu_(a b)=v_"rel"/lambda_"mfp" . $
 
@@ -139,7 +139,7 @@
 
   #equation-note[
     The potential energy
-    of two charges is $(q_a q_b)/(4 pi epsilon_0 r)$ in #unit("J"), so
+    of two charges is $q_a q_b\/(4 pi epsilon_0 r)$ in #unit("J"), so
     $b_90$ is in #unit("m").]
 
   The small-angle contributions add a logarithmic weight over impact
@@ -224,12 +224,12 @@
       question: [What probability law gives the mean free path in a uniform background?],
       answer: [The first-collision distance is exponentially distributed,
       $p(ell)=n_b sigma exp(-n_b sigma ell)$, with mean
-      $lambda_"mfp"=1/(n_b sigma)$.],
+      $lambda_"mfp"=1\/(n_b sigma)$.],
     ),
     (
       question: [Why is the Coulomb logarithm dimensionless?],
       answer: [It is the logarithm of the ratio of two impact-parameter
-      lengths, $ln Lambda=ln(b_"max"/b_"min")$.],
+      lengths, $ln Lambda=ln(b_"max"\/b_"min")$.],
     ),
     (
       question: [What does $K_"n" approx 1$ indicate?],
@@ -276,7 +276,7 @@
     velocity coordinates. Dividing $f_s$ by the total species particle number
     in a chosen domain gives a probability density on that domain; its
     integral over the domain is one. At a fixed position, a different
-    normalization, $f_s/n_s$, gives the local velocity probability density.]
+    normalization, $f_s\/n_s$, gives the local velocity probability density.]
   )
 
   For any single-particle property $g(t,bold(r),bold(v))$, the local velocity
@@ -289,7 +289,7 @@
   #equation-note[
     The average is local in position. Setting $g=1$ gives one, while setting
     $g=bold(v)$ gives the bulk velocity $bold(u)_s$. The factor
-    $(f_s)/(n_s)$ is a velocity-space probability density with units
+    $f_s\/n_s$ is a velocity-space probability density with units
     #unit("s^3 m^-3").]
 
   At a fixed position, the velocity integral gives the number density:
@@ -326,8 +326,8 @@
   #equation-note[
     Temperature is expressed through the thermal energy $k_B T_s$ in
     #unit("J"). The one-dimensional standard deviation is
-    $sqrt((k_B T_s)/m_s)$, while the parameter
-    $v_"th,s"=sqrt((2 k_B T_s)/m_s)$ is the thermal-speed convention from
+    $sqrt(k_B T_s\/m_s)$, while the parameter
+    $v_"th,s"=sqrt(2 k_B T_s\/m_s)$ is the thermal-speed convention from
     Chapter 1. The plot below shows a one-component velocity distribution,
     whose centered peak is at zero velocity. It is not the distribution of
     speed magnitudes, which includes a velocity-space volume factor.]
@@ -375,7 +375,7 @@
   )
 
   #details(
-    [Mean random kinetic energy $(3 k_B T_s)/2$],
+    [Mean random kinetic energy $3 k_B T_s\/2$],
     [#derivation-step[Sum the independent velocity components]
     Each Cartesian component of a Maxwellian has variance
 
@@ -475,8 +475,7 @@
   #unit-ledger[
     For the phase-space characteristic $bold(z)=(bold(r),bold(v))$, the two
     blocks of its velocity are $bold(V)_z=(bold(v),bold(a))$. We also use the
-    normalized variables $xi=bold(r)/L_0$, $eta=bold(v)/v_0$, and $tau=(t
-    v_0)/L_0$, all explicitly dimensionless.
+    normalized variables $xi=bold(r)\/L_0$, $eta=bold(v)\/v_0$, and $tau=t v_0\/L_0$, all explicitly dimensionless.
   ]
 
   #definition(
@@ -516,11 +515,11 @@
   $ pdv(f,tau) + bold(eta) dot grad(f) = 0 $ <kinetic-normalized-streaming>
 
   #equation-note[
-    Both $bold(xi)=bold(r)/L_0$ and $bold(eta)=bold(v)/v_0$ are dimensionless.
-    The time coordinate is $tau=t/tau_0$ with $tau_0=L_0/v_0$;
+    Both $bold(xi)=bold(r)\/L_0$ and $bold(eta)=bold(v)\/v_0$ are dimensionless.
+    The time coordinate is $tau=t\/tau_0$ with $tau_0=L_0\/v_0$;
     restore positions, velocities, and times with $L_0$, $v_0$, and $tau_0$.
     In the one-dimensional visualization, the vector equation reduces to
-    $pdv(f,tau)+eta pdv(f,xi)=0$ with $xi=x/L_0$ and $eta=v/v_0$. The physical
+    $pdv(f,tau, style: "horizontal")+eta pdv(f,xi, style: "horizontal")=0$ with $xi=x\/L_0$ and $eta=v\/v_0$. The physical
     kinetic equation is three-dimensional in both position and velocity.
   ]
 
@@ -545,7 +544,7 @@
         +bold(a)_s dot pdv(g,bold(v)) . $
 
     #derivation-step[Distinguish the two viewpoints]
-    At a fixed phase-space point, only the partial derivative $pdv(g,t)$ is
+    At a fixed phase-space point, only the partial derivative $pdv(g,t, style: "horizontal")$ is
     measured. Along a characteristic, the spatial and velocity-space
     advection terms contribute as well. The two descriptions are equivalent
     because they evaluate the same scalar field in different ways.]
@@ -583,7 +582,7 @@
       Free streaming in one spatial and one velocity dimension. The
       visualization uses normalized variables and a deterministic sample of a
       distribution.
-      Arrow lengths are proportional to $eta=v/v_0$ and represent displacement
+      Arrow lengths are proportional to $eta=v\/v_0$ and represent displacement
       over the same normalized time interval.
     ],
     poster: "../media/phase-space-advection.png",
@@ -632,8 +631,11 @@
       question: [When is the convective derivative of a distribution zero?],
       answer: [It is zero without collisions or sources when the phase-space
       flow is incompressible, as for Lorentz motion. In general,
-      $dv(f,t,d: upright(D))=-f (div_(bold(r))(bold(v))
-      +div_(bold(v))(bold(a)))$ along a source-free characteristic;
+
+      $ dv(f,t,d: upright(D))=-f (div_(bold(r))(bold(v))
+        +div_(bold(v))(bold(a))) $
+
+      along a source-free characteristic;
       velocity-dependent drag can compress phase space.],
     ),
     (
@@ -858,7 +860,7 @@
     (
       question: [What is the first fluid equation obtained by integrating the kinetic equation?],
       answer: [The species continuity equation,
-      $pdv(n_s,t)+div(n_s bold(u)_s)=0$, provided the velocity-space boundary
+      $pdv(n_s,t, style: "horizontal")+div(n_s bold(u)_s)=0$, provided the velocity-space boundary
       flux vanishes and collisions conserve particle number.],
     ),
   ))
@@ -879,7 +881,7 @@
   ))
 
   #unit-ledger[
-    The ratios $nu tau$, $K_"n"$, and $lambda_D/L$ are dimensionless.
+    The ratios $nu tau$, $K_"n"$, and $lambda_D\/L$ are dimensionless.
   ]
 
   #assumption(
@@ -943,7 +945,7 @@
   #callout(
     [Collision frequency is a model selector],
     [For a process with characteristic time $tau$ and length $L$, use
-    $nu tau$ and $K_"n"=lambda_"mfp"/L$ together. A small $nu tau$ permits
+    $nu tau$ and $K_"n"=lambda_"mfp"\/L$ together. A small $nu tau$ permits
     collisionless kinetic behavior. A small $K_"n"$ supports local fluid moments.
     These criteria answer different questions and can select hybrid models in
     which some directions or species are collisional while others are kinetic.]
@@ -967,7 +969,7 @@
   #strong[Classical statistics and quantum degeneracy] <kinetic-degeneracy>
 
   Classical statistics also have a validity boundary. For electrons, define
-  the degeneracy parameter $theta_e = (k_B T_e) / E_(F,e)$, with the
+  the degeneracy parameter $theta_e = k_B T_e\/E_(F,e)$, with the
   nonrelativistic Fermi energy
 
   $ E_(F,e) = (ℏ^2 / (2 m_e)) (3 pi^2 n_e)^(2/3) $
@@ -1003,13 +1005,13 @@
       exchange momentum or energy even between Maxwellian species.],
     ),
     (
-      question: [Why is $(q_s Phi)/(k_B T_s)$ dimensionless?],
+      question: [Why is $q_s Phi\/(k_B T_s)$ dimensionless?],
       answer: [Both the numerator and denominator are energies in #unit("J"),
       so their ratio has no units.],
     ),
     (
       question: [Which ordering supports a local fluid closure?],
-      answer: [A small Knudsen number, $K_"n"=lambda_"mfp"/L << 1$, supports
+      answer: [A small Knudsen number, $K_"n"=lambda_"mfp"\/L << 1$, supports
       frequent local collisions over the macroscopic scale. A closure is
       still required for the moment hierarchy.],
     ),

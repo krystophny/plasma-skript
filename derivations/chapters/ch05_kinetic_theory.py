@@ -206,7 +206,7 @@ ax.set(xlim=(-3, 3), ylim=(0, 0.8), yticks=[0, 0.25, 0.5, 0.75],
 save(fig, "moment_ambiguity")
 
 # %% Convective derivative
-section("Convective derivative", "05-kinetic-theory.typ:487")
+section("Convective derivative", "05-kinetic-theory.typ:486")
 t = sp.Symbol("t")
 x_t, v_t = sp.Function("x")(t), sp.Function("v")(t)
 g, accel = sp.Function("g"), sp.Function("a")
@@ -214,11 +214,11 @@ note("Along a characteristic", sp.Eq(x_t.diff(t), v_t), "and", sp.Eq(v_t.diff(t)
 x, v = sp.symbols("x v")
 chain = g(t, x_t, v_t).diff(t).subs({x_t.diff(t): v_t, v_t.diff(t): accel(t, x_t, v_t)})
 agrees(chain.subs({x_t: x, v_t: v}).doit(),
-       g(t, x, v).diff(t) + v * g(t, x, v).diff(x) + accel(t, x, v) * g(t, x, v).diff(v), ":551",
+       g(t, x, v).diff(t) + v * g(t, x, v).diff(x) + accel(t, x, v) * g(t, x, v).diff(v), ":550",
        lhs=sp.Derivative(g(t, x_t, v_t), t))
 
 # %% Normalized free streaming
-section("Normalized free streaming", "05-kinetic-theory.typ:517")
+section("Normalized free streaming", "05-kinetic-theory.typ:516")
 t_p, x_p, v_p, L_0, v_0 = sp.symbols("t x v L_0 v_0", positive=True)
 tau, xi, eta = sp.symbols("tau xi eta")
 F = sp.Function("F")
@@ -230,11 +230,11 @@ assert sp.simplify(streaming - normalized.lhs.subs({tau: v_0 * t_p / L_0, xi: x_
                                                     eta: v_p / v_0}).doit()) == 0
 G_free = sp.Function("G")(xi - eta * tau)
 note("Every", G_free, "streams freely:")
-agrees(sp.simplify(G_free.diff(tau) + eta * G_free.diff(xi)), 0, ":523",
+agrees(sp.simplify(G_free.diff(tau) + eta * G_free.diff(xi)), 0, ":522",
        lhs=sp.Derivative(G_free, tau) + eta * sp.Derivative(G_free, xi))
 
 # %% Conservative and convective kinetic equation
-section("Conservative and convective kinetic equation", "05-kinetic-theory.typ:702")
+section("Conservative and convective kinetic equation", "05-kinetic-theory.typ:704")
 y, z_r = sp.symbols("y z", real=True)
 x_r = sp.Symbol("x", real=True)
 R = [x_r, y, z_r]
@@ -249,10 +249,10 @@ vec_B = sp.Matrix(sp.symbols("B_x B_y B_z", real=True))
 note("Lorentz acceleration", sp.Symbol("a"), "; phase-space flow", sp.Tuple(sp.Symbol("v"), sp.Symbol("a")),
      "has zero divergence:")
 div_r = sp.Add(*[sp.Derivative(velocity[i], R[i]) for i in range(3)], evaluate=False)
-agrees(div_r.doit(), 0, ":748", lhs=div_r)
+agrees(div_r.doit(), 0, ":750", lhs=div_r)
 local_lorentz = q_s / m * (vec_E + velocity.cross(vec_B))  # fields at one point in space
 div_v = sp.Add(*[sp.Derivative(local_lorentz[i], V[i]) for i in range(3)], evaluate=False)
-agrees(sp.expand(div_v.doit()), 0, ":748", lhs=div_v)
+agrees(sp.expand(div_v.doit()), 0, ":750", lhs=div_v)
 assert sp.expand(sum(lorentz[i].diff(V[i]) for i in range(3))) == 0
 conservative = f.diff(t) + sum(sp.diff(f * velocity[i], R[i]) + sp.diff(f * lorentz[i], V[i]) for i in range(3))
 convective = (f.diff(t) + sum(velocity[i] * f.diff(R[i]) + lorentz[i] * f.diff(V[i]) for i in range(3)))
@@ -264,23 +264,23 @@ note("A velocity-dependent drag", sp.Eq(sp.Symbol("a"), -gamma * sp.Symbol("v"))
 drag = -gamma * velocity
 compression = sp.Add(*[sp.Derivative(f * drag[i], V[i]) for i in range(3)], evaluate=False) \
     - sum(drag[i] * f.diff(V[i]) for i in range(3))
-agrees(sp.expand(compression.doit()), -3 * gamma * f, ":639",
+agrees(sp.expand(compression.doit()), -3 * gamma * f, ":641",
        lhs=f * sp.Add(*[sp.Derivative(drag[i], V[i]) for i in range(3)], evaluate=False))
 E_0 = sp.Symbol("E_0", positive=True)
 check(q_s / m * E_0, q_s / m * E_0, unit=u.meter / u.second**2,
       units={q_s: u.coulomb, m: u.kilogram, E_0: u.volt / u.meter})
 
 # %% Particle-number conservation
-section("Particle-number conservation", "05-kinetic-theory.typ:793")
+section("Particle-number conservation", "05-kinetic-theory.typ:795")
 E_x0, B_z0 = sp.symbols("E_x B_z", real=True)
 acceleration = sp.Matrix([q_s / m * E_x0, 0, 0]) + q_s / m * velocity.cross(sp.Matrix([0, 0, B_z0]))
 note("Maxwellian in uniform fields", E_x0, "and", B_z0)
 velocity_flux = over_velocity(sp.Add(*[sp.Derivative(f_M_sym * acceleration[i], V[i])
                                        for i in range(3) if acceleration[i] != 0], evaluate=False))
 flux_divergence = sum(sp.diff(f_M * acceleration[i], V[i]) for i in range(3))
-agrees(velocity_integral(flux_divergence, V, U), 0, ":806", lhs=velocity_flux)
-agrees(moment(1), n_s, ":815", lhs=over_velocity(f_M_sym))
-agrees(moment(v_x), n_s * u_x, ":815", lhs=over_velocity(v_x * f_M_sym))
+agrees(velocity_integral(flux_divergence, V, U), 0, ":808", lhs=velocity_flux)
+agrees(moment(1), n_s, ":817", lhs=over_velocity(f_M_sym))
+agrees(moment(v_x), n_s * u_x, ":817", lhs=over_velocity(v_x * f_M_sym))
 note("One dimension with", sp.Function("n")(t, x), "and", sp.Function("u")(t, x), ", integrating over",
      sp.Eq(w, sp.Symbol("v") - sp.Function("u")(t, x)))
 density, drift = sp.Function("n")(t, x), sp.Function("u")(t, x)
@@ -290,10 +290,10 @@ f_sym = sp.Function("f")(t, x, w_1d)
 kinetic_moment = sp.Integral(sp.Derivative(f_sym, t) + sp.Derivative((drift + w_1d) * f_sym, x),
                              (w_1d, -sp.oo, sp.oo))
 agrees(sp.simplify(kinetic_moment.subs(f_sym, f_1d).doit()),
-       density.diff(t) + (density * drift).diff(x), ":820", lhs=kinetic_moment)
+       density.diff(t) + (density * drift).diff(x), ":822", lhs=kinetic_moment)
 
 # %% Boltzmann equilibrium in a potential
-section("Boltzmann equilibrium in a potential", "05-kinetic-theory.typ:901")
+section("Boltzmann equilibrium in a potential", "05-kinetic-theory.typ:903")
 n_0s = sp.Symbol("n_0s", positive=True)
 x_1 = sp.Symbol("x", real=True)
 Phi = sp.Function("Phi")(x_1)
@@ -305,22 +305,22 @@ equilibrium = show(sp.Eq(sp.Function("f_eq")(H), sp.Mul(
     evaluate=False))).rhs
 f_eq = equilibrium.subs(H, energy)  # :914
 note("Stationary Vlasov equation in one dimension")
-agrees(sp.simplify(v_x * f_eq.diff(x_1) - q_s / m * Phi.diff(x_1) * f_eq.diff(v_x)), 0, ":933",
+agrees(sp.simplify(v_x * f_eq.diff(x_1) - q_s / m * Phi.diff(x_1) * f_eq.diff(v_x)), 0, ":935",
        lhs=v_x * sp.Derivative(f_eq_sym, x_1) - q_s / m * sp.Derivative(Phi, x_1) * sp.Derivative(f_eq_sym, v_x))
-agrees(sp.simplify(velocity_integral(f_eq, V, [0, 0, 0])), n_0s * sp.exp(-q_s * Phi / (k_B * T)), ":920",
+agrees(sp.simplify(velocity_integral(f_eq, V, [0, 0, 0])), n_0s * sp.exp(-q_s * Phi / (k_B * T)), ":922",
        lhs=over_velocity(f_eq_sym))
 Phi_0 = sp.Symbol("Phi_0", positive=True)
 check(q_s * Phi_0 / (k_B * T), q_s * Phi_0 / (k_B * T), unit=u.joule / u.joule,
       units={q_s: u.coulomb, Phi_0: u.volt, T: u.kelvin})
 
 # %% Fermi energy
-section("Fermi energy", "05-kinetic-theory.typ:973")
+section("Fermi energy", "05-kinetic-theory.typ:975")
 hbar, k_F, n_e, m_e = sp.symbols("hbar k_F n_e m_e", positive=True)
 note("Two spin states per k-space cell", (2 * sp.pi) ** 3, "fill a sphere of radius", k_F)
 states = show(sp.Eq(n_e, 2 * sp.Rational(4, 3) * sp.pi * k_F**3 / (2 * sp.pi) ** 3))
 k_F_expr = show(sp.Eq(k_F, sp.solve(states, k_F)[0])).rhs
 E_F = agrees(sp.simplify(hbar**2 * k_F_expr**2 / (2 * m_e)),
-             hbar**2 / (2 * m_e) * (3 * sp.pi**2 * n_e) ** sp.Rational(2, 3), ":989", lhs=sp.Symbol("E_F"))
+             hbar**2 / (2 * m_e) * (3 * sp.pi**2 * n_e) ** sp.Rational(2, 3), ":991", lhs=sp.Symbol("E_F"))
 quantum_units = {hbar: u.joule * u.second, n_e: u.meter**-3, m_e: u.kilogram, T: u.kelvin}
 check(E_F, E_F, unit=u.joule, units=quantum_units)
 check(k_B * T / E_F, k_B * T / E_F, unit=u.joule / u.joule, units=quantum_units)  # theta_e

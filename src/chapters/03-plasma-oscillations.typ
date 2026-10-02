@@ -79,7 +79,7 @@
 
   #equation-note[
     $omega_(p,s)$ is in $upright("s")^(-1)$ as an angular frequency.
-    The corresponding ordinary frequency is $f_(p,s) = omega_(p,s)/(2 pi)$
+    The corresponding ordinary frequency is $f_(p,s) = omega_(p,s)\/(2 pi)$
     in hertz.
   ]
 
@@ -93,16 +93,16 @@
 
   #equation-note[
     The factor $sqrt(2)$ follows from the convention
-    $v_("th,e")=sqrt((2 k_B T_e)/m_e)$. If a source defines thermal speed as
-    $sqrt((k_B T_e)/m_e)$, the same relation is written without that factor.
+    $v_("th,e")=sqrt(2 k_B T_e\/m_e)$. If a source defines thermal speed as
+    $sqrt(k_B T_e\/m_e)$, the same relation is written without that factor.
   ]
 
-  The species inertial length $d_s=c/omega_(p,s)$ compares a light-transit
+  The species inertial length $d_s=c\/omega_(p,s)$ compares a light-transit
   time with the plasma-response time. Here $c$ is in
   #unit("m/s") and $d_s$ is in #unit("m"). This electromagnetic scale
   differs from the thermal screening length derived in
   #chapter-link("intro-debye-shielding")[Debye shielding].
-  Here $v_("th,e")=sqrt((2 k_B T_e)/m_e)$ is the electron thermal-speed
+  Here $v_("th,e")=sqrt(2 k_B T_e\/m_e)$ is the electron thermal-speed
   convention, in #unit("m/s"); $T_e$ is in kelvin.
 
   #details(
@@ -134,11 +134,11 @@
     "An electron slab oscillates against fixed positive ions. The electric field points along the signed displacement, while the electron force points oppositely. Both vanish at equilibrium. Displacement is normalized by its amplitude and time by the inverse electron plasma frequency, with unit [1].",
     caption: [
       Cold electron plasma oscillation: the charge-separation field produces
-      a restoring electron force. The animation uses $xi/xi_0$ and
+      a restoring electron force. The animation uses $xi\/xi_0$ and
       $tau=omega_(p,e) t$, both with unit [1]. The position scale $L_0$
-      satisfies $xi_0/L_0=0.55$. The field scale is
-      $E_0=(e n_0 xi_0)/epsilon_0$; field and electron force are shown as
-      $E/E_0$ and $F_e/(e E_0)$, respectively, both with unit [1].
+      satisfies $xi_0\/L_0=0.55$. The field scale is
+      $E_0=e n_0 xi_0\/epsilon_0$; field and electron force are shown as
+      $E\/E_0$ and $F_e\/(e E_0)$, respectively, both with unit [1].
     ],
     poster: "../media/plasma-oscillation.png",
   )

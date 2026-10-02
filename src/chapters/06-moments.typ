@@ -51,7 +51,10 @@
     [For species $s$, the phase-space distribution is defined by
     $d N_s = f_(s)(t, bold(r), bold(v)) dif^3 bold(r) dif^3 bold(v)$. For a
     velocity weight $A(bold(v))$, its local velocity moment is
-    $integral A(bold(v)) f_s dif^3 bold(v)$. The zeroth moment counts particles,
+
+    $ integral A(bold(v)) f_s dif^3 bold(v) . $
+
+    The zeroth moment counts particles,
     while the weight determines which physical average is retained.]
   )
 
@@ -152,7 +155,7 @@
       Moment hierarchy from kinetic information to fluid fields. The animation
       labels dimensional quantities.
       The full third central tensor $Q_(i j k)$ contains more information
-      than heat flux $q_i=(1/2) sum_j Q_(i j j)$.
+      than heat flux $q_i=(1\/2) sum_j Q_(i j j)$.
     ],
     poster: "../media/moment-hierarchy.png",
   )
@@ -187,7 +190,10 @@
     (
       question: [Which velocity weight produces the number density?],
       answer: [The zeroth weight, $A=1$, gives
-      $n_s=integral f_s dif^3 bold(v)$ in #unit("m^-3").],
+
+      $ n_s=integral f_s dif^3 bold(v) $
+
+      in #unit("m^-3").],
     ),
     (
       question: [Why can a neutral plasma carry current?],
@@ -199,7 +205,10 @@
     (
       question: [What is removed when the pressure tensor is replaced by a scalar pressure?],
       answer: [Directional information is removed. The replacement keeps only
-      $p_s=(sum_i (P_s)_(i i))/3$ and discards anisotropic normal stresses and
+
+      $ p_s=(sum_i (P_s)_(i i))/3 $
+
+      and discards anisotropic normal stresses and
       off-diagonal shear stresses.]
     ),
     (
@@ -236,7 +245,10 @@
     [Assume $f_s$ and the velocity-space flux vanish sufficiently rapidly as
     $abs(bold(v)) -> infinity$. Assume ordinary collisions do not create or
     destroy particles of species $s$, so
-    $integral C_(s)[f] dif^3 bold(v)=0$. Ionization, recombination, or an imposed
+
+    $ integral C_(s)[f] dif^3 bold(v)=0 . $
+
+    Ionization, recombination, or an imposed
     source would add a nonzero right-hand side and must be stated separately.]
   )
 
@@ -343,7 +355,7 @@
 
   #interpretation(
     [Eulerian reading of continuity],
-    [The term $pdv(n_s,t)$ measures accumulation at a fixed position. The
+    [The term $pdv(n_s,t, style: "horizontal")$ measures accumulation at a fixed position. The
     divergence $div(n_s bold(u)_s)$ measures net outward particle
     flux. If the flow converges, the divergence is negative and the density
     increases. This is the divergence of particle flux, which depends on
@@ -370,8 +382,10 @@
     (
       question: [Which kinetic term becomes the particle flux in continuity?],
       answer: [The spatial streaming term becomes
-      $div(integral bold(v) f_s dif^3 bold(v))
-      =div(n_s bold(u)_s)$.]
+
+      $ div(integral bold(v) f_s dif^3 bold(v))
+        =div(n_s bold(u)_s) . $
+      ]
     ),
     (
       question: [Why does the Lorentz force not create particles in the zeroth moment?],
@@ -382,12 +396,12 @@
     (
       question: [What changes in continuity if ionization is included?],
       answer: [A source term appears, for example
-      $pdv(n_s,t)+div(n_s bold(u)_s)=S_s$. The source has the same
+      $pdv(n_s,t, style: "horizontal")+div(n_s bold(u)_s)=S_s$. The source has the same
       density-per-time units as the left-hand side.]
     ),
     (
       question: [What does a negative divergence of particle flux imply locally?],
-      answer: [With no source, $pdv(n_s,t)=-div(n_s bold(u)_s)$, so a negative
+      answer: [With no source, $pdv(n_s,t, style: "horizontal")=-div(n_s bold(u)_s)$, so a negative
       flux divergence means positive local density accumulation.]
     ),
   ))
@@ -410,7 +424,7 @@
   #unit-ledger[
     The divergence of a pressure tensor and an electromagnetic force density
     are in #unit("N/m^3") $=$ #unit("kg m^-2 s^-2"). The Lorentz acceleration
-    is $bold(a)_s=q_s/m_s (bold(E)+bold(v) times bold(B))$.
+    is $bold(a)_s=(q_s\/m_s) (bold(E)+bold(v) times bold(B))$.
   ]
 
   #assumption(
@@ -479,9 +493,12 @@
   #equation-note[
     The pressure force density is $-div(bold(P)_s)$. In the
     fluid-following form, obtained with species continuity, the equation reads
-    $rho_s (pdv(bold(u)_s,t)+bold(u)_s dot grad(bold(u)_s))
+
+    $ rho_s (pdv(bold(u)_s,t)+bold(u)_s dot grad(bold(u)_s))
       = q_s n_s (bold(E)+bold(u)_s times bold(B))
-      -div(bold(P)_s) + bold(R)_s$. Every term has force-density
+      -div(bold(P)_s) + bold(R)_s . $
+
+    Every term has force-density
     units in #unit("N/m^3"). The acceleration
     now follows a fluid element moving at $bold(u)_s$, not an
     individual particle moving at $bold(v)$. Pressure accounts for the
@@ -509,8 +526,12 @@
         =m_s integral_("boundary") v_i a_(s,j)f_s d S_j
         -m_s integral pdv(v_i,v_j) a_(s,j)f_s dif^3 bold(v) . $
 
-    The surface term vanishes and $pdv(v_i,v_j)=delta_(i j)$. The force term
-    is therefore $-m_s integral a_(s,i) f_s dif^3 bold(v)$ on the left.
+    The surface term vanishes and $pdv(v_i,v_j, style: "horizontal")=delta_(i j)$. The force term
+    is therefore
+
+    $ -m_s integral a_(s,i) f_s dif^3 bold(v) $
+
+    on the left.
 
     #derivation-step[Insert the Lorentz acceleration]
     Move the force term to the right. Substitution of the Lorentz acceleration
@@ -614,7 +635,7 @@
     Energy density is in #unit("J/m^3") $=$ #unit("kg m^-1 s^-2"), and energy
     flux is in #unit("W/m^2") $=$ #unit("kg s^-3"). Heat flux $bold(q)_s$ is
     an energy flux. The scalar pressure $p_s$ has the same units as
-    $bold(P)_s$. The ratio $gamma=5/3$ below is dimensionless and applies to a
+    $bold(P)_s$. The ratio $gamma=5\/3$ below is dimensionless and applies to a
     three-dimensional monatomic closure.
   ]
 
@@ -647,8 +668,8 @@
   $ Q_s = (m_s/2) integral_(RR^3) abs(bold(v))^2 C_(s)[f] dif^3 bold(v) $ \
   <moments-energy-collision>
 
-  Weight the kinetic equation by $(m_s abs(bold(v))^2)/2$. The time term is
-  $pdv(W_s,t)$. The spatial term is the divergence of the raw energy flux
+  Weight the kinetic equation by $m_s abs(bold(v))^2\/2$. The time term is
+  $pdv(W_s,t, style: "horizontal")$. The spatial term is the divergence of the raw energy flux
 
   $ bold(F)_s = (m_s/2) integral_(RR^3)
     abs(bold(v))^2 bold(v) f_s dif^3 bold(v) $ <moments-energy-flux>
@@ -707,8 +728,8 @@
   #details(
     [Derivation: energy density and energy flux decomposition],
     [#derivation-step[Weight the kinetic equation by particle energy]
-    Multiply the kinetic equation by $(m_s v^2)/2$ and integrate. The time
-    derivative gives $pdv(W_s,t)$. The spatial streaming term gives
+    Multiply the kinetic equation by $m_s v^2\/2$ and integrate. The time
+    derivative gives $pdv(W_s,t, style: "horizontal")$. The spatial streaming term gives
 
     $ div((m_s/2) integral v^2 bold(v) f_s dif^3 bold(v)) . $
 
@@ -721,7 +742,10 @@
 
     The magnetic force does no work because
     $bold(v) dot (bold(v) times bold(B))=0$. The remaining electric term is
-    $-q_s bold(E) dot integral bold(v) f_s dif^3 bold(v)$ on the left. Move it
+
+    $ -q_s bold(E) dot integral bold(v) f_s dif^3 bold(v) $
+
+    on the left. Move it
     to the right and use
 
     $ integral bold(v)f_s dif^3 bold(v)=n_s bold(u)_s . $
@@ -752,7 +776,7 @@
     $ (div(bold(P)_s))_i=sum_j pdv((P_s)_(i j),x_j) . $
 
     If $P_(i j)=p_s delta_(i j)$, the sum reduces to
-    $pdv(p_s,x_i)$, which is $grad(p_s)$. A scalar pressure is therefore a
+    $pdv(p_s,x_i, style: "horizontal")$, which is $grad(p_s)$. A scalar pressure is therefore a
     special isotropic closure.]
   )
 
@@ -853,7 +877,10 @@
     (
       question: [What physical transport does $bold(q)_s$ represent?],
       answer: [It is the energy flux carried by random motion in the local
-      bulk frame, $(m_s/2) integral abs(bold(w)_s)^2 bold(w)_s f_s dif^3 bold(v)$.]
+      bulk frame,
+
+      $ (m_s/2) integral abs(bold(w)_s)^2 bold(w)_s f_s dif^3 bold(v) . $
+      ]
     ),
     (
       question: [When may $grad(p_s)$ replace $div(bold(P)_s)$?],
@@ -952,7 +979,10 @@
 
   #equation-note[
     If $f_(M,s)$ has the same density as $f_s$, then
-    $integral C_("BGK")[f_s] dif^3 bold(v)=0$. If it also has the same flow and
+
+    $ integral C_("BGK")[f_s] dif^3 bold(v)=0 . $
+
+    If it also has the same flow and
     energy moments, the corresponding momentum and energy collision moments
     vanish for that single-species model. In a multispecies plasma, physical
     interspecies collisions may still exchange momentum and energy between
@@ -1007,16 +1037,16 @@
 
   #rechenbeispiel[
     Context: a warm isotropic closure follows a polytropic law with
-    $gamma=5/3$. The density changes from $n_0$ to
+    $gamma=5\/3$. The density changes from $n_0$ to
     $n_1=8 n_0$.
 
     Assumptions: source-free adiabatic compression with
     $p n^(-gamma)$ constant along the fluid path.
 
-    Target: report the pressure ratio $p_1/p_0$ and temperature ratio
-    $T_1/T_0$.
+    Target: report the pressure ratio $p_1\/p_0$ and temperature ratio
+    $T_1\/T_0$.
 
-    Numerical result: $p_1/p_0=32$ and $T_1/T_0=4$; both ratios are
+    Numerical result: $p_1\/p_0=32$ and $T_1\/T_0=4$; both ratios are
     dimensionless.
   ]
 
@@ -1072,7 +1102,7 @@
       question: [Give one closure that avoids a separate heat-transport law and state its assumption.],
       answer: [A polytropic law $p_s n_s^(-gamma)="constant"$ along a fluid path
       closes pressure using density. It assumes a prescribed effective energy
-      response, such as adiabatic compression when $gamma=5/3$.]
+      response, such as adiabatic compression when $gamma=5\/3$.]
     ),
   ))
 

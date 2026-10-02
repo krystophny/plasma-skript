@@ -45,7 +45,7 @@
     $N$ is a number density in #unit("m^-3"), $R$ is in #unit("m"),
     and $phi$ is in #unit("V"). The numerical factor depends on the assumed
     charge profile; the robust result is the scaling
-    $R$ proportional to $sqrt((epsilon_0 k_B T_e)/(N e^2))$.
+    $R$ proportional to $sqrt(epsilon_0 k_B T_e\/(N e^2))$.
   ]
 
   #details(
@@ -94,7 +94,7 @@
   #equation-note[
     $n_e$ and $n_0$ are in #unit("m^-3"), and $e phi$ and $k_B T_e$
     are energies in #unit("J"). The approximation is dimensionless and requires
-    $abs(e phi)/(k_B T_e) << 1$.
+    $abs(e phi)\/(k_B T_e) << 1$.
   ]
 
   The net charge density is therefore
@@ -132,7 +132,7 @@
 
     $ exp((-(-e phi))/(k_B T_e))=exp((e phi)/(k_B T_e)) . $
 
-    When $abs(e phi)/(k_B T_e) << 1$, expand it to first order:
+    When $abs(e phi)\/(k_B T_e) << 1$, expand it to first order:
 
     $ n_e approx n_0 (1+(e phi)/(k_B T_e)) . $
 
@@ -153,7 +153,7 @@
 
     $ phi(r) "proportional to" exp(-r/lambda_D)/r . $
 
-    The exponential factor is the shielding; $1/r$ is the unscreened geometric
+    The exponential factor is the shielding; $1\/r$ is the unscreened geometric
     spreading of a point source.]
   )
 
@@ -177,7 +177,7 @@
   #knowledge-check((
     (
       question: [Why does a positive electrostatic potential increase the equilibrium electron density in the Boltzmann response?],
-      answer: [An electron has charge $-e$, so its potential energy is $-e phi$. A positive $phi$ lowers that energy and produces the factor $exp((e phi) / (k_B T_e))$.],
+      answer: [An electron has charge $-e$, so its potential energy is $-e phi$. A positive $phi$ lowers that energy and produces the factor $exp(e phi\/(k_B T_e))$.],
     ),
     (
       question: [Which approximation turns the exponential Boltzmann response into a linear screening equation?],
@@ -185,11 +185,11 @@
     ),
     (
       question: [What happens to the screened potential at distances much larger than $lambda_D$ in this model?],
-      answer: [The exponential factor suppresses it, so the localized electrostatic influence is small compared with the unscreened $1/r$ field.],
+      answer: [The exponential factor suppresses it, so the localized electrostatic influence is small compared with the unscreened $1\/r$ field.],
     ),
     (
       question: [Give one situation in which the linear Debye-shielding derivation should not be used without modification.],
-      answer: [A potential comparable to or larger than $(k_B T_e)/e$, a time-dependent kinetic response, or a boundary within the shielding region violates the stated assumptions.],
+      answer: [A potential comparable to or larger than $k_B T_e\/e$, a time-dependent kinetic response, or a boundary within the shielding region violates the stated assumptions.],
     ),
   ))
 
@@ -227,13 +227,13 @@
     $Q$ is in #unit("C"), $r$ and $R$ are in #unit("m"), and $phi_"C"$
     is in #unit("V") when the reference potential is zero at infinity. The
     interior expression is quadratic in $r$ and joins the exterior Coulomb
-    expression continuously at $r=R$: both give $Q/(4 pi epsilon_0 R)$ there.
+    expression continuously at $r=R$: both give $Q\/(4 pi epsilon_0 R)$ there.
   ]
 
   The quadratic interior is the potential of the extended source itself. It
   removes the point-charge singularity at the center. Outside the sphere,
   spherical symmetry reduces the source to its total charge and restores the
-  $1/r$ Coulomb decay.
+  $1\/r$ Coulomb decay.
 
   The plasma response is a separate effect. In the linearized, static model,
   the same source satisfies the spherical Debye--Hückel equations
@@ -245,12 +245,15 @@
   #equation-note[
     $rho_Q$ is the source charge density, while the mobile
     electron response has already been absorbed into the term
-    $-phi_"D"/lambda_D^2$. The fields and potentials are matched at the source
+    $-phi_"D"\/lambda_D^2$. The fields and potentials are matched at the source
     boundary, and the exterior solution decays at infinity. Linearization
-    requires $abs(e phi_"D")/(k_B T_e) << 1$ everywhere. A sufficient
-    condition for a positive source is $(3 e Q)/(8 pi epsilon_0 R k_B T_e) << 1$,
+    requires $abs(e phi_"D")\/(k_B T_e) << 1$ everywhere. A sufficient
+    condition for a positive source is
+
+    $ (3 e Q)/(8 pi epsilon_0 R k_B T_e) << 1 , $
+
     using the maximum bare potential. Normalizing the plotted potential by
-    $Q/(4 pi epsilon_0 lambda_D)$ does not by itself impose this small-source condition.
+    $Q\/(4 pi epsilon_0 lambda_D)$ does not by itself impose this small-source condition.
   ]
 
   #details(
@@ -271,7 +274,7 @@
 
     #derivation-step[Integrate the field with the boundary condition]
     Set $phi_"C" (infinity)=0$ and integrate inward from the exterior. This
-    gives $phi_"C" (r)=Q/(4 pi epsilon_0 r)$ outside the source and
+    gives $phi_"C" (r)=Q\/(4 pi epsilon_0 r)$ outside the source and
 
     $ phi_"C" (r) = phi_"C" (R) + integral_r^R E_"C" (r') dif r'
       = Q/(4 pi epsilon_0 R) + integral_r^R (Q r')/(4 pi epsilon_0 R^3) dif r'
@@ -285,7 +288,7 @@
   #details(
     [Derivation: matched finite-source Debye response],
     [#derivation-step[Choose regular and decaying radial solutions]
-    Write $kappa=1/lambda_D$ and $x=kappa R$. In the source region, a constant
+    Write $kappa=1\/lambda_D$ and $x=kappa R$. In the source region, a constant
     particular solution and the regular homogeneous solution give
 
     $ phi_(D,"in")(r) = phi_"p" + A (sinh(kappa r))/r,
@@ -313,14 +316,14 @@
     $ B = (R phi_"p")/(2 x) (e^x (x-1) + (x+1) e^(-x)) . $
 
     Therefore the exterior response contains both the geometrical Coulomb
-    factor $1/r$ and the shielding factor $e^(-r/lambda_D)$. For a finite
+    factor $1\/r$ and the shielding factor $e^(-r\/lambda_D)$. For a finite
     source, the coefficient $B$ records the source-size correction.]
   )
 
   #interpretation(
     [Reduction of the exterior potential],
     [For a point source, the ratio of the Debye-screened to bare potential is
-    $phi_"D"/phi_"C" = e^(-r/lambda_D)$. A finite sphere changes the amplitude
+    $phi_"D"\/phi_"C" = e^(-r\/lambda_D)$. A finite sphere changes the amplitude
     near $r=R$, but the exterior screening still supplies the exponential
     suppression. At distances several Debye lengths from the source, the
     Coulomb tail is therefore reduced exponentially.]
@@ -336,7 +339,7 @@
       two-dimensional cross-section of a uniformly charged three-dimensional
       permeable sphere. Electrons are present inside and outside the source.
       As representative markers move inward, the solid screened curve
-      falls below the dashed bare curve outside $R$: the Coulomb $1/r$ tail
+      falls below the dashed bare curve outside $R$: the Coulomb $1\/r$ tail
       acquires the Debye suppression factor. Marker motion and intermediate
       curves interpolate between states for explanation; they do not solve
       a time-dependent shielding problem.
@@ -386,31 +389,45 @@
   #summary[
     A uniformly charged sphere of radius $R$ and charge $Q$ has a bare
     potential that is quadratic in the radius $r$ inside the source and equal
-    to the Coulomb potential $Q/(4 pi epsilon_0 r)$ outside it. In the
+    to the Coulomb potential $Q\/(4 pi epsilon_0 r)$ outside it. In the
     linearized Debye--Hückel model, the screened potential $phi_"D"$ is
-    regular inside the source and equals $B e^(-r/lambda_D)/r$ outside, where
+    regular inside the source and equals
+
+    $ B e^(-r/lambda_D)/r $
+
+    outside, where
     continuity of potential and radial field at $r=R$ fixes the coefficient
     $B$. The source size sets the amplitude near $r=R$, and the electron
-    response supplies the exterior factor $e^(-r/lambda_D)$. Linearization
-    holds everywhere when $(3 e Q)/(8 pi epsilon_0 R k_B T_e) << 1$.
+    response supplies the exterior factor $e^(-r\/lambda_D)$. Linearization
+    holds everywhere when
+
+    $ (3 e Q)/(8 pi epsilon_0 R k_B T_e) << 1 . $
   ]
 
   #knowledge-check((
     (
       question: [Use Gauss's law to find the bare field inside the uniform sphere. How large is the bare potential at the center compared with its value at the surface $r=R$?],
-      answer: [The enclosed charge is $Q r^3/R^3$, so $E_"C" = (Q r)/(4 pi epsilon_0 R^3)$ grows linearly with $r$. Integrating this field from $r$ to $R$ and adding the surface value $Q/(4 pi epsilon_0 R)$ gives $phi_"C" (0) = (3 Q)/(8 pi epsilon_0 R)$, which is $3/2$ of the surface value and finite.],
+      answer: [The enclosed charge is $Q r^3\/R^3$, so $E_"C" = Q r\/(4 pi epsilon_0 R^3)$ grows linearly with $r$. Integrating this field from $r$ to $R$ and adding the surface value $Q\/(4 pi epsilon_0 R)$ gives $phi_"C" (0) = 3 Q\/(8 pi epsilon_0 R)$, which is $3\/2$ of the surface value and finite.],
     ),
     (
       question: [A positive source keeps its charge $Q$ while its radius $R$ is halved. How does the sufficient condition for linearization change?],
-      answer: [The parameter $(3 e Q)/(8 pi epsilon_0 R k_B T_e)$ is the bare potential energy $e phi_"C" (0)$ at the center divided by the electron thermal energy $k_B T_e$, and it scales as $1/R$. Halving $R$ doubles it, so the same margin of validity requires half the charge or twice the electron temperature.],
+      answer: [The parameter
+
+      $ (3 e Q)/(8 pi epsilon_0 R k_B T_e) $
+
+      is the bare potential energy $e phi_"C" (0)$ at the center divided by the electron thermal energy $k_B T_e$, and it scales as $1\/R$. Halving $R$ doubles it, so the same margin of validity requires half the charge or twice the electron temperature.],
     ),
     (
       question: [What does the exterior coefficient $B$ become when $R -> 0$ at fixed $Q$, and which earlier result does the exterior potential then reproduce?],
-      answer: [$B -> Q/(4 pi epsilon_0)$, so the exterior potential becomes $Q e^(-r/lambda_D)/(4 pi epsilon_0 r)$, the screened point charge of the previous section. The finite-source correction is contained entirely in $B$.],
+      answer: [$B -> Q\/(4 pi epsilon_0)$, so the exterior potential becomes
+
+      $ Q e^(-r/lambda_D)/(4 pi epsilon_0 r) , $
+
+      the screened point charge of the previous section. The finite-source correction is contained entirely in $B$.],
     ),
     (
-      question: [With $kappa = 1/lambda_D$, explain why the interior solution uses $sinh(kappa r)/r$, the exterior solution uses $e^(-kappa r)/r$, and two conditions at $r=R$ suffice to fix them.],
-      answer: [The interior solution must stay finite at $r=0$, and $sinh(kappa r)/r -> kappa$ there, while $e^(-kappa r)/r$ diverges. The exterior solution must decay at infinity, which excludes the growing $e^(kappa r)/r$. Each region then carries one free amplitude, $A$ and $B$, and continuity of $phi_"D"$ and of $dv(phi_"D", r)$ at $r=R$ gives two equations for them.],
+      question: [With $kappa = 1\/lambda_D$, explain why the interior solution uses $sinh(kappa r)\/r$, the exterior solution uses $e^(-kappa r)\/r$, and two conditions at $r=R$ suffice to fix them.],
+      answer: [The interior solution must stay finite at $r=0$, and $sinh(kappa r)\/r -> kappa$ there, while $e^(-kappa r)\/r$ diverges. The exterior solution must decay at infinity, which excludes the growing $e^(kappa r)\/r$. Each region then carries one free amplitude, $A$ and $B$, and continuity of $phi_"D"$ and of $dv(phi_"D", r, style: "horizontal")$ at $r=R$ gives two equations for them.],
     ),
   ))
 
@@ -419,7 +436,7 @@
   #objectives((
     [compute the Debye number from the electron density and the Debye length],
     [relate the coupling parameter $Gamma_s$ to the Debye number],
-    [decide from $N_D$, $Gamma_s$ and $lambda_D/L$ whether a collective, quasineutral description applies],
+    [decide from $N_D$, $Gamma_s$ and $lambda_D\/L$ whether a collective, quasineutral description applies],
   ))
 
   The Debye number counts electrons within a sphere of radius $lambda_D$.
@@ -436,20 +453,23 @@
     [Ideal-plasma convention used here],
     [For the purposes of this script, an ideal plasma is weakly coupled and
     sufficiently populated that collective fields can be treated smoothly.
-    A useful weak-coupling parameter is $Gamma_s = (q_s^2) / (4 pi epsilon_0 a_s k_B T_s)$,
-    where $a_s = (3 / (4 pi n_s))^(1/3)$ is the mean-spacing scale. The
+    A useful weak-coupling parameter is
+
+    $ Gamma_s = (q_s^2) / (4 pi epsilon_0 a_s k_B T_s) , $
+
+    where $a_s = (3\/(4 pi n_s))^(1\/3)$ is the mean-spacing scale. The
     classical collective ordering also requires many particles in a Debye
     sphere and, when quasineutral fluid behavior is invoked, a system scale
     $L$ much larger than $lambda_D$.]
   )
 
   #equation-note[
-    $a_s$ is in #unit("m"), $(q_s^2) / (4 pi epsilon_0 a_s k_B T_s)$ is
+    $a_s$ is in #unit("m"), $q_s^2\/(4 pi epsilon_0 a_s k_B T_s)$ is
     dimensionless, and the weak-coupling condition is $Gamma_s << 1$.
   ]
 
   Compare the screening length with the system or gradient length $L$ in
-  #unit("m"). The dimensionless ratio $lambda_D/L << 1$ supports bulk
+  #unit("m"). The dimensionless ratio $lambda_D\/L << 1$ supports bulk
   quasineutrality away from boundaries; it does not establish a collisional
   fluid closure. Collision scales are treated in
   #chapter-link("kinetic-collisions")[Collisions in gases and plasmas].
@@ -457,32 +477,38 @@
   #debye-regime-map
 
   #summary[
-    The Debye number $N_D = (4 pi)/3 n_e lambda_D^3$ counts the electrons in a
+    The Debye number $N_D = (4 pi\/3) n_e lambda_D^3$ counts the electrons in a
     sphere of radius $lambda_D$, and a smooth collective field requires
     $N_D >> 1$. The coupling parameter $Gamma_s$ compares the Coulomb energy of
     two particles of species $s$ at the mean spacing $a_s$ with their thermal
     energy $k_B T_s$, and an ideal plasma has $Gamma_s << 1$. For electrons,
-    $Gamma_e N_D^(2/3) = 1/3$, independent of $n_e$ and $T_e$, so weak coupling and
+    $Gamma_e N_D^(2\/3) = 1\/3$, independent of $n_e$ and $T_e$, so weak coupling and
     a large Debye number are one condition. Bulk quasineutrality additionally
-    requires $lambda_D/L << 1$ for the system or gradient length $L$.
+    requires $lambda_D\/L << 1$ for the system or gradient length $L$.
   ]
 
   #knowledge-check((
     (
       question: [How does $N_D$ scale with the electron density $n_e$ at fixed $T_e$, and with $T_e$ at fixed $n_e$? Which corner of the density--temperature plane violates $N_D >> 1$?],
-      answer: [Since $lambda_D$ is proportional to $sqrt(T_e/n_e)$, $N_D$ is proportional to $n_e lambda_D^3$ and hence to $T_e^(3/2) n_e^(-1/2)$. Dense, cold plasmas reach $N_D approx 1$, the shaded high-density, low-temperature region of the regime map.],
+      answer: [Since $lambda_D$ is proportional to $sqrt(T_e\/n_e)$, $N_D$ is proportional to $n_e lambda_D^3$ and hence to $T_e^(3\/2) n_e^(-1\/2)$. Dense, cold plasmas reach $N_D approx 1$, the shaded high-density, low-temperature region of the regime map.],
     ),
     (
-      question: [Show that $Gamma_e N_D^(2/3)$ contains neither $n_e$ nor $T_e$, using $a_e = (3/(4 pi n_e))^(1/3)$ and $lambda_D^2 = (epsilon_0 k_B T_e)/(n_e e^2)$.],
-      answer: [$Gamma_e = e^2/(4 pi epsilon_0 k_B T_e) ((4 pi n_e)/3)^(1/3)$ and $N_D^(2/3) = ((4 pi n_e)/3)^(2/3) (epsilon_0 k_B T_e)/(n_e e^2)$. In the product, $e^2$, $epsilon_0$ and $k_B T_e$ cancel, and the density factors combine to $n_e/n_e$, leaving a pure number. A large $N_D$ therefore implies $Gamma_e << 1$, and conversely.],
+      question: [Show that $Gamma_e N_D^(2\/3)$ contains neither $n_e$ nor $T_e$, using $a_e = (3\/(4 pi n_e))^(1\/3)$ and $lambda_D^2 = epsilon_0 k_B T_e\/(n_e e^2)$.],
+      answer: [
+
+      $ Gamma_e = e^2/(4 pi epsilon_0 k_B T_e) ((4 pi n_e)/3)^(1/3)
+        quad "and" quad
+        N_D^(2/3) = ((4 pi n_e)/3)^(2/3) (epsilon_0 k_B T_e)/(n_e e^2) . $
+
+      In the product, $e^2$, $epsilon_0$ and $k_B T_e$ cancel, and the density factors combine to $n_e\/n_e$, leaving a pure number. A large $N_D$ therefore implies $Gamma_e << 1$, and conversely.],
     ),
     (
       question: [A plasma has $N_D >> 1$ and $Gamma_e << 1$, but its size $L$ is comparable to $lambda_D$. Which condition fails, and which modeling assumption must be dropped?],
-      answer: [The ordering $lambda_D/L << 1$ fails. Screening layers then span the whole system, and bulk quasineutrality cannot be assumed. The collective field remains smooth because $N_D >> 1$ still holds.],
+      answer: [The ordering $lambda_D\/L << 1$ fails. Screening layers then span the whole system, and bulk quasineutrality cannot be assumed. The collective field remains smooth because $N_D >> 1$ still holds.],
     ),
     (
-      question: [The line $lambda_D = L$ in the density--temperature plane is $k_B T_e = (e^2 n_e L^2)/epsilon_0$. On which side is the bulk quasineutral, and how does the line move when $L$ doubles?],
-      answer: [Quasineutral bulk requires $lambda_D < L$, which is $k_B T_e < (e^2 n_e L^2)/epsilon_0$, the side of higher density at given temperature. Doubling $L$ multiplies the temperature on the line by four at each density, so the quasineutral region grows.],
+      question: [The line $lambda_D = L$ in the density--temperature plane is $k_B T_e = e^2 n_e L^2\/epsilon_0$. On which side is the bulk quasineutral, and how does the line move when $L$ doubles?],
+      answer: [Quasineutral bulk requires $lambda_D < L$, which is $k_B T_e < e^2 n_e L^2\/epsilon_0$, the side of higher density at given temperature. Doubling $L$ multiplies the temperature on the line by four at each density, so the quasineutral region grows.],
     ),
   ))
 

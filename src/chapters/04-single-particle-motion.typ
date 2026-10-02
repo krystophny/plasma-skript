@@ -84,15 +84,15 @@
   )
 
   The guiding center is the center of the circular orbit in the perpendicular
-  plane. Its radius is $rho=v_perp/omega_c$, where $omega_c=abs(Omega)$ is
+  plane. Its radius is $rho=v_perp\/omega_c$, where $omega_c=abs(Omega)$ is
   the positive gyrofrequency. Thus a faster perpendicular particle has a
   larger orbit, while a stronger field bends the same particle more tightly.
 
-  For species $s$, write the signed frequency as $Omega_s=(q_s B)/m_s$
+  For species $s$, write the signed frequency as $Omega_s=q_s B\/m_s$
   and its positive magnitude as $omega_(c,s)=abs(Omega_s)$. Both are angular
   frequencies in #unit("s^-1"). A thermal orbit estimate uses
-  $v_(perp,s)=v_("th,s")=sqrt((2 k_B T_s)/m_s)$ in #unit("m/s"),
-  giving $rho_s=v_("th,s")/omega_(c,s)$ in #unit("m").
+  $v_(perp,s)=v_("th,s")=sqrt(2 k_B T_s\/m_s)$ in #unit("m/s"),
+  giving $rho_s=v_("th,s")\/omega_(c,s)$ in #unit("m").
 
   #gyroradius-geometry
 
@@ -121,7 +121,7 @@
     $m_i = qty("1.673e-27", "kg")$, $e = qty("1.602e-19", "C")$,
     $epsilon_0 = qty("8.854e-12", "F/m")$, and
     $k_B = qty("1.381e-23", "J/K")$. Take the perpendicular speed to be the
-    thermal speed, $v_(perp,s) = v_("th,s") = sqrt((2 k_B T_s)/m_s)$, for each
+    thermal speed, $v_(perp,s) = v_("th,s") = sqrt(2 k_B T_s\/m_s)$, for each
     species.
 
     Target: report $lambda_D$, $omega_(p,e)$, $rho_e$, and $rho_i$.
@@ -141,7 +141,7 @@
     $m_i = qty("1.673e-27", "kg")$, $e = qty("1.602e-19", "C")$,
     $epsilon_0 = qty("8.854e-12", "F/m")$, and
     $k_B = qty("1.381e-23", "J/K")$. Take the perpendicular speed to be the
-    thermal speed, $v_(perp,s) = v_("th,s") = sqrt((2 k_B T_s)/m_s)$, for each
+    thermal speed, $v_(perp,s) = v_("th,s") = sqrt(2 k_B T_s\/m_s)$, for each
     species.
 
     Target: report $lambda_D$, $omega_(p,e)$, $omega_(c,e)$,
@@ -160,7 +160,7 @@
   #summary[
     The Lorentz force separates energy transfer by $bold(E)$ from magnetic
     bending. In a uniform $bold(B)$ field the perpendicular motion is circular
-    with radius $rho = v_perp/omega_c$, while the parallel motion is uniform.
+    with radius $rho = v_perp\/omega_c$, while the parallel motion is uniform.
   ]
 
   #exam-prompts(
@@ -183,7 +183,7 @@
     ),
     (
       question: [How does the gyroradius scale with particle mass at fixed $v_perp$ and $B$?],
-      answer: [It is proportional to $m$, because $rho = (m v_perp)/(abs(q)B)$.],
+      answer: [It is proportional to $m$, because $rho = m v_perp\/(abs(q)B)$.],
     ),
     (
       question: [What changes when the sign of $q$ changes in a uniform magnetic field?],
@@ -210,12 +210,12 @@
   ))
 
   #unit-ledger[
-    A drift ratio such as $v_D/v_perp$ is dimensionless only after both speeds
+    A drift ratio such as $v_D\/v_perp$ is dimensionless only after both speeds
     use the same reference state.
   ]
 
   Resolve the electric field into components parallel and perpendicular to the
-  magnetic field, with $bold(b) = bold(B)/B$:
+  magnetic field, with $bold(b) = bold(B)\/B$:
 
   $ bold(E) = E_parallel bold(b) + bold(E)_perp, quad
     m dv(v_parallel,t) = q E_parallel $ <motion-electric-decomposition>
@@ -261,7 +261,7 @@
   $ bold(v)_(E times B) = (bold(E) times bold(B))/(B^2) $ <motion-exb-drift>
 
   #equation-note[
-    With $E$ in #unit("V/m") and $B$ in #unit("T"), $E/B$ is directly a
+    With $E$ in #unit("V/m") and $B$ in #unit("T"), $E\/B$ is directly a
     speed in #unit("m/s"). The common $E times B$ drift is independent of species mass and charge sign.
   ]
 
@@ -293,14 +293,14 @@
     caption: [
       Gyromotion plus the $E times B$ drift. With reference
       length $L_0$ and time $t_0$, the trajectory uses $Omega t_0=2$,
-      $rho/L_0=0.65$, and $v_D t_0/L_0=0.55$, all dimensionless.
+      $rho\/L_0=0.65$, and $v_D t_0\/L_0=0.55$, all dimensionless.
     ],
     poster: "../media/exb-drift.png",
   )
 
   #summary[
     A homogeneous perpendicular force produces a drift
-    $bold(v)_D = (bold(F) times bold(B))/(q B^2)$. For an electric force the
+    $bold(v)_D = bold(F) times bold(B)\/(q B^2)$. For an electric force the
     charge cancels, so all magnetized species share the same $E times B$ drift.
   ]
 
@@ -315,7 +315,7 @@
   #knowledge-check((
     (
       question: [Why does the $E times B$ drift not depend on charge sign?],
-      answer: [The electric force is $q bold(E)$, and the $q$ cancels the $1/q$ in the general force-drift expression.],
+      answer: [The electric force is $q bold(E)$, and the $q$ cancels the $1\/q$ in the general force-drift expression.],
     ),
     (
       question: [What component of a constant force is not represented by the perpendicular force drift?],
@@ -349,14 +349,14 @@
   #unit-ledger[
     Let $L_B$ denote the magnetic-field variation length in #unit("m") and
     $omega_c^(-1)$ the characteristic gyration time in seconds; the gyroperiod
-    is $(2 pi)/omega_c$. The ordering parameters $rho/L_B$ and
-    $omega_"slow"/omega_c$ are dimensionless. The magnetic moment defined
+    is $2 pi\/omega_c$. The ordering parameters $rho\/L_B$ and
+    $omega_"slow"\/omega_c$ are dimensionless. The magnetic moment defined
     below is in #unit("J/T"), equivalently #unit("A m^2").
   ]
 
   #assumption(
     [Slowly varying fields],
-    [Assume $rho/L_B << 1$, field variation during one gyroperiod is small,
+    [Assume $rho\/L_B << 1$, field variation during one gyroperiod is small,
     and the fields are smooth enough for a local orbit expansion. Collisions,
     wave-particle resonances, and abrupt boundaries can invalidate the
     averaging.
@@ -429,7 +429,7 @@
     $ F_parallel=-mu pdv(B,s), quad
       m dv(v_parallel,t)=-mu pdv(B,s) . $
 
-    Since $dv(s,t)=v_parallel$, the particle samples the field according to
+    Since $dv(s,t, style: "horizontal")=v_parallel$, the particle samples the field according to
 
     $ dv(B,t)=v_parallel pdv(B,s) . $
 
@@ -448,7 +448,7 @@
     $ dv((m v_parallel^2)/2+mu B,t)=B dv(mu,t) . $
 
     In this static, leading-order guiding-center approximation, the total
-    guiding-center energy is conserved, so $dv(mu,t) approx 0$. The ordering
+    guiding-center energy is conserved, so $dv(mu,t, style: "horizontal") approx 0$. The ordering
     requires the field to vary little over one gyroperiod and one gyroradius.]
   )
 
@@ -483,7 +483,7 @@
   #summary[
     Guiding-center theory requires small orbit size and slow field variation.
     The decomposition $bold(r)=bold(R)+bold(rho)$ separates gyromotion from
-    center motion, and $mu=(m v_perp^2)/(2B)$ is conserved approximately in the
+    center motion, and $mu=m v_perp^2\/(2B)$ is conserved approximately in the
     adiabatic regime.
   ]
 
@@ -497,7 +497,7 @@
   #knowledge-check((
     (
       question: [What is the small parameter that compares a gyroradius with magnetic-field structure?],
-      answer: [ $rho/L_B$. Guiding-center averaging requires this dimensionless ratio to be much smaller than one.],
+      answer: [ $rho\/L_B$. Guiding-center averaging requires this dimensionless ratio to be much smaller than one.],
     ),
     (
       question: [Which part of the orbit is averaged out in guiding-center theory?],
@@ -505,7 +505,7 @@
     ),
     (
       question: [What happens to $mu$ if $B$ increases adiabatically while it remains invariant?],
-      answer: [The perpendicular kinetic energy $(m v_perp^2)/2 = mu B$ increases in proportion to $B$, so $v_perp$ increases as $sqrt(B)$.],
+      answer: [The perpendicular kinetic energy $m v_perp^2\/2 = mu B$ increases in proportion to $B$, so $v_perp$ increases as $sqrt(B)$.],
     ),
     (
       question: [Give one process that can break magnetic-moment conservation.],
@@ -529,7 +529,7 @@
 
   #assumption(
     [Adiabatic guiding-center force],
-    [Use the same $rho/L_B << 1$ ordering and neglect rapid changes of $mu$.
+    [Use the same $rho\/L_B << 1$ ordering and neglect rapid changes of $mu$.
     The magnetic-moment force is the effective guiding-center force]
   )
 
@@ -562,8 +562,8 @@
     curvature, so the minus sign points outward from that centre.
   ]
 
-  Define the curvature vector $bold(kappa) = bold(R)_c/R_c^2$ and the field
-  unit vector $bold(b) = bold(B)/B$. Applying the same force-drift map gives
+  Define the curvature vector $bold(kappa) = bold(R)_c\/R_c^2$ and the field
+  unit vector $bold(b) = bold(B)\/B$. Applying the same force-drift map gives
 
   $ bold(v)_"curv" = (bold(F)_"curv" times bold(B))/(q B^2) = (m v_parallel^2)/(q B) (bold(b) times bold(kappa)) $ <motion-curvature-drift>
 
@@ -614,7 +614,7 @@
   $ m dv(v_parallel,t) = F_parallel = -mu pdv(B,s) $ <motion-mirror-force>
 
   #equation-note[
-    The derivative $pdv(B,s)$ is taken along the field-line coordinate $s$.
+    The derivative $pdv(B,s, style: "horizontal")$ is taken along the field-line coordinate $s$.
     A positive field gradient therefore opposes motion into the stronger-field
     region. This is the one-dimensional mirror force in the adiabatic model.
   ]
@@ -644,7 +644,7 @@
       =m v_parallel dv(v_parallel,t)
       =-mu v_parallel pdv(B,s) . $
 
-    If $dv(mu,t)=0$, the magnetic energy changes as
+    If $dv(mu,t, style: "horizontal")=0$, the magnetic energy changes as
 
     $ dv(mu B,t)=mu v_parallel pdv(B,s) . $
 
@@ -673,14 +673,14 @@
     $ sin^2 alpha_0 >= B_0/B_"max" . $
 
     The complementary range is the loss cone: particles with
-    $sin^2 alpha_0 < B_0/B_"max"$ pass through the mirror and escape.]
+    $sin^2 alpha_0 < B_0\/B_"max"$ pass through the mirror and escape.]
   )
 
   #rechenbeispiel[
     A particle starts in a minimum field $B_0 = qty("0.0100", "T")$ and sees a
     maximum field $B_"max" = qty("0.0500", "T")$. Determine the critical pitch
     angle $alpha_"c"$ separating reflected particles from the loss cone.
-    Here $0 <= alpha_0 <= pi/2$ is the acute pitch angle to the direction of
+    Here $0 <= alpha_0 <= pi\/2$ is the acute pitch angle to the direction of
     approach, in a static field with no electric work.
 
     Numerical result: $alpha_"c" = 26.6 degree$. Particles with
@@ -717,7 +717,7 @@
   #knowledge-check((
     (
       question: [Why is the grad-$B$ drift charge-sign dependent while the $E times B$ drift is not?],
-      answer: [The magnetic-moment force does not contain a factor of $q$, so the force-drift formula retains $1/q$. The electric force contains $q$ and cancels it.],
+      answer: [The magnetic-moment force does not contain a factor of $q$, so the force-drift formula retains $1\/q$. The electric force contains $q$ and cancels it.],
     ),
     (
       question: [What energy conversion occurs as a mirrored particle approaches stronger $B$?],
@@ -751,7 +751,7 @@
 
   #unit-ledger[
     The drive frequency $omega_"d"$ and $Omega$ are in #unit("s^-1"). The
-    ordering ratio $omega_"d"/abs(Omega)$ is normalized and therefore carries
+    ordering ratio $omega_"d"\/abs(Omega)$ is normalized and therefore carries
     unit [1].
   ]
 
@@ -759,7 +759,7 @@
     [Slowly varying perpendicular electric field],
     [Take a uniform, time-independent $bold(B)=B bold(b)$ and a spatially
     uniform perpendicular electric field whose characteristic drive
-    frequency satisfies $omega_"d"/abs(Omega) << 1$. The field changes slowly
+    frequency satisfies $omega_"d"\/abs(Omega) << 1$. The field changes slowly
     compared with one gyroperiod, and the correction to the $E times B$ drift
     remains small.]
   )
@@ -784,7 +784,7 @@
   $ bold(v)_"pol" = m/(q B^2) pdv(bold(E)_perp,t) $ <motion-polarization-drift>
 
   #equation-note[
-    The factor $1/q$ makes the polarization drift point in
+    The factor $1\/q$ makes the polarization drift point in
     opposite directions for positive and negative charges. Unlike the
     $E times B$ drift, it depends on particle mass.
   ]
@@ -829,8 +829,8 @@
     $ bold(delta v)=m/(q B^2) pdv(bold(E)_perp,t) . $
 
     #derivation-step[State the ordering]
-    The discarded term $m pdv(bold(delta v),t)$ is smaller by
-    $omega_"d"/abs(Omega)$. The polarization drift is therefore valid when
+    The discarded term $m pdv(bold(delta v),t, style: "horizontal")$ is smaller by
+    $omega_"d"\/abs(Omega)$. The polarization drift is therefore valid when
     the electric field varies slowly compared with the gyrofrequency.]
   )
 
@@ -852,13 +852,13 @@
     and a perpendicular drive
     $bold(E)_perp (t)=qty("3.00e4", "V/m") cos(omega_"d" t) bold(e)_x$
     with $omega_"d"=qty("1.00e5", "s^-1")$. Evaluate the polarization-drift
-    amplitude and the ordering ratio $omega_"d"/abs(Omega_e)$.
+    amplitude and the ordering ratio $omega_"d"\/abs(Omega_e)$.
 
     Assumptions: uniform fields, collisionless motion, and the
     slowly varying-field approximation.
 
     Numerical result: $abs(v_"pol,e")=qty("171", "m/s")$ and
-    #normalized-label[ $omega_"d"/abs(Omega_e)=qty("5.69e-5", "1")$].
+    #normalized-label[ $omega_"d"\/abs(Omega_e)=qty("5.69e-5", "1")$].
   ]
 
   #interpretation(
@@ -873,7 +873,7 @@
 
   #summary[
     For $omega_"d" << abs(Omega)$, a changing perpendicular electric field
-    adds $bold(v)_"pol"=m/(q B^2) pdv(bold(E)_perp,t)$ to the common
+    adds $bold(v)_"pol"=(m\/(q B^2)) pdv(bold(E)_perp,t, style: "horizontal")$ to the common
     $E times B$ drift. This correction is mass dependent and reverses with
     charge, so it contributes to the polarization current.
   ]
@@ -882,15 +882,15 @@
     (
       question: [Which ordering makes the polarization-drift expansion valid?],
       answer: [The electric-field drive must be slow compared with gyromotion:
-      $omega_"d"/abs(Omega) << 1$, with a uniform field over the orbit and a
+      $omega_"d"\/abs(Omega) << 1$, with a uniform field over the orbit and a
       small inertial correction.]
     ),
     (
       question: [Why does the polarization drift depend on mass while the $E times B$ drift does not?],
       answer: [The $E times B$ drift is an instantaneous electric--magnetic
       force balance. The polarization drift is the velocity needed to supply
-      the inertia $m pdv(bold(v)_(E times B),t)$, so its coefficient contains
-      $m/q$.]
+      the inertia $m pdv(bold(v)_(E times B),t, style: "horizontal")$, so its coefficient contains
+      $m\/q$.]
     ),
     (
       question: [What is the direction of the electron polarization drift when $bold(E)_perp$ grows in the $bold(e)_x$ direction?],
@@ -923,9 +923,9 @@
   ))
 
   #unit-ledger[
-    The angular frequency $omega$, signed gyrofrequency $Omega=(q B)/m$, and
+    The angular frequency $omega$, signed gyrofrequency $Omega=q B\/m$, and
     detuning are in #unit("s^-1"). The resonance condition
-    $omega/abs(Omega)=1$ is normalized and carries unit [1].
+    $omega\/abs(Omega)=1$ is normalized and carries unit [1].
   ]
 
   #assumption(
@@ -955,7 +955,10 @@
   #equation-note[
     For a harmonic drive
     $E_"cw"=tilde(E)_"cw" exp(-i omega t)$, the response amplitude is
-    $tilde(v)_"cw"=(q tilde(E)_"cw")/(i m (Omega-omega))$. The denominator
+
+    $ tilde(v)_"cw"=(q tilde(E)_"cw")/(i m (Omega-omega)) . $
+
+    The denominator
     becomes small when the drive rotation matches the signed gyrofrequency.
   ]
 
@@ -1053,7 +1056,7 @@
       positive resonance remains at $abs(Omega)$.]
     ),
     (
-      question: [What does the factor $1/(Omega-omega)$ predict as the drive approaches resonance?],
+      question: [What does the factor $1\/(Omega-omega)$ predict as the drive approaches resonance?],
       answer: [The ideal forced-response amplitude grows as the detuning tends
       to zero. The divergence signals missing broadening or saturation physics,
       such as collisions, finite pulse duration, or nonlinear motion.]

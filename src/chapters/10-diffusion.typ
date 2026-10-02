@@ -42,9 +42,13 @@
 
   #unit-ledger[
     A diffusion coefficient $D$ is in #unit("m^2/s"), and particle flux
-    $bold(Gamma)$ is in #unit("m^-2/s"). The normalized variables $xi=x/L_0$
-    and $tau=t/tau_0$ are dimensionless. In the one-dimensional Green
-    function, $N_0=integral_(-infinity)^infinity n(x,t) dif x$ is the
+    $bold(Gamma)$ is in #unit("m^-2/s"). The normalized variables $xi=x\/L_0$
+    and $tau=t\/tau_0$ are dimensionless. In the one-dimensional Green
+    function,
+
+    $ N_0=integral_(-infinity)^infinity n(x,t) dif x $
+
+    is the
     conserved column density in #unit("m^-2").
   ]
 
@@ -60,10 +64,10 @@
   #definition(
     [Diffusion from a random walk],
     [For a one-dimensional step of magnitude $Delta x$ every $Delta t$, define
-    $D=(Delta x)^2/(2 Delta t)$. The diffusive particle flux obeys Fick's law
+    $D=(Delta x)^2\/(2 Delta t)$. The diffusive particle flux obeys Fick's law
     $bold(Gamma)^(D)=-D grad(n)$, and a system of size $L$ has
     the characteristic diffusion time
-    $tau_"D"=L^2/D$. This is a scale estimate; a precise decay time also
+    $tau_"D"=L^2\/D$. This is a scale estimate; a precise decay time also
     depends on geometry and boundary conditions. For particles starting at
     the origin with the same diffusivity in all three directions, the
     variance relation is
@@ -84,7 +88,7 @@
       ⟨(Delta x)^2⟩=((Delta x)^2)/2+((-Delta x)^2)/2=(Delta x)^2 . $
 
     #derivation-step[Accumulate independent steps]
-    After $N=t/(Delta t)$ statistically independent steps, cross terms in the
+    After $N=t\/(Delta t)$ statistically independent steps, cross terms in the
     squared displacement vanish because the individual means are zero. Thus
 
     $ ⟨x⟩=0, quad
@@ -92,7 +96,7 @@
         =(((Delta x)^2 t)/(Delta t))=2 D t . $
 
     This defines the one-dimensional coefficient
-    $D=(Delta x)^2/(2 Delta t).$
+    $D=(Delta x)^2\/(2 Delta t).$
 
     #derivation-step[Derive the local diffusive flux]
     Consider a cell of width $Delta x$. Right-moving and left-moving
@@ -110,7 +114,7 @@
 
     $ pdv(n,t)=div(D grad(n)) . $
 
-    For uniform $D$, this reduces to $pdv(n,t)=D laplacian(n)$. A point-like
+    For uniform $D$, this reduces to $pdv(n,t, style: "horizontal")=D laplacian(n)$. A point-like
     initial sheet $n(x,0)=N_0 delta(x)$ has Green-function solution
 
     $ n(x,t)=N_0/sqrt(4 pi D t) exp(-x^2/(4 D t)) . $
@@ -123,15 +127,17 @@
     [A normalized diffusion equation],
     [Choose reference length $L_0$ in #unit("m"), time $tau_0$ in
     #unit("s"), and density $n_0$ in #unit("m^-3"). Define the reference
-    coefficient $D_0=L_0^2/tau_0$ in #unit("m^2/s") and the dimensionless
+    coefficient $D_0=L_0^2\/tau_0$ in #unit("m^2/s") and the dimensionless
     variables
-    $bold(xi)=bold(r)/L_0$, $tau=t/tau_0$,
-    $n_("norm")=n/n_0$, and $D_("norm")=D/D_0$.
+    $bold(xi)=bold(r)\/L_0$, $tau=t\/tau_0$,
+    $n_("norm")=n\/n_0$, and $D_("norm")=D\/D_0$.
     Spatial derivatives below act on $bold(xi)$.
     The diffusion equation then has the dimensionless form
-    $pdv(n_("norm"), tau)=div(D_("norm") grad(n_("norm")))$.
-    For a system length $L$ with $L_("norm")=L/L_0$, the normalized
-    diffusion time is $tau_"D"/tau_0=L_("norm")^2/D_("norm")$.
+
+    $ pdv(n_("norm"), tau)=div(D_("norm") grad(n_("norm"))) . $
+
+    For a system length $L$ with $L_("norm")=L\/L_0$, the normalized
+    diffusion time is $tau_"D"\/tau_0=L_("norm")^2\/D_("norm")$.
     Every dimensional result is recovered by restoring the stated reference
     scales; no unit is hidden in a normalized axis or coefficient.]
   )
@@ -143,9 +149,9 @@
     "Thirty-six one-dimensional walkers start at the origin and take eighteen seeded symmetric steps. Position is xi=x/L0 and time is tau=t/tau0, with step magnitude 0.34 and step duration 1 in these normalized units. The ensemble mean is zero, while the finite sample fluctuates. Selected path traces show spreading; the ensemble variance is 2 D-star tau with D-star=0.0578.",
     caption: [
       Random-walk spreading from 36 walkers taking 18 seeded independent
-      symmetric steps. With $xi=x/L_0$ and $tau=t/tau_0$, each step has
+      symmetric steps. With $xi=x\/L_0$ and $tau=t\/tau_0$, each step has
       magnitude $Delta xi=0.34$ [1] and duration $Delta tau=1$ [1]. The
-      coefficient $D_*=D tau_0/L_0^2=0.0578$ [1] is
+      coefficient $D_*=D tau_0\/L_0^2=0.0578$ [1] is
       $D_("norm")$ defined above. Restore dimensional steps as
       $Delta x=0.34 L_0$ and $Delta t=tau_0$. The ensemble mean is zero and
       its variance is $2 D_* tau$; finite-sample means and variances fluctuate.
@@ -180,8 +186,8 @@
     Independent symmetric steps give $⟨x⟩=0$ but
     $⟨x^2⟩=2 D t$ in one dimension. Fick's law
     $bold(Gamma)^(D)=-D grad(n)$ and particle conservation produce
-    $pdv(n,t)=div(D grad(n))$, with the scale
-    $tau_"D"=L^2/D$.
+    $pdv(n,t, style: "horizontal")=div(D grad(n))$, with the scale
+    $tau_"D"=L^2\/D$.
   ]
 
   #knowledge-check((
@@ -199,7 +205,7 @@
     ),
     (
       question: [How does the characteristic diffusion time scale with system size?],
-      answer: [For a fixed coefficient, $tau_"D"=L^2/D$, so doubling the
+      answer: [For a fixed coefficient, $tau_"D"=L^2\/D$, so doubling the
       length makes the diffusive time four times larger.]
     ),
     (
@@ -238,21 +244,23 @@
     constant momentum-transfer frequency $nu_s$, small drift relative to the
     thermal speed, and no magnetic field in this section. Let the species
     pressure be $p_s=n_s k_B T_s$, with spatially uniform $T_s$, and consider
-    evolution slow compared with the momentum-relaxation time $1/nu_s$.
+    evolution slow compared with the momentum-relaxation time $1\/nu_s$.
     Neglect inertia in that regime.]
   )
 
   #definition(
     [Mobility and diffusion],
     [The species momentum equation is
-    $m_s n_s (pdv(bold(u)_s,t)+bold(u)_s dot grad(bold(u)_s))
+
+    $ m_s n_s (pdv(bold(u)_s,t)+bold(u)_s dot grad(bold(u)_s))
       =q_s n_s bold(E)-grad(p_s)
-        -m_s n_s nu_s bold(u)_s$.
+      -m_s n_s nu_s bold(u)_s . $
+
     In the steady small-drift limit,
-    $bold(u)_s=mu_s^(q) bold(E)-D_s ((grad(n_s))/n_s)$,
+    $bold(u)_s=mu_s^(q) bold(E)-D_s (grad(n_s)\/n_s)$,
     where the signed mobility and diffusion coefficient are
-    $mu_s^(q)=q_s/(m_s nu_s)$ and
-    $D_s=(k_B T_s)/(m_s nu_s)$.]
+    $mu_s^(q)=q_s\/(m_s nu_s)$ and
+    $D_s=k_B T_s\/(m_s nu_s)$.]
   )
 
   #governing-law(
@@ -260,11 +268,11 @@
     [Multiplying the velocity law by $n_s$ gives
     $bold(Gamma)_s=n_s mu_s^(q) bold(E)-D_s grad(n_s)$.
     If a positive mobility is preferred, define
-    $mu_s=abs(q_s)/(m_s nu_s)$. The electric drift is then along the field
+    $mu_s=abs(q_s)\/(m_s nu_s)$. The electric drift is then along the field
     for positive charges and opposite to it for electrons; multiply the
     mobility by the charge sign, not by the charge magnitude again.
     The Einstein relation is
-    $D_s=(mu_s k_B T_s)/abs(q_s)$.]
+    $D_s=mu_s k_B T_s\/abs(q_s)$.]
   )
 
   #details(
@@ -293,7 +301,7 @@
 
     Multiplication by $n_s$ produces the particle flux. With the positive
     mobility magnitude
-    $abs(mu_s^(q))=abs(q_s)/(m_s nu_s)$, the Einstein relation is
+    $abs(mu_s^(q))=abs(q_s)\/(m_s nu_s)$, the Einstein relation is
 
     $ D_s/abs(mu_s^(q))=(k_B T_s)/abs(q_s) . $
 
@@ -312,8 +320,8 @@
     $m_e=qty("9.109e-31", "kg")$,
     $e=qty("1.602e-19", "C")$, and
     $nu_e=qty("1.0e8", "s^-1")$. Determine the positive mobility magnitude
-    $mu_e=e/(m_e nu_e)$ and the diffusion coefficient
-    $D_e=(k_B T_e)/(m_e nu_e)$.
+    $mu_e=e\/(m_e nu_e)$ and the diffusion coefficient
+    $D_e=k_B T_e\/(m_e nu_e)$.
 
     Numerical result: $mu_e=qty("1.76e3", "m^2/V/s")$ and
     $D_e=qty("3.52e3", "m^2/s")$.
@@ -330,8 +338,8 @@
   #summary[
     Neutral drag yields
     $bold(Gamma)_s=n_s mu_s^(q) bold(E)-D_s grad(n_s)$ with
-    $mu_s^(q)=q_s/(m_s nu_s)$ and
-    $D_s=(k_B T_s)/(m_s nu_s)$. The Einstein relation connects their
+    $mu_s^(q)=q_s\/(m_s nu_s)$ and
+    $D_s=k_B T_s\/(m_s nu_s)$. The Einstein relation connects their
     magnitudes, while the sign of the force response remains set by $q_s$.
   ]
 
@@ -343,14 +351,14 @@
     ),
     (
       question: [How does increasing the neutral collision frequency affect unmagnetized diffusion?],
-      answer: [At fixed temperature, $D_s=(k_B T_s)/(m_s nu_s)$ decreases
+      answer: [At fixed temperature, $D_s=k_B T_s\/(m_s nu_s)$ decreases
       inversely with $nu_s$ because the mean free path and drift response are
       both shortened.]
     ),
     (
       question: [Why must the charge sign be kept separate from the positive mobility magnitude?],
       answer: [Electrons and ions drift in opposite directions under the same
-      electric field. With $mu_s=abs(q_s)/(m_s nu_s)$, the electric drift
+      electric field. With $mu_s=abs(q_s)\/(m_s nu_s)$, the electric drift
       is $+mu_s bold(E)$ for positive ions and $-mu_s bold(E)$ for electrons.
       The charge magnitude is already included in $mu_s$.]
     ),
@@ -405,7 +413,7 @@
     $bold(Gamma)_i=bold(Gamma)_e$.]
   )
 
-  Charge conservation gives $pdv(rho_q,t)+div(bold(j))=0$. Maintaining
+  Charge conservation gives $pdv(rho_q,t, style: "horizontal")+div(bold(j))=0$. Maintaining
   quasi-neutrality therefore constrains the leading current divergence;
   it does not require $bold(j)=bold(0)$. In one-dimensional steady transport,
   current is spatially constant, and a zero-current boundary sets that
@@ -415,10 +423,12 @@
   #governing-law(
     [Ambipolar field and diffusion coefficient],
     [Solving the equal-flux condition gives
-    $bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) ((grad(n))/n)$.
+
+    $ bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) ((grad(n))/n) . $
+
     Substitution into either species flux gives
     $bold(Gamma)_a=-D_a grad(n)$ with
-    $D_a=(mu_i D_e+mu_e D_i)/(mu_i+mu_e)$.]
+    $D_a=(mu_i D_e+mu_e D_i)\/(mu_i+mu_e)$.]
   )
 
   #details(
@@ -480,7 +490,7 @@
     the ambipolar field adjust rapidly compared with the
     density evolution. Consider the plasma with
     $n=qty("1.0e16", "m^-3")$,
-    $(grad(n))/n=qty("-1.0", "m^-1")$, and
+    $grad(n)\/n=qty("-1.0", "m^-1")$, and
     $k_B T_i=k_B T_e=qty("1.0", "eV")=qty("1.602e-19", "J")$.
     Use $m_i=qty("1.673e-27", "kg")$,
     $m_e=qty("9.109e-31", "kg")$,
@@ -506,9 +516,12 @@
 
   #summary[
     Equal electron and ion particle fluxes give
-    $bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) ((grad(n))/n)$ and
+
+    $ bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) ((grad(n))/n) $
+
+    and
     $bold(Gamma)_a=-D_a grad(n)$, where
-    $D_a=(mu_i D_e+mu_e D_i)/(mu_i+mu_e)$. Ambipolar diffusion here
+    $D_a=(mu_i D_e+mu_e D_i)\/(mu_i+mu_e)$. Ambipolar diffusion here
     follows from quasi-neutrality together with the zero-current
     boundary condition.
   ]
@@ -550,13 +563,13 @@
 
   #objectives((
     [derive the parallel and perpendicular diffusion coefficients],
-    [identify the magnetization parameter $abs(Omega_s)/nu_s$],
+    [identify the magnetization parameter $abs(Omega_s)\/nu_s$],
     [separate ordinary diffusion from Hall-like transverse response],
     [explain why the collisionless limit suppresses classical cross-field diffusion],
   ))
 
   #unit-ledger[
-    The magnetization parameter $abs(Omega_s)/nu_s$ is dimensionless.
+    The magnetization parameter $abs(Omega_s)\/nu_s$ is dimensionless.
     Parallel, perpendicular, and Hall diffusion coefficients are in
     #unit("m^2/s").
   ]
@@ -572,15 +585,19 @@
 
   #definition(
     [Magnetized diffusion tensor],
-    [Let $Omega_s=(q_s B)/m_s$ and
-    $D_s=(k_B T_s)/(m_s nu_s)$. The parallel coefficient is
+    [Let $Omega_s=q_s B\/m_s$ and
+    $D_s=k_B T_s\/(m_s nu_s)$. The parallel coefficient is
     $D_(s,parallel)=D_s$, while
-    $D_(s,perp)=D_s/(1+(Omega_s/nu_s)^2)$.
+    $D_(s,perp)=D_s\/(1+(Omega_s\/nu_s)^2)$.
     A signed transverse coefficient is
-    $D_(s,H)=(D_s (Omega_s/nu_s))/(1+(Omega_s/nu_s)^2)$.
+
+    $ D_(s,H)=(D_s (Omega_s/nu_s))/(1+(Omega_s/nu_s)^2) . $
+
     The gradient contribution can be written
-    $bold(Gamma)_(s,perp)=-D_(s,perp)grad_(perp)(n_s)
-      +D_(s,H) hat(bold(b)) times grad_(perp)(n_s)$,
+
+    $ bold(Gamma)_(s,perp)=-D_(s,perp)grad_(perp)(n_s)
+      +D_(s,H) hat(bold(b)) times grad_(perp)(n_s) , $
+
     in the chosen orientation convention.]
   )
 
@@ -651,7 +668,7 @@
 
   The formal collisionless limit requires care. At fixed nonzero magnetic
   field, the classical perpendicular coefficient tends to zero. The parallel
-  formula instead grows as $1/nu_s$; once the mean free path is comparable
+  formula instead grows as $1\/nu_s$; once the mean free path is comparable
   to the system length, local diffusion along the field no longer applies.
   Particles then retain memory of their motion and boundaries.
 
@@ -672,7 +689,7 @@
     $abs(Omega_e)=qty("1.76e9", "s^-1")$,
     $D_(e,parallel)=qty("1.76e4", "m^2/s")$,
     $D_(e,perp)=qty("0.569", "m^2/s")$, and
-    $D_(e,perp)/D_(e,parallel)=qty("3.23e-5", "1")$.
+    $D_(e,perp)\/D_(e,parallel)=qty("3.23e-5", "1")$.
   ]
 
   #interpretation(
@@ -688,16 +705,16 @@
     [Collisions facilitate cross-field transport],
     [More collisions shorten the free path, yet a nonzero collision rate is needed to break the
     indefinite gyromotion. The competition is measured by
-    $abs(Omega_s)/nu_s$: it is small for nearly isotropic transport and
+    $abs(Omega_s)\/nu_s$: it is small for nearly isotropic transport and
     large for strong perpendicular suppression.]
   )
 
   #summary[
     A magnetic field leaves $D_parallel=D_s$ but reduces the classical
     cross-field coefficient to
-    $D_perp=D_s/(1+(Omega_s/nu_s)^2)$. The signed Hall-like coefficient
+    $D_perp=D_s\/(1+(Omega_s\/nu_s)^2)$. The signed Hall-like coefficient
     describes a transverse response; in the strongly magnetized limit
-    $D_(s,perp)$ scales as $(nu_s/2) rho_("th,s")^2$ under the thermal-speed
+    $D_(s,perp)$ scales as $(nu_s\/2) rho_("th,s")^2$ under the thermal-speed
     convention used in Chapter 1.
   ]
 
@@ -710,14 +727,14 @@
     ),
     (
       question: [What dimensionless parameter measures magnetization?],
-      answer: [The ratio $abs(Omega_s)/nu_s$ compares the gyration rate with
+      answer: [The ratio $abs(Omega_s)\/nu_s$ compares the gyration rate with
       the collision rate. It is the control parameter in the tensor
       coefficients.]
     ),
     (
       question: [What happens to classical cross-field diffusion as collisions vanish?],
       answer: [For fixed $B$ it tends to zero as
-      $D_perp approx D_(s)(nu_s/Omega_s)^2$. A collisionless particle remains
+      $D_perp approx D_(s)(nu_s\/Omega_s)^2$. A collisionless particle remains
       on its guiding-center orbit apart from other drifts.]
     ),
     (
@@ -766,19 +783,23 @@
     $bold(0)=-grad(p)+bold(j) times bold(B)$ and
     $bold(j)=sigma (bold(E)+bold(u) times bold(B))$.
     The perpendicular velocity contains
-    $bold(u)_perp=(bold(E) times bold(B))/(B^2)
-      -(grad_(perp)(p))/(sigma B^2)$.
+
+    $ bold(u)_perp=(bold(E) times bold(B))/(B^2)
+      -(grad_(perp)(p))/(sigma B^2) . $
+
     For $p=n k_(B)(T_e+T_i)$, the pressure-driven flux is
     $bold(Gamma)_perp=-D_perp^("cl") grad_(perp)(n)$ with
-    $D_perp^("cl")=(n k_(B)(T_e+T_i))/(sigma B^2)
-      =(eta n k_(B)(T_e+T_i))/(B^2)$.]
+
+    $ D_perp^("cl")=(n k_(B)(T_e+T_i))/(sigma B^2)
+      =(eta n k_(B)(T_e+T_i))/(B^2) . $
+    ]
   )
 
   #governing-law(
     [Classical and Bohm-like scalings],
     [At fixed density, temperatures, and conductivity,
     $D_perp^("cl") ∝ B^(-2)$. A commonly used empirical Bohm estimate is
-    $D_perp^(B) approx (k_B T_e)/(16 e B)$,
+    $D_perp^(B) approx k_B T_e\/(16 e B)$,
     so $D_perp^(B) ∝ B^(-1)$. The numerical factor is empirical and
     should not be mistaken for a derivation from the collisional model.]
   )
@@ -833,7 +854,7 @@
     $ D_perp^("cl")=(n k_(B)(T_e+T_i))/(sigma B^2)
         =(eta n k_(B)(T_e+T_i))/(B^2) . $
 
-    The factor $1/B^2$ arises because the field enters twice: once through
+    The factor $1\/B^2$ arises because the field enters twice: once through
     the Lorentz force density $bold(j) times bold(B)$ and once through the
     motional term $bold(u) times bold(B)$ in Ohm's law.
 
@@ -866,7 +887,7 @@
     Numerical result:
     $D_perp^("cl")=qty("3.20e-3", "m^2/s")$,
     $D_perp^(B)=qty("6.25e1", "m^2/s")$,
-    $D_perp^(B)/D_perp^("cl")=qty("1.95e4", "1")$, and
+    $D_perp^(B)\/D_perp^("cl")=qty("1.95e4", "1")$, and
     $tau_"D"^("cl")=qty("3.12e2", "s")$.
   ]
 
@@ -881,8 +902,11 @@
 
   #summary[
     Fully ionized classical transport gives
-    $D_perp^("cl")=(n k_(B)(T_e+T_i))/(sigma B^2)$ and
-    $tau_"D"=L^2/D$. It scales as $B^(-2)$, while the empirical Bohm
+
+    $ D_perp^("cl")=(n k_(B)(T_e+T_i))/(sigma B^2) $
+
+    and
+    $tau_"D"=L^2\/D$. It scales as $B^(-2)$, while the empirical Bohm
     estimate scales as $B^(-1)$. The two rest on different physical
     assumptions.
   ]
@@ -892,7 +916,7 @@
       question: [Why does the classical diffusion coefficient scale as $B^(-2)$ rather than $B^(-1)$?],
       answer: [The field enters through both $bold(j) times bold(B)$ in force
       balance and $bold(u) times bold(B)$ in Ohm's law. Solving the
-      perpendicular balance therefore produces the factor $1/(sigma B^2)$ in
+      perpendicular balance therefore produces the factor $1\/(sigma B^2)$ in
       $D_perp^("cl")$.]
     ),
     (
@@ -903,7 +927,7 @@
     (
       question: [How is a diffusion loss time estimated from a coefficient?],
       answer: [For a characteristic length $L$, use
-      $tau_"D"=L^2/D$. Geometry changes the numerical factor, but not the
+      $tau_"D"=L^2\/D$. Geometry changes the numerical factor, but not the
       basic dimensional scaling.]
     ),
     (

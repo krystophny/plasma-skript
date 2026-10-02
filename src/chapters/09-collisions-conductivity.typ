@@ -51,11 +51,11 @@
     collision frequency by
     $nu_(a b)=n_b ⟨sigma_(a b) v_"rel"⟩$.
     The brackets denote the prescribed velocity-space average. The collision
-    time is $tau_(a b)=1/nu_(a b)$ and, with the same averaging convention,
+    time is $tau_(a b)=1\/nu_(a b)$ and, with the same averaging convention,
     the mean free path is
-    $lambda_(a b)=⟨v_"rel"⟩/nu_(a b)$.
+    $lambda_(a b)=⟨v_"rel"⟩\/nu_(a b)$.
     If the cross section is independent of speed, this becomes
-    $lambda_(a b)=1/(n_b sigma_(a b))$.]
+    $lambda_(a b)=1\/(n_b sigma_(a b))$.]
   )
 
   With a total scattering cross section, $tau_(a b)$ is a mean waiting time
@@ -162,8 +162,8 @@
 
   #summary[
     Collision bookkeeping starts with an effective cross section and a target
-    density. It gives $nu=n⟨sigma v⟩$, $tau=1/nu$,
-    and $lambda=⟨v⟩/nu$. Diffusion responds to
+    density. It gives $nu=n⟨sigma v⟩$, $tau=1\/nu$,
+    and $lambda=⟨v⟩\/nu$. Diffusion responds to
     inhomogeneity, mobility responds to a force, and the Knudsen number states
     whether a local fluid description is plausible.
   ]
@@ -172,7 +172,7 @@
     (
       question: [What is the difference between collision time and collision frequency?],
       answer: [They are reciprocals under the same averaging convention:
-      $tau=1/nu$. For a total event cross section, these are the encounter
+      $tau=1\/nu$. For a total event cross section, these are the encounter
       rate and mean waiting time. For a momentum-transfer cross section,
       they describe directed-momentum relaxation, which can require many
       small-angle encounters.]
@@ -185,7 +185,7 @@
     ),
     (
       question: [Which dimensionless parameter compares a mean free path with a device length?],
-      answer: [The Knudsen number $K_"n"=lambda/L$ does so. Small $K_"n"$
+      answer: [The Knudsen number $K_"n"=lambda\/L$ does so. Small $K_"n"$
       supports a local collisional fluid model, whereas large $K_"n"$ signals
       kinetic or ballistic transport.]
     ),
@@ -231,7 +231,7 @@
 
   Here $chi$ is the deflection angle and $dif Omega$ is a solid-angle element;
   neither angle carries a dimensional unit. The differential cross section
-  $(dif sigma)/(dif Omega)$ gives scattering area per unit solid angle.
+  $dif sigma\/(dif Omega)$ gives scattering area per unit solid angle.
   The factor $1-cos chi$ weights each direction by its loss of forward
   momentum. A scattering process dominated by small deflections can therefore
   have a large total cross section but a small momentum-transfer cross section.
@@ -240,7 +240,7 @@
     [Neutral collision rate and drag],
     [For electrons in a neutral background,
     $nu_"en"=n_"n"⟨sigma_"mt,en" v_"e"⟩$ and
-    $lambda_"en"=⟨v_"e"⟩/nu_"en"$.
+    $lambda_"en"=⟨v_"e"⟩\/nu_"en"$.
     The analogous ion rate is
     $nu_"in"=n_"n"⟨sigma_"mt,in" v_"i"⟩$.
     If neutrals are stationary, the electron drag force density is
@@ -382,9 +382,11 @@
     [Strong-deflection scale],
     [For charges $q_a$ and $q_b$ with reduced mass $m_r$ and relative speed
     $v_"rel"$, define the ninety-degree impact parameter by
-    $b_90=abs(q_a q_b)/(4 pi epsilon_0 m_r v_"rel"^2)$.
+
+    $ b_90=abs(q_a q_b)/(4 pi epsilon_0 m_r v_"rel"^2) . $
+
     For an electron scattering from a singly charged ion,
-    $b_90=e^2/(4 pi epsilon_0 m_"e"v_"e"^2)$ in the heavy-ion approximation and
+    $b_90=e^2\/(4 pi epsilon_0 m_"e"v_"e"^2)$ in the heavy-ion approximation and
     $sigma_90=pi b_90^2$. A closest-approach convention based on equating
     kinetic and Coulomb potential energies differs by an order-one factor; the
     collision logarithm is insensitive to that convention at leading order.]
@@ -401,21 +403,23 @@
   #definition(
     [Coulomb logarithm and electron--ion rate],
     [For impact parameters $b$ much larger than $b_90$, the deflection is
-    small, $chi(b) approx (2 b_90)/b$. The screened upper cutoff is
+    small, $chi(b) approx 2 b_90\/b$. The screened upper cutoff is
     $b_"max" approx lambda_D$. The broad-impact-parameter measure is recorded
-    by $Lambda_"cut"=lambda_D/b_90$ and its logarithm
+    by $Lambda_"cut"=lambda_D\/b_90$ and its logarithm
     $ln Lambda_"cut"$. Separately, define $Lambda=n_"e"lambda_D^3$.
     The approximate scattering-rate convention of Inan and Golkowski
     (2011), Eq. (7.5), uses this plasma parameter @inan2011:
-    $nu_(e i) approx (sqrt(2) omega_(p,e)^4)/(64 pi n_"e")
-      ((k_B T_"e")/m_"e")^(-3/2) ln Lambda$,
-    where $omega_(p,e)=sqrt((n_"e"e^2)/(epsilon_0 m_"e"))$.
+
+    $ nu_(e i) approx (sqrt(2) omega_(p,e)^4)/(64 pi n_"e")
+      ((k_B T_"e")/m_"e")^(-3/2) ln Lambda , $
+
+    where $omega_(p,e)=sqrt(n_"e"e^2\/(epsilon_0 m_"e"))$.
     The corresponding mean free path is
-    $lambda_(e i)=⟨v_"e"⟩/nu_(e i)$.]
+    $lambda_(e i)=⟨v_"e"⟩\/nu_(e i)$.]
   )
 
   These logarithms are not numerically equal. With the electron Debye length
-  $lambda_D=sqrt((epsilon_0 k_B T_"e")/(n_"e"e^2))$ and the Maxwellian mean
+  $lambda_D=sqrt(epsilon_0 k_B T_"e"\/(n_"e"e^2))$ and the Maxwellian mean
   speed used here, $Lambda_"cut"=32 Lambda$, so
   $ln Lambda_"cut"=ln Lambda+ln(32)$. Treating the additive constant as
   negligible is only a leading-log approximation when $ln Lambda$ is large
@@ -424,7 +428,7 @@
   $ln Lambda_"cut"$.
 
   The plasma parameter $Lambda$ also differs from the Debye-sphere particle
-  count used in Chapter 1: $N_D=((4 pi)/3) Lambda$. Both are dimensionless and
+  count used in Chapter 1: $N_D=(4 pi\/3) Lambda$. Both are dimensionless and
   express the many-particle screening condition. Keeping these definitions
   separate avoids introducing an unintended factor into a quoted rate.
 
@@ -462,7 +466,7 @@
 
     $ omega_(p,e)^2=(n_"e"e^2)/(epsilon_0 m_"e") . $
 
-    This gives the scaling $nu_(e i) ∝ T_"e"^(-3/2)ln Lambda_"cut"$.
+    This gives the scaling $nu_(e i) ∝ T_"e"^(-3\/2)ln Lambda_"cut"$.
     It does not fix a kinetic transport prefactor. The displayed textbook
     estimate uses $ln Lambda$ instead, with the leading-log distinction
     stated above.
@@ -516,7 +520,7 @@
     but in cumulative effect by the logarithmic interval between $b_90$ and
     $lambda_D$. The weak-coupling parameter
     $Lambda=n_"e"lambda_D^3 >> 1$ justifies the statistical treatment, and the
-    electron--ion rate scales as $T_"e"^(-3/2)ln Lambda$ in the stated
+    electron--ion rate scales as $T_"e"^(-3\/2)ln Lambda$ in the stated
     convention.
   ]
 
@@ -531,7 +535,10 @@
     (
       question: [How does the ninety-degree impact parameter scale with speed?],
       answer: [For fixed charges and reduced mass,
-      $b_90=abs(q_a q_b)/(4 pi epsilon_0 m_r v_"rel"^2)$, so faster particles have a smaller
+
+      $ b_90=abs(q_a q_b)/(4 pi epsilon_0 m_r v_"rel"^2) , $
+
+      so faster particles have a smaller
       strong-deflection scale.]
     ),
     (
@@ -568,7 +575,7 @@
 
   #unit-ledger[
     The resistivity $eta$ in $bold(E)=eta bold(j)$ is in #unit("ohm meter"),
-    and conductivity $sigma=1/eta$ is in #unit("S/m"). Here $sigma$ denotes
+    and conductivity $sigma=1\/eta$ is in #unit("S/m"). Here $sigma$ denotes
     conductivity; the collision cross sections earlier in this chapter have
     area units.
   ]
@@ -589,23 +596,32 @@
       (bold(u)_"i"-bold(u)_"e")$.
     Since $bold(j)=e n_"e" (bold(u)_"i"-bold(u)_"e")$, the force per electron
     charge density is $eta bold(j)$ with
-    $eta=(m_"e"nu_"e i")/(n_"e"e^2)$.
+    $eta=m_"e"nu_"e i"\/(n_"e"e^2)$.
     More generally use $nu=nu_"en"$ for a stationary neutral background or
     the sum of the relevant momentum-transfer frequencies. The scalar
-    conductivity is $sigma_"dc"=1/eta=(n_"e"e^2)/(m_"e"nu)$.]
+    conductivity is $sigma_"dc"=1\/eta=n_"e"e^2\/(m_"e"nu)$.]
   )
 
   #governing-law(
     [Spitzer scaling in the stated collision convention],
-    [$nu_"e i" approx (sqrt(2) omega_(p,e)^4)/(64 pi n_"e")
-      ((k_B T_"e")/m_"e")^(-3/2) ln Lambda$ gives
-    $eta_"Sp" approx pi/(2 sqrt(2))
-      (e^2 sqrt(m_"e"))/((4 pi epsilon_0)^2 (k_B T_"e")^(3/2)) ln Lambda$.
+    [
+
+    $ nu_"e i" approx (sqrt(2) omega_(p,e)^4)/(64 pi n_"e")
+      ((k_B T_"e")/m_"e")^(-3/2) ln Lambda $
+
+    gives
+
+    $ eta_"Sp" approx pi/(2 sqrt(2))
+      (e^2 sqrt(m_"e"))/((4 pi epsilon_0)^2 (k_B T_"e")^(3/2)) ln Lambda . $
+
     Thus $eta_"Sp"$ is approximately independent of density at fixed
     temperature, apart from the weak density dependence hidden in
     $ln Lambda$. Its dominant temperature scaling is
-    $eta_"Sp" ∝ T_"e"^(-3/2)$, while
-      $sigma_"Sp"$ scales as $T_"e"^(3/2)/(ln Lambda)$.]
+    $eta_"Sp" ∝ T_"e"^(-3\/2)$, while
+      $sigma_"Sp"$ scales as
+
+      $ T_"e"^(3/2)/(ln Lambda) . $
+      ]
   )
 
   #details(
@@ -679,10 +695,10 @@
 
   #summary[
     Linear drag converts the collision frequency into
-    $eta=(m_"e"nu)/(n_"e"e^2)$ and
-    $sigma_"dc"=(n_"e"e^2)/(m_"e"nu)$. Neutral and Coulomb channels supply
+    $eta=m_"e"nu\/(n_"e"e^2)$ and
+    $sigma_"dc"=n_"e"e^2\/(m_"e"nu)$. Neutral and Coulomb channels supply
     different $nu$. With the stated Coulomb convention, Spitzer resistivity
-    scales mainly as $T_"e"^(-3/2)ln Lambda$ and is nearly density-independent
+    scales mainly as $T_"e"^(-3\/2)ln Lambda$ and is nearly density-independent
     at fixed temperature.
   ]
 
@@ -691,18 +707,18 @@
       question: [What physical quantity is divided by the charge density to obtain resistivity?],
       answer: [The collisional drag force density is divided by the charge
       density scale and expressed per current. This gives
-      $eta=(m_"e"nu)/(n_"e"e^2)$ in the scalar model.]
+      $eta=m_"e"nu\/(n_"e"e^2)$ in the scalar model.]
     ),
     (
       question: [How are resistivity and conductivity related?],
       answer: [They are reciprocals in the scalar model:
-      $sigma=1/eta$. Resistivity has units #unit("ohm meter") and conductivity has
+      $sigma=1\/eta$. Resistivity has units #unit("ohm meter") and conductivity has
       units #unit("S/m") when $bold(E)=eta bold(j)$.]
     ),
     (
       question: [What is the dominant temperature scaling of Spitzer resistivity?],
       answer: [At fixed Coulomb logarithm,
-      $eta_"Sp" ∝ T_"e"^(-3/2)$. The logarithm varies only weakly
+      $eta_"Sp" ∝ T_"e"^(-3\/2)$. The logarithm varies only weakly
       with density and temperature in a weakly coupled plasma.]
     ),
     (
@@ -761,13 +777,12 @@
 
   For unmagnetized DC response, set $bold(B)_0=bold(0)$ and $omega=0$, so
 
-  $bold(j)=sigma_"dc"bold(E),
-    quad sigma_"dc"=(n_"e"q_"e"^2)/(m_"e"nu_"e")$.
+  $bold(j)=sigma_"dc"bold(E), quad sigma_"dc"=n_"e"q_"e"^2\/(m_"e"nu_"e")$.
 
   Align the $z$ axis with $bold(B)_0$ and define the signed electron
   cyclotron frequency
 
-  $Omega_"e"=(q_"e"B_0)/m_"e"$.
+  $Omega_"e"=q_"e"B_0\/m_"e"$.
 
   For DC response, set $omega=0$. Write $J_x$, $J_y$, and $J_z$ for the
   Cartesian components of the same current density $bold(j)$. The component
@@ -879,7 +894,7 @@
 
     Assumptions: linear homogeneous DC response, immobile ions, a uniform
     magnetic field along the $z$ axis, and the signed-charge convention
-    $Omega_"e"=q_"e"B_0/m_"e"$.
+    $Omega_"e"=q_"e"B_0\/m_"e"$.
 
     Target: report the signed cyclotron frequency and the three DC tensor
     entries.

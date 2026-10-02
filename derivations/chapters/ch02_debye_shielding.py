@@ -130,7 +130,7 @@ note("Inside the source, with", sp.Eq(kappa, 1 / lambda_D))
 screened_source = show(sp.Eq(laplacian(phi) - kappa**2 * phi, -rho_Q / eps0))
 note("A constant particular solution")
 phi_p_expr = sp.solve(screened_source.subs(phi, phi_p).doit().subs(rho_Q, rho_Q_expr), phi_p)[0]
-agrees(phi_p_expr, 3 * Q / (4 * sp.pi * eps0 * kappa**2 * R**3), ":255", lhs=phi_p)
+agrees(phi_p_expr, 3 * Q / (4 * sp.pi * eps0 * kappa**2 * R**3), ":258", lhs=phi_p)
 check(phi_p_expr, phi_p_expr, unit=u.volt, units=SI_UNITS)
 note("Regular inside, decaying outside")
 trial_in = show(sp.Eq(phi_inner, phi_p + A * sp.sinh(kappa * r) / r)).rhs  # :253
@@ -154,24 +154,24 @@ def in_x(expr):
     return sp.simplify(expr.rewrite(sp.exp).subs(kappa, x / R))
 
 
-A_match = agrees(in_x(solution[A]), -(R * phi_p * (x + 1) * sp.exp(-x)) / x, ":271", lhs=A)
+A_match = agrees(in_x(solution[A]), -(R * phi_p * (x + 1) * sp.exp(-x)) / x, ":274", lhs=A)
 B_match = agrees(in_x(solution[B]),
-                 (R * phi_p) / (2 * x) * (sp.exp(x) * (x - 1) + (x + 1) * sp.exp(-x)), ":275", lhs=B)
+                 (R * phi_p) / (2 * x) * (sp.exp(x) * (x - 1) + (x + 1) * sp.exp(-x)), ":278", lhs=B)
 B_full = B_match.subs({phi_p: phi_p_expr, x: kappa * R})
 check(B_full, B_full, unit=u.volt * u.meter, units=SI_UNITS)
 note("Point-source limit", sp.Eq(R, 0, evaluate=False), "recovers the screened Coulomb coefficient")
 agrees(sp.limit(B_full, R, 0), Q / (4 * sp.pi * eps0), ":158", lhs=B)
 
 # %% Debye number and coupling
-section("Debye number and coupling", "02-debye-shielding.typ:353")
+section("Debye number and coupling", "02-debye-shielding.typ:356")
 N_D, Gamma = sp.symbols("N_D Gamma", positive=True)
 note("Electrons in a Debye sphere")
 count = show(sp.Eq(N_D, sp.Integral(4 * sp.pi * s**2 * n0, (s, 0, lambda_D))))
-N_D_expr = agrees(count.rhs.doit(), sp.Rational(4, 3) * sp.pi * n0 * lambda_D**3, ":356", lhs=N_D)
+N_D_expr = agrees(count.rhs.doit(), sp.Rational(4, 3) * sp.pi * n0 * lambda_D**3, ":359", lhs=N_D)
 check(N_D_expr, N_D_expr, unit=u.meter / u.meter, units=SI_UNITS)
 note("Mean spacing: one particle per sphere of radius", a)
 spacing = show(sp.Eq(sp.Rational(4, 3) * sp.pi * a**3 * n0, 1))
-a_expr = agrees(sp.solve(spacing, a)[0], (3 / (4 * sp.pi * n0)) ** sp.Rational(1, 3), ":368", lhs=a)
+a_expr = agrees(sp.solve(spacing, a)[0], (3 / (4 * sp.pi * n0)) ** sp.Rational(1, 3), ":371", lhs=a)
 check(a_expr, a_expr, unit=u.meter, units=SI_UNITS)
 note("Coupling: Coulomb energy at that spacing over thermal energy")
 coupling = show(sp.Eq(Gamma, e**2 / (4 * sp.pi * eps0 * a * k_B * T_e))).rhs  # :367
@@ -183,7 +183,7 @@ link = show(sp.Eq(Gamma * N_D ** sp.Rational(2, 3),
 assert link.rhs.free_symbols == set(), link
 
 # %% Regime lines in the n-T plane
-section("Regime lines in the n-T plane", "02-debye-shielding.typ:351")
+section("Regime lines in the n-T plane", "02-debye-shielding.typ:354")
 T_eV = k_B * T_e / e
 
 
