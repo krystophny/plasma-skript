@@ -10,7 +10,7 @@ next one:
     d_t P     contains div Q      (pressure / energy),
 
 with peculiar velocity w = v - u and heat flux q_i = (1/2) Q_ijj.
-Units are Gaussian CGS and are shown next to each moment.
+Units are SI and are shown next to each moment.
 """
 
 from manim import *
@@ -24,12 +24,12 @@ from style import (
 
 ROWS = [
     # name, unit, equation, color, divergence term in the next equation
-    ("density", r"[\mathrm{cm^{-3}}]", r"n=\int f\,d^3v", SKY, r"\nabla\!\cdot(n\mathbf{u})"),
-    ("flow", r"[\mathrm{cm\,s^{-1}}]", r"\mathbf{u}=\frac{1}{n}\int \mathbf{v}\,f\,d^3v", GREEN,
+    ("density", r"[\mathrm{m^{-3}}]", r"n=\int f\,d^3v", SKY, r"\nabla\!\cdot(n\mathbf{u})"),
+    ("flow", r"[\mathrm{m\,s^{-1}}]", r"\mathbf{u}=\frac{1}{n}\int \mathbf{v}\,f\,d^3v", GREEN,
      r"\nabla\!\cdot\mathbf{P}"),
-    ("pressure", r"[\mathrm{erg\,cm^{-3}}]", r"P_{ij}=m\int w_i w_j\,f\,d^3v", ORANGE,
+    ("pressure", r"[\mathrm{J\,m^{-3}}]", r"P_{ij}=m\int w_i w_j\,f\,d^3v", ORANGE,
      r"\nabla\!\cdot\mathbf{Q}"),
-    ("third moment", r"[\mathrm{erg\,cm^{-2}\,s^{-1}}]", r"Q_{ijk}=m\int w_i w_j w_k\,f\,d^3v", PURPLE,
+    ("third moment", r"[\mathrm{W\,m^{-2}}]", r"Q_{ijk}=m\int w_i w_j w_k\,f\,d^3v", PURPLE,
      None),
 ]
 
@@ -42,7 +42,7 @@ class MomentHierarchy(StyledScene):
 
         # Kinetic state: f and a sketch of its velocity-space samples.
         f_eq = math(r"f(t,\mathbf{r},\mathbf{v})", size=40)
-        f_unit = math(r"[\mathrm{s^3\,cm^{-6}}]", color=MUTED, size=26)
+        f_unit = math(r"[\mathrm{s^3\,m^{-6}}]", color=MUTED, size=26)
         rng = np.random.default_rng(4)
         pts = rng.normal(scale=(0.42, 0.32), size=(46, 2))
         cloud = VGroup(*[Dot([x, y, 0], radius=0.045, color=ELECTRON) for x, y in pts])

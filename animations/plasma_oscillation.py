@@ -11,7 +11,7 @@ data and not a particle-in-cell calculation.
 
 For a displacement xi > 0 of the electron slab, a sheet of bare ions is
 exposed on the left and a sheet of excess electrons appears on the right, so
-the field between them points along +x: E = 4 pi e n0 xi. The electron force
+the field between them points along +x: E = e n0 xi/epsilon_0 (SI). The electron force
 -eE points back toward equilibrium. Positions use L0 with xi_0/L0 = 0.55.
 """
 
@@ -25,7 +25,7 @@ from style import (
 
 
 def slab_state(tau):
-    """Return xi/xi0, E/(4 pi e n0 xi0), F/(4 pi e² n0 xi0)."""
+    """Return xi/xi0, E/(e n0 xi0/epsilon_0), F/(e² n0 xi0/epsilon_0)."""
     return np.array([np.cos(tau), np.cos(tau), -np.cos(tau)])
 
 

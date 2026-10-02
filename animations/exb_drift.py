@@ -6,7 +6,7 @@ analytic path is
     X = x/L0 = -2.35 + 0.55 tau + 0.65 cos(2 tau)
     Y = y/L0 = -0.65 - 0.65 sin(2 tau),  0 <= tau=t/t0 <= 8.
 
-Here Omega*t0=2, cE/B=0.55 L0/t0, rho=0.65 L0, q>0,
+Here Omega*t0=2, E/B=0.55 L0/t0 (SI), rho=0.65 L0, q>0,
 E along +y and B along +z. Thus X''=2Y', Y''=1.1-2X'.
 
 The circular part represents gyromotion and the linear part represents the
@@ -89,7 +89,7 @@ class ExBDrift(StyledScene):
 
         drift_arrow = Arrow(ax.c2p(-1.0, 0.35), ax.c2p(1.0, 0.35), buff=0,
                             color=INK, stroke_width=3, max_tip_length_to_length_ratio=0.12)
-        drift_label = math(r"\mathbf{v}_E = c\,\mathbf{E}\times\mathbf{B}/B^2", color=INK, size=32)
+        drift_label = math(r"\mathbf{v}_E = \mathbf{E}\times\mathbf{B}/B^2", color=INK, size=32)
         drift_label.next_to(drift_arrow, UP, buff=0.15)
         gc_label = label("guiding center", color=MUTED, size=SMALL_SIZE)
         gc_label.add_updater(lambda m: m.move_to(center_point()).set_y(ax.c2p(0, -1.58)[1]))

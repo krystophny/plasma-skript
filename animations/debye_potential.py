@@ -1,9 +1,9 @@
 """Finite spherical source and the reduction of its Coulomb potential.
 
 The scene uses normalized coordinates r/lambda_D [1] and potential
-phi/(Q/lambda_D) [1].  A uniformly charged three-dimensional sphere is shown
+phi/(Q/(4 pi epsilon_0 lambda_D)) [1] (SI).  A uniformly charged three-dimensional sphere is shown
 as a two-dimensional cross-section populated by scattered source markers.
-The bare Gaussian-CGS potential is quadratic inside the sphere and has a 1/r
+The bare SI potential (phi = Q/(4 pi epsilon_0 r) outside) is quadratic inside the sphere and has a 1/r
 tail outside it.  The screened curve solves the linearized spherical
 Debye--Hückel equation for the same finite source and therefore has an
 exponentially reduced exterior tail.
@@ -11,7 +11,7 @@ exponentially reduced exterior tail.
 The fixed source is permeable: mobile electrons occupy its interior and
 exterior. Source plus signs and electron dots are a visual aid. The endpoint
 curves are analytic continuum equilibria; their linear interpolation is not
-a time-dependent field solution. Choose Q small enough that 3 e Q/(2 R kT)
+a time-dependent field solution. Choose Q small enough that 3 e Q/(8 pi epsilon_0 R kT)
 is much less than one; the displayed shape normalization does not fix Q.
 """
 
@@ -28,7 +28,7 @@ SPHERE_RADIUS = 0.5
 
 
 def _uniform_sphere_potential(radii, radius=SPHERE_RADIUS):
-    """Return phi/(Q/lambda_D) for a bare uniform sphere with lambda_D=1."""
+    """Return phi/(Q/(4 pi epsilon_0 lambda_D)) for a bare uniform sphere with lambda_D=1."""
 
     radii = np.asarray(radii, dtype=float)
     potential = np.empty_like(radii)
@@ -41,7 +41,7 @@ def _uniform_sphere_potential(radii, radius=SPHERE_RADIUS):
 def _screened_sphere_potential(radii, radius=SPHERE_RADIUS):
     """Return the exact linearized Debye--Hückel potential for a sphere.
 
-    The input is normalized by lambda_D and the output by Q/lambda_D.  The
+    The input is normalized by lambda_D and the output by Q/(4 pi epsilon_0 lambda_D).  The
     expression matches the regular interior solution and the decaying
     exterior solution at the source boundary.
     """
@@ -174,7 +174,7 @@ class DebyePotentialReduction(StyledScene):
         ax_labels = VGroup(
             math(r"r/\lambda_D\ [1]", color=MUTED, size=30).next_to(ax.x_axis, DOWN, buff=0.2)
             .align_to(ax.x_axis, RIGHT),
-            math(r"\phi\,\lambda_D/Q\ [1]", color=MUTED, size=30).next_to(ax.y_axis, UP, buff=0.18),
+            math(r"4\pi\varepsilon_0\lambda_D\phi/Q\ [1]", color=MUTED, size=30).next_to(ax.y_axis, UP, buff=0.18),
         )
         ax_numbers = VGroup(*[
             math(str(k), color=FAINT, size=26).next_to(ax.c2p(k, 0), DOWN, buff=0.14)

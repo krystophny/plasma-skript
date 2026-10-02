@@ -122,7 +122,7 @@ class MotionPhysics(unittest.TestCase):
         state = model("plasma_oscillation.py")["slab_state"]
         for tau in (0.0, 0.7, np.pi/2, 2.0, np.pi):
             xi, field, force = state(tau)
-            self.assertAlmostEqual(field, xi)  # Gauss: E=4 pi e n xi.
+            self.assertAlmostEqual(field, xi)  # Gauss's law (SI): E=e n xi/epsilon_0.
             self.assertAlmostEqual(force, -field)  # Electron q=-e.
             h = 1e-4
             acceleration = (state(tau+h)[0]-2*xi+state(tau-h)[0])/h**2
