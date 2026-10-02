@@ -29,25 +29,26 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. The electrostatic potential $phi$ is in statvolt,
-    charge density $rho_q$ in statcoulomb $upright("cm")^(-3)$, and the electron
-    temperature $T_e$ is in kelvin. The screening length $lambda_D$ is in cm.
+    SI is active. The electrostatic potential $phi$ is in #unit("V"),
+    charge density $rho_q$ in #unit("C m^-3"), and the electron
+    temperature $T_e$ is in kelvin. The screening length $lambda_D$ is in
+    #unit("m"); $epsilon_0$ is the vacuum permittivity.
   ]
 
   A first estimate of the size of a charge-separated region can be obtained
   before solving the shielding profile. Let $N$ denote a number density in a
   uniformly charged spherical region of radius $R$, with charge magnitude
-  $e$ per particle. Gaussian Gauss's law gives the boundary potential scale
+  $e$ per particle. Gauss's law gives the boundary potential scale
 
-  $ phi(R) = (4 pi N e R^2)/3,
+  $ phi(R) = (N e R^2)/(3 epsilon_0),
     quad abs(e phi(R)) approx k_B T_e
-    => R approx sqrt((3 k_B T_e)/(4 pi N e^2)) $ <debye-charge-separation-scale>
+    => R approx sqrt((3 epsilon_0 k_B T_e)/(N e^2)) $ <debye-charge-separation-scale>
 
   #equation-note[
-    Gaussian CGS. $N$ is a number density in #unit("cm^-3"), $R$ is in cm,
-    and $phi$ is in statvolt. The numerical factor depends on the assumed
+    SI. $N$ is a number density in #unit("m^-3"), $R$ is in #unit("m"),
+    and $phi$ is in #unit("V"). The numerical factor depends on the assumed
     charge profile; the robust result is the scaling
-    $R$ proportional to $sqrt((k_B T_e)/(N e^2))$.
+    $R$ proportional to $sqrt((epsilon_0 k_B T_e)/(N e^2))$.
   ]
 
   #details(
@@ -57,19 +58,19 @@
 
     $ Q(r)=(4 pi)/3 N e r^3 .$
 
-    Applying the Gaussian flux law to a sphere gives
+    Applying Gauss's flux law to a sphere gives
 
-    $ E(r) 4 pi r^2=4 pi Q(r) ,$
+    $ E(r) 4 pi r^2=Q(r)/epsilon_0 ,$
 
     and hence
 
-    $ E(r)=(4 pi)/3 N e r .$
+    $ E(r)=(N e r)/(3 epsilon_0) .$
 
     #derivation-step[Estimate the boundary potential]
     Measured relative to infinity, the potential at the boundary of the
     uniformly charged sphere is
 
-    $ phi(R)=Q(R)/R=(4 pi)/3 N e R^2 .$
+    $ phi(R)=Q(R)/(4 pi epsilon_0 R)=(N e R^2)/(3 epsilon_0) .$
 
     A thermal particle can cross or substantially rearrange the region when
     $abs(e phi(R))$ is comparable to $k_B T_e$. Solving that balance gives the
@@ -95,8 +96,8 @@
   $ n_e = n_0 exp((e phi) / (k_B T_e)) approx n_0 (1 + (e phi) / (k_B T_e)) $ <debye-boltzmann-response>
 
   #equation-note[
-    Gaussian CGS. $n_e$ and $n_0$ are in $upright("cm")^(-3)$, and $e phi$ and $k_B T_e$
-    are energies in erg. The approximation is dimensionless and requires
+    SI. $n_e$ and $n_0$ are in #unit("m^-3"), and $e phi$ and $k_B T_e$
+    are energies in #unit("J"). The approximation is dimensionless and requires
     $abs(e phi)/(k_B T_e) << 1$.
   ]
 
@@ -105,25 +106,25 @@
   $ rho_q = e n_i - e n_e approx - (e^2 n_0)/(k_B T_e) phi $ <debye-charge-response>
 
   #equation-note[
-    Gaussian CGS. The sign expresses the restoring response of electrons to a
+    SI. The sign expresses the restoring response of electrons to a
     positive potential perturbation.
   ]
 
-  Poisson's equation in Gaussian CGS is
+  Poisson's equation in SI is
 
-  $ laplacian phi = -4 pi rho_q $ <debye-poisson>
+  $ laplacian phi = -rho_q/epsilon_0 $ <debye-poisson>
 
   #equation-note[
-    Gaussian CGS. This equation defines the electrostatic field convention used
-    here. It is not the SI form with $epsilon_0$.
+    SI. This equation defines the electrostatic field convention used
+    here, with vacuum permittivity $epsilon_0$ in #unit("F/m").
   ]
 
   Substitution gives the screened equation
 
-  $ laplacian phi - phi / lambda_D^2 = 0, quad lambda_D = sqrt((k_B T_e) / (4 pi n_0 e^2)) $ <debye-screened-equation>
+  $ laplacian phi - phi / lambda_D^2 = 0, quad lambda_D = sqrt((epsilon_0 k_B T_e) / (n_0 e^2)) $ <debye-screened-equation>
 
   #equation-note[
-    Gaussian CGS. $lambda_D$ is in cm. The equation is valid outside the
+    SI. $lambda_D$ is in #unit("m"). The equation is valid outside the
     localized source and within the linearized, static response model.
   ]
 
@@ -146,9 +147,9 @@
     #derivation-step[Insert the response into Poisson's equation]
     Define the Debye coefficient by
 
-    $ lambda_D^(-2)=(4 pi n_0 e^2)/(k_B T_e) .$
+    $ lambda_D^(-2)=(n_0 e^2)/(epsilon_0 k_B T_e) .$
 
-    Inserting the charge response into the Gaussian-CGS Poisson equation gives
+    Inserting the charge response into the SI Poisson equation gives
 
     $ laplacian phi-phi/lambda_D^2=0 .$
 
@@ -176,19 +177,19 @@
     sphere, whose boundary conditions would be different.]
   )
 
-  For this finite source, the exact bare potential in Gaussian CGS is
+  For this finite source, the exact bare potential in SI is
 
-  $ phi_"C" (r) = (Q/(2 R)) (3 - r^2/R^2), quad 0 <= r <= R $ <debye-sphere-potential-inside>
+  $ phi_"C" (r) = Q/(8 pi epsilon_0 R) (3 - r^2/R^2), quad 0 <= r <= R $ <debye-sphere-potential-inside>
 
   and
 
-  $ phi_"C" (r) = Q/r, quad r >= R $ <debye-sphere-potential-outside>
+  $ phi_"C" (r) = Q/(4 pi epsilon_0 r), quad r >= R $ <debye-sphere-potential-outside>
 
   #equation-note[
-    Gaussian CGS. $Q$ is in statcoulomb, $r$ and $R$ are in cm, and $phi_"C"$
-    is in statvolt when the reference potential is zero at infinity. The
+    SI. $Q$ is in #unit("C"), $r$ and $R$ are in #unit("m"), and $phi_"C"$
+    is in #unit("V") when the reference potential is zero at infinity. The
     interior expression is quadratic in $r$ and joins the exterior Coulomb
-    expression continuously at $r=R$: both give $Q/R$ there.
+    expression continuously at $r=R$: both give $Q/(4 pi epsilon_0 R)$ there.
   ]
 
   The quadratic interior is the potential of the extended source itself. It
@@ -199,44 +200,44 @@
   The plasma response is a separate effect. In the linearized, static model,
   the same source satisfies the spherical Debye--Hückel equations
 
-  $ laplacian phi_"D" - phi_"D"/lambda_D^2 = -4 pi rho_Q, quad r < R $
+  $ laplacian phi_"D" - phi_"D"/lambda_D^2 = -rho_Q/epsilon_0, quad r < R $
 
   $ laplacian phi_"D" - phi_"D"/lambda_D^2 = 0, quad r > R .$
 
   #equation-note[
-    Gaussian CGS. $rho_Q$ is the source charge density, while the mobile
+    SI. $rho_Q$ is the source charge density, while the mobile
     electron response has already been absorbed into the term
     $-phi_"D"/lambda_D^2$. The fields and potentials are matched at the source
     boundary, and the exterior solution decays at infinity. Linearization
     requires $abs(e phi_"D")/(k_B T_e) << 1$ everywhere. A sufficient
-    condition for a positive source is $(3 e Q)/(2 R k_B T_e) << 1$,
+    condition for a positive source is $(3 e Q)/(8 pi epsilon_0 R k_B T_e) << 1$,
     using the maximum bare potential. Normalizing the plotted potential by
-    $Q/lambda_D$ does not by itself impose this small-source condition.
+    $Q/(4 pi epsilon_0 lambda_D)$ does not by itself impose this small-source condition.
   ]
 
   #details(
     [Derivation: bare potential of a uniform sphere],
     [#derivation-step[Enclose the source]
-    For $r<R$, the charge enclosed by a Gaussian sphere is
+    For $r<R$, the charge enclosed by a concentric spherical surface is
 
     $ Q_"enc" (r) = rho_Q (4 pi r^3)/3 = Q r^3/R^3 .$
 
-    Gaussian Gauss's law then gives
+    Gauss's law then gives
 
-    $ E_"C" (r) 4 pi r^2 = 4 pi Q_"enc" (r)
-      => E_"C" (r) = Q r/R^3, quad r<R .$
+    $ E_"C" (r) 4 pi r^2 = Q_"enc" (r)/epsilon_0
+      => E_"C" (r) = (Q r)/(4 pi epsilon_0 R^3), quad r<R .$
 
     For $r>R$, the enclosed charge is $Q$, so
 
-    $ E_"C" (r) = Q/r^2, quad r>R .$
+    $ E_"C" (r) = Q/(4 pi epsilon_0 r^2), quad r>R .$
 
     #derivation-step[Integrate the field with the boundary condition]
     Set $phi_"C" (infinity)=0$ and integrate inward from the exterior. This
-    gives $phi_"C" (r)=Q/r$ outside the source and
+    gives $phi_"C" (r)=Q/(4 pi epsilon_0 r)$ outside the source and
 
     $ phi_"C" (r) = phi_"C" (R) + integral_r^R E_"C" (r') dif r'
-      = Q/R + integral_r^R (Q r')/R^3 dif r'
-      = (Q/(2 R)) (3-r^2/R^2) $
+      = Q/(4 pi epsilon_0 R) + integral_r^R (Q r')/(4 pi epsilon_0 R^3) dif r'
+      = Q/(8 pi epsilon_0 R) (3-r^2/R^2) $
 
     inside. At $r=R$, the potential and the radial field agree on both sides,
     so the piecewise solution is continuous and has no artificial surface
@@ -250,7 +251,7 @@
     particular solution and the regular homogeneous solution give
 
     $ phi_(D,"in")(r) = phi_"p" + A (sinh(kappa r))/r,
-      quad phi_"p" = (4 pi rho_Q)/(kappa^2) = (3 Q)/(kappa^2 R^3) .$
+      quad phi_"p" = rho_Q/(epsilon_0 kappa^2) = (3 Q)/(4 pi epsilon_0 kappa^2 R^3) .$
 
     Outside the source, decay at infinity selects
 
@@ -293,7 +294,7 @@
 
   #animation(
     "../media/debye-potential-reduction.mp4",
-    "A cross-section of a permeable, uniformly charged three-dimensional sphere uses plus signs for the fixed positive source and dots for mobile electrons, present inside and outside the sphere. Electron markers move inward during an illustrative transition. A radial plot compares the dashed bare potential, quadratic inside R and Coulomb-like outside, with the solid screened equilibrium potential and its exponentially reduced exterior tail. Radius and potential are normalized by the Debye length and Q divided by the Debye length, with unit [1]. Intermediate curves and marker motion are explanatory interpolation, not a computed transient.",
+    "A cross-section of a permeable, uniformly charged three-dimensional sphere uses plus signs for the fixed positive source and dots for mobile electrons, present inside and outside the sphere. Electron markers move inward during an illustrative transition. A radial plot compares the dashed bare potential, quadratic inside R and Coulomb-like outside, with the solid screened equilibrium potential and its exponentially reduced exterior tail. Radius and potential are normalized by the Debye length and by Q divided by 4 pi epsilon_0 times the Debye length, with unit [1]. Intermediate curves and marker motion are explanatory interpolation, not a computed transient.",
     caption: [
       A finite spherical source and its potential. The source is shown as a
       two-dimensional cross-section of a uniformly charged three-dimensional
@@ -363,7 +364,7 @@
     [Ideal-plasma convention used here],
     [For the purposes of this script, an ideal plasma is weakly coupled and
     sufficiently populated that collective fields can be treated smoothly.
-    A useful weak-coupling parameter is $Gamma_s = (q_s^2) / (a_s k_B T_s)$,
+    A useful weak-coupling parameter is $Gamma_s = (q_s^2) / (4 pi epsilon_0 a_s k_B T_s)$,
     where $a_s = (3 / (4 pi n_s))^(1/3)$ is the mean-spacing scale. The
     classical collective ordering also requires many particles in a Debye
     sphere and, when quasineutral fluid behavior is invoked, a system scale
@@ -372,12 +373,12 @@
   )
 
   #equation-note[
-    Gaussian CGS. $a_s$ is in #unit("cm"), $(q_s^2) / (a_s k_B T_s)$ is
+    SI. $a_s$ is in #unit("m"), $(q_s^2) / (4 pi epsilon_0 a_s k_B T_s)$ is
     dimensionless, and the weak-coupling condition is $Gamma_s << 1$.
   ]
 
   Compare the screening length with the system or gradient length $L$ in
-  #unit("cm"). The dimensionless ratio $lambda_D/L << 1$ supports bulk
+  #unit("m"). The dimensionless ratio $lambda_D/L << 1$ supports bulk
   quasineutrality away from boundaries; it does not establish a collisional
   fluid closure. Collision scales are treated in
   #chapter-link("kinetic-collisions")[Collisions in gases and plasmas].

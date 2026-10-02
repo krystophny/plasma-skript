@@ -39,13 +39,12 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Position is in #unit("cm"), velocity is in
-    #unit("cm/s"), mass is in #unit("g"), and charge is in statcoulomb (esu).
-    Number density is in #unit("cm^-3"). Mass density is in
-    #unit("g") #unit("cm^-3"), momentum density is in
-    #unit("g") #unit("cm^-2") #unit("s^-1"), and pressure is in
-    #unit("g") #unit("cm^-1") #unit("s^-2"), equivalently dyn per square
-    centimetre. The symbols $bold(u)_s$, $bold(P)_s$, and $bold(q)_s$ below
+    SI units are used. Position is in #unit("m"), velocity is in
+    #unit("m/s"), mass is in #unit("kg"), and charge is in #unit("C").
+    Number density is in #unit("m^-3"). Mass density is in
+    #unit("kg/m^3"), momentum density is in
+    #unit("kg m^-2 s^-1"), and pressure is in
+    #unit("Pa") $=$ #unit("N/m^2") $=$ #unit("kg m^-1 s^-2"). The symbols $bold(u)_s$, $bold(P)_s$, and $bold(q)_s$ below
     denote velocity, pressure tensor, and heat-flux vector, respectively. The
     bold heat-flux symbol $bold(q)_s$ is distinct from the scalar particle
     charge $q_s$.
@@ -73,7 +72,7 @@
   $ bold(j) = sum_s bold(j)_s $ <moments-charge-current>
 
   #equation-note[
-    The charge density $rho_q$ is in statcoulomb per cubic centimetre. The
+    The charge density $rho_q$ is in #unit("C/m^3"). The
     current density $bold(j)$ is the charge-weighted particle flux. The sum
     over species is essential: an electrically neutral plasma can have
     $rho_q approx 0$ while carrying a nonzero current.
@@ -144,7 +143,7 @@
     $ bold(M)_s=bold(P)_s+rho_s bold(u)_s bold(u)_s .$
 
     Both terms are momentum fluxes with units
-    #unit("g") #unit("cm^-1") #unit("s^-2"). The central tensor vanishes for
+    #unit("Pa") $=$ #unit("kg m^-1 s^-2"). The central tensor vanishes for
     a cold delta-like velocity distribution.]
   )
 
@@ -155,7 +154,7 @@
     "A schematic reduces the distribution function to number density, bulk velocity, pressure tensor, and the full third central moment tensor. Heat flux is identified as a contraction of the third central tensor. Arrows show how each transport equation introduces a higher moment and therefore requires closure.",
     caption: [
       Moment hierarchy from kinetic information to fluid fields. The animation
-      labels dimensional Gaussian-CGS quantities, not normalized fields.
+      labels dimensional SI quantities, not normalized fields.
       The full third central tensor $Q_(i j k)$ contains more information
       than heat flux $q_i=(1/2) sum_j Q_(i j j)$.
       This is a schematic, not measured data or a numerical solution.
@@ -193,7 +192,7 @@
     (
       question: [Which velocity weight produces the number density?],
       answer: [The zeroth weight, $A=1$, gives
-      $n_s=integral f_s dif^3 bold(v)$ in #unit("cm^-3").],
+      $n_s=integral f_s dif^3 bold(v)$ in #unit("m^-3").],
     ),
     (
       question: [Why can a neutral plasma carry current?],
@@ -232,10 +231,11 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. The kinetic distribution has the phase-space units
-    implied by $d N_s=f_s dif^3 bold(r) dif^3 bold(v)$. The continuity equation
-    balances a density in #unit("cm^-3") per #unit("s") with the divergence
-    of a flux in #unit("cm^-2") #unit("s^-1"). The same balance multiplied by
+    SI units are used. The kinetic distribution has the phase-space units
+    implied by $d N_s=f_s dif^3 bold(r) dif^3 bold(v)$, namely
+    #unit("s^3 m^-6"). The continuity equation
+    balances a density in #unit("m^-3") per #unit("s") with the divergence
+    of a flux in #unit("m^-2 s^-1"). The same balance multiplied by
     mass or charge gives mass or charge continuity. No normalized variable is
     used in this derivation.
   ]
@@ -290,7 +290,7 @@
 
   #equation-note[
     The flux in the number equation is $n_s bold(u)_s$ in
-    #unit("cm^-2") #unit("s^-1"). A source, sink, or ionization model would
+    #unit("m^-2 s^-1"). A source, sink, or ionization model would
     appear as $S_s$ on the right-hand side. The source-free equation is local,
     so it applies even when the total number in a finite region changes by
     flux through its boundary.
@@ -336,9 +336,9 @@
 
   #rechenbeispiel[
     Context: a uniform singly ionized particle stream has
-    $n_s=qty("1.0e10", "cm^-3")$, normal speed
-    $u_s=qty("2.0e7", "cm/s")$, and reaches a planar collector of area
-    $A=qty("1.0", "cm^2")$.
+    $n_s=qty("1.0e16", "m^-3")$, normal speed
+    $u_s=qty("2.0e5", "m/s")$, and reaches a planar collector of area
+    $A=qty("1.0e-4", "m^2")$.
 
     Assumptions: steady source-free flow with the velocity normal to the
     collector.
@@ -346,7 +346,7 @@
     Target: report the particle flux $Gamma_s$ and the collection rate
     $dot(N)_s$.
 
-    Numerical result: $Gamma_s=qty("2.0e17", "cm^-2 s^-1")$ and
+    Numerical result: $Gamma_s=qty("2.0e21", "m^-2 s^-1")$ and
     $dot(N)_s=qty("2.0e17", "s^-1")$.
   ]
 
@@ -412,17 +412,17 @@
   #objectives((
     [derive the momentum equation by weighting the kinetic equation with $m_s bold(v)$],
     [separate directed momentum flux from the pressure tensor],
-    [evaluate the Lorentz force moment in Gaussian CGS],
+    [evaluate the Lorentz force moment in SI units],
     [interpret the collision moment as interspecies momentum exchange],
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Momentum density $rho_s bold(u)_s$ is in
-    #unit("g") #unit("cm^-2") #unit("s^-1"). The divergence of a pressure
+    SI units are used. Momentum density $rho_s bold(u)_s$ is in
+    #unit("kg m^-2 s^-1"). The divergence of a pressure
     tensor and an electromagnetic force density are in
-    #unit("g") #unit("cm^-2") #unit("s^-2"). The Lorentz acceleration is
-    $bold(a)_s=q_s/m_s (bold(E)+(bold(v) times bold(B))/c)$, with $bold(E)$ in
-    statvolt per centimetre, $bold(B)$ in gauss, and $c$ in #unit("cm/s").
+    #unit("N/m^3") $=$ #unit("kg m^-2 s^-2"). The Lorentz acceleration is
+    $bold(a)_s=q_s/m_s (bold(E)+bold(v) times bold(B))$, with $bold(E)$ in
+    #unit("V/m") and $bold(B)$ in #unit("T").
   ]
 
   #assumption(
@@ -478,23 +478,23 @@
   balance is
 
   $ m_s integral bold(a)_s f_s dif^3 bold(v)
-    = q_s n_s (bold(E) + (bold(u)_s times bold(B))/c) $ \
+    = q_s n_s (bold(E) + bold(u)_s times bold(B)) $ \
   <moments-lorentz-force-density>
 
   The species momentum equation is consequently
 
   $ pdv(rho_s bold(u)_s,t)
     + div(rho_s bold(u)_s bold(u)_s + bold(P)_s)
-    = q_s n_s (bold(E) + (bold(u)_s times bold(B))/c) + bold(R)_s $ \
+    = q_s n_s (bold(E) + bold(u)_s times bold(B)) + bold(R)_s $ \
   <moments-momentum-equation>
 
   #equation-note[
     The pressure force density is $-div(bold(P)_s)$. In the
     fluid-following form, obtained with species continuity, the equation reads
     $rho_s (pdv(bold(u)_s,t)+bold(u)_s dot grad(bold(u)_s))
-      = q_s n_s (bold(E)+(bold(u)_s times bold(B))/c)
+      = q_s n_s (bold(E)+bold(u)_s times bold(B))
       -div(bold(P)_s) + bold(R)_s$. Every term has force-density
-    units in #unit("g") #unit("cm^-2") #unit("s^-2"). The acceleration
+    units in #unit("N/m^3"). The acceleration
     now follows a fluid element moving at $bold(u)_s$, rather than an
     individual particle moving at $bold(v)$. Pressure accounts for the
     momentum transport caused by their velocity difference.
@@ -529,8 +529,8 @@
     gives
 
     $ q_s bold(E) integral f_s dif^3 bold(v)
-        +(q_s/c) (integral bold(v)f_s dif^3 bold(v)) times bold(B)
-        =q_s n_s (bold(E)+(bold(u)_s times bold(B))/c) .$
+        +q_s (integral bold(v)f_s dif^3 bold(v)) times bold(B)
+        =q_s n_s (bold(E)+bold(u)_s times bold(B)) .$
 
     #derivation-step[Split the momentum flux and use continuity]
     Insert $bold(v)=bold(u)_s+bold(w)_s$ into the raw second moment. The terms
@@ -550,16 +550,16 @@
 
   #rechenbeispiel[
     Context: a uniform singly ionized hydrogen plasma has
-    $n_i=qty("1.0e10", "cm^-3")$, $q_i=e=qty("4.803e-10", "statcoulomb")$,
-    and an electric field $E=qty("2.00", "statV/cm")$ along $x$.
+    $n_i=qty("1.0e16", "m^-3")$, $q_i=e=qty("1.602e-19", "C")$,
+    and an electric field $E=qty("6.00e4", "V/m")$ along $x$.
 
     Assumptions: neglect pressure gradients and magnetic forces, and use the
     electrostatic force density $f_(E,x)=n_i q_i E_x$.
 
     Target: report the $x$-directed electric force density.
 
-    Numerical result: $f_(E,x)=9.61 #unit("g") #unit("cm^-2") #unit("s^-2")$,
-    equivalently $9.61 #unit("dyn/cm^3")$.
+    Numerical result: $f_(E,x)=qty("96.1", "N/m^3")$,
+    equivalently $qty("96.1", "kg m^-2 s^-2")$.
   ]
 
   #interpretation(
@@ -590,7 +590,7 @@
       question: [Why does the magnetic part of the Lorentz force do no work but still affect momentum?],
       answer: [It is perpendicular to the instantaneous velocity, so it does
       no kinetic-energy work. It is nevertheless a directional force and
-    appears in the momentum source $(q_s n_s (bold(u)_s times bold(B)))/c$.]
+    appears in the momentum source $q_s n_s (bold(u)_s times bold(B))$.]
     ),
     (
       question: [When can the collision momentum sources cancel?],
@@ -623,10 +623,9 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Energy density is in
-    #unit("g") #unit("cm^-1") #unit("s^-2") (erg per cubic centimetre), and
-    energy flux is in #unit("g") #unit("s^-3") (erg per square centimetre per
-    second). Heat flux $bold(q)_s$ is an energy flux. The scalar pressure
+    SI units are used. Energy density is in
+    #unit("J/m^3") $=$ #unit("kg m^-1 s^-2"), and
+    energy flux is in #unit("W/m^2") $=$ #unit("kg s^-3"). Heat flux $bold(q)_s$ is an energy flux. The scalar pressure
     $p_s$ has the same units as $bold(P)_s$. The ratio
     $gamma=5/3$ below is dimensionless and applies to a three-dimensional
     monatomic closure.
@@ -815,9 +814,9 @@
 
   #rechenbeispiel[
     Context: an isotropic hydrogen-ion population has
-    $n_i=qty("1.0e10", "cm^-3")$, $m_i=qty("1.673e-24", "g")$,
-    $k_B T_i=qty("1.602e-11", "erg")$, and bulk speed
-    $u_i=qty("1.0e7", "cm/s")$.
+    $n_i=qty("1.0e16", "m^-3")$, $m_i=qty("1.673e-27", "kg")$,
+    $k_B T_i=qty("1.602e-18", "J")$ ($qty("10", "eV")$), and bulk speed
+    $u_i=qty("1.0e5", "m/s")$.
 
     Assumptions: Maxwellian random motion, isotropic pressure, and the
     three-dimensional kinetic-energy definitions used above.
@@ -825,9 +824,9 @@
     Target: report the internal energy density $epsilon_i$, bulk kinetic-energy
     density, and total kinetic-energy density $W_i$.
 
-    Numerical result: $epsilon_i=0.240 #unit("erg/cm^3")$,
-    $W_("bulk",i)=0.837 #unit("erg/cm^3")$, and
-    $W_i=1.08 #unit("erg/cm^3")$.
+    Numerical result: $epsilon_i=qty("0.0240", "J/m^3")$,
+    $W_("bulk",i)=qty("0.0837", "J/m^3")$, and
+    $W_i=qty("0.108", "J/m^3")$.
   ]
 
   #interpretation(
@@ -899,10 +898,10 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active for all dimensional quantities. The collision
-    frequency $nu_s$ is in #unit("s^-1"), while $f_s$, its Maxwellian
-    reference $f_(M,s)$ have units #unit("s^3 cm^-6"). The collision operator
-    has units of distribution per time, #unit("s^2 cm^-6").
+    SI units are used for all dimensional quantities. The collision
+    frequency $nu_s$ is in #unit("s^-1"), while $f_s$ and its Maxwellian
+    reference $f_(M,s)$ have units #unit("s^3 m^-6"). The collision operator
+    has units of distribution per time, #unit("s^2 m^-6").
     Closure parameters such as $gamma$, the Knudsen number,
     and $nu_s tau$ are dimensionless. A closure is not a unit conversion.
   ]

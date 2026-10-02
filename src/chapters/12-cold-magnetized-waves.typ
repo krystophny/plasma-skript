@@ -41,12 +41,13 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Number density $n_s$ is in #unit("cm^-3"),
-    charge $q_s$ is in #unit("statcoulomb"), mass $m_s$ is in #unit("g"),
-    $bold(E)$ is in statvolt per #unit("cm"), $bold(B)$ is in #unit("G"),
-    and $bold(j)$ is in statcoulomb per #unit("cm^2") per #unit("s").
+    SI units with $epsilon_0$ and $mu_0$ are used. Number density $n_s$ is
+    in #unit("m^-3"), charge $q_s$ is in #unit("C"), mass $m_s$ is in
+    #unit("kg"), $bold(E)$ is in #unit("V/m"), $bold(B)$ is in #unit("T"),
+    and $bold(j)$ is in #unit("A/m^2"). The vacuum permittivity
+    $epsilon_0$ is in #unit("F/m") and $mu_0$ in #unit("H/m").
     Frequencies $omega$ and $Omega_s$ are in #unit("s^-1"), wave number $k$
-    is in #unit("cm^-1"), and $c$ is in #unit("cm/s"). The dielectric
+    is in #unit("m^-1"), and $c=1/sqrt(mu_0 epsilon_0)$ is in #unit("m/s"). The dielectric
     coefficients and refractive index $N=(k c)/omega$ are dimensionless.
   ]
 
@@ -63,10 +64,10 @@
     [Signed gyrofrequency and plasma frequency],
     [For species $s$, define the signed gyrofrequency and the positive plasma
     frequency by
-    $Omega_s=(q_s B_0)/(m_s c)$ and
-    $omega_(p,s)^2=(4 pi n_(s,0) q_s^2)/m_s$.
+    $Omega_s=(q_s B_0)/m_s$ and
+    $omega_(p,s)^2=(n_(s,0) q_s^2)/(epsilon_0 m_s)$.
     For electrons it is useful to reserve
-    $omega_(c,e)=(abs(q_e) B_0)/(m_e c)>0$
+    $omega_(c,e)=(abs(q_e) B_0)/m_e>0$
     for the cyclotron-frequency magnitude. The sign of $q_e$ remains in the
     transverse polarization convention.]
   )
@@ -74,7 +75,10 @@
   #definition(
     [Cold dielectric tensor],
     [The current response is represented by
-    $bold(epsilon)_(p) dot bold(E)_1=bold(E)_1+((4 pi i)/omega) bold(j)_1$,
+    $bold(epsilon)_(p) dot bold(E)_1=bold(E)_1+(i/(omega epsilon_0)) bold(j)_1$,
+    so that $bold(epsilon)_(p)=bold(I)+sum_s bold(chi)_s$ with species
+    susceptibility $bold(chi)_s=bold(sigma)_s/(-i omega epsilon_0)$ for the
+    species conductivity $bold(sigma)_s$ defined by $bold(j)_(s,1)=bold(sigma)_s dot bold(E)_1$,
     with
     $bold(epsilon)_(p)=mat(
       epsilon_(perp), -i epsilon_(times), 0;
@@ -115,7 +119,7 @@
     The linearized cold momentum equation is
 
     $ -i omega m_s bold(u)_(s,1)=q_s (
-      bold(E)_1+(bold(u)_(s,1) times bold(B)_0)/c) .$
+      bold(E)_1+bold(u)_(s,1) times bold(B)_0) .$
 
     With $bold(B)_0=B_0 bold(e)_z$, the transverse components form a coupled
     two-by-two system:
@@ -153,7 +157,7 @@
     Insert the current into
 
     $ bold(epsilon)_(p) dot bold(E)_1
-      =bold(E)_1+((4 pi i)/omega) bold(j)_1 .$
+      =bold(E)_1+(i/(omega epsilon_0)) bold(j)_1 .$
 
     Reading off the coefficients gives the cold dielectric tensor displayed
     above. Its off-diagonal entries encode the rotation of transverse motion.
@@ -161,15 +165,15 @@
     #derivation-step[Insert the response into Maxwell's equations]
     Fourier-transformed Faraday and Ampere laws are
 
-    $ bold(k) times bold(E)_1=(omega bold(B)_1)/c $
+    $ bold(k) times bold(E)_1=omega bold(B)_1 $
 
     and
 
-    $ bold(k) times bold(B)_1=-(omega bold(E)_1)/c
-      -(4 pi i bold(j)_1)/c .$
+    $ bold(k) times bold(B)_1=-(omega bold(E)_1)/c^2
+      -i mu_0 bold(j)_1 .$
 
     Substitute the first relation into the second, eliminate $bold(j)_1$ by
-    the dielectric definition, and use
+    the dielectric definition with $mu_0 epsilon_0=1/c^2$, and use
 
     $ bold(k) times (bold(k) times bold(E)_1)
       =bold(k)(bold(k) dot bold(E)_1)-k^2 bold(E)_1 .$
@@ -183,12 +187,12 @@
 
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, magnetized electron response
-    with fixed ions, a uniform field $bold(B)_0=B_0 bold(e)_z$, and Gaussian
-    CGS. For a hydrogen plasma use
-    $n_0=qty("1.0e10", "cm^-3")$, $B_0=qty("100", "G")$,
-    $e=qty("4.803e-10", "statcoulomb")$,
-    $m_e=qty("9.109e-28", "g")$, and
-    $c=qty("2.998e10", "cm/s")$. Determine the electron plasma frequency,
+    with fixed ions, a uniform field $bold(B)_0=B_0 bold(e)_z$, and SI
+    units. For a hydrogen plasma use
+    $n_0=qty("1.0e16", "m^-3")$, $B_0=qty("1.0e-2", "T")$,
+    $e=qty("1.602e-19", "C")$,
+    $m_e=qty("9.109e-31", "kg")$, and
+    $epsilon_0=qty("8.854e-12", "F/m")$. Determine the electron plasma frequency,
     the electron cyclotron-frequency magnitude, and their ratio.
 
     Numerical result: $omega_(p,e)=qty("5.64e9", "s^-1")$,
@@ -198,7 +202,7 @@
 
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, fixed-ion electron response
-    with $bold(B)_0$ along $z$ and Gaussian-CGS conventions. At angular
+    with $bold(B)_0$ along $z$ and SI conventions. At angular
     frequency $omega=qty("1.00e10", "s^-1")$, use
     $omega_(p,e)=qty("5.64e9", "s^-1")$,
     $omega_(c,e)=qty("1.76e9", "s^-1")$, and the signed convention
@@ -267,8 +271,8 @@
     The refractive index $N=(k c)/omega$, normalized frequency is
     $W=omega/omega_(p,e)$, and magnetization is
     $Y=omega_(c,e)/omega_(p,e)$; all three are dimensionless. The dimensional
-    $k$ is in #unit("cm^-1"), $omega$ and $omega_(c,e)$ are in
-    #unit("s^-1"), and phase or group velocities are in #unit("cm/s").
+    $k$ is in #unit("m^-1"), $omega$ and $omega_(c,e)$ are in
+    #unit("s^-1"), and phase or group velocities are in #unit("m/s").
   ]
 
   #assumption(
@@ -400,7 +404,7 @@
       polarization plane rotates. The prescribed illustration uses
       $k_+ L_0=1.2$, $k_- L_0=0.8$, and $omega t_0=1$, with each component
       of amplitude $E_0/2$. Here $L_0$, $t_0$, and $E_0$ are reference
-      length, time, and electric-field scales in Gaussian CGS. At fixed
+      length, time, and electric-field scales in SI units. At fixed
       position the polarization axis is stationary in time; these prescribed
       wave numbers illustrate superposition rather than a fitted plasma.
     ],
@@ -409,12 +413,12 @@
 
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, fixed-ion electron response
-    with uniform $bold(B)_0$, parallel propagation, and Gaussian CGS. For the
+    with uniform $bold(B)_0$, parallel propagation, and SI units. For the
     fixed-ion plasma with
     $omega_(p,e)=qty("5.64e9", "s^-1")$,
     $omega_(c,e)=qty("1.76e9", "s^-1")$, and a parallel wave with
     $omega=qty("2.00e10", "s^-1")$ crossing a path of
-    $L=qty("10", "cm")$, determine the two refractive indices and the
+    $L=qty("0.10", "m")$, determine the two refractive indices and the
     Faraday-rotation angle $theta_F=((k_+-k_-)L)/2$.
 
     Numerical result: #normalized-label[$N_+=qty("0.963", "1")$],
@@ -479,7 +483,7 @@
     The angle $theta$ is dimensionless and measured in radians. The refractive
     index $N=(k c)/omega$, $W=omega/omega_(p,e)$, and
     $Y=omega_(c,e)/omega_(p,e)$ are dimensionless. Dimensional $k$ is in
-    #unit("cm^-1"), $omega$ in #unit("s^-1"), and wavelengths in #unit("cm").
+    #unit("m^-1"), $omega$ in #unit("s^-1"), and wavelengths in #unit("m").
   ]
 
   #assumption(
@@ -587,18 +591,18 @@
 
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, fixed-ion electron response
-    with perpendicular propagation, uniform $bold(B)_0$, and Gaussian CGS.
-    For $n_0=qty("1.0e10", "cm^-3")$ and $B_0=qty("100", "G")$, use
+    with perpendicular propagation, uniform $bold(B)_0$, and SI units.
+    For $n_0=qty("1.0e16", "m^-3")$ and $B_0=qty("1.0e-2", "T")$, use
     $omega_(p,e)=qty("5.64e9", "s^-1")$,
     $omega_(c,e)=qty("1.76e9", "s^-1")$, and
     $omega=qty("5.50e9", "s^-1")$. Classify the ordinary and extraordinary
     branches and report the wave number for the propagating branch.
 
     Numerical result: the ordinary branch is evanescent with
-    $alpha_O=qty("4.17e-2", "cm^-1")$; the extraordinary branch
+    $alpha_O=qty("4.17", "m^-1")$; the extraordinary branch
     propagates with #normalized-label[$N_X=qty("0.805", "1")$],
-    $k_X=qty("1.48e-1", "cm^-1")$, and
-    $lambda_X=qty("42.5", "cm")$.
+    $k_X=qty("14.8", "m^-1")$, and
+    $lambda_X=qty("0.425", "m")$.
   ]
 
   #interpretation(
@@ -656,7 +660,7 @@
     The propagation angle $theta$ is dimensionless. Use
     $N=(k c)/omega$, $X_(omega)=omega_(p,e)^2/omega^2$, and
     $Y_(omega)=omega_(c,e)/omega$, all dimensionless. The dimensional wave
-    number $k$ is in #unit("cm^-1") and frequency $omega$ in
+    number $k$ is in #unit("m^-1") and frequency $omega$ in
     #unit("s^-1").
   ]
 
@@ -778,7 +782,7 @@
 
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, fixed-ion electron response
-    with uniform $bold(B)_0$, oblique propagation, and Gaussian CGS. Use the
+    with uniform $bold(B)_0$, oblique propagation, and SI units. Use the
     normalized parameters
     #normalized-label[$Y=omega_(c,e)/omega_(p,e)=qty("0.30", "1")$],
     #normalized-label[$W=omega/omega_(p,e)=qty("1.50", "1")$], and
@@ -848,8 +852,8 @@
     $Y=omega_(c,e)/omega_(p,e)$ are dimensionless. Define the normalized wave
     number $K=(k c)/omega_(p,e)=W N$. The refractive index $N$
     and angle $theta$ are dimensionless; dimensional $k$ is in
-    #unit("cm^-1"), $omega$ in #unit("s^-1"), and wavelengths in
-    #unit("cm").
+    #unit("m^-1"), $omega$ in #unit("s^-1"), and wavelengths in
+    #unit("m").
   ]
 
   #assumption(
@@ -938,7 +942,7 @@
 
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, fixed-ion electron response
-    with uniform $bold(B)_0$ and Gaussian CGS. Let
+    with uniform $bold(B)_0$ and SI units. Let
     #normalized-label[$Y=omega_(c,e)/omega_(p,e)=qty("0.30", "1")$].
     Determine the normalized circular cutoffs and upper-hybrid resonance,
     then classify the ordinary and extraordinary modes at

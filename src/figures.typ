@@ -97,8 +97,8 @@
     curse of dimensionality: at fixed resolution per coordinate, the size
     of a full grid grows exponentially with the number of coordinates.
     The schematic
-    phase-space axes use Gaussian CGS position in #unit("cm") and velocity in
-    #unit("cm/s").
+    phase-space axes use SI position in #unit("m") and velocity in
+    #unit("m/s").
   ]
 
   if target() == "paged" {
@@ -241,8 +241,8 @@
               line((1.64, 0), (1.64, 2.4), stroke: 0.55pt + muted)
               line((2.46, 0), (2.46, 2.4), stroke: 0.55pt + muted)
               line((3.28, 0), (3.28, 2.4), stroke: 0.55pt + muted)
-              content((4.25, -0.1), [x #text(size: 7pt)[(#unit("cm") )]])
-              content((-0.25, 2.55), [v #text(size: 7pt)[(#unit("cm/s") )]])
+              content((4.25, -0.1), [x #text(size: 7pt)[(#unit("m") )]])
+              content((-0.25, 2.55), [v #text(size: 7pt)[(#unit("m/s") )]])
               content((3.45, 2.55), [2D])
               content((1.55, -0.48), [$10^4$ points])
             })
@@ -267,8 +267,8 @@
         leads to kinetic and fluid descriptions, with an additional
         assumption at each reduction.
         Here 6+1D means three position coordinates, three velocity
-        coordinates, and time; 3+1D retains position and time. In Gaussian
-        CGS, these coordinates are in #unit("cm"), #unit("cm/s"), and
+        coordinates, and time; 3+1D retains position and time. In SI,
+        these coordinates are in #unit("m"), #unit("m/s"), and
         #unit("s"), respectively. ODE and PDE denote ordinary and partial
         differential equations.
       ]
@@ -321,7 +321,7 @@
   alt: "A circular orbit in a uniform magnetic field. The orbit center is marked, the radius from the center to the particle is labelled gyroradius, and a straight arrow shows the perpendicular velocity at the particle.",
   caption: [
     Geometry of uniform-field gyromotion. The radius is the gyroradius
-    $rho$ (a length in Gaussian CGS), and the tangent arrow represents the
+    $rho$ (a length in #unit("m")), and the tangent arrow represents the
     perpendicular velocity $bold(v)_perp$.
   ],
 )[
@@ -361,16 +361,16 @@
     Linear Debye shielding for a permeable, uniformly charged sphere with
     $R/lambda_D = 0.5$. Both axes use unit #text("[1]"): the radius is
     normalized by the electron Debye length, and the potential by
-    $Q/lambda_D$. The dashed curve is the bare spherical source and the solid
+    $Q/(4 pi epsilon_0 lambda_D)$ in SI. The dashed curve is the bare spherical source and the solid
     curve is the solution of the linearized spherical Debye--Hückel
-    equation, including mobile plasma inside the source. Linearization requires $abs(e phi)/(k_B T_e) << 1$ throughout; normalization by $Q/lambda_D$ alone does not guarantee this. The curves are normalized Gaussian-CGS results.
+    equation, including mobile plasma inside the source. Linearization requires $abs(e phi)/(k_B T_e) << 1$ throughout; normalization by $Q/(4 pi epsilon_0 lambda_D)$ alone does not guarantee this. The curves are normalized SI results.
   ],
 )[
   #plot-diagram(
     width: 10cm,
     height: 5.6cm,
     xlabel: normalized-axis[$r \/ lambda_D$],
-    ylabel: normalized-axis[$phi \/ (Q \/ lambda_D)$],
+    ylabel: normalized-axis[$phi \/ (Q \/ (4 pi epsilon_0 lambda_D))$],
     ..curve(samples(0, 4, n: 160), r => model.sphere-bare(r),
       color: plot-orange, dash: "dashed"),
     ..curve(samples(0, 4, n: 160), r => model.sphere-screened(r)),
@@ -559,7 +559,7 @@
         node((-1.45, 1), [Mass-weighted sum \
           $rho, bold(u), bold(P)$]),
         node((1.45, 1), [Species difference \
-          $bold(E)+bold(u) times bold(B) \/ c$]),
+          $bold(E)+bold(u) times bold(B)$]),
         node((0, 2), [Single-fluid MHD \
           mass, momentum, induction]),
         edge((0, 0), (-1.45, 1), [sum], "->"),
@@ -586,7 +586,7 @@
           ]
           #html.div(class: "mhd-node mhd-node-ohm")[
             #html.strong[Species difference]
-            #html.span[$bold(E)+bold(u) times bold(B) \/ c$]
+            #html.span[$bold(E)+bold(u) times bold(B)$]
           ]
         ]
         #html.div(class: "mhd-arrow")[↓ closure and ordering]
@@ -601,7 +601,7 @@
 }
 
 #let mhd-ohm-balance = context {
-  let alt-description = "A generalized Ohm-law map places the ideal combination of electric field and bulk magnetic advection, E plus u cross B over c, at the top. Four arrows lead to the separate right-hand-side terms: resistive, Hall, electron-pressure, and electron-inertia."
+  let alt-description = "A generalized Ohm-law map places the ideal combination of electric field and bulk magnetic advection, E plus u cross B, at the top. Four arrows lead to the separate right-hand-side terms: resistive, Hall, electron-pressure, and electron-inertia."
   let caption-text = [
     Generalized Ohm's law is a balance of distinct physical effects. The
     simplified ideal form is obtained only after the retained corrections are
@@ -617,7 +617,7 @@
         spacing: (0.55cm, 1.3cm),
         ..concept-style,
         node((0, 0), [Generalized Ohm law \
-          $bold(E)+bold(u) times bold(B) \/ c = dots$]),
+          $bold(E)+bold(u) times bold(B) = dots$]),
         node((-3, 1), [Resistive \ $eta bold(j)$]),
         node((-1, 1), [Hall \ $bold(j) times bold(B) \/ (e n c)$]),
         node((1, 1), [Electron pressure \ $-grad p_e \/ (e n)$]),
@@ -637,7 +637,7 @@
       )[
         #html.div(class: "mhd-node mhd-node-wide")[
           #html.strong[Generalized Ohm law]
-          #html.span[$bold(E)+bold(u) times bold(B) \/ c$]
+          #html.span[$bold(E)+bold(u) times bold(B)$]
         ]
         #html.div(class: "mhd-arrow")[four corrections are ordered separately]
         #html.div(class: "mhd-term-grid")[
@@ -685,7 +685,7 @@
         node((-1.35, 1), [Nearly ideal \
           $R_m >> 1$]),
         node((1.35, 1), [Finite resistivity \
-          $D_B=c^2 eta \/ (4 pi)$]),
+          $D_B=eta \/ mu_0$]),
         node((-1.35, 2), [Approximately frozen flux \
           field lines move with $bold(u)$]),
         node((1.35, 2), [Diffusion \
@@ -714,7 +714,7 @@
           ]
           #html.div(class: "mhd-node mhd-node-diffusion")[
             #html.strong[Finite resistivity]
-            #html.span[$D_B=c^2 eta \/ (4 pi)$; diffusion time $tau_D=L^2 \/ D_B$]
+            #html.span[$D_B=eta \/ mu_0$; diffusion time $tau_D=L^2 \/ D_B$]
           ]
         ]
         #html.div(class: "mhd-arrow")[advection dominates ↔ diffusion permits topology changes]
@@ -725,7 +725,7 @@
 }
 
 #let mhd-force-balance = context {
-  let alt-description = "A static MHD force-balance diagram shows pressure-gradient force balanced by magnetic force density. The equilibrium condition is grad p equals j cross B divided by c, and both forces are perpendicular to the magnetic field."
+  let alt-description = "A static MHD force-balance diagram shows pressure-gradient force balanced by magnetic force density. The equilibrium condition is grad p equals j cross B, and both forces are perpendicular to the magnetic field."
   let caption-text = [
     Static MHD equilibrium is a local force balance. In a smooth isotropic
     plasma, pressure gradients are perpendicular to the field and are balanced
@@ -745,9 +745,9 @@
         node((-1.4, 1), [Pressure force \
           $-grad p$]),
         node((1.4, 1), [Magnetic force \
-          $bold(j) times bold(B) \/ c$]),
+          $bold(j) times bold(B)$]),
         node((0, 2), [Force balance \
-          $grad p=bold(j) times bold(B) \/ c$]),
+          $grad p=bold(j) times bold(B)$]),
         edge((0, 0), (-1.4, 1), [pressure], "->"),
         edge((0, 0), (1.4, 1), [magnetic], "->"),
         edge((-1.4, 1), (0, 2), [balance], "->"),
@@ -773,13 +773,13 @@
           ]
           #html.div(class: "mhd-node mhd-node-magnetic")[
             #html.strong[Magnetic force]
-            #html.span[$bold(j) times bold(B) \/ c$]
+            #html.span[$bold(j) times bold(B)$]
           ]
         ]
         #html.div(class: "mhd-arrow")[↓ equilibrium]
         #html.div(class: "mhd-node mhd-node-result")[
           #html.strong[Force balance]
-          #html.span[$grad p=bold(j) times bold(B) \/ c$]
+          #html.span[$grad p=bold(j) times bold(B)$]
         ]
       ]
       #html.figcaption[#caption-text]
@@ -977,8 +977,8 @@
     Conserved one-dimensional diffusion from a point source:
     $n/n_0=tau^(-1/2) exp(-xi^2/(4 tau))$, where $xi=x/L_0$,
     $tau=t/tau_D$, $tau_D=L_0^2/D$, and $n_0=N_0/(sqrt(4 pi) L_0)$.
-    For volumetric density $n$ in #unit("cm^-3"), the conserved column
-    $N_0=integral n dif x$ has units #unit("cm^-2").
+    For volumetric density $n$ in #unit("m^-3"), the conserved column
+    $N_0=integral n dif x$ has units #unit("m^-2").
     At $tau=4$ the width doubles and the peak halves relative to $tau=1$.
     The full-line area is constant; the displayed window truncates the tails.
     Both axes and normalized times use unit #text("[1]").
@@ -1296,7 +1296,7 @@
         spacing: (2.1cm, 1.2cm),
         ..concept-style,
         node((0, 0), [Cold momentum \
-          $-i omega m_(s) bold(u)_(s)=q_(s)(bold(E)+bold(u)_(s) times bold(B)_(0) \/ c)$]),
+          $-i omega m_(s) bold(u)_(s)=q_(s)(bold(E)+bold(u)_(s) times bold(B)_(0))$]),
         node((-1.35, 1), [Transverse response \
           $epsilon_(perp), epsilon_(times)$]),
         node((1.35, 1), [Parallel response \
@@ -1321,7 +1321,7 @@
       )[
         #html.div(class: "mhd-node mhd-node-wide")[
           #html.strong[Cold momentum]
-          #html.span[$-i omega m_(s) bold(u)_(s)=q_(s)(bold(E)+bold(u)_(s) times bold(B)_(0) \/ c)$]
+          #html.span[$-i omega m_(s) bold(u)_(s)=q_(s)(bold(E)+bold(u)_(s) times bold(B)_(0))$]
         ]
         #html.div(class: "mhd-arrow")[split by direction]
         #html.div(class: "mhd-branches")[
@@ -1690,7 +1690,7 @@
         node((0, 0), [Warm MHD \
           pressure + magnetic field]),
         node((-1.35, 1), [Magnetic pressure \
-          $v_A^2=B_0^2/(4 pi rho_0)$]),
+          $v_A^2=B_0^2/(mu_0 rho_0)$]),
         node((1.35, 1), [Pressure \
           $v_s^2=(gamma p_0)/rho_0$]),
         node((0, 2), [Compression \
@@ -1715,7 +1715,7 @@
         #html.div(class: "mhd-branches")[
           #html.div(class: "mhd-node mhd-node-hall")[
             #html.strong[Magnetic pressure]
-            #html.span[$v_A^2=B_0^2/(4 pi rho_0)$]
+            #html.span[$v_A^2=B_0^2/(mu_0 rho_0)$]
           ]
           #html.div(class: "mhd-node mhd-node-ohm")[
             #html.strong[Thermal pressure]

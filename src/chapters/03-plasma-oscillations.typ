@@ -27,9 +27,9 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Let the equilibrium density be $n_0$ in
-    $upright("cm")^(-3)$, the electron displacement $xi$ in cm, the electric field in
-    statvolt per centimetre, and time in seconds. Ions are singly charged and
+    SI is active. Let the equilibrium density be $n_0$ in
+    #unit("m^-3"), the electron displacement $xi$ in #unit("m"), the electric field in
+    #unit("V/m"), and time in seconds; $epsilon_0$ is the vacuum permittivity. Ions are singly charged and
     initially stationary.
   ]
 
@@ -44,65 +44,65 @@
   A displacement creates two oppositely charged boundary sheets. The sheet
   charge magnitude is $e n_0 abs(xi)$, so the electric field between them is
 
-  $ bold(E) = 4 pi e n_0 xi bold(e)_x $ <plasma-oscillation-field>
+  $ bold(E) = (e n_0 xi)/epsilon_0 bold(e)_x $ <plasma-oscillation-field>
 
   #equation-note[
-    Gaussian CGS. $bold(e)_x$ is a fixed unit vector and $xi$ is the signed
+    SI. $bold(e)_x$ is a fixed unit vector and $xi$ is the signed
     electron displacement along it. The field reverses when $xi$ changes sign
     and the electron force points opposite to it. The field
-    is in statvolt per centimetre when $n_0$ is in $upright("cm")^(-3)$ and $xi$ in $upright("cm")$.
+    is in #unit("V/m") when $n_0$ is in #unit("m^-3") and $xi$ in #unit("m").
   ]
 
   The electron force is opposite to the displacement:
 
-  $ m_e dv(xi,t,2) = -e E = -4 pi n_0 e^2 xi $ <plasma-oscillation-force>
+  $ m_e dv(xi,t,2) = -e E = -(n_0 e^2)/epsilon_0 xi $ <plasma-oscillation-force>
 
   #equation-note[
-    Gaussian CGS. The force is in dynes. The negative sign is the restoring
+    SI. The force is in #unit("N"). The negative sign is the restoring
     sign for the electron charge $-e$.
   ]
 
   Dividing by $m_e$ gives the harmonic-oscillator equation
 
-  $ dv(xi,t,2) + omega_(p,e)^2 xi = 0, quad omega_(p,e) = sqrt((4 pi n_0 e^2)/m_e) $ <plasma-oscillation-frequency>
+  $ dv(xi,t,2) + omega_(p,e)^2 xi = 0, quad omega_(p,e) = sqrt((n_0 e^2)/(epsilon_0 m_e)) $ <plasma-oscillation-frequency>
 
   #equation-note[
-    Gaussian CGS. $omega_(p,e)$ is an angular frequency in $upright("s")^(-1)$.
+    SI. $omega_(p,e)$ is an angular frequency in $upright("s")^(-1)$.
     The cold model has no damping and no thermal dispersive correction.
   ]
 
   #strong[Frequency and length scales] <oscillation-scales>
 
-  For a homogeneous species $s$ with number density $n_s$ in #unit("cm^-3"),
-  charge $q_s$ in statcoulomb, and mass $m_s$ in grams, the plasma frequency is
+  For a homogeneous species $s$ with number density $n_s$ in #unit("m^-3"),
+  charge $q_s$ in #unit("C"), and mass $m_s$ in #unit("kg"), the plasma frequency is
 
-  $ omega_(p,s) = sqrt((4 pi n_s q_s^2) / m_s) $ <intro-plasma-frequency>
+  $ omega_(p,s) = sqrt((n_s q_s^2) / (epsilon_0 m_s)) $ <intro-plasma-frequency>
 
   #equation-note[
-    Gaussian CGS. $omega_(p,s)$ is in $upright("s")^(-1)$ as an angular frequency.
+    SI. $omega_(p,s)$ is in $upright("s")^(-1)$ as an angular frequency.
     The corresponding ordinary frequency is $f_(p,s) = omega_(p,s)/(2 pi)$
     in hertz.
   ]
 
-  The electron Debye length $lambda_D$, in #unit("cm"), is also related to the distance an electron at the thermal
+  The electron Debye length $lambda_D$, in #unit("m"), is also related to the distance an electron at the thermal
   speed travels during an inverse plasma frequency:
 
   $ lambda_D = v_("th,e")/(sqrt(2) omega_(p,e)),
     quad omega_(p,e) = v_("th,e")/(sqrt(2) lambda_D) $ <intro-plasma-frequency-debye-relation>
 
   #equation-note[
-    Gaussian CGS. The factor $sqrt(2)$ follows from the convention
+    SI. The factor $sqrt(2)$ follows from the convention
     $v_("th,e")=sqrt((2 k_B T_e)/m_e)$. If a source defines thermal speed as
     $sqrt((k_B T_e)/m_e)$, the same relation is written without that factor.
   ]
 
   The species inertial length $d_s=c/omega_(p,s)$ compares a light-transit
-  time with the plasma-response time. In Gaussian CGS, $c$ is in
-  #unit("cm/s") and $d_s$ is in #unit("cm"). This electromagnetic scale
+  time with the plasma-response time. In SI, $c$ is in
+  #unit("m/s") and $d_s$ is in #unit("m"). This electromagnetic scale
   differs from the thermal screening length derived in
   #chapter-link("intro-debye-shielding")[Debye shielding].
   Here $v_("th,e")=sqrt((2 k_B T_e)/m_e)$ is the electron thermal-speed
-  convention, in #unit("cm/s"); $T_e$ is in kelvin.
+  convention, in #unit("m/s"); $T_e$ is in kelvin.
 
   #details(
     [Derivation: the displacement oscillator],
@@ -114,12 +114,12 @@
 
     Gauss's law for two infinite sheets gives the uniform internal field
 
-    $ E=4 pi e n_0 xi .$
+    $ E=(e n_0 xi)/epsilon_0 .$
 
     #derivation-step[Identify the oscillator]
     An electron feels $F=-e E$, so
 
-    $ m_e dv(xi,t,2)=-4 pi n_0 e^2 xi .$
+    $ m_e dv(xi,t,2)=-(n_0 e^2)/epsilon_0 xi .$
 
     The coefficient of $xi$ has units of $upright("s")^(-2)$ and identifies the
     square of the plasma frequency. Within the small-amplitude model,
@@ -136,7 +136,7 @@
       a restoring electron force. The animation uses $xi/xi_0$ and
       $tau=omega_(p,e) t$, both with unit [1]. The position scale $L_0$
       satisfies $xi_0/L_0=0.55$. The field scale is
-      $E_0=4 pi e n_0 xi_0$; field and electron force are shown as
+      $E_0=(e n_0 xi_0)/epsilon_0$; field and electron force are shown as
       $E/E_0$ and $F_e/(e E_0)$, respectively, both with unit [1].
       This is an illustrative model, not measured data.
     ],

@@ -37,11 +37,11 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Number density $n_s$ is in #unit("cm^-3"), a
-    neutral collision cross section $sigma$ is in #unit("cm^2"), speed is in
-    #unit("cm/s"), mean free path is in #unit("cm"), and collision frequency
-    is in #unit("s^-1"). Charge is in statcoulomb and energy is in
-    #unit("erg"). The dimensionless parameters $K_"n"$ and $ln Lambda$ are
+    SI units are active. Number density $n_s$ is in #unit("m^-3"), a
+    neutral collision cross section $sigma$ is in #unit("m^2"), speed is in
+    #unit("m/s"), mean free path is in #unit("m"), and collision frequency
+    is in #unit("s^-1"). Charge is in #unit("C") and energy is in
+    #unit("J"). The dimensionless parameters $K_"n"$ and $ln Lambda$ are
     explicitly marked as such.
   ]
 
@@ -61,8 +61,8 @@
   $ dv(S,ell) = -n_b sigma_(a b) S, quad S(0)=1 $ <kinetic-survival>
 
   #equation-note[
-    The coefficient $n_b sigma_(a b)$ has units #unit("cm^-1") in Gaussian
-    CGS. The equation describes loss from the uncollided population, not loss
+    The coefficient $n_b sigma_(a b)$ has units #unit("m^-1") in SI.
+    The equation describes loss from the uncollided population, not loss
     of particles from the plasma.
   ]
 
@@ -73,7 +73,7 @@
     lambda_("mfp", a b) = v_"rel" / nu_(a b) $ <kinetic-mfp>
 
   #equation-note[
-    The mean free path is in #unit("cm") and the collision frequency is in
+    The mean free path is in #unit("m") and the collision frequency is in
     #unit("s^-1"). The relation uses the same relative speed in both
     quantities.
   ]
@@ -135,14 +135,14 @@
   speed $v_"rel"$ and reduced mass $m_r$, the classical impact parameter for
   a ninety-degree deflection is
 
-  $ m_r v_"rel"^2 b_90 = abs(q_a q_b), quad
-    b_90 = abs(q_a q_b)/(m_r v_"rel"^2), quad
+  $ m_r v_"rel"^2 b_90 = abs(q_a q_b)/(4 pi epsilon_0), quad
+    b_90 = abs(q_a q_b)/(4 pi epsilon_0 m_r v_"rel"^2), quad
     m_r = (m_a m_b)/(m_a+m_b) $ <kinetic-b90>
 
   #equation-note[
-    Gaussian CGS is used in the electrostatic relation. The potential energy
-    of two charges is $(q_a q_b)/r$ in #unit("erg"), so $b_90$ is in
-    #unit("cm").]
+    SI units are used in the electrostatic relation. The potential energy
+    of two charges is $(q_a q_b)/(4 pi epsilon_0 r)$ in #unit("J"), so
+    $b_90$ is in #unit("m").]
 
   The small-angle contributions add a logarithmic weight over impact
   parameters. With $b_"max"$ set by collective screening and
@@ -165,7 +165,7 @@
   $a$ in a background $b$ is
 
   $ nu_(a b) "scales as"
-    (n_b q_a^2 q_b^2 ln Lambda)/(m_a^2 v_a^3) $ <kinetic-coulomb-frequency>
+    (n_b q_a^2 q_b^2 ln Lambda)/(epsilon_0^2 m_a^2 v_a^3) $ <kinetic-coulomb-frequency>
 
   #equation-note[
     This is a scaling relation. Numerical coefficients and the replacement of
@@ -196,12 +196,12 @@
     effectively collisionless over the time $tau$.]
 
   #rechenbeispiel[
-    Consider a weakly ionized gas with $n_b = qty("1e12", "cm^-3")$,
-    $sigma_(a b) = qty("1e-15", "cm^2")$, and
-    $v_"rel" = qty("1e8", "cm/s")$. Use the neutral-collision model above.
+    Consider a weakly ionized gas with $n_b = qty("1e18", "m^-3")$,
+    $sigma_(a b) = qty("1e-19", "m^2")$, and
+    $v_"rel" = qty("1e6", "m/s")$. Use the neutral-collision model above.
     Determine the mean free path and collision frequency.
 
-    Numerical result: $lambda_"mfp" = qty("1e3", "cm")$ and
+    Numerical result: $lambda_"mfp" = qty("10", "m")$ and
     $nu_(a b) = qty("1e5", "s^-1")$.
   ]
 
@@ -264,12 +264,12 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Position is in #unit("cm"), velocity in
-    #unit("cm/s"), and the phase-space measure
-    $dif^3 bold(r) dif^3 bold(v)$ has units #unit("cm^6 s^-3"). The
-    distribution $f_s$ therefore has units #unit("s^3 cm^-6") so that its
+    SI units are active. Position is in #unit("m"), velocity in
+    #unit("m/s"), and the phase-space measure
+    $dif^3 bold(r) dif^3 bold(v)$ has units #unit("m^6 s^-3"). The
+    distribution $f_s$ therefore has units #unit("s^3 m^-6") so that its
     integral over a phase-space cell gives a particle count. The moments $n_s$
-    and $bold(u)_s$ are in #unit("cm^-3") and #unit("cm/s"), respectively.
+    and $bold(u)_s$ are in #unit("m^-3") and #unit("m/s"), respectively.
   ]
 
   #definition(
@@ -294,7 +294,7 @@
     The average is local in position. Setting $g=1$ gives one, while setting
     $g=bold(v)$ gives the bulk velocity $bold(u)_s$. The factor
     $(f_s)/(n_s)$ is a velocity-space probability density with units
-    #unit("s^3 cm^-3").]
+    #unit("s^3 m^-3").]
 
   At a fixed position, the velocity integral gives the number density:
 
@@ -302,7 +302,7 @@
 
   #equation-note[
     The velocity integral is over all of $RR^3$. The result is a number
-    density in #unit("cm^-3"). The position dependence remains because the
+    density in #unit("m^-3"). The position dependence remains because the
     integration removes velocity information only.
   ]
 
@@ -316,9 +316,9 @@
   #equation-note[
     $bold(w)$ is the random velocity measured in the local bulk frame. The
     dyadic product $bold(w) bold(w)$ has components $w_i w_j$: each pairs two
-    components of the random velocity. In Gaussian CGS,
-    $bold(P)_s$ is a momentum-flux or pressure tensor with force-per-area
-    units. Its scalar isotropic part is introduced in the moments chapter.
+    components of the random velocity. In SI,
+    $bold(P)_s$ is a momentum-flux or pressure tensor in #unit("Pa")
+    (force per area). Its scalar isotropic part is introduced in the moments chapter.
   ]
 
   A local equilibrium distribution with uniform temperature $T_s$ and drift
@@ -329,7 +329,7 @@
 
   #equation-note[
     Temperature is expressed through the thermal energy $k_B T_s$ in
-    #unit("erg"). The one-dimensional standard deviation is
+    #unit("J"). The one-dimensional standard deviation is
     $sqrt((k_B T_s)/m_s)$, while the parameter
     $v_"th,s"=sqrt((2 k_B T_s)/m_s)$ is the thermal-speed convention from
     Chapter 1. The plot below shows a one-component velocity distribution,
@@ -478,8 +478,8 @@
   ))
 
   #unit-ledger[
-    The dimensional variables are $bold(r)$ in #unit("cm"), $bold(v)$ in
-    #unit("cm/s"), and $bold(a)$ in #unit("cm/s^2"). For the phase-space
+    SI units are active. The dimensional variables are $bold(r)$ in
+    #unit("m"), $bold(v)$ in #unit("m/s"), and $bold(a)$ in #unit("m/s^2"). For the phase-space
     characteristic $bold(z)=(bold(r),bold(v))$, the two blocks of its velocity
     are $bold(V)_z=(bold(v),bold(a))$. We also use the normalized variables
     $xi=bold(r)/L_0$, $eta=bold(v)/v_0$, and
@@ -501,8 +501,8 @@
     quad bold(z)=(bold(r),bold(v)) $ <kinetic-characteristic>
 
   #equation-note[
-    Position has units #unit("cm"), velocity has units #unit("cm/s"), and
-    acceleration has units #unit("cm/s^2"). The phase-space coordinate is a
+    Position has units #unit("m"), velocity has units #unit("m/s"), and
+    acceleration has units #unit("m/s^2"). The phase-space coordinate is a
     bookkeeping pair with mixed units, so its normalized version is useful for
     visualizations.
   ]
@@ -661,16 +661,17 @@
   ]
 
   #objectives((
-    [write the Boltzmann equation for a species in Gaussian CGS],
+    [write the Boltzmann equation for a species in SI units],
     [transform its conservative form into convective form],
     [state the phase-space incompressibility condition for Lorentz motion],
     [distinguish the collisional Boltzmann equation from the collisionless Vlasov equation],
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. For species $s$, $q_s$ is in statcoulomb, $m_s$ is
-    in grams, $bold(E)$ is in statvolt per centimetre, $bold(B)$ is in gauss,
-    and $bold(a)_s$ is in #unit("cm/s^2"). The collision operator has units
+    SI units are active. For species $s$, $q_s$ is in #unit("C"), $m_s$ is
+    in #unit("kg"), $bold(E)$ is in #unit("V/m"), $bold(B)$ is in #unit("T"),
+    and $bold(a)_s$ is in #unit("m/s^2"). The vacuum permittivity
+    $epsilon_0$ and permeability $mu_0$ appear in the field equations. The collision operator has units
     of $f_s$ per second, so it is written as #unit("s^-1") times a
     distribution density.
   ]
@@ -687,16 +688,16 @@
     $ dv(bold(r)_(a)(t), t) = bold(v)_(a)(t) $
 
     $ m_a dv(bold(v)_(a)(t), t) = q_a [bold(E)(bold(r)_(a)(t), t)
-      + (bold(v)_(a)(t) times bold(B)(bold(r)_(a)(t), t))/c] $
+      + bold(v)_(a)(t) times bold(B)(bold(r)_(a)(t), t)] $
 
     $ rho_q (bold(r), t) = sum_a q_a delta(bold(r) - bold(r)_(a)(t)),
       quad bold(j)(bold(r), t) = sum_a q_a bold(v)_(a)(t)
         delta(bold(r) - bold(r)_(a)(t)) $
 
-    $ div(bold(E)) = 4 pi rho_q, quad div(bold(B)) = 0 $
+    $ div(bold(E)) = rho_q/epsilon_0, quad div(bold(B)) = 0 $
 
-    $ curl(bold(E)) = -1/c pdv(bold(B), t),
-      quad curl(bold(B)) = (4 pi)/c bold(j) + 1/c pdv(bold(E), t) $
+    $ curl(bold(E)) = -pdv(bold(B), t),
+      quad curl(bold(B)) = mu_0 bold(j) + mu_0 epsilon_0 pdv(bold(E), t) $
 
     The discrete particle sources are coarse-grained when one passes to a
     kinetic distribution or to fluid moments. This is the sense in which the
@@ -705,14 +706,14 @@
     assumptions stated here.]
   )
 
-  The electromagnetic acceleration follows from the Gaussian-CGS Lorentz
+  The electromagnetic acceleration follows from the SI Lorentz
   force:
 
-  $ bold(a)_s = q_s/m_s (bold(E) + (bold(v) times bold(B))/c) $ <kinetic-acceleration>
+  $ bold(a)_s = q_s/m_s (bold(E) + bold(v) times bold(B)) $ <kinetic-acceleration>
 
   #equation-note[
-    The speed of light $c$ is in #unit("cm/s"). The acceleration is in
-    #unit("cm/s^2"). The magnetic term changes the direction of velocity and
+    The acceleration is in
+    #unit("m/s^2"). The magnetic term changes the direction of velocity and
     the electric term can change its magnitude.
   ]
 
@@ -760,7 +761,7 @@
   When the collision operator is neglected, this becomes the Vlasov equation:
 
   $ pdv(f_s,t) + bold(v) dot grad(f_s)
-    + q_s/m_s (bold(E) + (bold(v) times bold(B))/c)
+    + q_s/m_s (bold(E) + bold(v) times bold(B))
       dot pdv(f_s,bold(v)) = 0 $ <kinetic-vlasov>
 
   #equation-note[
@@ -889,9 +890,9 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. The electrostatic potential $Phi$ is in statvolt,
-    so $q_s Phi$ is an energy in #unit("erg"). Temperature enters through
-    $k_B T_s$ in #unit("erg"). The ratios $nu tau$, $K_"n"$, and
+    SI units are active. The electrostatic potential $Phi$ is in #unit("V"),
+    so $q_s Phi$ is an energy in #unit("J"). Temperature enters through
+    $k_B T_s$ in #unit("J"). The ratios $nu tau$, $K_"n"$, and
     $lambda_D/L$ are dimensionless and must not be read as dimensional
     frequencies or lengths.
   ]
@@ -920,7 +921,7 @@
 
   #equation-note[
     The exponent is dimensionless because both $q_s Phi$ and $k_B T_s$ are
-    energies in #unit("erg"). For electrons, $q_e<0$, so a positive
+    energies in #unit("J"). For electrons, $q_e<0$, so a positive
     potential increases the electron density in this convention.
   ]
 
@@ -988,7 +989,7 @@
   $ E_(F,e) = (ℏ^2 / (2 m_e)) (3 pi^2 n_e)^(2/3) $
 
   #equation-note[
-    Gaussian CGS. $E_(F,e)$ and $k_B T_e$ are energies in #unit("erg"),
+    SI units. $E_(F,e)$ and $k_B T_e$ are energies in #unit("J"),
     and $theta_e$ is dimensionless. The classical limit has $theta_e >> 1$;
     $theta_e <= 1$ signals quantum degeneracy. White-dwarf interiors and
     dense laser-compressed matter are representative settings.
@@ -1019,8 +1020,8 @@
     ),
     (
       question: [Why is $(q_s Phi)/(k_B T_s)$ dimensionless?],
-      answer: [Both the numerator and denominator are energies in Gaussian
-      CGS, so their ratio has no units.],
+      answer: [Both the numerator and denominator are energies in #unit("J"),
+      so their ratio has no units.],
     ),
     (
       question: [Which ordering supports a local fluid closure?],

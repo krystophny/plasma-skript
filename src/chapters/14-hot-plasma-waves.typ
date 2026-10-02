@@ -43,11 +43,13 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Number density $n_s$ is in #unit("cm^-3"),
-    velocity is in #unit("cm/s"), position is in #unit("cm"), frequency and
-    wave number are in #unit("s^-1") and #unit("cm^-1"), mass is in #unit("g"),
-    $bold(E)$ is in statvolt per #unit("cm"), and $f_s$ is a phase-space
-    density with units #unit("cm^-6 s^3"). The Debye length is in #unit("cm").
+    SI units are used throughout. Number density $n_s$ is in #unit("m^-3"),
+    velocity is in #unit("m/s"), position is in #unit("m"), frequency and
+    wave number are in #unit("s^-1") and #unit("m^-1"), mass is in #unit("kg"),
+    charge is in #unit("C"), $bold(E)$ is in #unit("V/m"), and $f_s$ is a
+    phase-space density with units #unit("m^-6 s^3"). The vacuum
+    permittivity $epsilon_0$ is in #unit("F/m"). The Debye length is in
+    #unit("m").
     The plasma dispersion function, $k lambda_D$, and $omega/omega_(p,e)$ are
     dimensionless.
   ]
@@ -66,7 +68,7 @@
     [Kinetic perturbation],
     [The collisionless kinetic equation for species $s$ is
     $pdv(f_s,t)+bold(v) dot grad(f_s)+
-      (q_s/m_s) (bold(E)+(bold(v) times bold(B))/c) dot
+      (q_s/m_s) (bold(E)+bold(v) times bold(B)) dot
       pdv(f_s,bold(v))=0$.
     Expand
     $f_s=f_(s,0)(bold(v))+epsilon f_(s,1)(bold(r),bold(v),t)$,
@@ -83,7 +85,7 @@
     [For a longitudinal perturbation with $bold(k) parallel bold(E)_1$,
     the allowed modes satisfy
     $epsilon_(L)(omega,bold(k))=1+
-      sum_s (4 pi q_s^2)/(m_s k^2)
+      sum_s q_s^2/(epsilon_0 m_s k^2)
       integral_(-infinity)^infinity
       [bold(k) dot pdv(f_(s,0)(bold(v)),bold(v))]/
       [omega-bold(k) dot bold(v)] dif^3 bold(v)=0$.
@@ -96,7 +98,7 @@
     $v_"te"=sqrt((2 k_B T_e)/m_e)$, and
     $epsilon_L=1+1/(k^2 lambda_D^2)[1+zeta Z(zeta)]$ with
     $zeta=omega/(k v_"te")$ and
-    $lambda_D^2=(k_B T_e)/(4 pi n_0 e^2)$.
+    $lambda_D^2=(epsilon_0 k_B T_e)/(n_0 e^2)$.
     Here $Z(zeta)=1/sqrt(pi) integral exp(-x^2)/(x-zeta) dif x$ is the
     plasma dispersion function on that contour from $-infinity$ to
     $infinity$; $x=v_(parallel)/v_"te"$ is a dimensionless integration
@@ -142,11 +144,11 @@
       integral (bold(k) dot pdv(f_(s,0),bold(v)))/
       (omega-bold(k) dot bold(v)) dif^3 bold(v) .$
 
-    In Gaussian CGS, Poisson's equation is
+    In SI units, Poisson's equation is
 
-    $ div(bold(E)_1)=4 pi rho_1 .$
+    $ div(bold(E)_1)=rho_1/epsilon_0 .$
 
-    After the Fourier substitution, $k^2 phi_1=4 pi rho_1$. A nonzero
+    After the Fourier substitution, $k^2 phi_1=rho_1/epsilon_0$. A nonzero
     potential therefore requires the displayed condition $epsilon_L=0$.
 
     #derivation-step[Evaluate an isotropic Maxwellian]
@@ -184,18 +186,19 @@
   #hot-isotropic-dispersion
 
   #rechenbeispiel[
-    Use $n_0=qty("1.0e10", "cm^-3")$,
-    $k_B T_e=qty("1.602e-11", "erg")$,
-    $m_e=qty("9.109e-28", "g")$, and
-    $e=qty("4.803e-10", "statcoulomb")$. Take
+    Use $n_0=qty("1.0e16", "m^-3")$,
+    $k_B T_e=qty("1.602e-18", "J")$ (that is, $qty("10", "eV")$),
+    $m_e=qty("9.109e-31", "kg")$,
+    $e=qty("1.602e-19", "C")$, and
+    $epsilon_0=qty("8.854e-12", "F/m")$. Take
     #normalized-label[$k lambda_D=qty("0.20", "1")$] and use the
     long-wavelength warm approximation
     #normalized-label[$omega_r^2/omega_(p,e)^2 approx
       1+3(k lambda_D)^2$].
     Determine $lambda_D$, $k$, and $omega_r$.
 
-    Numerical result: $lambda_D approx qty("2.35e-2", "cm")$,
-    $k approx qty("8.51", "cm^-1")$, and
+    Numerical result: $lambda_D approx qty("2.35e-4", "m")$,
+    $k approx qty("851", "m^-1")$, and
     #normalized-label[$omega_r/omega_(p,e) approx qty("1.06", "1")$] or
     $omega_r approx qty("5.97e9", "s^-1")$.
   ]
@@ -256,11 +259,11 @@
 
   #unit-ledger[
     The phase velocity $v_"phi"$ and thermal speed $v_"te"$ are in
-    #unit("cm/s"). The resonant velocity $v_"res"$ is in #unit("cm/s"),
+    #unit("m/s"). The resonant velocity $v_"res"$ is in #unit("m/s"),
     $omega_r$ and the weak rate $gamma$ are in #unit("s^-1"), and $k$ is in
-    #unit("cm^-1"). The one-dimensional marginal $F_(s,0)$ is in
-    #unit("cm^-4 s"), and its slope $dv(F_(s,0),v)$ is in
-    #unit("cm^-5 s^2"). The ratios $v_"phi"/v_"te"$ and
+    #unit("m^-1"). The one-dimensional marginal $F_(s,0)$ is in
+    #unit("m^-4 s"), and its slope $dv(F_(s,0),v)$ is in
+    #unit("m^-5 s^2"). The ratios $v_"phi"/v_"te"$ and
     $gamma/omega_(p,e)$ are dimensionless.
   ]
 
@@ -315,7 +318,7 @@
     Choose $bold(k)=k bold(e)_z$ with $k>0$. Integrate the three-dimensional
     response over $v_x,v_y$ before integrating by parts in $v$:
 
-    $ epsilon_L=1-sum_s (4 pi q_s^2)/(m_s k^2)
+    $ epsilon_L=1-sum_s q_s^2/(epsilon_0 m_s k^2)
       integral_(-infinity)^infinity
       (dv(F_(s,0),v))/(v-omega/k) dif v .$
 
@@ -323,7 +326,7 @@
     Since $dv(1/(v-omega/k),v)=-1/(v-omega/k)^2$, this becomes
 
     $ epsilon_L=1-
-      sum_s (4 pi q_s^2)/(m_s k^2)
+      sum_s q_s^2/(epsilon_0 m_s k^2)
       integral_(-infinity)^infinity
       F_(s,0)(v)/(v-omega/k)^2 dif v .$
 
@@ -341,7 +344,7 @@
     Here $upright("PV")$ denotes the Cauchy principal value. Consequently,
 
     $ Im(epsilon_(L)(omega_r,k))=
-      -sum_s (4 pi^2 q_s^2)/(m_s k^2)
+      -sum_s (pi q_s^2)/(epsilon_0 m_s k^2)
         dv(F_(s,0),v) .$
 
     Each derivative on the right is evaluated at $v=omega_r/k$.
@@ -355,9 +358,9 @@
   #hot-velocity-space-slopes
 
   #rechenbeispiel[
-    For $n_0=qty("1.0e10", "cm^-3")$ and
-    $k_B T_e=qty("1.602e-11", "erg")$, use
-    $lambda_D=qty("2.35e-2", "cm")$ and
+    For $n_0=qty("1.0e16", "m^-3")$ and
+    $k_B T_e=qty("1.602e-18", "J")$, use
+    $lambda_D=qty("2.35e-4", "m")$ and
     $omega_(p,e)=qty("5.64e9", "s^-1")$. At
     #normalized-label[$k lambda_D=qty("0.30", "1")$], estimate
     #normalized-label[$omega_r/omega_(p,e)$] from the long-wave real root,
@@ -424,8 +427,8 @@
   #unit-ledger[
     The real frequency $omega_r$, temporal rate $gamma$, and plasma frequency
     $omega_(p,e)$ are in #unit("s^-1"). The wave number $k$ is in
-    #unit("cm^-1"), the group velocity is in #unit("cm/s"), and the temporal
-    and spatial e-folding scales are in #unit("s") and #unit("cm"). Rates
+    #unit("m^-1"), the group velocity is in #unit("m/s"), and the temporal
+    and spatial e-folding scales are in #unit("s") and #unit("m"). Rates
     normalized by $omega_(p,e)$ and wave numbers normalized by $lambda_D$ are
     dimensionless.
   ]
@@ -541,7 +544,7 @@
       It starts at $X=-1.4$, $V=1.12$ and displays
       $X-0.92 tau$ and $V-0.92$. The field scale is
       $E_0=(m_e v_0^2)/(e L_0)$; $L_0$ and $v_0$ are reference length
-      and speed in Gaussian CGS. In the distribution panel $v_0=v_"te"$;
+      and speed in SI units. In the distribution panel $v_0=v_"te"$;
       the plotted $f_0$ is the marginal $F_(e,0)$ defined above, with
       $(F_(e,0) v_0)/n_0=exp(-V^2)/sqrt(pi)$.
     ],
@@ -551,13 +554,13 @@
   #rechenbeispiel[
     For a forward packet use a temporal rate
     $gamma=-qty("1.13e8", "s^-1")$ and group velocity
-    $v_"g"=qty("1.00e8", "cm/s")$ in Gaussian CGS. Use the weak-rate
+    $v_"g"=qty("1.00e6", "m/s")$. Use the weak-rate
     conversion $k_i approx (-gamma)/v_"g"$, with
     $L_"amp"=1/k_i$ and $tau_"d"=1/abs(gamma)$. Determine the spatial
     attenuation rate, amplitude attenuation length, and temporal damping time.
 
-    Numerical result: $k_i approx qty("1.13", "cm^-1")$,
-    $L_"amp" approx qty("8.85e-1", "cm")$, and
+    Numerical result: $k_i approx qty("113", "m^-1")$,
+    $L_"amp" approx qty("8.85e-3", "m")$, and
     $tau_"d" approx qty("8.85e-9", "s")$.
   ]
 
@@ -617,11 +620,11 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. The electric and magnetic perturbations are in
-    statvolt per #unit("cm") and #unit("G"), respectively. The wave number
-    $k$ is in #unit("cm^-1"), $omega$ and $omega_(p,s)$ are in #unit("s^-1"),
-    and particle speeds are in #unit("cm/s"). The phase-space density
-    $f_(s,0)$ is in #unit("cm^-6 s^3"); $c$ is in #unit("cm/s"). The ratios
+    SI units are used. The electric and magnetic perturbations are in
+    #unit("V/m") and #unit("T"), respectively. The wave number
+    $k$ is in #unit("m^-1"), $omega$ and $omega_(p,s)$ are in #unit("s^-1"),
+    and particle speeds are in #unit("m/s"). The phase-space density
+    $f_(s,0)$ is in #unit("m^-6 s^3"); $c$ is in #unit("m/s"). The ratios
     $k c/omega_(p,s)$, $omega/omega_(p,s)$, and
     $v_x^2/c^2$ are dimensionless.
   ]
@@ -645,7 +648,7 @@
     [Transverse polarization],
     [A transverse mode has its electric field perpendicular to the propagation
     direction. With the stated geometry, Faraday's law gives
-    $bold(B)_1=(c k)/(omega) E_(1,x) bold(e)_y$.
+    $bold(B)_1=k/omega E_(1,x) bold(e)_y$.
     The perturbed current is obtained from the first velocity moment of
     $f_(s,1)$, so the kinetic dielectric response depends on the full
     equilibrium distribution rather than on density and temperature alone.]
@@ -656,7 +659,7 @@
     [For a species equilibrium $f_(s,0)(bold(v))$, the transverse normal modes
     satisfy
     $k^2 c^2=omega^2+
-      sum_s (4 pi q_s^2)/(m_s)
+      sum_s q_s^2/(epsilon_0 m_s)
       integral_(RR^3) [
         v_x pdv(f_(s,0)(bold(v)),v_x)+
         (k v_x^2)/(omega-k v_z)
@@ -666,11 +669,11 @@
     parts gives the equivalent form
     $k^2 c^2=omega^2-
       sum_s omega_(p,s)^2-
-      sum_s (4 pi q_s^2 k^2)/(m_s)
+      sum_s (q_s^2 k^2)/(epsilon_0 m_s)
       integral_(RR^3) [
         (v_x^2 f_(s,0)(bold(v)))/((omega-k v_z)^2)
       ] dif^3 bold(v)$,
-    where $omega_(p,s)^2=(4 pi n_s q_s^2)/m_s$. The velocity integral uses
+    where $omega_(p,s)^2=(n_s q_s^2)/(epsilon_0 m_s)$. The velocity integral uses
     the causal contour when the pole $omega-k v_z=0$ lies on the integration
     path.]
   )
@@ -703,7 +706,7 @@
     Substitution into the transverse component of Ampere's law gives
 
     $ k^2 c^2=omega^2+
-        sum_s (4 pi q_s^2)/(m_s) integral_(RR^3) [
+        sum_s q_s^2/(epsilon_0 m_s) integral_(RR^3) [
           v_x pdv(f_(s,0),v_x)+
           (k v_x^2)/(omega-k v_z) pdv(f_(s,0),v_z)
         ] dif^3 bold(v) .$
@@ -729,7 +732,7 @@
     These identities produce the equivalent governing law
 
     $ k^2 c^2=omega^2-sum_s omega_(p,s)^2-
-        sum_s (4 pi q_s^2 k^2)/(m_s)
+        sum_s (q_s^2 k^2)/(epsilon_0 m_s)
         integral_(RR^3) [
           (v_x^2 f_(s,0))/((omega-k v_z)^2)
         ] dif^3 bold(v) .$
@@ -784,7 +787,7 @@
 
     Inserting this result together with
 
-    $ omega_p^2=(4 pi n_0 e^2)/m_e $
+    $ omega_p^2=(n_0 e^2)/(epsilon_0 m_e) $
 
     yields the quartic governing the transverse branch.
 
@@ -812,18 +815,19 @@
   )
 
   #rechenbeispiel[
-    Use an electron plasma with $n_0=qty("1.0e10", "cm^-3")$,
-    $e=qty("4.803e-10", "statcoulomb")$,
-    $m_e=qty("9.109e-28", "g")$, and
-    $c=qty("2.998e10", "cm/s")$. Let
+    Use an electron plasma with $n_0=qty("1.0e16", "m^-3")$,
+    $e=qty("1.602e-19", "C")$,
+    $m_e=qty("9.109e-31", "kg")$,
+    $epsilon_0=qty("8.854e-12", "F/m")$, and
+    $c=qty("2.998e8", "m/s")$. Let
     #normalized-label[$(k c)/omega_p=qty("0.50", "1")$] and
     #normalized-label[ $〈v_x^2〉/c^2=qty("1.00e-2", "1")$ ].
     Determine $k$, the wavelength, and the positive growth rate of the
     anisotropic transverse branch.
 
     Numerical result: $omega_p approx qty("5.64e9", "s^-1")$,
-    $k approx qty("9.41e-2", "cm^-1")$,
-    $lambda approx qty("66.8", "cm")$,
+    $k approx qty("9.41", "m^-1")$,
+    $lambda approx qty("0.668", "m")$,
     #normalized-label[$gamma/omega_p approx qty("4.47e-2", "1")$], and
     $gamma approx qty("2.52e8", "s^-1")$.
   ]
@@ -883,10 +887,10 @@
   ))
 
   #unit-ledger[
-    The total density $n_0$ is in #unit("cm^-3"), beam speed $v_0$ and the
-    light speed $c$ are in #unit("cm/s"), $k$ is in #unit("cm^-1"), and
+    The total density $n_0$ is in #unit("m^-3"), beam speed $v_0$ and the
+    light speed $c$ are in #unit("m/s"), $k$ is in #unit("m^-1"), and
     $omega$, $gamma$, and $omega_p$ are in #unit("s^-1"). The wavelength is
-    in #unit("cm"). The normalized variables
+    in #unit("m"). The normalized variables
     $(k v_0)/omega_p$, $omega/omega_p$, and $gamma/omega_p$ are dimensionless.
   ]
 
@@ -896,14 +900,14 @@
     $+v_0$ and $-v_0$ along $bold(e)_z$. Ions form a fixed neutralizing
     background, the plasma is unmagnetized and collisionless, and the wave is
     one-dimensional and electrostatic. The total electron plasma frequency is
-    $omega_p^2=(4 pi n_0 e^2)/m_e$.]
+    $omega_p^2=(n_0 e^2)/(epsilon_0 m_e)$.]
   )
 
   #definition(
     [Two-stream equilibrium],
     [The one-dimensional equilibrium can be written
     $F_(e,0)(v)=(n_0/2) [delta(v-v_0)+delta(v+v_0)]$,
-    the marginal along the beams, with units #unit("cm^-4 s") and
+    the marginal along the beams, with units #unit("m^-4 s") and
     $integral F_(e,0)(v) dif v=n_0$.
     The delta functions idealize cold beams. A finite beam temperature replaces
     them by narrow distributions and introduces thermal spreading, resonant
@@ -1004,17 +1008,18 @@
   )
 
   #rechenbeispiel[
-    Let $n_0=qty("1.0e10", "cm^-3")$,
+    Let $n_0=qty("1.0e16", "m^-3")$,
     #normalized-label[$v_0/c=qty("0.10", "1")$] with
-    $c=qty("2.998e10", "cm/s")$, and choose
+    $c=qty("2.998e8", "m/s")$, and choose
     #normalized-label[$(k v_0)/omega_p=qty("0.50", "1")$]. Use
-    $e=qty("4.803e-10", "statcoulomb")$ and
-    $m_e=qty("9.109e-28", "g")$. Determine $k$, the wavelength, and the
+    $e=qty("1.602e-19", "C")$,
+    $m_e=qty("9.109e-31", "kg")$, and
+    $epsilon_0=qty("8.854e-12", "F/m")$. Determine $k$, the wavelength, and the
     positive growth rate.
 
     Numerical result: $omega_p approx qty("5.64e9", "s^-1")$,
-    $k approx qty("9.41e-1", "cm^-1")$,
-    $lambda approx qty("6.68", "cm")$,
+    $k approx qty("94.1", "m^-1")$,
+    $lambda approx qty("6.68e-2", "m")$,
     #normalized-label[$gamma/omega_p approx qty("0.341", "1")$], and
     $gamma approx qty("1.92e9", "s^-1")$.
   ]
@@ -1074,17 +1079,17 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Magnetic field $B_0$ is in #unit("G"), mass is in
-    #unit("g"), gyrofrequency and wave frequency are in #unit("s^-1"),
-    parallel and perpendicular wave numbers are in #unit("cm^-1"), and
-    parallel or perpendicular particle speeds are in #unit("cm/s"). The
-    signed gyrofrequency $Omega_s=(q_s B_0)/(m_s c)$ has units
+    SI units are used. Magnetic field $B_0$ is in #unit("T"), mass is in
+    #unit("kg"), charge is in #unit("C"), gyrofrequency and wave frequency
+    are in #unit("s^-1"), parallel and perpendicular wave numbers are in
+    #unit("m^-1"), and parallel or perpendicular particle speeds are in
+    #unit("m/s"). The signed gyrofrequency $Omega_s=(q_s B_0)/m_s$ has units
     #unit("s^-1"). For a characteristic perpendicular speed $v_(perp,"s")$,
     define the thermal gyroradius
-    $rho_s=v_(perp,"s")/abs(Omega_s)$, which is in #unit("cm"). Harmonic number
+    $rho_s=v_(perp,"s")/abs(Omega_s)$, which is in #unit("m"). Harmonic number
     $n$, $k_perp rho_s$, $omega/abs(Omega_s)$, and the resonance condition
     after division by a frequency are dimensionless. The individual orbit
-    radius $r_(L,s)=v_perp/abs(Omega_s)$ is in #unit("cm") and varies
+    radius $r_(L,s)=v_perp/abs(Omega_s)$ is in #unit("m") and varies
     across the velocity integral; it differs from the thermal scale $rho_s$.
   ]
 
@@ -1102,7 +1107,7 @@
   #definition(
     [Gyroangle harmonic response],
     [Define the signed gyrofrequency
-    $Omega_s=(q_s B_0)/(m_s c)$. Choose
+    $Omega_s=(q_s B_0)/m_s$. Choose
     $v_x=v_perp cos(theta)$ and $v_y=-v_perp sin(theta)$, so increasing
     $theta$ rotates from positive $x$ toward negative $y$ and
     $dv(theta,t)=Omega_s$. Thus $theta=-theta_"std"$, where the glossary's
@@ -1145,7 +1150,7 @@
 
     Indeed, differentiating $v_x=v_perp cos(theta)$ and
     $v_y=-v_perp sin(theta)$ gives $dv(v_x,t)=Omega_s v_y$ and
-    $dv(v_y,t)=-Omega_s v_x$, the Gaussian-CGS Lorentz components.
+    $dv(v_y,t)=-Omega_s v_x$, the Lorentz-force components $dv(bold(v),t)=(q_s/m_s) bold(v) times bold(B)_0$.
 
     A stationary gyrotropic equilibrium therefore satisfies
 
@@ -1209,13 +1214,13 @@
   #hot-magnetized-resonance
 
   #rechenbeispiel[
-    For electrons in a $B_0=qty("100", "G")$ field use
+    For electrons in a $B_0=qty("1.0e-2", "T")$ field use
     $omega_"ce"=qty("1.76e9", "s^-1")$ as the positive electron gyrofrequency
     magnitude and $Omega_e=-omega_"ce"$. Let
     #normalized-label[$omega/omega_"ce"=qty("0.80", "1")$] and
     #normalized-label[$(k_(parallel) v_"te")/omega_"ce"=qty("1.50", "1")$],
     with
-    $v_"te"=qty("1.88e8", "cm/s")$. Report the resonant parallel velocities
+    $v_"te"=qty("1.88e6", "m/s")$. Report the resonant parallel velocities
     for $n=0$ and $n=-1$, normalized by $v_"te"$, and give
     $k_(parallel)$ and $omega$.
 
@@ -1223,7 +1228,7 @@
     #normalized-label[$v_(parallel,"res")/v_"te"=qty("0.533", "1")$]; for
     $n=-1$,
     #normalized-label[$v_(parallel,"res")/v_"te"=qty("-0.133", "1")$];
-    $k_(parallel) approx qty("14.0", "cm^-1")$ and
+    $k_(parallel) approx qty("1.40e3", "m^-1")$ and
     $omega approx qty("1.41e9", "s^-1")$.
   ]
 
@@ -1249,7 +1254,7 @@
   #knowledge-check((
     (
       question: [What is the difference between a signed gyrofrequency and its positive magnitude?],
-      answer: [The positive magnitude $omega_"c"=(abs(q) B)/(m c)$ is a rate, while the signed $Omega=(q B)/(m c)$ retains the charge-dependent sense of gyromotion and enters the harmonic resonance with its sign.]
+      answer: [The positive magnitude $omega_"c"=(abs(q) B)/m$ is a rate, while the signed $Omega=(q B)/m$ retains the charge-dependent sense of gyromotion and enters the harmonic resonance with its sign.]
     ),
     (
       question: [Which harmonic corresponds to the parallel Landau resonance?],

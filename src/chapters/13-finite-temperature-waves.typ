@@ -40,11 +40,11 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. The collision frequency $nu$, wave frequency
-    $omega$, and damping rate are in #unit("s^-1"). Masses are in #unit("g"),
-    $bold(E)$ is in statvolt per #unit("cm"), $bold(B)$ is in #unit("G"),
-    and wave numbers $k_r$ and $k_i$ are in #unit("cm^-1"). The effective
-    mass has units #unit("g"), while $N$ and $m_"eff"/m$ are dimensionless.
+    SI units are used throughout. The collision frequency $nu$, wave frequency
+    $omega$, and damping rate are in #unit("s^-1"). Masses are in #unit("kg"),
+    $bold(E)$ is in #unit("V/m"), $bold(B)$ is in #unit("T"),
+    and wave numbers $k_r$ and $k_i$ are in #unit("m^-1"). The effective
+    mass has units #unit("kg"), while $N$ and $m_"eff"/m$ are dimensionless.
   ]
 
   #assumption(
@@ -63,11 +63,11 @@
     [Complex effective mass],
     [With the drag term included, write the time-harmonic momentum equation as
     $-i omega m_(s) bold(u)_(s,1)=q_(s)(
-      bold(E)_1+(bold(u)_(s,1) times bold(B)_(0))/c)
+      bold(E)_1+bold(u)_(s,1) times bold(B)_(0))
       -m_(s) nu_s bold(u)_(s,1)$.
     Moving the drag to the left gives
     $-i omega m_("eff",s) bold(u)_(s,1)
-      =q_(s)(bold(E)_1+(bold(u)_(s,1) times bold(B)_(0))/c)$
+      =q_(s)(bold(E)_1+bold(u)_(s,1) times bold(B)_(0))$
     with $m_("eff",s)=m_(s)(1+(i nu_s)/omega)$. The sign of the imaginary part
     follows the stated Fourier convention. For nonzero $omega$, this is an
     exact algebraic rewrite of the stated constant-drag equation, including
@@ -97,13 +97,13 @@
     Start from the linearized momentum equation with drag:
 
     $ -i omega m_(s) bold(u)_(s,1)
-        =q_(s)(bold(E)_1+(bold(u)_(s,1) times bold(B)_(0))/c)
+        =q_(s)(bold(E)_1+bold(u)_(s,1) times bold(B)_(0))
         -m_(s) nu_s bold(u)_(s,1) .$
 
     Move the drag term to the left:
 
     $ (-i omega m_(s)+m_(s) nu_s)bold(u)_(s,1)
-        =q_(s)(bold(E)_1+(bold(u)_(s,1) times bold(B)_(0))/c) .$
+        =q_(s)(bold(E)_1+bold(u)_(s,1) times bold(B)_(0)) .$
 
     Factor the coefficient:
 
@@ -116,8 +116,8 @@
 
     #derivation-step[Insert the effective parameters into the cold response]
     The species plasma-frequency factor becomes
-    $(4 pi n_(s,0)q_s^2)/m_("eff",s)$, and the signed gyrofrequency becomes
-    $(q_s B_0)/(m_("eff",s) c)$. Insert both into the cold transverse response.
+    $(n_(s,0)q_s^2)/(epsilon_0 m_("eff",s))$, and the signed gyrofrequency becomes
+    $(q_s B_0)/m_("eff",s)$. Insert both into the cold transverse response.
     For the electron branch whose collisionless denominator is
     $omega(omega-omega_(c,e))$, the two substitutions combine to
 
@@ -163,7 +163,7 @@
   #rechenbeispiel[
     Assume a homogeneous, cold, unmagnetized, weakly collisional, fixed-ion
     electron plasma with linear momentum drag, the stated Fourier convention,
-    and Gaussian CGS. Use
+    and SI units. Use
     $omega_(p,e)=qty("5.64e9", "s^-1")$,
     $omega=qty("2.00e10", "s^-1")$, and a constant
     $nu_e=qty("1.00e9", "s^-1")$. In the high-frequency weak-collision
@@ -174,9 +174,9 @@
     Numerical result:
     #normalized-label[$m_"eff",e/m_e=qty("1.00", "1")+i qty("5.00e-2", "1")$],
     #normalized-label[$N approx qty("0.959", "1")+i qty("2.07e-3", "1")$],
-    $k_r approx qty("6.40e-1", "cm^-1")$,
-    $k_i approx qty("1.38e-3", "cm^-1")$, and the amplitude attenuation
-    length is approximately $qty("7.23e2", "cm")$.
+    $k_r approx qty("64.0", "m^-1")$,
+    $k_i approx qty("1.38e-1", "m^-1")$, and the amplitude attenuation
+    length is approximately $qty("7.23", "m")$.
   ]
 
   #interpretation(
@@ -233,11 +233,11 @@
   ))
 
   #unit-ledger[
-    Densities are in #unit("cm^-3"), masses in #unit("g"), and $B_0$ in
-    #unit("G"). The positive gyrofrequencies $omega_(c,e)$ and
+    Densities are in #unit("m^-3"), masses in #unit("kg"), and $B_0$ in
+    #unit("T"). The positive gyrofrequencies $omega_(c,e)$ and
     $omega_(c,i)$ are in #unit("s^-1"). The Alfvén, sound, and wave phase
-    speeds are in #unit("cm/s"); $k$ is in #unit("cm^-1") and wavelengths are
-    in #unit("cm"). All refractive indices are dimensionless.
+    speeds are in #unit("m/s"); $k$ is in #unit("m^-1") and wavelengths are
+    in #unit("m"). All refractive indices are dimensionless.
   ]
 
   #assumption(
@@ -286,7 +286,7 @@
       omega_(p,e)^2/(omega_(c,e)omega_(c,i))
       approx c^2/v_A^2$,
     where
-    $v_A=B_0/sqrt(4 pi rho_0)
+    $v_A=B_0/sqrt(mu_0 rho_0)
       =(c sqrt(omega_(c,e) omega_(c,i)))/omega_(p,e)$
     and $rho_0 approx n_0 m_i$. The last approximation also requires
     $v_A << c$, so the added unity is negligible. In this nonrelativistic
@@ -345,11 +345,12 @@
     In a dense nonrelativistic plasma this term is much larger than one. Use
 
     $ (omega_(c,e)omega_(c,i))/omega_(p,e)^2
-      =B_0^2/(4 pi n_0 m_i c^2) .$
+      =(epsilon_0 B_0^2)/(n_0 m_i)
+      =B_0^2/(mu_0 n_0 m_i c^2) .$
 
     It follows that
 
-    $ N^2 approx c^2/[B_0^2/(4 pi n_0 m_i)]=c^2/v_A^2 .$
+    $ N^2 approx c^2/[B_0^2/(mu_0 n_0 m_i)]=c^2/v_A^2 .$
 
     Since $N=(k c)/omega$, the low-frequency phase speed is
     $omega/k approx v_A.$
@@ -367,18 +368,18 @@
 
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, two-fluid hydrogen plasma with
-    both species mobile, parallel low-frequency propagation, and Gaussian CGS.
-    For the neutral hydrogen plasma use $n_0=qty("1.0e10", "cm^-3")$,
-    $B_0=qty("100", "G")$, $m_i=qty("1.673e-24", "g")$,
-    and $e=qty("4.803e-10", "statcoulomb")$. Consider a parallel
+    both species mobile, parallel low-frequency propagation, and SI units.
+    For the neutral hydrogen plasma use $n_0=qty("1.0e16", "m^-3")$,
+    $B_0=qty("1.0e-2", "T")$, $m_i=qty("1.673e-27", "kg")$,
+    and $e=qty("1.602e-19", "C")$. Consider a parallel
     low-frequency wave at
     #normalized-label[$omega/omega_(c,i)=qty("0.10", "1")$]. Determine
     $omega_(c,i)$, $v_A$, $k approx omega/v_A$, and the wavelength.
 
     Numerical result: $omega_(c,i)=qty("9.58e5", "s^-1")$,
-    $v_A=qty("2.18e8", "cm/s")$,
-    $k=qty("4.39e-4", "cm^-1")$, and
-    $lambda=qty("1.43e4", "cm")$.
+    $v_A=qty("2.18e6", "m/s")$,
+    $k=qty("4.39e-2", "m^-1")$, and
+    $lambda=qty("1.43e2", "m")$.
   ]
 
   #interpretation(
@@ -433,10 +434,10 @@
   ))
 
   #unit-ledger[
-    Temperature is represented by the energy $k_B T$ in #unit("erg");
-    number density is in #unit("cm^-3"), Debye length $lambda_D$ is in
-    #unit("cm"), thermal or sound speeds are in #unit("cm/s"), $k$ is in
-    #unit("cm^-1"), and frequencies are in #unit("s^-1"). The normalized
+    Temperature is represented by the energy $k_B T$ in #unit("J") (or
+    #unit("eV")); number density is in #unit("m^-3"), Debye length $lambda_D$
+    is in #unit("m"), thermal or sound speeds are in #unit("m/s"), $k$ is in
+    #unit("m^-1"), and frequencies are in #unit("s^-1"). The normalized
     combination $k lambda_D$ and the ratio $omega/omega_p$ are dimensionless.
   ]
 
@@ -467,7 +468,7 @@
     $omega^2=omega_(p,e)^2+k^2 c_(s,e)^2
       =omega_(p,e)^2(1+gamma_e k^2 lambda_(D,e)^2)$,
     with
-    $lambda_(D,e)^2=(k_B T_e)/(4 pi n_0e^2)$ for an isothermal electron
+    $lambda_(D,e)^2=(epsilon_0 k_B T_e)/(n_0e^2)$ for an isothermal electron
     reference.]
   )
 
@@ -531,7 +532,7 @@
     The current or charge response is proportional to
     $q_s n_(s,0)u_(s,1)$. Insert it into
 
-    $ bold(epsilon) dot bold(E)=bold(E)+((4 pi i)/omega)bold(j) .$
+    $ bold(epsilon) dot bold(E)=bold(E)+(i/(epsilon_0 omega))bold(j) .$
 
     The contribution of species $s$ is the susceptibility
 
@@ -551,7 +552,7 @@
 
     This is the warm plasma-oscillation branch. The definitions
 
-    $ lambda_(D,e)^2=(k_B T_e)/(4 pi n_0 e^2) $ \
+    $ lambda_(D,e)^2=(epsilon_0 k_B T_e)/(n_0 e^2) $ \
     $ c_(s,e)^2=(gamma_e k_B T_e)/m_e $
 
     imply
@@ -590,11 +591,11 @@
 
   #rechenbeispiel[
     Assume a homogeneous, unmagnetized, collisionless, fixed-ion warm-fluid
-    electron plasma with an isothermal closure and Gaussian CGS. Use
-    $n_0=qty("1.0e10", "cm^-3")$,
-    $k_B T_e=qty("1.602e-11", "erg")$ (the same energy as
-    $qty("10", "eV")$), $e=qty("4.803e-10", "statcoulomb")$,
-    $m_e=qty("9.109e-28", "g")$, and $gamma_e=1$.
+    electron plasma with an isothermal closure and SI units. Use
+    $n_0=qty("1.0e16", "m^-3")$,
+    $k_B T_e=qty("1.602e-18", "J")$ (the same energy as
+    $qty("10", "eV")$), $e=qty("1.602e-19", "C")$,
+    $m_e=qty("9.109e-31", "kg")$, and $gamma_e=1$.
     This is a formal isothermal-closure calculation outside the controlled
     small-$k lambda_D$ regime; its result requires kinetic comparison before
     interpretation as a collisionless plasma wave.
@@ -602,8 +603,8 @@
     $lambda_(D,e)$, $k$, and the
     normalized warm plasma-oscillation frequency.
 
-    Numerical result: $lambda_(D,e)=qty("2.35e-2", "cm")$,
-    $k=qty("3.40e1", "cm^-1")$, and
+    Numerical result: $lambda_(D,e)=qty("2.35e-4", "m")$,
+    $k=qty("3.40e3", "m^-1")$, and
     #normalized-label[$omega/omega_(p,e)=qty("1.28", "1")$].
   ]
 
@@ -664,9 +665,9 @@
   ))
 
   #unit-ledger[
-    In Gaussian CGS, $rho_0$ is in #unit("g/cm^3"), pressure is in
-    #unit("dyn/cm^2"), $B_0$ is in #unit("G"), and $v_A$, $v_s$, and $v_m$
-    are in #unit("cm/s"). The wave number is in #unit("cm^-1") and angular
+    In SI units, $rho_0$ is in #unit("kg/m^3"), pressure is in
+    #unit("Pa"), $B_0$ is in #unit("T"), and $v_A$, $v_s$, and $v_m$
+    are in #unit("m/s"). The wave number is in #unit("m^-1") and angular
     frequency in #unit("s^-1"). The ratios $omega/omega_(c,i)$ and
     $k lambda_D$ are dimensionless.
   ]
@@ -691,7 +692,7 @@
   #definition(
     [Alfvén, sound, and magnetosonic speeds],
     [Define
-    $v_A=B_0/sqrt(4 pi rho_0)$,
+    $v_A=B_0/sqrt(mu_0 rho_0)$,
     $v_s=sqrt((gamma p_0)/rho_0)$, and
     $v_m=sqrt(v_A^2+v_s^2)$
     for perpendicular compressional motion. The square $v_A^2$ is magnetic
@@ -758,12 +759,12 @@
     #derivation-step[Close the electrostatic response]
     For an electrostatic wave, Gauss's law is
 
-    $ i k E_(1,x)=4 pi q_e n_(e,1) .$
+    $ i k E_(1,x)=(q_e n_(e,1))/epsilon_0 .$
 
     Substitute the density response and cancel the nonzero factor
     $i k E_(1,x):$
 
-    $ 1=((4 pi n_0 q_e^2)/(m_e
+    $ 1=((n_0 q_e^2)/(epsilon_0 m_e
       (omega^2-omega_(c,e)^2-k^2 c_(s,e)^2)))
       =(omega_(p,e)^2)/(omega^2-omega_(c,e)^2-k^2 c_(s,e)^2) .$
 
@@ -779,10 +780,10 @@
     #derivation-step[Recover the perpendicular MHD branch]
     For the low-frequency one-fluid limit, use continuity,
     $pdv(rho,t)+div(rho bold(u))=0$, the ideal induction equation,
-    $pdv(bold(B),t)=curl(bold(u)times bold(B))$, and the Gaussian-CGS MHD
+    $pdv(bold(B),t)=curl(bold(u)times bold(B))$, and the SI MHD
     momentum equation
 
-    $ rho pdv(bold(u),t)=-grad(p)+[curl(bold(B))times bold(B)]/(4 pi) .$
+    $ rho pdv(bold(u),t)=-grad(p)+[curl(bold(B))times bold(B)]/mu_0 .$
 
     This momentum equation is written to first order about a static
     equilibrium; the advective acceleration is second order in the
@@ -800,12 +801,12 @@
 
     The $x$ component of momentum is
 
-    $ -i omega rho_0u_x=-i k p_1-i (k B_0B_(1,z))/(4 pi) .$
+    $ -i omega rho_0u_x=-i k p_1-i (k B_0B_(1,z))/mu_0 .$
 
     Substitute the density, pressure, and magnetic perturbations, then divide
     by the nonzero factor $rho_0u_x/omega$:
 
-    $ omega^2=k^2[v_s^2+B_0^2/(4 pi rho_0)]
+    $ omega^2=k^2[v_s^2+B_0^2/(mu_0 rho_0)]
       =k^2(v_s^2+v_A^2) .$
 
     Thus the perpendicular compressional speed is
@@ -841,7 +842,8 @@
       $(v_s t_0)/L_0=0.6$, $(v_A t_0)/L_0=1$, and
       $(v_m t_0)/L_0=sqrt(1.36)$; the common wave number is $k L_0=1.25$.
       The prescribed linear patterns illustrate $v_m^2=v_A^2+v_s^2$;
-      $L_0$ and $t_0$ are arbitrary reference length and time in Gaussian CGS.
+      $L_0$ and $t_0$ are arbitrary reference length (#unit("m")) and time
+      (#unit("s")).
     ],
     poster: "../media/magnetosonic-waves.png",
   )
@@ -849,17 +851,17 @@
   #rechenbeispiel[
     Assume a homogeneous, quasineutral hydrogen plasma in the low-frequency,
     strongly conducting ideal-MHD limit, with perpendicular and parallel
-    propagation compared in Gaussian CGS. Use
-    $n_0=qty("1.0e10", "cm^-3")$, $B_0=qty("100", "G")$,
-    $m_i=qty("1.673e-24", "g")$,
-    $k_B T_e=k_B T_i=qty("1.602e-11", "erg")$ (10 eV), and isothermal
+    propagation compared in SI units. Use
+    $n_0=qty("1.0e16", "m^-3")$, $B_0=qty("1.0e-2", "T")$,
+    $m_i=qty("1.673e-27", "kg")$,
+    $k_B T_e=k_B T_i=qty("1.602e-18", "J")$ (10 eV), and isothermal
     $gamma_e=gamma_i=1$, determine $v_A$, the total-pressure sound speed
-    $v_s$, and $v_m$. For $k=qty("1.0e-5", "cm^-1")$, report the parallel
+    $v_s$, and $v_m$. For $k=qty("1.0e-3", "m^-1")$, report the parallel
     shear-Alfvén and perpendicular magnetosonic frequencies.
 
-    Numerical result: $v_A=qty("2.18e8", "cm/s")$,
-    $v_s=qty("4.38e6", "cm/s")$, and
-    $v_m=qty("2.18e8", "cm/s")$ to the shown precision.
+    Numerical result: $v_A=qty("2.18e6", "m/s")$,
+    $v_s=qty("4.38e4", "m/s")$, and
+    $v_m=qty("2.18e6", "m/s")$ to the shown precision.
     The two example frequencies are
     $omega_A=qty("2.18e3", "s^-1")$ and
     $omega_m=qty("2.18e3", "s^-1")$.
@@ -921,9 +923,9 @@
     The ordering parameters $C=nu/omega$, $I=omega/omega_(c,i)$,
     $K=k lambda_D$, and $M=m_e/m_i$ are dimensionless. Dimensional
     $nu$, $omega$, and $omega_(c,i)$ are in #unit("s^-1"); $k$ is in
-    #unit("cm^-1"); and $lambda_D$ and the pressure-response gyroradius
-    $rho_s=c_s/omega_(c,s)$ are in #unit("cm"). Particle and wave speeds are
-    in #unit("cm/s").
+    #unit("m^-1"); and $lambda_D$ and the pressure-response gyroradius
+    $rho_s=c_s/omega_(c,s)$ are in #unit("m"). Particle and wave speeds are
+    in #unit("m/s").
   ]
 
   #assumption(
@@ -1003,7 +1005,7 @@
     quasineutrality. The weighted momentum sum gives
 
     $ rho_0 pdv(bold(u),t)
-        =-grad(p)+[curl(bold(B)) times bold(B)]/(4 pi) .$
+        =-grad(p)+[curl(bold(B)) times bold(B)]/mu_0 .$
 
     The induction equation becomes
 

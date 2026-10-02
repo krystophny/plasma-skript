@@ -41,13 +41,13 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Number density $n$ is in #unit("cm^-3"), position
-    and length scales are in #unit("cm"), time is in #unit("s"), a diffusion
-    coefficient $D$ is in #unit("cm^2/s"), and particle flux
-    $bold(Gamma)$ is in #unit("cm^-2/s"). The normalized variables
+    SI units are used. Number density $n$ is in #unit("m^-3"), position
+    and length scales are in #unit("m"), time is in #unit("s"), a diffusion
+    coefficient $D$ is in #unit("m^2/s"), and particle flux
+    $bold(Gamma)$ is in #unit("m^-2/s"). The normalized variables
     $xi=x/L_0$ and $tau=t/tau_0$ are dimensionless.
     In the one-dimensional Green function, $N_0=integral_(-infinity)^infinity
-    n(x,t) dif x$ is the conserved column density in #unit("cm^-2").
+    n(x,t) dif x$ is the conserved column density in #unit("m^-2").
   ]
 
   #assumption(
@@ -123,9 +123,9 @@
 
   #governing-law(
     [A normalized diffusion equation],
-    [Choose reference length $L_0$ in #unit("cm"), time $tau_0$ in
-    #unit("s"), and density $n_0$ in #unit("cm^-3"). Define the reference
-    coefficient $D_0=L_0^2/tau_0$ in #unit("cm^2/s") and the dimensionless
+    [Choose reference length $L_0$ in #unit("m"), time $tau_0$ in
+    #unit("s"), and density $n_0$ in #unit("m^-3"). Define the reference
+    coefficient $D_0=L_0^2/tau_0$ in #unit("m^2/s") and the dimensionless
     variables
     $bold(xi)=bold(r)/L_0$, $tau=t/tau_0$,
     $n_("norm")=n/n_0$, and $D_("norm")=D/D_0$.
@@ -158,14 +158,14 @@
 
   #rechenbeispiel[
     Assume independent symmetric one-dimensional steps in a neutral-collision
-    model, with no directed drift, and use Gaussian CGS. The model has a step
+    model, with no directed drift, and use SI units. The model has a step
     magnitude
-    $Delta x=qty("2.0e-1", "cm")$ every
+    $Delta x=qty("2.0e-3", "m")$ every
     $Delta t=qty("1.0e-7", "s")$. For a device of length
-    $L=qty("1.0e1", "cm")$, determine the diffusion coefficient and the
+    $L=qty("1.0e-1", "m")$, determine the diffusion coefficient and the
     characteristic diffusion time.
 
-    Numerical result: $D=qty("2.0e5", "cm^2/s")$ and
+    Numerical result: $D=qty("2.0e1", "m^2/s")$ and
     $tau_"D"=qty("5.0e-4", "s")$.
   ]
 
@@ -229,13 +229,13 @@
   ))
 
   #unit-ledger[
-    In Gaussian CGS, $q_s$ is in statcoulomb, $m_s$ in #unit("g"), collision
+    In SI units, $q_s$ is in #unit("C"), $m_s$ in #unit("kg"), collision
     frequency $nu_s$ in #unit("s^-1"), temperature energy $k_B T_s$ in
-    #unit("erg"), mobility $mu_s$ has units of velocity divided by electric
-    field, #unit("cm^2/statV/s"), and $D_s$ is in #unit("cm^2/s"). This
+    #unit("J"), mobility $mu_s$ has units of velocity divided by electric
+    field, #unit("m^2/V/s"), and $D_s$ is in #unit("m^2/s"). This
     electric-field mobility includes charge, unlike the force-based mobility
     introduced in Chapter 9. The flux remains in
-    #unit("cm^-2/s").
+    #unit("m^-2/s").
   ]
 
   #assumption(
@@ -312,17 +312,17 @@
 
   #rechenbeispiel[
     Assume local, isothermal, steady, unmagnetized neutral drag with
-    negligible inertia, and use Gaussian CGS. For electrons in a weakly
+    negligible inertia, and use SI units. For electrons in a weakly
     ionized plasma, use
-    $k_B T_e=qty("3.204e-12", "erg")$,
-    $m_e=qty("9.109e-28", "g")$,
-    $e=qty("4.803e-10", "statC")$, and
+    $k_B T_e=qty("2.0", "eV")=qty("3.204e-19", "J")$,
+    $m_e=qty("9.109e-31", "kg")$,
+    $e=qty("1.602e-19", "C")$, and
     $nu_e=qty("1.0e8", "s^-1")$. Determine the positive mobility magnitude
     $mu_e=e/(m_e nu_e)$ and the diffusion coefficient
     $D_e=(k_B T_e)/(m_e nu_e)$.
 
-    Numerical result: $mu_e=qty("5.27e9", "cm^2/statV/s")$ and
-    $D_e=qty("3.52e7", "cm^2/s")$.
+    Numerical result: $mu_e=qty("1.76e3", "m^2/V/s")$ and
+    $D_e=qty("3.52e3", "m^2/s")$.
   ]
 
   #interpretation(
@@ -386,11 +386,11 @@
   ))
 
   #unit-ledger[
-    The density $n$ is in #unit("cm^-3"), density gradient is in
-    #unit("cm^-4"), species fluxes and the common ambipolar flux are in
-    #unit("cm^-2/s"), the ambipolar field is in statvolt per #unit("cm"),
-    and $D_a$ is in #unit("cm^2/s"). The hydrogen charge magnitude $e$ is in
-    statcoulomb.
+    The density $n$ is in #unit("m^-3"), density gradient is in
+    #unit("m^-4"), species fluxes and the common ambipolar flux are in
+    #unit("m^-2/s"), the ambipolar field is in #unit("V/m"),
+    and $D_a$ is in #unit("m^2/s"). The hydrogen charge magnitude $e$ is in
+    #unit("C").
   ]
 
   #assumption(
@@ -487,22 +487,22 @@
   #rechenbeispiel[
     Assume local isothermal neutral drag in a weakly ionized, quasi-neutral,
     singly charged hydrogen plasma with no externally imposed current. Use
-    Gaussian CGS and let the ambipolar field adjust rapidly compared with the
+    SI units and let the ambipolar field adjust rapidly compared with the
     density evolution. Consider the plasma with
-    $n=qty("1.0e10", "cm^-3")$,
-    $(grad(n))/n=qty("-1.0e-2", "cm^-1")$, and
-    $k_B T_i=k_B T_e=qty("1.602e-12", "erg")$.
-    Use $m_i=qty("1.673e-24", "g")$,
-    $m_e=qty("9.109e-28", "g")$,
-    $e=qty("4.803e-10", "statC")$,
+    $n=qty("1.0e16", "m^-3")$,
+    $(grad(n))/n=qty("-1.0", "m^-1")$, and
+    $k_B T_i=k_B T_e=qty("1.0", "eV")=qty("1.602e-19", "J")$.
+    Use $m_i=qty("1.673e-27", "kg")$,
+    $m_e=qty("9.109e-31", "kg")$,
+    $e=qty("1.602e-19", "C")$,
     $nu_i=qty("1.0e7", "s^-1")$, and
     $nu_e=qty("1.0e9", "s^-1")$. Determine the ambipolar field,
     coefficient, and particle flux.
 
     Numerical result:
-    $bold(E)_a=qty("2.99e-5", "statV/cm")$,
-    $D_a=qty("1.82e5", "cm^2/s")$, and
-    $abs(bold(Gamma)_a)=qty("1.82e13", "cm^-2/s")$.
+    $bold(E)_a=qty("0.897", "V/m")$,
+    $D_a=qty("1.82e1", "m^2/s")$, and
+    $abs(bold(Gamma)_a)=qty("1.82e17", "m^-2/s")$.
   ]
 
   #interpretation(
@@ -566,10 +566,10 @@
   ))
 
   #unit-ledger[
-    In Gaussian CGS, $bold(B)$ is in gauss, the signed cyclotron frequency
-    $Omega_s=(q_s B)/(m_s c)$ is in #unit("s^-1"), and the magnetization
+    In SI units, $bold(B)$ is in #unit("T"), the signed cyclotron frequency
+    $Omega_s=(q_s B)/m_s$ is in #unit("s^-1"), and the magnetization
     parameter $abs(Omega_s)/nu_s$ is dimensionless. Parallel, perpendicular,
-    and Hall diffusion coefficients are in #unit("cm^2/s").
+    and Hall diffusion coefficients are in #unit("m^2/s").
   ]
 
   #assumption(
@@ -583,7 +583,7 @@
 
   #definition(
     [Magnetized diffusion tensor],
-    [Let $Omega_s=(q_s B)/(m_s c)$ and
+    [Let $Omega_s=(q_s B)/m_s$ and
     $D_s=(k_B T_s)/(m_s nu_s)$. The parallel coefficient is
     $D_(s,parallel)=D_s$, while
     $D_(s,perp)=D_s/(1+(Omega_s/nu_s)^2)$.
@@ -628,7 +628,7 @@
     #derivation-step[Check the strongly magnetized limit]
     The electric-force part contains the crossed-field drift
 
-    $ bold(u)_(E times B)=(c (bold(E) times bold(B)))/(B^2) .$
+    $ bold(u)_(E times B)=(bold(E) times bold(B))/(B^2) .$
 
     When $abs(Omega_s)>>nu_s$,
 
@@ -670,20 +670,19 @@
 
   #rechenbeispiel[
     Assume a local uniform magnetic field, isotropic steady collisional drag,
-    Gaussian CGS, and the scalar diffusion model derived above. Ignore field
+    SI units, and the scalar diffusion model derived above. Ignore field
     curvature, finite-orbit effects, and turbulence. For electrons at
-    $k_B T_e=qty("1.602e-12", "erg")$, use
-    $m_e=qty("9.109e-28", "g")$,
-    $e=qty("4.803e-10", "statC")$,
-    $c=qty("2.998e10", "cm/s")$,
-    $B=qty("1.0e2", "G")$, and
+    $k_B T_e=qty("1.0", "eV")=qty("1.602e-19", "J")$, use
+    $m_e=qty("9.109e-31", "kg")$,
+    $e=qty("1.602e-19", "C")$,
+    $B=qty("1.0e-2", "T")$, and
     $nu_e=qty("1.0e7", "s^-1")$. Determine the magnitude of the cyclotron
     frequency, the parallel coefficient, and the perpendicular coefficient.
 
     Numerical result:
     $abs(Omega_e)=qty("1.76e9", "s^-1")$,
-    $D_(e,parallel)=qty("1.76e8", "cm^2/s")$,
-    $D_(e,perp)=qty("5.69e3", "cm^2/s")$, and
+    $D_(e,parallel)=qty("1.76e4", "m^2/s")$,
+    $D_(e,perp)=qty("0.569", "m^2/s")$, and
     $D_(e,perp)/D_(e,parallel)=qty("3.23e-5", "1")$.
   ]
 
@@ -759,12 +758,10 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Pressure is in #unit("dyn/cm^2"), current density
-    in statcoulomb per #unit("cm^2") per #unit("s"), conductivity $sigma$ in
-    #unit("s^-1"), $bold(B)$ in gauss, and the classical and Bohm-like
-    diffusion coefficients are in #unit("cm^2/s"). The factor $c$ is
-    #unit("cm/s") and must remain explicit in Gaussian electromagnetic force
-    balance.
+    SI units are used. Pressure is in #unit("Pa"), current density
+    in #unit("A/m^2"), conductivity $sigma$ in #unit("S/m") (the resistivity
+    $eta=1/sigma$ is in #unit("ohm meter")), $bold(B)$ in #unit("T"), and the
+    classical and Bohm-like diffusion coefficients are in #unit("m^2/s").
   ]
 
   #assumption(
@@ -781,22 +778,22 @@
   #definition(
     [Classical fully ionized diffusion],
     [The steady force balance and resistive Ohm law are
-    $bold(0)=-grad(p)+(bold(j) times bold(B))/c$ and
-    $bold(j)=sigma (bold(E)+(bold(u) times bold(B))/c)$.
+    $bold(0)=-grad(p)+bold(j) times bold(B)$ and
+    $bold(j)=sigma (bold(E)+bold(u) times bold(B))$.
     The perpendicular velocity contains
-    $bold(u)_perp=(c (bold(E) times bold(B)))/(B^2)
-      -(c^2 grad_(perp)(p))/(sigma B^2)$.
+    $bold(u)_perp=(bold(E) times bold(B))/(B^2)
+      -(grad_(perp)(p))/(sigma B^2)$.
     For $p=n k_(B)(T_e+T_i)$, the pressure-driven flux is
     $bold(Gamma)_perp=-D_perp^("cl") grad_(perp)(n)$ with
-    $D_perp^("cl")=(n c^2 k_(B)(T_e+T_i))/(sigma B^2)$.]
+    $D_perp^("cl")=(n k_(B)(T_e+T_i))/(sigma B^2)
+      =(eta n k_(B)(T_e+T_i))/(B^2)$.]
   )
 
   #governing-law(
     [Classical and Bohm-like scalings],
     [At fixed density, temperatures, and conductivity,
-    $D_perp^("cl") ∝ B^(-2)$. A commonly used empirical Bohm estimate in
-    Gaussian CGS is
-    $D_perp^(B) approx (c k_B T_e)/(16 e B)$,
+    $D_perp^("cl") ∝ B^(-2)$. A commonly used empirical Bohm estimate is
+    $D_perp^(B) approx (k_B T_e)/(16 e B)$,
     so $D_perp^(B) ∝ B^(-1)$. The numerical factor is empirical and
     should not be mistaken for a derivation from the collisional model.]
   )
@@ -812,11 +809,11 @@
     [#derivation-step[Combine force balance with Ohm's law]
     Start from
 
-    $ bold(0)=-grad(p)+(bold(j) times bold(B))/c $
+    $ bold(0)=-grad(p)+bold(j) times bold(B) $
 
     and substitute
 
-    $ bold(j)=sigma(bold(E)+(bold(u) times bold(B))/c) .$
+    $ bold(j)=sigma(bold(E)+bold(u) times bold(B)) .$
 
     Using
 
@@ -825,14 +822,14 @@
     gives
 
     $ bold(0)=-grad_(perp)(p)
-        +(sigma (bold(E) times bold(B)))/c
-        -(sigma B^2 bold(u)_perp)/(c^2) .$
+        +sigma (bold(E) times bold(B))
+        -sigma B^2 bold(u)_perp .$
 
     #derivation-step[Solve for the perpendicular velocity]
     Rearranging gives
 
-    $ bold(u)_perp=(c (bold(E) times bold(B)))/(B^2)
-        -(c^2 grad_(perp)(p))/(sigma B^2) .$
+    $ bold(u)_perp=(bold(E) times bold(B))/(B^2)
+        -(grad_(perp)(p))/(sigma B^2) .$
 
     #derivation-step[Identify the pressure-driven diffusion]
     Multiply by $n$. The first term is a common crossed-field drift and does
@@ -844,14 +841,16 @@
     The pressure term in the particle flux is consequently
 
     $ bold(Gamma)_perp^("diff")
-        =-(n c^2 k_(B)(T_e+T_i) grad_(perp)(n))/(sigma B^2) .$
+        =-(n k_(B)(T_e+T_i) grad_(perp)(n))/(sigma B^2) .$
 
     Therefore
 
-    $ D_perp^("cl")=(n c^2 k_(B)(T_e+T_i))/(sigma B^2) .$
+    $ D_perp^("cl")=(n k_(B)(T_e+T_i))/(sigma B^2)
+        =(eta n k_(B)(T_e+T_i))/(B^2) .$
 
-    The explicit $c^2$ is required because both the Lorentz force density and
-    the magnetic part of Ohm's law use the Gaussian-CGS convention.
+    The factor $1/B^2$ arises because the field enters twice: once through
+    the Lorentz force density $bold(j) times bold(B)$ and once through the
+    motional term $bold(u) times bold(B)$ in Ohm's law.
 
     #derivation-step[State the comparison with anomalous transport]
     The classical loss time for a macroscopic length $L$ is
@@ -868,23 +867,22 @@
 
   #rechenbeispiel[
     Assume a quasi-neutral, fully ionized hydrogen plasma in steady classical
-    perpendicular force balance, with scalar conductivity and Gaussian CGS.
+    perpendicular force balance, with scalar conductivity and SI units.
     Neglect turbulent and finite-orbit corrections; use the Bohm expression
     only as an empirical comparison. For the plasma, use
-    $n=qty("1.0e10", "cm^-3")$,
-    $k_B T_e=k_B T_i=qty("1.602e-11", "erg")$,
-    $sigma=qty("1.0e15", "s^-1")$,
-    $B=qty("1.0e2", "G")$,
-    $c=qty("2.998e10", "cm/s")$, and
-    $e=qty("4.803e-10", "statC")$. Determine the classical coefficient,
+    $n=qty("1.0e16", "m^-3")$,
+    $k_B T_e=k_B T_i=qty("10", "eV")=qty("1.602e-18", "J")$,
+    $sigma=qty("1.0e5", "S/m")$,
+    $B=qty("1.0e-2", "T")$, and
+    $e=qty("1.602e-19", "C")$. Determine the classical coefficient,
     the Bohm estimate, and their ratio. For a device of length
-    $L=qty("1.0e2", "cm")$, also estimate the classical diffusion time.
+    $L=qty("1.0", "m")$, also estimate the classical diffusion time.
 
     Numerical result:
-    $D_perp^("cl")=qty("2.88e1", "cm^2/s")$,
-    $D_perp^(B)=qty("6.25e5", "cm^2/s")$,
-    $D_perp^(B)/D_perp^("cl")=qty("2.17e4", "1")$, and
-    $tau_"D"^("cl")=qty("3.47e2", "s")$.
+    $D_perp^("cl")=qty("3.20e-3", "m^2/s")$,
+    $D_perp^(B)=qty("6.25e1", "m^2/s")$,
+    $D_perp^(B)/D_perp^("cl")=qty("1.95e4", "1")$, and
+    $tau_"D"^("cl")=qty("3.12e2", "s")$.
   ]
 
   #interpretation(
@@ -898,7 +896,7 @@
 
   #summary[
     Fully ionized classical transport gives
-    $D_perp^("cl")=(n c^2 k_(B)(T_e+T_i))/(sigma B^2)$ and
+    $D_perp^("cl")=(n k_(B)(T_e+T_i))/(sigma B^2)$ and
     $tau_"D"=L^2/D$. It scales as $B^(-2)$, while the empirical Bohm
     estimate scales as $B^(-1)$. The two describe different physical
     assumptions and must not be conflated.
@@ -906,10 +904,10 @@
 
   #knowledge-check((
     (
-      question: [Where does the factor of c enter the Gaussian-CGS classical diffusion coefficient?],
-      answer: [It enters through both $(bold(j) times bold(B))/c$ in force
-      balance and $(bold(u) times bold(B))/c$ in Ohm's law. Solving the
-      perpendicular balance therefore produces the explicit $c^2$ in
+      question: [Why does the classical diffusion coefficient scale as $B^(-2)$ rather than $B^(-1)$?],
+      answer: [The field enters through both $bold(j) times bold(B)$ in force
+      balance and $bold(u) times bold(B)$ in Ohm's law. Solving the
+      perpendicular balance therefore produces the factor $1/(sigma B^2)$ in
       $D_perp^("cl")$.]
     ),
     (

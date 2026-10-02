@@ -42,19 +42,19 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. The species distribution is defined by
-    $d N_s=f_(s) dif^3 bold(r) dif^3 bold(v)$, with position in #unit("cm")
-    and velocity in #unit("cm/s"). The mass density $rho_s=m_s n_s$ is in
-    #unit("g cm^-3"). The energy density and energy flux below are in
-    #unit("erg cm^-3") and #unit("erg cm^-2 s^-1"), respectively. The Lorentz force uses
-    $bold(E)+(bold(v) times bold(B))/c$; $c$ is the speed of
-    light in #unit("cm/s"). No normalized variable is used in this section.
+    SI units are active. The species distribution is defined by
+    $d N_s=f_(s) dif^3 bold(r) dif^3 bold(v)$, with position in #unit("m")
+    and velocity in #unit("m/s"). The mass density $rho_s=m_s n_s$ is in
+    #unit("kg m^-3"). The energy density and energy flux below are in
+    #unit("J m^-3") and #unit("W m^-2"), respectively. The Lorentz force uses
+    $bold(E)+bold(v) times bold(B)$ with $bold(E)$ in #unit("V/m") and
+    $bold(B)$ in #unit("T"). No normalized variable is used in this section.
   ]
 
   #assumption(
     [Kinetic equation and velocity-space boundary],
     [For species $s$, use a smooth kinetic equation with acceleration
-    $bold(a)_s=(q_s/m_s)(bold(E)+(bold(v) times bold(B))/c)$. The distribution
+    $bold(a)_s=(q_s/m_s)(bold(E)+bold(v) times bold(B))$. The distribution
     and the velocity-space flux $f_(s) bold(a)_s$ vanish sufficiently rapidly
     as $abs(bold(v)) -> infinity$, so surface terms at infinite speed are
     zero. Require species-number-conserving collisions,
@@ -81,8 +81,8 @@
     transfer and kinetic-energy transfer by
     $bold(R)_s=m_s integral bold(v) C_(s)[f] dif^3 bold(v)$ and
     $Q_(s)=(m_s integral abs(bold(v))^2 C_(s)[f] dif^3 bold(v))/2$.
-    The source $bold(R)_s$ is in #unit("g cm^-2 s^-2") and $Q_(s)$ is in
-    #unit("erg cm^-3 s^-1").]
+    The source $bold(R)_s$ is in #unit("N m^-3") and $Q_(s)$ is in
+    #unit("W m^-3").]
   )
 
   #governing-law(
@@ -91,7 +91,7 @@
     $pdv(W_s,t)+div((W_s) bold(u)_s+bold(P)_s dot bold(u)_s+bold(q)_s)
       =q_s n_s bold(E) dot bold(u)_s+Q_(s)$,
     where $Q_(s)$ is the collisional rate of kinetic-energy transfer to
-    species $s$ in #unit("erg cm^-3 s^-1"). The magnetic force is absent from
+    species $s$ in #unit("W m^-3"). The magnetic force is absent from
     the power term because $bold(v) dot (bold(v) times bold(B))=0$.]
   )
 
@@ -230,7 +230,7 @@
     The first moment of the kinetic equation is
 
     $ pdv(rho_s bold(u)_s,t)+div(rho_s bold(u)_s bold(u)_s+bold(P)_s)
-        =q_s n_s (bold(E)+(bold(u)_s times bold(B))/c)+bold(R)_s .$
+        =q_s n_s (bold(E)+bold(u)_s times bold(B))+bold(R)_s .$
 
     Dot this equation with $bold(u)_s$. The number-conserving assumption
     gives $pdv(rho_s,t)+div(rho_s bold(u)_s)=0$, so the product rule yields
@@ -288,7 +288,7 @@
   #knowledge-check((
     (
       question: [Why does the magnetic part of the Lorentz force not appear in the single-species energy source?],
-      answer: [Its power is proportional to $bold(v) dot (bold(v) times bold(B))$, which is zero for every particle. The electric part contributes $q_s n_s bold(E) dot bold(u)_s$ in Gaussian CGS.],
+      answer: [Its power is proportional to $bold(v) dot (bold(v) times bold(B))$, which is zero for every particle. The electric part contributes $q_s n_s bold(E) dot bold(u)_s$ in #unit("W m^-3").],
     ),
     (
       question: [Which term transports random kinetic energy relative to the species flow?],
@@ -324,11 +324,11 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Coordinates $x,y,z,r$ are lengths in #unit("cm"),
+    SI units are active. Coordinates $x,y,z,r$ are lengths in #unit("m"),
     angles $phi$ and $theta$ are dimensionless, and a scalar field $psi$ and
     vector field $bold(A)$ retain whatever physical units the model assigns.
-    Thus $grad(psi)$ has units of $psi$ per #unit("cm"), $div(bold(A))$ has
-    units of $bold(A)$ per #unit("cm"), and $curl(bold(A))$ has the same
+    Thus $grad(psi)$ has units of $psi$ per #unit("m"), $div(bold(A))$ has
+    units of $bold(A)$ per #unit("m"), and $curl(bold(A))$ has the same
     units. The formulas below are dimensional coordinate identities; no
     normalized radius is implied.
   ]
@@ -526,13 +526,13 @@
     In an axisymmetric cylindrical plasma column, let the radial particle-flux
     vector be $bold(Gamma)=Gamma_(r)(r) bold(e)_(r)$ with
     $Gamma_(r)(r)=C/r$. Use
-    $C=qty("2.00e10", "cm^-1 s^-1")$, and evaluate the flux at
-    $r_1=qty("10.0", "cm")$ and $r_2=qty("20.0", "cm")$. Determine both
+    $C=qty("2.00e12", "m^-1 s^-1")$, and evaluate the flux at
+    $r_1=qty("0.100", "m")$ and $r_2=qty("0.200", "m")$. Determine both
     radial fluxes and $div(bold(Gamma))$ for $r>0$.
 
-    Numerical result: $Gamma_(r)(r_1)=qty("2.00e9", "cm^-2 s^-1")$,
-    $Gamma_(r)(r_2)=qty("1.00e9", "cm^-2 s^-1")$, and
-    $div(bold(Gamma))=qty("0", "cm^-3 s^-1")$.
+    Numerical result: $Gamma_(r)(r_1)=qty("2.00e13", "m^-2 s^-1")$,
+    $Gamma_(r)(r_2)=qty("1.00e13", "m^-2 s^-1")$, and
+    $div(bold(Gamma))=qty("0", "m^-3 s^-1")$.
   ]
 
   #interpretation(
@@ -543,7 +543,7 @@
     that these meanings survive a coordinate change. In a normalized model,
     one may later set #normalized-label[$xi=r/L$] and obtain
     $pdv(psi,r)=(pdv(psi,xi))/L$, but the reference length $L$ in
-    #unit("cm") must be stated explicitly.]
+    #unit("m") must be stated explicitly.]
   )
 
   #summary[
@@ -570,7 +570,7 @@
     ),
     (
       question: [How would a normalized radial coordinate change the gradient?],
-      answer: [If #normalized-label[$xi=r/L$] with stated reference length $L$ in #unit("cm"), then $pdv(psi,r)=(pdv(psi,xi))/L$. Each physical gradient component therefore carries the inverse length scale, which must be recorded before a normalized operator is used.],
+      answer: [If #normalized-label[$xi=r/L$] with stated reference length $L$ in #unit("m"), then $pdv(psi,r)=(pdv(psi,xi))/L$. Each physical gradient component therefore carries the inverse length scale, which must be recorded before a normalized operator is used.],
     ),
   ))
 

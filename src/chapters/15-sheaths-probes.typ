@@ -42,12 +42,12 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Number density $n_s$ is in #unit("cm^-3"),
-    velocity is in #unit("cm/s"), mass is in #unit("g"), and the directed
-    particle flux $Gamma_s$ is in #unit("cm^-2 s^-1"). Charge is in
-    statcoulomb, so a current density $J_s=q_s Gamma_s$ is in
-    statcoulomb per #unit("cm^2") per #unit("s"). Thermal energy $k_B T_s$
-    and potential energy $q_s phi$ are in #unit("erg"). Ratios such as
+    SI units are used. Number density $n_s$ is in #unit("m^-3"),
+    velocity is in #unit("m/s"), mass is in #unit("kg"), and the directed
+    particle flux $Gamma_s$ is in #unit("m^-2 s^-1"). Charge is in
+    #unit("C"), so a current density $J_s=q_s Gamma_s$ is in
+    #unit("A/m^2"). Thermal energy $k_B T_s$
+    and potential energy $q_s phi$ are in #unit("J") (or #unit("eV")). Ratios such as
     $Gamma_e/Gamma_i$ and $(e phi)/(k_B T_e)$ are dimensionless.
   ]
 
@@ -209,13 +209,14 @@
   ))
 
   #unit-ledger[
-    The coordinate $x$ and Debye length $lambda_D$ are in #unit("cm"),
-    potential $phi$ is in #unit("statvolt"), electric field is in statvolt
-    per #unit("cm"), and densities are in #unit("cm^-3"). Ion speed and the
-    cold-ion sound speed are in #unit("cm/s"). The normalized coordinate
+    The coordinate $x$ and Debye length $lambda_D$ are in #unit("m"),
+    potential $phi$ is in #unit("V"), electric field is in #unit("V/m"),
+    and densities are in #unit("m^-3"). Ion speed and the
+    cold-ion sound speed are in #unit("m/s"). The normalized coordinate
     $xi=x/lambda_D$, potential barrier $eta=-(e phi)/(k_B T_e)$, and Mach
-    number $M=u_s/c_s$ are dimensionless. In Gaussian CGS,
-    $lambda_D^2=(k_B T_e)/(4 pi n_0 e^2)$.
+    number $M=u_s/c_s$ are dimensionless. The electron Debye length is
+    $lambda_D^2=(epsilon_0 k_B T_e)/(n_0 e^2)$, with $epsilon_0$ in
+    #unit("F/m").
   ]
 
   #assumption(
@@ -249,9 +250,9 @@
     [Planar sheath equation],
     [Ion continuity and energy give
     $n_i/n_s=M/(M^2+2 eta)^(1/2)$.
-    Gaussian-CGS Poisson's equation, written with
+    Poisson's equation, written with
     $bold(E)=-grad(phi)$ and
-    $div(bold(E))=4 pi e(n_i-n_e)$, becomes
+    $div(bold(E))=e(n_i-n_e)/epsilon_0$, becomes
     $dv(eta,xi,2) =
       M/(M^2+2 eta)^(1/2)-exp(-eta)$.
     Expanding at the quasineutral edge gives
@@ -304,19 +305,19 @@
     $ n_i/n_s=u_s/u_i=M/(M^2+2 eta)^(1/2) .$
 
     #derivation-step[Nondimensionalize Poisson's equation]
-    In Gaussian CGS,
+    Gauss's law reads
 
-    $ div(bold(E))=4 pi rho_q=4 pi e(n_i-n_e) .$
+    $ div(bold(E))=rho_q/epsilon_0=(e(n_i-n_e))/epsilon_0 .$
 
     In one dimension, $E_x=-dv(phi,x)$, so
 
-    $ -dv(phi,x,2)=4 pi e(n_i-n_e) .$
+    $ -dv(phi,x,2)=(e(n_i-n_e))/epsilon_0 .$
 
     Set $phi=-((k_B T_e)/e) eta$ and $x=lambda_D xi$. The left side becomes
 
     $ ((k_B T_e)/(e lambda_D^2)) dv(eta,xi,2) .$
 
-    Using $lambda_D^2=(k_B T_e)/(4 pi n_0 e^2)$ and $n_s=n_0$ at the
+    Using $lambda_D^2=(epsilon_0 k_B T_e)/(n_0 e^2)$ and $n_s=n_0$ at the
     ideal matching edge gives
 
     $ dv(eta,xi,2)=n_i/n_0-n_e/n_0
@@ -362,9 +363,9 @@
     #derivation-step[Reduce Poisson's equation]
     For $phi=-V$, Poisson's equation is
 
-    $ dv(V,x,2)=4 pi e n_i=C V^(-1/2) ,$
+    $ dv(V,x,2)=(e n_i)/epsilon_0=C V^(-1/2) ,$
 
-    where $C=4 pi Gamma_i sqrt((e m_i)/2)$. Introduce the inward distance
+    where $C=(Gamma_i/epsilon_0) sqrt((e m_i)/2)$. Introduce the inward distance
     $s=d-x$ measured from the electron-free edge toward the wall. The equation
     becomes
 
@@ -395,10 +396,10 @@
     $ V_w^(3/2)=((9 C)/4)d^2 .$
 
     Solving for the ion flux and multiplying by $e$ gives the planar
-    Child--Langmuir scaling in Gaussian CGS:
+    Child--Langmuir law:
 
     $ J_i=e Gamma_i
-      =(sqrt((2 e)/m_i) V_w^(3/2))/(9 pi d^2) .$
+      =(4 epsilon_0)/9 sqrt((2 e)/m_i) V_w^(3/2)/d^2 .$
 
     This is a near-wall space-charge result. It does not replace the
     Boltzmann-electron sheath equation across the complete boundary layer.]
@@ -408,19 +409,19 @@
 
   #rechenbeispiel[
     For a hydrogen plasma use
-    $n_0=qty("1.0e10", "cm^-3")$,
-    $k_B T_e=qty("1.602e-11", "erg")$,
-    $m_i=qty("1.673e-24", "g")$, and
-    $e=qty("4.803e-10", "statcoulomb")$. Let the normalized sheath-edge
+    $n_0=qty("1.0e16", "m^-3")$,
+    $k_B T_e=qty("10.0", "eV")$,
+    $m_i=qty("1.673e-27", "kg")$, and
+    $e=qty("1.602e-19", "C")$. Let the normalized sheath-edge
     speed be #normalized-label[$M=qty("1.50", "1")$]. Determine the electron
     Debye length,
     cold-ion sound speed, sheath-edge ion speed, and ion particle flux
     $Gamma_i=n_0 M c_s$.
 
-    Numerical result: $lambda_D approx qty("2.35e-2", "cm")$,
-    $c_s approx qty("3.09e6", "cm/s")$,
-    $u_s approx qty("4.64e6", "cm/s")$, and
-    $Gamma_i approx qty("4.64e16", "cm^-2 s^-1")$. The chosen
+    Numerical result: $lambda_D approx qty("2.35e-4", "m")$,
+    $c_s approx qty("3.09e4", "m/s")$,
+    $u_s approx qty("4.64e4", "m/s")$, and
+    $Gamma_i approx qty("4.64e20", "m^-2 s^-1")$. The chosen
     #normalized-label[$M=qty("1.50", "1")>1$] is above the cold-ion Bohm
     threshold.
   ]
@@ -436,7 +437,7 @@
   )
 
   #summary[
-    Boltzmann electrons, cold-ion continuity, ion energy, and cgs Poisson
+    Boltzmann electrons, cold-ion continuity, ion energy, and Poisson's equation
     combine into
     $dv(eta,xi,2)=M/(M^2+2 eta)^(1/2)-exp(-eta)$.
     Its small-$eta$ expansion requires $M>=1$: ions must enter the sheath
@@ -482,11 +483,10 @@
   ))
 
   #unit-ledger[
-    The floating potential $phi_f$ is in #unit("statvolt") relative to the
+    The floating potential $phi_f$ is in #unit("V") relative to the
     sheath-edge plasma potential, and $(k_B T_e)/e$ is the corresponding potential scale.
-    Fluxes are in #unit("cm^-2 s^-1"), current densities in
-    statcoulomb per #unit("cm^2") per #unit("s"), and probe area is in
-    #unit("cm^2"). The normalized wall bias
+    Fluxes are in #unit("m^-2 s^-1"), current densities in
+    #unit("A/m^2"), and probe area is in #unit("m^2"). The normalized wall bias
     $u_f=(e phi_f)/(k_B T_e)$ and all flux ratios are dimensionless.
   ]
 
@@ -572,28 +572,26 @@
     For hydrogen, $(2 pi m_e)/m_i approx 0.00342$, whose logarithm is
     approximately $-5.68$. The ideal cold-ion floating potential is thus
     approximately $-2.84 k_B T_e/e$. The numerical example evaluates these
-    stated CGS definitions without an additional probe-geometry factor.]
+    stated definitions without an additional probe-geometry factor.]
   )
   #rechenbeispiel[
     Use a hydrogen plasma with
-    $n_0=qty("1.0e10", "cm^-3")$ and
-    $k_B T_e=qty("4.806e-12", "erg")$ (3.00 eV). Take
-    $m_e=qty("9.109e-28", "g")$,
-    $m_i=qty("1.673e-24", "g")$, and
-    $e=qty("4.803e-10", "statcoulomb")$. Use the cold-ion Bohm flux and
-    a planar area of $A=qty("1.0", "cm^2")$. Determine $lambda_D$, the
+    $n_0=qty("1.0e16", "m^-3")$ and
+    $k_B T_e=qty("3.00", "eV")$. Take
+    $m_e=qty("9.109e-31", "kg")$,
+    $m_i=qty("1.673e-27", "kg")$, and
+    $e=qty("1.602e-19", "C")$. Use the cold-ion Bohm flux and
+    a planar area of $A=qty("1.0e-4", "m^2")$. Determine $lambda_D$, the
     electron and ion edge fluxes, the floating potential, and the ion
     current collected at the floating surface.
 
     Numerical result:
-    $lambda_D approx qty("1.29e-2", "cm")$,
-    $Gamma_(e,0) approx qty("2.90e17", "cm^-2 s^-1")$,
-    $Gamma_i approx qty("1.70e16", "cm^-2 s^-1")$,
+    $lambda_D approx qty("1.29e-4", "m")$,
+    $Gamma_(e,0) approx qty("2.90e21", "m^-2 s^-1")$,
+    $Gamma_i approx qty("1.70e20", "m^-2 s^-1")$,
     #normalized-label[$(e phi_f)/(k_B T_e) approx qty("-2.84", "1")$],
-    $phi_f approx qty("-2.84e-2", "statvolt")$
-    (approximately $qty("-8.52", "V")$), and
-    $e Gamma_i A approx qty("8.14e6", "statcoulomb")$ per #unit("s"), corresponding to
-    approximately $qty("2.72", "mA")$.
+    $phi_f approx qty("-8.52", "V")$, and
+    $e Gamma_i A approx qty("2.72", "mA")$.
   ]
   #interpretation(
     [Floating does not mean field-free],
@@ -647,10 +645,9 @@
     [infer density from the electron saturation scale and list major corrections],
   ))
   #unit-ledger[
-    Probe bias $phi_p-phi_"pl"$ is in #unit("statvolt") or a clearly stated
-    converted voltage, current $I_p$ is in statcoulomb per #unit("s") in cgs
-    (often reported in #unit("A")), and collection area $A$ is in
-    #unit("cm^2"). The normalized bias
+    Probe bias $phi_p-phi_"pl"$ is in #unit("V"), current $I_p$ is in
+    #unit("A") (often reported in #unit("mA")), and collection area $A$ is in
+    #unit("m^2"). The normalized bias
     $u=(e (phi_p-phi_"pl"))/(k_B T_e)$ and normalized current
     $I_p/(e Gamma_(e,0) A)$ are dimensionless. When temperature is quoted
     in electron-volts, $k_B T_e$ is an energy and
@@ -745,9 +742,8 @@
     $ n_e=abs(I_(e,0))/
       (e A sqrt((k_B T_e)/(2 pi m_e))) .$
 
-    The measured current and charge-current unit must be consistent. In the
-    numerical example, converting the CGS charge flux to amperes gives the
-    stated density.]
+    The measured current must be in amperes and the area in square metres for
+    this expression to return $n_e$ in #unit("m^-3").]
   )
   #probe-iv-characteristic
   #animation(
@@ -784,15 +780,15 @@
     poster: "../media/langmuir-probe.png",
   )
   #rechenbeispiel[
-    A planar probe has area $A=qty("0.10", "cm^2")$. In its electron-retarding
+    A planar probe has area $A=qty("1.0e-5", "m^2")$. In its electron-retarding
     region, a fit gives
     $dv(ln(abs(I_e)/I_(e,0)),phi_p)=qty("0.40", "V^-1")$.
     The extrapolated zero-bias electron saturation current magnitude is
     $abs(I_(e,0))=qty("4.0", "mA")$. Use the ideal planar model and determine
-    the electron temperature energy $k_B T_e$ in eV and density in #unit("cm^-3").
+    the electron temperature energy $k_B T_e$ in eV and density in #unit("m^-3").
     Numerical result: $(k_B T_e)/e approx qty("2.50", "V")$, so
     $k_B T_e approx qty("2.50", "eV")$, and
-    $n_e approx qty("9.44e9", "cm^-3")$.
+    $n_e approx qty("9.44e15", "m^-3")$.
   ]
   #interpretation(
     [A probe measures a model-dependent collection response],

@@ -31,12 +31,12 @@
   ))
 
   #unit-ledger[
-    The dimensional convention is Gaussian CGS. Number density $n_s$ is in
-    #unit("cm^-3"), charge $q_s$ is in statcoulomb (esu), mass $m_s$ is in grams,
-    time is in seconds, electric field $bold(E)$ is in statvolt per centimetre,
-    magnetic field $bold(B)$ is in gauss, and energy is in #unit("erg"). The temperature
+    The dimensional convention is SI. Number density $n_s$ is in
+    #unit("m^-3"), charge $q_s$ is in #unit("C"), mass $m_s$ is in #unit("kg"),
+    time is in seconds, electric field $bold(E)$ is in #unit("V/m"),
+    magnetic field $bold(B)$ is in #unit("T"), and energy is in #unit("J"). The temperature
     $T_s$ below is a thermodynamic temperature in kelvin, so $k_B T_s$ is an
-    energy in #unit("erg"). A symbol without a unit is explicitly marked dimensionless.
+    energy in #unit("J"). A symbol without a unit is explicitly marked dimensionless.
   ]
 
   #definition(
@@ -71,7 +71,7 @@
   $ rho_q = sum_s q_s n_s $ <intro-charge-density>
 
   #equation-note[
-    Gaussian CGS. The charge density $rho_q$ is in statcoulomb $upright("cm")^(-3)$.
+    SI. The charge density $rho_q$ is in #unit("C m^-3").
     The sum runs over all charged species.
   ]
 
@@ -91,7 +91,7 @@
     quad n_e approx sum_i Z_i n_i $ <intro-quasineutrality>
 
   #equation-note[
-    Gaussian CGS. $e$ is the positive elementary charge in statcoulomb and
+    SI. $e$ is the positive elementary charge in #unit("C") and
     $Z_i$ is the integer ion charge state. For a singly ionized hydrogen
     plasma, the condition reduces to $n_e approx n_i$. Charge-separated
     regions of Debye-scale thickness and boundary sheaths are controlled
@@ -107,7 +107,7 @@
   #details(
     [Order-of-magnitude examples],
     [The following ranges are orientation values rather than a phase diagram.
-    The density column is $n_e$ in #unit("cm^-3"), and the energy column is
+    The density column is $n_e$ in #unit("m^-3"), and the energy column is
     $k_B T_e$ in electron-volts. A single named object can occupy more than one
     row as its local state changes.
 
@@ -121,11 +121,11 @@
         [$k_B T_e$],
         [Characteristic emphasis],
       ),
-      [Solar wind], [$1$--$10$], [$1$--$100$], [dilute, weakly collisional, magnetized],
-      [Ionosphere], [$10^4$--$10^6$], [$0.1$--$1$], [partially ionized and collisional],
-      [Glow discharge], [$10^9$--$10^12$], [$1$--$10$], [weak ionization and boundaries],
-      [Solar corona], [$10^8$--$10^10$], [$10^2$--$10^3$], [hot, magnetized, nearly fully ionized],
-      [Fusion plasma], [$10^13$--$10^15$], [$10^3$--$2 dot 10^4$], [hot, confined, collective],
+      [Solar wind], [$10^6$--$10^7$], [$1$--$100$], [dilute, weakly collisional, magnetized],
+      [Ionosphere], [$10^10$--$10^12$], [$0.1$--$1$], [partially ionized and collisional],
+      [Glow discharge], [$10^15$--$10^18$], [$1$--$10$], [weak ionization and boundaries],
+      [Solar corona], [$10^14$--$10^16$], [$10^2$--$10^3$], [hot, magnetized, nearly fully ionized],
+      [Fusion plasma], [$10^19$--$10^21$], [$10^3$--$2 dot 10^4$], [hot, confined, collective],
     )
   ])
 
@@ -194,8 +194,8 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Mass $m_s$ is in grams, speed $v$ in
-    #unit("cm/s"), and kinetic energy and $k_B T_s$ are in #unit("erg").
+    SI is active. Mass $m_s$ is in #unit("kg"), speed $v$ in
+    #unit("m/s"), and kinetic energy and $k_B T_s$ are in #unit("J").
     Temperature $T_s$ itself is in kelvin. When temperature is quoted in
     electron-volts, the intended quantity is the energy $k_B T_s$, not the
     thermodynamic temperature symbol by itself.
@@ -210,7 +210,7 @@
   #equation-note[
     The first quantity depends on the individual particle speed. The second
     is the thermal energy scale of an equilibrium population; both are in
-    #unit("erg"). A single particle need not have the population's average
+    #unit("J"). A single particle need not have the population's average
     kinetic energy.
   ]
 
@@ -221,7 +221,7 @@
   $ v_("th,s") = sqrt((2 k_B T_s)/m_s) $ <intro-thermal-speed>
 
   #equation-note[
-    Gaussian CGS. $v_("th,s")$ is in #unit("cm/s"). It is a characteristic
+    SI. $v_("th,s")$ is in #unit("m/s"). It is a characteristic
     width, not the mean speed of the particles.
   ]
 
@@ -229,7 +229,7 @@
   develops the Maxwellian, its normalization, and the connection between
   temperature and mean random kinetic energy.
 
-  The conversion $1 #unit("eV") = 1.602176634 dot 10^(-12) #unit("erg")$
+  The conversion $1 #unit("eV") = 1.602176634 dot 10^(-19) #unit("J")$
   corresponds to $(1 #unit("eV"))/k_B approx 1.1605 dot 10^4$ K. Thus a
   statement such as $k_B T_e = 10 #unit("eV")$ identifies an energy scale of
   roughly $1.16 dot 10^5$ K, while the electron and ion temperatures may still
@@ -295,8 +295,8 @@
   ))
 
   #unit-ledger[
-    Dimensional lengths are measured in centimetres and times in seconds,
-    using Gaussian CGS. Comparing two lengths or two times produces a
+    Dimensional lengths are measured in metres and times in seconds
+    (SI). Comparing two lengths or two times produces a
     dimensionless ratio; both must refer to the same physical problem.
   ]
 
@@ -367,8 +367,8 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS remains the dimensional convention. A density is a particle
-    count per cubic centimetre, a bulk velocity is in #unit("cm/s"), and
+    SI remains the dimensional convention. A density is a particle
+    count per cubic metre, a bulk velocity is in #unit("m/s"), and
     temperature is in kelvin. The hierarchy below is a conceptual map.
   ]
 

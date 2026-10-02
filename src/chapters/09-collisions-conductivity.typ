@@ -40,9 +40,9 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Number density $n_s$ is in #unit("cm^-3"), a
-    cross section $sigma_(a b)$ is in #unit("cm^2"), speed is in
-    #unit("cm/s"), mean free path is in #unit("cm"), and collision frequency
+    SI units are used. Number density $n_s$ is in #unit("m^-3"), a
+    cross section $sigma_(a b)$ is in #unit("m^2"), speed is in
+    #unit("m/s"), mean free path is in #unit("m"), and collision frequency
     $nu_(a b)$ is in #unit("s^-1"). Time is in #unit("s"); a normalized
     collision count such as $nu tau$ and a Knudsen number are dimensionless.
   ]
@@ -74,9 +74,9 @@
   These are macroscopic summaries; the microscopic coefficient still depends
   on the collision operator and the ordering of scales.
 
-  Here $D$ is a particle diffusivity in #unit("cm^2/s"), and $bold(G)_"diff"$
-  is particle flux in #unit("cm^-2 s^-1"). The coefficient $mu$ in this
-  force-based definition is mobility, with units #unit("s/g"); it is not
+  Here $D$ is a particle diffusivity in #unit("m^2/s"), and $bold(G)_"diff"$
+  is particle flux in #unit("m^-2 s^-1"). The coefficient $mu$ in this
+  force-based definition is mobility, with units #unit("s/kg"); it is not
   the magnetic moment of Chapter 4. An electric-field mobility instead
   relates velocity directly to the electric field and includes the charge
   factor from the force.
@@ -135,10 +135,10 @@
 
   #rechenbeispiel[
     Consider a test population moving through stationary targets with
-    $n_b=qty("1.0e13", "cm^-3")$,
-    $sigma_(a b)=qty("2.0e-15", "cm^2")$, representative relative speed
-    $v_"rel"=qty("1.0e7", "cm/s")$, and macroscopic length
-    $L=qty("1.0e3", "cm")$ in Gaussian CGS.
+    $n_b=qty("1.0e19", "m^-3")$,
+    $sigma_(a b)=qty("2.0e-19", "m^2")$, representative relative speed
+    $v_"rel"=qty("1.0e5", "m/s")$, and macroscopic length
+    $L=qty("10", "m")$.
 
     Assumptions: independent binary encounters, speed-independent effective
     cross section, and the fixed-speed convention
@@ -149,7 +149,7 @@
 
     Numerical result: $nu_(a b)=qty("2.0e5", "s^-1")$,
     $tau_(a b)=qty("5.0e-6", "s")$,
-    $lambda_(a b)=qty("5.0e1", "cm")$, and
+    $lambda_(a b)=qty("0.50", "m")$, and
     $K_"n"=0.050$ (dimensionless).
   ]
 
@@ -180,9 +180,9 @@
       small-angle encounters.]
     ),
     (
-      question: [What are the Gaussian-CGS units of a collision cross section and mean free path?],
-      answer: [A cross section is an area in #unit("cm^2"), and a mean free
-      path is a length in #unit("cm"). The collision frequency is in
+      question: [What are the SI units of a collision cross section and mean free path?],
+      answer: [A cross section is an area in #unit("m^2"), and a mean free
+      path is a length in #unit("m"). The collision frequency is in
       #unit("s^-1").]
     ),
     (
@@ -218,11 +218,11 @@
   ))
 
   #unit-ledger[
-    Neutral density $n_"n"$ is in #unit("cm^-3"); electron or ion speed is
-    in #unit("cm/s"); the momentum-transfer cross section
-    $sigma_"mt"$ is in #unit("cm^2"); and $nu_"en"$, $nu_"in"$, and their
+    Neutral density $n_"n"$ is in #unit("m^-3"); electron or ion speed is
+    in #unit("m/s"); the momentum-transfer cross section
+    $sigma_"mt"$ is in #unit("m^2"); and $nu_"en"$, $nu_"in"$, and their
     relaxation times are in #unit("s^-1") and #unit("s"), respectively. The
-    drag force density is in #unit("g") #unit("cm^-2") #unit("s^-2").
+    drag force density is in #unit("N/m^3").
   ]
 
   #assumption(
@@ -293,9 +293,9 @@
 
   #rechenbeispiel[
     Given a weakly ionized gas with neutral density
-    $n_"n"=qty("2.0e14", "cm^-3")$, momentum-transfer cross section
-    $sigma_"mt,en"=qty("2.0e-15", "cm^2")$, and representative electron
-    speed $v_"e"=qty("1.0e7", "cm/s")$.
+    $n_"n"=qty("2.0e20", "m^-3")$, momentum-transfer cross section
+    $sigma_"mt,en"=qty("2.0e-19", "m^2")$, and representative electron
+    speed $v_"e"=qty("1.0e5", "m/s")$.
 
     Assumptions: stationary neutrals, a fixed representative electron speed,
     and the momentum-transfer rate
@@ -304,7 +304,7 @@
     Target: report the effective collision frequency and mean free path.
 
     Numerical result: $nu_"en"=qty("4.0e6", "s^-1")$ and
-    $lambda_"en"=qty("2.5e0", "cm")$.
+    $lambda_"en"=qty("2.5e-2", "m")$.
   ]
 
   #interpretation(
@@ -373,12 +373,13 @@
   ))
 
   #unit-ledger[
-    In Gaussian CGS, charge is in statcoulomb, reduced mass $m_r$ is in
-    #unit("g"), relative speed is in #unit("cm/s"), and the impact parameter
-    $b_90$ and Debye length $lambda_D$ are in #unit("cm"). The Coulomb
+    SI units are used: charge is in #unit("C"), reduced mass $m_r$ is in
+    #unit("kg"), relative speed is in #unit("m/s"), the vacuum permittivity
+    $epsilon_0$ is in #unit("F/m"), and the impact parameter
+    $b_90$ and Debye length $lambda_D$ are in #unit("m"). The Coulomb
     cutoff logarithm $ln Lambda_"cut"$ and plasma parameter
     $Lambda=n_"e"lambda_D^3$ are dimensionless, as is $ln Lambda$;
-    thermal energy $k_B T_s$ is in #unit("erg"), and collision frequencies are
+    thermal energy $k_B T_s$ is in #unit("J") (or #unit("eV")), and collision frequencies are
     in #unit("s^-1").
   ]
 
@@ -395,10 +396,10 @@
   #definition(
     [Strong-deflection scale],
     [For charges $q_a$ and $q_b$ with reduced mass $m_r$ and relative speed
-    $v_"rel"$, define the ninety-degree impact parameter in Gaussian CGS by
-    $b_90=abs(q_a q_b)/(m_r v_"rel"^2)$.
+    $v_"rel"$, define the ninety-degree impact parameter by
+    $b_90=abs(q_a q_b)/(4 pi epsilon_0 m_r v_"rel"^2)$.
     For an electron scattering from a singly charged ion,
-    $b_90=e^2/(m_"e"v_"e"^2)$ in the heavy-ion approximation and
+    $b_90=e^2/(4 pi epsilon_0 m_"e"v_"e"^2)$ in the heavy-ion approximation and
     $sigma_90=pi b_90^2$. A closest-approach convention based on equating
     kinetic and Coulomb potential energies differs by an order-one factor; the
     collision logarithm is insensitive to that convention at leading order.]
@@ -407,7 +408,7 @@
   The large-angle estimate is:
 
   $ nu_90 approx n_"i" sigma_90 v_"e"
-    =(pi n_"i" e^4)/(m_"e"^2 v_"e"^3) $
+    =(n_"i" e^4)/(16 pi epsilon_0^2 m_"e"^2 v_"e"^3) $
 
   It is not the full electron--ion relaxation rate because the many more
   distant encounters contribute cumulatively.
@@ -423,13 +424,13 @@
     (2011), Eq. (7.5), uses this plasma parameter @inan2011:
     $nu_(e i) approx (sqrt(2) omega_(p,e)^4)/(64 pi n_"e")
       ((k_B T_"e")/m_"e")^(-3/2) ln Lambda$,
-    where $omega_(p,e)=sqrt((4 pi n_"e"e^2)/m_"e")$.
+    where $omega_(p,e)=sqrt((n_"e"e^2)/(epsilon_0 m_"e"))$.
     The corresponding mean free path is
     $lambda_(e i)=⟨v_"e"⟩/nu_(e i)$.]
   )
 
   These logarithms are not numerically equal. With the electron Debye length
-  $lambda_D=sqrt((k_B T_"e")/(4 pi n_"e"e^2))$ and the Maxwellian mean
+  $lambda_D=sqrt((epsilon_0 k_B T_"e")/(n_"e"e^2))$ and the Maxwellian mean
   speed used here, $Lambda_"cut"=32 Lambda$, so
   $ln Lambda_"cut"=ln Lambda+ln(32)$. Treating the additive constant as
   negligible is only a leading-log approximation when $ln Lambda$ is large
@@ -474,7 +475,7 @@
 
     Insert this scale and
 
-    $ omega_(p,e)^2=(4 pi n_"e"e^2)/m_"e" .$
+    $ omega_(p,e)^2=(n_"e"e^2)/(epsilon_0 m_"e") .$
 
     This gives the scaling $nu_(e i) ∝ T_"e"^(-3/2)ln Lambda_"cut"$.
     It does not fix a kinetic transport prefactor. The displayed textbook
@@ -494,12 +495,13 @@
 
   #rechenbeispiel[
     For a fully ionized hydrogen plasma, use
-    $n_"e"=qty("1.0e10", "cm^-3")$,
-    $k_B T_"e"=qty("1.602e-11", "erg")$,
-    $e=qty("4.803e-10", "statC")$,
-    $m_"e"=qty("9.109e-28", "g")$, and
+    $n_"e"=qty("1.0e16", "m^-3")$,
+    $k_B T_"e"=qty("10", "eV")=qty("1.602e-18", "J")$,
+    $e=qty("1.602e-19", "C")$,
+    $epsilon_0=qty("8.854e-12", "F/m")$,
+    $m_"e"=qty("9.109e-31", "kg")$, and
     $⟨v_"e"⟩
-      =qty("2.12e8", "cm/s")$.
+      =qty("2.12e6", "m/s")$.
 
     Assumptions: weak coupling $Lambda >> 1$, classical Coulomb scattering,
     a Debye upper cutoff, the heavy-ion approximation, and the Maxwellian
@@ -509,10 +511,10 @@
     Target: report $lambda_D$, $Lambda$, $ln Lambda$, $nu_(e i)$ using the
     collision-frequency convention above, and $lambda_(e i)$.
 
-    Numerical result: $lambda_D=qty("2.35e-2", "cm")$,
+    Numerical result: $lambda_D=qty("2.35e-4", "m")$,
     $Lambda=qty("1.30e5", "1")$, $ln Lambda=qty("11.8", "1")$,
     $nu_(e i)=qty("3.60e3", "s^-1")$, and
-    $lambda_(e i)=qty("5.89e4", "cm")$.
+    $lambda_(e i)=qty("5.89e2", "m")$.
   ]
 
   #interpretation(
@@ -577,17 +579,16 @@
     [derive scalar resistivity from a drag force and the current],
     [distinguish neutral-limited and Coulomb-limited resistivity],
     [obtain the temperature and density scaling of Spitzer resistivity],
-    [connect resistivity to conductivity in Gaussian CGS],
+    [connect resistivity to conductivity in SI units],
   ))
 
   #unit-ledger[
-    In Gaussian CGS, $bold(E)$ is in statvolt per #unit("cm"), current density
-    $bold(j)$ is in statcoulomb per #unit("cm^2") per #unit("s"), resistivity
-    $eta$ in $bold(E)=eta bold(j)$ is in #unit("s"), and conductivity
-    $sigma=1/eta$ is in #unit("s^-1"). Here $sigma$ denotes conductivity;
+    SI units are used: $bold(E)$ is in #unit("V/m"), current density
+    $bold(j)$ is in #unit("A/m^2"), resistivity
+    $eta$ in $bold(E)=eta bold(j)$ is in #unit("ohm meter"), and conductivity
+    $sigma=1/eta$ is in #unit("S/m"). Here $sigma$ denotes conductivity;
     the collision cross sections earlier in this chapter have area units.
-    The drag force density is in
-    #unit("g") #unit("cm^-2") #unit("s^-2").
+    The drag force density is in #unit("N/m^3").
   ]
 
   #assumption(
@@ -617,7 +618,7 @@
     [$nu_"e i" approx (sqrt(2) omega_(p,e)^4)/(64 pi n_"e")
       ((k_B T_"e")/m_"e")^(-3/2) ln Lambda$ gives
     $eta_"Sp" approx pi/(2 sqrt(2))
-      (e^2 sqrt(m_"e"))/((k_B T_"e")^(3/2)) ln Lambda$.
+      (e^2 sqrt(m_"e"))/((4 pi epsilon_0)^2 (k_B T_"e")^(3/2)) ln Lambda$.
     Thus $eta_"Sp"$ is approximately independent of density at fixed
     temperature, apart from the weak density dependence hidden in
     $ln Lambda$. Its dominant temperature scaling is
@@ -654,7 +655,7 @@
     #derivation-step[Insert the Coulomb rate]
     Use
 
-    $ omega_(p,e)^4=((4 pi n_"e"e^2)/m_"e")^2 .$
+    $ omega_(p,e)^4=((n_"e"e^2)/(epsilon_0 m_"e"))^2 .$
 
     Inserting the Coulomb rate gives
 
@@ -670,19 +671,19 @@
 
   #rechenbeispiel[
     Using the Coulomb rate from the previous section for
-    $n_"e"=qty("1.0e10", "cm^-3")$ and
+    $n_"e"=qty("1.0e16", "m^-3")$ and
     $nu_"e i"=qty("3.60e3", "s^-1")$, calculate the scalar resistivity and
-    DC conductivity in Gaussian CGS with
-    $e=qty("4.803e-10", "statC")$ and
-    $m_"e"=qty("9.109e-28", "g")$.
+    DC conductivity with
+    $e=qty("1.602e-19", "C")$ and
+    $m_"e"=qty("9.109e-31", "kg")$.
 
     Assumptions: quasi-neutral singly charged hydrogen, scalar linear
     electron--ion drag, and no magnetic-field or pressure contribution.
 
     Target: report the scalar resistivity and DC conductivity.
 
-    Numerical result: $eta_"Sp"=qty("1.42e-15", "s")$ and
-    $sigma_"dc"=qty("7.04e14", "s^-1")$.
+    Numerical result: $eta_"Sp"=qty("1.28e-5", "ohm meter")$ and
+    $sigma_"dc"=qty("7.84e4", "S/m")$.
   ]
 
   #interpretation(
@@ -711,10 +712,10 @@
       $eta=(m_"e"nu)/(n_"e"e^2)$ in the scalar model.]
     ),
     (
-      question: [How are resistivity and conductivity related in this Gaussian-CGS convention?],
+      question: [How are resistivity and conductivity related in SI units?],
       answer: [They are reciprocals in the scalar model:
-      $sigma=1/eta$. Resistivity has units #unit("s") and conductivity has
-      units #unit("s^-1") when $bold(E)=eta bold(j)$.]
+      $sigma=1/eta$. Resistivity has units #unit("ohm meter") and conductivity has
+      units #unit("S/m") when $bold(E)=eta bold(j)$.]
     ),
     (
       question: [What is the dominant temperature scaling of Spitzer resistivity?],
@@ -749,10 +750,10 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active: $bold(E)$ is in statvolt per #unit("cm"),
-    $bold(B)_0$ is in gauss, $bold(j)$ is in statcoulomb per #unit("cm^2")
-    per #unit("s"), and all collision, cyclotron, and wave frequencies are in
-    #unit("s^-1"). The conductivity tensor entries are in #unit("s^-1");
+    SI units are used: $bold(E)$ is in #unit("V/m"),
+    $bold(B)_0$ is in #unit("T"), $bold(j)$ is in #unit("A/m^2"), and all
+    collision, cyclotron, and wave frequencies are in
+    #unit("s^-1"). The conductivity tensor entries are in #unit("S/m");
     $omega$ and $Omega$ are frequencies, while $i$ is the dimensionless
     imaginary unit with $i^2=-1$.
   ]
@@ -779,7 +780,7 @@
   The linear electron momentum equation becomes
 
   $m_"e" (nu_"e"-i omega)bold(u)_"e"
-    =q_"e" (bold(E)+(bold(u)_"e"times bold(B)_0)/c)$.
+    =q_"e" (bold(E)+bold(u)_"e"times bold(B)_0)$.
 
   For unmagnetized DC response, set $bold(B)_0=bold(0)$ and $omega=0$, so
 
@@ -789,7 +790,7 @@
   Align the $z$ axis with $bold(B)_0$ and define the signed electron
   cyclotron frequency
 
-  $Omega_"e"=(q_"e"B_0)/(m_"e"c)$.
+  $Omega_"e"=(q_"e"B_0)/m_"e"$.
 
   For DC response, set $omega=0$. Write $J_x$, $J_y$, and $J_z$ for the
   Cartesian components of the same current density $bold(j)$. The component
@@ -864,19 +865,19 @@
     For mobile ions with independent stationary-background drag (or
     collisionless response), define
 
-    $ omega_(p,s)^2=(4 pi n_s q_s^2)/m_s, quad
-      Omega_s=(q_s B_0)/(m_s c), quad a_s=nu_s-i omega .$
+    $ omega_(p,s)^2=(n_s q_s^2)/(epsilon_0 m_s), quad
+      Omega_s=(q_s B_0)/m_s, quad a_s=nu_s-i omega .$
 
-    In Gaussian CGS, the species responses sum to
+    The species responses sum to
 
-    $ sigma_(parallel)=1/(4 pi)sum_s (omega_(p,s)^2/a_s) ,$
+    $ sigma_(parallel)=epsilon_0 sum_s (omega_(p,s)^2/a_s) ,$
 
-    $ sigma_(perp)=1/(4 pi)sum_s
+    $ sigma_(perp)=epsilon_0 sum_s
       (omega_(p,s)^2 a_s)/(a_s^2+Omega_s^2) ,$
 
     and
 
-    $ sigma_"H"=1/(4 pi)sum_s
+    $ sigma_"H"=epsilon_0 sum_s
       (omega_(p,s)^2 Omega_s)/(a_s^2+Omega_s^2) .$
 
     Current always adds as $bold(j)=sum_s n_s q_s bold(u)_s$, but these
@@ -893,25 +894,24 @@
 
   #rechenbeispiel[
     Consider a homogeneous electron plasma with
-    $n_"e"=qty("1.0e10", "cm^-3")$,
+    $n_"e"=qty("1.0e16", "m^-3")$,
     $nu_"e"=qty("2.5e3", "s^-1")$,
-    $B_0=qty("100", "G")$,
-    $e=qty("4.803e-10", "statC")$,
-    $m_"e"=qty("9.109e-28", "g")$, and
-    $c=qty("2.998e10", "cm/s")$. With
+    $B_0=qty("0.010", "T")$,
+    $e=qty("1.602e-19", "C")$, and
+    $m_"e"=qty("9.109e-31", "kg")$, with
     $q_"e"=-e$.
 
     Assumptions: linear homogeneous DC response, immobile ions, a uniform
     magnetic field along the $z$ axis, and the signed-charge convention
-    $Omega_"e"=q_"e"B_0/(m_"e"c)$.
+    $Omega_"e"=q_"e"B_0/m_"e"$.
 
     Target: report the signed cyclotron frequency and the three DC tensor
     entries.
 
     Numerical result: $Omega_"e"=qty("-1.76e9", "s^-1")$,
-    $sigma_(parallel)=qty("1.01e15", "s^-1")$,
-    $sigma_(perp)=qty("2.05e3", "s^-1")$, and
-    $sigma_"H"=qty("-1.44e9", "s^-1")$.
+    $sigma_(parallel)=qty("1.13e5", "S/m")$,
+    $sigma_(perp)=qty("2.28e-7", "S/m")$, and
+    $sigma_"H"=qty("-0.160", "S/m")$.
   ]
 
   #interpretation(
@@ -929,7 +929,7 @@
     parallel, perpendicular/Pedersen, and Hall entries. In harmonic response
     use $a_s=nu_s-i omega$; with mobile ions, the displayed species tensors
     add for independent stationary-background drag or collisionless response.
-    Every entry is in #unit("s^-1") in Gaussian CGS and carries the
+    Every entry is in #unit("S/m") and carries the
     signed-charge convention through $Omega_s$.
   ]
 

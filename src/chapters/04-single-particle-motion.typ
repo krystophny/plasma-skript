@@ -25,10 +25,10 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. The particle has mass $m$ in grams, charge $q$ in
-    statcoulomb, velocity in #unit("cm/s"), electric field in statvolt per
-    centimetre, magnetic field $B$ in gauss, and time in seconds. The magnetic
-    part of the Lorentz force therefore carries $1/c$.
+    SI is active. The particle has mass $m$ in #unit("kg"), charge $q$ in
+    #unit("C"), velocity in #unit("m/s"), electric field in #unit("V/m"),
+    magnetic field $B$ in #unit("T"), and time in #unit("s"). Electric and
+    magnetic forces enter the Lorentz force with the same prefactor $q$.
   ]
 
   #governing-law(
@@ -36,11 +36,11 @@
     [For prescribed fields, a particle obeys]
   )
 
-  $ m dv(bold(v),t) = q (bold(E) + (bold(v) times bold(B)) / c) $ <motion-lorentz-force>
+  $ m dv(bold(v),t) = q (bold(E) + bold(v) times bold(B)) $ <motion-lorentz-force>
 
   #equation-note[
-    Gaussian CGS. Multiplying each field term by $q$ gives its contribution
-    to the force, in dynes. Dividing the total force by $m$ gives the
+    SI. Multiplying each field term by $q$ gives its contribution
+    to the force, in #unit("N"). Dividing the total force by $m$ gives the
     particle acceleration.
   ]
 
@@ -49,17 +49,17 @@
   $ dv((m v^2)/2,t) = q bold(E) dot bold(v) $ <motion-energy>
 
   #equation-note[
-    Gaussian CGS. The kinetic energy is in erg. The magnetic term does no work
+    SI. The kinetic energy is in #unit("J"). The magnetic term does no work
     because $bold(v) dot (bold(v) times bold(B)) = 0$.
   ]
 
   In a uniform magnetic field with $bold(E)=0$, choose
   $bold(B) = B bold(e)_z$. The perpendicular velocity components satisfy
 
-  $ dv(v_x,t) = Omega v_y, quad dv(v_y,t) = -Omega v_x, quad Omega = (q B)/(m c) $ <motion-cyclotron-components>
+  $ dv(v_x,t) = Omega v_y, quad dv(v_y,t) = -Omega v_x, quad Omega = (q B)/m $ <motion-cyclotron-components>
 
   #equation-note[
-    Gaussian CGS. $Omega$ is a signed angular frequency in $upright("s")^(-1)$. The
+    SI. $Omega$ is a signed angular frequency in $upright("s")^(-1)$. The
     parallel velocity is constant, so the full orbit is a helix unless
     $v_parallel = 0$.
   ]
@@ -70,12 +70,12 @@
     The magnetic force is perpendicular to $bold(v)_perp$, so it supplies
     centripetal acceleration without changing $v_perp$. Equating magnitudes,
 
-    $ (m v_perp^2)/rho=(abs(q) v_perp B)/c ,$
+    $ (m v_perp^2)/rho=abs(q) v_perp B ,$
 
     gives
 
-    $ rho=(m c v_perp)/(abs(q) B)=v_perp/omega_c, quad
-      omega_c=(abs(q) B)/(m c) .$
+    $ rho=(m v_perp)/(abs(q) B)=v_perp/omega_c, quad
+      omega_c=(abs(q) B)/m .$
 
     #derivation-step[Integrate the component motion]
     Solving the perpendicular component equations gives, for the chosen
@@ -94,11 +94,11 @@
   the positive gyrofrequency. Thus a faster perpendicular particle has a
   larger orbit, while a stronger field bends the same particle more tightly.
 
-  For species $s$, write the signed frequency as $Omega_s=(q_s B)/(m_s c)$
+  For species $s$, write the signed frequency as $Omega_s=(q_s B)/m_s$
   and its positive magnitude as $omega_(c,s)=abs(Omega_s)$. Both are angular
   frequencies in #unit("s^-1"). A thermal orbit estimate uses
-  $v_(perp,s)=v_("th,s")=sqrt((2 k_B T_s)/m_s)$ in #unit("cm/s"),
-  giving $rho_s=v_("th,s")/omega_(c,s)$ in #unit("cm").
+  $v_(perp,s)=v_("th,s")=sqrt((2 k_B T_s)/m_s)$ in #unit("m/s"),
+  giving $rho_s=v_("th,s")/omega_(c,s)$ in #unit("m").
 
   #gyroradius-geometry
 
@@ -120,33 +120,33 @@
   not justify averaging over a particle orbit.
 
   #rechenbeispiel[
-    Context: use a hydrogen plasma with $n_e = qty("1e14", "cm^-3")$,
+    Context: use a hydrogen plasma with $n_e = qty("1e20", "m^-3")$,
     $T_e = qty("1e6", "K")$, $T_i = qty("1e6", "K")$, and
-    $B = qty("1e4", "G")$. Assume singly charged ions, $n_i = n_e$, and use
-    $m_e = qty("9.109e-28", "g")$,
-    $m_i = qty("1.673e-24", "g")$, $e = 4.803 dot 10^(-10)$ statcoulomb,
-    $k_B = qty("1.381e-16", "erg/K")$, and
-    $c = qty("2.998e10", "cm/s")$. Take the perpendicular speed to be the
+    $B = qty("1", "T")$. Assume singly charged ions, $n_i = n_e$, and use
+    $m_e = qty("9.109e-31", "kg")$,
+    $m_i = qty("1.673e-27", "kg")$, $e = qty("1.602e-19", "C")$,
+    $epsilon_0 = qty("8.854e-12", "F/m")$, and
+    $k_B = qty("1.381e-23", "J/K")$. Take the perpendicular speed to be the
     thermal speed, $v_(perp,s) = v_("th,s") = sqrt((2 k_B T_s)/m_s)$, for each
     species.
 
     Target: report $lambda_D$, $omega_(p,e)$, $rho_e$, and $rho_i$.
 
-    Numerical result: $lambda_D = qty("6.9e-4", "cm")$,
+    Numerical result: $lambda_D = qty("6.9e-6", "m")$,
     $omega_(p,e) = qty("5.6e11", "s^-1")$,
-    $rho_e = qty("3.1e-3", "cm")$, and $rho_i = qty("1.3e-1", "cm")$.
-    These values are dimensional Gaussian-CGS results.
+    $rho_e = qty("3.1e-5", "m")$, and $rho_i = qty("1.3e-3", "m")$.
+    These values are dimensional SI results.
   ]
 
   #rechenbeispiel[
     Context: use a representative thermonuclear hydrogen plasma with
-    $n_e = qty("1e14", "cm^-3")$, $T_e = qty("1e8", "K")$,
-    $T_i = qty("1e8", "K")$, and $B = qty("5e4", "G")$. Assume
+    $n_e = qty("1e20", "m^-3")$, $T_e = qty("1e8", "K")$,
+    $T_i = qty("1e8", "K")$, and $B = qty("5", "T")$. Assume
     singly charged ions, $n_i = n_e$. Use
-    $m_e = qty("9.109e-28", "g")$,
-    $m_i = qty("1.673e-24", "g")$, $e = 4.803 dot 10^(-10)$ statcoulomb,
-    $k_B = qty("1.381e-16", "erg/K")$, and
-    $c = qty("2.998e10", "cm/s")$. Take the perpendicular speed to be the
+    $m_e = qty("9.109e-31", "kg")$,
+    $m_i = qty("1.673e-27", "kg")$, $e = qty("1.602e-19", "C")$,
+    $epsilon_0 = qty("8.854e-12", "F/m")$, and
+    $k_B = qty("1.381e-23", "J/K")$. Take the perpendicular speed to be the
     thermal speed, $v_(perp,s) = v_("th,s") = sqrt((2 k_B T_s)/m_s)$, for each
     species.
 
@@ -154,13 +154,13 @@
     $omega_(c,i)$, $rho_e$, and $rho_i$.
 
     Numerical result: $k_B T_e approx qty("8.62", "keV")$,
-    $lambda_D = qty("6.9e-3", "cm")$,
+    $lambda_D = qty("6.9e-5", "m")$,
     $omega_(p,e) = qty("5.6e11", "s^-1")$,
     $omega_(c,e) = qty("8.8e11", "s^-1")$,
     $omega_(c,i) = qty("4.8e8", "s^-1")$,
-    $rho_e = qty("6.3e-3", "cm")$, and
-    $rho_i = qty("2.7e-1", "cm")$. These are rough dimensional
-    Gaussian-CGS values for a hot confined plasma.
+    $rho_e = qty("6.3e-5", "m")$, and
+    $rho_i = qty("2.7e-3", "m")$. These are rough dimensional
+    SI values for a hot confined plasma.
   ]
 
   #summary[
@@ -189,7 +189,7 @@
     ),
     (
       question: [How does the gyroradius scale with particle mass at fixed $v_perp$ and $B$?],
-      answer: [It is proportional to $m$, because $rho = (m c v_perp)/(abs(q)B)$ in Gaussian CGS.],
+      answer: [It is proportional to $m$, because $rho = (m v_perp)/(abs(q)B)$ in SI.],
     ),
     (
       question: [What changes when the sign of $q$ changes in a uniform magnetic field?],
@@ -216,9 +216,9 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. The homogeneous force $bold(F)$ is in dynes,
-    $bold(B)$ in gauss, $q$ in statcoulomb, and drift velocity in
-    #unit("cm/s"). A drift ratio such as $v_D/v_perp$ is dimensionless
+    SI is active. The homogeneous force $bold(F)$ is in #unit("N"),
+    $bold(B)$ in #unit("T"), $q$ in #unit("C"), and drift velocity in
+    #unit("m/s"). A drift ratio such as $v_D/v_perp$ is dimensionless
     only after both speeds use the same reference state.
   ]
 
@@ -248,29 +248,29 @@
 
   The force balance for a constant orbit-center velocity is
 
-  $ bold(F) + (q/c) (bold(v)_D times bold(B)) = 0 $ <motion-force-balance>
+  $ bold(F) + q (bold(v)_D times bold(B)) = 0 $ <motion-force-balance>
 
   #equation-note[
-    Gaussian CGS. This is a vector force balance in dynes. The drift has no
+    SI. This is a vector force balance in #unit("N"). The drift has no
     acceleration because it describes the constant orbit-center translation.
   ]
 
   Crossing with $bold(B)$ and using $bold(F) dot bold(B)=0$ gives
 
-  $ bold(v)_D = (c (bold(F) times bold(B)))/(q B^2) $ <motion-general-drift>
+  $ bold(v)_D = (bold(F) times bold(B))/(q B^2) $ <motion-general-drift>
 
   #equation-note[
-    Gaussian CGS. The result has velocity units. It is valid for a homogeneous
+    SI. The result has velocity units, #unit("m/s"). It is valid for a homogeneous
     perpendicular force and a uniform magnetic field.
   ]
 
   For $bold(F)=q bold(E)$, the charge cancels:
 
-  $ bold(v)_(E times B) = (c (bold(E) times bold(B)))/(B^2) $ <motion-exb-drift>
+  $ bold(v)_(E times B) = (bold(E) times bold(B))/(B^2) $ <motion-exb-drift>
 
   #equation-note[
-    Gaussian CGS. The factor $c$ is required in this electromagnetic convention.
-    The common $E times B$ drift is independent of species mass and charge sign.
+    SI. With $E$ in #unit("V/m") and $B$ in #unit("T"), $E/B$ is directly a
+    speed in #unit("m/s"). The common $E times B$ drift is independent of species mass and charge sign.
   ]
 
   #details(
@@ -278,7 +278,7 @@
     [#derivation-step[Start from the orbit-center force balance]
     A constant drift velocity satisfies
 
-    $ bold(F)+(q/c)(bold(v)_D times bold(B))=bold(0) .$
+    $ bold(F)+q (bold(v)_D times bold(B))=bold(0) .$
 
     The drift is perpendicular to $bold(B)$, so crossing the equation with
     $bold(B)$ uses
@@ -288,7 +288,7 @@
     #derivation-step[Solve for the drift]
     The cross-product equation becomes
 
-    $ bold(v)_D=(c (bold(F) times bold(B)))/(q B^2) .$
+    $ bold(v)_D=(bold(F) times bold(B))/(q B^2) .$
 
     For an electric force, $bold(F)=q bold(E)$, so both the charge magnitude
     and its sign cancel. Direct substitution into the original force balance
@@ -299,7 +299,7 @@
     "../media/exb-drift.mp4",
     "A positive charge gyrates clockwise around a guiding center translating rightward. Position axes are x/L0 and y/L0 [1]. The electric field points upward and the magnetic field out of the page; the drift is E cross B.",
     caption: [
-      Gyromotion plus the Gaussian-CGS $E times B$ drift. The trajectory is a
+      Gyromotion plus the $E times B$ drift. The trajectory is a
       deterministic normalized illustration, not measured data. With reference
       length $L_0$ and time $t_0$, it uses $Omega t_0=2$,
       $rho/L_0=0.65$, and $v_D t_0/L_0=0.55$, all dimensionless.
@@ -309,7 +309,7 @@
 
   #summary[
     A homogeneous perpendicular force produces a drift
-    $bold(v)_D = (c (bold(F) times bold(B)))/(q B^2)$. For an electric force the
+    $bold(v)_D = (bold(F) times bold(B))/(q B^2)$. For an electric force the
     charge cancels, so all magnetized species share the same $E times B$ drift.
   ]
 
@@ -356,12 +356,12 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Let $L_B$ denote the magnetic-field variation
-    length in cm and $omega_c^(-1)$ the characteristic gyration time in
+    SI is active. Let $L_B$ denote the magnetic-field variation
+    length in #unit("m") and $omega_c^(-1)$ the characteristic gyration time in
     seconds; the gyroperiod is $(2 pi)/omega_c$. The ordering
     parameters $rho/L_B$ and $omega_"slow"/omega_c$ are dimensionless.
-    Magnetic moment is defined below in the corresponding Gaussian-CGS
-    energy-per-field convention.
+    The magnetic moment defined below is in #unit("J/T"), equivalently
+    #unit("A m^2").
   ]
 
   #assumption(
@@ -378,9 +378,9 @@
   $ bold(r)(t) = bold(R)(t) + bold(rho)(t), quad abs(bold(rho)) approx rho $ <motion-position-split>
 
   #equation-note[
-    Gaussian CGS geometry. $bold(R)$ is the guiding-center position and
+    SI geometry. $bold(R)$ is the guiding-center position and
     $bold(rho)$ is the fast gyroradius vector. Both positions and $rho$ are in
-    cm.
+    #unit("m").
   ]
 
   The velocity has the corresponding decomposition
@@ -390,7 +390,7 @@
     bold(v) = bold(v)_parallel + bold(v)_perp $ <motion-velocity-split>
 
   #equation-note[
-    Gaussian CGS. Every velocity is in #unit("cm/s"). The first equality
+    SI. Every velocity is in #unit("m/s"). The first equality
     follows from the position split; the second is the local decomposition
     relative to $bold(B)$. The guiding-center derivative includes parallel
     motion and slow drifts, so it is not generally identical to
@@ -402,7 +402,7 @@
   $ mu = (m v_perp^2)/(2 B) $ <motion-magnetic-moment>
 
   #equation-note[
-    Gaussian CGS. $mu$ is an energy divided by magnetic field. It is an
+    SI. $mu$ is an energy divided by magnetic field, in #unit("J/T"). It is an
     adiabatic invariant under the stated slow-variation ordering: it remains
     approximately constant as the particle samples a slowly changing field.
     Here “adiabatic” refers to the separation of orbit and field-variation
@@ -424,11 +424,10 @@
 
     $ I_"gyro"=abs(q)/T_"c"=(abs(q) omega_c)/(2 pi) .$
 
-    In Gaussian CGS, the magnetic dipole moment is current times area divided
-    by $c$:
+    In SI, the magnetic dipole moment is current times area:
 
-    $ mu=(I_"gyro" S)/c
-      =(abs(q) omega_c rho^2)/(2 c)
+    $ mu=I_"gyro" S
+      =(abs(q) omega_c rho^2)/2
       =(m v_perp^2)/(2 B) .$
 
     Here $mu$ is the positive scalar magnitude; the gyration produces a
@@ -470,18 +469,17 @@
   need not be conserved.
 
   #rechenbeispiel[
-    A proton has $m_i=qty("1.673e-24", "g")$ and charge
-    $q_i=e=qty("4.803e-10", "statcoulomb")$. Use
-    $c=qty("2.998e10", "cm/s")$, an initial field
-    $B_0=qty("100", "G")$, a final field $B_1=qty("400", "G")$, and
-    $v_(perp,0)=qty("1.00e7", "cm/s")$. Assume that the field changes
+    A proton has $m_i=qty("1.673e-27", "kg")$ and charge
+    $q_i=e=qty("1.602e-19", "C")$. Use an initial field
+    $B_0=qty("0.0100", "T")$, a final field $B_1=qty("0.0400", "T")$, and
+    $v_(perp,0)=qty("1.00e5", "m/s")$. Assume that the field changes
     adiabatically, $mu$ is conserved, and there is no electrostatic energy
     exchange.
 
     Target: report $v_(perp,1)$, $rho_0$, and $rho_1$.
 
-    Numerical result: $v_(perp,1)=qty("2.00e7", "cm/s")$,
-    $rho_0=qty("10.4", "cm")$, and $rho_1=qty("5.22", "cm")$.
+    Numerical result: $v_(perp,1)=qty("2.00e5", "m/s")$,
+    $rho_0=qty("0.104", "m")$, and $rho_1=qty("0.0522", "m")$.
   ]
 
   #interpretation(
@@ -540,9 +538,9 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. $grad(B)$ has gauss per centimetre, the effective
-    force is in dynes, and all drift velocities are in #unit("cm/s").
-    The symbols $mu$, $m$, $q$, $B$, and $c$ use the definitions of the prior
+    SI is active. $grad(B)$ has #unit("T/m"), the effective
+    force is in #unit("N"), and all drift velocities are in #unit("m/s").
+    The symbols $mu$, $m$, $q$, and $B$ use the definitions of the prior
     section.
   ]
 
@@ -555,17 +553,17 @@
   $ bold(F)_mu = -mu grad(B) $ <motion-mu-force>
 
   #equation-note[
-    Gaussian CGS. $bold(F)_mu$ is in dynes when $mu$ is in energy per gauss and
-    $grad(B)$ in gauss per centimetre.
+    SI. $bold(F)_mu$ is in #unit("N") when $mu$ is in #unit("J/T") and
+    $grad(B)$ in #unit("T/m").
   ]
 
   Because the field varies little across an orbit, the local perpendicular
   part of this force can be inserted into the homogeneous-force drift:
 
-  $ bold(v)_(grad B) = (c (bold(F)_mu times bold(B)))/(q B^2) = (c mu (bold(B) times grad(B)))/(q B^2) $ <motion-gradb-drift>
+  $ bold(v)_(grad B) = (bold(F)_mu times bold(B))/(q B^2) = (mu (bold(B) times grad(B)))/(q B^2) $ <motion-gradb-drift>
 
   #equation-note[
-    Gaussian CGS. The drift is perpendicular to both $bold(B)$ and the field
+    SI. The drift is perpendicular to both $bold(B)$ and the field
     gradient. Its direction changes with the sign of $q$.
   ]
 
@@ -576,7 +574,7 @@
   $ bold(F)_"curv" = -(m v_parallel^2 bold(R)_c)/(R_c^2) $ <motion-curvature-force>
 
   #equation-note[
-    Gaussian CGS. The effective centrifugal force is in dynes. The vector
+    SI. The effective centrifugal force is in #unit("N"). The vector
     convention for $bold(R)_c$ points from the particle toward the centre of
     curvature, so the minus sign points outward from that centre.
   ]
@@ -584,10 +582,10 @@
   Define the curvature vector $bold(kappa) = bold(R)_c/R_c^2$ and the field
   unit vector $bold(b) = bold(B)/B$. Applying the same force-drift map gives
 
-  $ bold(v)_"curv" = (c (bold(F)_"curv" times bold(B)))/(q B^2) = (c m v_parallel^2)/(q B) (bold(b) times bold(kappa)) $ <motion-curvature-drift>
+  $ bold(v)_"curv" = (bold(F)_"curv" times bold(B))/(q B^2) = (m v_parallel^2)/(q B) (bold(b) times bold(kappa)) $ <motion-curvature-drift>
 
   #equation-note[
-    Gaussian CGS. The curvature drift is in #unit("cm/s"). The sign of $q$
+    SI. The curvature drift is in #unit("m/s"). The sign of $q$
     determines its direction; the expression uses the stated convention for
     $bold(R)_c$ and assumes the same adiabatic ordering as the grad-$B$ drift.
   ]
@@ -602,7 +600,7 @@
     #derivation-step[Apply the general force-drift formula]
     A perpendicular homogeneous force drifts at
 
-    $ bold(v)_D=(c (bold(F) times bold(B)))/(q B^2) .$
+    $ bold(v)_D=(bold(F) times bold(B))/(q B^2) .$
 
     Substitute the magnetic-moment force and use
 
@@ -610,7 +608,7 @@
 
     The grad-$B$ drift is therefore
 
-    $ bold(v)_(grad B)=(c mu (bold(B) times grad(B)))/(q B^2) .$
+    $ bold(v)_(grad B)=(mu (bold(B) times grad(B)))/(q B^2) .$
 
     Reversing $q$ while holding $bold(B)$ fixed checks the direction of the
     drift.]
@@ -696,8 +694,8 @@
   )
 
   #rechenbeispiel[
-    A particle starts in a minimum field $B_0 = qty("100", "G")$ and sees a
-    maximum field $B_"max" = qty("500", "G")$. Determine the critical pitch
+    A particle starts in a minimum field $B_0 = qty("0.0100", "T")$ and sees a
+    maximum field $B_"max" = qty("0.0500", "T")$. Determine the critical pitch
     angle $alpha_"c"$ separating reflected particles from the loss cone.
     Here $0 <= alpha_0 <= pi/2$ is the acute pitch angle to the direction of
     approach, in a static field with no electric work.
@@ -769,9 +767,9 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. The electric field is in statvolt per centimetre,
-    the magnetic field is in gauss, mass is in grams, charge is in
-    statcoulomb, and all velocities are in #unit("cm/s"). The drive frequency
+    SI is active. The electric field is in #unit("V/m"),
+    the magnetic field is in #unit("T"), mass is in #unit("kg"), charge is in
+    #unit("C"), and all velocities are in #unit("m/s"). The drive frequency
     $omega_"d"$ and $Omega$ are in #unit("s^-1"). The ordering ratio
     $omega_"d"/abs(Omega)$ is normalized and therefore carries unit [1].
   ]
@@ -792,20 +790,20 @@
 
   The leading force balance is the familiar common drift
 
-  $ bold(v)_(E times B) = (c (bold(E)_perp times bold(B)))/(B^2) $ <motion-polarization-exb>
+  $ bold(v)_(E times B) = (bold(E)_perp times bold(B))/(B^2) $ <motion-polarization-exb>
 
   #equation-note[
-    Gaussian CGS. The leading drift is in #unit("cm/s") and follows the
+    SI. The leading drift is in #unit("m/s") and follows the
     instantaneous electric field. The notation $bold(v)_"gyro"$ denotes the
     rapidly rotating residual motion, not an additional secular drift.
   ]
 
   The next-order orbit-center response is the polarization drift:
 
-  $ bold(v)_"pol" = (m c^2)/(q B^2) pdv(bold(E)_perp,t) $ <motion-polarization-drift>
+  $ bold(v)_"pol" = m/(q B^2) pdv(bold(E)_perp,t) $ <motion-polarization-drift>
 
   #equation-note[
-    Gaussian CGS. The factor $1/q$ makes the polarization drift point in
+    SI. The factor $1/q$ makes the polarization drift point in
     opposite directions for positive and negative charges. Unlike the
     $E times B$ drift, it depends on particle mass.
   ]
@@ -816,16 +814,16 @@
     For a uniform magnetic field, the perpendicular Lorentz equation is
 
     $ m pdv(bold(v)_perp,t)=q (bold(E)_perp+
-      (bold(v)_perp times bold(B))/c) .$
+      bold(v)_perp times bold(B)) .$
 
     Define $bold(v)_E=bold(v)_(E times B)$ by
 
-    $ bold(E)_perp+(bold(v)_E times bold(B))/c=bold(0) .$
+    $ bold(E)_perp+bold(v)_E times bold(B)=bold(0) .$
 
     Write the remaining slow correction as $bold(delta v)$. Keeping the
     leading inertial term gives
 
-    $ m pdv(bold(v)_E,t)=(q/c)(bold(delta v) times bold(B)) .$
+    $ m pdv(bold(v)_E,t)=q (bold(delta v) times bold(B)) .$
 
     #derivation-step[Invert the magnetic operator]
     Cross with $bold(B)$. Because the correction is perpendicular to the
@@ -836,18 +834,18 @@
 
     Thus
 
-    $ bold(delta v)=(m c)/(q B^2)
+    $ bold(delta v)=m/(q B^2)
       (bold(B) times pdv(bold(v)_E,t)) .$
 
     Since $bold(B)$ is constant,
 
     $ pdv(bold(v)_E,t)=
-      (c (pdv(bold(E)_perp,t) times bold(B)))/(B^2) .$
+      (pdv(bold(E)_perp,t) times bold(B))/(B^2) .$
 
     Use $bold(B) times (bold(A) times bold(B))=B^2 bold(A)$ for
     $bold(A) dot bold(B)=0$. The correction is therefore
 
-    $ bold(delta v)=(m c^2)/(q B^2) pdv(bold(E)_perp,t) .$
+    $ bold(delta v)=m/(q B^2) pdv(bold(E)_perp,t) .$
 
     #derivation-step[State the ordering]
     The discarded term $m pdv(bold(delta v),t)$ is smaller by
@@ -858,28 +856,27 @@
   Summing over species gives a polarization current density
 
   $ bold(j)_"pol" = sum_s n_(s,0) q_s bold(v)_"pol,s"
-    = (c^2)/(B^2) (sum_s n_(s,0) m_s)
+    = 1/(B^2) (sum_s n_(s,0) m_s)
       pdv(bold(E)_perp,t) $ <motion-polarization-current>
 
   #equation-note[
-    Gaussian CGS. The current density is in statcoulomb per #unit("cm^2") per
-    #unit("s"). The charge signs cancel in the species sum, so the mass
+    SI. The current density is in #unit("A/m^2"). The charge signs cancel in the species sum, so the mass
     density weights the polarization current; in an electron--ion plasma the
     ion contribution is usually larger.
   ]
 
   #rechenbeispiel[
-    Consider an electron in a uniform field $B=qty("100", "G")$. Use
-    $m_e=qty("9.109e-28", "g")$, $q_e=-qty("4.803e-10", "statcoulomb")$,
-    $c=qty("2.998e10", "cm/s")$, and a perpendicular drive
-    $bold(E)_perp (t)=qty("1.00", "statvolt/cm") cos(omega_"d" t) bold(e)_x$
+    Consider an electron in a uniform field $B=qty("0.0100", "T")$. Use
+    $m_e=qty("9.109e-31", "kg")$, $q_e=-qty("1.602e-19", "C")$,
+    and a perpendicular drive
+    $bold(E)_perp (t)=qty("3.00e4", "V/m") cos(omega_"d" t) bold(e)_x$
     with $omega_"d"=qty("1.00e5", "s^-1")$. Evaluate the polarization-drift
     amplitude and the ordering ratio $omega_"d"/abs(Omega_e)$.
 
-    Assumptions: uniform Gaussian-CGS fields, collisionless motion, and the
+    Assumptions: uniform fields, collisionless motion, and the
     slowly varying-field approximation.
 
-    Numerical result: $abs(v_"pol,e")=qty("1.70e4", "cm/s")$ and
+    Numerical result: $abs(v_"pol,e")=qty("171", "m/s")$ and
     #normalized-label[$omega_"d"/abs(Omega_e)=qty("5.69e-5", "1")$].
   ]
 
@@ -895,7 +892,7 @@
 
   #summary[
     For $omega_"d" << abs(Omega)$, a changing perpendicular electric field
-    adds $bold(v)_"pol"=(m c^2)/(q B^2) pdv(bold(E)_perp,t)$ to the common
+    adds $bold(v)_"pol"=m/(q B^2) pdv(bold(E)_perp,t)$ to the common
     $E times B$ drift. This correction is mass dependent and reverses with
     charge, so it contributes to the polarization current.
   ]
@@ -944,9 +941,9 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. The angular frequency $omega$, signed gyrofrequency
-    $Omega=q B/(m c)$, and detuning are in #unit("s^-1"). The complex electric
-    field amplitude is in statvolt per centimetre, velocity in #unit("cm/s"),
+    SI is active. The angular frequency $omega$, signed gyrofrequency
+    $Omega=(q B)/m$, and detuning are in #unit("s^-1"). The complex electric
+    field amplitude is in #unit("V/m"), velocity in #unit("m/s"),
     and $i$ is the dimensionless imaginary unit with $i^2=-1$. The resonance
     condition $omega/abs(Omega)=1$ is normalized and carries unit [1].
   ]
@@ -976,7 +973,7 @@
   $ pdv(v_"cw",t) + i Omega v_"cw" = (q/m) E_"cw" $ <motion-cyclotron-response>
 
   #equation-note[
-    Gaussian CGS. For a harmonic drive
+    SI. For a harmonic drive
     $E_"cw"=tilde(E)_"cw" exp(-i omega t)$, the response amplitude is
     $tilde(v)_"cw"=(q tilde(E)_"cw")/(i m (Omega-omega))$. The denominator
     becomes small when the drive rotation matches the signed gyrofrequency.
@@ -1030,11 +1027,10 @@
   the energy transfer and broaden or shift the ideal resonance.
 
   #rechenbeispiel[
-    In a uniform Gaussian-CGS field $B=qty("100", "G")$, determine the
+    In a uniform field $B=qty("0.0100", "T")$, determine the
     positive resonant angular frequencies for an electron and a proton. Use
-    $e=qty("4.803e-10", "statcoulomb")$,
-    $m_e=qty("9.109e-28", "g")$, $m_i=qty("1.673e-24", "g")$, and
-    $c=qty("2.998e10", "cm/s")$. For each species, identify the circular
+    $e=qty("1.602e-19", "C")$,
+    $m_e=qty("9.109e-31", "kg")$, and $m_i=qty("1.673e-27", "kg")$. For each species, identify the circular
     polarization that couples to the positive-frequency drive.
 
     Assumptions: collisionless, nonrelativistic, uniform magnetic field and

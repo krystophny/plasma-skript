@@ -40,22 +40,21 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Position is in #unit("cm"), time is in
-    #unit("s"), velocity is in #unit("cm/s"), mass is in #unit("g"), number
-    density is in #unit("cm^-3"), and mass density is in
-    #unit("g") #unit("cm^-3"). Pressure and energy density are in
-    #unit("erg/cm^3"), electric field is in statvolt per #unit("cm"),
-    magnetic field is in gauss, and the current density is charge per
-    #unit("cm^2") per #unit("s"). The speed of light is in #unit("cm/s").
-    A species label is an index, not a unit.
+    SI units are used. Position is in #unit("m"), time is in
+    #unit("s"), velocity is in #unit("m/s"), mass is in #unit("kg"), number
+    density is in #unit("m^-3"), and mass density is in
+    #unit("kg/m^3"). Pressure and energy density are in
+    #unit("J/m^3") (equivalently #unit("Pa")), electric field is in
+    #unit("V/m"), magnetic field is in #unit("T"), and the current density is
+    in #unit("A/m^2"). A species label is an index, not a unit.
   ]
 
   #definition(
     [Hydrogen two-fluid variables],
     [Use $s in {e, i}$ for electrons and singly charged ions. Their charges
     are $q_(e)=-e$ and $q_(i)=+e$, with masses
-    $m_(e)=qty("9.109e-28", "g")$ and
-    $m_(i)=qty("1.673e-24", "g")$. For each species, $n_(s)$ is number
+    $m_(e)=qty("9.109e-31", "kg")$ and
+    $m_(i)=qty("1.673e-27", "kg")$. For each species, $n_(s)$ is number
     density, $bold(u)_(s)$ is mean velocity, $bold(P)_(s)$ is the pressure
     tensor, and $bold(R)_(s)$ is the collisional momentum source.]
   )
@@ -67,9 +66,9 @@
     bold(j) = sum_s q_(s) n_(s) bold(u)_(s) $ <multiple-species-moments>
 
   #equation-note[
-    The mass density $rho_(s)$ is in #unit("g/cm^3"), charge density $rho_q$
-    is in statcoulomb per #unit("cm^3"), and $bold(j)$ is the total current
-    density. The charge $e$ is measured in statcoulomb. In a quasi-neutral
+    The mass density $rho_(s)$ is in #unit("kg/m^3"), charge density $rho_q$
+    is in #unit("C/m^3"), and $bold(j)$ is the total current density in
+    #unit("A/m^2"). The charge $e$ is measured in #unit("C"). In a quasi-neutral
     hydrogen plasma, $n_(e) approx n_(i)$, but generally
     $bold(u)_(e) != bold(u)_(i)$; the difference is precisely what permits a
     current.
@@ -153,7 +152,7 @@
       question: [What is the physical role of the magnetic field in the
       species equations?],
       answer: [It couples to each species through
-      $(q_(s)n_(s) (bold(u)_(s) times bold(B)))/c$. The force is perpendicular to
+      $q_(s)n_(s) (bold(u)_(s) times bold(B))$. The force is perpendicular to
       the instantaneous velocity and changes direction of motion without
       directly doing work.]
     ),
@@ -176,13 +175,12 @@
   ))
 
   #unit-ledger[
-    The equations use Gaussian CGS. The Lorentz force density is in
-    #unit("g") #unit("cm^-2") #unit("s^-2"), because
+    The equations use SI units with $epsilon_0$ and $mu_0$. The Lorentz force
+    density is in #unit("N/m^3"), because
     $q_(s)n_(s) bold(E)$ and
-    $(q_(s)n_(s)(bold(u)_(s) times bold(B)))/c$ have that unit. The pressure
+    $q_(s)n_(s)(bold(u)_(s) times bold(B))$ have that unit. The pressure
     divergence and $bold(R)_(s)$ are also force densities. Energy density is
-    in #unit("erg/cm^3"), and an energy flux is in
-    #unit("erg") #unit("cm^-2") #unit("s^-1").
+    in #unit("J/m^3"), and an energy flux is in #unit("W/m^2").
   ]
 
   #assumption(
@@ -203,7 +201,7 @@
 
   $ pdv(rho_(s) bold(u)_(s), t)
     + div(rho_(s) bold(u)_(s) bold(u)_(s) + bold(P)_(s))
-    = q_(s) n_(s) (bold(E) + (bold(u)_(s) times bold(B))/c)
+    = q_(s) n_(s) (bold(E) + bold(u)_(s) times bold(B))
     + bold(R)_(s) $ <multiple-momentum-conservative>
 
   Equivalently, after using continuity, the left-hand side can be written as
@@ -211,14 +209,13 @@
 
   $ rho_(s) (pdv(bold(u)_(s), t)
     + bold(u)_(s) dot grad(bold(u)_(s)))
-    = q_(s) n_(s) (bold(E) + (bold(u)_(s) times bold(B))/c)
+    = q_(s) n_(s) (bold(E) + bold(u)_(s) times bold(B))
     - div(bold(P)_(s)) + bold(R)_(s) $
     <multiple-momentum-material>
 
   #equation-note[
-    The momentum density is in #unit("g/cm^2/s"). Every term in the material
-    equation is a force density in #unit("g") #unit("cm^-2")
-    #unit("s^-2"). The tensor divergence becomes
+    The momentum density is in #unit("kg m^-2 s^-1"). Every term in the
+    material equation is a force density in #unit("N/m^3"). The tensor divergence becomes
     $grad(p_(s))$ only for an isotropic pressure tensor.
   ]
 
@@ -246,11 +243,11 @@
 
   The field equations are
 
-  $ div(bold(E)) = 4 pi rho_q, quad div(bold(B)) = 0 $
+  $ div(bold(E)) = rho_q/epsilon_0, quad div(bold(B)) = 0 $
     <multiple-gauss-laws>
 
-  $ curl(bold(E)) = -(pdv(bold(B), t))/c, quad
-    curl(bold(B)) = ((4 pi)/c) bold(j) + (pdv(bold(E), t))/c $
+  $ curl(bold(E)) = -pdv(bold(B), t), quad
+    curl(bold(B)) = mu_0 bold(j) + mu_0 epsilon_0 pdv(bold(E), t) $
     <multiple-maxwell>
 
   #details(
@@ -264,7 +261,7 @@
     with
 
     $ bold(a)_(s)=q_(s)/m_(s)
-        (bold(E)+(bold(v) times bold(B))/c) .$
+        (bold(E)+bold(v) times bold(B)) .$
 
     #derivation-step[Take the zeroth moment]
     Integrating over velocity gives $pdv(n_(s),t)$ from the time term and
@@ -293,7 +290,7 @@
 
     $ m_(s) integral bold(a)_(s)f_(s) dif^3 bold(v)
         =q_(s)n_(s)bold(E)
-        +(q_(s)n_(s)(bold(u)_(s)times bold(B)))/c .$
+        +q_(s)n_(s)(bold(u)_(s)times bold(B)) .$
 
     The remaining collision moment is
 
@@ -321,10 +318,10 @@
 
   #rechenbeispiel[
     Context: a quasi-neutral hydrogen plasma has
-    $n_(e)=n_(i)=qty("1.0e10", "cm^-3")$, ion speed
-    $u_(i,x)=qty("2.0e7", "cm/s")$, electron speed
-    $u_(e,x)=qty("1.5e7", "cm/s")$, and
-    $e=qty("4.803e-10", "statC")$.
+    $n_(e)=n_(i)=qty("1.0e16", "m^-3")$, ion speed
+    $u_(i,x)=qty("2.0e5", "m/s")$, electron speed
+    $u_(e,x)=qty("1.5e5", "m/s")$, and
+    $e=qty("1.602e-19", "C")$.
 
     Assumptions: singly charged species, equal densities, and one-dimensional
     flows along $x$.
@@ -332,8 +329,8 @@
     Target: report the charge density and the total $x$-directed current
     density.
 
-    Numerical result: $rho_q=0$ statcoulomb per #unit("cm^3") and
-    $j_x=qty("2.40e7", "statC")$ per #unit("cm^2") per #unit("s").
+    Numerical result: $rho_q=qty("0", "C/m^3")$ and
+    $j_x=qty("80.1", "A/m^2")$.
   ]
 
   #interpretation(
@@ -365,7 +362,7 @@
       question: [Which term couples a species momentum equation to the
       electromagnetic field?],
       answer: [The Lorentz force density
-      $q_(s)n_(s)(bold(E)+(bold(u)_(s)times bold(B))/c)$ couples the species
+      $q_(s)n_(s)(bold(E)+bold(u)_(s)times bold(B))$ couples the species
       momentum to the common fields.]
     ),
     (
@@ -409,11 +406,10 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. $bold(B)$ is in gauss, $bold(E)$ is in statvolt per
-    #unit("cm"), $q_(s)$ is in statcoulomb, $n_(s)$ is in
-    #unit("cm^-3"), and all drift velocities are in #unit("cm/s"). The
-    pressure gradient is in #unit("erg") #unit("cm^-4"). The factor $c$ is
-    required in the magnetic part of the Gaussian-CGS Lorentz force.
+    SI units are used. $bold(B)$ is in #unit("T"), $bold(E)$ is in
+    #unit("V/m"), $q_(s)$ is in #unit("C"), $n_(s)$ is in
+    #unit("m^-3"), and all drift velocities are in #unit("m/s"). The
+    pressure gradient is in #unit("Pa/m"), equivalently #unit("N/m^3").
   ]
 
   #assumption(
@@ -428,7 +424,7 @@
   Let $bold(b)=bold(B)/B$ and project the species momentum balance
   perpendicular to the field:
 
-  $ 0 approx q_(s)n_(s) (bold(E)_perp + (bold(u)_(s,perp) times bold(B))/c)
+  $ 0 approx q_(s)n_(s) (bold(E)_perp + bold(u)_(s,perp) times bold(B))
     - grad_perp p_(s) $ <multiple-perpendicular-balance>
 
   Here $bold(E)_perp=bold(E)-bold(b)(bold(b)dot bold(E))$ and
@@ -438,13 +434,13 @@
   $ bold(u)_(s,perp) = bold(u)_(E times B) + bold(u)_(*,s) $
     <multiple-drift-decomposition>
 
-  $ bold(u)_(E times B) = (c (bold(E) times bold(B)))/(B^2) $
+  $ bold(u)_(E times B) = (bold(E) times bold(B))/(B^2) $
     <multiple-exb-drift>
 
-  $ bold(u)_(*,s) = (c (bold(B) times grad(p_(s))))/(q_(s)n_(s)B^2) $ <multiple-diamagnetic-drift>
+  $ bold(u)_(*,s) = (bold(B) times grad(p_(s)))/(q_(s)n_(s)B^2) $ <multiple-diamagnetic-drift>
 
   #equation-note[
-    Both velocities are in #unit("cm/s"). The electric drift is independent
+    Both velocities are in #unit("m/s"). The electric drift is independent
     of species, while the diamagnetic drift changes sign with $q_(s)$ and
     depends on the species pressure gradient. The star labels the diamagnetic
     contribution; it is not a complex conjugate. If the pressure is uniform,
@@ -456,7 +452,7 @@
     [#derivation-step[Write the perpendicular force balance]
     Start with
 
-    $ q_(s)n_(s)(bold(E)_perp+(bold(u)_(s,perp)times bold(B))/c)
+    $ q_(s)n_(s)(bold(E)_perp+bold(u)_(s,perp)times bold(B))
         =grad_perp p_(s) .$
 
     #derivation-step[Eliminate the magnetic cross product]
@@ -467,21 +463,21 @@
     gives
 
     $ q_(s)n_(s)bold(E)times bold(B)
-        -(q_(s)n_(s)B^2 bold(u)_(s,perp))/c
+        -q_(s)n_(s)B^2 bold(u)_(s,perp)
         =grad(p_(s))times bold(B) .$
 
     #derivation-step[Separate the two perpendicular drifts]
     Rearrange and use
     $grad(p) times bold(B)=-bold(B)times grad(p):$
 
-    $ bold(u)_(s,perp)=(c (bold(E)times bold(B)))/(B^2)
-        +(c (bold(B)times grad(p_(s))))/(q_(s)n_(s)B^2) .$
+    $ bold(u)_(s,perp)=(bold(E)times bold(B))/(B^2)
+        +(bold(B)times grad(p_(s)))/(q_(s)n_(s)B^2) .$
 
     The first term is the common electric drift because $q_(s)$ cancels from
     the electric force balance. The second is the charge-dependent
     diamagnetic drift. The spatial ordering requires the pressure-gradient
     scale $L_perp$ to be much larger than the species gyroradius $r_(L,s)$,
-    both measured in centimetres:
+    both measured in metres:
 
     $ r_(L,s)/L_perp << 1 . $
 
@@ -493,12 +489,11 @@
 
   #rechenbeispiel[
     Context: in a local Cartesian frame, take
-    $bold(B)=qty("100", "G") bold(e)_(z)$,
-    $bold(E)=qty("1.00e-3", "statV/cm") bold(e)_(x)$,
-    $n_(i)=n_(e)=qty("1.0e8", "cm^-3")$, and
-    $grad(p_(i))=grad(p_(e))=qty("1.602e-6", "erg/cm^4") bold(e)_(x)$.
-    Use $e=qty("4.803e-10", "statC")$ and
-    $c=qty("2.998e10", "cm/s")$, with $q_i=+e$ and $q_e=-e$.
+    $bold(B)=qty("0.0100", "T") bold(e)_(z)$,
+    $bold(E)=qty("30.0", "V/m") bold(e)_(x)$,
+    $n_(i)=n_(e)=qty("1.0e14", "m^-3")$, and
+    $grad(p_(i))=grad(p_(e))=qty("1.602e-5", "Pa/m") bold(e)_(x)$.
+    Use $e=qty("1.602e-19", "C")$, with $q_i=+e$ and $q_e=-e$.
 
     Assumptions: scalar pressure, locally uniform fields, and the
     inertia-free perpendicular drift ordering.
@@ -506,10 +501,10 @@
     Target: report the common electric drift and the ion and electron
     diamagnetic drift velocities.
 
-    Numerical result: $bold(u)_(E times B)=-2.998 dot 10^5
-    #unit("cm/s") bold(e)_(y)$, $bold(u)_(*,i)=+1.00 dot 10^4
-    #unit("cm/s") bold(e)_(y)$, and
-    $bold(u)_(*,e)=-1.00 dot 10^4 #unit("cm/s") bold(e)_(y)$.
+    Numerical result: $bold(u)_(E times B)=-3.00 dot 10^3
+    #unit("m/s") bold(e)_(y)$, $bold(u)_(*,i)=+1.00 dot 10^2
+    #unit("m/s") bold(e)_(y)$, and
+    $bold(u)_(*,e)=-1.00 dot 10^2 #unit("m/s") bold(e)_(y)$.
   ]
 
   #interpretation(
@@ -535,7 +530,7 @@
       question: [Which term makes the electric drift common to both species?],
       answer: [The electric force is proportional to $q_(s)$, which cancels
       the $1/q_(s)$ introduced when the perpendicular Lorentz balance is
-      solved. Thus $bold(u)_(E times B)=(c (bold(E)times bold(B)))/(B^2)$.]
+      solved. Thus $bold(u)_(E times B)=(bold(E)times bold(B))/(B^2)$.]
     ),
     (
       question: [How does reversing the charge affect the diamagnetic drift?],
@@ -574,11 +569,11 @@
   ))
 
   #unit-ledger[
-    The current density is in statcoulomb per #unit("cm^2") per #unit("s").
-    The pressure sum $p_(e)+p_(i)$ is in #unit("erg/cm^3"), and
-    $(c (bold(B)times grad(p)))/(B^2)$ has the same current-density unit in Gaussian
-    CGS after the charge and density factors cancel. All displayed drift
-    velocities remain in #unit("cm/s").
+    The current density is in #unit("A/m^2"). The pressure sum
+    $p_(e)+p_(i)$ is in #unit("Pa"), and
+    $(bold(B)times grad(p))/(B^2)$ has the same current-density unit after the
+    charge and density factors cancel. All displayed drift velocities remain
+    in #unit("m/s").
   ]
 
   #assumption(
@@ -592,13 +587,13 @@
   Insert the perpendicular drift into the current definition:
 
   $ bold(j)_perp = sum_s q_(s)n_(s)bold(u)_(s,perp)
-    = (rho_q c (bold(E) times bold(B)))/(B^2)
-      + (c sum_s (bold(B) times grad(p_(s))))/(B^2) $
+    = (rho_q (bold(E) times bold(B)))/(B^2)
+      + (sum_s (bold(B) times grad(p_(s))))/(B^2) $
     <multiple-current-sum>
 
   Under quasi-neutrality, the first term is small and the pressure term is
 
-  $ bold(j)_* = (c (bold(B) times grad(p_(e)+p_(i))))/(B^2) $
+  $ bold(j)_* = (bold(B) times grad(p_(e)+p_(i)))/(B^2) $
     <multiple-diamagnetic-current>
 
   For scalar ideal-gas pressures, $p_(s)=n_(s) k_B T_(s)$. If
@@ -629,15 +624,15 @@
     For each species, the diamagnetic contribution obeys
 
     $ q_(s)n_(s)bold(u)_(*,s)
-        =(c (bold(B)times grad(p_(s))))/(B^2) .$
+        =(bold(B)times grad(p_(s)))/(B^2) .$
 
     The factors $q_(s)n_(s)$ cancel the denominator in the species velocity.
 
     #derivation-step[Sum the diamagnetic currents]
     Summing over electrons and ions gives
 
-    $ bold(j)_*=(c (bold(B)times[
-          grad(p_(e))+grad(p_(i))]))/(B^2) .$
+    $ bold(j)_*=(bold(B)times[
+          grad(p_(e))+grad(p_(i))])/(B^2) .$
 
     The pressure-drift velocities are opposite for opposite charges, but their
     charge-weighted currents add.
@@ -663,10 +658,10 @@
 
   #rechenbeispiel[
     Context: a quasi-neutral hydrogen plasma has
-    $bold(B)=qty("100", "G") bold(e)_(z)$ and total pressure gradient
-    $grad(p_(e)+p_(i))=qty("3.204e-6", "erg/cm^4") bold(e)_(x)$.
-    Use $c=qty("2.998e10", "cm/s")$ and neglect the charge-density
-    contribution to the common electric drift current.
+    $bold(B)=qty("0.0100", "T") bold(e)_(z)$ and total pressure gradient
+    $grad(p_(e)+p_(i))=qty("3.204e-5", "Pa/m") bold(e)_(x)$.
+    Neglect the charge-density contribution to the common electric drift
+    current.
 
     Assumptions: local scalar-pressure drift ordering with
     $rho_q approx 0$.
@@ -674,9 +669,8 @@
     Target: report the diamagnetic current density and the leading-order
     electric-drift current density.
 
-    Numerical result: $bold(j)_*=+9.61 dot 10^2 bold(e)_(y)$ statcoulomb per
-    #unit("cm^2") per #unit("s"), while
-    $bold(j)_(E times B)=0$ statcoulomb per #unit("cm^2") per #unit("s").
+    Numerical result: $bold(j)_*=+3.20 dot 10^(-3) #unit("A/m^2") bold(e)_(y)$,
+    while $bold(j)_(E times B)=qty("0", "A/m^2")$.
   ]
 
   #interpretation(
@@ -692,7 +686,7 @@
   #summary[
     Charge-weighting converts opposite diamagnetic velocities into additive
     current contributions. In a quasi-neutral hydrogen plasma,
-    $bold(j)_*=(c (bold(B)times grad(p_(e)+p_(i))))/(B^2)$, while the common electric
+    $bold(j)_*=(bold(B)times grad(p_(e)+p_(i)))/(B^2)$, while the common electric
     drift contributes only through the small charge density. The current is a
     response to the pressure gradient; its interpretation as transport needs
     the full fluid balance and boundary conditions.
@@ -711,7 +705,7 @@
       question: [Why do the electron and ion diamagnetic currents add?],
       answer: [Their diamagnetic velocities have opposite signs, but each
       current is multiplied by its own charge. Since
-      $q_(s)n_(s)bold(u)_(*,s)=(c (bold(B)times grad(p_(s))))/(B^2)$, both contributions
+      $q_(s)n_(s)bold(u)_(*,s)=(bold(B)times grad(p_(s)))/(B^2)$, both contributions
       point along the corresponding pressure-gradient cross-field direction.]
     ),
     (
@@ -753,12 +747,11 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS remains active. Parallel velocity is in #unit("cm/s"),
-    pressure gradient is in #unit("erg/cm^4"), the parallel electric field is
-    in statvolt per #unit("cm"), and the parallel force density is in
-    #unit("g") #unit("cm^-2") #unit("s^-2"). A mass-weighted one-fluid
-    velocity has units #unit("cm/s"); relative-flow stresses have pressure
-    units #unit("erg/cm^3").
+    SI units remain in use. Parallel velocity is in #unit("m/s"),
+    pressure gradient is in #unit("Pa/m"), the parallel electric field is
+    in #unit("V/m"), and the parallel force density is in #unit("N/m^3"). A
+    mass-weighted one-fluid velocity has units #unit("m/s"); relative-flow
+    stresses have pressure units #unit("Pa").
   ]
 
   #assumption(
@@ -821,7 +814,7 @@
 
   $ pdv(rho bold(u),t)
     + div(rho bold(u) bold(u)+bold(P)_(1))
-    = rho_q bold(E) + (bold(j) times bold(B))/c
+    = rho_q bold(E) + bold(j) times bold(B)
       + sum_s bold(R)_(s) $ <multiple-summed-momentum>
 
   For isolated elastic collisions, the last term vanishes. Dropping the
@@ -878,8 +871,8 @@
     The field forces become
 
     $ sum_s q_(s)n_(s)bold(E)=rho_q bold(E), quad
-      (sum_s q_(s)n_(s)(bold(u)_(s)times bold(B)))/c
-        =(bold(j)times bold(B))/c .$
+      sum_s q_(s)n_(s)(bold(u)_(s)times bold(B))
+        =bold(j)times bold(B) .$
 
     These identities give the summed momentum equation. If interspecies
     collisions are internal, their momentum sources cancel in the sum.]
@@ -887,10 +880,10 @@
 
   #rechenbeispiel[
     Context: an isothermal electron population has reference density
-    $n_(e,0)=qty("1.0e10", "cm^-3")$, thermal energy
-    $k_B T_(e)=qty("4.806e-12", "erg")$, and a parallel potential
-    increase $phi-phi_0=qty("1.00e-2", "statV")$. Use
-    $e=qty("4.803e-10", "statC")$.
+    $n_(e,0)=qty("1.0e16", "m^-3")$, thermal energy
+    $k_B T_(e)=qty("4.806e-19", "J")=qty("3.00", "eV")$, and a parallel
+    potential increase $phi-phi_0=qty("3.00", "V")$. Use
+    $e=qty("1.602e-19", "C")$.
 
     Assumptions: connected field line, negligible parallel electron inertia
     and collisions, electrostatic parallel field, and uniform $T_(e)$.
@@ -899,7 +892,7 @@
     density.
 
     Numerical result: $n_(e)/n_(e,0)=2.72$ (dimensionless) and
-    $n_(e)=qty("2.72e10", "cm^-3")$.
+    $n_(e)=qty("2.72e16", "m^-3")$.
   ]
 
   #interpretation(

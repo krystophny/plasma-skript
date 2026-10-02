@@ -41,14 +41,15 @@
   ))
 
   #unit-ledger[
-    Gaussian CGS is active. Number density $n_s$ is in #unit("cm^-3"),
-    position and wavelength are in #unit("cm"), time and frequency are in
-    #unit("s") and #unit("s^-1"), velocity is in #unit("cm/s"), mass is in
-    #unit("g"), pressure is in #unit("dyn/cm^2"), $k_B T_s$ is in
-    #unit("erg"), $q_s$ is in statcoulomb, $bold(E)$ is in statvolt per
-    #unit("cm"), $bold(B)$ is in #unit("G"), and current density is in
-    statcoulomb per #unit("cm^2") per #unit("s"). The speed of light $c$ is
-    in #unit("cm/s"). The phase $bold(k) dot bold(r)-omega t$ and normalized
+    SI units are used. Number density $n_s$ is in #unit("m^-3"),
+    position and wavelength are in #unit("m"), time and frequency are in
+    #unit("s") and #unit("s^-1"), velocity is in #unit("m/s"), mass is in
+    #unit("kg"), pressure is in #unit("Pa"), $k_B T_s$ is in
+    #unit("J") (or #unit("eV")), $q_s$ is in #unit("C"), $bold(E)$ is in
+    #unit("V/m"), $bold(B)$ is in #unit("T"), and current density is in
+    #unit("A/m^2"). The vacuum permittivity $epsilon_0$ is in #unit("F/m"),
+    the vacuum permeability $mu_0$ is in #unit("H/m"), and the speed of
+    light $c=1/sqrt(mu_0 epsilon_0)$ is in #unit("m/s"). The phase $bold(k) dot bold(r)-omega t$ and normalized
     variables such as $omega/omega_(p,e)$ are dimensionless.
   ]
 
@@ -71,7 +72,7 @@
     A complex amplitude represents the real field through
     $bold(A)_1(bold(r),t)=Re{tilde(bold(A))_1
     exp(i (bold(k) dot bold(r)-omega t))}$.
-    The wave number $k=abs(bold(k))$ is in #unit("cm^-1") and the
+    The wave number $k=abs(bold(k))$ is in #unit("m^-1") and the
     angular frequency $omega$ is in #unit("s^-1").]
   )
 
@@ -94,12 +95,12 @@
   $ pdv(n_s,t)+div(n_s bold(u)_s)=0 $
 
   $ m_s n_s (pdv(bold(u)_s,t)+bold(u)_s dot grad(bold(u)_s))
-    =q_s n_s (bold(E)+(bold(u)_s times bold(B))/c)-grad(p_s) $
+    =q_s n_s (bold(E)+bold(u)_s times bold(B))-grad(p_s) $
 
-  $ curl(bold(E))=-(pdv(bold(B),t))/c, quad
-    curl(bold(B))=((4 pi)/c) bold(j)+(pdv(bold(E),t))/c $
+  $ curl(bold(E))=-pdv(bold(B),t), quad
+    curl(bold(B))=mu_0 bold(j)+mu_0 epsilon_0 pdv(bold(E),t) $
 
-  $ div(bold(E))=4 pi rho_q, quad
+  $ div(bold(E))=rho_q/epsilon_0, quad
     div(bold(B))=0 $
 
   where $rho_q=sum_s q_s n_s$ and
@@ -129,7 +130,7 @@
 
     $ m_s n_(s,0) pdv(bold(u)_(s,1),t)
       =q_s n_(s,0)(bold(E)_1+
-      (bold(u)_(s,1) times bold(B)_0)/c)-grad(p_(s,1)) .$
+      bold(u)_(s,1) times bold(B)_0)-grad(p_(s,1)) .$
 
     #derivation-step[Apply the plane-wave replacement]
     For the convention
@@ -149,7 +150,7 @@
 
     $ -i omega m_s n_(s,0) bold(u)_(s,1)
       =q_s n_(s,0)(bold(E)_1+
-      (bold(u)_(s,1) times bold(B)_0)/c)-i bold(k) p_(s,1) .$
+      bold(u)_(s,1) times bold(B)_0)-i bold(k) p_(s,1) .$
 
     #derivation-step[Form the dispersion condition]
     Maxwell's equations receive the same algebraic replacement. Equilibrium
@@ -163,21 +164,22 @@
 
   #rechenbeispiel[
     A homogeneous hydrogen plasma has equilibrium density
-    $n_(e,0)=n_(i,0)=qty("1.0e10", "cm^-3")$, electron temperature energy
-    $k_B T_e=qty("1.602e-12", "erg")$, and a density perturbation with
+    $n_(e,0)=n_(i,0)=qty("1.0e16", "m^-3")$, electron temperature energy
+    $k_B T_e=qty("1.0", "eV")=qty("1.602e-19", "J")$, and a density perturbation with
     relative amplitude #normalized-label[$(delta n_e)/n_(e,0)=qty("2.0e-2", "1")$]. Use
-    $e=qty("4.803e-10", "statC")$, $m_e=qty("9.109e-28", "g")$, and a
-    wavelength $lambda=qty("1.0e1", "cm")$ at angular frequency
+    $e=qty("1.602e-19", "C")$, $m_e=qty("9.109e-31", "kg")$,
+    $epsilon_0=qty("8.854e-12", "F/m")$, and a
+    wavelength $lambda=qty("0.10", "m")$ at angular frequency
     $omega=qty("1.0e10", "s^-1")$, with $k=(2 pi)/lambda$.
 
     Assumptions: cold fixed-ion ordering for the plasma-frequency estimate,
-    small-amplitude perturbation, and Gaussian-CGS dimensional quantities.
+    small-amplitude perturbation, and SI dimensional quantities.
 
     Target: report the perturbation parameter, Debye-scale ordering
     $k lambda_D$, and frequency ordering $omega/omega_(p,e)$.
 
     Numerical result: #normalized-label[$epsilon=qty("2.0e-2", "1")$],
-    $lambda_D=qty("7.43e-3", "cm")$,
+    $lambda_D=qty("7.43e-5", "m")$,
     #normalized-label[$k lambda_D=qty("4.67e-3", "1")$],
     $omega_(p,e)=qty("5.64e9", "s^-1")$, and
     #normalized-label[$omega/omega_(p,e)=qty("1.77", "1")$].
@@ -245,9 +247,9 @@
   ))
 
   #unit-ledger[
-    The electron density $n_0$ is in #unit("cm^-3"), charge $e$ is in
-    statcoulomb, electron mass $m_e$ is in #unit("g"), electric field is in
-    statvolt per #unit("cm"), and the plasma frequency
+    The electron density $n_0$ is in #unit("m^-3"), charge $e$ is in
+    #unit("C"), electron mass $m_e$ is in #unit("kg"), $epsilon_0$ is in
+    #unit("F/m"), electric field is in #unit("V/m"), and the plasma frequency
     $omega_(p,e)$ is in #unit("s^-1"). The normalized displacement
     $xi/xi_0$ and time $omega_(p,e) t$ are dimensionless.
   ]
@@ -262,8 +264,8 @@
 
   #definition(
     [Electron plasma frequency],
-    [The electron plasma frequency in Gaussian CGS is
-    $omega_(p,e)=sqrt((4 pi n_0 e^2)/m_e)$.
+    [The electron plasma frequency is
+    $omega_(p,e)=sqrt((n_0 e^2)/(epsilon_0 m_e))$.
     It is a local collective frequency. Since the cold longitudinal
     dispersion relation contains no $k$, this idealized oscillation has no
     group propagation.]
@@ -272,9 +274,9 @@
   #governing-law(
     [Cold electrostatic plasma oscillation],
     [For a longitudinal perturbation with fixed ions,
-    $omega^2=omega_(p,e)^2=(4 pi n_0 e^2)/m_e$.
+    $omega^2=omega_(p,e)^2=(n_0 e^2)/(epsilon_0 m_e)$.
     If every species is allowed to move coherently, the restoring frequency
-    becomes $omega_p^2=sum_s ((4 pi n_(s,0) q_s^2)/m_s)$.]
+    becomes $omega_p^2=sum_s ((n_(s,0) q_s^2)/(epsilon_0 m_s))$.]
   )
 
   #details(
@@ -296,7 +298,7 @@
     The fixed ions do not contribute a perturbed charge. Poisson's equation
     is therefore
 
-    $ i k E_1=4 pi rho_(q,1)=-4 pi e n_(e,1) .$
+    $ i k E_1=rho_(q,1)/epsilon_0=-(e n_(e,1))/epsilon_0 .$
 
     Solving the momentum equation gives
 
@@ -304,19 +306,19 @@
 
     Inserting this response into continuity and then Poisson gives
 
-    $ i k E_1=-4 pi e ((-i n_0 e k E_1)/(m_e omega^2)) .$
+    $ i k E_1=-e/epsilon_0 ((-i n_0 e k E_1)/(m_e omega^2)) .$
 
     #derivation-step[Identify the collective frequency]
     Cancel the nonzero field amplitude and the common factor $i k$:
 
-    $ omega^2=(4 pi n_0 e^2)/m_e .$
+    $ omega^2=(n_0 e^2)/(epsilon_0 m_e) .$
 
     The wave number disappears because the cold model has no pressure
     gradient and hence no spatial restoring scale. If the ions also move,
     repeat the response calculation for every species and add their charge
     responses. The result is
 
-    $ omega_p^2=sum_s ((4 pi n_(s,0)q_s^2)/m_s) .$
+    $ omega_p^2=sum_s ((n_(s,0)q_s^2)/(epsilon_0 m_s)) .$
 
     For hydrogen, the ion contribution is smaller than the electron term by
     $m_e/m_i$.]
@@ -324,11 +326,12 @@
 
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, longitudinal electrostatic
-    perturbation with fixed ions and Gaussian-CGS quantities. For a cold
+    perturbation with fixed ions and SI quantities. For a cold
     hydrogen plasma use
-    $n_0=qty("1.0e10", "cm^-3")$,
-    $e=qty("4.803e-10", "statC")$, and
-    $m_e=qty("9.109e-28", "g")$.
+    $n_0=qty("1.0e16", "m^-3")$,
+    $e=qty("1.602e-19", "C")$,
+    $m_e=qty("9.109e-31", "kg")$, and
+    $epsilon_0=qty("8.854e-12", "F/m")$.
     Determine the electron plasma frequency and its ordinary frequency
     $f_p=omega_(p,e)/(2 pi)$.
 
@@ -348,7 +351,7 @@
 
   #summary[
     A displaced cold electron population creates a charge-separation field.
-    In Gaussian CGS this gives $omega_(p,e)^2=(4 pi n_0 e^2)/m_e$.
+    This gives $omega_(p,e)^2=(n_0 e^2)/(epsilon_0 m_e)$.
     The frequency is collective and local in the cold fixed-ion limit; ion
     inertia adds the corresponding ion plasma-frequency contribution.
   ]
@@ -369,7 +372,7 @@
     (
       question: [How does allowing the ions to move change the collective frequency?],
       answer: [Each mobile species contributes
-      $(4 pi n_(s,0)q_s^2)/m_s$ to the
+      $(n_(s,0)q_s^2)/(epsilon_0 m_s)$ to the
       squared collective frequency. The ion contribution is usually small
       because the ion mass is large.]
     ),
@@ -398,9 +401,10 @@
   ))
 
   #unit-ledger[
-    The wave number $k$ is in #unit("cm^-1"), frequency $omega$ is in
-    #unit("s^-1"), and $c$ is in #unit("cm/s"). The velocities
-    $v_"phi"$ and $v_"g"$ are in #unit("cm/s"). The dielectric factor
+    The wave number $k$ is in #unit("m^-1"), frequency $omega$ is in
+    #unit("s^-1"), and $c$ is in #unit("m/s"). The velocities
+    $v_"phi"$ and $v_"g"$ are in #unit("m/s"). The current density is in
+    #unit("A/m^2") and $epsilon_0$ is in #unit("F/m"). The dielectric factor
     $epsilon_(r)$, $(k c)/omega_(p,e)$, and $omega/omega_(p,e)$ are
     dimensionless.
   ]
@@ -460,12 +464,14 @@
     #derivation-step[Eliminate the magnetic amplitude]
     For a transverse plane wave, Faraday's and Ampere's equations are
 
-    $ bold(k) times bold(E)_1=(omega bold(B)_1)/c $
+    $ bold(k) times bold(E)_1=omega bold(B)_1 $
 
     and
 
-    $ bold(k) times bold(B)_1=-(omega bold(E)_1)/c
-      -(4 pi i bold(j)_1)/c .$
+    $ bold(k) times bold(B)_1=-(omega bold(E)_1)/c^2
+      -i mu_0 bold(j)_1 ,$
+
+    with $c^2=1/(mu_0 epsilon_0)$.
 
     Substitute the first relation into the second and use
 
@@ -473,11 +479,11 @@
 
     The resulting electric-field equation is
 
-    $ (omega^2-c^2 k^2) bold(E)_1=-4 pi i omega bold(j)_1 .$
+    $ (omega^2-c^2 k^2) bold(E)_1=-(i omega bold(j)_1)/epsilon_0 .$
 
     #derivation-step[Read off the electromagnetic branch]
     Insert the current response and define
-    $omega_(p,e)^2=(4 pi n_0 e^2)/m_e:$
+    $omega_(p,e)^2=(n_0 e^2)/(epsilon_0 m_e):$
 
     $ (omega^2-c^2 k^2) bold(E)_1
       =omega_(p,e)^2 bold(E)_1 .$
@@ -511,7 +517,7 @@
       $A=exp(-(X-0.42 tau)^2/(2 (1.15)^2))
         cos(5.2 (X-0.90 tau))$.
       Here $L_0$, $t_0$, and $E_0$ are arbitrary reference length, time,
-      and field scales in Gaussian CGS; velocities are in units $L_0/t_0$.
+      and field scales in SI units; velocities are in units $L_0/t_0$.
       Thus $sigma/L_0=1.15$, $k L_0=5.2$,
       $(v_"g" t_0)/L_0=0.42$, and $(v_"phi" t_0)/L_0=0.90$ are
       prescribed dimensionless parameters. This ansatz is not an exact
@@ -524,18 +530,18 @@
 
   #rechenbeispiel[
     Assume the homogeneous, cold, collisionless, unmagnetized, fixed-ion
-    transverse electromagnetic model and Gaussian CGS. A cold electromagnetic
+    transverse electromagnetic model in SI units. A cold electromagnetic
     wave has #normalized-label[$omega/omega_(p,e)=2$] in a plasma with
     $omega_(p,e)=qty("5.64e9", "s^-1")$ and
-    $c=qty("2.998e10", "cm/s")$.
+    $c=qty("2.998e8", "m/s")$.
     Determine $k$, the phase velocity, the group velocity, and the wavelength.
 
     Numerical result:
     #normalized-label[$(k c)/omega_(p,e)=qty("1.732", "1")$],
     #normalized-label[$v_"phi"/c=qty("1.155", "1")$],
     #normalized-label[$v_"g"/c=qty("0.866", "1")$],
-    $k=qty("0.326", "cm^-1")$, and
-    $lambda=qty("19.3", "cm")$.
+    $k=qty("32.6", "m^-1")$, and
+    $lambda=qty("0.193", "m")$.
   ]
 
   #interpretation(
@@ -597,10 +603,12 @@
   ))
 
   #unit-ledger[
-    Species temperature energy $k_B T_s$ is in #unit("erg"), mass is in
-    #unit("g"), thermal speed and ion-acoustic speed are in #unit("cm/s"),
-    $k$ is in #unit("cm^-1"), $omega$ is in #unit("s^-1"), and
-    $lambda_D$ is in #unit("cm"). The phase parameters
+    Species temperature energy $k_B T_s$ is in #unit("J") (or #unit("eV")),
+    mass is in #unit("kg"), thermal speed and ion-acoustic speed are in
+    #unit("m/s"), $k$ is in #unit("m^-1"), $omega$ is in #unit("s^-1"),
+    density is in #unit("m^-3"), charge is in #unit("C"), $epsilon_0$ is in
+    #unit("F/m"), and $lambda_D=sqrt((epsilon_0 k_B T_e)/(n_0 e^2))$ is in
+    #unit("m"). The phase parameters
     $k lambda_D$ and $omega/(k v_"th,s")$ are dimensionless.
   ]
 
@@ -617,7 +625,7 @@
     [Warm-fluid scales],
     [Define
     $c_s^2=(gamma_s k_B T_s)/m_s$ and
-    $omega_(p,s)^2=(4 pi n_(s,0)q_s^2)/m_s$.
+    $omega_(p,s)^2=(n_(s,0)q_s^2)/(epsilon_0 m_s)$.
     Here the index $s$ labels a species: $c_e$ and $c_i$ are its electron
     and ion pressure-response speeds. Neither is necessarily the phase
     velocity of a collective branch. The thermal-speed convention used for kinetic
@@ -682,12 +690,12 @@
     #derivation-step[Sum the species in Poisson's equation]
     The longitudinal field obeys
 
-    $ i k E_1=4 pi sum_s q_s n_(s,1) .$
+    $ i k E_1=1/epsilon_0 sum_s q_s n_(s,1) .$
 
     Cancel $i k E_1$ and insert the species response:
 
-    $ 1=sum_s (4 pi n_(s,0)q_s^2)/
-      (m_s (omega^2-k^2 c_s^2)) .$
+    $ 1=sum_s (n_(s,0)q_s^2)/
+      (epsilon_0 m_s (omega^2-k^2 c_s^2)) .$
 
     This is the warm-fluid longitudinal dispersion relation.
 
@@ -742,16 +750,16 @@
   #rechenbeispiel[
     Assume an unmagnetized, electrostatic warm-fluid model with cold ions,
     an isothermal electron response, quasi-neutral long-wavelength ordering,
-    and Gaussian CGS. For cold ions and an isothermal electron response use
-    $k_B T_e=qty("1.602e-11", "erg")$,
-    $m_i=qty("1.673e-24", "g")$, and
-    $k=qty("1.0e-2", "cm^-1")$.
+    and SI units. For cold ions and an isothermal electron response use
+    $k_B T_e=qty("10", "eV")=qty("1.602e-18", "J")$,
+    $m_i=qty("1.673e-27", "kg")$, and
+    $k=qty("1.0", "m^-1")$.
     Determine the ion-acoustic speed, frequency, and the ratio
-    $k lambda_D$ for $n_0=qty("1.0e10", "cm^-3")$.
+    $k lambda_D$ for $n_0=qty("1.0e16", "m^-3")$.
     Numerical result:
-    $c_s=qty("3.09e6", "cm/s")$,
+    $c_s=qty("3.09e4", "m/s")$,
     $omega=qty("3.09e4", "s^-1")$,
-    $lambda_D=qty("2.35e-2", "cm")$, and
+    $lambda_D=qty("2.35e-4", "m")$, and
     #normalized-label[$k lambda_D=qty("2.35e-4", "1")$].
   ]
   #interpretation(
@@ -809,8 +817,8 @@
   #unit-ledger[
     The normalized axes use $K=(k c)/omega_(p,e)$ and
     $W=omega/omega_(p,e)$, both dimensionless. The reconstructed wave number
-    is in #unit("cm^-1"), frequency in #unit("s^-1"), and velocities in
-    #unit("cm/s"). For warm electrostatic checks, $K_D=k lambda_D$ is also
+    is in #unit("m^-1"), frequency in #unit("s^-1"), and velocities in
+    #unit("m/s"). For warm electrostatic checks, $K_D=k lambda_D$ is also
     dimensionless.
   ]
   #assumption(
@@ -883,16 +891,16 @@
   #wave-dispersion
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, unmagnetized, fixed-ion
-    electromagnetic model in Gaussian CGS. A radio source drives a plasma with
-    $n_0=qty("1.0e10", "cm^-3")$ and
-    $c=qty("2.998e10", "cm/s")$. Classify a drive at
+    electromagnetic model in SI units. A radio source drives a plasma with
+    $n_0=qty("1.0e16", "m^-3")$ and
+    $c=qty("2.998e8", "m/s")$. Classify a drive at
     $omega=qty("4.0e9", "s^-1")$ and another at
     $omega=qty("1.13e10", "s^-1")$ as propagating or evanescent. For the
     propagating drive, report $k$ and the normalized phase and group speeds.
     Numerical result:
     $omega_(p,e)=qty("5.64e9", "s^-1")$; the lower-frequency drive is
-    evanescent with $alpha=qty("1.33e-1", "cm^-1")$. The higher-frequency
-    drive is propagating with $k=qty("3.27e-1", "cm^-1")$,
+    evanescent with $alpha=qty("13.3", "m^-1")$. The higher-frequency
+    drive is propagating with $k=qty("32.7", "m^-1")$,
     #normalized-label[$v_"phi"/c=qty("1.15", "1")$], and
     #normalized-label[$v_"g"/c=qty("0.866", "1")$].
   ]
