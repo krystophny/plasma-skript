@@ -92,7 +92,12 @@ async function auditPage(page, pagePath, viewport) {
   page.on("console", (message) => {
     if (
       message.type() === "error" &&
-      message.text() !== "Failed to load resource: the server responded with a status of 404 (File not found)"
+      // A bare 404 console line carries no URL; the favicon probe produces it
+      // with server-specific wording. Real same-origin 404s are still caught by
+      // the response handler below.
+      !/^Failed to load resource: the server responded with a status of 404 \((File not found|Not Found)\)$/.test(
+        message.text(),
+      )
     ) {
       consoleErrors.push(message.text());
     }
@@ -101,7 +106,13 @@ async function auditPage(page, pagePath, viewport) {
     pageErrors.push(error.message);
   });
   page.on("requestfailed", (request) => {
-    if (sameOrigin(request.url()) && !request.url().endsWith("/favicon.ico")) {
+    // Chromium cancels media requests (net::ERR_ABORTED) when it switches to
+    // range requests or leaves the page; missing media still fails through the
+    // response handler.
+    const abortedMedia =
+      (request.resourceType() === "media" || request.url().endsWith(".mp4")) &&
+      request.failure()?.errorText === "net::ERR_ABORTED";
+    if (sameOrigin(request.url()) && !request.url().endsWith("/favicon.ico") && !abortedMedia) {
       failedRequests.push(`${request.url()}: ${request.failure()?.errorText}`);
     }
   });
