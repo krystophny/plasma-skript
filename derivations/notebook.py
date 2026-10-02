@@ -177,12 +177,11 @@ def agrees(derived, printed, *, lhs=None, eq="", source=""):
     """
     diff = sp.simplify(sp.expand(sp.sympify(derived) - sp.sympify(printed)))
     assert diff == 0, f"derived {derived} != printed {printed}"
-    tag = " ".join(t for t in ("script", _eq_tag(eq), source) if t)
+    _eq_tag(eq)  # validates the label
     d = _display(sp.sympify(printed))
     if lhs is not None:
         d = sp.Eq(lhs, d, evaluate=False)
-    _record("check", (_latex(d), "matches " + tag),
-            sp.pretty(d, use_unicode=True) + f"    [matches {tag} ✓]")
+    _record("check", (_latex(d), ""), sp.pretty(d, use_unicode=True) + "    ✓")
     return printed
 
 
@@ -222,10 +221,16 @@ def evaluate(symbol, expr, inputs, unit, digits=3):
 def close_to(number, printed, rtol=5e-3, *, eq="", source=""):
     """Assert a computed (real or complex) number matches the printed one."""
     assert abs(number - printed) <= rtol * abs(printed), f"{number} vs printed {printed}"
-    shown = _rounded(printed, 3) if isinstance(printed, (int, float)) else sp.N(printed, 3)
-    tag = " ".join(t for t in (_eq_tag(eq), source) if t)
-    _record("check", (_latex(shown), f"matches script {tag}".strip()),
-            f"   matches printed {printed}" + (f"  [{tag}]" if tag else "") + " \u2713")
+    _eq_tag(eq)  # validates the label
+    items = _SECTIONS[-1][2] if _SECTIONS else []
+    if items and items[-1][0] == "math":
+        # Mark the value just computed by evaluate() instead of repeating it.
+        items[-1] = ("check", items[-1][1])
+        if _ECHO:
+            print("    ✓")
+    else:
+        shown = _rounded(printed, 3) if isinstance(printed, (int, float)) else sp.N(printed, 3)
+        _record("check", (_latex(shown), ""), sp.pretty(shown, use_unicode=True) + "    ✓")
 
 
 def _esc(text):
@@ -242,7 +247,7 @@ def report(path, title=None):
     title = title or name
     out = [r"\documentclass[11pt]{article}",
            r"\usepackage[a4paper,margin=2cm]{geometry}",
-           r"\usepackage{amsmath,amssymb,xcolor}",
+           r"\usepackage{amsmath,amssymb,xcolor}", r"\usepackage{stix2}",
            r"\allowdisplaybreaks", r"\setlength{\parindent}{0pt}",
            rf"\title{{{_esc(title)}}}", r"\date{}", r"\begin{document}", r"\maketitle"]
     for title, reference, items in _SECTIONS:
