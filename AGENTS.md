@@ -19,6 +19,8 @@ Before changing files:
 ## Content rules
 
 - Write the first edition in English for a graduate plasma-physics audience.
+- Assume zero prior knowledge and infinite intelligence: name and define
+  every symbol and term at first use; skip no steps, pad none.
 - Keep waves and plasma sheaths as separate top-level chapters.
 - Use SI (with ε₀ and μ₀) throughout. State this once, in the notation
   glossary of `src/main.typ`; do not write "SI" or "in SI units" at

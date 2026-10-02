@@ -12,6 +12,9 @@ HTML-specific components have an equivalent paged fallback.
 
 - The audience is graduate students in plasma physics or a closely related
   physics program.
+- Assume zero prior knowledge and infinite intelligence: every symbol and
+  term is named and defined at first use, no step is skipped because readers
+  "know it", and no step is padded because they might be slow.
 - Christopher Albert and Maximilian Philipp are the initial project authors and
   maintainers. No university ownership claim applies to their work.
 - The first publication is in English. The source structure and component
