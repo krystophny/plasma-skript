@@ -32,6 +32,20 @@
   if target() == "paged" { align(center, img) }
   else { html.div(class: "quantitative-plot", img) }
 }
+// Two derived plots side by side, for a direct comparison on equal axes.
+// Each panel is drawn at its native width (si.figure size), so the text size
+// matches a single derived plot.
+#let derived-plot-pair(left, right, width: 6.6cm) = context {
+  let path(name) = "/derivations/build/fig/" + name + ".svg"
+  if target() == "paged" {
+    align(center, grid(columns: 2, column-gutter: 0.8cm,
+      image(path(left), width: width), image(path(right), width: width)))
+  } else {
+    html.div(style: "display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;",
+      html.div(class: "quantitative-plot", image(path(left), width: width))
+      + html.div(class: "quantitative-plot", image(path(right), width: width)))
+  }
+}
 #let samples(lo, hi, n: 80) = range(n + 1).map(i => lo + (hi - lo) * i / n)
 // Okabe–Ito blue and vermilion plus a neutral gray. Every curve also carries
 // a distinct dash pattern and a direct label, so color is never the only cue.
@@ -199,17 +213,31 @@
   }))
 ]
 
-#let debye-potential-comparison = figure(
-  alt: "Radial plot of the potential of a uniformly charged sphere of radius half a Debye length, with and without Debye shielding. The dashed bare potential is quadratic inside the sphere and falls off as 1 over r outside. The solid screened potential is lower everywhere and decays to nearly zero within about three Debye lengths.",
+#let debye-screened-point = figure(
+  alt: "Radial plot of the potential of a point charge with and without Debye shielding. The dashed bare Coulomb potential falls off as 1 over r. The solid screened potential lies below it everywhere and decays to nearly zero within about three Debye lengths.",
   caption: [
-    Bare (dashed) and Debye-screened (solid) potential of the permeable,
-    uniformly charged sphere, $R = lambda_D\/2$, from the expressions derived
-    above. Radius in units of $lambda_D$, potential in units of
-    $Q\/(4 pi epsilon_0 lambda_D)$. The linear model assumes
-    $abs(e phi) << k_B T_e$ throughout, which this normalization does not
-    impose by itself.
+    Bare (dashed) and Debye-screened (solid) potential of a point charge,
+    $Q\/(4 pi epsilon_0 r)$ and $Q e^(-r\/lambda_D)\/(4 pi epsilon_0 r)$,
+    from the expressions derived above. Radius in units of $lambda_D$,
+    potential in units of $Q\/(4 pi epsilon_0 lambda_D)$. Their ratio is
+    $e^(-r\/lambda_D)$; at $r = lambda_D$ the screened potential is $1\/e$
+    of the bare one.
   ],
-)[#derived-plot("debye_potential", width: 8.6cm)]
+)[#derived-plot("debye_potential", width: 6.6cm)]
+
+#let debye-potential-comparison = figure(
+  alt: "Two radial plots on identical axes, each comparing a dashed bare potential with a solid Debye-screened potential. Left: a point charge, where both curves diverge at the origin. Right: a permeable, uniformly charged sphere of radius half a Debye length, where the bare potential is quadratic and finite inside the sphere and the screened potential is lower everywhere. Outside the sources both screened curves decay to nearly zero within about three Debye lengths.",
+  caption: [
+    Point charge (left) and permeable, uniformly charged sphere of radius
+    $R = lambda_D\/2$ (right), each bare (dashed) and Debye-screened (solid),
+    from the expressions derived above. Same axes: radius in units of
+    $lambda_D$, potential in units of $Q\/(4 pi epsilon_0 lambda_D)$. The
+    finite source removes the central singularity; outside $R$ both screened
+    curves carry the same exponential suppression of the Coulomb tail. The
+    linear model assumes $abs(e phi) << k_B T_e$ throughout, which this
+    normalization does not impose by itself.
+  ],
+)[#derived-plot-pair("debye_potential", "debye_sphere_potential")]
 
 #let debye-regime-map = figure(
   alt: "Log-log plane of electron density from 10 to the 6 to 10 to the 32 per cubic metre and electron temperature from 0.01 eV to 100 keV. Three dashed lines of slope one mark Debye lengths of 100 m, 1 cm and 1 micrometre. A solid line of slope one third marks N_D equal to one; the shaded region below it, at high density and low temperature, has N_D below one. Five example plasmas, ionosphere, H II region, solar corona, Hall thruster and tokamak core, all lie far above that line.",
@@ -437,18 +465,18 @@
 ]
 
 #let conductivity-tensor = figure(
-  alt: "DC conductivity of one species divided by the parallel conductivity, versus magnetization |Omega_s|/nu_s on a logarithmic axis from 0.01 to 100. The parallel value stays at one (gray dotted). The Pedersen conductivity (blue, solid) falls from one to zero; the Hall magnitude (orange, dashed) rises from zero to a maximum of one half at |Omega_s| = nu_s, where both are equal, and falls again.",
+  alt: "Two panels on identical axes: DC conductivity of one species divided by the parallel conductivity, versus magnetization |Omega_s|/nu_s on a logarithmic axis from 0.01 to 100, with the parallel value one as a gray dotted line. Left: the Pedersen conductivity (blue, solid) falls from one to zero, passing one half at |Omega_s| = nu_s. Right: the Hall magnitude (orange, dashed) rises from zero to its maximum of one half at |Omega_s| = nu_s and falls again.",
   caption: [
-    DC conductivity tensor of one species:
-    $sigma_perp/sigma_parallel=1/(1+X^2)$ and
+    DC conductivity tensor of one species, Pedersen (left) and Hall (right)
+    on the same axes: $sigma_perp/sigma_parallel=1/(1+X^2)$ and
     $abs(sigma_"H")/sigma_parallel=X/(1+X^2)$ with
     $X=abs(Omega_s)/nu_s$. Weakly magnetized, the current follows
-    $bold(E)$; at $abs(Omega_s)=nu_s$ Pedersen and Hall are equal; strongly
-    magnetized, both vanish while $sigma_parallel$ is unchanged. The sign of
-    $sigma_"H"$ follows the sign of $q_s$.
+    $bold(E)$; at $abs(Omega_s)=nu_s$ (dot) Pedersen and Hall are equal;
+    strongly magnetized, both vanish while $sigma_parallel$ is unchanged.
+    The sign of $sigma_"H"$ follows the sign of $q_s$.
   ],
 )[
-  #derived-plot("conductivity-tensor", width: 10cm)
+  #derived-plot-pair("conductivity-pedersen", "conductivity-hall")
 ]
 
 #let random-walk-diffusion = figure(
@@ -491,16 +519,17 @@
 ]
 
 #let diffusion-scalings = figure(
-  alt: "Log-log plot of perpendicular diffusion coefficient in square metres per second versus magnetic field from 1 mT to 1 T for the worked-example plasma. The empirical Bohm estimate (orange, dashed) falls as 1/B, the classical collisional coefficient (blue, solid) as 1/B squared. At 10 mT a double arrow marks the ratio 1.95e4.",
+  alt: "Two log-log panels on identical axes: perpendicular diffusion coefficient in square metres per second versus magnetic field from 1 mT to 1 T for the worked-example plasma. Left: the classical collisional coefficient (blue, solid) falls as 1/B squared and is 3.20e-3 at 10 mT. Right: the empirical Bohm estimate (orange, dashed) falls as 1/B and is 62.5 at 10 mT.",
   caption: [
-    Classical and Bohm cross-field diffusion for the plasma of the example
-    below: $n=10^16$ #unit("m^-3"), $k_B T_e=k_B T_i=10$ #unit("eV"),
-    $sigma=10^5$ #unit("S/m"). At $B=10$ #unit("mT") the empirical Bohm
-    estimate exceeds the classical value by $1.95 times 10^4$, and the gap
-    grows in proportion to $B$.
+    Classical (left) and Bohm (right) cross-field diffusion on the same axes
+    for the plasma of the example below: $n=10^16$ #unit("m^-3"),
+    $k_B T_e=k_B T_i=10$ #unit("eV"), $sigma=10^5$ #unit("S/m"). At
+    $B=10$ #unit("mT") (dots) the empirical Bohm estimate exceeds the
+    classical value by $1.95 times 10^4$, and the gap grows in proportion
+    to $B$.
   ],
 )[
-  #derived-plot("diffusion-scalings", width: 10cm)
+  #derived-plot-pair("diffusion-classical", "diffusion-bohm")
 ]
 
 #let wave-linearization = context {
@@ -573,7 +602,7 @@
   }
 }
 
-// Plot: plot_wave_dispersion() in derivations/chapters/ch11_introduction_waves.py.
+// Plot: wave-dispersion cell in derivations/chapters/ch11_introduction_waves.py.
 #let wave-dispersion = figure(
   alt: "A normalized dispersion plot of frequency over electron plasma frequency against wave number times c over plasma frequency. The cold electromagnetic branch starts at the cutoff W=1 for K=0 and approaches the dotted vacuum line W=K; the cold electrostatic branch is the horizontal line W=1.",
   caption: [
@@ -708,7 +737,7 @@
   }
 }
 
-// Plot: plot_magnetized_parallel_dispersion() in derivations/chapters/ch12_cold_magnetized_waves.py.
+// Plot: magnetized-parallel-dispersion cell in derivations/chapters/ch12_cold_magnetized_waves.py.
 #let magnetized-parallel-dispersion = figure(
   alt: "Cold parallel dispersion, normalized frequency W against K=kc/omega_pe at Y=0.3. The s=+1 branch starts at the cutoff W=0.861, the s=-1 branch at W=1.161; both approach the dotted vacuum line W=K. Below the electron cyclotron resonance W=0.3 the s=-1 whistler branch rises from zero and flattens toward the resonance.",
   caption: [
@@ -790,17 +819,17 @@
   }
 }
 
-// Plot: plot_magnetized_cutoff_map() in derivations/chapters/ch12_cold_magnetized_waves.py.
+// Plots: perpendicular-o-mode and perpendicular-x-mode in derivations/chapters/ch12_cold_magnetized_waves.py.
 #let magnetized-cutoff-map = figure(
-  alt: "Perpendicular propagation at Y=0.3: squared refractive index N^2 against W=omega/omega_pe for the ordinary (dashed) and extraordinary (solid) modes. The ordinary mode crosses zero at its cutoff W=1. The extraordinary mode crosses zero at W=0.861, diverges at the upper-hybrid resonance W=1.044, returns from minus infinity and crosses zero again at W=1.161. The shaded region N^2<0 is evanescent.",
+  alt: "Two panels on identical axes, perpendicular propagation at Y=0.3: squared refractive index N^2 against W=omega/omega_pe. Left, the ordinary mode (dashed). Right, the extraordinary mode (solid). The ordinary mode crosses zero at its cutoff W=1. The extraordinary mode crosses zero at W=0.861, diverges at the upper-hybrid resonance W=1.044, returns from minus infinity and crosses zero again at W=1.161. The shaded region N^2<0 is evanescent.",
   caption: [
-    Perpendicular cold modes at
+    Perpendicular cold modes, ordinary (left) and extraordinary (right), at
     #normalized-label[$Y=omega_(c,e)/omega_(p,e)=0.3$], the values of the
     following example. Cutoffs are zeros of $N^2$ (dots), the upper-hybrid
     resonance is a pole of $N_X^2$; between a resonance and the next cutoff
     the extraordinary mode is evanescent (shaded, $N^2<0$).
   ],
-)[#derived-plot("magnetized-cutoff-map", width: 9.5cm)]
+)[#derived-plot-pair("perpendicular-o-mode", "perpendicular-x-mode")]
 
 #let collisional-wave-response = context {
   let alt-description = "A response map starts with the collisionless cold-plasma dielectric response. Adding a collision frequency makes the effective mass complex, which makes the refractive index and wave number complex; the real part controls phase advance and the positive imaginary part produces spatial attenuation in the chosen Fourier convention."
@@ -865,7 +894,7 @@
   }
 }
 
-// Plot: plot_ion_wave_branches() in derivations/chapters/ch13_finite_temperature_waves.py.
+// Plot: ion-wave-branches cell in derivations/chapters/ch13_finite_temperature_waves.py.
 #let ion-wave-branches = figure(
   alt: "Normalized cold two-fluid parallel dispersion, W=omega/omega_ci against K=k v_A/omega_ci. Both circular branches start along the dotted Alfvén line W=K. The RH whistler branch bends above it; the LH branch bends below and approaches the ion cyclotron resonance W=1.",
   caption: [
@@ -877,18 +906,20 @@
   ],
 )[#derived-plot("ion-wave-branches", width: 9.5cm)]
 
-// Plot: plot_warm_longitudinal_modes() in derivations/chapters/ch13_finite_temperature_waves.py.
+// Plots: warm-langmuir-branch and ion-acoustic-branch in derivations/chapters/ch13_finite_temperature_waves.py.
 #let warm-longitudinal-modes = figure(
-  alt: "Both roots of the two-species warm-fluid longitudinal dispersion relation on logarithmic axes, W=omega/omega_pe against K=k lambda_De. The electron plasma wave stays near W=1 and rises for K of order one. The ion-acoustic branch rises linearly, far below, and levels off at the ion plasma frequency, marked by a horizontal line.",
+  alt: "Two panels, both roots of the two-species warm-fluid longitudinal dispersion relation against K=k lambda_De. Left, the electron plasma wave in units of omega_pe: it starts at 1 and approaches the dotted thermal line omega=k c_se. Right, the ion-acoustic branch in units of omega_pi: it rises along the dotted line omega=k c_s and levels off at the ion plasma frequency, marked by a horizontal line.",
   caption: [
     The two roots of the warm two-species longitudinal relation for
     isothermal electrons ($gamma_e=1$), cold ions and $m_i/m_e=1836$, with
-    $K=k lambda_(D,e)$ and $W=omega/omega_(p,e)$. The electron plasma wave
-    follows $W^2 approx 1+K^2$; the ion-acoustic branch rises as
-    $W approx K sqrt(m_e/m_i)$ and saturates at $omega_(p,i)/omega_(p,e)$
-    for $K >> 1$, where the fluid closure is no longer controlled.
+    $K=k lambda_(D,e)$. Left, the electron plasma wave in units of
+    $omega_(p,e)$ follows $omega^2 approx omega_(p,e)^2(1+K^2)$. Right, the
+    ion-acoustic branch in units of $omega_(p,i)$ rises as $omega approx k c_s$
+    and saturates at $omega_(p,i)$ for $K >> 1$, where the fluid closure is
+    no longer controlled. The two frequency scales differ by
+    $sqrt(m_i/m_e) approx 43$.
   ],
-)[#derived-plot("warm-longitudinal-modes", width: 9.5cm)]
+)[#derived-plot-pair("warm-langmuir-branch", "ion-acoustic-branch")]
 
 #let mhd-wave-speeds = context {
   let alt-description = "A warm MHD wave map combines magnetic pressure and thermal pressure for perpendicular compression. Magnetic tension instead restores parallel shear-Alfvén waves. For perpendicular compression the pressure terms combine to give the magnetosonic speed v_m equal to the square root of v_A squared plus v_s squared."
@@ -1018,11 +1049,11 @@
   }
 }
 
-// Plot: plot_hot_isotropic_dispersion() in derivations/chapters/ch14_hot_plasma_waves.py.
+// Plots: hot-isotropic-dispersion and hot-isotropic-damping in derivations/chapters/ch14_hot_plasma_waves.py.
 #let hot-isotropic-dispersion = figure(
-  alt: "Two stacked panels against a=k lambda_De from 0.12 to 0.6. Top: real frequency of the exact Maxwellian Langmuir root and the Bohm-Gross asymptote; they agree for small a and separate beyond about 0.25. Bottom: damping rate of the exact root and the weak-damping asymptote; both are negligible below a of about 0.2, the asymptote overestimates near 0.3 and saturates, while the exact rate keeps growing.",
+  alt: "Two side-by-side panels against a=k lambda_De from 0.12 to 0.6. Left: real frequency of the exact Maxwellian Langmuir root and the Bohm-Gross asymptote; they agree for small a and separate beyond about 0.25. Right: damping rate of the exact root and the weak-damping asymptote; both are negligible below a of about 0.2, the asymptote overestimates near 0.3 and saturates, while the exact rate keeps growing.",
   caption: [
-    Exact complex root $omega=omega_r+i gamma$ of
+    Exact complex root $omega=omega_r+i gamma$ (real part left, damping rate right) of
     $epsilon_L=1+(1+zeta Z(zeta))/a^2=0$ for one electron Maxwellian,
     $a=k lambda_(D,e)$, against the asymptotes
     $omega_r/omega_(p,e)=sqrt(1+3a^2)$ and
@@ -1030,7 +1061,7 @@
     The asymptotes hold for $a lt.tilde 0.25$; beyond, the wave is
     strongly damped and only the full root is meaningful.
   ],
-)[#derived-plot("hot-isotropic-dispersion", width: 9cm)]
+)[#derived-plot-pair("hot-isotropic-dispersion", "hot-isotropic-damping")]
 
 #let hot-velocity-space-slopes = context {
   let alt-description = "A normalized velocity-space plot compares a Maxwellian distribution, which decreases through a marked positive phase velocity, with a bump-on-tail distribution that has a positive slope near the same region. A negative slope supports Landau damping; a positive slope can support wave growth."
@@ -1066,7 +1097,7 @@
 
 }
 
-// Plot: plot_two_stream_growth() in derivations/chapters/ch14_hot_plasma_waves.py.
+// Plot: two-stream-growth cell in derivations/chapters/ch14_hot_plasma_waves.py.
 #let two-stream-growth = figure(
   alt: "Two-stream growth rate gamma/omega_p against K=|k v_0|/omega_p. The rate rises from zero, peaks at 1/(2 sqrt 2) for K=sqrt(3/8) (marked), and falls to zero at the band edge K=1; larger K is stable.",
   caption: [
@@ -1198,11 +1229,11 @@
   }
 }
 
-// Plot: plot_sheath_profile() in derivations/chapters/ch15_sheaths_probes.py.
+// Plots: sheath-potential and sheath-densities in derivations/chapters/ch15_sheaths_probes.py.
 #let sheath-profile = figure(
-  alt: "Self-consistent planar sheath against distance from the wall in Debye lengths. The normalized potential drop eta falls from the hydrogen floating value 2.84 at the wall toward zero in the plasma. The ion density stays above the electron density everywhere; both rise toward n_0 away from the wall, the electrons from about 0.06 and the ions from about 0.39.",
+  alt: "Self-consistent planar sheath against distance from the wall in Debye lengths, two panels. Left: the normalized potential drop eta falls from the hydrogen floating value 2.84 at the wall toward zero in the plasma. Right: the ion density stays above the electron density everywhere; both rise toward n_0 away from the wall, the electrons from about 0.06 and the ions from about 0.39.",
   caption: [
-    Poisson solution of the sheath equation
+    Potential (left) and densities (right) from the Poisson solution of the sheath equation
     $eta''=M/sqrt(M^2+2 eta)-exp(-eta)$ for ions entering at the Bohm speed
     ($M=1$), integrated from a hydrogen wall at the floating potential
     $eta_w=-ln sqrt((2 pi m_e)/m_i)=2.84$, with
@@ -1210,9 +1241,9 @@
     electrons $n_e/n_0=exp(-eta)$ are depleted faster than the cold ions
     $n_i/n_0=M/sqrt(M^2+2 eta)$, so the sheath carries positive space charge.
   ],
-)[#derived-plot("sheath-profile", width: 9.5cm)]
+)[#derived-plot-pair("sheath-potential", "sheath-densities")]
 
-// Plot: plot_probe_iv_characteristic() in derivations/chapters/ch15_sheaths_probes.py.
+// Plot: probe-iv-characteristic cell in derivations/chapters/ch15_sheaths_probes.py.
 #let probe-iv-characteristic = figure(
   alt: "Normalized planar Langmuir-probe current against bias u. A small positive ion-saturation plateau at strongly negative bias, a zero crossing at the floating value u_f=-2.84 (marked), an exponential electron-retardation rise in magnitude, and a flat electron-saturation level -1 above the plasma potential u=0.",
   caption: [

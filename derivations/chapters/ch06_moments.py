@@ -1,522 +1,373 @@
-"""Chapter 6, velocity moments: src/chapters/06-moments.typ.
+# Chapter 6 · Velocity moments (src/chapters/06-moments.typ)
+#
+# The moment equations are checked on an explicit test distribution (fluids.py):
+# velocity integrals of the kinetic equation are done term by term, so the
+# integration by parts in velocity space is verified, not assumed.
 
-Run `python derivations/ch06_moments.py` to check every step, or
-`pytest derivations` to check every chapter.
-
-Method. The moment equations are checked on an explicit test distribution:
-a drifting, anisotropic Gaussian with a Hermite skew term (gives a nonzero
-heat flux) and a shear term (gives an off-diagonal pressure). All parameters
-depend on (t, x, y, z). Velocity integrals of the kinetic equation are done
-term by term with SymPy, so the integration by parts in velocity space and
-the split into flow and random parts are verified rather than assumed.
-
-Coverage (line in src/chapters/06-moments.typ -> test):
-  65-72        n_s, rho_s, rho_q, j_s, j (definitions, units)  -> test_density_and_current
-  84-90        u_s, j_s = q_s n_s u_s, <w_s> = 0               -> test_density_and_current
-  95-96        pressure tensor (definition, units)             -> test_raw_second_moment
-  110-143      M_s = P_s + rho_s u_s u_s                       -> test_raw_second_moment
-  158-159      q_i = (1/2) sum_j Q_ijj                         -> test_heat_flux_contraction
-  256-290      kinetic balance -> continuity (number, mass, charge)
-               305-330 derivation steps                         -> test_continuity
-  339-350      example: Gamma = 2.0e21, Ndot = 2.0e17          -> test_example_flux
-  440-488      first moment: time, flux, force terms, momentum
-               equation; 504-545 derivation steps              -> test_momentum_equation
-  494-496      material (convective) momentum form             -> test_material_momentum
-  553-562      example: f_E,x = 96.1 N/m^3                     -> test_example_force_density
-  645-647      W_s, eps_s = tr(P)/2, W = rho u^2/2 + eps       -> test_energy_moments
-  654-667      heat flux q_s and raw energy flux F_s           -> test_energy_moments
-  671-691      energy force term, raw and split energy eq.;
-               723-760 derivation steps                         -> test_energy_equation
-  704-716      scalar pressure, isotropic divergence           -> test_isotropic_pressure
-  775-798      bulk kinetic and internal-energy balances,
-               u.div(P) = div(P.u) - P:grad(u)                 -> test_internal_energy
-  803-809      isotropic adiabatic law with 5/3                -> test_internal_energy
-  817-829      example: eps = 0.0240, W_bulk = 0.0837, W = 0.108 -> test_example_energy
-  924-948      cold / warm closures, polytropic law            -> test_polytropic_law
-  961-1003     BGK moments vanish when moments are matched     -> test_bgk_moments
-  1024-1035    example: p1/p0 = 32, T1/T0 = 4                  -> test_example_polytropic
-Not checked: 919 (schematic hierarchy chain), 993-995 (sum_s R_s = 0 and
-sum_s Q_s = 0 state momentum and energy conservation of the collision
-operator; they are assumptions here, not derived results).
-"""
-
-from functools import lru_cache
-
+# %% Setup
 import sympy as sp
 from sympy.physics import units as u
 
 import si
-from si import Derivation, e, k_B, m_i
-
-
-# Units of this file's symbols. Kept local (not in the shared si.UNITS) so that
-# symbols with common names in other chapter files cannot clash.
-LOCAL = {}
-
-
-def check(derived, stated, unit=None, units=None):
-    """si.check with this file's LOCAL unit table."""
-    return si.check(derived, stated, unit=unit, units={**LOCAL, **(units or {})})
-
-# CODATA 2018 values for the worked examples.
-CODATA = {e: 1.602176634e-19, m_i: 1.67262192369e-27}
-
-
-class Tex(sp.Symbol):
-    """Display-only symbol whose LaTeX is its name, verbatim."""
-
-    def _latex(self, printer, exp=None):
-        return self.name if exp is None else f"{{{self.name}}}^{{{exp}}}"
-
-
-def num(d, label, name, value):
-    """Record a numerical step with four significant digits; return the value."""
-    d.eq(label, Tex(name), sp.Float(value, 4))
-    return value
-
-
-def close(value, printed, slack=5e-4):
-    """Value agrees with the printed number to half a unit in its last digit."""
-    mant = printed.lower().split("e")[0].lstrip("+-")
-    digits = len(mant.replace(".", "").lstrip("0"))
-    p = float(printed)
-    tol = 0.5 * 10 ** (sp.floor(sp.log(abs(p), 10)) - digits + 1) + slack * abs(p)
-    assert abs(float(value) - p) <= tol, f"{float(value):.6g} vs printed {printed}"
-
-
-# ---------------------------------------------------------------------------
-# Test distribution and velocity integration
-# ---------------------------------------------------------------------------
-t, x, y, z = sp.symbols("t x y z", real=True)
-X = (x, y, z)
-v = sp.symbols("v_x v_y v_z", real=True)
-w = sp.symbols("w_x w_y w_z", real=True)
-m_s, q_s = sp.symbols("m_s q_s", real=True)
-
-# Fields of (t, r): density, flow, three thermal widths, skew and shear sizes.
-args = (t, x, y, z)
-
-
-def field(name, tex):
-    """Undefined function of (t, x, y, z) that prints as `tex` (no arguments)."""
-    def _latex(self, printer, exp=None):
-        return tex if exp is None else f"{tex}^{{{exp}}}"
-
-    return sp.Function(name, real=True, __dict__={"_latex": _latex})(*args)
-
-
-n = field("n", "n_{s}")
-U = [field(f"u_{c}", f"u_{{{c}}}") for c in "xyz"]
-sig = [field(f"sigma_{c}", rf"\sigma_{{{c}}}") for c in "xyz"]
-kap = field("kappa", r"\kappa")
-lam = field("lambda", r"\lambda")
-E = [field(f"E_{c}", f"E_{{{c}}}") for c in "xyz"]
-B = [field(f"B_{c}", f"B_{{{c}}}") for c in "xyz"]
-
-# Random velocity in units of the widths, and the Gaussian weight.
-s = [(v[i] - U[i]) / sig[i] for i in range(3)]
-G = sp.exp(-sum(si**2 for si in s) / 2)
-# Hermite He_3 skew along x (heat flux) and He_1 He_1 shear in x-y; both
-# leave n and u unchanged by construction.
-f = n / ((2 * sp.pi) ** sp.Rational(3, 2) * sig[0] * sig[1] * sig[2]) * G * (
-    1 + kap * (s[0] ** 3 - 3 * s[0]) + lam * s[0] * s[1]
-)
-
-
-@lru_cache(None)
-def gauss_moment(k):
-    """int_R w^k exp(-w^2/(2 a^2)) dw for a > 0, done by SymPy."""
-    a, ww = sp.symbols("a ww", positive=True)
-    return sp.Lambda(a, sp.integrate(ww**k * sp.exp(-ww**2 / (2 * a**2)), (ww, -sp.oo, sp.oo)))
-
-
-def vint(expr, widths=None):
-    """Integrate expr(v) over R^3. expr must be polynomial(v) times the
-    Gaussian exp(-sum_i (v_i - u_i)^2 / (2 widths_i^2)) (default: sigma_i)."""
-    widths = sig if widths is None else widths
-    G_w = sp.exp(-sum(w[i] ** 2 / widths[i] ** 2 for i in range(3)) / 2)
-    e_w = sp.expand(sp.powsimp(expr.subs({v[i]: U[i] + w[i] for i in range(3)}, simultaneous=True) / G_w))
-    total = 0
-    for term in sp.Add.make_args(e_w):
-        coeff, mono = term.as_independent(*w, as_Add=False)
-        powers = mono.as_powers_dict()
-        k = [int(powers.get(wi, 0)) for wi in w]
-        assert mono == sp.Mul(*[w[i] ** k[i] for i in range(3)]), mono
-        total += coeff * sp.Mul(*[gauss_moment(k[i])(widths[i]) for i in range(3)])
-    return sp.expand(total)
-
-
-def div(vec):
-    return sum(sp.diff(vec[i], X[i]) for i in range(3))
-
-
-def tdiv(T):
-    """Divergence of a rank-two tensor: (div T)_i = sum_j d_j T_ij."""
-    return [sum(sp.diff(T[i][j], X[j]) for j in range(3)) for i in range(3)]
-
-
-def cross(a, b):
-    return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]
-
-
-def dot(a, b):
-    return sum(a[i] * b[i] for i in range(3))
-
-
-def zero(expr):
-    assert sp.simplify(sp.expand(expr)) == 0, expr
-
-
-# Display-only pressure-tensor components P_ij.
-DP = [[field(f"P_{a}{b}", f"P_{{{a}{b}}}") for b in "xyz"] for a in "xyz"]
-
-# Lorentz acceleration and the three left-hand terms of the kinetic equation.
-acc = [q_s / m_s * (E[i] + cross(v, B)[i]) for i in range(3)]
-kin_time = sp.diff(f, t)
-kin_space = sum(sp.diff(f * v[j], X[j]) for j in range(3))
-kin_force = sum(sp.diff(f * acc[j], v[j]) for j in range(3))
-kinetic_lhs = kin_time + kin_space + kin_force
-
-
-@lru_cache(None)
-def moments():
-    """Central moments of f computed by direct integration."""
-    ww = [v[i] - U[i] for i in range(3)]
-    dens = vint(f)
-    flow = [vint(v[i] * f) / dens for i in range(3)]
-    P = [[m_s * vint(ww[i] * ww[j] * f) for j in range(3)] for i in range(3)]
-    w2 = sum(wi**2 for wi in ww)
-    q = [m_s / 2 * vint(w2 * ww[i] * f) for i in range(3)]
-    return dens, flow, P, q
-
-
-# Plain symbols for unit checks of the definitions.
-ns, rho_s, us, qs, ms = sp.symbols("n_s rho_s u_s q_s m_s", positive=True)
-ps, Ts, Wd = sp.symbols("p_s T_s W", positive=True)
-LOCAL.update({ns: u.meter**-3, us: u.meter / u.second, qs: u.coulomb,
-              ms: u.kilogram, ps: u.pascal, Ts: u.kelvin})
-
-
-# ---------------------------------------------------------------------------
-# Section 1: definitions
-# ---------------------------------------------------------------------------
-def test_density_and_current():
-    d = Derivation("Density, flow and current", "src/chapters/06-moments.typ:65")
-    dens, flow, _, _ = moments()
-    # Zeroth moment of the test distribution returns its density parameter.
-    d.eq("zeroth moment", sp.Symbol("n_s"), dens)
-    zero(dens - n)
-    # First moment / n returns the flow; j_s = q_s n_s u_s (line 85).
-    jx = d.eq("charge-weighted first moment", sp.Symbol("j_{s,x}"), q_s * vint(v[0] * f))
-    zero(jx - q_s * n * U[0])
-    # Random velocity has zero mean (line 90).
-    for i in range(3):
-        zero(vint((v[i] - flow[i]) * f))
-    # Units: rho_q = q n in C/m^3, j = q n u in A/m^2, rho_s = m n in kg/m^3.
-    check(qs * ns, qs * ns, unit=u.coulomb / u.meter**3)
-    check(qs * ns * us, qs * ns * us, unit=u.ampere / u.meter**2)
-    check(ms * ns, ms * ns, unit=u.kilogram / u.meter**3)
-
-
-def test_raw_second_moment():
-    d = Derivation("Raw second moment", "src/chapters/06-moments.typ:110")
-    _, _, P, _ = moments()
-    for i, j in [(0, 0), (0, 1), (1, 2)]:
-        # Integrate m v_i v_j f directly ...
-        M_ij = d.eq("second moment", sp.Symbol(f"M_{{{'xyz'[i]}{'xyz'[j]}}}"),
-                    m_s * vint(v[i] * v[j] * f))
-        # ... and compare with P_ij + rho_s u_i u_j (line 112).
-        stated = P[i][j] + m_s * n * U[i] * U[j]
-        check(M_ij, stated)
-    # Pressure tensor m n <w w> is a pressure (line 95).
-    check(ms * ns * us**2, ms * ns * us**2, unit=u.pascal)
-
-
-def test_heat_flux_contraction():
-    d = Derivation("Heat flux as contraction", "src/chapters/06-moments.typ:159")
-    _, _, _, q = moments()
-    ww = [v[i] - U[i] for i in range(3)]
-    # Third central tensor Q_ijk = m int w_i w_j w_k f.
-    Q = lambda i, j, k: m_s * vint(ww[i] * ww[j] * ww[k] * f)
-    qx = d.eq("contract Q_ijj", sp.Symbol("q_x"), sp.Rational(1, 2) * sum(Q(0, j, j) for j in range(3)))
-    check(qx, q[0])
-    zero(sp.Rational(1, 2) * sum(Q(1, j, j) for j in range(3)) - q[1])
-
-
-# ---------------------------------------------------------------------------
-# Section 2: continuity
-# ---------------------------------------------------------------------------
-def test_continuity():
-    d = Derivation("Continuity from the zeroth moment", "src/chapters/06-moments.typ:278")
-    # Velocity integrals of the three kinetic terms (lines 261-272).
-    I_t = d.eq("int df/dt", sp.Symbol("I_t"), vint(kin_time))
-    I_x = d.eq("int div(f v)", sp.Symbol("I_r"), vint(kin_space))
-    I_v = d.eq("int div_v(f a)", sp.Symbol("I_v"), vint(kin_force))
-    check(I_t, sp.diff(n, t))
-    check(I_x, div([n * U[i] for i in range(3)]))
-    check(I_v, 0)
-    # Number continuity (line 278) with a particle-conserving collision term.
-    lhs = d.step("collisions conserve N", I_t + I_x + I_v)
-    check(lhs, sp.diff(n, t) + div([n * U[i] for i in range(3)]))
-    # Mass continuity (line 283): multiply by the constant m_s.
-    check(m_s * lhs, sp.diff(m_s * n, t) + div([m_s * n * U[i] for i in range(3)]))
-    # Charge continuity (line 289): two species, multiply by q_s and sum.
-    n2 = field("n2", "n_{2}")
-    U2 = [field(f"u2_{c}", f"u_{{2{c}}}") for c in "xyz"]
-    q1, q2 = sp.symbols("q_1 q_2", real=True)
-    cont = lambda nn, uu: sp.diff(nn, t) + div([nn * uu[i] for i in range(3)])
-    rho_q = q1 * n + q2 * n2
-    j = [q1 * n * U[i] + q2 * n2 * U2[i] for i in range(3)]
-    check(q1 * cont(n, U) + q2 * cont(n2, U2), sp.diff(rho_q, t) + div(j))
-
-
-def test_example_flux():
-    d = Derivation("Example: particle flux to a collector", "src/chapters/06-moments.typ:339")
-    Gamma = num(d, "Gamma = n u", r"\Gamma_s", sp.Float(1.0e16) * sp.Float(2.0e5))
-    close(Gamma, "2.0e21")
-    close(num(d, "Ndot = Gamma A", r"\dot N_s", Gamma * 1.0e-4), "2.0e17")
-
-
-# ---------------------------------------------------------------------------
-# Section 3: momentum
-# ---------------------------------------------------------------------------
-def test_momentum_equation():
-    d = Derivation("Momentum equation from the first moment", "src/chapters/06-moments.typ:486")
-    _, _, P, _ = moments()
-    rho = m_s * n
-    for i in range(3):
-        # Weight the kinetic equation with m_s v_i and integrate (line 440).
-        T_t = m_s * vint(v[i] * kin_time)
-        T_x = m_s * vint(v[i] * kin_space)
-        T_v = m_s * vint(v[i] * kin_force)
-        # Time term (line 453) and flux term (lines 459-464).
-        check(T_t, sp.diff(rho * U[i], t))
-        check(T_x, sum(sp.diff(rho * U[i] * U[j] + P[i][j], X[j]) for j in range(3)))
-        # Integration by parts: force term is -q n (E + u x B)_i (lines 472-481).
-        lorentz = q_s * n * (E[i] + cross(U, B)[i])
-        check(-T_v, lorentz)
-        if i == 0:
-            # Display: the same terms in compact notation (P_xj as symbols).
-            rho_d = field("rho", r"\rho_{s}")
-            d.eq("time term", sp.Symbol("T_t"), sp.Derivative(rho_d * U[0], t))
-            d.eq("flux term", sp.Symbol("T_r"), sum(
-                sp.Derivative(rho_d * U[0] * U[j] + DP[0][j], X[j]) for j in range(3)))
-            d.eq("force term, by parts", sp.Symbol("T_v"), -lorentz)
-            d.step("momentum eq., x", sp.Eq(sp.Symbol("T_t") + sp.Symbol("T_r") + sp.Symbol("T_v"),
-                                             sp.Symbol("R_{s,x}")))
-
-
-def test_material_momentum():
-    d = Derivation("Material form of the momentum equation", "src/chapters/06-moments.typ:494")
-    rho = field("rho", r"\rho_{s}")
-    i = 0
-    # Conservative form minus u_i times mass continuity ...
-    cons = sp.diff(rho * U[i], t) + div([rho * U[i] * U[j] for j in range(3)])
-    cont = sp.diff(rho, t) + div([rho * U[j] for j in range(3)])
-    lhs = d.step("subtract u_x (continuity)", sp.expand(cons - U[i] * cont))
-    # ... equals rho (du/dt + u.grad u)_i (lines 494, 543-545).
-    stated = rho * (sp.diff(U[i], t) + sum(U[j] * sp.diff(U[i], X[j]) for j in range(3)))
-    check(lhs, stated)
-
-
-def test_example_force_density():
-    d = Derivation("Example: electric force density", "src/chapters/06-moments.typ:553")
-    fE = num(d, "f = n e E", "f_{E,x}", 1.0e16 * CODATA[e] * 6.00e4)
-    close(fE, "96.1")
-    check(ns * qs * sp.Symbol("E_0"), ns * qs * sp.Symbol("E_0"),
-          unit=u.newton / u.meter**3, units={sp.Symbol("E_0"): u.volt / u.meter})
-
-
-# ---------------------------------------------------------------------------
-# Section 4: energy
-# ---------------------------------------------------------------------------
-def energy_moments():
-    _, _, P, q = moments()
-    v2 = dot(v, v)
-    W = m_s / 2 * vint(v2 * f)
-    Fv = [m_s / 2 * vint(v2 * v[i] * f) for i in range(3)]
-    return W, Fv, P, q
-
-
-def test_energy_moments():
-    d = Derivation("Energy density and energy flux", "src/chapters/06-moments.typ:645")
-    W, Fv, P, q = energy_moments()
-    d.eq("energy moment", sp.Symbol("W_s"), W)
-    d.eq("energy-flux moment", sp.Symbol("F_{s,x}"), sp.Symbol("W_s") * U[0]
-         + sum(DP[0][j] * U[j] for j in range(3)) + sp.Symbol("q_{s,x}"))
-    # W = rho u^2/2 + eps with eps = tr(P)/2 (line 647).
-    eps = sum(P[i][i] for i in range(3)) / 2
-    check(W, m_s * n * dot(U, U) / 2 + eps)
-    # Raw flux F = W u + P.u + q (line 685; derivation 745-760).
-    for i in range(3):
-        stated = W * U[i] + sum(P[i][j] * U[j] for j in range(3)) + q[i]
-        check(Fv[i], stated)
-    # Units: energy density J/m^3, heat flux W/m^2.
-    check(ms * ns * us**2 / 2, ms * ns * us**2 / 2, unit=u.joule / u.meter**3)
-    check(ms * ns * us**3 / 2, ms * ns * us**3 / 2, unit=u.watt / u.meter**2)
-
-
-def test_energy_equation():
-    d = Derivation("Energy equation from the second moment", "src/chapters/06-moments.typ:690")
-    W, Fv, P, q = energy_moments()
-    wt = m_s * dot(v, v) / 2
-    T_t = vint(wt * kin_time)
-    T_x = vint(wt * kin_space)
-    T_v = vint(wt * kin_force)
-    check(T_t, sp.diff(W, t))
-    check(T_x, div(Fv))
-    # Force term: -m int v.a f; magnetic part drops, electric work remains (673-680).
-    check(T_v, -m_s * vint(dot(v, acc) * f))
-    check(-T_v, q_s * n * dot(U, E))
-    # Split energy equation (line 690).
-    flux = [W * U[i] + sum(P[i][j] * U[j] for j in range(3)) + q[i] for i in range(3)]
-    check(T_t + T_x, sp.diff(W, t) + div(flux))
-    # Display in compact notation.
-    Wf = field("W", "W_{s}")
-    qd = [field(f"qh_{c}", f"q_{{{c}}}") for c in "xyz"]
-    d.eq("time term", sp.Symbol("T_t"), sp.Derivative(Wf, t))
-    d.eq("flux term, split", sp.Symbol("T_r"), sp.Derivative(
-        Wf * U[0] + sum(DP[0][j] * U[j] for j in range(3)) + qd[0], x) + Tex(r"\ldots"))
-    d.eq("force term, by parts", sp.Symbol("T_v"), -q_s * n * dot(U, E))
-    d.step("energy eq.", sp.Eq(sp.Symbol("T_t") + sp.Symbol("T_r") + sp.Symbol("T_v"), sp.Symbol("Q_s")))
-
-
-def test_isotropic_pressure():
-    d = Derivation("Isotropic pressure", "src/chapters/06-moments.typ:709")
-    p = field("p", "p_{s}")
-    Piso = [[p if i == j else 0 for j in range(3)] for i in range(3)]
-    # Scalar pressure = trace/3 (line 704).
-    check(sum(Piso[i][i] for i in range(3)) / 3, p)
-    # Component divergence sum_j d_j P_ij (line 716) gives grad p.
-    divP = d.eq("sum_j d_j (p delta_xj)", Tex(r"(\nabla\cdot P)_x"), tdiv(Piso)[0])
-    check(divP, sp.diff(p, x))
-    # For the Maxwellian part of the test distribution, P_xx = n m sigma_x^2 = n k_B T.
-    _, _, P, _ = moments()
-    check(P[0][0].subs(lam, 0), m_s * n * sig[0] ** 2)
-
-
-def test_internal_energy():
-    d = Derivation("Internal energy and the adiabatic law", "src/chapters/06-moments.typ:796")
-    rho = field("rho", r"\rho_{s}")
-    eps = field("epsilon", r"\epsilon_{s}")
-    Q = field("Q", "Q_{s}")
-    R = [field(f"R_{c}", f"R_{{{c}}}") for c in "xyz"]
-    qh = [field(f"q_{c}", f"q_{{{c}}}") for c in "xyz"]
-    Pn = {}
-    for i in range(3):
-        for j in range(i, 3):
-            Pn[(i, j)] = Pn[(j, i)] = field(f"P_{i}{j}", f"P_{{{'xyz'[i]}{'xyz'[j]}}}")
-    P = [[Pn[(i, j)] for j in range(3)] for i in range(3)]
-    fE = [q_s / m_s * rho * E[i] for i in range(3)]  # q n E with n = rho/m
-    gradU = [[sp.diff(U[j], X[i]) for j in range(3)] for i in range(3)]
-    # Residuals (lhs - rhs) of mass, momentum and total-energy equations.
-    mass = sp.diff(rho, t) + div([rho * U[j] for j in range(3)])
-    mom = [sp.diff(rho * U[i], t) + sum(sp.diff(rho * U[i] * U[j] + P[i][j], X[j]) for j in range(3))
-           - fE[i] - R[i] for i in range(3)]
-    W = rho * dot(U, U) / 2 + eps
+from fluids import (EPS_DEF, F_W, W_DEF, W_REL, A, B, E, F, KINETIC, P, SHAPE, SIGMA, S, U,
+                    Partial, VelocityIntegral, W, X, cross, div, dot, eps, f, field,
+                    gauss_moment, integrate, kappa, lam, m_s, moment, moment_values, moments,
+                    n, q, q_s, rounded, t, tdiv, v, vec, vint, x)
+from notebook import agrees, close_to, evaluate, note, report, section, show
+
+k_B = si.k_B
+w = W_REL                                    # random velocity v - u
+v2, w2 = dot(v, v), dot(w, w)
+C = sp.Symbol("C")                           # collision term
+T_t, T_r, T_v = sp.symbols("T_t T_r T_v")    # time, flux and force terms
+C_mass, M_x = sp.symbols("C M_x")             # mass and momentum balances
+
+
+def same(a, b):
+    """a == b, with derivatives evaluated (used for the asserted components)."""
+    return sp.simplify(sp.expand((a - b).doit())) == 0
+
+
+_, _, P_test, _ = moments()
+MOMENTS = moment_values()                    # P_ij, q_i, eps, W, F_i on the test f
+
+
+def agrees_in_moments(derived, printed, source, lhs):
+    """agrees() for a statement written with P, q, W, epsilon: the test values
+    are inserted for the comparison, the display keeps the compact notation."""
+    residual = derived - printed.subs(MOMENTS).doit()   # must vanish
+    return agrees(residual + printed, printed, source, lhs=lhs)
+
+
+# Silent unit checks with plain symbols.
+ns, us, qs, ms, ps, Ts, E0 = sp.symbols("n_s u_s q_s m_s p_s T_s E_0", positive=True)
+UNITS = {ns: u.meter**-3, us: u.meter / u.second, qs: u.coulomb, ms: u.kilogram,
+         ps: u.pascal, Ts: u.kelvin, E0: u.volt / u.meter}
+
+
+def has_unit(expr, unit):
+    si.check(expr, expr, unit=unit, units=UNITS)
+
+
+
+def given(values, *more):
+    """Note listing the inputs of a worked example, separated by commas."""
+    parts = ["Input"]
+    for symbol, value in values.items():
+        parts += [sp.Eq(symbol, rounded(value)), ","]
+    note(*parts[:-1], *more)
+
+# %% Test distribution
+section("Test distribution")
+note("Drifting anisotropic Gaussian with a skew", kappa, "(heat flux) and a shear",
+     lam, "(off-diagonal pressure)")
+show(sp.Eq(F, SHAPE))
+note("with", sp.Eq(S[0], (v[0] - U[0]) / SIGMA[0]), "and likewise for y, z; all parameters"
+     " depend on", sp.Tuple(t, *X), ". Velocity integrals reduce to Gaussian moments, e.g.")
+a_w, w_w = sp.symbols("a w", positive=True)
+show(sp.Eq(sp.Integral(w_w**2 * sp.exp(-w_w**2 / (2 * a_w**2)), (w_w, -sp.oo, sp.oo)),
+           gauss_moment(2)(a_w)))
+
+# %% Density, flow and current
+section("Density, flow and current", "06-moments.typ:65")
+density = moment(1)
+agrees(integrate(density), n, ":65", lhs=density)
+current = moment(q_s * v[0])
+agrees(integrate(current), q_s * n * U[0], ":85", lhs=current)
+note("The random velocity", sp.Eq(w[0], v[0] - U[0]), "has zero mean (x shown; y, z asserted)")
+agrees(integrate(moment(w[0])), 0, ":90", lhs=moment(w[0]))
+assert all(integrate(moment(w[i])) == 0 for i in (1, 2))
+has_unit(qs * ns, u.coulomb / u.meter**3)
+has_unit(qs * ns * us, u.ampere / u.meter**2)
+has_unit(ms * ns, u.kilogram / u.meter**3)
+
+# %% Raw second moment
+section("Raw second moment", "06-moments.typ:110")
+note("Raw minus central second moment (xy shown; xx and yz asserted)")
+for i, j in [(0, 1), (0, 0), (1, 2)]:
+    raw, central = moment(m_s * v[i] * v[j]), moment(m_s * w[i] * w[j])
+    split = integrate(raw) - integrate(central)
+    if (i, j) == (0, 1):
+        agrees(split, m_s * n * U[i] * U[j], ":112", lhs=raw - central)
+    else:
+        assert same(split, m_s * n * U[i] * U[j])
+has_unit(ms * ns * us**2, u.pascal)                  # P_s = m n <w w>, line 95
+
+# %% Heat flux as contraction
+section("Heat flux as contraction", "06-moments.typ:159")
+heat = moment(m_s * w2 * w[0] / 2)
+show(sp.Eq(heat, integrate(heat)))
+tensor = [moment(m_s * w[0] * w[j] * w[j]) for j in range(3)]   # Q_xjj
+agrees(sum(integrate(Q) for Q in tensor) / 2, integrate(heat), ":159", lhs=sum(tensor) / 2)
+assert same(sum(integrate(moment(m_s * w[1] * w[j] ** 2)) for j in range(3)) / 2,
+            integrate(moment(m_s * w2 * w[1] / 2)))
+
+# %% Continuity
+section("Continuity from the zeroth moment", "06-moments.typ:278")
+note("Kinetic equation with the Lorentz acceleration (x component; y, z alike)")
+show(sp.Eq(A[0], q_s / m_s * (E[0] + cross(v, B)[0])))
+show(sp.Eq(KINETIC, C))
+time = VelocityIntegral(Partial(F, t))
+flux = VelocityIntegral(sum(Partial(v[j] * F, X[j]) for j in range(3)))
+force = VelocityIntegral(sum(Partial(A[j] * F, v[j]) for j in range(3)))
+agrees(integrate(time), Partial(n, t), ":261", lhs=time)
+agrees(integrate(flux), sum(Partial(n * U[j], X[j]) for j in range(3)), ":265", lhs=flux)
+note("Integration by parts in velocity: the force term vanishes")
+agrees(integrate(force), 0, ":270", lhs=force)
+note("Collisions conserve particles,", sp.Eq(VelocityIntegral(C), 0), "; the sum is continuity")
+number = integrate(VelocityIntegral(KINETIC))
+agrees(number, Partial(n, t) + sum(Partial(n * U[j], X[j]) for j in range(3)), ":278",
+       lhs=sp.S.Zero)
+note("Times", m_s, "gives mass continuity; times", q_s, "summed over two species gives charge"
+     " continuity (both asserted)")
+assert same(m_s * number, sp.diff(m_s * n, t) + div([m_s * n * U[i] for i in range(3)]))
+n2, U2 = field("n_2"), vec("u_2")
+q1, q2 = sp.symbols("q_1 q_2", real=True)
+cont = lambda nn, uu: sp.diff(nn, t) + div([nn * uu[i] for i in range(3)])
+rho_q = q1 * n + q2 * n2
+j_q = [q1 * n * U[i] + q2 * n2 * U2[i] for i in range(3)]
+assert same(q1 * cont(n, U) + q2 * cont(n2, U2), sp.diff(rho_q, t) + div(j_q))
+
+# %% Example: particle flux
+section("Example: particle flux to a collector", "06-moments.typ:339")
+n_0, u_0, area = sp.symbols("n_0 u_0 A", positive=True)
+Gamma, Ndot = sp.symbols("Gamma_s Ndot_s")
+collector = {n_0: 1.0e16 / u.meter**3, u_0: 2.0e5 * u.meter / u.second, area: 1.0e-4 * u.meter**2}
+given(collector)
+close_to(evaluate(Gamma, n_0 * u_0, collector, 1 / (u.meter**2 * u.second)), 2.0e21, source=":339")
+close_to(evaluate(Ndot, n_0 * u_0 * area, collector, 1 / u.second), 2.0e17, source=":345")
+
+# %% Momentum equation
+section("Momentum equation from the first moment", "06-moments.typ:486")
+note("Weight the kinetic equation with", m_s * v[0], "and integrate (x shown; y, z asserted)")
+for i in range(3):
+    time = VelocityIntegral(m_s * v[i] * Partial(F, t))
+    flux = VelocityIntegral(m_s * v[i] * sum(Partial(v[j] * F, X[j]) for j in range(3)))
+    force = VelocityIntegral(m_s * v[i] * sum(Partial(A[j] * F, v[j]) for j in range(3)))
+    time_term = Partial(m_s * n * U[i], t)
+    flux_term = sum(Partial(m_s * n * U[i] * U[j] + P[i][j], X[j]) for j in range(3))
+    lorentz = q_s * n * (E[i] + cross(U, B)[i])
+    if i == 0:
+        show(sp.Eq(T_t, time))
+        agrees(integrate(time), time_term, ":453", lhs=T_t)
+        show(sp.Eq(T_r, flux))
+        agrees_in_moments(integrate(flux), flux_term, ":459", lhs=T_r)
+        note("By parts in velocity the force term becomes the Lorentz force density")
+        show(sp.Eq(T_v, force))
+        agrees(-integrate(force), lorentz, ":472", lhs=-T_v)
+    else:
+        assert same(integrate(time), time_term)
+        assert same(integrate(flux), flux_term.subs(MOMENTS))
+        assert same(-integrate(force), lorentz)
+R_x = field("R_x")
+note("Momentum equation, x component, with the collisional friction", R_x)
+show(sp.Eq(T_t + T_r + T_v, R_x))
+
+# %% Material momentum
+section("Material form of the momentum equation", "06-moments.typ:494")
+rho = field("rho_s")
+note("Subtract", U[0], "times mass continuity from the conservative form (x shown)")
+conservative = show(sp.Eq(M_x, Partial(rho * U[0], t)
+                          + sum(Partial(rho * U[0] * U[j], X[j]) for j in range(3)))).rhs
+continuity = show(sp.Eq(C_mass, Partial(rho, t)
+                        + sum(Partial(rho * U[j], X[j]) for j in range(3)))).rhs
+agrees((conservative - U[0] * continuity).doit(),
+       rho * (Partial(U[0], t) + sum(U[j] * Partial(U[0], X[j]) for j in range(3))), ":494",
+       lhs=M_x - U[0] * C_mass)
+
+# %% Example: electric force density
+section("Example: electric force density", "06-moments.typ:553")
+f_E = sp.Symbol("f_E,x")
+field_input = {n_0: 1.0e16 / u.meter**3, E0: 6.00e4 * u.volt / u.meter}
+given(field_input)
+close_to(evaluate(f_E, n_0 * si.e * E0, field_input,
+                  u.newton / u.meter**3), 96.1, source=":553")
+has_unit(ns * qs * E0, u.newton / u.meter**3)
+
+# %% Energy moments
+section("Energy density and energy flux", "06-moments.typ:645")
+note("Internal energy is half the trace of the pressure tensor")
+show(sp.Eq(eps, EPS_DEF))
+agrees_in_moments(integrate(W_DEF), m_s * n * dot(U, U) / 2 + eps, ":647", lhs=W_DEF)
+note("Raw energy flux = convected energy", W, "+ pressure work + heat flux (x shown; y, z asserted)")
+for i in range(3):
+    energy_flux = moment(m_s * dot(v, v) * v[i] / 2)
+    stated = W * U[i] + sum(P[i][j] * U[j] for j in range(3)) + q[i]
+    if i == 0:
+        agrees_in_moments(integrate(energy_flux), stated, ":685", lhs=energy_flux)
+    else:
+        assert same(integrate(energy_flux), stated.subs(MOMENTS))
+has_unit(ms * ns * us**2 / 2, u.joule / u.meter**3)
+has_unit(ms * ns * us**3 / 2, u.watt / u.meter**2)
+
+# %% Energy equation
+section("Energy equation from the second moment", "06-moments.typ:690")
+note("Weight the kinetic equation with", m_s * v2 / 2, "and integrate")
+time = VelocityIntegral(m_s * v2 / 2 * Partial(F, t))
+flux = VelocityIntegral(m_s * v2 / 2 * sum(Partial(v[j] * F, X[j]) for j in range(3)))
+force = VelocityIntegral(m_s * v2 / 2 * sum(Partial(A[j] * F, v[j]) for j in range(3)))
+show(sp.Eq(T_t, time))
+agrees_in_moments(integrate(time), Partial(W, t), ":680", lhs=T_t)
+show(sp.Eq(T_r, flux))
+agrees_in_moments(integrate(flux), sum(Partial(F_W[j], X[j]) for j in range(3)), ":683",
+                  lhs=T_r)
+note("By parts in velocity; the magnetic force does no work")
+by_parts = moment(-m_s * dot(v, A))
+assert same(integrate(force), integrate(by_parts))
+show(sp.Eq(T_v, force))
+show(sp.Eq(T_v, by_parts))
+agrees(integrate(by_parts), -q_s * n * dot(U, E), ":676", lhs=T_v)
+note("Energy equation; inserting the split flux", sp.Eq(F_W[0], W * U[0] + q[0]
+     + sum(P[0][j] * U[j] for j in range(3))), "is asserted for all components")
+split_flux = [W * U[i] + sum(P[i][j] * U[j] for j in range(3)) + q[i] for i in range(3)]
+assert same(integrate(time) + integrate(flux),
+            (Partial(W, t) + sum(Partial(split_flux[j], X[j]) for j in range(3))).subs(MOMENTS))
+Q_s = field("Q_s")
+show(sp.Eq(Partial(W, t) + sum(Partial(F_W[j], X[j]) for j in range(3)),
+           q_s * n * dot(U, E) + Q_s))
+
+# %% Isotropic pressure
+section("Isotropic pressure", "06-moments.typ:709")
+p = field("p_s")
+isotropic = {P[i][j]: (p if i == j else 0) for i in range(3) for j in range(3)}
+note("Scalar pressure is a third of the trace; isotropic tensor")
+show(sp.Eq(sp.Matrix(P), sp.Matrix(P).subs(isotropic), evaluate=False))
+agrees((P[0][0] + P[1][1] + P[2][2]).subs(isotropic) / 3, p, ":704",
+       lhs=(P[0][0] + P[1][1] + P[2][2]) / 3)
+divergence = tdiv(P)[0]
+agrees(divergence.subs(isotropic).doit(), Partial(p, x), ":716", lhs=divergence)
+note("Maxwellian part of the test distribution,", sp.Eq(lam, 0))
+agrees(P_test[0][0].subs(lam, 0), m_s * n * SIGMA[0] ** 2, ":716", lhs=P[0][0])
+
+# %% Internal energy
+section("Internal energy and the adiabatic law", "06-moments.typ:796")
+eps, Q_s = field("epsilon_s"), field("Q_s")
+R = vec("R")
+W_tot, W_int = sp.symbols("W_tot W_int")      # total and internal energy balances
+
+
+def balances(U, P, q, R, E):
+    """Residuals (lhs - rhs) of mass, momentum and total energy, and the
+    stated bulk and internal balances; rho, eps, Q are fields."""
+    force = [q_s / m_s * rho * E[i] for i in range(3)]      # q n E with n = rho/m
+    mass = Partial(rho, t) + sum(Partial(rho * U[j], X[j]) for j in range(3))
+    momentum = [Partial(rho * U[i], t) + sum(Partial(rho * U[i] * U[j] + P[i][j], X[j])
+                                             for j in range(3)) - force[i] - R[i]
+                for i in range(3)]
+    Wt = rho * dot(U, U) / 2 + eps
     PU = [sum(P[i][j] * U[j] for j in range(3)) for i in range(3)]
-    energy = sp.diff(W, t) + div([W * U[i] + PU[i] + qh[i] for i in range(3)]) - dot(U, fE) - Q
-    # Product identity u.div(P) = div(P.u) - P:grad(u) (line 787), P symmetric.
-    PgU = sum(P[i][j] * gradU[j][i] for i in range(3) for j in range(3))
-    check(dot(U, tdiv(P)), div(PU) - PgU)
-    # Bulk balance (line 778) = u.(momentum) - (u^2/2)(mass).
-    bulk = (sp.expand(dot(U, mom) - dot(U, U) / 2 * mass))
-    stated_bulk = (sp.diff(rho * dot(U, U) / 2, t) + div([rho * dot(U, U) * U[i] / 2 for i in range(3)])
-                   + dot(U, tdiv(P)) - dot(U, fE) - dot(U, R))
-    check(bulk, stated_bulk)
-    # Internal energy (line 796) = total energy - bulk.
-    internal = sp.expand(energy - bulk)
-    stated_int = (sp.diff(eps, t) + div([eps * U[i] + qh[i] for i in range(3)]) + PgU
-                  - (Q - dot(U, R)))
-    check(internal, stated_int)
-    # Isotropic closure eps = 3p/2, P = p I, q = 0, Q = u.R (lines 803-809).
-    p = field("p", "p_{s}")
-    iso = {eps: 3 * p / 2, **{Pn[(i, j)]: (p if i == j else 0) for i in range(3) for j in range(3)},
-           **{qh[i]: 0 for i in range(3)}, Q: dot(U, R)}
-    adiab = sp.expand(2 * stated_int.subs(iso).doit() / 3)
-    stated = sp.diff(p, t) + dot(U, [sp.diff(p, xi) for xi in X]) + 5 * p / 3 * div(U)
-    check(adiab, stated)
-    # Display: one-dimensional (x only) form of each step.
-    D = sp.Derivative
-    ux, Pxx, qx = U[0], Pn[(0, 0)], qh[0]
-    d.step("u.momentum - (u.u/2) mass", sp.Eq(
-        D(rho * ux**2 / 2, t) + D(rho * ux**3 / 2, x) + ux * D(Pxx, x),
-        q_s / m_s * rho * ux * E[0] + ux * R[0]))
-    d.step("u div P = div(P u) - P:grad u", sp.Eq(ux * D(Pxx, x), D(Pxx * ux, x) - Pxx * D(ux, x)))
-    d.step("energy - bulk", sp.Eq(D(eps, t) + D(eps * ux + qx, x) + Pxx * D(ux, x), Q - ux * R[0]))
-    d.step("eps = 3p/2, P = p I, q = 0", sp.Eq(D(p, t) + ux * D(p, x) + 5 * p / 3 * D(ux, x), 0))
+    energy = (Partial(Wt, t) + sum(Partial(Wt * U[i] + PU[i] + q[i], X[i]) for i in range(3))
+              - dot(U, force) - Q_s)
+    PgU = sum(P[i][j] * Partial(U[i], X[j]) for i in range(3) for j in range(3))
+    bulk = (Partial(rho * dot(U, U) / 2, t)
+            + sum(Partial(rho * dot(U, U) * U[i] / 2, X[i]) for i in range(3))
+            + dot(U, tdiv(P)) - dot(U, force) - dot(U, R))
+    internal = (Partial(eps, t) + sum(Partial(eps * U[i] + q[i], X[i]) for i in range(3))
+                + PgU - (Q_s - dot(U, R)))
+    return mass, momentum, energy, PU, PgU, bulk, internal
 
 
-def test_polytropic_law():
-    d = Derivation("Polytropic closure", "src/chapters/06-moments.typ:947")
-    gamma = sp.Symbol("gamma", positive=True)
-    p = field("p", "p_{s}")
-    nn = field("n", "n_{s}")
-    Dt = lambda g: sp.diff(g, t) + dot(U, [sp.diff(g, xi) for xi in X])
-    # D/Dt (p n^-gamma) = 0 with continuity D n/Dt = -n div u (line 941).
-    K = Dt(p * nn ** (-gamma)) * nn**gamma
-    K = sp.expand(K)
-    # Continuity: dn/dt = -div(n u).
-    dn_dt = -div([nn * U[i] for i in range(3)])
-    K = sp.expand(K.subs(sp.Derivative(nn, t), dn_dt))
-    stated = Dt(p) + gamma * p * div(U)
-    check(K, stated)
-    D = sp.Derivative
-    d.step("polytropic law", sp.Eq(D(p * nn ** (-gamma), t) + U[0] * D(p * nn ** (-gamma), x)
-                                   + Tex(r"\ldots"), 0))
-    d.step("continuity", sp.Eq(D(p, t) + U[0] * D(p, x) + gamma * p * D(U[0], x) + Tex(r"\ldots"), 0))
-    # Cold closure (line 924) has no pressure; warm: eps = 3p/2 = (3/2) n k_B T.
-    check(sp.Rational(3, 2) * ns * k_B * Ts, sp.Rational(3, 2) * ps.subs(ps, ns * k_B * Ts),
-          unit=u.joule / u.meter**3)
+note("Checked in 3D with a symmetric pressure tensor; shown in 1D, only",
+     sp.Tuple(U[0], P[0][0], q[0], R[0]), "nonzero")
+Psym = [[P[min(i, j)][max(i, j)] for j in range(3)] for i in range(3)]
+mass, mom, energy, PU, PgU, bulk, internal = balances(U, Psym, q, R, E)
+assert same(dot(U, tdiv(Psym)), div(PU) - PgU)
+assert same(dot(U, mom) - dot(U, U) / 2 * mass, bulk)
+assert same(energy - bulk, internal)
+
+zero_yz = {c: 0 for c in (U[1], U[2], q[1], q[2], R[1], R[2])}
+one_d = lambda expr: expr.subs(zero_yz)
+P1 = [[P[0][0] if i == j == 0 else 0 for j in range(3)] for i in range(3)]
+U1, q1, R1 = [U[0], 0, 0], [q[0], 0, 0], [R[0], 0, 0]
+mass, mom, energy, PU, PgU, bulk, internal = balances(U1, P1, q1, R1, E)
+show(sp.Eq(C_mass, mass))
+show(sp.Eq(M_x, mom[0]))
+show(sp.Eq(W_tot, energy))
+note("Product rule for the pressure work")
+agrees(dot(U1, tdiv(P1)), Partial(P[0][0] * U[0], x) - P[0][0] * Partial(U[0], x), ":787",
+       lhs=U[0] * Partial(P[0][0], x))
+note("Bulk kinetic energy from the momentum and mass balances")
+agrees((U[0] * mom[0] - U[0]**2 / 2 * mass).doit(), bulk, ":778",
+       lhs=U[0] * M_x - U[0]**2 / 2 * C_mass)
+note("Internal energy: total minus bulk")
+show(sp.Eq(W_int, W_tot - (U[0] * M_x - U[0]**2 / 2 * C_mass)))
+agrees((energy - bulk).doit(), internal, ":796", lhs=W_int)
+note("Isotropic closure", sp.Eq(eps, 3 * p / 2), ",", sp.Eq(P[0][0], p), ",", sp.Eq(q[0], 0), ",",
+     sp.Eq(Q_s, dot(U1, R1)))
+closure = {eps: 3 * p / 2, P[0][0]: p, q[0]: 0, Q_s: dot(U1, R1)}
+agrees((2 * internal.subs(closure) / 3).doit(),
+       Partial(p, t) + U[0] * Partial(p, x) + 5 * p / 3 * Partial(U[0], x), ":809",
+       lhs=2 * W_int / 3)
+iso3 = {eps: 3 * p / 2, Q_s: dot(U, R), **{q[i]: 0 for i in range(3)},
+        **{P[i][j]: (p if i == j else 0) for i in range(3) for j in range(3)}}
+_, _, _, _, _, _, internal3 = balances(U, Psym, q, R, E)
+assert same(2 * internal3.subs(iso3) / 3,
+            sp.diff(p, t) + dot(U, [sp.diff(p, xi) for xi in X]) + 5 * p / 3 * div(U))
+
+# %% Polytropic closure
+section("Polytropic closure", "06-moments.typ:947")
+gamma = sp.Symbol("gamma", positive=True)
+material = lambda g: Partial(g, t) + sum(U[j] * Partial(g, X[j]) for j in range(3))
+note("Polytropic law and continuity")
+K = sp.Symbol("K")                            # material derivative of p n^-gamma
+law = show(sp.Eq(K, material(p * n**-gamma)))
+continuity = show(sp.Eq(Partial(n, t), -sum(Partial(n * U[j], X[j]) for j in range(3))))
+note("Set", sp.Eq(K, 0), "and eliminate the time derivative of the density")
+expanded = sp.expand((n**gamma * law.rhs).doit())
+expanded = sp.expand(expanded.subs(sp.Derivative(n, t), continuity.rhs.doit()))
+agrees(expanded, material(p) + gamma * p * sum(Partial(U[j], X[j]) for j in range(3)), ":941",
+       lhs=n**gamma * K)
+note("Warm closure", sp.Eq(eps, 3 * p / 2), "with", sp.Eq(p, ns * k_B * Ts), "is an energy density")
+has_unit(sp.Rational(3, 2) * ns * k_B * Ts, u.joule / u.meter**3)
+
+# %% BGK collision moments
+section("BGK collision moments", "06-moments.typ:961")
+nu, sigma_M = sp.symbols("nu_s sigma_M", positive=True)
+F_M = field("f_M", t, *X, *v)
+maxwellian = n / (2 * sp.pi * sigma_M**2) ** sp.Rational(3, 2) * sp.exp(-dot(w, w) / (2 * sigma_M**2))
+note("Maxwellian with the same", sp.Tuple(n, U[0]), "and energy:",
+     sp.Eq(sigma_M**2, sum(s**2 for s in SIGMA) / 3))
+show(sp.Eq(F_M, maxwellian))
+bgk = -nu * (F - F_M)
+show(sp.Eq(C, bgk))
+matched = sp.sqrt(sum(s**2 for s in SIGMA) / 3)
+f_M = maxwellian.subs({w[i]: v[i] - U[i] for i in range(3)}).subs(sigma_M, matched)
 
 
-def test_bgk_moments():
-    d = Derivation("BGK collision moments", "src/chapters/06-moments.typ:961")
-    nu = sp.Symbol("nu_s", positive=True)
-    # Maxwellian with the same n, u and the same mean energy: sigma^2 = tr(sigma_i^2)/3.
-    s2 = sum(si**2 for si in sig) / 3
-    fM = n / (2 * sp.pi * s2) ** sp.Rational(3, 2) * sp.exp(-sum((v[i] - U[i]) ** 2 / sp.sqrt(s2) ** 2 for i in range(3)) / 2)
-
-    def vint_M(expr_f, expr_fM):
-        """Integrate g(v) f - h(v) f_M, each against its own Gaussian."""
-        return sp.simplify(vint(expr_f) - vint(expr_fM, [sp.sqrt(s2)] * 3))
-
-    S_N = d.eq("int C_BGK", sp.Symbol("S_N"), -nu * vint_M(f, fM))
-    check(S_N, 0)
-    R_x = d.eq("m int v_x C_BGK", sp.Symbol("R_x"), -nu * m_s * vint_M(v[0] * f, v[0] * fM))
-    check(R_x, 0)
-    Q_s = d.eq("energy moment of BGK", sp.Symbol("Q_s"),
-               -nu * m_s / 2 * vint_M(dot(v, v) * f, dot(v, v) * fM))
-    check(Q_s, 0)
+def bgk_moment(weight):
+    """int weight C_BGK d^3v: f and f_M are integrated against their own Gaussians."""
+    return sp.simplify(-nu * (vint(weight * f) - vint(weight * f_M, [matched] * 3)))
 
 
-# ---------------------------------------------------------------------------
-# Worked examples
-# ---------------------------------------------------------------------------
-def test_example_energy():
-    d = Derivation("Example: energy densities of a drifting ion population",
-                   "src/chapters/06-moments.typ:817")
-    n_i, kT, u_i = 1.0e16, 10 * CODATA[e], 1.0e5
-    # Isotropic Maxwellian: P = n k_B T I, so eps = tr(P)/2 = (3/2) n k_B T.
-    eps = num(d, "eps = 3 n k_B T / 2", r"\epsilon_i", 1.5 * n_i * kT)
-    Wb = num(d, "bulk energy", r"W_{\mathrm{bulk}}", 0.5 * n_i * CODATA[m_i] * u_i**2)
-    W = num(d, "W = W_bulk + eps", "W_i", Wb + eps)
-    close(eps, "0.0240")
-    close(Wb, "0.0837")
-    close(W, "0.108")
+for label, weight, line in [("number", 1, ":963"), ("momentum", m_s * v[0], ":975"),
+                            ("energy", m_s * v2 / 2, ":990")]:
+    agrees(bgk_moment(weight), 0, line, lhs=VelocityIntegral(weight * bgk))
 
+# %% Example: energy densities
+section("Example: energy densities of a drifting ion population", "06-moments.typ:817")
+n_i, T_i, u_i, m_p = sp.symbols("n_i T_i u_i m_p", positive=True)
+eps_i, W_bulk, W_i = sp.symbols("epsilon_i W_bulk W_i")
+ions = {n_i: 1.0e16 / u.meter**3, T_i: 10 * u.electronvolt / u.boltzmann_constant,
+        u_i: 1.0e5 * u.meter / u.second}
+note("Hydrogen ions,", sp.Eq(n_i, rounded(ions[n_i])), ",", sp.Eq(k_B * T_i, 10 * u.electronvolt), ",",
+     sp.Eq(u_i, rounded(ions[u_i])))
+internal_i = sp.Rational(3, 2) * n_i * k_B * T_i         # tr(P)/2 with P = n k_B T I
+bulk_i = n_i * m_p * u_i**2 / 2
+close_to(evaluate(eps_i, internal_i, ions, u.joule / u.meter**3), 0.0240, source=":820")
+close_to(evaluate(W_bulk, bulk_i, ions, u.joule / u.meter**3), 0.0836, source=":828")
+close_to(evaluate(W_i, internal_i + bulk_i, ions, u.joule / u.meter**3), 0.108, source=":826")
 
-def test_example_polytropic():
-    d = Derivation("Example: adiabatic compression", "src/chapters/06-moments.typ:1024")
-    gamma = sp.Rational(5, 3)
-    # p n^-gamma constant: p1/p0 = (n1/n0)^gamma; T = p/(n k_B).
-    p_ratio = d.eq("polytropic law", sp.Symbol("p_1/p_0"), sp.Integer(8) ** gamma)
-    T_ratio = d.eq("ideal gas", sp.Symbol("T_1/T_0"), p_ratio / 8)
-    check(p_ratio, 32)
-    check(T_ratio, 4)
+# %% Example: adiabatic compression
+section("Example: adiabatic compression", "06-moments.typ:1024")
+p0, p1, n0_, n1_, T0, T1 = sp.symbols("p_0 p_1 n_0 n_1 T_0 T_1", positive=True)
+note("Compress by", sp.Eq(n1_ / n0_, 8), "with", sp.Eq(gamma, sp.Rational(5, 3)))
+adiabat = show(sp.Eq(p1 * n1_**-gamma, p0 * n0_**-gamma))
+pressure_ratio = sp.solve(adiabat, p1)[0] / p0
+compression = {n1_: 8 * n0_, gamma: sp.Rational(5, 3)}
+agrees(pressure_ratio.subs(compression), 32, ":1030", lhs=p1 / p0)
+note("Ideal gas", sp.Eq(T1 / T0, (p1 / p0) / (n1_ / n0_)))
+agrees((pressure_ratio / (n1_ / n0_)).subs(compression), 4, ":1033", lhs=T1 / T0)
 
-
+# %%
 if __name__ == "__main__":
-    from si import run_as_script
-
-    run_as_script(globals())
+    report(__file__, "Chapter 6 · Velocity moments")

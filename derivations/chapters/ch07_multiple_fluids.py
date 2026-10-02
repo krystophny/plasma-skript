@@ -1,401 +1,375 @@
-"""Chapter 7, multiple-fluid theory: src/chapters/07-multiple-fluids.typ.
+# Chapter 7 · Multiple-fluid theory (src/chapters/07-multiple-fluids.typ)
+#
+# Species moments and their sums, the perpendicular drifts, the parallel
+# balance with the Boltzmann relation, and the one-fluid momentum equation.
 
-Run `python derivations/ch07_multiple_fluids.py` to check every step, or
-`pytest derivations` to check every chapter.
-
-Coverage (line in src/chapters/07-multiple-fluids.typ -> test):
-  64-66, 94-108  species moments, rho_q, j, hydrogen j      -> test_species_moments
-  197-214        continuity, conservative and material
-                 momentum forms                             -> test_momentum_forms
-  226-242        W_s, eps_s, q_h,s and the energy balance;
-                 300-313 derivation steps                   -> test_energy_balance
-  246-251        Maxwell equations imply charge continuity  -> test_maxwell_charge_continuity
-  258-297        moment derivation (same as Chapter 6)      -> ch06_moments tests
-  321-333        example: rho_q = 0, j_x = 80.1 A/m^2       -> test_example_current
-  427-474        perpendicular balance, E x B and
-                 diamagnetic drifts, (u x B) x B = -B^2 u_perp -> test_perpendicular_drift
-  482            r_L/L_perp << 1 (ordering, not checked)
-  492-507        example: u_ExB, u_*i, u_*e                 -> test_example_drifts
-  589-603        current sum, j_*, grad(p_e + p_i)
-                 626-646 derivation steps                   -> test_diamagnetic_current
-  661-673        example: j_* = 3.20e-3 A/m^2               -> test_example_diamagnetic_current
-  773-777        parallel momentum equation                 -> test_parallel_equation
-  782-793        electron balance, E_par, Boltzmann relation;
-                 827-854 derivation steps                   -> test_boltzmann_relation
-  802-818        one-fluid definitions, summed momentum;
-                 859-875 derivation steps                   -> test_one_fluid_momentum
-  883-895        example: n_e/n_e0 = 2.72                   -> test_example_boltzmann
-"""
-
+# %% Setup
 import sympy as sp
 from sympy.physics import units as u
 
 import si
-from si import Derivation, e, k_B
+from fluids import (F_W, KINETIC, P, U, W, W_DEF, X, Partial, VelocityIntegral, cross, curl,
+                    div, dot, eps, field, integrate, m_s, moment_values, n, q, q_s, t,
+                    rounded, v, vec, x)
+from notebook import agrees, close_to, evaluate, note, report, section, show
+
+e, k_B, eps0, mu0 = si.e, si.k_B, si.eps0, si.mu0
 
 
-# Units of this file's symbols. Kept local (not in the shared si.UNITS) so that
-# symbols with common names in other chapter files cannot clash.
-LOCAL = {}
+def same(a, b):
+    """a == b, with derivatives evaluated (used for the asserted components)."""
+    return sp.simplify(sp.expand((a - b).doit())) == 0
 
 
-def check(derived, stated, unit=None, units=None):
-    """si.check with this file's LOCAL unit table."""
-    return si.check(derived, stated, unit=unit, units={**LOCAL, **(units or {})})
-
-# CODATA 2018 values for the worked examples.
-CODATA = {e: 1.602176634e-19}
-
-
-class Tex(sp.Symbol):
-    """Display-only symbol whose LaTeX is its name, verbatim."""
-
-    def _latex(self, printer, exp=None):
-        return self.name if exp is None else f"{{{self.name}}}^{{{exp}}}"
+def agrees_with(derived, printed, values, source, lhs):
+    """agrees() for a statement written with named quantities: `values` are
+    inserted for the comparison, the display keeps the names."""
+    residual = derived - printed.subs(values).doit()    # must vanish
+    return agrees(residual + printed, printed, source, lhs=lhs)
 
 
-def num(d, label, name, value):
-    """Record a numerical step with four significant digits; return the value."""
-    d.eq(label, Tex(name), sp.Float(value, 4))
-    return value
-
-
-def close(value, printed, slack=5e-4):
-    """Value agrees with the printed number to half a unit in its last digit."""
-    mant = printed.lower().split("e")[0].lstrip("+-")
-    digits = len(mant.replace(".", "").lstrip("0"))
-    p = float(printed)
-    tol = 0.5 * 10 ** (sp.floor(sp.log(abs(p), 10)) - digits + 1) + slack * abs(p)
-    assert abs(float(value) - p) <= tol, f"{float(value):.6g} vs printed {printed}"
-
-
-t, x, y, z = sp.symbols("t x y z", real=True)
-X = (x, y, z)
-args = (t, x, y, z)
-
-
-def field(name, tex):
-    """Undefined function of (t, x, y, z) that prints as `tex` (no arguments)."""
-    def _latex(self, printer, exp=None):
-        return tex if exp is None else f"{tex}^{{{exp}}}"
-
-    return sp.Function(name, real=True, __dict__={"_latex": _latex})(*args)
-
-
-def vec(name, tex):
-    return [field(f"{name}_{c}", f"{tex}_{{{c}}}") for c in "xyz"]
-
-
-def div(a):
-    return sum(sp.diff(a[i], X[i]) for i in range(3))
-
-
-def grad(g):
-    return [sp.diff(g, xi) for xi in X]
-
-
-def curl(a):
-    return [sp.diff(a[2], y) - sp.diff(a[1], z), sp.diff(a[0], z) - sp.diff(a[2], x),
-            sp.diff(a[1], x) - sp.diff(a[0], y)]
-
-
-def cross(a, b):
-    return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]
-
-
-def dot(a, b):
-    return sum(a[i] * b[i] for i in range(3))
-
-
-def vcheck(a, b):
-    for ai, bi in zip(a, b):
-        check(ai, bi)
-
-
+# Silent unit checks with plain symbols.
 ns, us, qs, ms, ps, Ts = sp.symbols("n_s u_s q_s m_s p_s T_s", positive=True)
 Bm, Em, Ls = sp.symbols("B E L", positive=True)
-LOCAL.update({ns: u.meter**-3, us: u.meter / u.second, qs: u.coulomb, ms: u.kilogram,
-              ps: u.pascal, Ts: u.kelvin, Bm: u.tesla, Em: u.volt / u.meter, Ls: u.meter})
+UNITS = {ns: u.meter**-3, us: u.meter / u.second, qs: u.coulomb, ms: u.kilogram,
+         ps: u.pascal, Ts: u.kelvin, Bm: u.tesla, Em: u.volt / u.meter, Ls: u.meter}
 
 
-# ---------------------------------------------------------------------------
-# Species variables and the two-fluid equations
-# ---------------------------------------------------------------------------
-def test_species_moments():
-    d = Derivation("Species-resolved charge and current", "src/chapters/07-multiple-fluids.typ:107")
-    n_e, n_i = sp.symbols("n_e n_i", positive=True)
-    ue, ui = sp.symbols("u_e u_i", real=True)
-    # Sum q_s n_s and q_s n_s u_s over s = e, i with q_e = -e, q_i = +e.
-    species = [(-e, n_e, ue), (e, n_i, ui)]
-    rho_q = d.eq("sum_s q_s n_s", Tex(r"\rho_q"), sum(q * nn for q, nn, _ in species))
-    j = d.eq("sum_s q_s n_s u_s", sp.Symbol("j"), sum(q * nn * uu for q, nn, uu in species))
-    check(rho_q, e * (n_i - n_e))
-    check(j, e * n_i * ui - e * n_e * ue)
-    check(qs * ns, qs * ns, unit=u.coulomb / u.meter**3)
-    check(qs * ns * us, qs * ns * us, unit=u.ampere / u.meter**2)
-    check(ms * ns, ms * ns, unit=u.kilogram / u.meter**3)
+def has_unit(expr, unit):
+    si.check(expr, expr, unit=unit, units=UNITS)
 
 
-def test_momentum_forms():
-    d = Derivation("Conservative and material momentum forms",
-                   "src/chapters/07-multiple-fluids.typ:202")
-    rho, n = field("rho", r"\rho_{s}"), field("n", "n_{s}")
-    U, E, B, R = vec("u", "u"), vec("E", "E"), vec("B", "B"), vec("R", "R")
-    P = [[field(f"P_{a}{b}", f"P_{{{a}{b}}}") for b in "xyz"] for a in "xyz"]
-    q = sp.Symbol("q_s", real=True)
-    force = [q * n * (E[i] + cross(U, B)[i]) for i in range(3)]
-    cont = sp.diff(rho, t) + div([rho * U[j] for j in range(3)])
-    for i in range(3):
-        cons = (sp.diff(rho * U[i], t) + sum(sp.diff(rho * U[i] * U[j] + P[i][j], X[j]) for j in range(3))
-                - force[i] - R[i])
-        # Subtract u_i times continuity from the conservative residual ...
-        mat = sp.expand(cons - U[i] * cont)
-        # ... to obtain the material form (line 210).
-        stated = (rho * (sp.diff(U[i], t) + dot(U, grad(U[i]))) - force[i]
-                  + sum(sp.diff(P[i][j], X[j]) for j in range(3)) - R[i])
-        check(mat, stated)
-    d.step("conservative form", sp.Eq(Tex(r"\partial_t(\rho_s u_s) + \nabla\cdot(\rho_s u_s u_s + P_s)"),
-                                      Tex(r"q_s n_s(E + u_s\times B) + R_s")))
-    d.step("subtract u_s continuity", sp.Eq(Tex(r"\rho_s(\partial_t u_s + u_s\cdot\nabla u_s)"),
-                                            Tex(r"q_s n_s(E + u_s\times B) - \nabla\cdot P_s + R_s")))
-    check(ms * ns * us**2 / Ls, ms * ns * us**2 / Ls, unit=u.newton / u.meter**3)
+
+def given(values, *more):
+    """Note listing the inputs of a worked example, separated by commas."""
+    parts = ["Input"]
+    for symbol, value in values.items():
+        parts += [sp.Eq(symbol, rounded(value)), ","]
+    note(*parts[:-1], *more)
+
+# %% Species moments
+section("Species-resolved charge and current", "07-multiple-fluids.typ:107")
+n_e, n_i = sp.symbols("n_e n_i", positive=True)
+q_e, q_i = sp.symbols("q_e q_i", real=True)
+u_e, u_i = sp.symbols("u_e u_i", real=True)
+rho_q, j = sp.symbols("rho_q j")
+charges = {q_e: -e, q_i: e}
+note("Electrons and ions,", sp.Eq(q_e, -e), "and", sp.Eq(q_i, e))
+charge = show(sp.Eq(rho_q, q_e * n_e + q_i * n_i))
+current = show(sp.Eq(j, q_e * n_e * u_e + q_i * n_i * u_i))
+agrees(charge.rhs.subs(charges), e * (n_i - n_e), ":107", lhs=rho_q)
+agrees(current.rhs.subs(charges), e * n_i * u_i - e * n_e * u_e, ":108", lhs=j)
+has_unit(qs * ns, u.coulomb / u.meter**3)
+has_unit(qs * ns * us, u.ampere / u.meter**2)
+has_unit(ms * ns, u.kilogram / u.meter**3)
+
+# %% Momentum forms
+section("Conservative and material momentum forms", "07-multiple-fluids.typ:202")
+rho = field("rho_s")
+E, B, R = vec("E"), vec("B"), vec("R")
+C_mass, M_x = sp.symbols("C M_x")
 
 
-def test_energy_balance():
-    d = Derivation("Species energy balance", "src/chapters/07-multiple-fluids.typ:239")
-    # Reuse the explicit test distribution of Chapter 6.
-    import ch06_moments as c6
-    W_mom = c6.m_s / 2 * c6.vint(c6.dot(c6.v, c6.v) * c6.f)
-    ww = [c6.v[i] - c6.U[i] for i in range(3)]
-    eps = c6.m_s / 2 * c6.vint(c6.dot(ww, ww) * c6.f)
-    qh = [c6.m_s / 2 * c6.vint(c6.dot(ww, ww) * ww[i] * c6.f) for i in range(3)]
-    _, _, P, _ = c6.moments()
-    # W_s = rho u^2/2 + eps_s with eps_s = (m/2) int w^2 f (line 226).
-    check(W_mom, c6.m_s * c6.n * c6.dot(c6.U, c6.U) / 2 + eps)
-    # Weight the kinetic equation by m v^2/2 and integrate (line 239).
-    wt = c6.m_s * c6.dot(c6.v, c6.v) / 2
-    lhs = c6.vint(wt * c6.kinetic_lhs)
-    flux = [W_mom * c6.U[i] + sum(P[i][j] * c6.U[j] for j in range(3)) + qh[i] for i in range(3)]
-    stated = sp.diff(W_mom, t) + c6.div(flux) - c6.q_s * c6.n * c6.dot(c6.U, c6.E)
-    check(lhs, stated)
-    W, rho, n = field("W", "W_s"), field("rho", r"\rho_s"), field("n", "n_s")
-    d.eq("energy moment", W, rho * sp.Symbol("u_s") ** 2 / 2 + Tex(r"\epsilon_s"))
-    d.step("moment of kinetic eq.", sp.Eq(Tex(r"\partial_t W_s + \nabla\cdot(W_s u_s + P_s u_s + q_{h,s})"),
-                                          Tex(r"q_s n_s u_s\cdot E + Q_s")))
-    check(ms * ns * us**3, ms * ns * us**3, unit=u.watt / u.meter**2)
+def momentum_forms(U, P, R, E, B):
+    """Conservative and material residuals of the momentum equation, continuity."""
+    force = [q_s * n * (E[i] + cross(U, B)[i]) for i in range(3)]
+    mass = Partial(rho, t) + sum(Partial(rho * U[j], X[j]) for j in range(3))
+    conservative = [Partial(rho * U[i], t) + sum(Partial(rho * U[i] * U[j] + P[i][j], X[j])
+                                                 for j in range(3)) - force[i] - R[i]
+                    for i in range(3)]
+    material = [rho * (Partial(U[i], t) + sum(U[j] * Partial(U[i], X[j]) for j in range(3)))
+                - force[i] + sum(Partial(P[i][j], X[j]) for j in range(3)) - R[i]
+                for i in range(3)]
+    return mass, conservative, material
 
 
-def test_maxwell_charge_continuity():
-    d = Derivation("Maxwell equations and charge continuity", "src/chapters/07-multiple-fluids.typ:246")
-    from si import eps0, mu0
-    E, B = vec("E", "E"), vec("B", "B")
-    rho_q = eps0 * div(E)  # Gauss
-    # Ampere: j = curl(B)/mu0 - eps0 dE/dt; take its divergence.
-    j_amp = [curl(B)[i] / mu0 - eps0 * sp.diff(E[i], t) for i in range(3)]
-    res = d.eq("div Ampere + d/dt Gauss", Tex(r"\partial_t\rho_q + \nabla\cdot j"),
-               sp.expand(sp.diff(rho_q, t) + div(j_amp)))
-    check(res, 0)
-    # div(curl E) = 0 keeps div B = 0 for all time under Faraday's law.
-    check(div([-c for c in curl(E)]), 0)
+mass, conservative, material = momentum_forms(U, P, R, E, B)
+for i in range(3):
+    assert same(conservative[i] - U[i] * mass, material[i])
+note("Checked for all components in 3D; shown in 1D, only", sp.Tuple(U[0], P[0][0], R[0], E[0]),
+     "nonzero")
+U1 = [U[0], 0, 0]
+P1 = [[P[0][0] if i == j == 0 else 0 for j in range(3)] for i in range(3)]
+mass, conservative, material = momentum_forms(U1, P1, [R[0], 0, 0], [E[0], 0, 0], [0, 0, 0])
+show(sp.Eq(C_mass, mass))
+show(sp.Eq(M_x, conservative[0]))
+note("Subtract", U[0], "times continuity")
+agrees((conservative[0] - U[0] * mass).doit(), material[0], ":210", lhs=M_x - U[0] * C_mass)
+has_unit(ms * ns * us**2 / Ls, u.newton / u.meter**3)
 
+# %% Energy balance
+section("Species energy balance", "07-multiple-fluids.typ:239")
+MOMENTS = moment_values()
+T_W, K, C = sp.symbols("T_W K C")             # energy moment, kinetic operator, collisions
+note("On the test distribution of Chapter 6, the energy density")
+show(sp.Eq(W, W_DEF))
+agrees_with(integrate(W_DEF), m_s * n * dot(U, U) / 2 + eps, MOMENTS, ":226", lhs=W)
+note("Weight the kinetic equation", sp.Eq(K, C), "with", m_s * dot(v, v) / 2, "and integrate")
+show(sp.Eq(K, KINETIC))
+show(sp.Eq(T_W, VelocityIntegral(m_s * dot(v, v) / 2 * K)))
+energy = VelocityIntegral(m_s * dot(v, v) / 2 * KINETIC)
+E_t = vec("E")
+agrees_with(integrate(energy),
+            Partial(W, t) + sum(Partial(F_W[j], X[j]) for j in range(3)) - q_s * n * dot(U, E_t),
+            MOMENTS, ":239", lhs=T_W)
+note("Raw energy flux split into convection, pressure work and heat flux (asserted)")
+split = [W * U[i] + sum(P[i][j] * U[j] for j in range(3)) + q[i] for i in range(3)]
+show(sp.Eq(F_W[0], split[0]))
+assert same(integrate(energy), (Partial(W, t) + sum(Partial(split[j], X[j]) for j in range(3))
+                                - q_s * n * dot(U, E_t)).subs(MOMENTS))
+has_unit(ms * ns * us**3, u.watt / u.meter**2)
 
-def test_example_current():
-    d = Derivation("Example: current with equal densities", "src/chapters/07-multiple-fluids.typ:321")
-    n0, ui, ue = 1.0e16, 2.0e5, 1.5e5
-    rho_q = num(d, "e (n_i - n_e)", r"\rho_q", CODATA[e] * (n0 - n0))
-    jx = num(d, "e n (u_i - u_e)", "j_x", CODATA[e] * n0 * ui - CODATA[e] * n0 * ue)
-    assert rho_q == 0
-    close(jx, "80.1")
+# %% Maxwell equations and charge continuity
+section("Maxwell equations and charge continuity", "07-multiple-fluids.typ:246")
+rho_qf, J = field("rho_q"), vec("j")
+gauss = show(sp.Eq(rho_qf, eps0 * sum(Partial(E[k], X[k]) for k in range(3))))
+note("Ampere with displacement current, x component (y, z alike)")
+ampere = [sp.Eq(J[k], curl(B)[k] / mu0 - eps0 * Partial(E[k], t)) for k in range(3)]
+show(ampere[0])
+charge_continuity = Partial(rho_qf, t) + sum(Partial(J[k], X[k]) for k in range(3))
+inserted = charge_continuity.subs({rho_qf: gauss.rhs, **{J[k]: ampere[k].rhs for k in range(3)}})
+agrees(sp.expand(inserted.doit()), 0, ":246", lhs=charge_continuity)
+note("Faraday keeps the divergence of B constant:")
+agrees(div(curl(E)), 0, ":251", lhs=sum(Partial(-curl(E)[k], X[k]) for k in range(3)))
 
+# %% Example: current
+section("Example: current with equal densities", "07-multiple-fluids.typ:321")
+n_0, j_x, rho_qx = sp.symbols("n_0 j_x rho_q")
+plasma = {n_0: 1.0e16 / u.meter**3, u_i: 2.0e5 * u.meter / u.second,
+          u_e: 1.5e5 * u.meter / u.second}
+given(plasma, "; equal densities", sp.Eq(n_e, n_0), "and", sp.Eq(n_i, n_0))
+equal = {n_e: n_0, n_i: n_0}
+assert sp.simplify(charge.rhs.subs(charges).subs(equal)) == 0
+show(sp.Eq(rho_q, charge.rhs.subs(charges).subs(equal)))
+close_to(evaluate(j_x, current.rhs.subs(charges).subs(equal), plasma, u.ampere / u.meter**2),
+         80.1, source=":330")
 
-# ---------------------------------------------------------------------------
-# Perpendicular drifts and diamagnetic current
-# ---------------------------------------------------------------------------
-Bv = sp.symbols("B_x B_y B_z", real=True)
-Ev = sp.symbols("E_x E_y E_z", real=True)
-Gp = sp.symbols("g_x g_y g_z", real=True)  # components of grad p_s
+# %% Perpendicular drift
+section("Perpendicular drift balance", "07-multiple-fluids.typ:427")
+q_, n_ = sp.symbols("q_s n_s", nonzero=True)
+Bv, Ev = sp.symbols("B_x B_y B_z", real=True), sp.symbols("E_x E_y E_z", real=True)
+Gp = sp.symbols("g_x g_y g_z", real=True)          # components of grad p_s
 B2 = dot(Bv, Bv)
+perp = lambda a: [a[i] - Bv[i] * dot(Bv, a) / B2 for i in range(3)]
+a_ = sp.symbols("a_1 a_2 a_3", real=True)
+assert all(same(l, r) for l, r in zip(cross(cross(a_, Bv), Bv), [-B2 * c for c in perp(a_)]))
+c1, c2 = sp.symbols("c_1 c_2")
+e1 = cross(Bv, [1, 0, 0])
+e2 = cross(Bv, e1)
+u_perp = [c1 * e1[i] + c2 * e2[i] for i in range(3)]
+balance = [q_ * n_ * (perp(Ev)[i] + cross(u_perp, Bv)[i]) - perp(Gp)[i] for i in range(3)]
+general = sp.solve([dot(balance, e1), dot(balance, e2)], [c1, c2], dict=True)[0]
+drift_ExB = [c / B2 for c in cross(Ev, Bv)]
+drift_dia = [c / (q_ * n_ * B2) for c in cross(Bv, Gp)]
+assert all(same(sp.simplify(u_perp[i].subs(general)), drift_ExB[i] + drift_dia[i]) for i in range(3))
+note("Solved for a general B and asserted; shown for", sp.Eq(sp.Symbol("B"), Bv[2]),
+     "along z, unknowns", sp.Tuple(*sp.symbols("u_x u_y")))
+ux, uy, Bz = sp.symbols("u_x u_y B_z")
+along_z = {Bv[0]: 0, Bv[1]: 0}
+balance_z = [sp.Eq(q_ * n_ * (Ev[0] + uy * Bz), Gp[0]), sp.Eq(q_ * n_ * (Ev[1] - ux * Bz), Gp[1])]
+for eq in balance_z:
+    show(eq)
+solution = sp.solve(balance_z, [ux, uy], dict=True)[0]
+for k, sym in enumerate((ux, uy)):
+    expected = (drift_ExB[k] + drift_dia[k]).subs(along_z).subs(Bv[2], Bz)
+    agrees(solution[sym], expected, ":440", lhs=sym)
+note("The first term is the E x B drift, the second the diamagnetic drift")
+has_unit(Em / Bm, u.meter / u.second)
+has_unit(ps / (Ls * qs * ns * Bm), u.meter / u.second)
+
+# %% Example: drifts
+section("Example: E x B and diamagnetic drifts", "07-multiple-fluids.typ:492")
+E_0, B_0, g_0, n0_ = sp.symbols("E_0 B_0 g_0 n_0", positive=True)
+E_vec, B_vec, g_vec = [E_0, 0, 0], [0, 0, B_0], [g_0, 0, 0]
+slab = {E_0: 30.0 * u.volt / u.meter, B_0: 0.0100 * u.tesla,
+        g_0: 1.602e-5 * u.pascal / u.meter, n0_: 1.0e14 / u.meter**3}
+given(slab, "; E and grad p along x, B along z")
+ExB, Bxg = cross(E_vec, B_vec), cross(B_vec, g_vec)
+assert ExB[0] == ExB[2] == 0 and Bxg[0] == Bxg[2] == 0
+speed = u.meter / u.second
+u_E, u_si, u_se = (sp.Symbol(s) for s in ("u_ExB,y", "u_*i,y", "u_*e,y"))
+close_to(evaluate(u_E, ExB[1] / B_0**2, slab, speed), -3.00e3, source=":496")
+close_to(evaluate(u_si, Bxg[1] / (e * n0_ * B_0**2), slab, speed), 1.00e2, source=":500")
+close_to(evaluate(u_se, Bxg[1] / (-e * n0_ * B_0**2), slab, speed), -1.00e2, source=":503")
+
+# %% Diamagnetic current
+section("Diamagnetic current", "07-multiple-fluids.typ:589")
+qe, qi, ne_, ni_ = sp.symbols("q_e q_i n_e n_i", nonzero=True)
+ge, gi = sp.symbols("g_ex g_ey g_ez", real=True), sp.symbols("g_ix g_iy g_iz", real=True)
+drift = lambda qq, nn, g: [drift_ExB[i] + cross(Bv, g)[i] / (qq * nn * B2) for i in range(3)]
+J_perp = [qe * ne_ * drift(qe, ne_, ge)[i] + qi * ni_ * drift(qi, ni_, gi)[i] for i in range(3)]
+charge_s = qe * ne_ + qi * ni_
+stated = [charge_s * drift_ExB[i] + (cross(Bv, ge)[i] + cross(Bv, gi)[i]) / B2 for i in range(3)]
+assert all(same(J_perp[i], stated[i]) for i in range(3))
+neutral = {qi: -qe * ne_ / ni_}
+g_sum = [ge[k] + gi[k] for k in range(3)]
+assert all(same(J_perp[i].subs(neutral), cross(Bv, g_sum)[i] / B2) for i in range(3))
+note("Sum of", sp.Mul(q_, n_), "times the drift over e and i; general B asserted, shown for B along z")
+jx = sp.Symbol("j_x")
+show(sp.Eq(jx, J_perp[0].subs(along_z).subs(Bv[2], Bz)))
+agrees(J_perp[0].subs(along_z).subs(Bv[2], Bz),
+       stated[0].subs(along_z).subs(Bv[2], Bz), ":592", lhs=jx)
+note("Quasi-neutral,", sp.Eq(charge_s, 0), ": only the diamagnetic current remains")
+agrees(sp.simplify(J_perp[0].subs(neutral).subs(along_z).subs(Bv[2], Bz)),
+       cross([0, 0, Bz], g_sum)[0] / Bz**2, ":596", lhs=jx)
+note("Ideal-gas pressures with equal densities", sp.Eq(sp.Symbol("p_s"), sp.Symbol("n") * k_B * sp.Symbol("T_s")))
+nf, Te, Ti = field("n"), field("T_e"), field("T_i")
+pressure = Partial(nf * k_B * Te + nf * k_B * Ti, x)
+agrees(pressure.doit(), k_B * ((Te + Ti) * Partial(nf, x) + nf * Partial(Te + Ti, x)), ":602",
+       lhs=pressure)
+has_unit(ps / (Ls * Bm), u.ampere / u.meter**2)
+
+# %% Example: diamagnetic current
+section("Example: diamagnetic current density", "07-multiple-fluids.typ:661")
+j_star = sp.Symbol("j_*,y")
+gradient = {g_0: 3.204e-5 * u.pascal / u.meter, B_0: 0.0100 * u.tesla}
+given(gradient)
+close_to(evaluate(j_star, Bxg[1] / B_0**2, gradient, u.ampere / u.meter**2), 3.20e-3,
+         source=":668")
+
+# %% Parallel momentum equation
+section("Parallel momentum equation", "07-multiple-fluids.typ:773")
+p = field("p_s")
+b = sp.symbols("b_x b_y b_z", real=True)          # constant unit vector along B
+B_mag = sp.Symbol("B", positive=True)
+B_field = [B_mag * c for c in b]
+L, Fv = sp.symbols("L_x L_y L_z"), sp.symbols("F_x F_y F_z")
+note("Material momentum balance", sp.Eq(L[0], Fv[0]), "with scalar pressure (x component)")
+lhs = [rho * (Partial(U[i], t) + sum(U[j] * Partial(U[i], X[j]) for j in range(3)))
+       for i in range(3)]
+rhs = [q_s * n * (E[i] + cross(U, B_field)[i]) - Partial(p, X[i]) + R[i] for i in range(3)]
+show(sp.Eq(L[0], lhs[0]))
+show(sp.Eq(Fv[0], rhs[0]))
+note("The magnetic force has no component along b:")
+agrees(sp.expand(dot(b, cross(U, B_field))), 0, ":775", lhs=dot(b, cross(U, B_field)))
+u_par, E_par, R_par = field("u_parallel"), field("E_parallel"), field("R_parallel")
+parallel = {u_par: dot(b, U), E_par: dot(b, E), R_par: dot(b, R)}
+note("Project both sides on b, with", sp.Eq(u_par, dot(b, U)), "and likewise", E_par, "and", R_par)
+agrees_with(sp.expand(dot(b, lhs)),
+            rho * (Partial(u_par, t) + sum(U[j] * Partial(u_par, X[j]) for j in range(3))),
+            parallel, ":777", lhs=dot(b, L))
+agrees_with(sp.expand(dot(b, rhs)),
+            -sum(b[j] * Partial(p, X[j]) for j in range(3)) + q_s * n * E_par + R_par,
+            parallel, ":777", lhs=dot(b, Fv))
+
+# %% Boltzmann relation
+section("Electron Boltzmann relation", "07-multiple-fluids.typ:793")
+s_ = sp.Symbol("s", real=True)                     # arc length along b
+T_e = sp.Symbol("T_e", positive=True)
+n_s = sp.Function("n_e", positive=True)(s_)
+phi = sp.Function("phi", real=True)(s_)
+E_s = field("E_parallel", s_)
+note("Inertialess, collisionless electrons along the field line")
+electron = show(sp.Eq(0, -Partial(n_s * k_B * T_e, s_) - e * n_s * E_s))
+E_solved = sp.solve(electron.doit(), E_s)[0]
+show(sp.Eq(E_s, E_solved))
+agrees(E_solved, -(k_B * T_e / e) * Partial(sp.log(n_s), s_), ":787", lhs=E_s)
+note("Insert the potential and integrate along the field line")
+show(sp.Eq(E_s, -Partial(phi, s_)))
+ode = show(sp.Eq(sp.Derivative(n_s, s_), sp.solve(sp.Eq(-sp.Derivative(phi, s_), E_solved),
+                                                  sp.Derivative(n_s, s_))[0]))
+phi0, n_e0 = sp.symbols("phi_0 n_e0", real=True)
+solution = show(sp.dsolve(ode, n_s))
+constant = sp.solve(sp.Eq(solution.rhs.subs(phi, phi0), n_e0), sp.Symbol("C1"), dict=True)[0]
+profile = solution.rhs.subs(constant)
+agrees(profile, n_e0 * sp.exp(e * (phi - phi0) / (k_B * T_e)), ":793", lhs=n_s)
+assert sp.simplify(profile.subs(phi, phi0) - n_e0) == 0
+has_unit(k_B * Ts / (e * Ls), u.volt / u.meter)
+
+# %% One-fluid momentum
+section("One-fluid momentum equation", "07-multiple-fluids.typ:815")
+species = ("e", "i")
+mass_s = {s: sp.Symbol(f"m_{s}", positive=True) for s in species}
+charge_q = {s: sp.Symbol(f"q_{s}", real=True) for s in species}
 
 
-def perp(a):
-    """a_perp = a - b (b . a)."""
-    return [a[i] - Bv[i] * dot(Bv, a) / B2 for i in range(3)]
+def one_fluid(*args):
+    """Species fields of `args`; summed species momentum residuals and the
+    stated one-fluid form, both per component, with the one-fluid variables."""
+    f_ = lambda name: field(name, *args)
+    v_ = lambda name: [f_(f"{name}{c}") for c in "xyz"]
+    dens = {s: f_(f"n_{s}") for s in species}
+    vel = {s: v_(f"u_{s}") for s in species}
+    Ps = {s: [[f_(f"P_{s}{a}{b}") for b in "xyz"] for a in "xyz"] for s in species}
+    Rs = {s: v_(f"R_{s}") for s in species}
+    Ef, Bf = v_("E_"), v_("B_")
+    rho_ = sum(mass_s[s] * dens[s] for s in species)
+    u_cm = [sum(mass_s[s] * dens[s] * vel[s][i] for s in species) / rho_ for i in range(3)]
+    V = {s: [vel[s][i] - u_cm[i] for i in range(3)] for s in species}
+    charge_ = sum(charge_q[s] * dens[s] for s in species)
+    jv = [sum(charge_q[s] * dens[s] * vel[s][i] for s in species) for i in range(3)]
+    P1 = [[sum(Ps[s][i][j] + mass_s[s] * dens[s] * V[s][i] * V[s][j] for s in species)
+           for j in range(3)] for i in range(3)]
+    total = [sum(Partial(mass_s[s] * dens[s] * vel[s][i], t)
+                 + sum(Partial(mass_s[s] * dens[s] * vel[s][i] * vel[s][j] + Ps[s][i][j], X[j])
+                       for j in range(3))
+                 - charge_q[s] * dens[s] * (Ef[i] + cross(vel[s], Bf)[i]) - Rs[s][i]
+                 for s in species) for i in range(3)]
+    return dict(dens=dens, vel=vel, rho=rho_, u=u_cm, V=V, charge=charge_, j=jv, P1=P1,
+                total=total, E=Ef, B=Bf, R=Rs)
 
 
-def test_perpendicular_drift():
-    d = Derivation("Perpendicular drift balance", "src/chapters/07-multiple-fluids.typ:427")
-    q, n_ = sp.symbols("q_s n_s", nonzero=True)
-    a = sp.symbols("a_1 a_2 a_3", real=True)
-    # Identity (u x B) x B = -B^2 u_perp for any u (line 461).
-    vcheck(cross(cross(a, Bv), Bv), [-B2 * c for c in perp(a)])
-    # Unknown perpendicular velocity: u_perp = c1 e1 + c2 e2 with e1, e2 perpendicular to B.
-    c1, c2 = sp.symbols("c_1 c_2")
-    e1 = cross(Bv, [1, 0, 0]) if Bv[1] != 0 or Bv[2] != 0 else [0, 1, 0]
-    e2 = cross(Bv, e1)
-    uperp = [c1 * e1[i] + c2 * e2[i] for i in range(3)]
-    # Inertialess perpendicular balance: q n (E_perp + u_perp x B) - grad_perp p = 0 (line 427).
-    bal = [q * n_ * (perp(Ev)[i] + cross(uperp, Bv)[i]) - perp(Gp)[i] for i in range(3)]
-    sol = sp.solve([dot(bal, e1), dot(bal, e2)], [c1, c2], dict=True)[0]
-    u_sol = [sp.simplify(c.subs(sol)) for c in uperp]
-    # Stated: u_perp = E x B / B^2 + B x grad p / (q n B^2) (lines 434-440).
-    u_ExB = [c / B2 for c in cross(Ev, Bv)]
-    u_dia = [c / (q * n_ * B2) for c in cross(Bv, Gp)]
-    vcheck(u_sol, [u_ExB[i] + u_dia[i] for i in range(3)])
-    d.step("perpendicular balance", sp.Eq(Tex(r"q_s n_s(E_\perp + u_{s\perp}\times B)"),
-                                          Tex(r"\nabla_\perp p_s")))
-    d.step("cross with B", sp.Eq(Tex(r"q_s n_s E\times B - q_s n_s B^2 u_{s\perp}"),
-                                 Tex(r"\nabla p_s\times B")))
-    d.eq("solve", Tex(r"u_{s\perp}"), Tex(r"\frac{E\times B}{B^2} + \frac{B\times\nabla p_s}{q_s n_s B^2}"))
-    # Units: E/B and grad p/(q n B) are speeds.
-    check(Em / Bm, Em / Bm, unit=u.meter / u.second)
-    check(ps / (Ls * qs * ns * Bm), ps / (Ls * qs * ns * Bm), unit=u.meter / u.second)
+# Full 3D check of all identities and components.
+full = one_fluid(t, *X)
+rho_V = [sum(mass_s[s] * full["dens"][s] * full["V"][s][i] for s in species) for i in range(3)]
+assert all(sp.simplify(c) == 0 for c in rho_V)
+for i, j_ in [(0, 0), (0, 1)]:
+    assert same(sum(mass_s[s] * full["dens"][s] * full["vel"][s][i] * full["vel"][s][j_]
+                    for s in species),
+                full["rho"] * full["u"][i] * full["u"][j_]
+                + sum(mass_s[s] * full["dens"][s] * full["V"][s][i] * full["V"][s][j_]
+                      for s in species))
+stated_full = [Partial(full["rho"] * full["u"][i], t)
+               + sum(Partial(full["rho"] * full["u"][i] * full["u"][j_] + full["P1"][i][j_], X[j_])
+                     for j_ in range(3))
+               - full["charge"] * full["E"][i] - cross(full["j"], full["B"])[i]
+               - sum(full["R"][s][i] for s in species) for i in range(3)]
+assert all(same(full["total"][i], stated_full[i]) for i in range(3))
 
+# Display: x component, fields depending on (t, x) only, named one-fluid variables.
+note("Checked in 3D; shown for the x component with fields of", sp.Tuple(t, x), "only")
+d1 = one_fluid(t, x)
+rho1, ux1, rhoq1 = field("rho", t, x), [field(f"u_{c}", t, x) for c in "xyz"], field("rho_q", t, x)
+j1 = [field(f"j_{c}", t, x) for c in "xyz"]
+V1 = {s: [field(f"V_{s}{c}", t, x) for c in "xyz"] for s in species}
+P11 = field("P_1xx", t, x)
+names = {rho1: d1["rho"], rhoq1: d1["charge"], P11: d1["P1"][0][0],
+         **{ux1[i]: d1["u"][i] for i in range(3)}, **{j1[i]: d1["j"][i] for i in range(3)},
+         **{V1[s][i]: d1["V"][s][i] for s in species for i in range(3)}}
+show(sp.Eq(rho1, d1["rho"]))
+show(sp.Eq(ux1[0], d1["u"][0]))
+show(sp.Eq(V1["e"][0], d1["vel"]["e"][0] - ux1[0]))
+note("Relative velocities carry no net momentum")
+agrees(sp.simplify(sum(mass_s[s] * d1["dens"][s] * d1["V"][s][0] for s in species)), 0, ":868",
+       lhs=sum(mass_s[s] * d1["dens"][s] * V1[s][0] for s in species))
+note("so the momentum flux splits into bulk and relative parts")
+agrees_with(sum(mass_s[s] * d1["dens"][s] * d1["vel"][s][0] ** 2 for s in species),
+            rho1 * ux1[0] ** 2 + sum(mass_s[s] * d1["dens"][s] * V1[s][0] ** 2 for s in species),
+            names, ":863", lhs=sum(mass_s[s] * d1["dens"][s] * d1["vel"][s][0] ** 2
+                                   for s in species))
+show(sp.Eq(P11, sum(field(f"P_{s}xx", t, x) + mass_s[s] * d1["dens"][s] * V1[s][0] ** 2
+                    for s in species)))
+M_e, M_i = sp.symbols("M_ex M_ix")
+note("Sum of the species momentum equations", sp.Eq(M_e + M_i, 0), ":")
+agrees_with(d1["total"][0],
+            Partial(rho1 * ux1[0], t) + Partial(rho1 * ux1[0] ** 2 + P11, x)
+            - rhoq1 * d1["E"][0] - cross(j1, d1["B"])[0] - sum(d1["R"][s][0] for s in species),
+            names, ":815", lhs=M_e + M_i)
 
-def test_example_drifts():
-    d = Derivation("Example: E x B and diamagnetic drifts", "src/chapters/07-multiple-fluids.typ:492")
-    E_ = [30.0, 0, 0]
-    B_ = [0, 0, 0.0100]
-    g = [1.602e-5, 0, 0]
-    n_ = 1.0e14
-    b2 = dot(B_, B_)
-    uE = num(d, "E x B drift", r"u_{E\times B,y}", cross(E_, B_)[1] / b2)
-    ui = num(d, "ion diamagnetic drift", r"u_{*i,y}", cross(B_, g)[1] / (CODATA[e] * n_ * b2))
-    ue = num(d, "electron diamagnetic drift", r"u_{*e,y}", cross(B_, g)[1] / (-CODATA[e] * n_ * b2))
-    close(uE, "-3.00e3")
-    close(ui, "1.00e2")
-    close(ue, "-1.00e2")
-    for vv in (cross(E_, B_), cross(B_, g)):
-        assert vv[0] == 0 and vv[2] == 0
+# %% Example: Boltzmann density
+section("Example: Boltzmann density ratio", "07-multiple-fluids.typ:883")
+phi1, n_e = sp.symbols("phi_1 n_e")
+probe = {phi1: 3.00 * u.volt, phi0: 0 * u.volt, T_e: 3.00 * u.elementary_charge * u.volt / u.boltzmann_constant,
+         n_e0: 1.0e16 / u.meter**3}
+note("Input", sp.Eq(phi1 - phi0, 3.00 * u.volt), ",", sp.Eq(k_B * T_e, 3.00 * u.electronvolt),
+     ",", sp.Eq(n_e0, rounded(probe[n_e0])))
+rise = show(sp.Eq(n_e, sp.powsimp(profile.subs(phi, phi1))))
+density = evaluate(n_e, rise.rhs, probe, u.meter**-3)
+close_to(density, 2.72e16, source=":893")
+ratio = sp.Symbol("n_e/n_e0")
+show(sp.Eq(ratio, sp.Float(density / 1.0e16, 3)))
+close_to(density / 1.0e16, 2.72, source=":889")
 
-
-def test_diamagnetic_current():
-    d = Derivation("Diamagnetic current", "src/chapters/07-multiple-fluids.typ:589")
-    qe, qi, ne_, ni_ = sp.symbols("q_e q_i n_e n_i", nonzero=True)
-    ge, gi = sp.symbols("g_ex g_ey g_ez", real=True), sp.symbols("g_ix g_iy g_iz", real=True)
-    drift = lambda q, nn, g: [cross(Ev, Bv)[i] / B2 + cross(Bv, g)[i] / (q * nn * B2) for i in range(3)]
-    # j_perp = sum_s q_s n_s u_s,perp with the drift of each species.
-    j = [qe * ne_ * drift(qe, ne_, ge)[i] + qi * ni_ * drift(qi, ni_, gi)[i] for i in range(3)]
-    rho_q = qe * ne_ + qi * ni_
-    stated = [rho_q * cross(Ev, Bv)[i] / B2 + (cross(Bv, ge)[i] + cross(Bv, gi)[i]) / B2 for i in range(3)]
-    vcheck(j, stated)
-    # Quasi-neutral limit rho_q = 0 leaves j_* = B x grad(p_e + p_i) / B^2 (line 596).
-    j_star = [sp.simplify(c.subs(qi, -qe * ne_ / ni_)) for c in j]
-    vcheck(j_star, [cross(Bv, [ge[k] + gi[k] for k in range(3)])[i] / B2 for i in range(3)])
-    d.eq("sum_s q_s n_s u_s,perp", Tex(r"j_\perp"),
-         Tex(r"\frac{\rho_q\, E\times B}{B^2} + \sum_s \frac{B\times\nabla p_s}{B^2}"))
-    d.eq("rho_q = 0", Tex(r"j_*"), Tex(r"\frac{B\times\nabla(p_e+p_i)}{B^2}"))
-    # Ideal-gas pressures with n_e = n_i = n (line 602).
-    n, Te, Ti = field("n", "n"), field("T_e", "T_e"), field("T_i", "T_i")
-    lhs = d.eq("p_s = n k_B T_s", Tex(r"\partial_x(p_e+p_i)"), sp.expand(sp.diff(n * k_B * Te + n * k_B * Ti, x)))
-    check(lhs, k_B * ((Te + Ti) * sp.diff(n, x) + n * sp.diff(Te + Ti, x)))
-    check(ps / (Ls * Bm), ps / (Ls * Bm), unit=u.ampere / u.meter**2)
-
-
-def test_example_diamagnetic_current():
-    d = Derivation("Example: diamagnetic current density", "src/chapters/07-multiple-fluids.typ:661")
-    B_, g = [0, 0, 0.0100], [3.204e-5, 0, 0]
-    jy = num(d, "diamagnetic current", "j_{*,y}", cross(B_, g)[1] / dot(B_, B_))
-    close(jy, "3.20e-3")
-
-
-# ---------------------------------------------------------------------------
-# Parallel dynamics and one-fluid variables
-# ---------------------------------------------------------------------------
-def test_parallel_equation():
-    d = Derivation("Parallel momentum equation", "src/chapters/07-multiple-fluids.typ:773")
-    rho, n, p = field("rho", r"\rho_s"), field("n", "n_s"), field("p", "p_s")
-    U, E, R = vec("u", "u"), vec("E", "E"), vec("R", "R")
-    q = sp.Symbol("q_s", real=True)
-    bx, by, bz = sp.symbols("b_x b_y b_z", real=True)
-    b = [bx, by, bz]
-    Bmag = sp.Symbol("B", positive=True)
-    Bvec = [Bmag * c for c in b]
-    # Material momentum equation with scalar pressure, dotted with constant b.
-    lhs = [rho * (sp.diff(U[i], t) + dot(U, grad(U[i]))) for i in range(3)]
-    rhs = [q * n * (E[i] + cross(U, Bvec)[i]) - grad(p)[i] + R[i] for i in range(3)]
-    res = sp.expand(dot(b, lhs) - dot(b, rhs))
-    upar = dot(b, U)
-    stated = (rho * (sp.diff(upar, t) + dot(U, grad(upar))) + dot(b, grad(p))
-              - q * n * dot(b, E) - dot(b, R))
-    # The magnetic force drops out because b . (u x B) = 0.
-    check(sp.expand(dot(b, cross(U, Bvec))), 0)
-    check(res, stated)
-    d.step("b . momentum", sp.Eq(Tex(r"\rho_s(\partial_t u_{\parallel s} + u_s\cdot\nabla u_{\parallel s})"),
-                                 Tex(r"-b\cdot\nabla p_s + q_s n_s E_\parallel + R_{\parallel s}")))
-
-
-def test_boltzmann_relation():
-    d = Derivation("Electron Boltzmann relation", "src/chapters/07-multiple-fluids.typ:793")
-    s_ = sp.Symbol("s", real=True)  # arc length along b
-    T_e = sp.Symbol("T_e", positive=True)
-    n = sp.Function("n_e", positive=True)(s_)
-    phi = sp.Function("phi", real=True)(s_)
-    # Inertialess, collisionless electrons: 0 = -dp_e/ds - e n_e E_par (line 782).
-    E_par = sp.solve(sp.Eq(0, -sp.diff(n * k_B * T_e, s_) - e * n * sp.Symbol("E")), sp.Symbol("E"))[0]
-    E_par = d.eq("electron balance", Tex(r"E_\parallel"), E_par)
-    # Stated (line 787): E_par = -(k_B T_e / e) d ln n_e / ds.
-    check(E_par, -(k_B * T_e / e) * sp.diff(sp.log(n), s_))
-    # With E_par = -dphi/ds, integrate along the field line.
-    ode = sp.Eq(-sp.diff(phi, s_), E_par)
-    phi0 = sp.Symbol("phi_0", real=True)
-    # d ln n / ds = (e/k_B T_e) dphi/ds  =>  n = n_0 exp(e (phi - phi_0)/(k_B T_e)).
-    dlnn = sp.solve(ode, sp.diff(n, s_))[0] / n
-    d.eq("E_par = -dphi/ds", Tex(r"\frac{d\ln n_e}{ds}"), sp.simplify(dlnn))
-    n_e0 = sp.Symbol("n_e0", positive=True)
-    stated = n_e0 * sp.exp(e * (phi - phi0) / (k_B * T_e))
-    # The stated profile solves d ln n/ds = (e/k_B T_e) dphi/ds and equals n_e0 at phi = phi_0.
-    check(sp.diff(sp.log(stated), s_), dlnn)
-    check(stated.subs(phi, phi0), n_e0)
-    d.step("integrate", sp.Eq(sp.Symbol("n_e"), stated))
-    check(k_B * Ts / (e * Ls), k_B * Ts / (e * Ls), unit=u.volt / u.meter)
-
-
-def test_one_fluid_momentum():
-    d = Derivation("One-fluid momentum equation", "src/chapters/07-multiple-fluids.typ:815")
-    S = ("e", "i")
-    m = {s: sp.Symbol(f"m_{s}", positive=True) for s in S}
-    q = {s: sp.Symbol(f"q_{s}", real=True) for s in S}
-    n = {s: field(f"n_{s}", f"n_{s}") for s in S}
-    U = {s: vec(f"u{s}", f"u_{{{s}}}") for s in S}
-    P = {s: [[field(f"P{s}_{a}{b}", f"P_{{{s},{a}{b}}}") for b in "xyz"] for a in "xyz"] for s in S}
-    R = {s: vec(f"R{s}", f"R_{{{s}}}") for s in S}
-    E, B = vec("E", "E"), vec("B", "B")
-    rho = sum(m[s] * n[s] for s in S)
-    u_cm = [sum(m[s] * n[s] * U[s][i] for s in S) / rho for i in range(3)]
-    V = {s: [U[s][i] - u_cm[i] for i in range(3)] for s in S}
-    # sum_s rho_s V_s = 0 (line 868).
-    vcheck([sum(m[s] * n[s] * V[s][i] for s in S) for i in range(3)], [0, 0, 0])
-    # sum_s rho_s u_s u_s = rho u u + sum_s rho_s V_s V_s (line 863).
-    for i, j in [(0, 0), (0, 1)]:
-        check(sum(m[s] * n[s] * U[s][i] * U[s][j] for s in S),
-              rho * u_cm[i] * u_cm[j] + sum(m[s] * n[s] * V[s][i] * V[s][j] for s in S))
-    # Add the species momentum equations (residual form) ...
-    rho_q = sum(q[s] * n[s] for s in S)
-    jv = [sum(q[s] * n[s] * U[s][i] for s in S) for i in range(3)]
-    P1 = [[sum(P[s][i][j] + m[s] * n[s] * V[s][i] * V[s][j] for s in S) for j in range(3)] for i in range(3)]
-    for i in range(3):
-        total = sum(sp.diff(m[s] * n[s] * U[s][i], t)
-                    + sum(sp.diff(m[s] * n[s] * U[s][i] * U[s][j] + P[s][i][j], X[j]) for j in range(3))
-                    - q[s] * n[s] * (E[i] + cross(U[s], B)[i]) - R[s][i] for s in S)
-        # ... and compare with the one-fluid form (line 815).
-        stated = (sp.diff(rho * u_cm[i], t) + sum(sp.diff(rho * u_cm[i] * u_cm[j] + P1[i][j], X[j]) for j in range(3))
-                  - rho_q * E[i] - cross(jv, B)[i] - sum(R[s][i] for s in S))
-        check(total, stated)
-    d.step("relative velocity", sp.Eq(Tex(r"\sum_s \rho_s u_s u_s"),
-                                      Tex(r"\rho u u + \sum_s \rho_s V_s V_s")))
-    d.step("Lorentz force", sp.Eq(Tex(r"\sum_s q_s n_s(E + u_s\times B)"), Tex(r"\rho_q E + j\times B")))
-    d.step("sum over species", sp.Eq(Tex(r"\partial_t(\rho u) + \nabla\cdot(\rho u u + P_1)"),
-                                     Tex(r"\rho_q E + j\times B + \sum_s R_s")))
-
-
-def test_example_boltzmann():
-    d = Derivation("Example: Boltzmann density ratio", "src/chapters/07-multiple-fluids.typ:883")
-    ratio = num(d, "exp(e dphi / k_B T_e)", "n_e/n_{e0}", sp.exp(3.00 / 3.00))
-    close(ratio, "2.72")
-    close(num(d, "n_e0 ratio", "n_e", 1.0e16 * ratio), "2.72e16")
-
-
+# %%
 if __name__ == "__main__":
-    from si import run_as_script
-
-    run_as_script(globals())
+    report(__file__, "Chapter 7 · Multiple-fluid theory")

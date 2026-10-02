@@ -1,472 +1,393 @@
-"""Chapter 15, sheaths and probes: src/chapters/15-sheaths-probes.typ.
+# Chapter 15 · Sheaths and probes (src/chapters/15-sheaths-probes.typ)
+#
+# Maxwellian wall fluxes, the Bohm sheath (Poisson equation, first integral,
+# Bohm criterion), Child-Langmuir sheaths, the floating potential and the
+# Langmuir probe characteristic. `python ch15_sheaths_probes.py` prints every step.
 
-Run `python derivations/ch15_sheaths_probes.py` to check every step, or
-`pytest derivations` to check every chapter.
-
-Coverage (line in src/chapters/15-sheaths-probes.typ -> test):
-  79-83, 94-131   Maxwellian half-space flux, three forms      -> test_half_space_flux
-  108-110, 122    Gaussian and half-space integrals            -> test_half_space_flux
-  135, 139        mean speed and Gamma = n v_mean / 4          -> test_mean_speed_form
-  83, 147-152     Gamma_e0/Gamma_i0 = sqrt(m_i/m_e) ~ 42.8     -> test_flux_ratio
-  272-278         Boltzmann electrons n_e = n0 exp(-eta)       -> test_boltzmann_electrons
-  283-305         ion energy, u_i^2 = c_s^2 (M^2+2 eta), n_i/n_s -> test_cold_ion_density
-  310-323         normalized sheath equation                   -> test_sheath_equation
-  329-337, 258-259 small-eta expansion, Bohm M >= 1            -> test_bohm_criterion
-  357-366         Child-Langmuir ion speed, density, C         -> test_child_langmuir_poisson
-  372-391         first integral and V(s) ~ s^(4/3)            -> test_child_langmuir_profile
-  396-402, 446    V_w^(3/2) relation and Child-Langmuir J_i    -> test_child_langmuir_current
-  409-425         numerical example (10 eV, M = 1.5)           -> test_example_bohm_numbers
-  509, 537-539    Boltzmann transmission of electrons          -> test_electron_transmission
-  517-526, 547-570 zero-current floating potential            -> test_floating_potential
-  526, 606-611    hydrogen coefficient -2.84                   -> test_floating_coefficient_hydrogen
-  577-595         numerical example (3 eV hydrogen)            -> test_example_floating_numbers
-  674-676         probe current I_p = A(e Gamma_i - e Gamma_e)  -> test_probe_semilog
-  683-693, 704-725 semilog line, slope, inverse slope          -> test_probe_semilog
-  697-698, 734-743 density from electron saturation            -> test_probe_density
-  755-756         animation density profile n_i/n0 at M = 1.5  -> test_cold_ion_density
-  775             animation ion-saturation level 0.058         -> test_probe_animation_level
-  782-791         numerical example (0.40 V^-1, 4.0 mA)        -> test_example_probe_numbers
-  figure sheath-profile: first integral of the sheath equation -> test_sheath_first_integral
-"""
-
+# %% Setup
+import mpmath as mp
+import numpy as np
 import sympy as sp
 from sympy.physics import units as u
 
-from si import (BLUE, GRAY, ORANGE, UNITS, Derivation, check, e, eps0, figure, k_B,
-                label, m_e, m_i, save)
+import si
+from notebook import PROTON_MASS, agrees, close_to, evaluate, note, report, section, show
+from si import BLUE, GRAY, ORANGE, figure, label, save
+from waves import number
 
-SRC = "src/chapters/15-sheaths-probes.typ"
-
+e, m_e, m_i, eps0, k_B = sp.symbols("e m_e m_i epsilon_0 k_B", positive=True)
 n_s, n0, T_s, T_e, m_s = sp.symbols("n_s n_0 T_s T_e m_s", positive=True)
 vx, vy, vz, v = sp.symbols("v_x v_y v_z v", real=True)
-eta, M, xi, lam = sp.symbols("eta M xi lambda_D", positive=True)
-V, s, d_w, C, Gam_i, Vw = sp.symbols("V s d C Gamma_i V_w", positive=True)
+eta, M, xi, lambda_D = sp.symbols("eta M xi lambda_D", positive=True)
+V, s, d_w, C, Gamma_i, V_w = sp.symbols("V s d C Gamma_i V_w", positive=True)
 phi, phi_w, phi_p, phi_pl = sp.symbols("phi phi_w phi_p phi_pl", real=True)
-A, Gam_e0 = sp.symbols("A Gamma_e0", positive=True)
-UNITS.update({
-    n_s: u.meter**-3, n0: u.meter**-3, T_s: u.kelvin, T_e: u.kelvin,
-    m_s: u.kilogram, V: u.volt, Vw: u.volt, d_w: u.meter, s: u.meter,
-    Gam_i: u.meter**-2 / u.second, Gam_e0: u.meter**-2 / u.second,
-    A: u.meter**2, phi: u.volt, phi_w: u.volt, phi_p: u.volt, phi_pl: u.volt,
-    lam: u.meter,
-})
+A, Gamma_e0 = sp.symbols("A Gamma_e0", positive=True)
+Gamma_s0 = sp.Symbol("Gamma_s0")
 
-# Results shared by the tests and the plots: each test proves its derivation
-# equals one of these expressions, and each plot_* lambdifies the same one.
-N_E = sp.exp(-eta)  # n_e/n_0, line 278
-N_I = M / sp.sqrt(M**2 + 2 * eta)  # n_i/n_s, line 305
-SHEATH_RHS = N_I - N_E  # d^2 eta/d xi^2, line 324
-# Sagdeev potential: (d eta/d xi)^2/2 = SAGDEEV with eta = eta' = 0 at the edge.
-SAGDEEV = M * (sp.sqrt(M**2 + 2 * eta) - M) + sp.exp(-eta) - 1
-FLUX_RATIO = sp.sqrt(2 * sp.pi * m_e / m_i)  # Gamma_i/Gamma_e0, lines 565-566
-u_b = sp.Symbol("u", real=True)  # u = e (phi_p - phi_pl)/(k_B T_e)
-PROBE_RETARDING = Gam_i / Gam_e0 - sp.exp(u_b)  # I_p/(e A Gamma_e0) for u <= 0, line 676
-
-# CODATA 2018 values (SI, exact where defined).
-E_CODATA = 1.602176634e-19
-ME_CODATA = 9.1093837015e-31
-MP_CODATA = 1.67262192369e-27
-EPS0_CODATA = 8.8541878128e-12
-
-
-class _Silent:
-    """Stand-in for Derivation when a helper's steps were already recorded."""
-
-    def step(self, label, expr):
-        return expr
-
-    def eq(self, label, lhs, rhs):
-        return rhs
-
-
-def num(d, label, lhs, val):
-    """Record a numerical result rounded to four digits; return the full value."""
-    d.eq(label, lhs, sp.Float(float(val), 4))
-    return val
-
-
-def close(x, y, rel):
-    assert abs(float(x) / float(y) - 1) < rel, f"{float(x)} vs {float(y)}"
+# SI units of the local symbols, for si.check(..., unit=...).
+UNITS = {n_s: u.meter**-3, n0: u.meter**-3, T_s: u.kelvin, T_e: u.kelvin, m_s: u.kilogram,
+         V: u.volt, V_w: u.volt, d_w: u.meter, s: u.meter, Gamma_i: u.meter**-2 / u.second,
+         Gamma_e0: u.meter**-2 / u.second, A: u.meter**2, phi: u.volt, phi_w: u.volt,
+         phi_p: u.volt, phi_pl: u.volt, lambda_D: u.meter}
+HYDROGEN = {m_i: PROTON_MASS}
+milliampere = u.Quantity("milliampere", abbrev="mA")
+milliampere.set_global_relative_scale_factor(sp.Rational(1, 1000), u.ampere)
 
 
 def maxwellian(n, T, m):
+    """Isotropic 3D Maxwellian of density n, temperature T, mass m."""
     return n * (m / (2 * sp.pi * k_B * T)) ** sp.Rational(3, 2) * sp.exp(
         -m * (vx**2 + vy**2 + vz**2) / (2 * k_B * T))
 
 
-def half_space_flux(n, T, m, vmin=0):
-    """Gamma = int_{vz>vmin} vz f d^3v for a 3D Maxwellian (integrated, not quoted)."""
+def half_space_flux(n, T, m, v_min=0):
+    """Gamma = integral of v_z f over v_z > v_min (integrated, not quoted)."""
     return sp.integrate(vz * maxwellian(n, T, m),
-                        (vx, -sp.oo, sp.oo), (vy, -sp.oo, sp.oo), (vz, vmin, sp.oo))
+                        (vx, -sp.oo, sp.oo), (vy, -sp.oo, sp.oo), (vz, v_min, sp.oo))
 
 
-def test_half_space_flux():
-    d = Derivation("Maxwellian half-space flux", f"{SRC}:94-131")
-    G = sp.Symbol("Gamma_s0")
-    d.eq("Maxwellian", sp.Symbol("f_s"), sp.Mul(n_s, sp.Pow(m_s / (2 * sp.pi * k_B * T_s), sp.Rational(3, 2), evaluate=False),
-          sp.exp(-m_s * sp.Symbol("v") ** 2 / (2 * k_B * T_s)), evaluate=False))
-    # Tangential Gaussian integral and normal half-space integral.
-    gauss = sp.integrate(sp.exp(-m_s * vx**2 / (2 * k_B * T_s)), (vx, -sp.oo, sp.oo))
-    d.eq("tangential", sp.Integral(sp.exp(-m_s * vx**2 / (2 * k_B * T_s)), (vx, -sp.oo, sp.oo)), gauss)
-    check(gauss, sp.sqrt(2 * sp.pi * k_B * T_s / m_s))  # src/chapters/15-sheaths-probes.typ:110
-    a = sp.symbols("a", positive=True)
-    half = d.eq("normal", sp.Integral(v * sp.exp(-a * v**2), (v, 0, sp.oo)),
-                sp.integrate(v * sp.exp(-a * v**2), (v, 0, sp.oo)))
-    check(half, 1 / (2 * a))  # :122
-    Gamma = d.eq("integrate", G, half_space_flux(n_s, T_s, m_s))
-    stated = n_s * sp.sqrt(k_B * T_s / (2 * sp.pi * m_s))  # :127
-    check(Gamma, stated, unit=u.meter**-2 / u.second)
-    v_th = sp.sqrt(2 * k_B * T_s / m_s)  # :82
-    d.eq("thermal speed", G, n_s * sp.Symbol("v_th") / (2 * sp.sqrt(sp.pi)))
-    check(Gamma, n_s * v_th / (2 * sp.sqrt(sp.pi)))  # :131
+# %% Maxwellian half-space flux
+section("Maxwellian half-space flux", "15-sheaths-probes.typ:94")
+show(sp.Eq(sp.Symbol("f_s"), maxwellian(n_s, T_s, m_s)))
+show(sp.Eq(Gamma_s0, sp.Integral(vz * sp.Symbol("f_s"), (vx, -sp.oo, sp.oo), (vy, -sp.oo, sp.oo),
+                                 (vz, 0, sp.oo))))
+note("Tangential directions: Gaussian integrals")
+gauss = sp.integrate(sp.exp(-m_s * vx**2 / (2 * k_B * T_s)), (vx, -sp.oo, sp.oo))
+agrees(gauss, sp.sqrt(2 * sp.pi * k_B * T_s / m_s), ":110",
+       lhs=sp.Integral(sp.exp(-m_s * vx**2 / (2 * k_B * T_s)), (vx, -sp.oo, sp.oo)))
+a_n = sp.Symbol("a", positive=True)
+note("Normal direction, only", sp.Gt(vz, 0), ":")
+agrees(sp.integrate(v * sp.exp(-a_n * v**2), (v, 0, sp.oo)), 1 / (2 * a_n), ":122",
+       lhs=sp.Integral(v * sp.exp(-a_n * v**2), (v, 0, sp.oo)))
+flux = half_space_flux(n_s, T_s, m_s)
+agrees(flux, n_s * sp.sqrt(k_B * T_s / (2 * sp.pi * m_s)), ":127", lhs=Gamma_s0)
+si.check(flux, n_s * sp.sqrt(k_B * T_s / (2 * sp.pi * m_s)), unit=u.meter**-2 / u.second, units=UNITS)
+v_th = sp.Symbol("v_th")
+note("With", sp.Eq(v_th, sp.sqrt(2 * k_B * T_s / m_s)), ":")
+agrees(flux, (n_s * v_th / (2 * sp.sqrt(sp.pi))).subs(v_th, sp.sqrt(2 * k_B * T_s / m_s)), ":131",
+       lhs=Gamma_s0)
+show(sp.Eq(Gamma_s0, n_s * v_th / (2 * sp.sqrt(sp.pi))))
 
+# %% Mean speed form of the flux
+section("Mean speed form of the flux", "15-sheaths-probes.typ:135")
+w = sp.Symbol("w", positive=True)
+speed_pdf = 4 * sp.pi * w**2 * (m_s / (2 * sp.pi * k_B * T_s)) ** sp.Rational(3, 2) * sp.exp(
+    -m_s * w**2 / (2 * k_B * T_s))
+v_mean = sp.integrate(w * speed_pdf, (w, 0, sp.oo))
+agrees(v_mean, sp.sqrt(8 * k_B * T_s / (sp.pi * m_s)), ":135", lhs=sp.Integral(w * speed_pdf, (w, 0, sp.oo)))
+si.check(v_mean, sp.sqrt(8 * k_B * T_s / (sp.pi * m_s)), unit=u.meter / u.second, units=UNITS)
+agrees(flux, n_s * v_mean / 4, ":139", lhs=Gamma_s0)
+show(sp.Eq(Gamma_s0, n_s * sp.Symbol("v_mean") / 4))
 
-def test_mean_speed_form():
-    d = Derivation("Mean speed form of the flux", f"{SRC}:135-139")
-    w = sp.symbols("w", positive=True)
-    fsp = 4 * sp.pi * w**2 * (m_s / (2 * sp.pi * k_B * T_s)) ** sp.Rational(3, 2) \
-        * sp.exp(-m_s * w**2 / (2 * k_B * T_s))
-    v_mean = d.eq("speed average", sp.Integral(w * fsp, (w, 0, sp.oo)),
-                  sp.integrate(w * fsp, (w, 0, sp.oo)))
-    check(v_mean, sp.sqrt(8 * k_B * T_s / (sp.pi * m_s)), unit=u.meter / u.second)  # :135
-    d.eq("ratio", sp.Symbol("Gamma_s0") / sp.Symbol("v_mean"),
-         sp.simplify(half_space_flux(n_s, T_s, m_s) / (n_s * v_mean)) * n_s)
-    check(half_space_flux(n_s, T_s, m_s), n_s * v_mean / 4)  # :139
+# %% Electron to ion flux ratio
+section("Electron to ion flux ratio", "15-sheaths-probes.typ:83")
+note("Equal density and temperature:")
+agrees(half_space_flux(n_s, T_s, m_e) / half_space_flux(n_s, T_s, m_i), sp.sqrt(m_i / m_e), ":83",
+       lhs=sp.Symbol("Gamma_e0") / sp.Symbol("Gamma_i0"))
+note("Hydrogen,", sp.Eq(m_i / m_e, 1836))
+ratio = number(sp.sqrt(m_i / m_e).subs(m_i, 1836 * m_e))
+show(sp.Eq(sp.Symbol("Gamma_e0") / sp.Symbol("Gamma_i0"), sp.Float(ratio, 3)))
+close_to(ratio, 42.8, rtol=2e-3, source=":152")
 
+# %% Boltzmann electrons
+section("Boltzmann electrons", "15-sheaths-probes.typ:278")
+n_e = sp.Function("n_e")
+note("Isothermal electrons, pressure against the electric force:")
+balance = show(sp.Eq(k_B * T_e * n_e(phi).diff(phi), e * n_e(phi)))
+boltzmann = sp.dsolve(balance, n_e(phi), ics={n_e(0): n0}).rhs
+agrees(boltzmann, n0 * sp.exp(e * phi / (k_B * T_e)), ":278", lhs=n_e(phi))
+note("Normalized potential", sp.Eq(eta, -e * phi / (k_B * T_e)))
+N_E = sp.exp(-eta)  # n_e/n_0
+agrees(boltzmann.subs(phi, -k_B * T_e * eta / e), n0 * N_E, ":278", lhs=sp.Symbol("n_e"))
 
-def test_flux_ratio():
-    d = Derivation("Electron to ion flux ratio", f"{SRC}:83, 147-152")
-    ratio = d.eq("equal n, T", sp.Symbol("Gamma_e0") / sp.Symbol("Gamma_i0"),
-                 half_space_flux(n_s, T_s, m_e) / half_space_flux(n_s, T_s, m_i))
-    check(ratio, sp.sqrt(m_i / m_e))  # :83
-    d.eq("mass ratio 1836", sp.sqrt(sp.Integer(1836), evaluate=False), sp.N(sp.sqrt(1836), 4))
-    close(sp.sqrt(1836), 42.8, 2e-3)  # :152
+# %% Cold ion density in the sheath
+section("Cold ion density in the sheath", "15-sheaths-probes.typ:305")
+u_s, u_i = sp.symbols("u_s u_i", positive=True)
+x = sp.Symbol("x")
+u_x, phi_x = sp.Function("u_i")(x), sp.Function("phi")(x)
+momentum = show(sp.Eq(m_i * u_x * u_x.diff(x) + e * phi_x.diff(x), 0))
+assert sp.simplify(sp.diff(m_i * u_x**2 / 2 + e * phi_x, x) - momentum.lhs) == 0  # :292
+note("is a total derivative: energy conservation from the edge, where", sp.Eq(phi, 0, evaluate=False))
+energy = show(sp.Eq(m_i * u_i**2 / 2 + e * phi, m_i * u_s**2 / 2))
+u_i_sq = sp.solve(energy.subs(phi, -k_B * T_e * eta / e), u_i**2)[0]
+agrees(u_i_sq, u_s**2 + 2 * k_B * T_e * eta / m_i, ":300", lhs=u_i**2)
+c_s = sp.sqrt(k_B * T_e / m_i)
+note("Edge speed", sp.Eq(u_s, M * sp.Symbol("c_s")), "with", sp.Eq(sp.Symbol("c_s"), c_s))
+agrees(u_i_sq.subs(u_s, M * c_s), c_s**2 * (M**2 + 2 * eta), ":301", lhs=u_i**2)
+note("Flux conservation", sp.Eq(sp.Symbol("n_i") * u_i, sp.Symbol("n_s") * u_s))
+N_I = M / sp.sqrt(M**2 + 2 * eta)  # n_i/n_s
+ion_ratio = sp.simplify((u_s / sp.sqrt(u_i_sq)).subs(u_s, M * c_s))
+agrees(ion_ratio, N_I, ":305", lhs=sp.Symbol("n_i") / sp.Symbol("n_s"))
+agrees(ion_ratio.subs(M, sp.Rational(3, 2)), sp.Rational(3, 2) / sp.sqrt(sp.Rational(9, 4) + 2 * eta),
+       ":756", lhs=sp.Symbol("n_i") / n0)
 
+# %% Normalized sheath equation
+section("Normalized sheath equation", "15-sheaths-probes.typ:323")
+eta_xi = sp.Function("eta")(xi)
+n_i_sym, n_e_sym = sp.symbols("n_i n_e", positive=True)
+note("Poisson in", sp.Eq(xi, x / lambda_D), "with", sp.Eq(phi, -k_B * T_e * eta / e))
+phi_xi = -(k_B * T_e / e) * eta_xi
+laplacian = -sp.diff(phi_xi, xi, 2) / lambda_D**2  # -d^2 phi/dx^2
+si.check(sp.simplify(-laplacian), -(k_B * T_e / (e * lambda_D**2)) * eta_xi.diff(xi, 2))  # :318
+poisson = show(sp.Eq(laplacian, e * (n_i_sym - n_e_sym) / eps0))
+note("Insert", sp.Eq(lambda_D**2, eps0 * k_B * T_e / (n0 * e**2)))
+normalized = sp.expand(sp.solve(poisson.subs(lambda_D, sp.sqrt(eps0 * k_B * T_e / (n0 * e**2))),
+                                eta_xi.diff(xi, 2))[0])
+agrees(normalized, n_i_sym / n0 - n_e_sym / n0, ":323", lhs=eta_xi.diff(xi, 2))
+note("Boltzmann electrons and flux-conserving cold ions,", sp.Eq(n0, sp.Symbol("n_s")), ":")
+SHEATH_RHS = sp.simplify(normalized.subs({n_i_sym: n0 * ion_ratio, n_e_sym: n0 * N_E}))
+agrees(SHEATH_RHS, N_I - N_E, ":324", lhs=eta_xi.diff(xi, 2))
 
-def test_boltzmann_electrons():
-    d = Derivation("Boltzmann electrons", f"{SRC}:272-278")
-    # Force balance for isothermal electrons: k_B T_e dn_e/dphi = e n_e.
-    ne = sp.Function("n_e")
-    ode = d.step("force balance", sp.Eq(k_B * T_e * ne(phi).diff(phi), e * ne(phi)))
-    sol = d.eq("solve", ne(phi), sp.dsolve(ode, ne(phi), ics={ne(0): n0}).rhs)
-    check(sol, n0 * sp.exp(e * phi / (k_B * T_e)))  # :278
-    out = d.eq("eta", ne(phi), sol.subs(phi, -k_B * T_e * eta / e))
-    check(out, n0 * N_E)  # :278
+# %% Sheath first integral
+section("Sheath first integral (Sagdeev potential)", "15-sheaths-probes.typ:324")
+note("Multiply by", eta_xi.diff(xi), "and integrate from the edge, where", sp.Eq(eta, 0, evaluate=False),
+     "and", sp.Eq(eta_xi.diff(xi), 0))
+h = sp.Symbol("h", positive=True)
+sagdeev = sp.integrate(SHEATH_RHS.subs(eta, h), (h, 0, eta))
+SAGDEEV = M * (sp.sqrt(M**2 + 2 * eta) - M) + sp.exp(-eta) - 1
+agrees(sagdeev, SAGDEEV, ":324", lhs=eta_xi.diff(xi) ** 2 / 2)
+assert sp.simplify(sp.diff(SAGDEEV, eta) - SHEATH_RHS) == 0 and SAGDEEV.subs(eta, 0) == 0
+note("Near the edge; a real", eta_xi.diff(xi), "needs a non-negative coefficient:")
+agrees(sp.series(SAGDEEV, eta, 0, 3).removeO(), (1 - M**-2) * eta**2 / 2, ":330",
+       lhs=eta_xi.diff(xi) ** 2 / 2)
+note("At", sp.Eq(M, 1, evaluate=False), "the leading term is cubic and positive:")
+agrees(sp.series(SAGDEEV.subs(M, 1), eta, 0, 4).removeO(), eta**3 / 3, ":324",
+       lhs=eta_xi.diff(xi) ** 2 / 2)
 
+# %% Bohm criterion
+section("Bohm criterion", "15-sheaths-probes.typ:337")
+note("Expand the ion density for small", eta)
+agrees(sp.series(N_I, eta, 0, 2).removeO(), 1 - eta / M**2, ":331", lhs=N_I)
+linear = sp.factor(sp.series(SHEATH_RHS, eta, 0, 2).removeO())
+agrees(linear, (1 - M**-2) * eta, ":337", lhs=eta_xi.diff(xi, 2))
+note("A monotone potential needs", sp.Ge(1 - M**-2, 0), ":")
+bohm = sp.solve_univariate_inequality(1 - M**-2 >= 0, M, relational=False)
+assert bohm.intersect(sp.Interval(0, sp.oo)) == sp.Interval(1, sp.oo)  # :259
+show(sp.Ge(M, 1))
 
-def ion_density_ratio(d=None):
-    """Cold ions: energy conservation plus flux conservation n_i u_i = n_s u_s."""
-    us, ui = sp.symbols("u_s u_i", positive=True)
-    x = sp.symbols("x")
-    uf, pf = sp.Function("u_i")(x), sp.Function("phi")(x)
-    mom = m_i * uf * uf.diff(x) + e * pf.diff(x)  # :287
-    assert sp.simplify(sp.diff(m_i * uf**2 / 2 + e * pf, x) - mom) == 0  # :292
-    # Energy at edge (phi = 0) and inside, with e phi = -k_B T_e eta.
-    ui2 = sp.solve(sp.Eq(m_i * ui**2 / 2 - k_B * T_e * eta, m_i * us**2 / 2), ui**2)[0]
-    c_s = sp.sqrt(k_B * T_e / m_i)
-    check(ui2, us**2 + 2 * k_B * T_e * eta / m_i)  # :300
-    check(ui2.subs(us, M * c_s), c_s**2 * (M**2 + 2 * eta))  # :301
-    if d is not None:
-        d.step("momentum", sp.Eq(mom, 0))
-        d.step("energy", sp.Eq(m_i * ui**2 / 2 + e * phi, m_i * us**2 / 2))
-        d.eq("solve", ui**2, ui2)
-        d.eq("continuity", sp.Symbol("n_i") / sp.Symbol("n_s"), us / ui)
-    return (us / sp.sqrt(ui2)).subs(us, M * c_s)
+# %% Child-Langmuir: ion density and Poisson
+section("Child-Langmuir: ion density and Poisson", "15-sheaths-probes.typ:357")
+note("Ions start at rest; potential drop", sp.Eq(V, -phi), ", no electrons")
+speed = sp.solve(sp.Eq(m_i * u_i**2 / 2, e * V), u_i)[0]
+agrees(speed, sp.sqrt(2 * e * V / m_i), ":357", lhs=u_i)
+si.check(speed, sp.sqrt(2 * e * V / m_i), unit=u.meter / u.second, units=UNITS)
+ion_density = Gamma_i / speed
+agrees(ion_density, Gamma_i * sp.sqrt(m_i / (2 * e * V)), ":361", lhs=sp.Symbol("n_i"))
+si.check(ion_density, Gamma_i * sp.sqrt(m_i / (2 * e * V)), unit=u.meter**-3, units=UNITS)
+C_stated = Gamma_i / eps0 * sp.sqrt(e * m_i / 2)
+V_x = sp.Function("V")(x)
+show(sp.Eq(V_x.diff(x, 2), e * sp.Symbol("n_i") / eps0))
+agrees(e * ion_density / eps0, C_stated * V ** sp.Rational(-1, 2), ":366", lhs=V_x.diff(x, 2))
+si.check(e * ion_density / eps0, C_stated * V ** sp.Rational(-1, 2), unit=u.volt / u.meter**2,
+         units=UNITS)
+note("Write", sp.Eq(C, C_stated), "(:368)")
 
+# %% Child-Langmuir profile
+section("Child-Langmuir profile", "15-sheaths-probes.typ:372")
+V_s = sp.Function("V")(s)
+show(sp.Eq(V_s.diff(s, 2), C / sp.sqrt(V_s)))
+note("Multiply by", V_s.diff(s), "; first integral with", sp.Eq(V_s.subs(s, 0), 0), "and zero field at the edge:")
+first_integral = V_s.diff(s) ** 2 / 2 - 2 * C * sp.sqrt(V_s)
+assert sp.simplify(sp.diff(first_integral, s).subs(V_s.diff(s, 2), C / sp.sqrt(V_s))) == 0
+show(sp.Eq(first_integral, 0))
+slope = sp.sqrt(4 * C * sp.sqrt(V))
+agrees(slope / V ** sp.Rational(1, 4), 2 * sp.sqrt(C), ":383", lhs=V_s.diff(s) / V_s ** sp.Rational(1, 4))
+W = sp.Symbol("W", positive=True)
+separated = sp.integrate(W ** sp.Rational(-1, 4), (W, 0, V))
+agrees(separated, sp.Rational(4, 3) * V ** sp.Rational(3, 4), ":387",
+       lhs=sp.Integral(W ** sp.Rational(-1, 4), (W, 0, V)))
+show(sp.Eq(separated, 2 * sp.sqrt(C) * s))
+profile = sp.solve(sp.Eq(separated, 2 * sp.sqrt(C) * s), V)[0]
+child = (9 * C / 4) ** sp.Rational(2, 3) * s ** sp.Rational(4, 3)
+agrees(profile, sp.Mul(sp.Pow(9 * C / 4, sp.Rational(2, 3), evaluate=False), s ** sp.Rational(4, 3),
+                       evaluate=False), ":391", lhs=V_s)
+assert sp.simplify(sp.diff(child, s, 2) - C / sp.sqrt(child)) == 0  # solves the ODE
+assert child.subs(s, 0) == 0 and sp.diff(child, s).subs(s, 0) == 0  # edge conditions
+si.check(sp.diff(child, s) ** 2 / 2, 2 * C * sp.sqrt(child))  # :377
 
-def test_cold_ion_density():
-    d = Derivation("Cold ion density in the sheath", f"{SRC}:283-305")
-    ratio = d.eq("Mach number", sp.Symbol("n_i") / sp.Symbol("n_s"),
-                 sp.simplify(ion_density_ratio(d)))
-    check(ratio, N_I)  # :305
-    anim = d.eq("M = 1.5", sp.Symbol("n_i") / n0, ratio.subs(M, sp.Rational(3, 2)))
-    check(anim, sp.Rational(3, 2) / sp.sqrt(sp.Rational(9, 4) + 2 * eta))  # :756
+# %% Child-Langmuir current
+section("Child-Langmuir current", "15-sheaths-probes.typ:396")
+note("At the wall,", sp.Eq(s, d_w, evaluate=False), ",", sp.Eq(V, V_w, evaluate=False))
+wall = sp.expand_power_base(profile.subs(s, d_w) ** sp.Rational(3, 2), force=True)
+agrees(wall, 9 * C / 4 * d_w**2, ":396", lhs=V_w ** sp.Rational(3, 2))
+J_i = sp.Symbol("J_i")
+current = e * sp.solve(sp.Eq(V_w ** sp.Rational(3, 2), sp.Rational(9, 4) * C_stated * d_w**2), Gamma_i)[0]
+child_langmuir = 4 * eps0 / 9 * sp.sqrt(2 * e / m_i) * V_w ** sp.Rational(3, 2) / d_w**2
+agrees(current, child_langmuir, ":401", lhs=J_i)
+si.check(current, child_langmuir, unit=u.ampere / u.meter**2, units=UNITS)
 
+# %% Worked example: sheath edge at 10 eV
+section("Worked example: sheath edge at 10 eV", "15-sheaths-probes.typ:409")
+example = {n0: 1e16 / u.meter**3, T_e: 10 * u.electronvolt / u.boltzmann_constant, M: 1.5, **HYDROGEN}
+note("Hydrogen,", sp.Eq(n0, example[n0], evaluate=False), ",",
+     sp.Eq(k_B * T_e, 10 * u.electronvolt, evaluate=False), ",", sp.Eq(M, sp.Float(1.5, 2)))
+lambda_D_sq = eps0 * k_B * T_e / (n0 * e**2)
+close_to(evaluate(lambda_D, sp.sqrt(lambda_D_sq), example, u.meter), 2.35e-4, source=":421")
+close_to(evaluate(sp.Symbol("c_s"), c_s, example, u.meter / u.second), 3.09e4, source=":422")
+close_to(evaluate(u_s, M * c_s, example, u.meter / u.second), 4.64e4, source=":423")
+close_to(evaluate(Gamma_i, n0 * M * c_s, example, 1 / (u.meter**2 * u.second)), 4.64e20, source=":424")
+note("The same with the rounded constants of the script,", sp.Eq(e, sp.Float(1.602e-19, 4) * u.coulomb),
+     ",", sp.Eq(m_i, sp.Float(1.673e-27, 4) * u.kilogram))
+printed = {**example, e: 1.602e-19 * u.coulomb, m_i: 1.673e-27 * u.kilogram}
+close_to(number(sp.sqrt(lambda_D_sq) / u.meter, printed), 2.35e-4, source=":421")
+close_to(number(c_s * u.second / u.meter, printed), 3.09e4, source=":422")
 
-def test_sheath_equation():
-    d = Derivation("Normalized sheath equation", f"{SRC}:310-324")
-    etaf = sp.Function("eta")(xi)
-    ni, ne = sp.symbols("n_i n_e", positive=True)
-    phi_of_x = -(k_B * T_e / e) * etaf
-    lhs = -sp.diff(phi_of_x, xi, 2) / lam**2  # d^2/dx^2 = lambda^-2 d^2/dxi^2
-    check(sp.simplify(-lhs), -(k_B * T_e / (e * lam**2)) * etaf.diff(xi, 2))  # :318
-    eq = d.step("Poisson", sp.Eq(lhs, e * (ni - ne) / eps0))
-    lam_D2 = eps0 * k_B * T_e / (n0 * e**2)
-    eta2 = d.eq("Debye length", etaf.diff(xi, 2),
-                sp.expand(sp.solve(eq.subs(lam, sp.sqrt(lam_D2)), etaf.diff(xi, 2))[0]))
-    check(eta2, ni / n0 - ne / n0)  # :323
-    rhs = d.eq("densities", etaf.diff(xi, 2),
-               sp.simplify(eta2.subs({ni: n0 * ion_density_ratio(), ne: n0 * sp.exp(-eta)})))
-    check(rhs, SHEATH_RHS)  # :324
+# %% Boltzmann transmission
+section("Boltzmann transmission", "15-sheaths-probes.typ:538")
+V_b = sp.Symbol("V_b", positive=True)  # barrier height -phi_w
+note("Only electrons with", sp.Gt(m_e * vz**2 / 2, e * V_b), "reach the wall:")
+v_min = sp.sqrt(2 * e * V_b / m_e)
+show(sp.Eq(sp.Symbol("v_min"), v_min))
+transmitted = half_space_flux(n0, T_e, m_e, v_min)
+unretarded = half_space_flux(n0, T_e, m_e)
+agrees(transmitted, unretarded * sp.exp(-e * V_b / (k_B * T_e)), ":538", lhs=sp.Symbol("Gamma_e"))
+agrees(sp.simplify(transmitted.subs(V_b, -phi_w) / unretarded), sp.exp(e * phi_w / (k_B * T_e)), ":539",
+       lhs=sp.Symbol("Gamma_e") / Gamma_e0)
 
+# %% Floating potential
+section("Floating potential", "15-sheaths-probes.typ:547")
+J = show(sp.Eq(sp.Symbol("J"), e * Gamma_i - e * Gamma_e0 * sp.exp(e * phi_w / (k_B * T_e)))).rhs
+phi_f = sp.Symbol("phi_f")
+floating = sp.expand_log(sp.solve(sp.Eq(J, 0), phi_w)[0], force=True)
+agrees(floating, k_B * T_e / e * sp.log(Gamma_i / Gamma_e0), ":560", lhs=phi_f)
+si.check(floating, k_B * T_e / e * sp.log(Gamma_i / Gamma_e0), unit=u.volt, units=UNITS)
+note("Bohm ions and unretarded Maxwellian electrons at the edge:")
+bohm_flux = n0 * sp.sqrt(k_B * T_e / m_i)  # :565
+show(sp.Eq(Gamma_i, bohm_flux))
+agrees(unretarded, n0 * sp.sqrt(k_B * T_e / (2 * sp.pi * m_e)), ":566", lhs=Gamma_e0)
+FLUX_RATIO = sp.sqrt(2 * sp.pi * m_e / m_i)
+agrees(sp.simplify(bohm_flux / unretarded), FLUX_RATIO, ":566", lhs=Gamma_i / Gamma_e0)
+two_logs = sp.Mul(k_B * T_e / (2 * e), sp.log(sp.simplify((bohm_flux / unretarded) ** 2)), evaluate=False)
+si.check(sp.expand_log(two_logs, force=True),
+         sp.expand_log(floating.subs({Gamma_i: bohm_flux, Gamma_e0: unretarded}), force=True))
+stated = k_B * T_e / (2 * e) * sp.log(2 * sp.pi * m_e / m_i)
+agrees(sp.expand_log(two_logs, force=True), stated, ":570", lhs=phi_f)
+si.check(sp.expand_log(two_logs, force=True), sp.expand_log(stated, force=True), unit=u.volt, units=UNITS)
 
-def test_sheath_first_integral():
-    # Multiply eta'' = SHEATH_RHS by eta' and integrate from the edge (eta = eta' = 0).
-    d = Derivation("Sheath first integral (Sagdeev potential)", f"{SRC}:324")
-    S = d.eq("integrate", sp.Symbol("S"), sp.integrate(SHEATH_RHS.subs(eta, xi), (xi, 0, eta)))
-    check(S, SAGDEEV)
-    assert sp.simplify(sp.diff(SAGDEEV, eta) - SHEATH_RHS) == 0 and SAGDEEV.subs(eta, 0) == 0
-    # Near the edge S ~ (1 - 1/M^2) eta^2/2: real eta' requires the Bohm criterion.
-    lead = d.eq("series", sp.Symbol("S"), sp.series(SAGDEEV, eta, 0, 3).removeO())
-    check(lead, (1 - M**-2) * eta**2 / 2)
-    # At M = 1 the leading term is cubic and positive.
-    check(sp.series(SAGDEEV.subs(M, 1), eta, 0, 4).removeO(), eta**3 / 3)
+# %% Hydrogen floating coefficient
+section("Hydrogen floating coefficient", "15-sheaths-probes.typ:572")
+mass_term = number(2 * sp.pi * m_e / m_i, HYDROGEN)
+show(sp.Eq(2 * sp.pi * m_e / m_i, sp.Float(mass_term, 3)))
+close_to(mass_term, 0.00342, rtol=1e-3, source=":572")
+log_term = float(np.log(mass_term))
+show(sp.Eq(sp.log(2 * sp.pi * m_e / m_i), sp.Float(log_term, 3)))
+close_to(log_term, -5.68, rtol=1e-3, source=":573")
+show(sp.Eq(e * phi_f / (k_B * T_e), sp.Float(log_term / 2, 3)))
+close_to(log_term / 2, -2.84, rtol=1e-3, source=":574")
 
+# %% Worked example: floating surface at 3 eV
+section("Worked example: floating surface at 3 eV", "15-sheaths-probes.typ:577")
+area = 1.0e-4 * u.meter**2
+example = {n0: 1e16 / u.meter**3, T_e: 3 * u.electronvolt / u.boltzmann_constant, **HYDROGEN, A: area}
+note("Hydrogen,", sp.Eq(n0, example[n0], evaluate=False), ",",
+     sp.Eq(k_B * T_e, 3 * u.electronvolt, evaluate=False), ",", sp.Eq(A, area, evaluate=False))
+close_to(evaluate(lambda_D, sp.sqrt(lambda_D_sq), example, u.meter), 1.29e-4, source=":589")
+flux_unit = 1 / (u.meter**2 * u.second)
+electron_flux = evaluate(Gamma_e0, unretarded, example, flux_unit)
+close_to(electron_flux, 2.90e21, source=":590")
+ion_flux = evaluate(Gamma_i, bohm_flux, example, flux_unit)
+close_to(ion_flux, 1.70e20, source=":591")
+u_f = float(np.log(ion_flux / electron_flux))
+show(sp.Eq(e * phi_f / (k_B * T_e), sp.Float(u_f, 3)))
+close_to(u_f, -2.84, source=":592")
+close_to(evaluate(phi_f, k_B * T_e / e * u_f, example, u.volt), -8.52, source=":593")
+close_to(evaluate(sp.Symbol("I_i"), e * A * bohm_flux, example, milliampere), 2.72, source=":594")
 
-def test_bohm_criterion():
-    d = Derivation("Bohm criterion", f"{SRC}:259, 329-337")
-    rhs = M / (M**2 + 2 * eta) ** sp.Rational(1, 2) - sp.exp(-eta)
-    ion = d.eq("series", M / sp.sqrt(M**2 + 2 * eta),
-               sp.series(M / (M**2 + 2 * eta) ** sp.Rational(1, 2), eta, 0, 2).removeO())
-    check(ion, 1 - eta / M**2)  # :331
-    lin = d.eq("series", sp.Derivative(sp.Function("eta")(xi), xi, 2),
-               sp.factor(sp.series(rhs, eta, 0, 2).removeO()))
-    check(lin, (1 - M**-2) * eta)  # :259, :337
-    # Monotone barrier requires a non-negative curvature coefficient.
-    sol = sp.solve_univariate_inequality(1 - M**-2 >= 0, M, relational=False)
-    assert sol.intersect(sp.Interval(0, sp.oo)) == sp.Interval(1, sp.oo)
-    d.step("Bohm", M >= 1)
+# %% Langmuir probe: semilog slope
+section("Langmuir probe: semilog slope", "15-sheaths-probes.typ:674")
+retarded = Gamma_e0 * sp.exp(e * (phi_p - phi_pl) / (k_B * T_e))  # :704
+I_p = show(sp.Eq(sp.Symbol("I_p"), A * (e * Gamma_i - e * retarded))).rhs
+I_e0 = e * A * Gamma_e0  # :687
+note("Subtract the ion saturation current", sp.Eq(sp.Symbol("I_i"), e * A * Gamma_i))
+electron_current = sp.expand(I_p - e * A * Gamma_i)
+agrees(electron_current, -e * A * retarded, ":686", lhs=sp.Symbol("I_e"))
+si.check(-electron_current, e * A * Gamma_e0 * sp.exp(e * (phi_p - phi_pl) / (k_B * T_e)), unit=u.ampere,
+         units=UNITS)  # :709
+u_b = sp.Symbol("u", real=True)  # u = e (phi_p - phi_pl)/(k_B T_e)
+PROBE_RETARDING = Gamma_i / Gamma_e0 - sp.exp(u_b)  # I_p/(e A Gamma_e0) for u <= 0
+si.check(I_p / I_e0, PROBE_RETARDING.subs(u_b, e * (phi_p - phi_pl) / (k_B * T_e)))  # :676
+show(sp.Eq(sp.Symbol("I_p") / (e * A * Gamma_e0), PROBE_RETARDING))
+note("with", sp.Eq(u_b, e * (phi_p - phi_pl) / (k_B * T_e)), "; logarithm of the electron current:")
+semilog = sp.expand_log(sp.log(sp.simplify(-electron_current / I_e0)), force=True)
+agrees(semilog, e * (phi_p - phi_pl) / (k_B * T_e), ":715",
+       lhs=sp.log(sp.Abs(sp.Symbol("I_e")) / sp.Symbol("I_e0")))
+slope = sp.diff(semilog, phi_p)
+S = sp.Symbol("S", positive=True)
+agrees(slope, e / (k_B * T_e), ":721", lhs=S)
+si.check(slope, e / (k_B * T_e), unit=u.volt**-1, units=UNITS)
+agrees(sp.solve(sp.Eq(S, slope), T_e)[0] * k_B, e / S, ":725", lhs=k_B * T_e)
 
+# %% Langmuir probe: density
+section("Langmuir probe: density", "15-sheaths-probes.typ:734")
+I0 = sp.Symbol("I_e0", positive=True)
+saturation = half_space_flux(n_s, T_e, m_e)
+agrees(saturation, n_s * sp.sqrt(k_B * T_e / (2 * sp.pi * m_e)), ":738", lhs=Gamma_e0)
+show(sp.Eq(I0, e * A * Gamma_e0))
+density = sp.solve(sp.Eq(I0, e * A * saturation), n_s)[0]
+probe_density = I0 / (e * A * sp.sqrt(k_B * T_e / (2 * sp.pi * m_e)))
+agrees(density, probe_density, ":742", lhs=n_s)
+si.check(density, probe_density, unit=u.meter**-3, units={**UNITS, I0: u.ampere})
 
-def test_child_langmuir_poisson():
-    d = Derivation("Child-Langmuir: ion density and Poisson", f"{SRC}:357-368")
-    # Zero injection energy: m_i u^2/2 = e V; flux conservation n_i = Gamma_i/u_i.
-    w = sp.Symbol("u_i", positive=True)
-    ui = d.eq("energy", w, sp.solve(sp.Eq(m_i * w**2 / 2, e * V), w)[0])
-    check(ui, sp.sqrt((2 * e * V) / m_i), unit=u.meter / u.second)  # :357
-    n_i = d.eq("flux", sp.Symbol("n_i"), Gam_i / ui)
-    check(n_i, Gam_i * sp.sqrt(m_i / (2 * e * V)), unit=u.meter**-3)  # :361
-    # Poisson with phi = -V and no electrons: V'' = e n_i / eps0 = C V^(-1/2).
-    C_stated = (Gam_i / eps0) * sp.sqrt((e * m_i) / 2)  # :368
-    d.eq("Poisson", sp.Derivative(sp.Function("V")(sp.Symbol("x")), sp.Symbol("x"), 2),
-         e * n_i / eps0)
-    check(e * n_i / eps0, C_stated * V ** sp.Rational(-1, 2), unit=u.volt / u.meter**2)
+# %% Probe animation: ion level
+section("Probe animation: ion level", "15-sheaths-probes.typ:775")
+level = number(FLUX_RATIO, HYDROGEN)
+show(sp.Eq(Gamma_i / Gamma_e0, sp.Float(level, 3)))
+close_to(level, 0.058, rtol=1e-2, source=":775")
 
+# %% Worked example: probe inversion
+section("Worked example: probe inversion", "15-sheaths-probes.typ:782")
+probe = {S: 0.40 / u.volt, I0: 4.0e-3 * u.ampere, A: 1.0e-5 * u.meter**2}
+note("Measured slope", sp.Eq(S, probe[S], evaluate=False), ",", sp.Eq(I0, probe[I0], evaluate=False), ",",
+     sp.Eq(A, probe[A], evaluate=False))
+T_volt = evaluate(k_B * T_e / e, 1 / S, probe, u.volt)
+close_to(T_volt, 2.50, rtol=1e-3, source=":789")
+close_to(evaluate(n_s, probe_density, {**probe, T_e: T_volt * u.volt * u.elementary_charge / u.boltzmann_constant},
+                  u.meter**-3), 9.44e15, rtol=2e-3, source=":791")
 
-def child_langmuir_profile(d):
-    """Solve V'' = C V^(-1/2) with V(0) = V'(0) = 0 by quadrature."""
-    Vs = sp.Function("V")(s)
-    d.step("ODE", sp.Eq(Vs.diff(s, 2), C / sp.sqrt(Vs)))
-    # First integral: d/ds[(V')^2/2 - 2 C V^(1/2)] = V' (V'' - C V^(-1/2)) = 0.
-    E1 = Vs.diff(s) ** 2 / 2 - 2 * C * sp.sqrt(Vs)
-    assert sp.simplify(sp.diff(E1, s).subs(Vs.diff(s, 2), C / sp.sqrt(Vs))) == 0
-    d.step("first integral", sp.Eq(E1, 0))
-    # Edge values V = 0, V' = 0 give C_1 = 0, positive branch.
-    Vp = sp.sqrt(4 * C * sp.sqrt(V))
-    check(Vp / V ** sp.Rational(1, 4), 2 * sp.sqrt(C))  # :383
-    W = sp.symbols("W", positive=True)
-    left = d.eq("separate", sp.Integral(W ** sp.Rational(-1, 4), (W, 0, V)),
-                sp.integrate(W ** sp.Rational(-1, 4), (W, 0, V)))
-    check(left, sp.Rational(4, 3) * V ** sp.Rational(3, 4))  # :387
-    Vsol = sp.solve(sp.Eq(left, 2 * sp.sqrt(C) * s), V)[0]
-    d.eq("solve", V ** sp.Rational(3, 2),
-         sp.expand_power_base(Vsol ** sp.Rational(3, 2), force=True))
-    return Vsol
+# %% Plot: Bohm sheath (M = 1) from the wall at the hydrogen floating potential
+# Wall at x = 0: x(eta) = integral from eta to eta_w of d eta'/sqrt(2 S(eta')).
+PANEL = (2.6, 3.0)  # one panel of a side-by-side pair
+eta_w = -np.log(level)  # 2.84
+sagdeev_M1 = sp.lambdify(eta, SAGDEEV.subs(M, 1), "mpmath")
+eta_grid = np.geomspace(eta_w, 0.02, 120)
+x_grid = [float(mp.quad(lambda t: 1 / mp.sqrt(2 * sagdeev_M1(t)), [h, eta_w])) for h in eta_grid]
+n_e_plot, n_i_plot = (sp.lambdify(eta, f.subs(M, 1), "numpy") for f in (N_E, N_I))
 
+fig, ax = figure(*PANEL)
+ax.plot(x_grid, eta_grid, color=BLUE)
+ax.axhline(eta_w, color=GRAY, lw=0.8, ls=":")
+label(ax, 11.8, eta_w - 0.08, f"wall $\\eta_w={eta_w:.2f}$", GRAY, ha="right", va="top")
+ax.set(xlim=(0, 12), ylim=(0, 3), xticks=[0, 4, 8, 12], yticks=[0, 1, 2, 3], xlabel=r"$x/\lambda_D$ from the wall [1]",
+       ylabel=r"$\eta=-e\phi/k_BT_e$ [1]")
+save(fig, "sheath-potential")
 
-def test_child_langmuir_profile():
-    d = Derivation("Child-Langmuir profile", f"{SRC}:372-391")
-    Vsol = child_langmuir_profile(d)
-    stated = ((9 * C) / 4) ** sp.Rational(2, 3) * s ** sp.Rational(4, 3)  # :391
-    check(Vsol, stated)
-    # Independent check: the profile satisfies the ODE and both edge conditions.
-    assert sp.simplify(sp.diff(stated, s, 2) - C / sp.sqrt(stated)) == 0
-    assert stated.subs(s, 0) == 0 and sp.diff(stated, s).subs(s, 0) == 0
-    check(sp.diff(stated, s) ** 2 / 2, 2 * C * sp.sqrt(stated))  # :377
+fig, ax = figure(*PANEL)
+ax.plot(x_grid, n_i_plot(eta_grid), color=ORANGE, ls="--")
+ax.plot(x_grid, n_e_plot(eta_grid), color=BLUE)
+label(ax, 0.3, 0.7, "ions", ORANGE)
+label(ax, 2.0, 0.12, "electrons", BLUE)
+ax.set(xlim=(0, 12), ylim=(0, 1.05), xticks=[0, 4, 8, 12], yticks=[0, 0.5, 1], xlabel=r"$x/\lambda_D$ from the wall [1]",
+       ylabel=r"$n/n_0$ [1]")
+save(fig, "sheath-densities")
 
+# %% Plot: planar probe current, retarding branch and electron saturation
+probe_current = sp.lambdify(u_b, PROBE_RETARDING.subs(Gamma_i, level * Gamma_e0), "numpy")
+u_grid = np.linspace(-8, 2, 400)
+current = np.where(u_grid <= 0, probe_current(np.minimum(u_grid, 0)), probe_current(0))
+u_float = np.log(level)  # -2.84
+fig, ax = figure(4.2, 2.8)
+ax.axhline(0, color="#333333", lw=0.6)
+ax.axvline(0, color=GRAY, lw=0.8, ls=":")
+ax.plot(u_grid, current, color=BLUE)
+ax.plot([u_float], [0], "o", color=ORANGE, ms=4, zorder=3)
+label(ax, u_float + 0.15, 0.03, f"floating $u_f={u_float:.2f}$", ORANGE)
+label(ax, -7.9, level + 0.03, "ion saturation", BLUE)
+label(ax, 1.9, -0.88, "electron\nsaturation", BLUE, ha="right")
+label(ax, 0.1, -0.45, "plasma\npotential", GRAY)
+ax.set(xlim=(-8, 2), ylim=(-1.1, 0.25), yticks=[-1, -0.5, 0],
+       xlabel=r"$u=e(\phi_p-\phi_{pl})/k_BT_e$ [1]", ylabel=r"$I/(eA\Gamma_{e0})$ [1]")
+save(fig, "probe-iv-characteristic")
 
-def test_child_langmuir_current():
-    d = Derivation("Child-Langmuir current", f"{SRC}:396-402")
-    Vsol = child_langmuir_profile(_Silent())
-    wall = d.eq("wall", Vw ** sp.Rational(3, 2),
-                sp.expand_power_base(Vsol.subs(s, d_w) ** sp.Rational(3, 2), force=True))
-    check(wall, ((9 * C) / 4) * d_w**2)  # :396
-    C_expr = (Gam_i / eps0) * sp.sqrt(e * m_i / 2)
-    G = sp.solve(sp.Eq(Vw ** sp.Rational(3, 2), sp.Rational(9, 4) * C_expr * d_w**2), Gam_i)[0]
-    J = d.eq("solve", sp.Symbol("J_i"), e * G)
-    stated = (4 * eps0) / 9 * sp.sqrt((2 * e) / m_i) * Vw ** sp.Rational(3, 2) / d_w**2  # :401
-    check(J, stated, unit=u.ampere / u.meter**2)
-
-
-def test_example_bohm_numbers():
-    d = Derivation("Example: sheath edge at 10 eV", f"{SRC}:409-425")
-    ev, n, mi, M_ = 1.602e-19, 1.0e16, 1.673e-27, 1.50  # inputs as printed
-    kT = 10.0 * ev
-    lamD = num(d, "m", lam, (EPS0_CODATA * kT / (n * ev**2)) ** 0.5)
-    cs = num(d, "m/s", sp.Symbol("c_s"), (kT / mi) ** 0.5)
-    num(d, "m/s", sp.Symbol("u_s"), M_ * cs)
-    num(d, "flux", Gam_i, n * M_ * cs)
-    close(lamD, 2.35e-4, 5e-3)  # :421
-    close(cs, 3.09e4, 5e-3)  # :422
-    close(M_ * cs, 4.64e4, 5e-3)  # :423
-    close(n * M_ * cs, 4.64e20, 5e-3)  # :424
-    # Same with CODATA e and proton mass.
-    close((EPS0_CODATA * 10 / (n * E_CODATA)) ** 0.5, 2.35e-4, 5e-3)
-    close((10 * E_CODATA / MP_CODATA) ** 0.5, 3.09e4, 5e-3)
-
-
-def test_electron_transmission():
-    d = Derivation("Boltzmann transmission", f"{SRC}:509, 537-539")
-    Vb = sp.symbols("V_b", positive=True)  # barrier |phi_w|
-    UNITS[Vb] = u.volt
-    G0 = half_space_flux(n0, T_e, m_e)
-    # Electrons with m_e vz^2/2 > e |phi_w| pass; the flux is conserved along orbits.
-    vmin = d.eq("barrier", sp.Symbol("v_min"), sp.sqrt(2 * e * Vb / m_e))
-    Gt = d.eq("integrate", sp.Symbol("Gamma_e"), half_space_flux(n0, T_e, m_e, vmin))
-    check(Gt, G0 * sp.exp(-(e * Vb) / (k_B * T_e)))  # :538
-    out = d.eq("negative wall", sp.Symbol("Gamma_e") / sp.Symbol("Gamma_e0"),
-               sp.simplify(Gt.subs(Vb, -phi_w) / G0))
-    check(out, sp.exp((e * phi_w) / (k_B * T_e)))  # :539, :509
-
-
-def test_floating_potential():
-    d = Derivation("Floating potential", f"{SRC}:547-570")
-    J = d.eq("net current", sp.Symbol("J"),
-             e * Gam_i - e * Gam_e0 * sp.exp(e * phi_w / (k_B * T_e)))  # :551
-    phi_f = d.eq("zero current", sp.Symbol("phi_f"),
-                 sp.expand_log(sp.solve(sp.Eq(J, 0), phi_w)[0], force=True))
-    check(phi_f, ((k_B * T_e) / e) * sp.log(Gam_i / Gam_e0), unit=u.volt)  # :560
-    # Ideal edge fluxes: Bohm ions and unretarded Maxwellian electrons.
-    Gi = n0 * sp.sqrt((k_B * T_e) / m_i)  # :565
-    Ge = d.eq("Maxwellian", Gam_e0, half_space_flux(n0, T_e, m_e))
-    check(Ge, n0 * sp.sqrt((k_B * T_e) / (2 * sp.pi * m_e)))  # :566
-    ratio = d.eq("flux ratio", Gam_i / Gam_e0, sp.simplify(Gi / Ge))
-    check(ratio, FLUX_RATIO)
-    # ln(ratio) = ln(ratio^2)/2 keeps the mass ratio inside one logarithm.
-    val = d.eq("Bohm flux", sp.Symbol("phi_f"),
-               sp.Mul(k_B * T_e / (2 * e), sp.log(sp.simplify(ratio**2)), evaluate=False))
-    check(sp.expand_log(val, force=True),
-          sp.expand_log(phi_f.subs({Gam_i: Gi, Gam_e0: Ge}), force=True))
-    stated = ((k_B * T_e) / (2 * e)) * sp.log((2 * sp.pi * m_e) / m_i)  # :570
-    check(sp.expand_log(val, force=True), sp.expand_log(stated, force=True), unit=u.volt)
-
-
-def test_floating_coefficient_hydrogen():
-    d = Derivation("Hydrogen floating coefficient", f"{SRC}:572-574")
-    ratio = num(d, "CODATA", 2 * sp.pi * m_e / m_i, 2 * sp.pi * ME_CODATA / MP_CODATA)
-    num(d, "log", e * sp.Symbol("phi_f") / (k_B * T_e), sp.log(ratio) / 2)
-    close(ratio, 0.00342, 1e-3)  # :572
-    close(sp.log(ratio), -5.68, 1e-3)  # :573
-    close(sp.log(ratio) / 2, -2.84, 1e-3)  # :526, :574, :611
-
-
-def test_example_floating_numbers():
-    d = Derivation("Example: floating surface at 3 eV", f"{SRC}:577-595")
-    ev, n, me, mi, A_ = 1.602e-19, 1.0e16, 9.109e-31, 1.673e-27, 1.0e-4
-    kT = 3.00 * ev
-    lamD = num(d, "m", lam, (EPS0_CODATA * kT / (n * ev**2)) ** 0.5)
-    Ge = num(d, "flux", Gam_e0, n * (kT / (2 * sp.pi * me)) ** 0.5)
-    Gi = num(d, "flux", Gam_i, n * (kT / mi) ** 0.5)
-    u_f = num(d, "log ratio", e * sp.Symbol("phi_f") / (k_B * T_e), sp.log(Gi / Ge))
-    num(d, "mA", sp.Symbol("I_i"), ev * Gi * A_ * 1e3)
-    close(lamD, 1.29e-4, 5e-3)  # :589
-    close(Ge, 2.90e21, 5e-3)  # :590
-    close(Gi, 1.70e20, 5e-3)  # :591
-    close(u_f, -2.84, 5e-3)  # :592
-    close(3.00 * u_f, -8.52, 5e-3)  # :593
-    close(ev * Gi * A_ * 1e3, 2.72, 5e-3)  # :594 (mA)
-
-
-def test_probe_semilog():
-    d = Derivation("Langmuir probe: semilog slope", f"{SRC}:674-725")
-    Ge = Gam_e0 * sp.exp(e * (phi_p - phi_pl) / (k_B * T_e))  # :704
-    I_p = d.eq("probe current", sp.Symbol("I_p"), A * (e * Gam_i - e * Ge))  # :676
-    I_i = e * A * Gam_i  # :693
-    I_e = d.eq("subtract ions", sp.Symbol("I_e"), sp.expand(I_p - I_i))
-    check(I_e, -e * A * Ge)  # :686
-    abs_Ie = -I_e
-    check(abs_Ie, e * A * Gam_e0 * sp.exp((e * (phi_p - phi_pl)) / (k_B * T_e)),
-          unit=u.ampere)  # :709
-    I_e0 = e * A * Gam_e0  # :687
-    check(I_p / I_e0, PROBE_RETARDING.subs(u_b, e * (phi_p - phi_pl) / (k_B * T_e)))
-    line = d.eq("log", sp.log(sp.Abs(sp.Symbol("I_e")) / sp.Symbol("I_e0")),
-                sp.expand_log(sp.log(sp.simplify(abs_Ie / I_e0)), force=True))
-    check(line, (e * (phi_p - phi_pl)) / (k_B * T_e))  # :715
-    slope = d.eq("slope", sp.Symbol("S"), sp.diff(line, phi_p))
-    check(slope, e / (k_B * T_e), unit=u.volt**-1)  # :721
-    S = sp.symbols("S", positive=True)
-    kT = d.eq("invert", k_B * T_e, sp.solve(sp.Eq(S, slope), T_e)[0] * k_B)
-    check(kT, e * S ** (-1))  # :725
-
-
-def test_probe_density():
-    d = Derivation("Langmuir probe: density", f"{SRC}:734-743")
-    I0 = sp.symbols("I_e0", positive=True)
-    UNITS[I0] = u.ampere
-    Ge = d.eq("Maxwellian", Gam_e0, half_space_flux(n_s, T_e, m_e))
-    check(Ge, n_s * sp.sqrt((k_B * T_e) / (2 * sp.pi * m_e)))  # :738
-    n_sol = d.eq("solve", n_s, sp.solve(sp.Eq(I0, e * A * Ge), n_s)[0])  # :734
-    stated = I0 / (e * A * sp.sqrt((k_B * T_e) / (2 * sp.pi * m_e)))  # :742
-    check(n_sol, stated, unit=u.meter**-3)
-
-
-def test_probe_animation_level():
-    d = Derivation("Probe animation: ion level", f"{SRC}:775")
-    # Ion saturation over electron saturation, in units of e Gamma_e0 A (hydrogen).
-    lvl = num(d, "Bohm / Maxwellian", sp.sqrt(2 * sp.pi * m_e / m_i),
-               (2 * sp.pi * ME_CODATA / MP_CODATA) ** 0.5)
-    close(lvl, 0.058, 1e-2)  # :775
-
-
-def test_example_probe_numbers():
-    d = Derivation("Example: probe inversion", f"{SRC}:782-791")
-    slope, I0, A_ = 0.40, 4.0e-3, 1.0e-5
-    Te_V = num(d, "inverse slope, V", k_B * T_e / e, 1 / slope)
-    close(Te_V, 2.50, 1e-3)  # :789
-    kT = Te_V * E_CODATA
-    n = num(d, "density", sp.Symbol("n_e"),
-             I0 / (E_CODATA * A_ * (kT / (2 * sp.pi * ME_CODATA)) ** 0.5))
-    close(n, 9.44e15, 2e-3)  # :791
-
-
-def plot_sheath_profile():
-    """Poisson solution of the Bohm sheath (M = 1) from the wall at hydrogen floating potential."""
-    import mpmath as mp
-    import numpy as np
-
-    Mv = 1  # ions enter at the Bohm speed
-    eta_w = float(-sp.log(FLUX_RATIO.subs({m_e: ME_CODATA, m_i: MP_CODATA})))  # 2.84
-    S = sp.lambdify(eta, SAGDEEV.subs(M, Mv), "mpmath")
-    # Wall at x = 0: x(eta) = int_eta^eta_w d eta'/sqrt(2 S(eta')).
-    etas = np.geomspace(eta_w, 0.02, 120)
-    xs = [float(mp.quad(lambda t: 1 / mp.sqrt(2 * S(t)), [h, eta_w])) for h in etas]
-    ne, ni = (sp.lambdify(eta, f.subs(M, Mv), "numpy") for f in (N_E, N_I))
-    fig, ax = figure(4.2, 2.8)
-    ax.plot(xs, etas, color=GRAY, ls=":")
-    ax.plot(xs, ni(etas), color=ORANGE, ls="--")
-    ax.plot(xs, ne(etas), color=BLUE)
-    at = lambda x: np.interp(x, xs, etas)  # eta at distance x
-    label(ax, 1.0, at(1.0) + 0.1, "potential $\\eta=-e\\phi/k_BT_e$", GRAY)
-    label(ax, 0.3, 0.68, "ions $n_i/n_0$", ORANGE)
-    label(ax, 8.0, 0.62, "electrons $n_e/n_0$", BLUE, va="top")
-    ax.set(xlim=(0, 12), ylim=(0, 3), yticks=[0, 1, 2, 3],
-           xlabel=r"$x/\lambda_D$ from the wall [1]", ylabel="$n/n_0$, $\\eta$ [1]")
-    save(fig, "sheath-profile")
-
-
-def plot_probe_iv_characteristic():
-    """Planar probe current I/(e A Gamma_e0): retarding branch, flat electron saturation."""
-    import numpy as np
-
-    ratio = float(FLUX_RATIO.subs({m_e: ME_CODATA, m_i: MP_CODATA}))  # hydrogen, 0.0585
-    f = sp.lambdify(u_b, PROBE_RETARDING.subs(Gam_i, ratio * Gam_e0) / 1, "numpy")
-    U = np.linspace(-8, 2, 400)
-    I = np.where(U <= 0, f(np.minimum(U, 0)), f(0))  # electron saturation for u > 0
-    u_f = np.log(ratio)  # tested in test_floating_potential: -2.84
-    fig, ax = figure(4.2, 2.8)
-    ax.axhline(0, color="#333333", lw=0.6)
-    ax.axvline(0, color=GRAY, lw=0.8, ls=":")
-    ax.plot(U, I, color=BLUE)
-    ax.plot([u_f], [0], "o", color=ORANGE, ms=4, zorder=3)
-    label(ax, u_f + 0.15, 0.03, f"floating $u_f={u_f:.2f}$", ORANGE)
-    label(ax, -7.9, ratio + 0.03, "ion saturation", BLUE)
-    label(ax, 1.9, -0.88, "electron\nsaturation", BLUE, ha="right")
-    label(ax, 0.1, -0.45, "plasma\npotential", GRAY)
-    ax.set(xlim=(-8, 2), ylim=(-1.1, 0.25), yticks=[-1, -0.5, 0],
-           xlabel=r"$u=e(\phi_p-\phi_{pl})/k_BT_e$ [1]", ylabel=r"$I/(eA\Gamma_{e0})$ [1]")
-    save(fig, "probe-iv-characteristic")
-
-
+# %%
 if __name__ == "__main__":
-    from si import run_as_script
-    run_as_script(globals())
+    report(__file__, "Chapter 15 · Sheaths and probes")

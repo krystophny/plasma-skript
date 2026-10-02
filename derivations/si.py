@@ -15,7 +15,7 @@ e, m_e, m_i, eps0, mu0, k_B, c = sp.symbols(
     "e m_e m_i epsilon_0 mu_0 k_B c", positive=True
 )
 
-# SI unit of each symbol. Derivation files extend this with UNITS.update(...).
+# SI unit of the constant symbols; chapter files pass their own units= tables.
 UNITS = {
     e: u.coulomb,
     m_e: u.kilogram,
@@ -54,104 +54,10 @@ def check(derived, stated, unit=None, units=None):
         assert same_unit(got, unit), f"unit of {stated} is {got}, expected {unit}"
 
 
-# --- LaTeX report -----------------------------------------------------------
-# Each test records its steps in a Derivation. Running a chapter file as a
-# script (see the Makefile) writes all recorded steps to build/tex/<file>.tex,
-# which latexmk turns into build/pdf/<file>.pdf.
-
-_RECORDED = []
-
-
-def _tex(expr):
-    """LaTeX for display; recombine sqrt(a) sqrt(b) into sqrt(a b)."""
-    if isinstance(expr, sp.Equality):
-        return f"{_tex(expr.lhs)} = {_tex(expr.rhs)}"
-    if isinstance(expr, sp.Mul):
-        powers = expr.as_powers_dict()
-        half = {b: x for b, x in powers.items() if getattr(x, "q", 1) == 2}
-        if len(half) > 1:
-            inner = sp.Mul(*[b ** (2 * x) for b, x in half.items()])
-            rest = sp.Mul(*[b**x for b, x in powers.items() if b not in half])
-            num, den = sp.fraction(rest)
-            top = (r"\sqrt{%s}" % sp.latex(inner)) if num == 1 else (
-                r"%s \sqrt{%s}" % (sp.latex(num), sp.latex(inner)))
-            return top if den == 1 else r"\frac{%s}{%s}" % (top, sp.latex(den))
-    return sp.latex(expr)
-
-
-class Derivation:
-    """Ordered list of (label, formula) steps, rendered as one LaTeX section."""
-
-    def __init__(self, title, source=""):
-        self.title, self.source, self.steps = title, source, []
-        _RECORDED.append(self)
-
-    def step(self, label, expr):
-        """Record expr (a SymPy expression or sp.Eq) and return it unchanged."""
-        self.steps.append((label, _tex(expr)))
-        return expr
-
-    def eq(self, label, lhs, rhs):
-        """Record lhs = rhs and return rhs."""
-        self.steps.append((label, f"{_tex(lhs)} = {_tex(rhs)}"))
-        return rhs
-
-
-def _tex_escape(text):
-    for a, b in [("\\", r"\textbackslash{}"), ("&", r"\&"), ("%", r"\%"),
-                 ("#", r"\#"), ("_", r"\_"), ("$", r"\$")]:
-        text = text.replace(a, b)
-    return text
-
-
-def write_report(title, path):
-    """Write every Derivation recorded so far as a standalone LaTeX document."""
-    lines = [
-        r"\documentclass[11pt]{article}",
-        r"\usepackage[a4paper,margin=2cm]{geometry}",
-        r"\usepackage{amsmath,amssymb}",
-        r"\allowdisplaybreaks",
-        rf"\title{{{_tex_escape(title)}}}",
-        r"\date{}",
-        r"\begin{document}",
-        r"\maketitle",
-    ]
-    for d in _RECORDED:
-        lines.append(rf"\section*{{{_tex_escape(d.title)}}}")
-        if d.source:
-            lines.append(rf"\noindent{{\small\texttt{{{_tex_escape(d.source)}}}}}")
-        lines.append(r"\begin{align*}")
-        body = [rf"&{tex} && \text{{{_tex_escape(label)}}}" for label, tex in d.steps]
-        lines.append(" \\\\\n".join(body))
-        lines.append(r"\end{align*}")
-    lines.append(r"\end{document}")
-    from pathlib import Path
-
-    Path(path).parent.mkdir(parents=True, exist_ok=True)
-    Path(path).write_text("\n".join(lines) + "\n")
-
-
-def run_as_script(module_globals):
-    """Run all test_* functions of a chapter file and write its LaTeX report."""
-    from pathlib import Path
-
-    name = Path(module_globals["__file__"]).stem
-    for key, fn in list(module_globals.items()):
-        if key.startswith("test_") and callable(fn):
-            fn()
-            print("ok", key)
-    for key, fn in list(module_globals.items()):
-        if key.startswith("plot_") and callable(fn):
-            fn()
-            print("plot", key)
-    doc = (module_globals.get("__doc__") or name).strip().splitlines()[0]
-    write_report(doc, Path("build/tex") / f"{name}.tex")
-
-
 # --- Plots -----------------------------------------------------------------
 # Plots of derived results live next to their derivation. A chapter file
 # defines plot_<name>() functions that lambdify the derived expressions and
-# call save(fig, "<name>"); run_as_script writes build/fig/<name>.svg (script
+# call save(fig, "<name>"), which writes build/fig/<name>.svg (script
 # website) and build/fig/<name>.pdf (slides).
 #
 # One figure, one source: the script includes the SVG with

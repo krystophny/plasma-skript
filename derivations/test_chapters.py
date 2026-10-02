@@ -14,7 +14,6 @@ CHAPTERS = sorted((Path(__file__).parent / "chapters").glob("ch*.py"))
 def test_chapter(path):
     notebook.reset(echo=False)
     namespace = runpy.run_path(str(path), run_name="chapter")
-    # Files not yet in notebook form still keep their checks in test_* functions.
     for name, fn in namespace.items():
         if name.startswith("test_") and callable(fn):
             fn()

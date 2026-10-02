@@ -40,6 +40,33 @@ def _display(obj):
     return obj
 
 
+def _join(pieces):
+    """Join note pieces with spaces, but none before punctuation."""
+    out = ""
+    for piece in pieces:
+        glue = "" if not out or piece[:1] in ",.;:)" else " "
+        out += glue + piece
+    return out
+
+
+def _latex(obj):
+    """LaTeX with scientific notation for very large or small floats."""
+    return sp.latex(obj, min=-3, max=4)
+
+
+def _inline(obj):
+    """One-line terminal form of a SymPy object (for use inside a sentence)."""
+    if isinstance(obj, sp.Equality):
+        return f"{_inline(obj.lhs)} = {_inline(obj.rhs)}"
+    pretty = sp.pretty(_display(obj), use_unicode=True)
+    return pretty if "\n" not in pretty else sp.sstr(obj)
+
+
+def _rounded(number, digits):
+    """Display copy rounded to `digits` significant digits (94.1 stays 94.1)."""
+    return sp.Float(f"{number:.{digits}g}", digits + 1)
+
+
 def section(title, source=""):
     """Start a new derivation; source is 'file.typ:line' in src/chapters."""
     _SECTIONS.append([title, source, []])
@@ -60,17 +87,16 @@ def note(*parts):
 
     note("Linearize for", sp.Lt(e * phi, k_B * T_e))
     """
-    tex = " ".join(f"${sp.latex(_display(p))}$" if isinstance(p, sp.Basic) else _esc(p)
-                   for p in parts)
-    text = " ".join(sp.pretty(p, use_unicode=True) if isinstance(p, sp.Basic) else p
-                    for p in parts)
+    tex = _join([f"${_latex(_display(p))}$" if isinstance(p, sp.Basic) else _esc(p)
+                  for p in parts])
+    text = _join([_inline(p) if isinstance(p, sp.Basic) else p for p in parts])
     _record("note", tex, f"   {text}")
 
 
 def show(obj, label=""):
     """Display a SymPy object (expression, Eq, Matrix) and return it unchanged."""
     d = _display(obj)
-    _record("math", (sp.latex(d), label),
+    _record("math", (_latex(d), label),
             sp.pretty(d, use_unicode=True) + (f"    [{label}]" if label else ""))
     return obj
 
@@ -83,7 +109,7 @@ def agrees(derived, printed, source="", lhs=None):
     d = _display(sp.sympify(printed))
     if lhs is not None:
         d = sp.Eq(lhs, d, evaluate=False)
-    _record("check", (sp.latex(d), "matches " + tag),
+    _record("check", (_latex(d), "matches " + tag),
             sp.pretty(d, use_unicode=True) + f"    [matches {tag} ✓]")
     return printed
 
@@ -106,19 +132,27 @@ def evaluate(symbol, expr, inputs, unit, digits=3):
     """
     subs = {s: CONSTANTS[s.name] for s in expr.free_symbols if s.name in CONSTANTS}
     subs.update(inputs)
-    q = convert_to(expr.subs(subs), unit)
-    number = float(sp.simplify(q / unit))
-    shown = sp.Eq(symbol, sp.Mul(sp.Float(number, digits), unit, evaluate=False),
-                  evaluate=False)
-    _record("math", (sp.latex(shown), ""), sp.pretty(shown, use_unicode=True))
+    if unit == 1:
+        number = complex(sp.N(expr.subs(subs)))
+        number = number.real if number.imag == 0 else number
+        shown = sp.Eq(symbol, _rounded(number, digits) if isinstance(number, float)
+                      else sp.N(number, digits), evaluate=False)
+    else:
+        base = [u.kilogram, u.meter, u.second, u.ampere, u.kelvin]
+        q = convert_to(sp.expand(convert_to(expr.subs(subs), base)), unit)
+        number = float(sp.simplify(q / unit))
+        shown = sp.Eq(symbol, sp.Mul(_rounded(number, digits), unit, evaluate=False),
+                      evaluate=False)
+    _record("math", (_latex(shown), ""), sp.pretty(shown, use_unicode=True))
     return number
 
 
 def close_to(number, printed, rtol=5e-3, source=""):
-    """Assert a computed number matches the number printed in the script."""
+    """Assert a computed (real or complex) number matches the printed one."""
     assert abs(number - printed) <= rtol * abs(printed), f"{number} vs printed {printed}"
-    _record("check", (sp.latex(sp.Float(printed, 3)), f"script {source}".strip()),
-            f"   matches printed {printed}  [{source}] ✓")
+    shown = _rounded(printed, 3) if isinstance(printed, (int, float)) else sp.N(printed, 3)
+    _record("check", (_latex(shown), f"matches script {source}".strip()),
+            f"   matches printed {printed}  [{source}] \u2713")
 
 
 def _esc(text):
@@ -143,7 +177,7 @@ def report(path, title=None):
             out.append(rf"{{\small\color{{gray}}\texttt{{{_esc(source)}}}}}\par")
         for kind, payload in items:
             if kind == "note":
-                out.append(rf"\medskip {payload}")
+                out.append(rf"\medskip {payload}\par")
             else:
                 tex, label = payload
                 tag = r"\quad\checkmark" if kind == "check" else ""

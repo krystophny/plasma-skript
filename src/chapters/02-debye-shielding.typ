@@ -1,6 +1,6 @@
 #import "../theme.typ": *
 #import "@preview/physica:0.9.8": grad, div, curl, laplacian, pdv, dv, vb
-#import "../figures.typ": debye-potential-comparison, debye-regime-map
+#import "../figures.typ": debye-potential-comparison, debye-regime-map, debye-screened-point
 
 #let chapter = [
   #page-title[2. Debye shielding] <debye-shielding>
@@ -160,6 +160,8 @@
     The exponential factor is the shielding; $1/r$ is the unscreened geometric
     spreading of a point source.]
   )
+
+  #debye-screened-point
 
   #definition(
     [Finite spherical test charge],

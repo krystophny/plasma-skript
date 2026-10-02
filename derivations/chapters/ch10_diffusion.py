@@ -1,471 +1,438 @@
-"""Chapter 10, diffusion: src/chapters/10-diffusion.typ.
+# Chapter 10 · Diffusion (src/chapters/10-diffusion.typ)
+#
+# Random walk and Fick's law, the Green function, mobility and the Einstein
+# relation, ambipolar and magnetized diffusion, classical versus Bohm, with plots.
 
-Run `python derivations/ch10_diffusion.py` to check every step, or
-`pytest derivations` to check every chapter.
-
-Coverage (line in src/chapters/10-diffusion.typ -> test):
-  64-72, 83-97    random walk: <x> = 0, <x^2> = 2 D t, D = dx^2/(2 dt) -> test_random_walk
-  100-113         Fick flux from left/right movers, diffusion equation -> test_fick_and_diffusion
-  116-121         Green function, <x^2> = 2 D t, <r^2> = 6 D t        -> test_green_function
-  126-136, 148-153 normalized variables, D_* = 0.0578                -> test_normalized_variables
-  163-169         example: D = 20 m^2/s, tau_D = 5.0e-4 s           -> test_example_random_walk
-  254-304         drift-diffusion velocity, mobility, Einstein relation -> test_mobility_diffusion
-  317-325         example: mu_e = 1.76e3, D_e = 3.52e3                -> test_example_mobility
-  409-479         ambipolar field, D_a and its mu_e >> mu_i limit      -> test_ambipolar
-  492-505         example: E_a = 0.897 V/m, D_a = 18.2, |Gamma_a|      -> test_example_ambipolar
-  586-653         magnetized tensor: D_par, D_perp, D_H, inverse matrix,
-                  strong-field limit, (nu/2) rho_th^2                 -> test_magnetized_diffusion
-  657-659         Hall-like flux is divergence free                   -> test_magnetized_diffusion
-  675-686         example: |Omega_e|, D_par, D_perp, ratio            -> test_example_magnetized
-  781-789, 812-858 classical one-fluid D_perp^cl, tau_D               -> test_classical_cross_field
-  795-797         Bohm estimate (units, B^-1 vs B^-2 scaling)         -> test_classical_cross_field
-  873-885         example: D_cl, D_Bohm, ratio, tau_D                 -> test_example_classical
-"""
-
+# %% Setup
 import itertools
+import math
 
+import numpy as np
 import sympy as sp
 from sympy.physics import units as u
 
-from ch07_multiple_fluids import Tex, close, num
 import si
-from si import Derivation, e, k_B, m_e, m_i
+from fluids import Named, Partial, field, rounded
+from notebook import agrees, close_to, evaluate, note, report, section, show
+from si import BLUE, GRAY, ORANGE, SI_VALUES, figure, label, log_ticks, save
 
-
-# Units of this file's symbols. Kept local (not in the shared si.UNITS) so that
-# symbols with common names in other chapter files cannot clash.
-LOCAL = {}
-
-
-def check(derived, stated, unit=None, units=None):
-    """si.check with this file's LOCAL unit table."""
-    return si.check(derived, stated, unit=unit, units={**LOCAL, **(units or {})})
-
-# CODATA 2018 values for the worked examples.
-CODATA = {e: 1.602176634e-19, m_e: 9.1093837015e-31, m_i: 1.67262192369e-27}
-
+e, k_B, m_e, m_i = si.e, si.k_B, si.m_e, si.m_i
 x, t = sp.symbols("x t", real=True)
-dx, dt, D, Lm, tm = sp.symbols("Delta_x Delta_t D L t_0", positive=True)
-LOCAL.update({dx: u.meter, dt: u.second, D: u.meter**2 / u.second, Lm: u.meter, tm: u.second})
+dx, dt, D, L, t0 = sp.symbols("Delta_x Delta_t D L t_0", positive=True)
+UNITS = {dx: u.meter, dt: u.second, D: u.meter**2 / u.second, L: u.meter, t0: u.second}
 
-# Results shared by the tests and the plots: each test proves its derivation
-# equals one of these expressions, and each plot_* lambdifies the same one.
+
+def has_unit(expr, unit, extra=None):
+    si.check(expr, expr, unit=unit, units={**UNITS, **(extra or {})})
+
+
+def agrees_with(derived, printed, values, source, lhs):
+    """agrees() for a statement written with named quantities: `values` are
+    inserted for the comparison, the display keeps the names."""
+    residual = derived - printed.subs(values).doit()    # must vanish
+    return agrees(residual + printed, printed, source, lhs=lhs)
+
+
+def ratio(symbol, value):
+    """Show a dimensionless number computed from evaluated quantities."""
+    show(sp.Eq(symbol, sp.Float(value, 3)))
+    return value
+
+
+def given(values, *more):
+    """Note listing the inputs of a worked example, separated by commas."""
+    parts = ["Input"]
+    for symbol, value in values.items():
+        parts += [sp.Eq(symbol, rounded(value)), ","]
+    note(*parts[:-1], *more)
+
+
+# %% Random walk
+section("Random walk", "10-diffusion.typ:92")
+M1, x_rms, N = sp.symbols("xbar x_rms N")
+M2 = x_rms**2
+note("Steps of", sp.Tuple(dx, -dx), "with probability 1/2 each; average position", M1,
+     "and mean square", M2, "over all equally likely paths of", N, "steps")
+for steps in range(1, 7):
+    paths = list(itertools.product([1, -1], repeat=steps))
+    mean = sum(sum(p) for p in paths) * dx / len(paths)
+    mean_square = sum(sum(p) ** 2 for p in paths) * dx**2 / len(paths)
+    if steps == 6:
+        note("For", sp.Eq(N, steps), "(N = 1 ... 5 asserted):")
+        agrees(mean, 0, ":85", lhs=M1)
+        agrees(mean_square, steps * dx**2, ":88", lhs=M2)
+    else:
+        assert mean == 0 and sp.simplify(mean_square - steps * dx**2) == 0
+note("After a time", t, "with the diffusion coefficient", D, ":")
+show(sp.Eq(N, t / dt))
+show(sp.Eq(D, dx**2 / (2 * dt)))
+agrees_with((N * dx**2).subs(N, t / dt), 2 * D * t, {D: dx**2 / (2 * dt)}, ":94", lhs=M2)
+has_unit(dx**2 / (2 * dt), u.meter**2 / u.second)
+has_unit(L**2 / D, u.second)                    # tau_D = L^2/D
+
+# %% Fick's law and the diffusion equation
+section("Fick's law and the diffusion equation", "10-diffusion.typ:104")
+n_x = sp.Function("n")
+x0 = sp.Symbol("x_0", real=True)
+Gamma = sp.Symbol("Gamma")
+note("Half of each neighbouring cell crosses", x0, "in", dt, ":")
+crossing = show(sp.Eq(Gamma, (n_x(x0 - dx / 2) * dx / 2 - n_x(x0 + dx / 2) * dx / 2) / dt)).rhs
+note("Expand the densities to second order in", dx)
+leading = sp.simplify(sp.series(crossing, dx, 0, 3).removeO().doit())
+agrees(leading, -(dx**2 / (2 * dt)) * sp.Derivative(n_x(x0), x0), ":104", lhs=Gamma)
+D_x, n_xt = field("D", x), field("n", x, t)
+note("Conservation with the flux", sp.Eq(Gamma, -D_x * Partial(n_xt, x)), ":")
+agrees(-Partial(-D_x * Partial(n_xt, x), x).doit(), Partial(D_x * Partial(n_xt, x), x), ":113",
+       lhs=Partial(n_xt, t))
+
+# %% Green function
+section("Green function of the diffusion equation", "10-diffusion.typ:118")
 N0, tp = sp.symbols("N_0 t", positive=True)
-GREEN = N0 / sp.sqrt(4 * sp.pi * D * tp) * sp.exp(-x**2 / (4 * D * tp))  # line 118
+GREEN = N0 / sp.sqrt(4 * sp.pi * D * tp) * sp.exp(-x**2 / (4 * D * tp))   # also plotted below
+n_G = sp.Symbol("n_G")
+show(sp.Eq(n_G, GREEN))
+note("It solves the diffusion equation, conserves the column", N0, "and starts point-like:")
+agrees(sp.diff(GREEN, tp) - D * sp.diff(GREEN, x, 2), 0, ":118",
+       lhs=sp.Derivative(n_G, tp) - D * sp.Derivative(n_G, (x, 2)))
+column = sp.Integral(GREEN, (x, -sp.oo, sp.oo))
+agrees(column.doit(), N0, ":118", lhs=sp.Integral(n_G, (x, -sp.oo, sp.oo)))
+agrees(sp.limit(GREEN.subs(x, 1), tp, 0, "+"), 0, ":118",
+       lhs=sp.Limit(sp.Function("n_G")(1, tp), tp, 0, "+"))
+spread = sp.Integral(x**2 * GREEN, (x, -sp.oo, sp.oo)) / N0
+agrees(spread.doit(), 2 * D * tp, ":120", lhs=M2)
+y, z = sp.symbols("y z", real=True)
+G3 = GREEN * GREEN.subs(x, y) * GREEN.subs(x, z) / N0**2
+r_rms = sp.Symbol("r_rms")
+note("Three independent directions:")
+agrees(sp.integrate((x**2 + y**2 + z**2) * G3, (x, -sp.oo, sp.oo), (y, -sp.oo, sp.oo),
+                    (z, -sp.oo, sp.oo)) / N0, 6 * D * tp, ":121", lhs=r_rms**2)
+has_unit(N0 / sp.sqrt(D * t0), u.meter**-3, {N0: u.meter**-2})
 
+# %% Normalized variables
+section("Normalized diffusion variables", "10-diffusion.typ:134")
+L0, tau0, n0, xi, tau = sp.symbols("L_0 tau_0 n_0 xi tau", positive=True)
+D_norm, L_norm = sp.symbols("D_norm L_norm", positive=True)
+Nf = sp.Function("N")
+note("Write", sp.Eq(field("n", x, t), n0 * Nf(x / L0, t / tau0)), "with", sp.Eq(D, D_norm * L0**2 / tau0))
+density = n0 * Nf(x / L0, t / tau0)
+residual = sp.diff(density, t) - D_norm * L0**2 / tau0 * sp.diff(density, x, 2)
+residual = sp.simplify(residual.subs({x: xi * L0, t: tau * tau0}) * tau0 / n0)
+agrees(residual.doit(), sp.Derivative(Nf(xi, tau), tau) - D_norm * sp.Derivative(Nf(xi, tau), (xi, 2)),
+       ":134", lhs=tau0 / n0 * (sp.Derivative(field("n", x, t), t) - D * sp.Derivative(field("n", x, t), (x, 2))))
+tau_D = sp.Symbol("tau_D")
+agrees((L_norm * L0) ** 2 / (D_norm * L0**2 / tau0) / tau0, L_norm**2 / D_norm, ":136", lhs=tau_D / tau0)
+note("Animation: steps of 0.34 in", xi, "per unit of", tau)
+D_star = sp.Symbol("D_*")
+close_to(ratio(D_star, 0.34**2 / 2), 0.0578, source=":150")
 
-# ---------------------------------------------------------------------------
-# Random walk and Fick's law
-# ---------------------------------------------------------------------------
-def test_random_walk():
-    d = Derivation("Random walk", "src/chapters/10-diffusion.typ:92")
-    # One step: +dx or -dx with probability 1/2 (line 85).
-    d.eq("one step", Tex(r"\langle\Delta x\rangle"), (dx + (-dx)) / 2)
-    d.eq("one step", Tex(r"\langle(\Delta x)^2\rangle"), (dx**2 + (-dx) ** 2) / 2)
-    # N independent steps: average x and x^2 over all 2^N equally likely paths.
-    for N in range(1, 7):
-        paths = list(itertools.product([1, -1], repeat=N))
-        mean = sum(sum(p) for p in paths) * dx / len(paths)
-        msq = sum(sum(p) ** 2 for p in paths) * dx**2 / len(paths)
-        check(mean, 0)
-        check(msq, N * dx**2)
-    # With N = t/dt and D = dx^2/(2 dt): <x^2> = 2 D t (line 94).
-    msq_t = d.eq("N = t / Delta t", Tex(r"\langle x^2\rangle"), (t / dt) * dx**2)
-    check(msq_t, 2 * (dx**2 / (2 * dt)) * t)
-    check(dx**2 / (2 * dt), dx**2 / (2 * dt), unit=u.meter**2 / u.second)
-    check(Lm**2 / D, Lm**2 / D, unit=u.second)  # tau_D = L^2/D
+# %% Example: random-walk diffusion
+section("Example: random-walk diffusion", "10-diffusion.typ:163")
+walk = {dx: 2.0e-3 * u.meter, dt: 1.0e-7 * u.second, L: 0.1 * u.meter}
+given(walk)
+D_walk = evaluate(D, dx**2 / (2 * dt), walk, u.meter**2 / u.second)
+close_to(D_walk, 2.0e1, source=":166")
+close_to(evaluate(tau_D, L**2 / (dx**2 / (2 * dt)), walk, u.second), 5.0e-4, source=":168")
 
+# %% Mobility and diffusion
+section("Mobility and diffusion", "10-diffusion.typ:291")
+q, nu, m, T = sp.symbols("q_s nu_s m_s T_s", positive=True)   # q > 0 here; sign handled below
+UNITS.update({q: u.coulomb, nu: u.second**-1, m: u.kilogram, T: u.kelvin})
+n_s = sp.Symbol("n_s", positive=True)
+E, g_s, u_s = sp.symbols("E g u_s", real=True)                # g = dn/dx
+q_signed = sp.Symbol("q", real=True)
+mu_s, D_s = sp.symbols("mu_s D_s")
+note("Inertialess momentum balance with friction and pressure,", sp.Eq(g_s, sp.Derivative(sp.Function("n_s")(x), x)))
+friction = show(sp.Eq(m * n_s * nu * u_s, q_signed * n_s * E - k_B * T * g_s))
+drift = sp.solve(friction, u_s)[0]
+mobility = {mu_s: q_signed / (m * nu), D_s: k_B * T / (m * nu)}
+note("Mobility", sp.Eq(mu_s, mobility[mu_s]), "and diffusion coefficient", sp.Eq(D_s, mobility[D_s]))
+agrees_with(drift, mu_s * E - D_s * g_s / n_s, mobility, ":286", lhs=u_s)
+Gamma_s = sp.Symbol("Gamma_s")
+agrees_with(n_s * drift, n_s * mu_s * E - D_s * g_s, mobility, ":267", lhs=Gamma_s)
+note("Einstein relation, with", sp.Eq(sp.Abs(mu_s), q / (m * nu)), ":")
+agrees((k_B * T / (m * nu)) / (q / (m * nu)), k_B * T / q, ":304", lhs=D_s / sp.Abs(mu_s))
+has_unit(q / (m * nu), u.meter**2 / u.volt / u.second)
+has_unit(k_B * T / (m * nu), u.meter**2 / u.second)
 
-def test_fick_and_diffusion():
-    d = Derivation("Fick's law and the diffusion equation", "src/chapters/10-diffusion.typ:104")
-    n = sp.Function("n")
-    x0 = sp.Symbol("x_0", real=True)
-    # Half of the particles in the cell left of x0 cross to the right in dt,
-    # half of those in the cell right of x0 cross to the left.
-    Gamma = (n(x0 - dx / 2) * dx / 2 - n(x0 + dx / 2) * dx / 2) / dt
-    lead = sp.series(Gamma, dx, 0, 3).removeO().doit()
-    G = d.eq("expand densities", Tex(r"\Gamma^D"), sp.simplify(lead))
-    check(G, -(dx**2 / (2 * dt)) * sp.diff(n(x0), x0))
-    # Conservation dn/dt + dGamma/dx = 0 with Gamma = -D dn/dx (lines 108-113).
-    Dx = sp.Function("D")(x)
-    nn = sp.Function("n")(x, t)
-    dndt = d.eq("conservation", sp.Derivative(nn, t), -sp.diff(-Dx * sp.diff(nn, x), x))
-    check(dndt, sp.diff(Dx * sp.diff(nn, x), x))
+# %% Example: electron mobility
+section("Example: electron mobility and diffusion", "10-diffusion.typ:317")
+electron = {nu: 1.0e8 / u.second, T: 2.0 * u.electronvolt / u.boltzmann_constant}
+note("Electrons,", sp.Eq(nu, rounded(electron[nu])), ",", sp.Eq(k_B * T, 2.0 * u.electronvolt))
+mu_e, D_e = sp.symbols("mu_e D_e")
+close_to(evaluate(mu_e, e / (m_e * nu), electron, u.meter**2 / (u.volt * u.second)), 1.76e3,
+         source=":320")
+close_to(evaluate(D_e, k_B * T / (m_e * nu), electron, u.meter**2 / u.second), 3.52e3, source=":323")
 
-
-def test_green_function():
-    d = Derivation("Green function of the diffusion equation", "src/chapters/10-diffusion.typ:118")
-    G = GREEN
-    # Solves dn/dt = D d2n/dx2 and conserves the column density N0.
-    check(sp.diff(G, tp) - D * sp.diff(G, x, 2), 0)
-    check(sp.integrate(G, (x, -sp.oo, sp.oo)), N0)
-    # Point-like start: n -> 0 away from x = 0 as t -> 0+.
-    check(sp.limit(G.subs(x, 1), tp, 0, "+"), 0)
-    x2 = d.eq("second moment", Tex(r"\langle x^2\rangle"), sp.integrate(x**2 * G, (x, -sp.oo, sp.oo)) / N0)
-    check(x2, 2 * D * tp)
-    # Three independent directions: <r^2> = 3 <x^2> = 6 D t (line 121).
-    yy, zz = sp.symbols("y z", real=True)
-    G3 = G * G.subs(x, yy) * G.subs(x, zz) / N0**2
-    r2 = sp.integrate((x**2 + yy**2 + zz**2) * G3, (x, -sp.oo, sp.oo), (yy, -sp.oo, sp.oo),
-                      (zz, -sp.oo, sp.oo)) / N0
-    check(d.eq("three directions", Tex(r"\langle r^2\rangle"), r2), 6 * D * tp)
-    check(N0 / sp.sqrt(D * tm), N0 / sp.sqrt(D * tm), unit=u.meter**-3, units={N0: u.meter**-2})
-
-
-def test_normalized_variables():
-    d = Derivation("Normalized diffusion variables", "src/chapters/10-diffusion.typ:134")
-    L0, tau0, n0, xi, tau = sp.symbols("L_0 tau_0 n_0 xi tau", positive=True)
-    Dn = sp.Symbol("D_norm", positive=True)
-    nf = sp.Function("N")
-    # n(x, t) = n0 N(x/L0, t/tau0) with D = D_norm L0^2/tau0 (lines 126-134).
-    n = n0 * nf(x / L0, t / tau0)
-    resid = sp.diff(n, t) - Dn * L0**2 / tau0 * sp.diff(n, x, 2)
-    resid = sp.simplify(resid.subs({x: xi * L0, t: tau * tau0}) * tau0 / n0)
-    stated = (sp.Derivative(nf(xi, tau), tau) - Dn * sp.Derivative(nf(xi, tau), xi, 2))
-    check(resid.doit(), stated.doit())
-    # tau_D / tau0 = L_norm^2 / D_norm (line 136).
-    Ln = sp.Symbol("L_norm", positive=True)
-    check((Ln * L0) ** 2 / (Dn * L0**2 / tau0) / tau0, Ln**2 / Dn)
-    # Animation: steps of 0.34 in xi every unit of tau give D_* = 0.34^2/2 (line 150).
-    Dstar = num(d, "Delta xi squared / 2", "D_*", 0.34**2 / 2)
-    close(Dstar, "0.0578")
-
-
-def test_example_random_walk():
-    d = Derivation("Example: random-walk diffusion", "src/chapters/10-diffusion.typ:163")
-    D_ = num(d, "dx2 / (2 dt)", "D", (2.0e-3) ** 2 / (2 * 1.0e-7))
-    close(D_, "2.0e1")
-    close(num(d, "L2 / D", r"\tau_D", (1.0e-1) ** 2 / D_), "5.0e-4")
-
-
-# ---------------------------------------------------------------------------
-# Mobility, Einstein relation, ambipolar diffusion
-# ---------------------------------------------------------------------------
-q, nu, m, T = sp.symbols("q_s nu_s m_s T_s", positive=True)  # q > 0 here; sign handled below
-LOCAL.update({q: u.coulomb, nu: u.second**-1, m: u.kilogram, T: u.kelvin})
-OM = sp.Symbol("Omega_s", real=True)
-D_S = k_B * T / (m * nu)                       # unmagnetized D_s (line 304)
-D_PERP = D_S / (1 + (OM / nu) ** 2)            # line 626
-D_HALL = D_S * (OM / nu) / (1 + (OM / nu) ** 2)
-
-
-def test_mobility_diffusion():
-    d = Derivation("Mobility and diffusion", "src/chapters/10-diffusion.typ:291")
-    n = sp.Symbol("n_s", positive=True)
-    E, gn, us = sp.symbols("E g u_s", real=True)  # g = dn/dx
-    qs = sp.Symbol("q", real=True)  # signed charge
-    # Inertialess momentum balance: m n nu u = q n E - k_B T grad n (line 286).
-    u_sol = sp.solve(sp.Eq(m * n * nu * us, qs * n * E - k_B * T * gn), us)[0]
-    d.eq("drop inertia", Tex("u_s"), u_sol)
-    mu_q, D_s = qs / (m * nu), k_B * T / (m * nu)
-    check(u_sol, mu_q * E - D_s * gn / n)
-    # Flux Gamma = n u (line 267) and Einstein relation D/|mu| = k_B T/|q| (line 304).
-    check(n * u_sol, n * mu_q * E - D_s * gn)
-    einstein = d.eq("Einstein relation", Tex(r"D_s/|\mu_s|"), D_s / (q / (m * nu)))
-    check(einstein, k_B * T / q)
-    check(q / (m * nu), q / (m * nu), unit=u.meter**2 / u.volt / u.second)
-    check(D_s, D_s, unit=u.meter**2 / u.second)
-
-
-def test_example_mobility():
-    d = Derivation("Example: electron mobility and diffusion", "src/chapters/10-diffusion.typ:317")
-    me, nu_ = CODATA[m_e], 1.0e8
-    close(num(d, "e / (m_e nu_e)", r"\mu_e", CODATA[e] / (me * nu_)), "1.76e3")
-    close(num(d, "k_B T_e / (m_e nu_e)", "D_e", 3.204e-19 / (me * nu_)), "3.52e3")
-
-
+# %% Ambipolar diffusion
+section("Ambipolar diffusion", "10-diffusion.typ:457")
 mui, mue, Di, De, n_a = sp.symbols("mu_i mu_e D_i D_e n", positive=True)
-E_x, g_n = sp.symbols("E g", real=True)  # field and density gradient along x
-GAMMA_I = mui * n_a * E_x - Di * g_n     # ion flux: drift + diffusion (line 449)
-GAMMA_E = -mue * n_a * E_x - De * g_n    # electron flux
-E_AMB = (Di - De) / (mui + mue) * g_n / n_a   # line 457
-D_AMB = (mui * De + mue * Di) / (mui + mue)   # line 470
+E_x, g_n = sp.symbols("E g", real=True)          # field and density gradient along x
+GAMMA_I = mui * n_a * E_x - Di * g_n             # shared with the plot below
+GAMMA_E = -mue * n_a * E_x - De * g_n
+E_AMB = (Di - De) / (mui + mue) * g_n / n_a
+D_AMB = (mui * De + mue * Di) / (mui + mue)
+Gamma_i, Gamma_e, E_a, D_a, Gamma_a = sp.symbols("Gamma_i Gamma_e E_a D_a Gamma_a")
+note("Drift plus diffusion for ions and electrons, with", sp.Eq(g_n, sp.Derivative(sp.Function("n")(x), x)))
+show(sp.Eq(Gamma_i, GAMMA_I))
+show(sp.Eq(Gamma_e, GAMMA_E))
+note("Zero current,", sp.Eq(Gamma_i, Gamma_e), ", fixes the field:")
+field_a = sp.solve(sp.Eq(GAMMA_I, GAMMA_E), E_x)[0]
+agrees(field_a, E_AMB, ":457", lhs=E_a)
+note("Insert into either flux:")
+show(sp.Eq(D_a, D_AMB))
+agrees_with(sp.simplify(GAMMA_I.subs(E_x, field_a)), -D_a * g_n, {D_a: D_AMB}, ":470", lhs=Gamma_i)
+agrees_with(sp.simplify(GAMMA_E.subs(E_x, field_a)), -D_a * g_n, {D_a: D_AMB}, ":470", lhs=Gamma_e)
+eps = sp.Symbol("epsilon", positive=True)
+note("Light electrons,", sp.Eq(mui, eps * mue), ", to first order in", eps, ":")
+expansion = sp.series(D_AMB.subs(mui, eps * mue), eps, 0, 2).removeO()
+agrees(expansion, Di + eps * (De - Di), ":479", lhs=D_a)
+note("The stated", Di + eps * De, "differs by", eps * Di, ", negligible against", Di, ":")
+agrees(sp.limit((expansion - (Di + eps * De)) / Di, eps, 0), 0, ":479",
+       lhs=sp.Limit((D_a - (Di + eps * De)) / Di, eps, 0))
 
+# %% Example: ambipolar field and flux
+section("Example: ambipolar field and flux", "10-diffusion.typ:492")
+nu_i, nu_e, m_p = sp.symbols("nu_i nu_e m_p", positive=True)
+T_a, gradient = sp.symbols("T g_n", positive=True)
+hydrogen = {mui: e / (m_p * nu_i), mue: e / (m_e * nu_e), Di: k_B * T_a / (m_p * nu_i),
+            De: k_B * T_a / (m_e * nu_e)}
+discharge = {T_a: 1.0 * u.electronvolt / u.boltzmann_constant, nu_i: 1.0e7 / u.second,
+             nu_e: 1.0e9 / u.second, n_a: 1.0e16 / u.meter**3, g_n: -1.0e16 / u.meter**4}
+note("Hydrogen,", sp.Eq(k_B * T_a, 1.0 * u.electronvolt), ",", sp.Eq(nu_i, rounded(discharge[nu_i])), ",",
+     sp.Eq(nu_e, rounded(discharge[nu_e])), ",", sp.Eq(n_a, rounded(discharge[n_a])), ",",
+     sp.Eq(g_n / n_a, -1 / u.meter))
+in_kg = {m_e: u.convert_to(u.electron_rest_mass, u.kilogram)}        # sums need kg
+close_to(evaluate(E_a, E_AMB.subs(hydrogen), {**discharge, **in_kg}, u.volt / u.meter), 0.897,
+         source=":497")
+D_a_value = evaluate(D_a, D_AMB.subs(hydrogen), {**discharge, **in_kg}, u.meter**2 / u.second)
+close_to(D_a_value, 1.82e1, source=":501")
+close_to(evaluate(sp.Abs(Gamma_a), -D_AMB.subs(hydrogen) * g_n, {**discharge, **in_kg},
+                  1 / (u.meter**2 * u.second)), 1.82e17, source=":504")
 
-def test_ambipolar():
-    d = Derivation("Ambipolar diffusion", "src/chapters/10-diffusion.typ:457")
-    n, E, gn, Gi, Ge = n_a, E_x, g_n, GAMMA_I, GAMMA_E
-    # Zero current j = e (Gamma_i - Gamma_e) = 0 fixes E (lines 449-457).
-    Ea = sp.solve(sp.Eq(Gi, Ge), E)[0]
-    d.eq("j = 0", Tex("E_a"), Ea)
-    check(Ea, E_AMB)
-    # Insert into Gamma_i: Gamma_a = -D_a grad n (lines 462-473).
-    Ga = sp.simplify(Gi.subs(E, Ea))
-    Da = D_AMB
-    d.eq("insert E_a", Tex(r"\Gamma_a"), -Da * gn)
-    check(Ga, -Da * gn)
-    check(Ge.subs(E, Ea), -Da * gn)
-    # mu_e >> mu_i: first order in eps = mu_i/mu_e gives D_i + eps (D_e - D_i) (line 479).
-    eps = sp.Symbol("epsilon", positive=True)
-    Da_eps = sp.series(Da.subs(mui, eps * mue), eps, 0, 2).removeO()
-    check(Da_eps, Di + eps * (De - Di))
-    # The stated D_i + eps D_e differs by eps D_i, negligible against D_i.
-    check(sp.limit((Da_eps - (Di + eps * De)) / Di, eps, 0), 0)
+# %% Magnetized diffusion
+section("Diffusion across a magnetic field", "10-diffusion.typ:604")
+OM = sp.Symbol("Omega_s", real=True)
+D_S = k_B * T / (m * nu)                         # unmagnetized D_s (line 304), shared with plots
+D_PERP = D_S / (1 + (OM / nu) ** 2)              # line 626
+D_HALL = D_S * (OM / nu) / (1 + (OM / nu) ** 2)
+q_m, B_m = sp.Symbol("q", real=True), sp.Symbol("B", positive=True)
+u_x, u_y, E_1, E_2, g_x, g_y = sp.symbols("u_x u_y E_x E_y g_x g_y", real=True)
+note("Steady perpendicular balance with friction, B along z, density gradient", sp.Tuple(g_x, g_y))
+balance = [sp.Eq(m * nu * u_x, q_m * (E_1 + u_y * B_m) - k_B * T * g_x / n_s),
+           sp.Eq(m * nu * u_y, q_m * (E_2 - u_x * B_m) - k_B * T * g_y / n_s)]
+for eq in balance:
+    show(eq)
+M = sp.Matrix([[nu, -OM], [OM, nu]])
+force = sp.Matrix([q_m / m * E_1 - k_B * T / (m * n_s) * g_x, q_m / m * E_2 - k_B * T / (m * n_s) * g_y])
+note("Matrix form with", sp.Eq(OM, q_m * B_m / m), "(both rows asserted):")
+show(sp.Eq(sp.MatMul(M, sp.Matrix([u_x, u_y])), force, evaluate=False))
+linear = (M * sp.Matrix([u_x, u_y]) - force).subs(OM, q_m * B_m / m)
+assert all(sp.expand(linear[k] - (balance[k].lhs - balance[k].rhs) / m) == 0 for k in range(2))
+M_inv = sp.simplify(M.inv())
+expected_inv = sp.Matrix([[nu, OM], [-OM, nu]]) / (nu**2 + OM**2)
+assert all(sp.simplify(M_inv[i, j] - expected_inv[i, j]) == 0 for i in range(2) for j in range(2))
+show(sp.Eq(sp.Symbol("M")**-1, M_inv, evaluate=False))
+note("Gradient part of the flux", n_s * sp.Symbol("u"), ":")
+flux = sp.simplify(n_s * M_inv * sp.Matrix([-k_B * T / (m * n_s) * g_x, -k_B * T / (m * n_s) * g_y]))
+D_perp, D_H, Gamma_x = Named("D_perp"), sp.Symbol("D_H"), sp.Symbol("Gamma_x")
+coefficients = {D_perp: D_PERP, D_H: D_HALL}
+show(sp.Eq(D_perp, D_PERP))
+show(sp.Eq(D_H, D_HALL))
+agrees_with(flux[0], -D_perp * g_x - D_H * g_y, coefficients, ":618", lhs=Gamma_x)
+assert sp.simplify(flux[1] - (-D_PERP * g_y + D_HALL * g_x)) == 0
+agrees(k_B * T * nu / (m * (nu**2 + OM**2)), D_S * nu**2 / (nu**2 + OM**2), ":626", lhs=D_perp)
+note("Strong field,", sp.Eq(nu, eps * OM), ", to leading order in", eps, ":")
+lead = sp.series(D_PERP.subs(OM, nu / eps) / D_S, eps, 0, 3).removeO()
+agrees(lead, eps**2, ":635", lhs=D_perp / D_s)
+rho_th = sp.Symbol("rho_th")
+note("Thermal gyroradius", sp.Eq(rho_th, sp.sqrt(2 * k_B * T / m) / OM), ":")
+agrees_with(D_S * (nu / OM) ** 2, nu / 2 * rho_th**2, {rho_th: sp.sqrt(2 * k_B * T / m) / OM}, ":650",
+            lhs=D_perp)
+note("The Hall flux is divergence free for constant", D_H, ":")
+X_, Y_ = sp.symbols("X Y", real=True)
+n_XY = sp.Function("n")(X_, Y_)
+hall = [-D_HALL * sp.diff(n_XY, Y_), D_HALL * sp.diff(n_XY, X_)]
+agrees(sp.diff(hall[0], X_) + sp.diff(hall[1], Y_), 0, ":657",
+       lhs=sp.Derivative(-D_H * sp.Derivative(n_XY, Y_), X_) + sp.Derivative(D_H * sp.Derivative(n_XY, X_), Y_))
 
+# %% Example: magnetized electron diffusion
+section("Example: magnetized electron diffusion", "10-diffusion.typ:675")
+magnetized = {B_m: 1.0e-2 * u.tesla, nu: 1.0e7 / u.second, T: 1.0 * u.electronvolt / u.boltzmann_constant}
+note("Electrons,", sp.Eq(B_m, rounded(magnetized[B_m])), ",", sp.Eq(nu, rounded(magnetized[nu])), ",",
+     sp.Eq(k_B * T, 1.0 * u.electronvolt))
+base = [u.kilogram, u.coulomb, u.second]          # 1 + (Omega/nu)^2 is a sum of quantities
+in_base = {e: u.convert_to(u.elementary_charge, base), m_e: u.convert_to(u.electron_rest_mass, base),
+           B_m: u.convert_to(magnetized[B_m], base)}
+gyro = sp.Abs(e * B_m / m_e)
+Omega_e, D_par = sp.Symbol("Omega_e"), Named("D_parallel")
+gyro_value = evaluate(sp.Abs(Omega_e), gyro, magnetized, u.second**-1)
+close_to(gyro_value, 1.76e9, source=":678")
+electrons = {m: m_e, OM: e * B_m / m_e}
+D_par_value = evaluate(D_par, D_S.subs(electrons), magnetized, u.meter**2 / u.second)
+close_to(D_par_value, 1.76e4, source=":680")
+D_perp_value = evaluate(D_perp, D_PERP.subs(electrons), {**magnetized, **in_base},
+                        u.meter**2 / u.second)
+close_to(D_perp_value, 0.569, source=":683")
+close_to(ratio(D_perp / D_par, D_perp_value / D_par_value), 3.23e-5, source=":686")
 
-def test_example_ambipolar():
-    d = Derivation("Example: ambipolar field and flux", "src/chapters/10-diffusion.typ:492")
-    kT, nu_i, nu_e, n, gn_n = 1.602e-19, 1.0e7, 1.0e9, 1.0e16, -1.0
-    mui = CODATA[e] / (CODATA[m_i] * nu_i)
-    mue = CODATA[e] / (CODATA[m_e] * nu_e)
-    Di, De = kT / (CODATA[m_i] * nu_i), kT / (CODATA[m_e] * nu_e)
-    Ea = num(d, "(D_i - D_e)/(mu_i + mu_e) grad n / n", "E_a", (Di - De) / (mui + mue) * gn_n)
-    Da = num(d, "ambipolar coefficient", "D_a", (mui * De + mue * Di) / (mui + mue))
-    G = num(d, "D_a times grad n", r"|\Gamma_a|", Da * n * abs(gn_n))
-    close(Ea, "0.897")
-    close(Da, "1.82e1")
-    close(G, "1.82e17")
-
-
-# ---------------------------------------------------------------------------
-# Magnetized and classical cross-field diffusion
-# ---------------------------------------------------------------------------
-def test_magnetized_diffusion():
-    d = Derivation("Diffusion across a magnetic field", "src/chapters/10-diffusion.typ:604")
-    qs, Om = sp.symbols("q Omega_s", real=True)
-    n = sp.Symbol("n_s", positive=True)
-    ux, uy, Ex, Ey, gx, gy = sp.symbols("u_x u_y E_x E_y g_x g_y", real=True)
-    B = sp.Symbol("B", positive=True)
-    # Steady perpendicular balance m nu u = q (E + u x B z) - (k_B T/n) grad n.
-    eqs = [m * nu * ux - qs * (Ex + uy * B) + k_B * T * gx / n,
-           m * nu * uy - qs * (Ey - ux * B) + k_B * T * gy / n]
-    # Matrix form (line 604) with Omega_s = q B / m.
-    M = sp.Matrix([[nu, -Om], [Om, nu]])
-    rhs = sp.Matrix([qs / m * Ex - k_B * T / (m * n) * gx, qs / m * Ey - k_B * T / (m * n) * gy])
-    lin = (M * sp.Matrix([ux, uy]) - rhs).subs(Om, qs * B / m)
-    check(sp.expand(lin[0] - eqs[0] / m), 0)
-    check(sp.expand(lin[1] - eqs[1] / m), 0)
-    # Inverse (line 612).
-    Minv = d.eq("invert", Tex(r"M^{-1}"), sp.simplify(M.inv()))
-    for i in range(2):
-        for j in range(2):
-            check(Minv[i, j], sp.Matrix([[nu, Om], [-Om, nu]])[i, j] / (nu**2 + Om**2))
-    # Density-gradient part of the flux n u (lines 618-626).
-    flux = sp.simplify(n * Minv * sp.Matrix([-k_B * T / (m * n) * gx, -k_B * T / (m * n) * gy]))
-    Ds, Dperp, DH = D_S, D_PERP, D_HALL
-    # Gamma_perp = -D_perp grad n + D_H b x grad n with b x grad n = (-g_y, g_x).
-    check(flux[0], -Dperp * gx - DH * gy)
-    check(flux[1], -Dperp * gy + DH * gx)
-    d.eq("gradient flux", Tex(r"\Gamma_\perp"), Tex(r"-D_\perp\nabla_\perp n_s + D_H\,\hat b\times\nabla_\perp n_s"))
-    d.eq("coefficient", Tex(r"D_\perp"), Dperp)
-    d.eq("coefficient", Tex(r"D_H"), DH)
-    check(k_B * T * nu / (m * (nu**2 + Om**2)), Ds * nu**2 / (nu**2 + Om**2))
-    # Strong field |Omega| >> nu: D_perp ~ D_s (nu/Omega)^2 (line 635).
-    eps = sp.Symbol("epsilon", positive=True)  # nu / Omega
-    lead = sp.series(Dperp.subs(Om, nu / eps) / Ds, eps, 0, 3).removeO()
-    check(lead, eps**2)
-    # Thermal gyroradius form (lines 644-650).
-    rho2 = (sp.sqrt(2 * k_B * T / m) / Om) ** 2
-    check(Ds * (nu / Om) ** 2, nu / 2 * rho2)
-    # Hall flux D_H b x grad n has zero divergence for constant D_H and b (line 657).
-    X, Y = sp.symbols("X Y", real=True)
-    nf = sp.Function("n")(X, Y)
-    hall = [-DH * sp.diff(nf, Y), DH * sp.diff(nf, X)]
-    check(sp.diff(hall[0], X) + sp.diff(hall[1], Y), 0)
-
-
-def test_example_magnetized():
-    d = Derivation("Example: magnetized electron diffusion", "src/chapters/10-diffusion.typ:675")
-    kT, B, nu_ = 1.602e-19, 1.0e-2, 1.0e7
-    Om = num(d, "e B / m_e", r"|\Omega_e|", CODATA[e] * B / CODATA[m_e])
-    Dpar = num(d, "k_B T / (m_e nu)", r"D_\parallel", kT / (CODATA[m_e] * nu_))
-    Dperp = num(d, "D / (1 + (Omega/nu) squared)", r"D_\perp", Dpar / (1 + (Om / nu_) ** 2))
-    close(Om, "1.76e9")
-    close(Dpar, "1.76e4")
-    close(Dperp, "0.569")
-    close(num(d, "ratio", r"D_\perp/D_\parallel", Dperp / Dpar), "3.23e-5")
-
-
+# %% Classical cross-field diffusion
+section("Classical cross-field diffusion", "10-diffusion.typ:831")
 sig, B_f, n_f = sp.symbols("sigma B n", positive=True)
 Te, Ti = sp.symbols("T_e T_i", positive=True)
-D_CL = n_f * k_B * (Te + Ti) / (sig * B_f**2)   # classical, line 849
-D_BOHM = k_B * Te / (16 * e * B_f)              # empirical Bohm, line 796
+D_CL = n_f * k_B * (Te + Ti) / (sig * B_f**2)    # classical, line 849 (shared with plots)
+D_BOHM = k_B * Te / (16 * e * B_f)               # empirical Bohm, line 796
+UNITS.update({sig: u.siemens / u.meter, B_f: u.tesla, n_f: u.meter**-3, Te: u.kelvin, Ti: u.kelvin})
+p_x, p_y = sp.symbols("g_x g_y", real=True)       # components of grad_perp p
+j_x, j_y = sp.symbols("j_x j_y")
+note("One-fluid Ohm law and force balance, B along z, pressure gradient", sp.Tuple(p_x, p_y))
+ohm = [sp.Eq(j_x, sig * (E_1 + u_y * B_f)), sp.Eq(j_y, sig * (E_2 - u_x * B_f))]
+force_balance = [sp.Eq(p_x, j_y * B_f), sp.Eq(p_y, -j_x * B_f)]
+for eq in ohm + force_balance:
+    show(eq)
+solved = sp.solve([fb.subs({j_x: ohm[0].rhs, j_y: ohm[1].rhs}) for fb in force_balance], [u_x, u_y],
+                  dict=True)[0]
+agrees(solved[u_x], E_2 * B_f / B_f**2 - p_x / (sig * B_f**2), ":831", lhs=u_x)
+agrees(solved[u_y], -E_1 * B_f / B_f**2 - p_y / (sig * B_f**2), ":831", lhs=u_y)
+note("The second term with", sp.Eq(sp.Symbol("p"), n_f * k_B * (Te + Ti)), "at uniform temperatures,",
+     sp.Eq(p_x, k_B * (Te + Ti) * sp.Symbol("g_n")), ":")
+g_n2 = sp.Symbol("g_n", real=True)
+diffusive = n_f * (-(k_B * (Te + Ti) * g_n2) / (sig * B_f**2))
+D_cl = Named("D_perp,cl")
+agrees(sp.simplify(-diffusive / g_n2), D_CL, ":849", lhs=D_cl)
+has_unit(D_CL, u.meter**2 / u.second)
+eta = sp.Symbol("eta", positive=True)
+agrees(D_CL.subs(sig, 1 / eta), eta * n_f * k_B * (Te + Ti) / B_f**2, ":852", lhs=D_cl)
+D_B = Named("D_perp,B")
+note("Empirical Bohm estimate")
+show(sp.Eq(D_B, D_BOHM))
+has_unit(D_BOHM, u.meter**2 / u.second)
+note("Scalings with B: classical as the -2 power, Bohm as the -1 power")
+agrees(sp.simplify(B_f * sp.diff(D_CL, B_f) / D_CL), -2, ":858",
+       lhs=B_f * sp.Derivative(D_cl, B_f) / D_cl)
+agrees(sp.simplify(B_f * sp.diff(D_BOHM, B_f) / D_BOHM), -1, ":797",
+       lhs=B_f * sp.Derivative(D_B, B_f) / D_B)
 
+# %% Example: classical and Bohm diffusion
+section("Example: classical and Bohm diffusion", "10-diffusion.typ:873")
+worked = {n_f: 1.0e16 / u.meter**3, Te: 10 * u.electronvolt / u.boltzmann_constant,
+          Ti: 10 * u.electronvolt / u.boltzmann_constant, sig: 1.0e5 * u.siemens / u.meter,
+          B_f: 1.0e-2 * u.tesla, L: 1.0 * u.meter}
+note("Input", sp.Eq(n_f, rounded(worked[n_f])), ",", sp.Eq(k_B * Te, 10 * u.electronvolt), ",",
+     sp.Eq(k_B * Ti, 10 * u.electronvolt), ",", sp.Eq(sig, rounded(worked[sig])), ",",
+     sp.Eq(B_f, rounded(worked[B_f])), ",", sp.Eq(L, worked[L]))
+classical = evaluate(D_cl, D_CL, worked, u.meter**2 / u.second)
+close_to(classical, 3.20e-3, source=":876")
+bohm = evaluate(D_B, D_BOHM, worked, u.meter**2 / u.second)
+close_to(bohm, 6.25e1, source=":879")
+close_to(ratio(D_B / D_cl, bohm / classical), 1.95e4, source=":882")
+close_to(evaluate(sp.Symbol("tau_D"), L**2 / D_CL, worked, u.second), 3.12e2, source=":885")
 
-def test_classical_cross_field():
-    d = Derivation("Classical cross-field diffusion", "src/chapters/10-diffusion.typ:831")
-    B, n = B_f, n_f
-    Ex, Ey, ux, uy, gx, gy = sp.symbols("E_x E_y u_x u_y g_x g_y", real=True)  # g = grad_perp p
-    # j = sigma (E + u x B z) and 0 = -grad p + j x B z (lines 812-816).
-    j = [sig * (Ex + uy * B), sig * (Ey - ux * B)]
-    jxB = [j[1] * B, -j[0] * B]
-    sol = sp.solve([-gx + jxB[0], -gy + jxB[1]], [ux, uy], dict=True)[0]
-    # Stated (line 831): u_perp = E x B / B^2 - grad_perp p / (sigma B^2); (E x B)_x = E_y B.
-    check(sol[ux], Ey * B / B**2 - gx / (sig * B**2))
-    check(sol[uy], -Ex * B / B**2 - gy / (sig * B**2))
-    d.eq("solve force balance + Ohm", Tex(r"u_\perp"), Tex(r"\frac{E\times B}{B^2} - \frac{\nabla_\perp p}{\sigma B^2}"))
-    # p = n k_B (T_e + T_i) with uniform temperatures: diffusive flux n u (lines 839-849).
-    gn = sp.Symbol("g_n", real=True)
-    Gdiff = n * (-(k_B * (Te + Ti) * gn) / (sig * B**2))
-    Dcl = d.eq("p = n k_B (T_e + T_i)", Tex(r"D_\perp^{cl}"), sp.simplify(-Gdiff / gn))
-    LOCAL.update({sig: u.siemens / u.meter, B: u.tesla, n: u.meter**-3, Te: u.kelvin, Ti: u.kelvin})
-    check(Dcl, D_CL, unit=u.meter**2 / u.second)
-    eta = sp.Symbol("eta", positive=True)
-    check(Dcl.subs(sig, 1 / eta), eta * n * k_B * (Te + Ti) / B**2)
-    # Scalings: classical B^-2, Bohm k_B T_e/(16 e B) as B^-1 (line 796).
-    DB = D_BOHM
-    check(DB, DB, unit=u.meter**2 / u.second)
-    check(sp.simplify(B * sp.diff(Dcl, B) / Dcl), -2)
-    check(sp.simplify(B * sp.diff(DB, B) / DB), -1)
+# %% Plot: random-walk diffusion
+# Green function at t = tau_D and 4 tau_D: the rms width doubles, the peak halves.
+tau_D_s = sp.Symbol("tau_D", positive=True)
+# x = xi L0, t = tau tau_D with tau_D = L0^2/D, column N0 = sqrt(4 pi) L0 n0.
+normalized = GREEN.subs({x: xi * L0, tp: tau * tau_D_s, N0: sp.sqrt(4 * sp.pi) * L0 * n0}) / n0
+normalized = sp.simplify(normalized.subs(D, L0**2 / tau_D_s))
+profile = sp.lambdify((xi, tau), normalized, "numpy")
+rms = sp.lambdify(tau, sp.sqrt(sp.integrate(xi**2 * normalized, (xi, -sp.oo, sp.oo))
+                               / sp.integrate(normalized, (xi, -sp.oo, sp.oo))), "numpy")
+fig, ax = figure(4.2, 2.4)
+xx = np.linspace(-9, 9, 400)
+for time, color, style, text, at in [(1, BLUE, "-", r"$t=\tau_D$", (0.5, 0.97)),
+                                     (4, ORANGE, "--", r"$t=4\tau_D$", (4.2, 0.36))]:
+    ax.plot(xx, profile(xx, time), color=color, ls=style)
+    width = rms(time)                            # sqrt(2 t / tau_D)
+    height = profile(width, time)
+    ax.annotate("", xy=(-width, height), xytext=(width, height),
+                arrowprops=dict(arrowstyle="<->", color=color, lw=0.9, shrinkA=0, shrinkB=0))
+    label(ax, *at, text, color)
+ax.text(0, 0.03, r"arrows: $\pm\langle x^2\rangle^{1/2}$", ha="center", fontsize=9, color="#333333")
+ax.set_xlim(-9, 9)
+ax.set_ylim(0, 1.08)
+ax.set_yticks([0, 0.5, 1])
+ax.set_xlabel(r"$x/L_0$")
+ax.set_ylabel(r"$n/n_0$")
+save(fig, "random-walk-diffusion")
 
+# %% Plot: cross-field diffusion versus magnetization
+X_mag = sp.Symbol("X", positive=True)            # |Omega_s| / nu_s
+suppression = sp.lambdify(X_mag, sp.simplify((D_PERP / D_S).subs(OM, X_mag * nu)), "numpy")
+X_example = gyro_value / 1.0e7                   # electrons of the worked example
+fig, ax = figure(4.2, 2.6)
+xx = np.logspace(-2, 3, 300)
+ax.plot(xx, suppression(xx), color=BLUE)
+ax.plot([X_example], [suppression(X_example)], "o", color=BLUE, ms=4)
+label(ax, X_example * 0.8, suppression(X_example), "worked example", BLUE, ha="right", va="center",
+      fontsize=9)
+label(ax, 12, 12**-2.0 * 3, r"$\simeq(\nu_s/\Omega_s)^2$", GRAY)
+label(ax, 0.012, 0.25, r"$D_{s,\perp}$", BLUE, va="center")
+ax.set_xscale("log")
+ax.set_yscale("log")
+log_ticks(ax.xaxis, -2, 3)
+log_ticks(ax.yaxis, -6, 0, 2)
+ax.set_ylim(1e-6, 3)
+ax.set_xlabel(r"magnetization $|\Omega_s|/\nu_s$")
+ax.set_ylabel(r"$D_{s,\perp}/D_s$")
+save(fig, "cross-field-diffusion")
 
-def test_example_classical():
-    d = Derivation("Example: classical and Bohm diffusion", "src/chapters/10-diffusion.typ:873")
-    n, kT, sig, B, L = 1.0e16, 1.602e-18, 1.0e5, 1.0e-2, 1.0
-    Dcl = num(d, "n k_B (T_e + T_i) / (sigma B2)", r"D_\perp^{cl}", n * 2 * kT / (sig * B**2))
-    DB = num(d, "k_B T_e / (16 e B)", r"D_\perp^{B}", kT / (16 * CODATA[e] * B))
-    close(Dcl, "3.20e-3")
-    close(DB, "6.25e1")
-    close(num(d, "ratio", r"D^B/D^{cl}", DB / Dcl), "1.95e4")
-    close(num(d, "L2 / D", r"\tau_D", L**2 / Dcl), "3.12e2")
-
-
-# ---------------------------------------------------------------------------
-# Plots of derived results (written to build/fig by run_as_script)
-# ---------------------------------------------------------------------------
-def plot_random_walk_diffusion():
-    """Green function at t = tau_D and 4 tau_D: rms width doubles, peak halves."""
-    import numpy as np
-
-    from si import BLUE, ORANGE, figure, label, save
-
-    xi, tau, L0, tauD, n0 = sp.symbols("xi tau L_0 tau_D n_0", positive=True)
-    # x = xi L0, t = tau tau_D with tau_D = L0^2/D, column N0 = sqrt(4 pi) L0 n0.
-    norm = GREEN.subs({x: xi * L0, tp: tau * tauD, N0: sp.sqrt(4 * sp.pi) * L0 * n0}) / n0
-    norm = sp.simplify(norm.subs(D, L0**2 / tauD))
-    f = sp.lambdify((xi, tau), norm, "numpy")
-    rms = sp.lambdify(tau, sp.sqrt(sp.integrate(xi**2 * norm, (xi, -sp.oo, sp.oo))
-                                   / sp.integrate(norm, (xi, -sp.oo, sp.oo))), "numpy")
-
-    fig, ax = figure(4.2, 2.4)
-    xx = np.linspace(-9, 9, 400)
-    for T_, color, ls, txt, at in [(1, BLUE, "-", r"$t=\tau_D$", (0.5, 0.97)),
-                                   (4, ORANGE, "--", r"$t=4\tau_D$", (4.2, 0.36))]:
-        ax.plot(xx, f(xx, T_), color=color, ls=ls)
-        s_ = rms(T_)  # rms width sqrt(2 t / tau_D)
-        h = f(s_, T_)
-        ax.annotate("", xy=(-s_, h), xytext=(s_, h),
-                    arrowprops=dict(arrowstyle="<->", color=color, lw=0.9, shrinkA=0, shrinkB=0))
-        label(ax, *at, txt, color)
-    ax.text(0, 0.03, r"arrows: $\pm\langle x^2\rangle^{1/2}$", ha="center", fontsize=9, color="#333333")
-    ax.set_xlim(-9, 9)
-    ax.set_ylim(0, 1.08)
-    ax.set_yticks([0, 0.5, 1])
-    ax.set_xlabel(r"$x/L_0$")
-    ax.set_ylabel(r"$n/n_0$")
-    save(fig, "random-walk-diffusion")
-
-
-def plot_cross_field_diffusion():
-    """Perpendicular diffusion versus magnetization, with the strong-field limit."""
-    import numpy as np
-
-    from si import BLUE, GRAY, figure, label, log_ticks, save
-
-    X = sp.Symbol("X", positive=True)  # |Omega_s| / nu_s
-    ratio = sp.lambdify(X, sp.simplify((D_PERP / D_S).subs(OM, X * nu)), "numpy")
-    # Worked example (line 675): electrons, B = 10 mT, nu_e = 1e7 s^-1.
-    X_ex = CODATA[e] * 1.0e-2 / CODATA[m_e] / 1.0e7
-
-    fig, ax = figure(4.2, 2.6)
-    xx = np.logspace(-2, 3, 300)
-    ax.plot(xx, ratio(xx), color=BLUE)
-    ax.plot([X_ex], [ratio(X_ex)], "o", color=BLUE, ms=4)
-    label(ax, X_ex * 0.8, ratio(X_ex), "worked example", BLUE, ha="right", va="center", fontsize=9)
-    label(ax, 12, 12**-2.0 * 3, r"$\simeq(\nu_s/\Omega_s)^2$", GRAY)
-    label(ax, 0.012, 0.25, r"$D_{s,\perp}$", BLUE, va="center")
-    ax.set_xscale("log")
-    ax.set_yscale("log")
-    log_ticks(ax.xaxis, -2, 3)
-    log_ticks(ax.yaxis, -6, 0, 2)
-    ax.set_ylim(1e-6, 3)
-    ax.set_xlabel(r"magnetization $|\Omega_s|/\nu_s$")
-    ax.set_ylabel(r"$D_{s,\perp}/D_s$")
-    save(fig, "cross-field-diffusion")
-
-
-def _mantissa_exponent(value):
-    import math
-
-    k = math.floor(math.log10(value))
-    return value / 10**k, k
-
-
-def plot_diffusion_scalings():
-    """Classical and Bohm cross-field diffusion for the worked-example plasma."""
-    import numpy as np
-
-    from si import BLUE, GRAY, ORANGE, SI_VALUES, figure, label, log_ticks, save
-
-    # Worked example (line 873): n = 1e16 m^-3, k_B T_e = k_B T_i = 10 eV, sigma = 1e5 S/m.
-    kT = 1.602e-18
-    vals = {n_f: 1.0e16, sig: 1.0e5, Te: kT / SI_VALUES[k_B], Ti: kT / SI_VALUES[k_B],
-            k_B: SI_VALUES[k_B], e: SI_VALUES[e]}
-    dcl = sp.lambdify(B_f, D_CL.subs(vals), "numpy")
-    dbohm = sp.lambdify(B_f, D_BOHM.subs(vals), "numpy")
-
-    fig, ax = figure(4.2, 2.6)
-    BB = np.logspace(-3, 0, 100)
-    ax.plot(BB, dbohm(BB), color=ORANGE, ls="--")
-    ax.plot(BB, dcl(BB), color=BLUE)
-    B_ex = 1.0e-2
-    ax.annotate("", xy=(B_ex, dbohm(B_ex)), xytext=(B_ex, dcl(B_ex)),
-                arrowprops=dict(arrowstyle="<->", color=GRAY, lw=0.9, shrinkA=2, shrinkB=2))
-    label(ax, B_ex * 1.15, (dbohm(B_ex) * dcl(B_ex)) ** 0.5,
-          r"$\times\,%.2f\cdot10^{%d}$" % _mantissa_exponent(dbohm(B_ex) / dcl(B_ex)),
-          GRAY, va="center", fontsize=9)
-    label(ax, 1.3e-3, dbohm(1.3e-3) * 1.5, r"Bohm $\propto B^{-1}$", ORANGE)
-    label(ax, 0.1, dcl(0.1) * 20, r"classical $\propto B^{-2}$", BLUE)
+# %% Plot: classical and Bohm diffusion side by side
+# Worked example: n = 1e16 m^-3, k_B T_e = k_B T_i = 10 eV, sigma = 1e5 S/m.
+kT = 10 * 1.602176634e-19
+values = {n_f: 1.0e16, sig: 1.0e5, Te: kT / SI_VALUES[k_B], Ti: kT / SI_VALUES[k_B],
+          k_B: SI_VALUES[k_B], e: SI_VALUES[e]}
+BB = np.logspace(-3, 0, 100)
+B_example = 1.0e-2
+for name, D_expr, color, style, title, scaling in [
+        ("diffusion-classical", D_CL, BLUE, "-", "classical", r"$\propto B^{-2}$"),
+        ("diffusion-bohm", D_BOHM, ORANGE, "--", "Bohm", r"$\propto B^{-1}$")]:
+    curve = sp.lambdify(B_f, D_expr.subs(values), "numpy")
+    fig, ax = figure(2.8, 2.6)
+    ax.plot(BB, curve(BB), color=color, ls=style)
+    ax.plot([B_example], [curve(B_example)], "o", color=color, ms=4)
+    exponent = math.floor(math.log10(curve(B_example)))     # value label at 10 mT
+    label(ax, B_example * 1.4, curve(B_example) * 1.5,
+          r"$%.2f\cdot10^{%d}$" % (curve(B_example) / 10**exponent, exponent), color, fontsize=9)
+    label(ax, 1.3e-3, 3e-6, f"{title} {scaling}", color)
     ax.set_xscale("log")
     ax.set_yscale("log")
     log_ticks(ax.xaxis, -3, 0)
     log_ticks(ax.yaxis, -6, 4, 2)
+    ax.set_ylim(1e-6, 1e4)
     ax.set_xlabel(r"$B$ (T)")
     ax.set_ylabel(r"$D_\perp$ (m$^2$/s)")
-    save(fig, "diffusion-scalings")
+    save(fig, name)
 
+# %% Plot: ambipolar balance
+# Diffusion and field-drift parts of both species fluxes in the worked example.
+numbers = {T_a: 1.602e-19 / SI_VALUES[k_B], nu_i: 1.0e7, nu_e: 1.0e9, m_p: 1.67262192369e-27,
+           m_e: SI_VALUES[m_e], e: SI_VALUES[e], k_B: SI_VALUES[k_B]}
+flux_values = {k: float(val.subs(numbers)) for k, val in hydrogen.items()}
+flux_values.update({n_a: 1.0e16, g_n: -1.0e16})
+field_value = float(E_AMB.subs(flux_values))
+unit = 1e17                                       # m^-2 s^-1
+rows = [(float(G.subs(flux_values).subs(E_x, 0)) / unit, float(G.subs(flux_values).subs(E_x, field_value)) / unit)
+        for G in (GAMMA_E, GAMMA_I)]
+common = float((-D_AMB * g_n).subs(flux_values)) / unit
+fig, ax = figure(4.2, 2.0)
+ax.axvline(common, color=GRAY, lw=0.9, ls=":")
+ax.text(common, 1.55, r"$\Gamma_a$", color=GRAY, ha="center", va="bottom")
+for row, (diffusion, total), name in [(1, rows[0], "electrons"), (0, rows[1], "ions")]:
+    ax.annotate("", xy=(diffusion, row + 0.12), xytext=(0, row + 0.12),
+                arrowprops=dict(arrowstyle="-|>", color=BLUE, lw=1.6, shrinkA=0, shrinkB=0))
+    ax.annotate("", xy=(total, row - 0.12), xytext=(diffusion, row - 0.12),
+                arrowprops=dict(arrowstyle="-|>", color=ORANGE, lw=1.6, ls="--", shrinkA=0, shrinkB=0))
+    ax.text(-0.4, row, name, ha="right", va="center")
+label(ax, rows[0][0] / 2, 1.2, r"diffusion $-D_e\,\partial_x n$", BLUE, ha="center")
+label(ax, rows[0][0] / 2, 0.8, r"field drift $-\mu_e n E_a$", ORANGE, ha="center", va="top")
+label(ax, rows[1][1] + 0.4, 0, r"ions: diffusion + drift $\mu_i n E_a$", "#333333", va="center",
+      fontsize=9)
+ax.set_xlim(-0.2, max(r[0] for r in rows) * 1.05)
+ax.set_ylim(-0.5, 1.75)
+ax.set_yticks([])
+ax.spines["left"].set_visible(False)
+ax.set_xlabel(r"particle flux $\Gamma_x$ ($10^{17}$ m$^{-2}$ s$^{-1}$)")
+save(fig, "ambipolar-balance")
 
-def plot_ambipolar_balance():
-    """Diffusion and field-drift parts of both species fluxes in the worked example."""
-    from si import BLUE, GRAY, ORANGE, figure, label, save
-
-    # Worked example (line 492): k_B T = 1 eV, nu_i = 1e7, nu_e = 1e9 s^-1,
-    # n = 1e16 m^-3, (dn/dx)/n = -1 m^-1, hydrogen.
-    kT, nu_i, nu_e, n0, gn_n = 1.602e-19, 1.0e7, 1.0e9, 1.0e16, -1.0
-    vals = {mui: CODATA[e] / (CODATA[m_i] * nu_i), mue: CODATA[e] / (CODATA[m_e] * nu_e),
-            Di: kT / (CODATA[m_i] * nu_i), De: kT / (CODATA[m_e] * nu_e),
-            n_a: n0, g_n: gn_n * n0}
-    Ea = float(E_AMB.subs(vals))
-    unit = 1e17  # m^-2 s^-1
-    rows = []
-    for G in (GAMMA_E, GAMMA_I):
-        diff = float(G.subs(vals).subs(E_x, 0)) / unit
-        total = float(G.subs(vals).subs(E_x, Ea)) / unit
-        rows.append((diff, total))
-    Ga = float((-D_AMB * g_n).subs(vals)) / unit
-
-    fig, ax = figure(4.2, 2.0)
-    ax.axvline(Ga, color=GRAY, lw=0.9, ls=":")
-    ax.text(Ga, 1.55, r"$\Gamma_a$", color=GRAY, ha="center", va="bottom")
-    for y, (diff, total), name in [(1, rows[0], "electrons"), (0, rows[1], "ions")]:
-        ax.annotate("", xy=(diff, y + 0.12), xytext=(0, y + 0.12),
-                    arrowprops=dict(arrowstyle="-|>", color=BLUE, lw=1.6, shrinkA=0, shrinkB=0))
-        ax.annotate("", xy=(total, y - 0.12), xytext=(diff, y - 0.12),
-                    arrowprops=dict(arrowstyle="-|>", color=ORANGE, lw=1.6, ls="--",
-                                    shrinkA=0, shrinkB=0))
-        ax.text(-0.4, y, name, ha="right", va="center")
-    label(ax, rows[0][0] / 2, 1.2, r"diffusion $-D_e\,\partial_x n$", BLUE, ha="center")
-    label(ax, rows[0][0] / 2, 0.8, r"field drift $-\mu_e n E_a$", ORANGE, ha="center", va="top")
-    label(ax, rows[1][1] + 0.4, 0, r"ions: diffusion + drift $\mu_i n E_a$", "#333333",
-          va="center", fontsize=9)
-    ax.set_xlim(-0.2, max(r[0] for r in rows) * 1.05)
-    ax.set_ylim(-0.5, 1.75)
-    ax.set_yticks([])
-    ax.spines["left"].set_visible(False)
-    ax.set_xlabel(r"particle flux $\Gamma_x$ ($10^{17}$ m$^{-2}$ s$^{-1}$)")
-    save(fig, "ambipolar-balance")
-
+# %%
 if __name__ == "__main__":
-    from si import run_as_script
-
-    run_as_script(globals())
+    report(__file__, "Chapter 10 · Diffusion")
