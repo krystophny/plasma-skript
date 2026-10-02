@@ -219,7 +219,7 @@ def save(fig, name):
 
     import matplotlib.pyplot as plt
 
-    out = Path("build/fig")
+    out = Path(__file__).resolve().parent / "build" / "fig"
     out.mkdir(parents=True, exist_ok=True)
     # Transparent background: the page or slide supplies the paper; on the
     # website the .quantitative-plot card keeps dark text readable in dark mode.

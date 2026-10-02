@@ -1,4 +1,5 @@
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
+here = Path(__file__).parent
+sys.path[:0] = [str(here), str(here / "chapters")]
