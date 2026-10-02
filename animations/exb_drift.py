@@ -17,7 +17,7 @@ from manim import *
 import numpy as np
 
 from style import (
-    B_FIELD, CURVE_WIDTH, DOT_RADIUS, E_FIELD, EASE, FAINT, INK, ION, LINEAR,
+    BG, B_FIELD, CURVE_WIDTH, DOT_RADIUS, E_FIELD, EASE, FAINT, INK, ION, LINEAR,
     MUTED, SMALL_SIZE, THIN_WIDTH, StyledScene, axes, axis_labels, label, math,
 )
 
@@ -44,7 +44,7 @@ class ExBDrift(StyledScene):
                     Dot(radius=0.025, color=B_FIELD),
                 ).move_to(ax.c2p(x, y))
                 b_marks.add(mark)
-        b_marks.set_opacity(0.55)
+        b_marks.set_opacity(0.85)
         b_label = math(r"\mathbf{B}\ \odot", color=B_FIELD, size=32)
         b_label.next_to(ax.c2p(2.5, 1.0), UP, buff=0.18)
 
@@ -80,7 +80,7 @@ class ExBDrift(StyledScene):
             center_point(), particle_point(), color=MUTED, stroke_width=1.6))
         particle = always_redraw(lambda: VGroup(
             Dot(particle_point(), radius=0.14, color=ION),
-            math("+", color="#0F1318", size=30).move_to(particle_point()),
+            math("+", color=BG, size=30).move_to(particle_point()),
         ))
         guiding_center = always_redraw(lambda: Dot(center_point(), radius=DOT_RADIUS, color=INK))
 

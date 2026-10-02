@@ -19,7 +19,7 @@ from manim import *
 import numpy as np
 
 from style import (
-    CURVE_WIDTH, E_FIELD, EASE, FAINT, GREEN, GRID, INK, LINEAR, MUTED, ORANGE,
+    CURVE_WIDTH, E_FIELD, EASE, FAINT, GREEN, GRID, INK, LINEAR, MUTED, BLUE,
     THIN_WIDTH, StyledScene, label, math,
 )
 
@@ -78,7 +78,7 @@ class MagnetizedPolarization(StyledScene):
             plus, minus, total = circular_modes(Z_PANEL, tracker.get_value())
             return VGroup(
                 _tip_vector(center, to_screen(plus, center, radius), GREEN, "circle"),
-                _tip_vector(center, to_screen(minus, center, radius), ORANGE, "square"),
+                _tip_vector(center, to_screen(minus, center, radius), BLUE, "square"),
                 Line(center, to_screen(total, center, radius), color=E_FIELD,
                      stroke_width=CURVE_WIDTH + 1),
             )
@@ -87,7 +87,7 @@ class MagnetizedPolarization(StyledScene):
 
         key = VGroup(
             VGroup(_tip_vector(ORIGIN, RIGHT * 0.45, GREEN, "circle"), math(r"E_+", color=GREEN, size=30)).arrange(RIGHT, buff=0.15),
-            VGroup(_tip_vector(ORIGIN, RIGHT * 0.45, ORANGE, "square"), math(r"E_-", color=ORANGE, size=30)).arrange(RIGHT, buff=0.15),
+            VGroup(_tip_vector(ORIGIN, RIGHT * 0.45, BLUE, "square"), math(r"E_-", color=BLUE, size=30)).arrange(RIGHT, buff=0.15),
             VGroup(Line(ORIGIN, RIGHT * 0.45, color=E_FIELD, stroke_width=CURVE_WIDTH + 1), math(r"E", color=E_FIELD, size=30)).arrange(RIGHT, buff=0.15),
         ).arrange(RIGHT, buff=0.5).next_to(frame, DOWN, buff=0.45)
 

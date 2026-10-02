@@ -14,7 +14,9 @@
   --blue: #2f5f93;
   --orange: #a3530f;
   --plot-surface: transparent;
-  --video-surface: #0f1318;
+  /* Manim scenes are rendered on white (animations/style.py BG). */
+  --video-surface: #ffffff;
+  --video-frame: var(--line);
   --reading-width: 42rem;
   --wide-width: 52rem;
   --serif: "Iowan Old Style", "Charter", "Bitstream Charter", "Sitka Text",
@@ -39,6 +41,7 @@
     --blue: #8fb5e3;
     --orange: #e3a368;
     --plot-surface: #f7f6f2;
+    --video-frame: #f7f6f2;
   }
 }
 
@@ -733,6 +736,9 @@ figure > img[src^="data:image/svg+xml"] {
   height: auto;
   border-radius: 8px;
   background: var(--video-surface);
+  /* A thin frame separates the white video from the paper page; in dark mode
+     the same frame turns the video into a light card, as for plots. */
+  border: 1px solid var(--video-frame);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 8px 28px rgba(0, 0, 0, 0.08);
 }
 

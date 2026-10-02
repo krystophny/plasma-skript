@@ -3,7 +3,7 @@
 Every scene imports this module (Manim puts the scene file's directory on
 ``sys.path``), so palette, typography, stroke widths and margins stay identical
 across the script.  The palette is the Okabe-Ito color-vision-safe set on the
-dark video surface used by the website (``--video-surface`` in styles.css).
+light video surface used by the website (``--video-surface`` in styles.css).
 Color is never the only encoding: scenes pair each color with a marker shape,
 line style or direct label.
 
@@ -22,25 +22,29 @@ from manim.mobject.text.text_mobject import register_font
 
 
 # --- palette -------------------------------------------------------------
-BG = "#0F1318"          # website --video-surface
-INK = "#ECE9E2"         # primary text and key objects
-MUTED = "#A3ABB4"       # secondary text, axis labels
-FAINT = "#68717C"       # reference curves, ticks
-GRID = "#38404A"        # axes and frames
+# Light theme matching the script palette in src/theme.typ (ink, muted) and the
+# Lilaq plot colours in src/figures.typ (plot-blue, plot-orange).
+BG = "#FFFFFF"          # website --video-surface
+INK = "#17202A"         # primary text, axes and key objects (theme.typ ink)
+MUTED = "#526175"       # secondary text, axis labels (theme.typ muted)
+FAINT = "#7D8895"       # reference curves, ticks, ghosts
+GRID = "#D3D9E0"        # light-grey frames, grid and guide lines
+AXIS = INK              # axis lines
 
-# Okabe-Ito (2008) hues, kept exact so the set stays color-vision safe.
-ORANGE = "#E69F00"
-SKY = "#56B4E9"
+# Okabe-Ito (2008) hues.  Blue, vermilion and green are exact; orange and
+# reddish purple are darkened (same hue) so that thin lines and labels keep at
+# least 3.5:1 contrast on white.  Sky blue and yellow are dropped: they vanish
+# on a white surface.
+BLUE = "#0072B2"        # = plot-blue
+VERMILION = "#D55E00"   # = plot-orange
 GREEN = "#009E73"
-YELLOW = "#F0E442"
-BLUE = "#0072B2"
-VERMILION = "#D55E00"
-PURPLE = "#CC79A7"
+ORANGE = "#B07800"      # Okabe-Ito orange #E69F00, darkened
+PURPLE = "#B0588A"      # Okabe-Ito reddish purple #CC79A7, darkened
 
 # Semantic roles shared by all scenes.
-ELECTRON = SKY          # drawn as filled circles
-ION = ORANGE            # drawn as triangles
-E_FIELD = YELLOW
+ELECTRON = BLUE         # drawn as filled circles
+ION = VERMILION         # drawn as triangles
+E_FIELD = ORANGE
 B_FIELD = PURPLE
 POTENTIAL = GREEN
 ACCENT = VERMILION      # resonance, highlighted reference value
@@ -73,9 +77,9 @@ def math(tex, color=INK, size=MATH_SIZE, **kwargs):
 
 
 def axes(x_range, y_range, x_length, y_length, ticks=True, **kwargs):
-    """Quiet axes: thin grey lines, short ticks, no arrow tips."""
+    """Quiet axes: thin ink lines, short ticks, no arrow tips."""
     axis_config = {
-        "color": GRID,
+        "color": AXIS,
         "stroke_width": AXIS_WIDTH,
         "include_ticks": ticks,
         "tick_size": 0.05,
