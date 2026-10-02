@@ -1,7 +1,5 @@
-#import "theme.typ": page-shell, frame-style, styles, register-cgs-units, normalized-label
+#import "theme.typ": page-shell, frame-style, styles, normalized-label
 #import "@preview/physica:0.9.8": laplacian, dv
-
-#register-cgs-units
 
 #show: frame-style(styles.boxy)
 #import "chapters/01-introduction.typ": chapter as introduction
@@ -180,13 +178,13 @@
       #html.p(class: "eyebrow")[Glossary]
       #html.h2[Notation and conventions]
       #html.dl[
-        #html.dt[Gaussian CGS]
+        #html.dt[SI units]
         #html.dd[
-          The default electromagnetic unit convention. For a charge $q$, the
-          Lorentz force is
-          $bold(F)=q (bold(E) + ((bold(v) times bold(B))/c))$, and electrostatic
+          The default unit convention, with vacuum permittivity $epsilon_0$
+          and permeability $mu_0$. For a charge $q$, the Lorentz force is
+          $bold(F)=q (bold(E) + bold(v) times bold(B))$, and electrostatic
           Poisson's equation for charge density $rho_q$ is
-          $laplacian(phi) = -4 pi rho_q$. The symbol $rho$ without the
+          $laplacian(phi) = -rho_q/epsilon_0$. The symbol $rho$ without the
           subscript denotes mass density.
         ]
         #html.dt[Normalized quantity]
@@ -198,16 +196,16 @@
         ]
         #html.dt[Gyrofrequency]
         #html.dd[
-          The positive rate $omega_c = (abs(q) B)/(m c)$ in Gaussian CGS. The
-          signed quantity $Omega = (q B)/(m c)$ retains charge orientation.
+          The positive rate $omega_c = (abs(q) B)/m$ in SI. The
+          signed quantity $Omega = (q B)/m$ retains charge orientation.
         ]
         #html.dt[Debye length]
         #html.dd[
           The electron screening length when ions do not respond and the
           electrons have thermodynamic temperature $T_e$ is
-          $lambda_D = sqrt((k_B T_e)/(4 pi n_e e^2))$ in Gaussian CGS.
+          $lambda_D = sqrt((epsilon_0 k_B T_e)/(n_e e^2))$ in SI.
           If several classical species respond with Boltzmann densities,
-          $lambda_D^(-2)=sum_s (4 pi n_s q_s^2)/(k_B T_s)$.
+          $lambda_D^(-2)=sum_s (n_s q_s^2)/(epsilon_0 k_B T_s)$.
         ]
         #html.dt[Thermal speed and distribution]
         #html.dd[

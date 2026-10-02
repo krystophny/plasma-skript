@@ -16,8 +16,6 @@
 #import "chapters/15-sheaths-probes.typ": chapter as sheaths
 #import "appendices/mathematical-toolkit.typ": appendix as mathematical-toolkit
 
-#register-cgs-units
-
 #show: frame-style(styles.boxy)
 
 #set page(paper: "a4", margin: 2.2cm)

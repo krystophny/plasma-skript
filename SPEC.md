@@ -16,9 +16,12 @@ HTML-specific components have an equivalent paged fallback.
   maintainers. No university ownership claim applies to their work.
 - The first publication is in English. The source structure and component
   interfaces should remain translation-ready for a later German edition.
-- Gaussian CGS is the default dimensional unit system. Normalized variables are
-  welcome, but every normalization must state its reference scales and how to
-  reconstruct dimensional quantities.
+- SI (with the vacuum constants ε₀ and μ₀) is the default
+  dimensional unit system. Normalized variables are welcome, but every
+  normalization must state its reference scales in SI and how to reconstruct
+  dimensional quantities. A single appendix, "Gaussian CGS translation", lists
+  the corresponding Gaussian CGS forms for readers of older literature; it is
+  the only place where CGS units or CGS-form equations may appear.
 - Use the versioned `unify` Typst package for unit-bearing quantities and
   numerical results whenever its parser supports the notation. Do not replace
   it with ad hoc unit formatting in new content.
@@ -29,8 +32,8 @@ HTML-specific components have an equivalent paged fallback.
   numerator or denominator whenever it contains more than one factor, an
   operator, or a derivative: write `(a b)/c` and `a/(b c)`, never `a b/c` or
   `a/b c` when the grouped expression is intended. This applies equally to
-  physical expressions such as `(m_(s) v^2)/2`, `(q_(s) n_(s) (bold(u)_(s)
-  times bold(B)))/c`, and `(k_B T_e)/(2 e)`.
+  physical expressions such as `(m_(s) v^2)/2`, `(q_(s) n_(s))/(epsilon_0
+  m_(s))`, and `(k_B T_e)/(2 e)`.
 - Use the derivative operators supplied by `physica`: `dv(f, x)` or
   `derivative(f, x)` for ordinary derivatives, and `pdv(f, x)` or
   `partialderivative(f, x)` for partial derivatives. Do not typeset an
@@ -47,8 +50,8 @@ HTML-specific components have an equivalent paged fallback.
   appear in an axis, legend, or other in-graphic label. Captions and
   alternative descriptions still state the normalization and its reference
   scales.
-- CGS and normalized conventions must not be mixed silently. Temperature
-  conventions, field conventions, and any conversion to SI must be stated at
+- SI and normalized conventions must not be mixed silently. Temperature
+  conventions (kelvin or electronvolt) and field conventions must be stated at
   the point of use.
 - The website is authoritative. A PDF may be generated from the same source
   components when the typed HTML has a readable paged fallback, but PDF support
@@ -64,7 +67,7 @@ HTML-specific components have an equivalent paged fallback.
   bibliography uses a numeric physics style.
 - The website provides an overview page, table of contents, chapter pages,
   stable section anchors, and previous or next chapter navigation.
-- A shared notation glossary records the Gaussian-CGS conventions, symbols,
+- A shared notation glossary records the SI conventions, symbols,
   sign conventions, temperature conventions, and normalized-variable names.
 - The `solutions/` directory is author-only material. It is ignored by Git and
   excluded from every public build and GitHub Pages artifact.
@@ -246,22 +249,22 @@ The narrative must distinguish clearly between:
 - exact identities and model equations,
 - assumptions and consequences,
 - illustrative normalized simulations and measured data,
-- dimensional CGS quantities and normalized quantities,
+- dimensional SI quantities and normalized quantities,
 - equilibrium, linearized, weakly nonlinear, and fully nonlinear statements.
 
 ### 3.1 Unit-system contract
 
 Each chapter or section must state the active unit convention before its first
-dimensional equation. In Gaussian CGS this includes the electromagnetic
-convention used for electric and magnetic fields. A normalized model must show
+dimensional equation. In SI this includes the use of ε₀ and μ₀
+in the field equations and the temperature convention. A normalized model must show
 the definitions of its dimensionless variables and identify every reference
 scale needed to recover a dimensional result.
 
 Plots and animations must label normalized axes with the normalization itself,
 followed by the unit syntax `[1]`, not only with a variable name. Numerical
-results must either be dimensional in CGS or explicitly say that they are
-dimensionless. A conversion to another system is supplementary and must not
-replace the primary CGS statement.
+results must either be dimensional in SI or explicitly say that they are
+dimensionless. Conversions to Gaussian CGS belong only in the translation
+appendix and never replace the primary SI statement.
 
 ## 4. Knowledge checks
 
@@ -444,7 +447,7 @@ snapshots provide these starting API baselines:
 - `frame-it` for definitions, assumptions, examples, warnings, derivation
   summaries, physical interpretations, and knowledge-check presentation.
 - `unify` for unit-bearing quantities and numerical results, with the active
-  Gaussian-CGS or normalized convention stated nearby.
+  SI or normalized convention stated nearby; use its default SI unit catalogue.
 
 Use the APIs documented in the corresponding PDFs under `resources/typst/`.
 The imported version must be updated deliberately when the package API or the

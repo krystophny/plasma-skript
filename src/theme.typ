@@ -1,5 +1,5 @@
 #import "@preview/frame-it:2.0.0": frames, frame-style, styles
-#import "@preview/unify:0.8.1": num, qty, unit, add-unit
+#import "@preview/unify:0.8.1": num, qty, unit
 
 // Scientific visual labels use [1] for a dimensionless unit. Keeping the
 // suffix in one component makes normalized axes and legends consistent across
@@ -9,14 +9,6 @@
 
 // Chapter links target a section in HTML and the same label in the print PDF.
 #let chapter-link(anchor, body) = link(label(anchor), body)
-
-// Gaussian-CGS units are not part of unify's default SI catalogue. This
-// content is inserted by each build entry point before chapter content so the
-// registration is active when quantities are formatted.
-#let register-cgs-units = [
-  #add-unit("statvolt", "statV", "upright(\"statV\")")
-  #add-unit("statcoulomb", "statC", "upright(\"statC\")")
-]
 
 #let ink = rgb("#17202A")
 #let muted = rgb("#526175")
@@ -376,9 +368,9 @@
   #list(..sections.map(section => [#section]))
 
   #unit-ledger[
-    Gaussian CGS is the default dimensional convention. Each chapter will
-    declare its electromagnetic convention before its first dimensional
-    equation and will identify every normalized reference scale.
+    SI is the default dimensional convention. Each chapter will declare its
+    field and temperature conventions before its first dimensional equation
+    and will identify every normalized reference scale.
   ]
 
   #summary[

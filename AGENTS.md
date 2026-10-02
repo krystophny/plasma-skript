@@ -20,7 +20,9 @@ Before changing files:
 
 - Write the first edition in English for a graduate plasma-physics audience.
 - Keep waves and plasma sheaths as separate top-level chapters.
-- Use Gaussian CGS as the default dimensional convention. Label every unit,
+- Use SI (with ε₀ and μ₀) as the default dimensional convention.
+  Gaussian CGS may appear only in the single appendix "Gaussian CGS
+  translation" for readers of older literature. Label every unit,
   normalization, reference scale, and dimensionless quantity at its point of
   use. In a simulation, diagram, or animation using dimensionless units, put
   `[1]` after each normalized visual quantity and never write
