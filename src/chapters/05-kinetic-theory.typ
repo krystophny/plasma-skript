@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[5. Kinetic theory of plasmas] <kinetic-theory>
+  #page-title(number: 5)[Kinetic theory of plasmas] <kinetic-theory>
 
   #lead[
     Single-particle theory follows individual orbits. Kinetic theory instead

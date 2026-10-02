@@ -162,15 +162,17 @@ close_to(evaluate(sp.Symbol("lambda_mfp"), mfp_expr, {**example, lnL: log_L}, u.
          5.89e2, source="09:516")
 
 # %% Plots: shared setup
-from si import BLUE, EXAMPLE_PLASMAS, GRAY, ORANGE, SI_VALUES, figure, label, log_ticks, save
+from si import BLUE, EXAMPLE_PLASMAS, GRAY, ORANGE, SI_VALUES, figure, label, log_ticks, save, slide_width
 
 INK = "#1c1f23"
-PANEL = (2.6, 2.4)  # one panel of the side-by-side pair maxwellian_heating | maxwellian_drift
+# Widths fit the slide grid (si.slide_width): one panel of a pair or a summary
+# plot spans 6 columns, a full plot page 8, the scale-ordering summary 12.
+PANEL = (slide_width(6), 2.4)  # one panel of the side-by-side pair maxwellian_heating | maxwellian_drift
 
 # %% Plot: net charge inside radius r around a point charge
 screened_fraction = sp.lambdify(r, (enclosed / Q).subs(lam_D, 1), "numpy")
 radius = np.linspace(0, 5, 300)
-fig, ax = figure(3.4, 2.4)
+fig, ax = figure(slide_width(6), 2.0)
 ax.axhline(1, color=ORANGE, ls="--")
 ax.plot(radius, screened_fraction(radius), color=BLUE)
 label(ax, 3.3, 1.03, "bare", ORANGE)
@@ -203,7 +205,7 @@ velocity_panel([(0, 1, BLUE, "-", r"$u = 0$", (-3.2, 0.2)), (2, 1, ORANGE, "--",
 # %% Plot: speed distribution with the most probable, mean and rms speed
 speed_curve = sp.lambdify(w, (v_th * speed_pdf).subs(v_th, 1), "numpy")
 speed = np.linspace(0, 3, 300)
-fig, ax = figure(3.4, 2.4)
+fig, ax = figure(slide_width(6), 2.0)
 ax.plot(speed, speed_curve(speed), color=BLUE)
 for value, text, ls, y_text in [(1.0, r"$v_\mathrm{th}$", "-", 0.98),
                                 (float(v_mean.subs(v_th, 1)), r"$\langle v \rangle$", "--", 0.78),
@@ -222,7 +224,7 @@ PROTON = 1.67262192369e-27
 kelvin_per_eV_value = J_PER_EV / SI_VALUES[k_B]
 thermal = sp.lambdify((eV, m_s), v_th_eV, "numpy")
 energy_eV = np.logspace(-2, 4, 200)
-fig, ax = figure(3.4, 2.8)
+fig, ax = figure(slide_width(8), 3.0)
 ax.plot(energy_eV, thermal(energy_eV * J_PER_EV, SI_VALUES[m_e]), color=BLUE)
 ax.plot(energy_eV, thermal(energy_eV * J_PER_EV, PROTON), color=ORANGE, ls="--")
 label(ax, 0.03, 2.2 * thermal(0.03 * J_PER_EV, SI_VALUES[m_e]), r"$v_{\mathrm{th},e}$", BLUE)
@@ -270,7 +272,7 @@ LENGTHS = [("lambda_D", r"$\lambda_D$", BLUE, "o"), ("rho_e", r"$\rho_e$", ORANG
            ("mfp", r"$\lambda_\mathrm{mfp}$", GRAY, "s"), ("L", r"$L$", INK, "|")]
 RATES = [("omega_pe", r"$\omega_{pe}$", BLUE, "o"), ("omega_ce", r"$\omega_{ce}$", ORANGE, "^"),
          ("nu_ei", r"$\nu_{ei}$", GRAY, "s")]
-fig, _ = figure(6.4, 2.7)
+fig, _ = figure(slide_width(12), 2.0)
 fig.clf()
 ax_len, ax_rate = fig.subplots(1, 2, sharey=True)
 for row, (name, (B_ex, L_ex)) in enumerate(FIELD_AND_SIZE.items()):
@@ -285,10 +287,11 @@ for row, (name, (B_ex, L_ex)) in enumerate(FIELD_AND_SIZE.items()):
             ax.plot(x, row, marker, color=color, ms=9 if marker == "|" else 5,
                     mew=1.6 if marker == "|" else 1.0)
             if row == 0:
-                ax.annotate(text, (x, row), xytext=(0, -9), textcoords="offset points",
-                            ha="center", va="top", color=color)
+                # Marker names above the top row, clear of the rows below.
+                ax.annotate(text, (x, row), xytext=(0, 7), textcoords="offset points",
+                            ha="center", va="bottom", color=color)
 ax_len.set(xscale="log", xlim=(1e-6, 1e18), xlabel=r"$\ell\ [\mathrm{m}]$",
-           yticks=range(len(FIELD_AND_SIZE)), yticklabels=list(FIELD_AND_SIZE), ylim=(4.5, -0.9))
+           yticks=range(len(FIELD_AND_SIZE)), yticklabels=list(FIELD_AND_SIZE), ylim=(4.5, -1.4))
 ax_rate.set(xscale="log", xlim=(1e-3, 1e13), xlabel=r"$\omega,\ \nu\ [\mathrm{s^{-1}}]$")
 log_ticks(ax_len.xaxis, -6, 18, 6)
 log_ticks(ax_rate.xaxis, -3, 13, 4)

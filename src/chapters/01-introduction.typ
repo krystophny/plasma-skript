@@ -3,7 +3,7 @@
 #import "@preview/physica:0.9.8": grad, div, curl, laplacian, pdv, dv, vb
 
 #let chapter = [
-  #page-title[1. Introduction] <introduction>
+  #page-title(number: 1)[Introduction] <introduction>
 
   #lead[
     A plasma is a many-particle system whose long-range electromagnetic fields

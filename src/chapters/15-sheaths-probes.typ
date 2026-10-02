@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[15. Plasma sheaths and Langmuir probes] <plasma-sheaths>
+  #page-title(number: 15)[Plasma sheaths and Langmuir probes] <plasma-sheaths>
 
   #lead[
     Electrons and ions arrive at a material surface with different thermal speeds, so the surface charges

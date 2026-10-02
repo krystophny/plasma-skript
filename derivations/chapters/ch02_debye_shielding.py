@@ -203,16 +203,18 @@ check(T_line_1, T_line_1, unit=u.volt, units=SI_UNITS)
 # %% Plots: shared setup
 import numpy as np
 
-from si import BLUE, EXAMPLE_PLASMAS, GRAY, ORANGE, SI_VALUES, figure, label, log_ticks, save
+from si import BLUE, EXAMPLE_PLASMAS, GRAY, ORANGE, SI_VALUES, figure, label, log_ticks, save, slide_width
 
-PANEL = (2.6, 3.0)  # one panel of a side-by-side pair (debye_potential | debye_sphere_potential)
+# Widths fit the slide grid (si.slide_width): one panel of the pair or a
+# summary plot spans 6 columns, the n-T map 10.
+PANEL = (slide_width(6), 2.4)  # one panel of a side-by-side pair (debye_potential | debye_sphere_potential)
 # r in units of lambda_D (kappa = 1), phi in units of Q/(4 pi eps0 lambda_D).
 NORMALIZED = {Q: 1, eps0: 1 / (4 * sp.pi), lambda_D: 1, kappa: 1}
 
 
 def potential_axes(ax):
     ax.set(xlim=(0, 4), ylim=(0, 3.2), xticks=[0, 1, 2, 3, 4],
-           xlabel=r"$r/\lambda_D$", ylabel=r"$4\pi\varepsilon_0\lambda_D\,\phi/Q$")
+           xlabel=r"$r/\lambda_D$", ylabel=r"$4\pi\varepsilon_0\lambda_D\,\varphi/Q$")
 
 
 radius = np.linspace(1e-6, 4, 400)
@@ -224,7 +226,7 @@ fig, ax = figure(*PANEL)
 ax.plot(radius, bare_curve(radius), color=ORANGE, ls="--")
 ax.plot(radius, screened_curve(radius), color=BLUE)
 label(ax, 1.3, bare_curve(1.3) + 0.08, "bare", ORANGE)
-label(ax, 2.5, screened_curve(2.5) + 0.04, "screened", BLUE)
+label(ax, 2.5, 0.05, "screened", BLUE)
 potential_axes(ax)
 save(fig, "debye_potential")
 
@@ -243,9 +245,9 @@ fig, ax = figure(*PANEL)
 ax.plot(radius, bare_sphere_curve(radius), color=ORANGE, ls="--")
 ax.plot(radius, screened_sphere_curve(radius), color=BLUE)
 ax.axvline(float(R_plot), color="0.8", lw=0.6, zorder=0)
-ax.text(float(R_plot), 3.2, r"$R$", ha="center", va="bottom", color="0.4")
+ax.text(float(R_plot) + 0.08, 3.15, r"$R$", ha="left", va="top", color="0.4")
 label(ax, 1.3, bare_sphere_curve(1.3) + 0.08, "bare", ORANGE)
-label(ax, 2.5, screened_sphere_curve(2.5) + 0.04, "screened", BLUE)
+label(ax, 2.5, 0.05, "screened", BLUE)
 potential_axes(ax)
 save(fig, "debye_sphere_potential")
 
@@ -258,7 +260,7 @@ def numeric(expr, *args):
 
 
 def nt_axes():
-    fig, ax = figure(5.0, 3.0)
+    fig, ax = figure(slide_width(10), 3.0)
     ax.set(xscale="log", yscale="log", xlim=(1e6, 1e32), ylim=(1e-2, 1e5),
            xlabel=r"$n_e\ [\mathrm{m^{-3}}]$", ylabel=r"$k_B T_e\ [\mathrm{eV}]$")
     log_ticks(ax.xaxis, 6, 32, 4)
@@ -303,14 +305,19 @@ save(fig, "nt_map")
 # %% Plot: Debye number against density at three temperatures
 N_D_of = numeric(N_D_expr.subs(lambda_D, lambda_D_expr), n0, T_e)
 kelvin_per_eV = float((e / k_B).subs(SI_VALUES))
-fig, ax = figure(3.4, 2.8)
+fig, ax = figure(slide_width(6), 2.2)
 for T_example, text, color, ls in [(1e4, r"$10\,\mathrm{keV}$", BLUE, "-"),
                                    (1e1, r"$10\,\mathrm{eV}$", ORANGE, "--"),
                                    (1e-1, r"$0.1\,\mathrm{eV}$", GRAY, ":")]:
     count_curve = N_D_of(density, T_example * kelvin_per_eV)
     ax.plot(density, count_curve, color=color, ls=ls)
     k = np.searchsorted(density, 1e8)
-    label(ax, density[k], count_curve[k] * 4, text, color)
+    # Labels above their curves; the lowest one in the free corner below it
+    # (parallel lines leave no room for a level label between them).
+    if T_example < 1:
+        label(ax, 2e6, 10**2.2, text, color)
+    else:
+        label(ax, density[k], count_curve[k] * 20, text, color)
 ax.axhline(1, color=ORANGE, lw=0.6)
 ax.fill_between(density, 1e-6, 1, color=ORANGE, alpha=0.10, lw=0)
 ax.set(xscale="log", yscale="log", xlim=(1e6, 1e32), ylim=(1e-4, 1e16),

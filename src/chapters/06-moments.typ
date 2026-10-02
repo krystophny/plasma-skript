@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": unit
 
 #let chapter = [
-  #page-title[6. Moments of the Boltzmann equation] <moments>
+  #page-title(number: 6)[Moments of the Boltzmann equation] <moments>
 
   #lead[
     Many plasma problems concern density, flow, or energy transport rather

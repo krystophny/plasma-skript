@@ -3,7 +3,7 @@
 #import "../figures.typ": plasma-frequency-scale
 
 #let chapter = [
-  #page-title[3. Plasma oscillations] <plasma-oscillations>
+  #page-title(number: 3)[Plasma oscillations] <plasma-oscillations>
 
   #lead[
     Debye shielding describes an equilibrium rearrangement of charge.

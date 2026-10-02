@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[10. Plasma diffusion] <plasma-diffusion>
+  #page-title(number: 10)[Plasma diffusion] <plasma-diffusion>
 
   #lead[
     Diffusion is the macroscopic signature of many small changes in particle

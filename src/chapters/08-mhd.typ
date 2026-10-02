@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[8. Single-fluid theory and magnetohydrodynamics] <single-fluid-mhd>
+  #page-title(number: 8)[Single-fluid theory and magnetohydrodynamics] <single-fluid-mhd>
 
   #lead[
     Chapter 7 combined species equations into total-fluid balances. To obtain

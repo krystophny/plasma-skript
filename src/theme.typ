@@ -64,19 +64,57 @@
   }
 }
 
-#let page-title(body) = context {
+// Chapter and section numbers. `page-title(number: N)` starts chapter N and
+// `section-title` numbers its sections N.1, N.2, ...; appendix titles carry
+// no number, and neither do their sections. Each title also records its
+// number, plain-text title, and label as metadata (<script-chapter>,
+// <script-section>), the single source from which the lecture slides in
+// slides/ take their section titles (scripts/build-slides.sh queries it).
+#let chapter-number = state("script-chapter-number", none)
+#let section-number = counter("script-section-number")
+
+#let plain-text(it) = {
+  if it == none { "" }
+  else if type(it) == str { it }
+  else if it.has("text") { plain-text(it.text) }
+  else if it.has("children") { it.children.map(plain-text).join("") }
+  else if it.func() == math.attach { plain-text(it.base) }
+  else if it.has("body") { plain-text(it.body) }
+  else if it.func() == [ ].func() { " " }
+  else { "" }
+}
+
+// The label written after a title call, e.g. `#section-title[...] <x>`,
+// sits on the context element that renders the title.
+#let own-label() = {
+  let found = query(here())
+  if found.len() > 0 and found.first().has("label") { str(found.first().label) }
+}
+
+#let page-title(number: none, body) = context {
+  let title = if number == none { body } else { [#number. #body] }
+  chapter-number.update(number)
+  section-number.update(0)
+  [#metadata((number: number, title: plain-text(body), label: own-label())) <script-chapter>]
   if target() == "paged" {
-    heading(level: 1)[#body]
+    heading(level: 1)[#title]
   } else {
-    html.h1(body)
+    html.h1(title)
   }
 }
 
 #let section-title(body) = context {
+  let chapter = chapter-number.get()
+  let number = if chapter != none {
+    str(chapter) + "." + str(section-number.get().first() + 1)
+  }
+  let title = if number == none { body } else { [#number#sym.space.en#body] }
+  section-number.step()
+  [#metadata((number: number, title: plain-text(body), label: own-label())) <script-section>]
   if target() == "paged" {
-    heading(level: 2)[#body]
+    heading(level: 2)[#title]
   } else {
-    html.h2(body)
+    html.h2(title)
   }
 }
 

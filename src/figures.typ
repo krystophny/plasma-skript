@@ -30,7 +30,9 @@
 // Image alt text: the plot's name in words; the enclosing figure's `alt`
 // carries the full description.
 #let plot-alt(name) = "Plot: " + name.replace("_", " ").replace("-", " ")
-#let derived-plot(name, width: 9cm) = context {
+// The default `auto` keeps the natural si.figure size, so the 10 pt figure
+// text matches every other natural-size plot.
+#let derived-plot(name, width: auto) = context {
   let img = image("/derivations/build/fig/" + name + ".svg", width: width,
     alt: plot-alt(name))
   if target() == "paged" { align(center, img) }
@@ -39,7 +41,7 @@
 // Two derived plots side by side, for a direct comparison on equal axes.
 // Each panel is drawn at its native width (si.figure size), so the text size
 // matches a single derived plot.
-#let derived-plot-pair(left, right, width: 6.6cm) = context {
+#let derived-plot-pair(left, right, width: auto) = context {
   let img(name) = image("/derivations/build/fig/" + name + ".svg", width: width,
     alt: plot-alt(name))
   if target() == "paged" {
@@ -227,7 +229,7 @@
     $e^(-r\/lambda_D)$; at $r = lambda_D$ the screened potential is $1\/e$
     of the bare one.
   ],
-)[#derived-plot("debye_potential", width: 6.6cm)]
+)[#derived-plot("debye_potential")]
 
 #let debye-potential-comparison = figure(
   alt: "Two radial plots on identical axes, each comparing a dashed bare potential with a solid Debye-screened potential. Left: a point charge, where both curves diverge at the origin. Right: a permeable, uniformly charged sphere of radius half a Debye length, where the bare potential is quadratic and finite inside the sphere and the screened potential is lower everywhere. Outside the sources both screened curves decay to nearly zero within about three Debye lengths.",
@@ -253,7 +255,7 @@
     the shaded side has $N_D < 1$. Dots: typical parameters of five example
     plasmas (order of magnitude).
   ],
-)[#derived-plot("nt_map", width: 12.5cm)]
+)[#derived-plot("nt_map")]
 
 #let moment-ambiguity = figure(
   alt: "One-dimensional velocity distributions with the same density, bulk velocity and temperature. The solid Maxwellian has a single peak at the bulk velocity. The dashed distribution consists of two narrower beams at plus and minus 0.6 thermal speeds, with a dip at the bulk velocity.",
@@ -274,7 +276,7 @@
     density--temperature map. $f_(p,e)$ grows as $sqrt(n_e)$: radio for
     space plasmas, microwave for laboratory and fusion plasmas.
   ],
-)[#derived-plot("plasma_frequency", width: 8.6cm)]
+)[#derived-plot("plasma_frequency")]
 
 #let collision-paths = figure(
   alt: "Two particle paths from left to right. Top, neutral gas: straight flights broken by four sharp turns, each marked by a dot for a hard collision. Bottom, plasma: a path made of many short segments, each turned by a small random angle, so the direction wanders gradually without any single sharp turn.",
@@ -1268,7 +1270,7 @@
     from Gauss's law and the screened potential derived in the Debye-shielding
     chapter. Radius in units of $lambda_D$.
   ],
-)[#derived-plot("enclosed_charge", width: 8.6cm)]
+)[#derived-plot("enclosed_charge")]
 
 #let intro-heating-drift = figure(
   alt: "Two plots on identical axes of one velocity component of a Maxwellian. Left, heating: the solid curve at temperature T and a dashed curve at 4T, both centred at zero; the hotter one is twice as wide and half as high. Right, acceleration: the solid curve at rest and a dashed curve of the same shape shifted to two thermal speeds.",
@@ -1289,7 +1291,7 @@
     probable speed; the mean speed is $2 v_"th"\/sqrt(pi)$ and the
     root-mean-square speed $sqrt(3\/2) v_"th"$. Speed in units of $v_"th"$.
   ],
-)[#derived-plot("maxwell_speed", width: 8.6cm)]
+)[#derived-plot("maxwell_speed")]
 
 #let intro-thermal-speed = figure(
   alt: "Log-log plot of thermal speed in metres per second against k_B T in electron-volts from 0.01 eV to 10 keV, with the temperature in kelvin on the top axis. Two parallel lines of slope one half: electrons from about 6 times 10 to the 4 to 6 times 10 to the 7 metres per second, and protons a factor 43 lower.",
@@ -1300,7 +1302,7 @@
     lines have slope $1\/2$; their ratio is $sqrt(m_p\/m_e) approx 43$.
     Nonrelativistic.
   ],
-)[#derived-plot("thermal_speed", width: 8.6cm)]
+)[#derived-plot("thermal_speed")]
 
 #let intro-scale-ordering = figure(
   alt: "Two panels with one row per example plasma: H II region, ionosphere, solar corona, Hall thruster and tokamak core. Left, lengths in metres on a logarithmic axis from a micrometre to 10 to the 18 metres: Debye length (circle), electron gyroradius (triangle), Coulomb mean free path (square) and system size (bar). Right, rates in inverse seconds: electron plasma frequency (circle), electron cyclotron frequency (triangle) and electron-ion collision frequency (square). In every row the Debye length lies far below the system size; the mean free path exceeds the system size in the tokamak core and the Hall thruster; the collision frequency lies far below the plasma frequency in every row.",
@@ -1314,4 +1316,4 @@
     $n_e$, $k_B T_e$, $B$ and $L$; the ionosphere's dominant
     electron--neutral collisions are not included.
   ],
-)[#derived-plot("scale_ordering", width: 16.2cm)]
+)[#derived-plot("scale_ordering")]

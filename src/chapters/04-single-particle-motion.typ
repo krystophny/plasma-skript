@@ -3,7 +3,7 @@
 #import "@preview/physica:0.9.8": grad, pdv, dv
 
 #let chapter = [
-  #page-title[4. Single-particle motion] <single-particle-motion>
+  #page-title(number: 4)[Single-particle motion] <single-particle-motion>
 
   #lead[
     The single-particle model prescribes electromagnetic fields and follows

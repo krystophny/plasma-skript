@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[12. Waves in cold magnetized plasmas] <cold-magnetized-waves>
+  #page-title(number: 12)[Waves in cold magnetized plasmas] <cold-magnetized-waves>
 
   #lead[
     A static magnetic field turns the isotropic plasma response into a tensor.

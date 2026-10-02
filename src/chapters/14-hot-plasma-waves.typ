@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[14. Waves in hot plasmas] <hot-plasma-waves>
+  #page-title(number: 14)[Waves in hot plasmas] <hot-plasma-waves>
 
   #lead[
     A fluid closure retains only a few velocity moments. A hot plasma wave

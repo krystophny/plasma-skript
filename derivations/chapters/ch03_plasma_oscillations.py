@@ -98,19 +98,23 @@ check(inertial.rhs.subs(omega_ps, omega_ps_expr), inertial.rhs.subs(omega_ps, om
 # %% Plot: plasma frequency against density
 import numpy as np
 
-from si import BLUE, EXAMPLE_PLASMAS, SI_VALUES, figure, log_ticks, save
+from si import BLUE, EXAMPLE_PLASMAS, SI_VALUES, figure, log_ticks, save, slide_width
 
 f_pe = sp.lambdify(n0, (omega_pe_expr / (2 * sp.pi)).subs(SI_VALUES), "numpy")
 density = np.logspace(6, 32, 200)
-fig, ax = figure(3.4, 2.8)
+# 6 slide-grid columns (si.slide_width): the summary plot of the deck.
+fig, ax = figure(slide_width(6), 2.2)
 for f, text in [(1e6, "MHz"), (1e9, "GHz"), (1e12, "THz")]:
     ax.axhline(f, color="0.85", lw=0.6, zorder=0)
     ax.text(1.5e6, f * 1.6, text, color="0.4", va="bottom")
 ax.plot(density, f_pe(density), color=BLUE)
 for name, (n_example, _) in EXAMPLE_PLASMAS.items():
     ax.plot(n_example, f_pe(n_example), "o", ms=4, color="#1c1f23")
-    ax.annotate(name, (n_example, f_pe(n_example)), xytext=(5, -3), textcoords="offset points",
-                va="top", fontsize=9)
+    # The top point is labelled above the curve, clear of its neighbour.
+    above = name == "tokamak core"
+    ax.annotate(name, (n_example, f_pe(n_example)), textcoords="offset points",
+                xytext=(-6, 3) if above else (5, -3), ha="right" if above else "left",
+                va="bottom" if above else "top")
 ax.set(xscale="log", yscale="log", xlim=(1e6, 1e32), ylim=(1e3, 1e15),
        xlabel=r"$n_e\ [\mathrm{m^{-3}}]$", ylabel=r"$f_{pe}\ [\mathrm{Hz}]$")
 log_ticks(ax.xaxis, 6, 30, 8)

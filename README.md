@@ -100,6 +100,12 @@ To serve an existing build on localhost without rebuilding, use
 `nix run .#local-host -- 8000`. Neither app watches for changes. You can also
 rebuild separately with `nix run .#build-site`.
 
+The site build also compiles the live lecture decks `slides/<stem>.typ` (A4
+landscape, for annotation during class) to `public/slides/<stem>.pdf` through
+`scripts/build-slides.sh`. The decks take section numbers and titles from the
+script and reuse its derived plots. `scripts/export-course-folder.sh <dest>`
+copies the deck PDFs, animations, and derivations into a course folder.
+
 The repository includes a GitHub Pages workflow that builds the same bundle
 with Nix and deploys pushes to `main`. Enable GitHub Pages with GitHub Actions
 as its publishing source in the repository settings.
@@ -108,6 +114,10 @@ as its publishing source in the repository settings.
 
 Teaching content is released under [CC BY 4.0 International](LICENSE-CONTENT.md).
 Code and build infrastructure are released under the [MIT License](LICENSE).
+The photos in `slides/photos/` are public domain or CC BY 4.0, each credited
+in [`slides/photos/credits.md`](slides/photos/credits.md). The Libertinus
+fonts in `fonts/` are distributed under the SIL Open Font License 1.1
+([`fonts/OFL.txt`](fonts/OFL.txt)).
 Contribution and attribution terms are documented in
 [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`CONTRIBUTORS.md`](CONTRIBUTORS.md).
 

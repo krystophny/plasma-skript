@@ -19,3 +19,6 @@ derivations/build/
 
 # Manim scratch output from local renders
 /media/
+
+# Generated inputs of the lecture decks (scripts/build-slides.sh).
+slides/build/

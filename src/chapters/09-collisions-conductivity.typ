@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[9. Collisions and plasma conductivity] <collisions-conductivity>
+  #page-title(number: 9)[Collisions and plasma conductivity] <collisions-conductivity>
 
   #lead[
     Gradients and external forces drive net transport; collisions set how

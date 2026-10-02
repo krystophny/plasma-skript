@@ -3,7 +3,7 @@
 #import "../figures.typ": debye-potential-comparison, debye-regime-map, debye-screened-point
 
 #let chapter = [
-  #page-title[2. Debye shielding] <debye-shielding>
+  #page-title(number: 2)[Debye shielding] <debye-shielding>
 
   #lead[
     Mobile charges rearrange around a localized disturbance. The equilibrium

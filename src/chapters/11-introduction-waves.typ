@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[11. Introduction to waves in plasmas] <introduction-waves>
+  #page-title(number: 11)[Introduction to waves in plasmas] <introduction-waves>
 
   #lead[
     A plasma wave is a collective perturbation whose restoring force and

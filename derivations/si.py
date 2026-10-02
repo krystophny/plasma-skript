@@ -98,6 +98,33 @@ EXAMPLE_PLASMAS = {
 }
 
 
+# Figure text is 10 pt at the natural figure size. The script includes the
+# plots at that size (labels a step below its 11 pt body); the slides scale
+# them by SLIDE_SCALE = 18 pt / 10 pt, so the labels equal the 18 pt slide
+# body. The slide grid (slides/theme.typ) has 15 mm columns and a 7 mm gutter;
+# slide_width(n) is the natural width in inches of a plot spanning n columns.
+SLIDE_SCALE = 1.8
+
+
+def slide_width(columns):
+    """Natural figure width [in] that fills `columns` slide-grid columns."""
+    return (15 * columns + 7 * (columns - 1)) / SLIDE_SCALE / 25.4
+
+
+def _register_fonts():
+    """Register the repository's Libertinus fonts (SIL OFL, fonts/) with
+    Matplotlib so that plots use the script's typeface without a system
+    install. Without the directory (e.g. an exported copy), Matplotlib falls
+    back to an installed Libertinus Serif or its default serif."""
+    from pathlib import Path
+
+    from matplotlib import font_manager
+
+    fonts = Path(__file__).resolve().parent.parent / "fonts"
+    for path in sorted(fonts.glob("LibertinusSerif-*.otf")):
+        font_manager.fontManager.addfont(str(path))
+
+
 def figure(width=4.2, height=2.8):
     """Minimal figure: no top/right spines, thin lines, mathtext labels."""
     import matplotlib
@@ -105,6 +132,7 @@ def figure(width=4.2, height=2.8):
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
+    _register_fonts()
     plt.rcParams.update({
         "font.size": 10, "axes.linewidth": 0.8, "lines.linewidth": 1.6,
         "axes.spines.top": False, "axes.spines.right": False,
@@ -112,9 +140,18 @@ def figure(width=4.2, height=2.8):
         "legend.frameon": False, "figure.dpi": 150,
         # Glyphs as paths: identical rendering without installed fonts.
         "svg.fonttype": "path", "svg.hashsalt": "plasma-skript",
-        # Computer Modern for text and math, matching Typst and the slides.
-        "font.family": "serif", "font.serif": ["cmr10"],
-        "mathtext.fontset": "cm", "axes.formatter.use_mathtext": True,
+        # Libertinus Serif for text and math, matching the script and the
+        # slides; glyphs missing from it (some relations) come from STIX.
+        "font.family": "serif",
+        "font.serif": ["Libertinus Serif", "STIXGeneral", "DejaVu Serif"],
+        "mathtext.fontset": "custom", "mathtext.fallback": "stix",
+        "mathtext.rm": "Libertinus Serif",
+        "mathtext.it": "Libertinus Serif:italic",
+        "mathtext.bf": "Libertinus Serif:bold",
+        "mathtext.sf": "Libertinus Serif",
+        "mathtext.cal": "Libertinus Serif:italic",
+        "mathtext.tt": "DejaVu Sans Mono",
+        "axes.formatter.use_mathtext": True,
         "axes.unicode_minus": False,
         "axes.edgecolor": "#333333", "xtick.color": "#333333",
         "ytick.color": "#333333", "axes.labelcolor": "#1c1f23",

@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title[7. Multiple-fluid theory of plasmas] <multiple-fluids>
+  #page-title(number: 7)[Multiple-fluid theory of plasmas] <multiple-fluids>
 
   #lead[
     A plasma can contain several interpenetrating fluids at the same position.
