@@ -10,8 +10,8 @@
 #                                 public/media of an earlier site build
 # Generated here, under slides/build/ (ignored by Git):
 #   script-outline.json  chapter and section numbers and titles, queried from
-#                        the script (src/theme.typ: <script-chapter>,
-#                        <script-section>), so the decks never restate them
+#                        the script by scripts/script-outline.sh, so the
+#                        decks never restate them
 #   media/<slug>.png     the current posters, copied so that new renders
 #                        appear in the next build
 set -euo pipefail
@@ -28,11 +28,7 @@ fi
 
 mkdir -p "$build/media" "$out_dir"
 
-typst eval --root "$repo_root" --font-path "$repo_root/fonts" --ignore-system-fonts --in "$repo_root/src/print.typ" \
-  '(chapters: query(<script-chapter>).map(m => m.value),
-    sections: query(<script-section>).map(m => m.value))' \
-  >"$build/script-outline.json.tmp"
-mv "$build/script-outline.json.tmp" "$build/script-outline.json"
+bash "$repo_root/scripts/script-outline.sh" "$build/script-outline.json"
 
 # Posters named in the decks: animation-page("<slug>", ...).
 rm -f "$build"/media/*.png

@@ -35,7 +35,7 @@ source and the plasma parameter follow without titles.
   charge density ρ_q = e(n_i − n_e) → linearize ρ_q ≈ −(e²n₀/k_BT_e)φ →
   substitute ∇²φ = φ/λ_D² → φ = w/r: w'' = w/λ_D² → decay w ∝ e^{−r/λ_D}.
   Result: φ = Q e^{−r/λ_D}/(4πε₀r), λ_D = √(ε₀k_BT_e/(n₀e²)). Sources:
-  script 02:81–158, `ch02_debye_shielding.py` "Debye length", "Screened point
+  script §2.1 Debye shielding, `ch02_debye_shielding.py` "Debye length", "Screened point
   charge".
 - **Plasma parameter (6).** Assumptions: uniform density n_e = n₀; Debye
   sphere r ≤ λ_D; mean spacing a, (4π/3)a³n₀ = 1. Derivation: count

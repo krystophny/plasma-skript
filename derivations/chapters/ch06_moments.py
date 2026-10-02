@@ -32,11 +32,11 @@ _, _, P_test, _ = moments()
 MOMENTS = moment_values()                    # P_ij, q_i, eps, W, F_i on the test f
 
 
-def agrees_in_moments(derived, printed, source, lhs):
+def agrees_in_moments(derived, printed, lhs, eq=""):
     """agrees() for a statement written with P, q, W, epsilon: the test values
     are inserted for the comparison, the display keeps the compact notation."""
     residual = derived - printed.subs(MOMENTS).doit()   # must vanish
-    return agrees(residual + printed, printed, source, lhs=lhs)
+    return agrees(residual + printed, printed, lhs=lhs, eq=eq)
 
 
 # Silent unit checks with plain symbols.
@@ -69,54 +69,54 @@ show(sp.Eq(sp.Integral(w_w**2 * sp.exp(-w_w**2 / (2 * a_w**2)), (w_w, -sp.oo, sp
            gauss_moment(2)(a_w)))
 
 # %% Density, flow and current
-section("Density, flow and current", "06-moments.typ:65")
+section("Density, flow and current", script="moments-definitions")
 density = moment(1)
-agrees(integrate(density), n, ":68", lhs=density)
+agrees(integrate(density), n, lhs=density)
 current = moment(q_s * v[0])
-agrees(integrate(current), q_s * n * U[0], ":88", lhs=current)
+agrees(integrate(current), q_s * n * U[0], lhs=current)
 note("The random velocity", sp.Eq(w[0], v[0] - U[0]), "has zero mean (x shown; y, z asserted)")
-agrees(integrate(moment(w[0])), 0, ":93", lhs=moment(w[0]))
+agrees(integrate(moment(w[0])), 0, lhs=moment(w[0]))
 assert all(integrate(moment(w[i])) == 0 for i in (1, 2))
 has_unit(qs * ns, u.coulomb / u.meter**3)
 has_unit(qs * ns * us, u.ampere / u.meter**2)
 has_unit(ms * ns, u.kilogram / u.meter**3)
 
 # %% Raw second moment
-section("Raw second moment", "06-moments.typ:110")
+section("Raw second moment", script="moments-definitions")
 note("Raw minus central second moment (xy shown; xx and yz asserted)")
 for i, j in [(0, 1), (0, 0), (1, 2)]:
     raw, central = moment(m_s * v[i] * v[j]), moment(m_s * w[i] * w[j])
     split = integrate(raw) - integrate(central)
     if (i, j) == (0, 1):
-        agrees(split, m_s * n * U[i] * U[j], ":115", lhs=raw - central)
+        agrees(split, m_s * n * U[i] * U[j], lhs=raw - central)
     else:
         assert same(split, m_s * n * U[i] * U[j])
-has_unit(ms * ns * us**2, u.pascal)                  # P_s = m n <w w>, line 95
+has_unit(ms * ns * us**2, u.pascal)                  # P_s = m n <w w>
 
 # %% Heat flux as contraction
-section("Heat flux as contraction", "06-moments.typ:159")
+section("Heat flux as contraction", script="moments-definitions")
 heat = moment(m_s * w2 * w[0] / 2)
 show(sp.Eq(heat, integrate(heat)))
 tensor = [moment(m_s * w[0] * w[j] * w[j]) for j in range(3)]   # Q_xjj
-agrees(sum(integrate(Q) for Q in tensor) / 2, integrate(heat), ":162", lhs=sum(tensor) / 2)
+agrees(sum(integrate(Q) for Q in tensor) / 2, integrate(heat), lhs=sum(tensor) / 2)
 assert same(sum(integrate(moment(m_s * w[1] * w[j] ** 2)) for j in range(3)) / 2,
             integrate(moment(m_s * w2 * w[1] / 2)))
 
 # %% Continuity
-section("Continuity from the zeroth moment", "06-moments.typ:283")
+section("Continuity from the zeroth moment", script="moments-continuity")
 note("Kinetic equation with the Lorentz acceleration (x component; y, z alike)")
 show(sp.Eq(A[0], q_s / m_s * (E[0] + cross(v, B)[0])))
 show(sp.Eq(KINETIC, C))
 time = VelocityIntegral(Partial(F, t))
 flux = VelocityIntegral(sum(Partial(v[j] * F, X[j]) for j in range(3)))
 force = VelocityIntegral(sum(Partial(A[j] * F, v[j]) for j in range(3)))
-agrees(integrate(time), Partial(n, t), ":273", lhs=time)
-agrees(integrate(flux), sum(Partial(n * U[j], X[j]) for j in range(3)), ":277", lhs=flux)
+agrees(integrate(time), Partial(n, t), lhs=time, eq="moments-continuity-terms")
+agrees(integrate(flux), sum(Partial(n * U[j], X[j]) for j in range(3)), lhs=flux)
 note("Integration by parts in velocity: the force term vanishes")
-agrees(integrate(force), 0, ":282", lhs=force)
+agrees(integrate(force), 0, lhs=force)
 note("Collisions conserve particles,", sp.Eq(VelocityIntegral(C), 0), "; the sum is continuity")
 number = integrate(VelocityIntegral(KINETIC))
-agrees(number, Partial(n, t) + sum(Partial(n * U[j], X[j]) for j in range(3)), ":290",
+agrees(number, Partial(n, t) + sum(Partial(n * U[j], X[j]) for j in range(3)),
        lhs=sp.S.Zero)
 note("Times", m_s, "gives mass continuity; times", q_s, "summed over two species gives charge"
      " continuity (both asserted)")
@@ -129,16 +129,16 @@ j_q = [q1 * n * U[i] + q2 * n2 * U2[i] for i in range(3)]
 assert same(q1 * cont(n, U) + q2 * cont(n2, U2), sp.diff(rho_q, t) + div(j_q))
 
 # %% Example: particle flux
-section("Example: particle flux to a collector", "06-moments.typ:344")
+section("Example: particle flux to a collector", script="moments-continuity")
 n_0, u_0, area = sp.symbols("n_0 u_0 A", positive=True)
 Gamma, Ndot = sp.symbols("Gamma_s Ndot_s")
 collector = {n_0: 1.0e16 / u.meter**3, u_0: 2.0e5 * u.meter / u.second, area: 1.0e-4 * u.meter**2}
 given(collector)
-close_to(evaluate(Gamma, n_0 * u_0, collector, 1 / (u.meter**2 * u.second)), 2.0e21, source=":351")
-close_to(evaluate(Ndot, n_0 * u_0 * area, collector, 1 / u.second), 2.0e17, source=":357")
+close_to(evaluate(Gamma, n_0 * u_0, collector, 1 / (u.meter**2 * u.second)), 2.0e21)
+close_to(evaluate(Ndot, n_0 * u_0 * area, collector, 1 / u.second), 2.0e17)
 
 # %% Momentum equation
-section("Momentum equation from the first moment", "06-moments.typ:490")
+section("Momentum equation from the first moment", script="moments-momentum")
 note("Weight the kinetic equation with", m_s * v[0], "and integrate (x shown; y, z asserted)")
 for i in range(3):
     time = VelocityIntegral(m_s * v[i] * Partial(F, t))
@@ -149,12 +149,12 @@ for i in range(3):
     lorentz = q_s * n * (E[i] + cross(U, B)[i])
     if i == 0:
         show(sp.Eq(T_t, time))
-        agrees(integrate(time), time_term, ":467", lhs=T_t)
+        agrees(integrate(time), time_term, lhs=T_t)
         show(sp.Eq(T_r, flux))
-        agrees_in_moments(integrate(flux), flux_term, ":473", lhs=T_r)
+        agrees_in_moments(integrate(flux), flux_term, lhs=T_r)
         note("By parts in velocity the force term becomes the Lorentz force density")
         show(sp.Eq(T_v, force))
-        agrees(-integrate(force), lorentz, ":486", lhs=-T_v)
+        agrees(-integrate(force), lorentz, lhs=-T_v)
     else:
         assert same(integrate(time), time_term)
         assert same(integrate(flux), flux_term.subs(MOMENTS))
@@ -164,7 +164,7 @@ note("Momentum equation, x component, with the collisional friction", R_x)
 show(sp.Eq(T_t + T_r + T_v, R_x))
 
 # %% Material momentum
-section("Material form of the momentum equation", "06-moments.typ:499")
+section("Material form of the momentum equation", script="moments-momentum")
 rho = field("rho_s")
 note("Subtract", U[0], "times mass continuity from the conservative form (x shown)")
 conservative = show(sp.Eq(M_x, Partial(rho * U[0], t)
@@ -172,51 +172,51 @@ conservative = show(sp.Eq(M_x, Partial(rho * U[0], t)
 continuity = show(sp.Eq(C_mass, Partial(rho, t)
                         + sum(Partial(rho * U[j], X[j]) for j in range(3)))).rhs
 agrees((conservative - U[0] * continuity).doit(),
-       rho * (Partial(U[0], t) + sum(U[j] * Partial(U[0], X[j]) for j in range(3))), ":511",
+       rho * (Partial(U[0], t) + sum(U[j] * Partial(U[0], X[j]) for j in range(3))),
        lhs=M_x - U[0] * C_mass)
 
 # %% Example: electric force density
-section("Example: electric force density", "06-moments.typ:564")
+section("Example: electric force density", script="moments-momentum")
 f_E = sp.Symbol("f_E,x")
 field_input = {n_0: 1.0e16 / u.meter**3, E0: 6.00e4 * u.volt / u.meter}
 given(field_input)
 close_to(evaluate(f_E, n_0 * si.e * E0, field_input,
-                  u.newton / u.meter**3), 96.1, source=":574")
+                  u.newton / u.meter**3), 96.1)
 has_unit(ns * qs * E0, u.newton / u.meter**3)
 
 # %% Energy moments
-section("Energy density and energy flux", "06-moments.typ:655")
+section("Energy density and energy flux", script="moments-energy")
 note("Internal energy is half the trace of the pressure tensor")
 show(sp.Eq(eps, EPS_DEF))
-agrees_in_moments(integrate(W_DEF), m_s * n * dot(U, U) / 2 + eps, ":668", lhs=W_DEF)
+agrees_in_moments(integrate(W_DEF), m_s * n * dot(U, U) / 2 + eps, lhs=W_DEF)
 note("Raw energy flux = convected energy", W, "+ pressure work + heat flux (x shown; y, z asserted)")
 for i in range(3):
     energy_flux = moment(m_s * dot(v, v) * v[i] / 2)
     stated = W * U[i] + sum(P[i][j] * U[j] for j in range(3)) + q[i]
     if i == 0:
-        agrees_in_moments(integrate(energy_flux), stated, ":706", lhs=energy_flux)
+        agrees_in_moments(integrate(energy_flux), stated, lhs=energy_flux)
     else:
         assert same(integrate(energy_flux), stated.subs(MOMENTS))
 has_unit(ms * ns * us**2 / 2, u.joule / u.meter**3)
 has_unit(ms * ns * us**3 / 2, u.watt / u.meter**2)
 
 # %% Energy equation
-section("Energy equation from the second moment", "06-moments.typ:700")
+section("Energy equation from the second moment", script="moments-energy")
 note("Weight the kinetic equation with", m_s * v2 / 2, "and integrate")
 time = VelocityIntegral(m_s * v2 / 2 * Partial(F, t))
 flux = VelocityIntegral(m_s * v2 / 2 * sum(Partial(v[j] * F, X[j]) for j in range(3)))
 force = VelocityIntegral(m_s * v2 / 2 * sum(Partial(A[j] * F, v[j]) for j in range(3)))
 show(sp.Eq(T_t, time))
-agrees_in_moments(integrate(time), Partial(W, t), ":701", lhs=T_t)
+agrees_in_moments(integrate(time), Partial(W, t), lhs=T_t)
 show(sp.Eq(T_r, flux))
-agrees_in_moments(integrate(flux), sum(Partial(F_W[j], X[j]) for j in range(3)), ":704",
+agrees_in_moments(integrate(flux), sum(Partial(F_W[j], X[j]) for j in range(3)),
                   lhs=T_r)
 note("By parts in velocity; the magnetic force does no work")
 by_parts = moment(-m_s * dot(v, A))
 assert same(integrate(force), integrate(by_parts))
 show(sp.Eq(T_v, force))
 show(sp.Eq(T_v, by_parts))
-agrees(integrate(by_parts), -q_s * n * dot(U, E), ":697", lhs=T_v)
+agrees(integrate(by_parts), -q_s * n * dot(U, E), lhs=T_v)
 note("Energy equation; inserting the split flux", sp.Eq(F_W[0], W * U[0] + q[0]
      + sum(P[0][j] * U[j] for j in range(3))), "is asserted for all components")
 split_flux = [W * U[i] + sum(P[i][j] * U[j] for j in range(3)) + q[i] for i in range(3)]
@@ -227,20 +227,20 @@ show(sp.Eq(Partial(W, t) + sum(Partial(F_W[j], X[j]) for j in range(3)),
            q_s * n * dot(U, E) + Q_s))
 
 # %% Isotropic pressure
-section("Isotropic pressure", "06-moments.typ:719")
+section("Isotropic pressure", script="moments-energy")
 p = field("p_s")
 isotropic = {P[i][j]: (p if i == j else 0) for i in range(3) for j in range(3)}
 note("Scalar pressure is a third of the trace; isotropic tensor")
 show(sp.Eq(sp.Matrix(P), sp.Matrix(P).subs(isotropic), evaluate=False))
-agrees((P[0][0] + P[1][1] + P[2][2]).subs(isotropic) / 3, p, ":725",
+agrees((P[0][0] + P[1][1] + P[2][2]).subs(isotropic) / 3, p,
        lhs=(P[0][0] + P[1][1] + P[2][2]) / 3)
 divergence = tdiv(P)[0]
-agrees(divergence.subs(isotropic).doit(), Partial(p, x), ":737", lhs=divergence)
+agrees(divergence.subs(isotropic).doit(), Partial(p, x), lhs=divergence)
 note("Maxwellian part of the test distribution,", sp.Eq(lam, 0))
-agrees(P_test[0][0].subs(lam, 0), m_s * n * SIGMA[0] ** 2, ":737", lhs=P[0][0])
+agrees(P_test[0][0].subs(lam, 0), m_s * n * SIGMA[0] ** 2, lhs=P[0][0])
 
 # %% Internal energy
-section("Internal energy and the adiabatic law", "06-moments.typ:809")
+section("Internal energy and the adiabatic law", script="moments-energy")
 eps, Q_s = field("epsilon_s"), field("Q_s")
 R = vec("R")
 W_tot, W_int = sp.symbols("W_tot W_int")      # total and internal energy balances
@@ -284,19 +284,19 @@ show(sp.Eq(C_mass, mass))
 show(sp.Eq(M_x, mom[0]))
 show(sp.Eq(W_tot, energy))
 note("Product rule for the pressure work")
-agrees(dot(U1, tdiv(P1)), Partial(P[0][0] * U[0], x) - P[0][0] * Partial(U[0], x), ":811",
+agrees(dot(U1, tdiv(P1)), Partial(P[0][0] * U[0], x) - P[0][0] * Partial(U[0], x),
        lhs=U[0] * Partial(P[0][0], x))
 note("Bulk kinetic energy from the momentum and mass balances")
-agrees((U[0] * mom[0] - U[0]**2 / 2 * mass).doit(), bulk, ":802",
+agrees((U[0] * mom[0] - U[0]**2 / 2 * mass).doit(), bulk,
        lhs=U[0] * M_x - U[0]**2 / 2 * C_mass)
 note("Internal energy: total minus bulk")
 show(sp.Eq(W_int, W_tot - (U[0] * M_x - U[0]**2 / 2 * C_mass)))
-agrees((energy - bulk).doit(), internal, ":820", lhs=W_int)
+agrees((energy - bulk).doit(), internal, lhs=W_int)
 note("Isotropic closure", sp.Eq(eps, 3 * p / 2), ",", sp.Eq(P[0][0], p), ",", sp.Eq(q[0], 0), ",",
      sp.Eq(Q_s, dot(U1, R1)))
 closure = {eps: 3 * p / 2, P[0][0]: p, q[0]: 0, Q_s: dot(U1, R1)}
 agrees((2 * internal.subs(closure) / 3).doit(),
-       Partial(p, t) + U[0] * Partial(p, x) + 5 * p / 3 * Partial(U[0], x), ":833",
+       Partial(p, t) + U[0] * Partial(p, x) + 5 * p / 3 * Partial(U[0], x),
        lhs=2 * W_int / 3)
 iso3 = {eps: 3 * p / 2, Q_s: dot(U, R), **{q[i]: 0 for i in range(3)},
         **{P[i][j]: (p if i == j else 0) for i in range(3) for j in range(3)}}
@@ -305,7 +305,7 @@ assert same(2 * internal3.subs(iso3) / 3,
             sp.diff(p, t) + dot(U, [sp.diff(p, xi) for xi in X]) + 5 * p / 3 * div(U))
 
 # %% Polytropic closure
-section("Polytropic closure", "06-moments.typ:961")
+section("Polytropic closure", script="moments-closures")
 gamma = sp.Symbol("gamma", positive=True)
 material = lambda g: Partial(g, t) + sum(U[j] * Partial(g, X[j]) for j in range(3))
 note("Polytropic law and continuity")
@@ -315,13 +315,13 @@ continuity = show(sp.Eq(Partial(n, t), -sum(Partial(n * U[j], X[j]) for j in ran
 note("Set", sp.Eq(K, 0), "and eliminate the time derivative of the density")
 expanded = sp.expand((n**gamma * law.rhs).doit())
 expanded = sp.expand(expanded.subs(sp.Derivative(n, t), continuity.rhs.doit()))
-agrees(expanded, material(p) + gamma * p * sum(Partial(U[j], X[j]) for j in range(3)), ":968",
+agrees(expanded, material(p) + gamma * p * sum(Partial(U[j], X[j]) for j in range(3)),
        lhs=n**gamma * K)
 note("Warm closure", sp.Eq(eps, 3 * p / 2), "with", sp.Eq(p, ns * k_B * Ts), "is an energy density")
 has_unit(sp.Rational(3, 2) * ns * k_B * Ts, u.joule / u.meter**3)
 
 # %% BGK collision moments
-section("BGK collision moments", "06-moments.typ:975")
+section("BGK collision moments", script="moments-closures")
 nu, sigma_M = sp.symbols("nu_s sigma_M", positive=True)
 F_M = field("f_M", t, *X, *v)
 maxwellian = n / (2 * sp.pi * sigma_M**2) ** sp.Rational(3, 2) * sp.exp(-dot(w, w) / (2 * sigma_M**2))
@@ -339,12 +339,12 @@ def bgk_moment(weight):
     return sp.simplify(-nu * (vint(weight * f) - vint(weight * f_M, [matched] * 3)))
 
 
-for label, weight, line in [("number", 1, ":993"), ("momentum", m_s * v[0], ":1005"),
-                            ("energy", m_s * v2 / 2, ":1020")]:
-    agrees(bgk_moment(weight), 0, line, lhs=VelocityIntegral(weight * bgk))
+for label, weight in [("number", 1), ("momentum", m_s * v[0]),
+                            ("energy", m_s * v2 / 2)]:
+    agrees(bgk_moment(weight), 0, lhs=VelocityIntegral(weight * bgk))
 
 # %% Example: energy densities
-section("Example: energy densities of a drifting ion population", "06-moments.typ:830")
+section("Example: energy densities of a drifting ion population", script="moments-energy")
 n_i, T_i, u_i, m_p = sp.symbols("n_i T_i u_i m_p", positive=True)
 eps_i, W_bulk, W_i = sp.symbols("epsilon_i W_bulk W_i")
 ions = {n_i: 1.0e16 / u.meter**3, T_i: 10 * u.electronvolt / u.boltzmann_constant,
@@ -353,20 +353,20 @@ note("Hydrogen ions,", sp.Eq(n_i, rounded(ions[n_i])), ",", sp.Eq(k_B * T_i, 10 
      sp.Eq(u_i, rounded(ions[u_i])))
 internal_i = sp.Rational(3, 2) * n_i * k_B * T_i         # tr(P)/2 with P = n k_B T I
 bulk_i = n_i * m_p * u_i**2 / 2
-close_to(evaluate(eps_i, internal_i, ions, u.joule / u.meter**3), 0.0240, source=":844")
-close_to(evaluate(W_bulk, bulk_i, ions, u.joule / u.meter**3), 0.0836, source=":852")
-close_to(evaluate(W_i, internal_i + bulk_i, ions, u.joule / u.meter**3), 0.108, source=":850")
+close_to(evaluate(eps_i, internal_i, ions, u.joule / u.meter**3), 0.0240)
+close_to(evaluate(W_bulk, bulk_i, ions, u.joule / u.meter**3), 0.0836)
+close_to(evaluate(W_i, internal_i + bulk_i, ions, u.joule / u.meter**3), 0.108)
 
 # %% Example: adiabatic compression
-section("Example: adiabatic compression", "06-moments.typ:1041")
+section("Example: adiabatic compression", script="moments-closures")
 p0, p1, n0_, n1_, T0, T1 = sp.symbols("p_0 p_1 n_0 n_1 T_0 T_1", positive=True)
 note("Compress by", sp.Eq(n1_ / n0_, 8), "with", sp.Eq(gamma, sp.Rational(5, 3)))
 adiabat = show(sp.Eq(p1 * n1_**-gamma, p0 * n0_**-gamma))
 pressure_ratio = sp.solve(adiabat, p1)[0] / p0
 compression = {n1_: 8 * n0_, gamma: sp.Rational(5, 3)}
-agrees(pressure_ratio.subs(compression), 32, ":1060", lhs=p1 / p0)
+agrees(pressure_ratio.subs(compression), 32, lhs=p1 / p0)
 note("Ideal gas", sp.Eq(T1 / T0, (p1 / p0) / (n1_ / n0_)))
-agrees((pressure_ratio / (n1_ / n0_)).subs(compression), 4, ":1063", lhs=T1 / T0)
+agrees((pressure_ratio / (n1_ / n0_)).subs(compression), 4, lhs=T1 / T0)
 
 # %%
 if __name__ == "__main__":

@@ -19,7 +19,7 @@ SI_UNITS = {n0: u.meter**-3, xi0: u.meter, x: u.meter, t: u.second, T_e: u.kelvi
             n_s: u.meter**-3, q_s: u.coulomb, m_s: u.kilogram}
 
 # %% Charge-separation field
-section("Charge-separation field", "03-plasma-oscillations.typ:45")
+section("Charge-separation field", script="intro-plasma-oscillations")
 note("Electrons shifted by", xi0, "leave an ion sheet at", sp.Eq(x, 0, evaluate=False),
      "and an electron sheet at", sp.Eq(x, L))
 sheet = show(sp.Eq(sigma, e * n0 * xi0))
@@ -34,43 +34,43 @@ def sheet_field(position, charge):
 two_sheets = show(sp.Eq(E, sheet_field(0, sigma) + sheet_field(L, -sigma)))
 note("Between the sheets,", sp.Eq(x, L / 2))
 inside = two_sheets.rhs.subs({x: L / 2, sigma: sheet.rhs})
-agrees(inside, e * n0 * xi0 / eps0, ":47", lhs=E)
+agrees(inside, e * n0 * xi0 / eps0, lhs=E)
 check(inside, e * n0 * xi0 / eps0, unit=u.volt / u.meter, units=SI_UNITS)
 note("Outside the slab the sheet fields cancel:")
 outside = show(sp.Eq(E, two_sheets.rhs.subs(x, 2 * L)))
 assert outside.rhs == 0
 
 # %% Electron plasma oscillation
-section("Electron plasma oscillation", "03-plasma-oscillations.typ:56")
+section("Electron plasma oscillation", script="intro-plasma-oscillations")
 note("Newton for an electron in the field", sp.Eq(E, e * n0 * xi / eps0))
 newton = sp.Eq(m_e * sp.Derivative(xi, t, 2), -e * (e * n0 * xi / eps0))
-agrees(newton.rhs, -(n0 * e**2) / eps0 * xi, ":58", lhs=newton.lhs)
+agrees(newton.rhs, -(n0 * e**2) / eps0 * xi, lhs=newton.lhs)
 note("Divide by", m_e * xi, "and compare with", sp.Eq(sp.Derivative(xi, t, 2) + omega_pe**2 * xi, 0))
 omega_sq = show(sp.Eq(omega_pe**2, -newton.rhs / (m_e * xi))).rhs
-omega_pe_expr = agrees(sp.sqrt(omega_sq), sp.sqrt(n0 * e**2 / (eps0 * m_e)), ":67", lhs=omega_pe)
+omega_pe_expr = agrees(sp.sqrt(omega_sq), sp.sqrt(n0 * e**2 / (eps0 * m_e)), lhs=omega_pe)
 check(sp.sqrt(omega_sq), omega_pe_expr, unit=1 / u.second, units=SI_UNITS)
 oscillator = show(sp.Eq(newton.lhs / m_e, (newton.rhs / m_e).subs(omega_sq, omega_pe**2)))
 assert oscillator.rhs == -omega_pe**2 * xi
 general = show(sp.dsolve(oscillator, xi))
 assert general.rhs.subs(omega_pe, omega_pe_expr).has(sp.sin(omega_pe_expr * t))
 delta, amplitude = sp.symbols("delta xi_0")
-trial = amplitude * sp.cos(omega_pe_expr * t + delta)  # amplitude-phase form, :127
+trial = amplitude * sp.cos(omega_pe_expr * t + delta)  # amplitude-phase form
 assert sp.simplify(m_e * trial.diff(t, 2) + e**2 * n0 / eps0 * trial) == 0
 
 # %% Species plasma frequency
-section("Species plasma frequency", "03-plasma-oscillations.typ:77")
+section("Species plasma frequency", script="intro-plasma-oscillations")
 note("Same oscillator for species", sp.Symbol("s"), "with charge", q_s, ", density", n_s, ", mass", m_s)
 species = show(newton.subs({e: q_s, n0: n_s, m_e: m_s}))
 omega_ps_expr = sp.sqrt(-species.rhs / (m_s * xi))
-agrees(omega_ps_expr, sp.sqrt(n_s * q_s**2 / (eps0 * m_s)), ":79", lhs=omega_ps)
+agrees(omega_ps_expr, sp.sqrt(n_s * q_s**2 / (eps0 * m_s)), lhs=omega_ps)
 check(omega_ps_expr.subs({n_s: n0, q_s: e, m_s: m_e}), omega_pe_expr,
       unit=1 / u.second, units=SI_UNITS)
 frequency = show(sp.Eq(f_ps, omega_ps / (2 * sp.pi)))
 check(frequency.rhs.subs(omega_ps, omega_ps_expr), frequency.rhs.subs(omega_ps, omega_ps_expr),
-      unit=u.hertz, units=SI_UNITS)  # :83
+      unit=u.hertz, units=SI_UNITS)
 
 # %% Plasma frequency and Debye length
-section("Plasma frequency and Debye length", "03-plasma-oscillations.typ:88")
+section("Plasma frequency and Debye length", script="intro-plasma-oscillations")
 definitions = {lambda_D: sp.sqrt(eps0 * k_B * T_e / (n0 * e**2)),
                omega_pe: omega_pe_expr, v_th: sp.sqrt(2 * k_B * T_e / m_e)}
 for symbol, expr in definitions.items():
@@ -79,18 +79,18 @@ ratio = show(sp.Eq(v_th / (omega_pe * lambda_D),
                    sp.simplify((v_th / (omega_pe * lambda_D)).subs(definitions))))
 assert ratio.rhs == sp.sqrt(2)
 lambda_D_rel = sp.solve(ratio, lambda_D)[0]
-agrees(lambda_D_rel, v_th / (sp.sqrt(2) * omega_pe), ":90", lhs=lambda_D)
+agrees(lambda_D_rel, v_th / (sp.sqrt(2) * omega_pe), lhs=lambda_D)
 check(definitions[lambda_D], lambda_D_rel.subs(definitions), unit=u.meter, units=SI_UNITS)
 omega_pe_rel = sp.solve(ratio, omega_pe)[0]
-agrees(omega_pe_rel, v_th / (sp.sqrt(2) * lambda_D), ":91", lhs=omega_pe)
+agrees(omega_pe_rel, v_th / (sp.sqrt(2) * lambda_D), lhs=omega_pe)
 check(omega_pe_expr, omega_pe_rel.subs(definitions), unit=1 / u.second, units=SI_UNITS)
 v_th_alt = sp.sqrt(k_B * T_e / m_e)
 note("With", sp.Eq(v_th, v_th_alt), "instead, the factor", sp.sqrt(2), "drops out")
 ratio_alt = show(sp.Eq(ratio.lhs, sp.simplify(ratio.lhs.subs({**definitions, v_th: v_th_alt}))))
-agrees(sp.solve(ratio_alt, lambda_D)[0], v_th / omega_pe, ":96", lhs=lambda_D)
+agrees(sp.solve(ratio_alt, lambda_D)[0], v_th / omega_pe, lhs=lambda_D)
 
 # %% Inertial length
-section("Inertial length", "03-plasma-oscillations.typ:97")
+section("Inertial length", script="intro-plasma-oscillations")
 inertial = show(sp.Eq(d_s, c / omega_ps))
 check(inertial.rhs.subs(omega_ps, omega_ps_expr), inertial.rhs.subs(omega_ps, omega_ps_expr),
       unit=u.meter, units=SI_UNITS)

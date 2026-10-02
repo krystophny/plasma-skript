@@ -19,23 +19,23 @@ SI_UNITS = {m_s: u.kilogram, T_s: u.kelvin, v: u.meter / u.second, n_e: u.meter*
             n_i: u.meter**-3, q_s: u.coulomb, n_s: u.meter**-3, Z: 1}
 
 # %% Charge density and quasineutrality
-section("Charge density and quasineutrality", "01-introduction.typ:68")
+section("Charge density and quasineutrality", script="intro-plasma-state")
 q_e, q_i = sp.symbols("q_e q_i")
 note("Sum of", q_s * n_s, "over electrons and ions")
 check(q_s * n_s, q_s * n_s, unit=u.coulomb / u.meter**3, units=SI_UNITS)
 species_sum = show(sp.Eq(rho_q, q_e * n_e + q_i * n_i))
 note("Electrons carry", sp.Eq(q_e, -e), "and ions of charge state", Z, "carry", sp.Eq(q_i, Z * e))
 charge = show(species_sum.subs({q_e: -e, q_i: Z * e}))
-agrees(charge.rhs, e * (Z * n_i - n_e), ":87", lhs=rho_q)
+agrees(charge.rhs, e * (Z * n_i - n_e), lhs=rho_q, eq="intro-quasineutrality")
 check(charge.rhs, e * (Z * n_i - n_e), unit=u.coulomb / u.meter**3, units=SI_UNITS)
 note("Quasineutrality", sp.Eq(rho_q, 0), "fixes the electron density")
 n_e_neutral = sp.solve(charge.rhs, n_e)[0]
-agrees(n_e_neutral, Z * n_i, ":88", lhs=n_e)
+agrees(n_e_neutral, Z * n_i, lhs=n_e, eq="intro-quasineutrality")
 note("Hydrogen,", sp.Eq(Z, 1))
-agrees(n_e_neutral.subs(Z, 1), n_i, ":88", lhs=n_e)
+agrees(n_e_neutral.subs(Z, 1), n_i, lhs=n_e, eq="intro-quasineutrality")
 
 # %% Thermal energy and thermal speed
-section("Thermal speed", "01-introduction.typ:232")
+section("Thermal speed", script="intro-speed-energy-temperature")
 note("Kinetic and thermal energy, both in joule")
 kinetic = show(sp.Eq(eps_kin, m_s * v**2 / 2))
 thermal = show(sp.Eq(eps_th, k_B * T_s))
@@ -44,23 +44,23 @@ check(thermal.rhs, thermal.rhs, unit=u.joule, units=SI_UNITS)
 note("Convention: the kinetic energy at the thermal speed equals", thermal.rhs)
 convention = show(sp.Eq(kinetic.rhs.subs(v, v_th), thermal.rhs))
 v_th_solved = sp.solve(convention, v_th)[0]
-agrees(v_th_solved, sp.sqrt(2 * k_B * T_s / m_s), ":232", lhs=v_th)
+agrees(v_th_solved, sp.sqrt(2 * k_B * T_s / m_s), lhs=v_th, eq="intro-thermal-speed")
 check(v_th_solved, v_th_solved, unit=u.meter / u.second, units=SI_UNITS)
 note("Four times the energy doubles the speed")
-agrees(v_th_solved.subs(T_s, 4 * T_s) / v_th_solved, 2, ":288",
+agrees(v_th_solved.subs(T_s, 4 * T_s) / v_th_solved, 2,
        lhs=sp.Function("v_th")(4 * T_s) / sp.Function("v_th")(T_s))
 
 # %% Worked example: electron-volt as a temperature
-section("Electron-volt in kelvin", "01-introduction.typ:248")
+section("Electron-volt in kelvin", script="intro-speed-energy-temperature")
 energy = sp.Symbol("epsilon", positive=True)
 note("Temperature with", sp.Eq(k_B * T_s, energy))
 kelvin_per_eV = evaluate(T_s, energy / k_B, {energy: 1 * u.electronvolt}, u.kelvin, digits=5)
-close_to(kelvin_per_eV, 1.1605e4, rtol=1e-4, source=":248")
+close_to(kelvin_per_eV, 1.1605e4, rtol=1e-4)
 kelvin_10eV = evaluate(T_s, energy / k_B, {energy: 10 * u.electronvolt}, u.kelvin)
-close_to(kelvin_10eV, 1.16e5, source=":250")
+close_to(kelvin_10eV, 1.16e5)
 
 # %% Net charge around a screened point charge
-section("Net charge around a screened point charge", "01-introduction.typ:98")
+section("Net charge around a screened point charge", script="intro-plasma-state")
 from si import eps0
 
 Q, r, lam_D = sp.symbols("Q r lambda_D", positive=True)
@@ -71,55 +71,55 @@ phi_D = show(sp.Eq(sp.Symbol("phi"), Q * sp.exp(-r / lam_D) / (4 * sp.pi * eps0 
 note("Gauss's law gives the net charge inside radius", r)
 enclosed = sp.simplify(-4 * sp.pi * eps0 * r**2 * sp.diff(phi_D.rhs, r))
 enclosed_stated = Q * (1 + r / lam_D) * sp.exp(-r / lam_D)
-agrees(enclosed, enclosed_stated, "fig. enclosed_charge", lhs=Q_enc)
+agrees(enclosed, enclosed_stated, source="fig. enclosed_charge", lhs=Q_enc)
 check(enclosed, enclosed_stated, unit=u.coulomb, units=SCREEN_UNITS)
 note("The screening cloud cancels the charge far from it")
-agrees(sp.limit(enclosed, r, sp.oo), 0, "fig. enclosed_charge", lhs=sp.Limit(Q_enc, r, sp.oo))
+agrees(sp.limit(enclosed, r, sp.oo), 0, source="fig. enclosed_charge", lhs=sp.Limit(Q_enc, r, sp.oo))
 close_to(float((enclosed / Q).subs(r, 3 * lam_D)), 4 * float(sp.exp(-3)), rtol=1e-12)
 
 # %% One velocity component: heating versus acceleration
-section("Heating versus acceleration", "01-introduction.typ:239")
+section("Heating versus acceleration", script="intro-speed-energy-temperature")
 v_x, u_s = sp.symbols("v_x u_s", real=True)
 f_x = sp.Function("f")(v_x)
 note("One velocity component of a Maxwellian drifting with bulk velocity", u_s)
 maxwell_1d = show(sp.Eq(f_x, n_s / (sp.sqrt(sp.pi) * v_th) * sp.exp(-(v_x - u_s) ** 2 / v_th**2))).rhs
-agrees(sp.integrate(maxwell_1d, (v_x, -sp.oo, sp.oo)), n_s, "fig. maxwellian_heating", lhs=sp.Symbol("n_s"))
+agrees(sp.integrate(maxwell_1d, (v_x, -sp.oo, sp.oo)), n_s, source="fig. maxwellian_heating", lhs=sp.Symbol("n_s"))
 mean_vx = sp.simplify(sp.integrate(v_x * maxwell_1d, (v_x, -sp.oo, sp.oo)) / n_s)
-agrees(mean_vx, u_s, "fig. maxwellian_drift", lhs=sp.Symbol(r"\langle v_x \rangle"))
+agrees(mean_vx, u_s, source="fig. maxwellian_drift", lhs=sp.Symbol(r"\langle v_x \rangle"))
 variance = sp.simplify(sp.integrate((v_x - u_s) ** 2 * maxwell_1d, (v_x, -sp.oo, sp.oo)) / n_s)
 note("Velocity variance with", sp.Eq(v_th, v_th_solved))
-agrees(variance.subs(v_th, v_th_solved), k_B * T_s / m_s, ":228",
+agrees(variance.subs(v_th, v_th_solved), k_B * T_s / m_s,
        lhs=sp.Symbol(r"\langle (v_x - u_s)^2 \rangle"))
 note("Heating", sp.Eq(T_s, 4 * T_s), "doubles the width; the mean stays", u_s)
-agrees(v_th_solved.subs(T_s, 4 * T_s) / v_th_solved, 2, "fig. maxwellian_heating",
+agrees(v_th_solved.subs(T_s, 4 * T_s) / v_th_solved, 2, source="fig. maxwellian_heating",
        lhs=sp.Function("v_th")(4 * T_s) / sp.Function("v_th")(T_s))
 
 # %% Speed distribution: v_th is the most probable speed, not the mean
-section("Speeds of a Maxwellian", "01-introduction.typ:241")
+section("Speeds of a Maxwellian", script="intro-speed-energy-temperature")
 w = sp.Symbol("v", positive=True)
 F_w = sp.Function("F")(w)
 note("Isotropic Maxwellian at rest, distribution of speeds (normalized to 1)")
 speed_pdf = show(sp.Eq(F_w, 4 * sp.pi * w**2 / (sp.pi ** sp.Rational(3, 2) * v_th**3)
                       * sp.exp(-w**2 / v_th**2))).rhs
-agrees(sp.integrate(speed_pdf, (w, 0, sp.oo)), 1, "fig. maxwell_speed", lhs=sp.Integral(F_w, (w, 0, sp.oo)))
+agrees(sp.integrate(speed_pdf, (w, 0, sp.oo)), 1, source="fig. maxwell_speed", lhs=sp.Integral(F_w, (w, 0, sp.oo)))
 peak = [s for s in sp.solve(sp.diff(speed_pdf, w), w) if s.is_positive]
-agrees(peak[0], v_th, "fig. maxwell_speed", lhs=sp.Symbol("v_peak"))
+agrees(peak[0], v_th, source="fig. maxwell_speed", lhs=sp.Symbol("v_peak"))
 v_mean = sp.simplify(sp.integrate(w * speed_pdf, (w, 0, sp.oo)))
-agrees(v_mean, 2 * v_th / sp.sqrt(sp.pi), "fig. maxwell_speed", lhs=sp.Symbol(r"\langle v \rangle"))
-agrees(v_mean.subs(v_th, v_th_solved), sp.sqrt(8 * k_B * T_s / (sp.pi * m_s)), "09:474",
+agrees(v_mean, 2 * v_th / sp.sqrt(sp.pi), source="fig. maxwell_speed", lhs=sp.Symbol(r"\langle v \rangle"))
+agrees(v_mean.subs(v_th, v_th_solved), sp.sqrt(8 * k_B * T_s / (sp.pi * m_s)),
        lhs=sp.Symbol(r"\langle v \rangle"))
 v_rms = sp.sqrt(sp.simplify(sp.integrate(w**2 * speed_pdf, (w, 0, sp.oo))))
-agrees(v_rms, sp.sqrt(sp.Rational(3, 2)) * v_th, "fig. maxwell_speed", lhs=sp.Symbol("v_rms"))
+agrees(v_rms, sp.sqrt(sp.Rational(3, 2)) * v_th, source="fig. maxwell_speed", lhs=sp.Symbol("v_rms"))
 note("Mean kinetic energy", m_s * v_rms**2 / 2, "is", sp.Rational(3, 2) * k_B * T_s)
-agrees((m_s * v_rms**2 / 2).subs(v_th, v_th_solved), sp.Rational(3, 2) * k_B * T_s, "05",
+agrees((m_s * v_rms**2 / 2).subs(v_th, v_th_solved), sp.Rational(3, 2) * k_B * T_s,
        lhs=sp.Symbol(r"\langle \epsilon_{kin} \rangle"))
 
 # %% Thermal speeds of electrons and protons
-section("Thermal speed against temperature", "01-introduction.typ:254")
+section("Thermal speed against temperature", script="intro-speed-energy-temperature")
 eV = sp.Symbol("epsilon", positive=True)
 m_p_sym = sp.Symbol("m_p", positive=True)
 v_th_eV = sp.sqrt(2 * eV / m_s)
-agrees(v_th_solved.subs(T_s, eV / k_B), v_th_eV, ":232", lhs=v_th)
+agrees(v_th_solved.subs(T_s, eV / k_B), v_th_eV, lhs=v_th, eq="intro-thermal-speed")
 v_e_1eV = evaluate(sp.Symbol("v_th,e"), v_th_eV.subs(m_s, sp.Symbol("m_e", positive=True)),
                    {eV: 1 * u.electronvolt}, u.meter / u.second)
 close_to(v_e_1eV, 5.93e5, rtol=1e-3, source="fig. thermal_speed")
@@ -130,7 +130,7 @@ close_to(v_e_1eV / v_p_1eV, 42.85, rtol=1e-3, source="fig. thermal_speed")
 # %% Characteristic scales of five example plasmas
 import numpy as np
 
-section("Characteristic scales of five example plasmas", "01-introduction.typ:340")
+section("Characteristic scales of five example plasmas", script="intro-scales")
 from si import m_e
 
 n0, T_e, B0 = sp.symbols("n_0 T_e B_0", positive=True)
@@ -157,9 +157,9 @@ example = {n0: 1.0e16 / u.meter**3, T_e: 1.602e-18 * u.joule / u.boltzmann_const
 debye_example = evaluate(sp.Symbol("lambda_D"), lambda_D_expr, example, u.meter)
 log_L = float(np.log(1.0e16 * debye_example**3))
 close_to(evaluate(sp.Symbol("nu_ei"), nu_ei_expr, {**example, lnL: log_L}, u.second**-1),
-         3.60e3, source="09:510")
+         3.60e3)
 close_to(evaluate(sp.Symbol("lambda_mfp"), mfp_expr, {**example, lnL: log_L}, u.meter),
-         5.89e2, source="09:516")
+         5.89e2)
 
 # %% Plots: shared setup
 from si import BLUE, EXAMPLE_PLASMAS, GRAY, ORANGE, SI_VALUES, figure, label, log_ticks, save, slide_width

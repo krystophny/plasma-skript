@@ -46,7 +46,7 @@ line). No prose sentences.
   φ = Q e^{−r/λ_D}/(4πε₀r). Derivation: insert charges
   ρ_q = e(Σ_i Z_i n_i − n_e) → Gauss Q_enc = −4πε₀r² dφ/dr =
   Q(1 + r/λ_D)e^{−r/λ_D} → r ≫ λ_D: Q_enc → 0, ρ_q ≈ 0. Result:
-  n_e ≈ Σ_i Z_i n_i, quasineutrality. Sources: script 01:60–98,
+  n_e ≈ Σ_i Z_i n_i, quasineutrality. Sources: script §1.1 Plasma as a collective state,
   `ch01_introduction.py` "Charge density and quasineutrality", "Net charge
   around a screened point charge".
 - **Thermal speed (10).** Assumptions: ε_kin,s = m_s v²/2; ε_th,s = k_BT_s;
@@ -54,12 +54,12 @@ line). No prose sentences.
   Derivation: convention m_s v_th²/2 = k_BT_s → variance
   ⟨(v_x−u_s)²⟩ = k_BT_s/m_s → speeds v_peak = v_th, ⟨v⟩ = 2v_th/√π,
   v_rms = √(3/2) v_th. Result: v_th,s = √(2k_BT_s/m_s). Sources: script
-  01:211–260, `ch01_introduction.py` "Thermal speed", "Heating versus
+  §1.2 Speed, energy, and temperature, `ch01_introduction.py` "Thermal speed", "Heating versus
   acceleration", "Speeds of a Maxwellian".
 - **Scale ordering (13).** Three blocks above the full-width plot.
   Assumptions: n_e, k_BT_e, B, L. Derivation (definitions used for the plot):
   λ_D, ω_pe, ω_ce = eB/m_e, ρ_e = v_th,e/ω_ce, λ_mfp = ⟨v⟩/ν_ei. Result:
-  ℓ ≪ L average, ℓ ≳ L resolve (script 01:296–345 summary). Source:
+  ℓ ≪ L average, ℓ ≳ L resolve (script §1.3 Characteristic scales and ordering, summary). Source:
   `ch01_introduction.py` "Characteristic scales of five example plasmas".
 
 ## LIVE routes (lecturer cues)

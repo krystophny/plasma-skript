@@ -8,7 +8,8 @@
 #   animations/          rendered MP4s plus one PNG still per scene
 #   animation-sources/   animations/*.py (scenes and the shared style.py) and
 #                        fonts/ (STIX Two Text, OFL)
-#   derivations/         Makefile, helper modules, chapters/*.py, build/pdf/*.pdf
+#   derivations/         Makefile, helper modules, chapters/*.py, build/pdf/*.pdf,
+#                        script-outline.json (the section names they cite)
 #                        (SymPy derivations; no build/tex, no build/fig)
 # Files that are no longer produced are deleted from those subfolders; files
 # with unchanged content are not rewritten.
@@ -102,6 +103,7 @@ deriv="$repo_root/derivations"
 cp "$deriv/Makefile" "$deriv"/*.py "$staging/derivations/"
 mkdir -p "$staging/derivations/chapters"
 cp "$deriv"/chapters/*.py "$staging/derivations/chapters/"
+bash "$repo_root/scripts/script-outline.sh" "$staging/derivations/script-outline.json"
 if [[ -f "$deriv/Makefile" ]] && ! compgen -G "$deriv/build/pdf/*.pdf" >/dev/null; then
   if command -v latexmk >/dev/null 2>&1; then
     make -C "$deriv" pdf

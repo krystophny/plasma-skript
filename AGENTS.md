@@ -42,6 +42,10 @@ Before changing files:
   optional collapsed details when appropriate. A `Rechenbeispiel` has data,
   assumptions, target, and numerical result only. It has no derivation in the
   script or in `solutions/`.
+- The SymPy checks in `derivations/chapters/` and the slide plans in
+  `slides/*.md` reference the script by section label
+  (`section(..., script="<label>")`, shown as "§N.M Title") and by labelled
+  equation (`eq="<label>"`), never by line number.
 
 ## Accessibility and components
 

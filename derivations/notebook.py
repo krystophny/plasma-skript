@@ -5,15 +5,24 @@ Spyder run them one by one). Every displayed line is a SymPy object that the
 script actually computes with, so the printed derivation cannot drift from
 the code:
 
-    section("Debye length", "02-debye-shielding.typ:124")
+    section("Debye length", script="intro-debye-shielding")
     poisson = show(sp.Eq(laplacian, -rho / eps0))      # equation to solve
     ...
-    agrees(lambda_D, printed)                          # compare with the script
+    agrees(lambda_D, printed, eq="debye-screened-equation")  # compare with the script
 
 Running a script prints every step in the terminal; `make tex` / `make pdf`
 collects the same steps into build/tex/<chapter>.tex and build/pdf/.
+
+References to the script are broad and stable, never line numbers: a section
+names the Typst label of a script section or chapter (`script=`), shown as
+"§2.1 Debye shielding" from the outline that scripts/script-outline.sh
+queries from the script; a check may name the Typst label of a displayed
+equation (`eq=`). Both are verified against src/ when the script runs.
 """
 
+import json
+import re
+import subprocess
 from pathlib import Path
 
 import sympy as sp
@@ -21,7 +30,13 @@ from sympy.physics import units as u
 from sympy.physics.units import convert_to
 
 BUILD = Path(__file__).resolve().parent / "build"  # derivations/build
-_SECTIONS = []  # [title, source, [(kind, payload), ...]]
+REPO = Path(__file__).resolve().parent.parent
+SRC = REPO / "src"
+# In the repository the outline is generated from src/; a standalone copy of
+# derivations/ (scripts/export-course-folder.sh) ships it next to this file.
+OUTLINE = (REPO / "slides" / "build" / "script-outline.json" if SRC.is_dir()
+           else Path(__file__).resolve().parent / "script-outline.json")
+_SECTIONS = []  # [title, reference, [(kind, payload), ...]]
 _ECHO = True  # print steps while running
 
 
@@ -67,11 +82,64 @@ def _rounded(number, digits):
     return sp.Float(f"{number:.{digits}g}", digits + 1)
 
 
-def section(title, source=""):
-    """Start a new derivation; source is 'file.typ:line' in src/chapters."""
-    _SECTIONS.append([title, source, []])
+def ensure_outline():
+    """Regenerate the script outline if it is missing or older than src/."""
+    if not SRC.is_dir():
+        if not OUTLINE.exists():
+            raise FileNotFoundError(f"no script sources and no {OUTLINE}")
+        return OUTLINE
+    newest = max(p.stat().st_mtime for p in SRC.rglob("*.typ"))
+    if not OUTLINE.exists() or OUTLINE.stat().st_mtime < newest:
+        subprocess.run(["bash", str(REPO / "scripts" / "script-outline.sh"), str(OUTLINE)],
+                       check=True)
+    return OUTLINE
+
+
+_REFS = {}
+
+
+def script_reference(label):
+    """'§N.M Title' for a script section label, or the chapter title for a chapter label."""
+    if not _REFS:
+        outline = json.loads(ensure_outline().read_text())
+        chapters = {c["label"]: c for c in outline["chapters"]}
+        for c in chapters.values():
+            _REFS[c["label"]] = (f"Chapter {c['number']} {c['title']}" if c["number"] is not None
+                                 else c["title"])
+        for s in outline["sections"]:
+            parent = chapters.get(s.get("chapter"), {}).get("title", "")
+            _REFS[s["label"]] = (f"§{s['number']} {s['title']}" if s["number"] is not None
+                                 else f"{parent}, {s['title']}".lstrip(", "))
+    if label not in _REFS:
+        raise KeyError(f"no script section or chapter <{label}> in {OUTLINE}")
+    return _REFS[label]
+
+
+_EQ_LABELS = set()
+
+
+def equation_labels():
+    """Labels attached to displayed equations in src/ (`$ ... $ <label>`)."""
+    if not _EQ_LABELS:
+        for path in SRC.rglob("*.typ"):
+            _EQ_LABELS.update(re.findall(r"\$\s*<([A-Za-z0-9:_.-]+)>", path.read_text()))
+    return _EQ_LABELS
+
+
+def _eq_tag(eq):
+    if not eq:
+        return ""
+    if SRC.is_dir() and eq not in equation_labels():
+        raise KeyError(f"no labelled equation <{eq}> in src/")
+    return f"eq. <{eq}>"
+
+
+def section(title, script=""):
+    """Start a new derivation; script is the Typst label of the script section."""
+    reference = script_reference(script) if script else ""
+    _SECTIONS.append([title, reference, []])
     if _ECHO:
-        print(f"\n== {title}" + (f"  [{source}]" if source else ""))
+        print(f"\n== {title}" + (f"  [{reference}]" if reference else ""))
 
 
 def _record(kind, payload, text):
@@ -101,11 +169,15 @@ def show(obj, label=""):
     return obj
 
 
-def agrees(derived, printed, source="", lhs=None):
-    """Assert derived == printed formula of the script; display `lhs = printed`."""
+def agrees(derived, printed, *, lhs=None, eq="", source=""):
+    """Assert derived == printed formula of the script; display `lhs = printed`.
+
+    eq: Typst label of the printed equation; source: another named, stable
+    reference such as a figure. Never a line number.
+    """
     diff = sp.simplify(sp.expand(sp.sympify(derived) - sp.sympify(printed)))
     assert diff == 0, f"derived {derived} != printed {printed}"
-    tag = "script" + (f" {source}" if source else "")
+    tag = " ".join(t for t in ("script", _eq_tag(eq), source) if t)
     d = _display(sp.sympify(printed))
     if lhs is not None:
         d = sp.Eq(lhs, d, evaluate=False)
@@ -147,17 +219,19 @@ def evaluate(symbol, expr, inputs, unit, digits=3):
     return number
 
 
-def close_to(number, printed, rtol=5e-3, source=""):
+def close_to(number, printed, rtol=5e-3, *, eq="", source=""):
     """Assert a computed (real or complex) number matches the printed one."""
     assert abs(number - printed) <= rtol * abs(printed), f"{number} vs printed {printed}"
     shown = _rounded(printed, 3) if isinstance(printed, (int, float)) else sp.N(printed, 3)
-    _record("check", (_latex(shown), f"matches script {source}".strip()),
-            f"   matches printed {printed}  [{source}] \u2713")
+    tag = " ".join(t for t in (_eq_tag(eq), source) if t)
+    _record("check", (_latex(shown), f"matches script {tag}".strip()),
+            f"   matches printed {printed}" + (f"  [{tag}]" if tag else "") + " \u2713")
 
 
 def _esc(text):
     for a, b in [("\\", r"\textbackslash{}"), ("&", r"\&"), ("%", r"\%"),
-                 ("#", r"\#"), ("_", r"\_"), ("$", r"\$"), ("^", r"\^{}")]:
+                 ("#", r"\#"), ("_", r"\_"), ("$", r"\$"), ("^", r"\^{}"),
+                 ("<", r"\textless{}"), (">", r"\textgreater{}"), ("§", r"\S{}")]:
         text = text.replace(a, b)
     return text
 
@@ -171,10 +245,10 @@ def report(path, title=None):
            r"\usepackage{amsmath,amssymb,xcolor}",
            r"\allowdisplaybreaks", r"\setlength{\parindent}{0pt}",
            rf"\title{{{_esc(title)}}}", r"\date{}", r"\begin{document}", r"\maketitle"]
-    for title, source, items in _SECTIONS:
+    for title, reference, items in _SECTIONS:
         out.append(rf"\section*{{{_esc(title)}}}")
-        if source:
-            out.append(rf"{{\small\color{{gray}}\texttt{{{_esc(source)}}}}}\par")
+        if reference:
+            out.append(rf"{{\small\color{{gray}}Script: {_esc(reference)}}}\par")
         for kind, payload in items:
             if kind == "note":
                 out.append(rf"\medskip {payload}\par")

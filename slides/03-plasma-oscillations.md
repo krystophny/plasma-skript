@@ -26,7 +26,7 @@ rules: see `01-introduction.md`.
   E = e n₀ ξ/ε₀ → Newton m_e ξ̈ = −eE = −(n₀e²/ε₀)ξ → divide by m_e:
   ξ̈ + ω_pe² ξ = 0 → solve ξ = ξ₀ cos(ω_pe t + δ). Result:
   ω_pe = √(n₀e²/(ε₀m_e)); below it f_pe = ω_pe/2π ≈ 8.98 √(n₀/m⁻³) Hz.
-  Sources: script 03:36–83, `ch03_plasma_oscillations.py` "Charge-separation
+  Sources: script §3.1 Electron plasma oscillations, `ch03_plasma_oscillations.py` "Charge-separation
   field", "Electron plasma oscillation". ω_pe τ ≫ 1 is not a script
   equation; it is the collisionless condition of the LIVE route below.
 

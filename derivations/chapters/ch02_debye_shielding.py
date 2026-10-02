@@ -27,54 +27,54 @@ def laplacian(f):
 
 
 # %% Charge-separation scale
-section("Charge-separation scale", "02-debye-shielding.typ:40")
+section("Charge-separation scale", script="intro-debye-shielding")
 note("Electrons removed from a sphere leave the charge density", N * e)
 enclosed = show(sp.Eq(sp.Function("Q")(r), sp.Integral(4 * sp.pi * s**2 * N * e, (s, 0, r))))
-Q_r = agrees(enclosed.rhs.doit(), sp.Rational(4, 3) * sp.pi * N * e * r**3, ":59", lhs=enclosed.lhs)
+Q_r = agrees(enclosed.rhs.doit(), sp.Rational(4, 3) * sp.pi * N * e * r**3, lhs=enclosed.lhs)
 note("Gauss's law")
 gauss = show(sp.Eq(4 * sp.pi * r**2 * eps0 * E, Q_r))
 E_r = sp.solve(gauss, E)[0]
-agrees(E_r, N * e * r / (3 * eps0), ":67", lhs=E)
+agrees(E_r, N * e * r / (3 * eps0), lhs=E)
 check(E_r, N * e * r / (3 * eps0), unit=u.volt / u.meter, units=SI_UNITS)
 note("Boundary potential against infinity; outside, the field is Coulomb")
 boundary = show(sp.Eq(sp.Function("phi")(R),
                       sp.Integral(Q_r.subs(r, R) / (4 * sp.pi * eps0 * s**2), (s, R, sp.oo))))
-phi_R = agrees(boundary.rhs.doit(), N * e * R**2 / (3 * eps0), ":73", lhs=boundary.lhs)
+phi_R = agrees(boundary.rhs.doit(), N * e * R**2 / (3 * eps0), lhs=boundary.lhs)
 check(phi_R, phi_R, unit=u.volt, units=SI_UNITS)
 note("Separation stops where the potential energy reaches the thermal energy")
 balance = show(sp.Eq(e * phi_R, k_B * T_e))
-R_scale = agrees(sp.solve(balance, R)[0], sp.sqrt(3 * eps0 * k_B * T_e / (N * e**2)), ":45", lhs=R)
+R_scale = agrees(sp.solve(balance, R)[0], sp.sqrt(3 * eps0 * k_B * T_e / (N * e**2)), lhs=R, eq="debye-charge-separation-scale")
 check(R_scale, R_scale, unit=u.meter, units=SI_UNITS)
 note("With", sp.Eq(N, n0), "and", sp.Eq(lambda_D, sp.sqrt(eps0 * k_B * T_e / (n0 * e**2))))
-agrees(R_scale.subs(N, n0) / sp.sqrt(eps0 * k_B * T_e / (n0 * e**2)), sp.sqrt(3), ":79",
+agrees(R_scale.subs(N, n0) / sp.sqrt(eps0 * k_B * T_e / (n0 * e**2)), sp.sqrt(3),
        lhs=R / lambda_D)
 
 # %% Debye length
-section("Debye length", "02-debye-shielding.typ:93")
+section("Debye length", script="intro-debye-shielding")
 note("Boltzmann factor", sp.exp(-W / (k_B * T_e)), "with the electron energy", sp.Eq(W, -e * phi_0))
 boltzmann = agrees((n0 * sp.exp(-W / (k_B * T_e))).subs(W, -e * phi_0),
-                   n0 * sp.exp(e * phi_0 / (k_B * T_e)), ":96", lhs=n_e)
+                   n0 * sp.exp(e * phi_0 / (k_B * T_e)), lhs=n_e, eq="debye-boltzmann-response")
 note("Linearize for", sp.Lt(e * phi_0, k_B * T_e))
 linear = sp.series(boltzmann, phi_0, 0, 2).removeO()
-agrees(linear, n0 * (1 + e * phi_0 / (k_B * T_e)), ":141", lhs=n_e)
+agrees(linear, n0 * (1 + e * phi_0 / (k_B * T_e)), lhs=n_e)
 check(linear, linear, unit=u.meter**-3, units=SI_UNITS)
 note("Immobile ions,", sp.Eq(n_i, n0))
 charge = show(sp.Eq(rho_q, e * n_i - e * n_e))
 charge_lin = agrees(sp.expand(charge.rhs.subs({n_i: n0, n_e: linear})),
-                    -(e**2 * n0) / (k_B * T_e) * phi_0, ":145", lhs=rho_q)
+                    -(e**2 * n0) / (k_B * T_e) * phi_0, lhs=rho_q)
 check(charge_lin, charge_lin, unit=u.coulomb / u.meter**3, units=SI_UNITS)
 note("Poisson equation in spherical symmetry")
 poisson = show(sp.Eq(laplacian(phi), -rho_q / eps0))
-check(poisson.rhs, poisson.rhs, unit=u.volt / u.meter**2, units=SI_UNITS)  # :115
+check(poisson.rhs, poisson.rhs, unit=u.volt / u.meter**2, units=SI_UNITS)
 screened_eq = show(poisson.subs(rho_q, charge_lin.subs(phi_0, phi)))
 note("The coefficient of", phi, "defines the screening length")
 lambda_D_sq = show(sp.Eq(lambda_D**2, sp.simplify(phi / screened_eq.rhs))).rhs
-lambda_D_expr = agrees(sp.sqrt(lambda_D_sq), sp.sqrt(eps0 * k_B * T_e / (n0 * e**2)), ":124",
-                       lhs=lambda_D)
+lambda_D_expr = agrees(sp.sqrt(lambda_D_sq), sp.sqrt(eps0 * k_B * T_e / (n0 * e**2)),
+                       lhs=lambda_D, eq="debye-screened-equation")
 check(lambda_D_expr, lambda_D_expr, unit=u.meter, units=SI_UNITS)
 
 # %% Screened point charge
-section("Screened point charge", "02-debye-shielding.typ:155")
+section("Screened point charge", script="intro-debye-shielding")
 screening = show(sp.Eq(laplacian(phi), phi / lambda_D**2))
 w = sp.Function("w")(r)
 note("Substitute", sp.Eq(phi, w / r))
@@ -84,57 +84,54 @@ note("Decay at infinity drops the growing branch; near the charge", sp.Eq(phi, Q
 C1 = sp.Symbol("C1")
 decaying = general.rhs.coeff(sp.exp(-r / lambda_D)) * sp.exp(-r / lambda_D)
 constant = sp.solve(sp.Eq(decaying.subs(r, 0), Q / (4 * sp.pi * eps0)), C1, dict=True)[0]
-screened = agrees((decaying / r).subs(constant), Q / (4 * sp.pi * eps0 * r) * sp.exp(-r / lambda_D),
-                  ":158", lhs=phi)
+screened = agrees((decaying / r).subs(constant), Q / (4 * sp.pi * eps0 * r) * sp.exp(-r / lambda_D), lhs=phi)
 assert sp.simplify(laplacian(screened).doit() - screened / lambda_D**2) == 0
 bare = sp.limit(screened * r, r, 0) / r  # r << lambda_D
 check(bare, Q / (4 * sp.pi * eps0 * r), unit=u.volt, units=SI_UNITS)
 
 # %% Bare potential of a uniform sphere
-section("Bare potential of a uniform sphere", "02-debye-shielding.typ:167")
+section("Bare potential of a uniform sphere", script="debye-finite-source")
 note("Total charge", Q, "spread uniformly over a sphere of radius", R)
-rho_Q_expr = agrees(Q / (sp.Rational(4, 3) * sp.pi * R**3), 3 * Q / (4 * sp.pi * R**3), ":170",
+rho_Q_expr = agrees(Q / (sp.Rational(4, 3) * sp.pi * R**3), 3 * Q / (4 * sp.pi * R**3),
                     lhs=rho_Q)
 check(rho_Q_expr, rho_Q_expr, unit=u.coulomb / u.meter**3, units=SI_UNITS)
 inner = show(sp.Eq(sp.Function("Q")(r), sp.Integral(4 * sp.pi * s**2 * rho_Q_expr, (s, 0, r))))
-Q_in = agrees(inner.rhs.doit(), Q * r**3 / R**3, ":223", lhs=inner.lhs)
+Q_in = agrees(inner.rhs.doit(), Q * r**3 / R**3, lhs=inner.lhs)
 note("Gauss's law inside and outside")
-E_in = agrees(Q_in / (4 * sp.pi * eps0 * r**2), Q * r / (4 * sp.pi * eps0 * R**3), ":227", lhs=E_in_sym)
-E_out = show(sp.Eq(E_out_sym, Q / (4 * sp.pi * eps0 * r**2))).rhs  # :232
+E_in = agrees(Q_in / (4 * sp.pi * eps0 * r**2), Q * r / (4 * sp.pi * eps0 * R**3), lhs=E_in_sym)
+E_out = show(sp.Eq(E_out_sym, Q / (4 * sp.pi * eps0 * r**2))).rhs
 outside = show(sp.Eq(phi_outer, sp.Integral(E_out.subs(r, s), (s, r, sp.oo))))
-phi_out = agrees(outside.rhs.doit(), Q / (4 * sp.pi * eps0 * r), ":186", lhs=phi_outer)
+phi_out = agrees(outside.rhs.doit(), Q / (4 * sp.pi * eps0 * r), lhs=phi_outer)
 check(phi_out, phi_out, unit=u.volt, units=SI_UNITS)
 inside = show(sp.Eq(phi_inner, phi_out.subs(r, R) + sp.Integral(E_in.subs(r, s), (s, r, R))))
-phi_in = agrees(sp.factor(inside.rhs.doit()), Q / (8 * sp.pi * eps0 * R) * (3 - r**2 / R**2),
-                ":182", lhs=phi_inner)
+phi_in = agrees(sp.factor(inside.rhs.doit()), Q / (8 * sp.pi * eps0 * R) * (3 - r**2 / R**2), lhs=phi_inner)
 check(phi_in, phi_in, unit=u.volt, units=SI_UNITS)
 note("Poisson inside:")
-agrees(sp.simplify(laplacian(phi_in).doit()), -rho_Q_expr / eps0, ":115", lhs=laplacian(phi))
+agrees(sp.simplify(laplacian(phi_in).doit()), -rho_Q_expr / eps0, lhs=laplacian(phi), eq="debye-poisson")
 note("Potential and field are continuous at", sp.Eq(r, R))
 assert sp.simplify(phi_in.subs(r, R) - phi_out.subs(r, R)) == 0
 assert sp.simplify((phi_in.diff(r) - phi_out.diff(r)).subs(r, R)) == 0
 
 # %% Small-source condition
-section("Small-source condition", "02-debye-shielding.typ:210")
+section("Small-source condition", script="debye-finite-source")
 note("The bare potential peaks at the centre")
 phi_centre = show(sp.Eq(sp.Function("phi")(0), phi_in.subs(r, 0))).rhs
-small_source = agrees(e * phi_centre / (k_B * T_e), 3 * e * Q / (8 * sp.pi * eps0 * R * k_B * T_e),
-                      ":213", lhs=e * sp.Function("phi")(0) / (k_B * T_e))
+small_source = agrees(e * phi_centre / (k_B * T_e), 3 * e * Q / (8 * sp.pi * eps0 * R * k_B * T_e), lhs=e * sp.Function("phi")(0) / (k_B * T_e))
 check(small_source, small_source, unit=u.meter / u.meter, units=SI_UNITS)
 
 # %% Matched finite-source response
-section("Matched finite-source Debye response", "02-debye-shielding.typ:250")
+section("Matched finite-source Debye response", script="debye-finite-source")
 A, B, phi_p = sp.symbols("A B phi_p")
 x = sp.Symbol("x", positive=True)
 note("Inside the source, with", sp.Eq(kappa, 1 / lambda_D))
 screened_source = show(sp.Eq(laplacian(phi) - kappa**2 * phi, -rho_Q / eps0))
 note("A constant particular solution")
 phi_p_expr = sp.solve(screened_source.subs(phi, phi_p).doit().subs(rho_Q, rho_Q_expr), phi_p)[0]
-agrees(phi_p_expr, 3 * Q / (4 * sp.pi * eps0 * kappa**2 * R**3), ":258", lhs=phi_p)
+agrees(phi_p_expr, 3 * Q / (4 * sp.pi * eps0 * kappa**2 * R**3), lhs=phi_p)
 check(phi_p_expr, phi_p_expr, unit=u.volt, units=SI_UNITS)
 note("Regular inside, decaying outside")
-trial_in = show(sp.Eq(phi_inner, phi_p + A * sp.sinh(kappa * r) / r)).rhs  # :253
-trial_out = show(sp.Eq(phi_outer, B * sp.exp(-kappa * r) / r)).rhs  # :258
+trial_in = show(sp.Eq(phi_inner, phi_p + A * sp.sinh(kappa * r) / r)).rhs
+trial_out = show(sp.Eq(phi_outer, B * sp.exp(-kappa * r) / r)).rhs
 
 
 def screened_operator(f):
@@ -154,27 +151,27 @@ def in_x(expr):
     return sp.simplify(expr.rewrite(sp.exp).subs(kappa, x / R))
 
 
-A_match = agrees(in_x(solution[A]), -(R * phi_p * (x + 1) * sp.exp(-x)) / x, ":274", lhs=A)
+A_match = agrees(in_x(solution[A]), -(R * phi_p * (x + 1) * sp.exp(-x)) / x, lhs=A)
 B_match = agrees(in_x(solution[B]),
-                 (R * phi_p) / (2 * x) * (sp.exp(x) * (x - 1) + (x + 1) * sp.exp(-x)), ":278", lhs=B)
+                 (R * phi_p) / (2 * x) * (sp.exp(x) * (x - 1) + (x + 1) * sp.exp(-x)), lhs=B)
 B_full = B_match.subs({phi_p: phi_p_expr, x: kappa * R})
 check(B_full, B_full, unit=u.volt * u.meter, units=SI_UNITS)
 note("Point-source limit", sp.Eq(R, 0, evaluate=False), "recovers the screened Coulomb coefficient")
-agrees(sp.limit(B_full, R, 0), Q / (4 * sp.pi * eps0), ":158", lhs=B)
+agrees(sp.limit(B_full, R, 0), Q / (4 * sp.pi * eps0), lhs=B)
 
 # %% Debye number and coupling
-section("Debye number and coupling", "02-debye-shielding.typ:356")
+section("Debye number and coupling", script="debye-finite-source")
 N_D, Gamma = sp.symbols("N_D Gamma", positive=True)
 note("Electrons in a Debye sphere")
 count = show(sp.Eq(N_D, sp.Integral(4 * sp.pi * s**2 * n0, (s, 0, lambda_D))))
-N_D_expr = agrees(count.rhs.doit(), sp.Rational(4, 3) * sp.pi * n0 * lambda_D**3, ":359", lhs=N_D)
+N_D_expr = agrees(count.rhs.doit(), sp.Rational(4, 3) * sp.pi * n0 * lambda_D**3, lhs=N_D)
 check(N_D_expr, N_D_expr, unit=u.meter / u.meter, units=SI_UNITS)
 note("Mean spacing: one particle per sphere of radius", a)
 spacing = show(sp.Eq(sp.Rational(4, 3) * sp.pi * a**3 * n0, 1))
-a_expr = agrees(sp.solve(spacing, a)[0], (3 / (4 * sp.pi * n0)) ** sp.Rational(1, 3), ":371", lhs=a)
+a_expr = agrees(sp.solve(spacing, a)[0], (3 / (4 * sp.pi * n0)) ** sp.Rational(1, 3), lhs=a)
 check(a_expr, a_expr, unit=u.meter, units=SI_UNITS)
 note("Coupling: Coulomb energy at that spacing over thermal energy")
-coupling = show(sp.Eq(Gamma, e**2 / (4 * sp.pi * eps0 * a * k_B * T_e))).rhs  # :367
+coupling = show(sp.Eq(Gamma, e**2 / (4 * sp.pi * eps0 * a * k_B * T_e))).rhs
 check(coupling.subs(a, a_expr), coupling.subs(a, a_expr), unit=u.meter / u.meter, units=SI_UNITS)
 note("Weak coupling and a large Debye number are one condition:")
 link = show(sp.Eq(Gamma * N_D ** sp.Rational(2, 3),
@@ -183,7 +180,7 @@ link = show(sp.Eq(Gamma * N_D ** sp.Rational(2, 3),
 assert link.rhs.free_symbols == set(), link
 
 # %% Regime lines in the n-T plane
-section("Regime lines in the n-T plane", "02-debye-shielding.typ:354")
+section("Regime lines in the n-T plane", script="debye-finite-source")
 T_eV = k_B * T_e / e
 
 

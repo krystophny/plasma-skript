@@ -8,6 +8,11 @@
 #   make        tex + pdf
 #   make clean  remove build/
 #
+# Section references (section(..., script="<label>")) resolve through the
+# script outline ../slides/build/script-outline.json, regenerated here by
+# ../scripts/script-outline.sh whenever a Typst source is newer; an exported
+# copy without the script ships script-outline.json instead.
+#
 # Requirements: python3 with sympy and matplotlib (pytest for `make test`),
 # latexmk for `make pdf`.
 
@@ -16,18 +21,27 @@ CHAPTERS := $(sort $(wildcard chapters/ch*.py))
 NAMES    := $(notdir $(CHAPTERS:.py=))
 TEX      := $(NAMES:%=build/tex/%.tex)
 PDF      := $(NAMES:%=build/pdf/%.pdf)
+# An exported copy without ../src uses the script-outline.json shipped with it.
+OUTLINE  := $(if $(wildcard ../src),../slides/build/script-outline.json,script-outline.json)
+TYPST    := $(if $(wildcard ../src),$(shell find ../src -name '*.typ'))
 
-.PHONY: all test tex fig pdf clean
+.PHONY: all test tex fig pdf outline clean
 all: pdf
 
-test:
+outline: $(OUTLINE)
+ifneq ($(wildcard ../src),)
+$(OUTLINE): $(TYPST) ../scripts/script-outline.sh
+	bash ../scripts/script-outline.sh $@
+endif
+
+test: $(OUTLINE)
 	$(PYTHON) -m pytest -q test_chapters.py
 
 tex: $(TEX)
 fig: $(TEX)
 pdf: $(PDF)
 
-build/tex/%.tex: chapters/%.py si.py
+build/tex/%.tex: chapters/%.py si.py notebook.py $(OUTLINE)
 	PYTHONPATH=. $(PYTHON) $<
 
 build/pdf/%.pdf: build/tex/%.tex
