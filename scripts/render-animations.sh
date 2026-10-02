@@ -23,14 +23,14 @@ scenes=(
   "diffusion_random_walk.py|DiffusionRandomWalk|diffusion-random-walk|8.5"
   "wave_packet.py|WavePacketPropagation|wave-packet|4.5"
   "magnetized_polarization.py|MagnetizedPolarization|magnetized-polarization|6.0"
-  "magnetosonic_waves.py|MagnetosonicWaves|magnetosonic-waves|26.0"
+  "magnetosonic_waves.py|MagnetosonicWaves|magnetosonic-waves|3.0"
   "landau_resonance.py|LandauResonance|landau-resonance|6.0"
   "two_stream_instability.py|TwoStreamInstability|two-stream-instability|6.0"
   "sheath_formation.py|SheathFormation|sheath-formation|8.5"
   "langmuir_probe.py|LangmuirProbe|langmuir-probe|6.0"
-  "collective_response.py|CollectiveResponse|collective-response|23.0"
+  "collective_response.py|CollectiveResponse|collective-response|17.0"
   "particles_to_moments.py|ParticlesToMoments|particles-to-moments|11.0"
-  "pendulum_ensemble.py|PendulumEnsemble|pendulum-ensemble|53.0"
+  "pendulum_ensemble.py|PendulumEnsemble|pendulum-ensemble|7.0"
 )
 
 if [[ "${1:-}" == "--slugs" ]]; then
