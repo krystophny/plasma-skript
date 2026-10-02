@@ -290,8 +290,8 @@
     $omega=omega_(c,e)$.]
   )
 
-  In these circular-mode formulas, $s$ labels polarization rather than
-  particle species. The factor $-i s$ specifies equal amplitudes with a
+  In these circular-mode formulas, $s$ labels polarization, not particle
+  species. The factor $-i s$ specifies equal amplitudes with a
   quarter-cycle phase difference between the two electric components.
   This algebraic convention fixes the rotation sense without relying on
   an unstated viewing direction.
@@ -399,8 +399,8 @@
       of amplitude $E_0/2$. Here $L_0$, $t_0$, and $E_0$ are reference
       length, time, and electric-field scales. The transverse
       panel shows the highlighted position $z=3 L_0$. At fixed
-      position the polarization axis is stationary in time; these prescribed
-      wave numbers illustrate superposition rather than a fitted plasma.
+      position the polarization axis is stationary in time; the wave numbers
+      are prescribed.
     ],
     poster: "../media/magnetized-polarization.png",
   )
@@ -696,8 +696,7 @@
   The two roots give possible wave numbers at a specified frequency and
   angle. For each root, the matrix also determines the relative electric-field
   components. Following those components is necessary to identify a physical
-  branch; the plus or minus sign in a scalar root alone is not a universal
-  polarization name.
+  branch.
 
   #details(
     [Derivation: oblique matrix and limiting geometry],
@@ -915,7 +914,7 @@
     For the extraordinary perpendicular branch, the two circular cutoffs and
     the upper-hybrid resonance divide the frequency axis into propagation and
     stopband intervals. Determine the correct interval by evaluating the sign
-    of $N_X^2$ between adjacent landmarks, not by guessing from mode names.
+    of $N_X^2$ between adjacent landmarks.
     If density or magnetic field varies along a path, a local cutoff can
     reflect or mode-convert a wave. Approximating the wave locally by a plane
     wave additionally requires the background scale length to be long compared

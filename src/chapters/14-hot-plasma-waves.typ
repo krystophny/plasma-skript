@@ -70,8 +70,7 @@
     $f_(s,1) = tilde(f)_(s,1)(bold(v))
       exp(i (bold(k) dot bold(r)-omega t))$.
     The dimensionless parameter $epsilon$ orders perturbation amplitudes.
-    It is distinct from the dielectric function $epsilon_L$ below and does
-    not decide whether the response is cold, warm, or kinetic.]
+    It is distinct from the dielectric function $epsilon_L$ below.]
   )
 
   #governing-law(
@@ -369,8 +368,7 @@
     [The linear theory identifies the particles that exchange energy with the
     wave. At larger amplitude those particles can become trapped in the wave
     potential, flatten the distribution near $v_"phi"$, and change the rate.
-    The slope criterion is therefore a linear diagnostic, not a nonlinear
-    saturation law.]
+    The slope criterion is therefore a linear diagnostic.]
   )
 
   #summary[
@@ -760,7 +758,7 @@
     The lower value of $omega^2$ is negative whenever
     $k != 0$ and $〈v_x^2〉>0$, so this idealized anisotropy contains a growing transverse
     mode. The instability is powered by the anisotropic velocity-space free
-    energy; it is not a property of an isotropic Maxwellian.]
+    energy.]
   )
 
   #details(
@@ -1222,7 +1220,7 @@
     their polarizations. The hot tensor adds orbit averaging, Doppler shifts,
     harmonic resonances, and distribution gradients. A cold cutoff or
     resonance is therefore a location at which kinetic corrections should be
-    checked first, not automatically a physical singularity.]
+    checked first.]
   )
 
   #summary[

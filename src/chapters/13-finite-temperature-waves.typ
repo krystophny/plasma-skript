@@ -176,8 +176,7 @@
 
   #interpretation(
     [Damping is part of the response],
-    [A complex dielectric coefficient does not merely append an after-the-fact
-    loss term. It changes phase velocity, polarization, cutoff structure, and
+    [A complex dielectric coefficient changes phase velocity, polarization, cutoff structure, and
     energy absorption together. The sign of the imaginary part must always be
     read with the declared Fourier convention.]
   )
@@ -238,8 +237,7 @@
     no pressure and no collisions for the first branch calculation. Retain
     both electron and ion inertia, use $m_e/m_i << 1$, and keep
     $bold(B)_0=B_0 bold(e)_z$. The labels RH and LH follow the present
-    Fourier and viewing convention; they denote circular eigenvalues, not
-    universal labels independent of convention.]
+    Fourier and viewing convention; they denote circular eigenvalues.]
   )
 
   #definition(
@@ -604,7 +602,7 @@
     perturbations and introduces wave-number dependence. Its relative
     contribution is $gamma_e k^2 lambda_(D,e)^2$ on the fixed-ion branch.
     Once $k lambda_D$ is not small, the fluid branch must be compared with
-    kinetic phase mixing rather than extrapolated indefinitely.]
+    kinetic phase mixing.]
   )
 
   #summary[
@@ -858,8 +856,7 @@
     [Shear-Alfvén motion bends field lines with little compression. Magnetosonic
     motion compresses the field and the fluid, so thermal pressure adds to
     magnetic pressure. The appropriate branch is selected by propagation
-    angle and frequency ordering, not by the presence of a magnetic field
-    alone.]
+    angle and frequency ordering.]
   )
 
   #summary[
@@ -1010,8 +1007,7 @@
 
     for cold quasineutral motion, finite-Larmor-radius effects, and resonant
     kinetic corrections respectively, with $v_(parallel)$ a thermal parallel
-    speed. Satisfying one condition does not imply
-    that the others hold.]
+    speed. The three conditions are independent.]
   )
 
   #warm-wave-ordering

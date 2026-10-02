@@ -139,7 +139,6 @@
       satisfies $xi_0/L_0=0.55$. The field scale is
       $E_0=(e n_0 xi_0)/epsilon_0$; field and electron force are shown as
       $E/E_0$ and $F_e/(e E_0)$, respectively, both with unit [1].
-      This is an illustrative model, not measured data.
     ],
     poster: "../media/plasma-oscillation.png",
   )

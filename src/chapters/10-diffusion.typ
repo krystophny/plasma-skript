@@ -127,7 +127,7 @@
     variables
     $bold(xi)=bold(r)/L_0$, $tau=t/tau_0$,
     $n_("norm")=n/n_0$, and $D_("norm")=D/D_0$.
-    Spatial derivatives below act on $bold(xi)$, not dimensional position.
+    Spatial derivatives below act on $bold(xi)$.
     The diffusion equation then has the dimensionless form
     $pdv(n_("norm"), tau)=div(D_("norm") grad(n_("norm")))$.
     For a system length $L$ with $L_("norm")=L/L_0$, the normalized

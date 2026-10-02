@@ -125,7 +125,7 @@
     as many small deflections. The distant part of the interaction is limited
     by collective screening, while the close part is limited by strong
     deflection or quantum diffraction. The resulting collision estimate is a
-    transport frequency, not a literal hard-sphere collision count.]
+    transport frequency.]
   )
 
   The impact parameter $b$ is the perpendicular separation of the incoming,
@@ -418,8 +418,7 @@
   )
 
   #summary[
-    The distribution function is a phase-space density, not merely a curve of
-    particle speeds. Integrating it over velocity gives density, weighting it
+    The distribution function is a phase-space density. Integrating it over velocity gives density, weighting it
     once gives bulk flow, and weighting it twice about the bulk flow gives
     pressure. The Maxwellian is the normalized equilibrium reference state for
     elastic collisions at fixed density, flow velocity, and temperature.
@@ -583,7 +582,7 @@
     caption: [
       Free streaming in one spatial and one velocity dimension. The
       visualization uses normalized variables and a deterministic sample of a
-      distribution, not a particle simulation or measured data.
+      distribution.
       Arrow lengths are proportional to $eta=v/v_0$ and represent displacement
       over the same normalized time interval.
     ],
@@ -867,7 +866,7 @@
   #section-title[Maxwellian equilibrium and kinetic model limits] <kinetic-equilibrium>
 
   #lead[
-    The Maxwellian is a reference state, not a universal shape. Its use is
+    The Maxwellian is a reference state. Its use is
     justified by collisional relaxation and the absence of unresolved sources
     that sustain non-equilibrium structure.
   ]
@@ -880,8 +879,7 @@
   ))
 
   #unit-ledger[
-    The ratios $nu tau$, $K_"n"$, and $lambda_D/L$ are dimensionless and must
-    not be read as dimensional frequencies or lengths.
+    The ratios $nu tau$, $K_"n"$, and $lambda_D/L$ are dimensionless.
   ]
 
   #assumption(

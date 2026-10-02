@@ -52,8 +52,7 @@
     distribution that is isotropic on the plasma side. The surface is
     collisionless over the collection distance, absorbs particles that reach
     it, and has no secondary emission in the first flux estimate. This
-    estimate is a boundary flux, not a claim that the distribution remains
-    isotropic inside the sheath.]
+    estimate is a boundary flux.]
   )
 
   #definition(
@@ -219,8 +218,7 @@
     $phi(infinity)=0$ and a negative wall potential. Use cold ions with
     charge $+e$, Boltzmann electrons with temperature $T_e$, no magnetic
     field, no collisions inside the sheath, and a steady ion flux. The
-    sheath edge is an asymptotic matching region, not an infinitely sharp
-    physical discontinuity. The limit $x -> infinity$ represents the
+    sheath edge is an asymptotic matching region. The limit $x -> infinity$ represents the
     sheath-edge reservoir in this local model; the presheath that joins it
     to the bulk plasma is not included.]
   )
@@ -237,7 +235,7 @@
     the inward ion speed: the signed velocity is $v_(i,x)=-u_i$ because $x$
     increases away from the wall. The barrier $-e phi$ is positive electron
     potential energy, although $phi$ itself is negative. Here the subscript
-    $s$ on $u_s$ and $n_s$ means “sheath edge,” rather than a species index.]
+    $s$ on $u_s$ and $n_s$ means “sheath edge,” not a species index.]
   )
 
   #governing-law(
@@ -588,8 +586,7 @@
   ]
   #interpretation(
     [Floating does not mean field-free],
-    [Zero net current is a global electrical condition, not the statement
-    that the electric field vanishes at the surface. The sheath field can be
+    [Zero net current is a global electrical condition. The sheath field can be
     strong while the integrated ion and electron charge currents cancel.
     Changing ion temperature, presheath losses, secondary emission, magnetic
     incidence, or surface geometry changes the fluxes and therefore the
@@ -602,7 +599,7 @@
     The ideal cold-ion floating condition is
     $phi_f=((k_B T_e)/e)ln(Gamma_i/Gamma_(e,0))
       approx -(2.84 k_B T_e)/e$ for hydrogen. The coefficient is a model
-    result, not a universal material constant.
+    result.
   ]
   #knowledge-check((
     (
@@ -656,8 +653,7 @@
     saturated and the electron current as Boltzmann-retarded. Neglect
     magnetic-orbit effects, collisions in the sheath, secondary emission,
     photoemission, RF fluctuations, and probe perturbation of the bulk
-    plasma. These assumptions define a diagnostic baseline, not a universal
-    probe law.]
+    plasma. These assumptions define a diagnostic baseline.]
   )
   #definition(
     [Probe bias and current regions],
@@ -669,7 +665,7 @@
     increases, the electron current grows exponentially in the
     electron-retardation region. At still more positive bias, the electron
     collection becomes geometry- and sheath-limited, producing an electron
-    saturation region rather than an unlimited exponential.]
+    saturation region.]
   )
   #governing-law(
     [Idealized probe characteristic],
@@ -741,7 +737,7 @@
   #probe-iv-characteristic
   #animation(
     "../media/sheath-formation.mp4",
-    "A prescribed planar sheath has its wall at x/lambdaD equal to zero and its edge at five. A positive electron-energy barrier rises toward the wall. Boltzmann-electron and cold-ion densities follow this potential; a subthreshold electron turns inside the barrier and an ion accelerates to the wall. The potential is prescribed rather than obtained from Poisson's equation.",
+    "A prescribed planar sheath has its wall at x/lambdaD equal to zero and its edge at five. A positive electron-energy barrier rises toward the wall. Boltzmann-electron and cold-ion densities follow this potential; a subthreshold electron turns inside the barrier and an ion accelerates to the wall.",
     caption: [
       The prescribed profile uses $X=x/lambda_D$, edge $X=5$,
       $eta=0.12 (5-X)^2$ inside the sheath, and $eta=0$ outside.
@@ -760,7 +756,7 @@
   )
   #animation(
     "../media/langmuir-probe.mp4",
-    "A normalized idealized probe current--voltage curve is divided into ion saturation, electron retardation, and electron saturation regions. A marked floating bias is where the conventional current is zero. A companion panel shows a probe surrounded by a sheath, with electron and ion collection arrows. The animation is a teaching map, not experimental data.",
+    "A normalized idealized probe current--voltage curve is divided into ion saturation, electron retardation, and electron saturation regions. A marked floating bias is where the conventional current is zero. A companion panel shows a probe surrounded by a sheath, with electron and ion collection arrows.",
     caption: [
       Probe bias moves the operating point across collection regimes. The
       retarding branch carries the temperature information in its logarithmic

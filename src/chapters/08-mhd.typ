@@ -27,8 +27,7 @@
 
   #lead[
     What does a one-fluid variable mean when electrons and ions still move
-    differently? It is a carefully chosen sum, not an assertion that all
-    species share one velocity. The mass-weighted velocity carries total
+    differently? It is a carefully chosen sum. The mass-weighted velocity carries total
     momentum, while charge-weighted velocity differences still define the
     current.
   ]
@@ -199,7 +198,7 @@
       question: [What changes in the mass equation if the plasma is quasi-neutral?],
       answer: [Nothing at leading order: mass conservation remains
       $pdv(rho,t)+div(rho bold(u))=0$. Quasi-neutrality is a charge-density
-      ordering, not a mass source or a velocity constraint.]
+      ordering.]
     ),
   ))
 
@@ -282,7 +281,7 @@
   $sigma$ is the scalar conductivity in #unit("S/m"). The
   frequency itself depends on the collision model and plasma state; the later
   collisions chapter supplies that kinetic input. Here, resistivity enters as
-  drag per unit current, not as an independent force.
+  drag per unit current.
 
   #details(
     [Derivation: locate every term in generalized Ohm's law],
@@ -562,7 +561,7 @@
 
   #animation(
     "../media/exb-drift.mp4",
-    "A positive charge gyrates clockwise around a guiding center translating rightward with the common electric drift. Position axes are x/L0 and y/L0 [1], using reference length L0. The electric field points upward and the magnetic field out of the page. This illustrates perpendicular advection, not a full MHD solution.",
+    "A positive charge gyrates clockwise around a guiding center translating rightward with the common electric drift. Position axes are x/L0 and y/L0 [1], using reference length L0. The electric field points upward and the magnetic field out of the page. This illustrates perpendicular advection.",
     caption: [
       Common $E times B$ advection as a visual bridge to ideal MHD. The
       reference length $L_0$ and time $t_0$ give the gyroradius ratio $r_L/L_0=0.65$,
@@ -879,8 +878,7 @@
     [Set $pdv(rho,t)=0$ and $bold(u)=bold(0)$, neglect gravity and the
     bulk electric force under quasi-neutrality, use scalar pressure, and use
     reduced Ampere's law. The magnetic field remains divergence-free. These
-    assumptions describe magnetohydrostatics, not a general time-dependent
-    plasma or a kinetic boundary layer.]
+    assumptions describe magnetohydrostatics.]
   )
 
   The static momentum equation is
@@ -1059,8 +1057,7 @@
 
     $ dv(p+B_(theta)^2/(2 mu_0),r)+(B_(theta)^2)/(mu_0 r)=0 .$
 
-    The final term is the inward magnetic tension from curved field lines.
-    These examples are special geometries, not additional equilibrium laws.]
+    The final term is the inward magnetic tension from curved field lines.]
   )
 
   #mhd-force-balance

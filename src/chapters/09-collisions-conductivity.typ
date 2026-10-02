@@ -27,7 +27,7 @@
   #lead[
     What does it mean to say that a particle collides? The useful answer is a
     rate, a mean free path, and a momentum-transfer rule. A cross section is an
-    effective area, not a literal hard-sphere diameter; it may depend strongly
+    effective area; it may depend strongly
     on relative speed and scattering angle.
   ]
 
@@ -85,7 +85,7 @@
     dilute enough that a particle samples one local density during an
     encounter, and the effective cross section includes the momentum transfer
     relevant to the observable. A collision frequency is therefore a local
-    model parameter, not a universal constant of the species pair.]
+    model parameter.]
   )
 
   #details(
@@ -278,7 +278,7 @@
     reverse direction in an elastic encounter with a heavy neutral while
     transferring only a small fraction of its kinetic energy. Excitation and
     ionization are inelastic energy-loss channels; they belong in an energy
-    equation rather than being hidden inside the momentum-drag coefficient.]
+    equation.]
   )
 
   #rechenbeispiel[
@@ -798,8 +798,7 @@
   In this DC tensor, $sigma_(perp)$ is the Pedersen conductivity: it gives
   current along the perpendicular electric field. The Hall part gives a
   current at right angles to it and supplies no electric work because its
-  current is perpendicular to the field. These labels describe two components
-  of the perpendicular response, not two additional particle populations.
+  current is perpendicular to the field.
 
   The harmonic AC tensor follows from the same momentum balance with
   $nu_"e"$ replaced by $nu_"e"-i omega$. Its complex entries encode both

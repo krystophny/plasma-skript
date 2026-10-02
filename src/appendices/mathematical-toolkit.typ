@@ -56,7 +56,7 @@
     $pdv(rho_s,t)+div(rho_s bold(u)_s)=0$. Ionization and recombination
     are excluded from the internal-energy balance below.
     Collisions may exchange energy between species, but their weighted
-    integral is retained as a source rather than silently discarded.]
+    integral is retained as a source.]
   )
 
   #definition(

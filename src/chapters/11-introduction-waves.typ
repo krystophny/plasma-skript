@@ -226,8 +226,8 @@
     What oscillates when a cold, unmagnetized plasma is displaced? In the
     high-frequency limit the electrons move against an almost fixed ion
     background. Charge separation creates an electric restoring force, so the
-    oscillation frequency is set by density and charge rather than by a
-    spatial wavelength.
+    oscillation frequency is set by density and charge, not by a spatial
+    wavelength.
   ]
 
   #objectives((
@@ -495,7 +495,7 @@
 
   #animation(
     "../media/wave-packet.mp4",
-    "A prescribed Gaussian envelope and cosine carrier travel rightward in normalized coordinates. A stationary key identifies the slower dashed envelope marker and faster solid carrier-phase marker. Position is x/L0 [1] and field amplitude is E/E0 [1]; this is an illustrative envelope ansatz, not an exact dispersive solution.",
+    "A prescribed Gaussian envelope and cosine carrier travel rightward in normalized coordinates. A stationary key identifies the slower dashed envelope marker and faster solid carrier-phase marker. Position is x/L0 [1] and field amplitude is E/E0 [1].",
     caption: [
       The prescribed carrier and envelope illustrate different phase and
       group speeds. With $X=x/L_0$, $tau=t/t_0$, and $A=E/E_0$, the ansatz is
@@ -599,7 +599,7 @@
     perturbations, and a local pressure closure
     $p_(s,1)=gamma_s k_B T_s n_(s,1)$. The equilibrium is quasi-neutral
     with equal electron and ion densities. Kinetic corrections are discussed
-    as a limit comparison, not hidden inside $gamma_s$.]
+    separately as a limit comparison.]
   )
 
   #definition(
@@ -713,8 +713,7 @@
 
     The analytically continued plasma-dispersion function $Z$ accounts for
     resonant particles through causal continuation from $Im(omega)>0$.
-    Other distributions require their velocity-space integral rather than
-    this Maxwellian formula. The imaginary contribution describes resonant
+    Other distributions require their own velocity-space integral. The imaginary contribution describes resonant
     energy exchange: the non-drifting Maxwellian response gives Landau
     damping, while suitable non-equilibrium distributions can drive growth.
     A warm-fluid $gamma_s$ can reproduce selected
@@ -725,7 +724,7 @@
 
   In the following example, $c_s$ denotes the collective ion-acoustic speed,
   as is common in sound-wave notation. It is determined by electron pressure
-  and ion inertia for the stated cold-ion limit, rather than by the ion
+  and ion inertia for the stated cold-ion limit, not by the ion
   pressure-response speed $c_i$ defined above.
 
   #rechenbeispiel[
@@ -805,7 +804,7 @@
     [Validity range of the plotted branches],
     [Read the cold electromagnetic curve only for a homogeneous,
     unmagnetized, collisionless, fixed-ion plasma. The vacuum line is a
-    reference, not a second plasma mode. If a branch leaves the assumptions,
+    reference. If a branch leaves the assumptions,
     switch model before extrapolating the curve.]
   )
   #definition(
@@ -855,8 +854,7 @@
     $ k=i alpha, quad alpha=sqrt(omega_(p,e)^2-omega^2)/c .$
 
     Choosing the decaying boundary solution gives the spatial factor
-    $exp(-alpha x)$. This is an evanescent field, not a propagating bulk
-    wave.
+    $exp(-alpha x)$. This is an evanescent field.
 
     #derivation-step[Compare with the cold electrostatic branch]
     The cold electrostatic fixed-ion branch has

@@ -60,8 +60,8 @@
 
   Other examples include the solar corona, planetary magnetospheres,
   lightning, arcs, and processing plasmas. These settings span many orders of
-  magnitude in density and temperature; the optional table below gives
-  orientation values rather than a universal boundary for the plasma state.
+  magnitude in density and temperature; the table below lists typical
+  values.
 
   The charge density is the species sum
 
@@ -97,8 +97,7 @@
 
   #intro-enclosed-charge
 
-  A plasma differs from a neutral gas in the range of its response, not merely
-  in the presence of charged particles. A charge imbalance can
+  A plasma differs from a neutral gas in the range of its response. A charge imbalance can
   launch an electric field, a current can launch a magnetic perturbation, and
   the resulting fields can move many particles before local collisions erase
   the correlation.
@@ -112,16 +111,14 @@
       resting electrons with the screened force derived from
       $-e^(-r\/lambda_D)\/r$; arrow length grows with the force and
       saturates near the charge. Lengths in units of $lambda_D$; the
-      dashed circle has radius $lambda_D$. Illustration, not a
-      self-consistent simulation.
+      dashed circle has radius $lambda_D$. The screened force is prescribed.
     ],
     poster: "../media/collective-response.png",
   )
 
   #details(
     [Order-of-magnitude examples],
-    [The following ranges are orientation values rather than a phase diagram.
-    The density column is $n_e$ in #unit("m^-3"), and the energy column is
+    [The density column is $n_e$ in #unit("m^-3"), and the energy column is
     $k_B T_e$ in electron-volts. A single named object can occupy more than one
     row as its local state changes.
 
@@ -146,8 +143,7 @@
   The characteristic responses introduced by this script are Debye shielding,
   electron plasma oscillations, collective waves, gyromotion and guiding-center
   drifts, instabilities, and boundary sheaths. These are different limits of
-  the same coupled particle--field system, not independent definitions of a
-  plasma.
+  the same coupled particle--field system.
 
   An ideal plasma, as used here, contains enough weakly interacting particles
   for smooth collective fields to be useful. Bulk quasineutrality also
@@ -158,8 +154,8 @@
   distinguishes that regime from the classical description used in this course.
 
   #summary[
-    A plasma is identified by scale-dependent collective electromagnetic
-    response, not by a universal temperature threshold. Bulk quasineutrality,
+    A plasma is identified by its scale-dependent collective electromagnetic
+    response. Bulk quasineutrality,
     weak coupling, and the validity of classical statistics are separate
     conditions, each checked at the scale of interest.
   ]

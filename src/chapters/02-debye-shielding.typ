@@ -75,8 +75,7 @@
 
     $ R approx sqrt(3) lambda_D .$
 
-    The order-one factor depends on the charge geometry, so this is a
-    charge-separation estimate rather than a new hard boundary.]
+    The order-one factor depends on the charge geometry.]
   )
 
   #assumption(
@@ -169,11 +168,9 @@
     $ rho_Q = (3 Q)/(4 pi R^3) .$
 
     The animation shows a two-dimensional cross-section of this sphere. The
-    randomly scattered source markers represent the continuous charge density;
-    they are not a second two-dimensional electrostatic model. The fixed
-    source charge is permeable to the plasma: electrons occupy both its
-    interior and exterior. This is not a conducting or plasma-excluding
-    sphere, whose boundary conditions would be different.]
+    randomly scattered source markers represent the continuous charge density.
+    The fixed source charge is permeable to the plasma: electrons occupy both
+    its interior and exterior.]
   )
 
   For this finite source, the exact bare potential is
@@ -284,7 +281,7 @@
     $phi_"D"/phi_"C" = e^(-r/lambda_D)$. A finite sphere changes the amplitude
     near $r=R$, but the exterior screening still supplies the exponential
     suppression. At distances several Debye lengths from the source, the
-    Coulomb tail is therefore strongly reduced rather than abruptly cut off.]
+    Coulomb tail is therefore reduced exponentially.]
   )
 
   #debye-potential-comparison
@@ -338,8 +335,7 @@
 
   #interpretation(
     [Scope of the Debye length],
-    [The Debye length is not a hard vacuum boundary and it does not make the
-    plasma exactly neutral at every point. It is the distance over which this
+    [The Debye length is the distance over which this
     particular equilibrium response reduces a localized electrostatic field.
     Strong potentials, rapid time dependence, boundaries, insufficient Debye
     number, and kinetic non-equilibrium require a more complete model.]
@@ -354,7 +350,7 @@
 
   #equation-note[
     Dimensionless. $N_D$ counts electrons inside a Debye sphere. The symbol
-    $>> 1$ states an ordering assumption, not an exact numerical boundary.
+    $>> 1$ states an ordering assumption.
   ]
 
   #definition(
@@ -365,8 +361,7 @@
     where $a_s = (3 / (4 pi n_s))^(1/3)$ is the mean-spacing scale. The
     classical collective ordering also requires many particles in a Debye
     sphere and, when quasineutral fluid behavior is invoked, a system scale
-    $L$ much larger than $lambda_D$. “Ideal” therefore does not mean cold,
-    uniform, or exactly neutral at every point.]
+    $L$ much larger than $lambda_D$.]
   )
 
   #equation-note[

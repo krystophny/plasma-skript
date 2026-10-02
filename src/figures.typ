@@ -151,7 +151,7 @@
     ]
 
     html.p[
-      For an illustrative $N = 10^20$ particles (a count with unit [1]), the
+      For $N = 10^20$ particles (a count with unit [1]), the
       microscopic model has $N$ coupled vector equations for the trajectories,
       together with the four Maxwell equations, including their constraints.
       Kinetic theory replaces those individual trajectories with one
@@ -183,7 +183,7 @@
         already has $10^4$ points. Counts have unit [1].
       ]
       #html.p[
-        These estimates count one stored scalar, not the full solver.
+        These estimates count one stored scalar.
         Multiple species, field components, time integration, and boundary
         data add storage. Coarser grids or other representations change
         the cost, but require their own accuracy checks.
@@ -277,12 +277,11 @@
 )[#derived-plot("plasma_frequency", width: 8.6cm)]
 
 #let collision-paths = figure(
-  alt: "Two illustrative particle paths from left to right. Top, neutral gas: straight flights broken by four sharp turns, each marked by a dot for a hard collision. Bottom, plasma: a path made of many short segments, each turned by a small random angle, so the direction wanders gradually without any single sharp turn. The paths are illustrative, not computed trajectories.",
+  alt: "Two particle paths from left to right. Top, neutral gas: straight flights broken by four sharp turns, each marked by a dot for a hard collision. Bottom, plasma: a path made of many short segments, each turned by a small random angle, so the direction wanders gradually without any single sharp turn.",
   caption: [
     Neutral gas (top): straight flights between a few hard, large-angle
     collisions (dots). Plasma (bottom): many small-angle Coulomb deflections
     whose accumulated effect turns the particle by a comparable angle.
-    Illustrative paths, not computed trajectories.
   ],
 )[
   #let neutral = ((0, 0), (1.3, 0.06), (2.2, 0.42), (3.4, -0.22), (4.6, -0.1), (5.8, 0.3))
@@ -1072,7 +1071,7 @@
   let caption-text = [
     One-dimensional velocity marginals, with $xi=v/v_"th"$,
     $v_"th"=sqrt((2 k_B T_e)/m_e)$ and $F_"ref"=n_0/(sqrt(pi) v_"th")$.
-    The Maxwellian is $F/F_"ref"=exp(-xi^2)$; the equal-density illustrative
+    The Maxwellian is $F/F_"ref"=exp(-xi^2)$; the equal-density
     mixture is $0.9 exp(-xi^2)+0.2 exp(-4(xi-2)^2)$.
     At the marked $v_phi/v_"th"=1.7$, near the steepest positive slope of
     the mixture, their slopes have opposite signs.
@@ -1181,7 +1180,7 @@
     A planar boundary is organized into a quasineutral plasma, a
     presheath that supplies directed ion flow, a charge-separated sheath of
     order a few Debye lengths, and the material wall. The labels describe
-    model regions rather than sharp interfaces in every experiment.
+    model regions.
   ]
 
   if target() == "paged" {

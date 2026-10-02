@@ -96,7 +96,7 @@
     tensor. Its diagonal entries are normal momentum fluxes and its
     off-diagonal entries are shear momentum fluxes. In an isotropic state the
     tensor reduces to a scalar pressure times the identity, but isotropy is an
-    additional assumption rather than a consequence of taking a moment.
+    additional assumption, not a consequence of taking a moment.
   ]
 
   “Raw” moments use the laboratory velocity $bold(v)$; “central” moments use
@@ -147,10 +147,10 @@
 
   #animation(
     "../media/moment-hierarchy.mp4",
-    "A schematic reduces the distribution function to number density, bulk velocity, pressure tensor, and the full third central moment tensor. Heat flux is identified as a contraction of the third central tensor. Arrows show how each transport equation introduces a higher moment and therefore requires closure.",
+    "The animation reduces the distribution function to number density, bulk velocity, pressure tensor, and the full third central moment tensor. Heat flux is identified as a contraction of the third central tensor. Arrows show how each transport equation introduces a higher moment and therefore requires closure.",
     caption: [
       Moment hierarchy from kinetic information to fluid fields. The animation
-      labels dimensional quantities, not normalized fields.
+      labels dimensional quantities.
       The full third central tensor $Q_(i j k)$ contains more information
       than heat flux $q_i=(1/2) sum_j Q_(i j j)$.
     ],
@@ -483,7 +483,7 @@
       = q_s n_s (bold(E)+bold(u)_s times bold(B))
       -div(bold(P)_s) + bold(R)_s$. Every term has force-density
     units in #unit("N/m^3"). The acceleration
-    now follows a fluid element moving at $bold(u)_s$, rather than an
+    now follows a fluid element moving at $bold(u)_s$, not an
     individual particle moving at $bold(v)$. Pressure accounts for the
     momentum transport caused by their velocity difference.
   ]
@@ -552,7 +552,7 @@
 
   #interpretation(
     [Pressure is a momentum flux],
-    [A pressure tensor is not only a thermodynamic label. Particles with random
+    [Particles with random
     velocities carry momentum across a surface, and the imbalance of that
     flux produces $-div(bold(P))$ in the momentum equation. Anisotropic
     velocity spread therefore produces a force that cannot generally be

@@ -84,8 +84,7 @@
     $ rho=sum_s rho_(s), quad
       bold(j)=sum_s q_(s)n_(s)bold(u)_(s) .$
 
-    A mass-weighted bulk velocity is another derived quantity, not a
-    replacement for the species velocities.
+    A mass-weighted bulk velocity is another derived quantity.
 
     #derivation-step[Separate quasi-neutrality from current]
     Quasi-neutrality constrains only the zeroth charge moment:
@@ -397,8 +396,7 @@
     [Assume a locally uniform magnetic field, an isotropic pressure tensor, and
     a perpendicular scale much larger than the gyroradius. Neglect the
     perpendicular inertial, collisional, and time-derivative terms for the
-    leading balance. The result is a local ordering, not a general solution of
-    the fluid equation.]
+    leading balance.]
   )
 
   Let $bold(b)=bold(B)/B$ and project the species momentum balance
@@ -576,8 +574,7 @@
 
   #equation-note[
     The diamagnetic current is perpendicular to both $bold(B)$ and the total
-    pressure gradient. It is a current density, not a new independent species
-    charge. A pressure gradient can therefore drive a current even while the
+    pressure gradient. A pressure gradient can therefore drive a current even while the
     leading-order charge density remains nearly zero.
   ]
 

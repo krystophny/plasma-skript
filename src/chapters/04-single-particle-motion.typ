@@ -291,9 +291,8 @@
     "../media/exb-drift.mp4",
     "A positive charge gyrates clockwise around a guiding center translating rightward. Position axes are x/L0 and y/L0 [1]. The electric field points upward and the magnetic field out of the page; the drift is E cross B.",
     caption: [
-      Gyromotion plus the $E times B$ drift. The trajectory is a
-      deterministic normalized illustration, not measured data. With reference
-      length $L_0$ and time $t_0$, it uses $Omega t_0=2$,
+      Gyromotion plus the $E times B$ drift. With reference
+      length $L_0$ and time $t_0$, the trajectory uses $Omega t_0=2$,
       $rho/L_0=0.65$, and $v_D t_0/L_0=0.55$, all dimensionless.
     ],
     poster: "../media/exb-drift.png",
@@ -397,7 +396,7 @@
     adiabatic invariant under the stated slow-variation ordering: it remains
     approximately constant as the particle samples a slowly changing field.
     Here “adiabatic” refers to the separation of orbit and field-variation
-    scales, rather than a thermodynamic no-heat-exchange condition.
+    scales, not to thermodynamic heat exchange.
   ]
 
   #details(
@@ -777,7 +776,7 @@
   #equation-note[
     The leading drift is in #unit("m/s") and follows the
     instantaneous electric field. The notation $bold(v)_"gyro"$ denotes the
-    rapidly rotating residual motion, not an additional secular drift.
+    rapidly rotating residual motion.
   ]
 
   The next-order orbit-center response is the polarization drift:
@@ -1037,8 +1036,7 @@
     Circular decomposition exposes the cyclotron denominator. A positive
     frequency resonates with the circular polarization matching the free
     gyromotion, at $omega=abs(Omega)$. The collisionless singularity marks the
-    limit of the slow-drift approximation rather than an unlimited physical
-    velocity.
+    limit of the slow-drift approximation.
   ]
 
   #knowledge-check((
