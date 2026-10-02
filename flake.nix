@@ -29,6 +29,8 @@
       ]);
       playwrightCore = pkgs.playwright-driver;
       physicsPython = pkgs.python3.withPackages (ps: [ps.numpy]);
+      # SymPy derivations write the data plots that the Typst sources include.
+      derivationsPython = pkgs.python3.withPackages (ps: [ps.numpy ps.sympy ps.matplotlib ps.pytest]);
       physicsCheckApp = pkgs.writeShellApplication {
         name = "plasma-check-physics";
         runtimeInputs = [physicsPython typst];
@@ -50,7 +52,7 @@
       };
       buildSiteApp = pkgs.writeShellApplication {
         name = "plasma-build-site";
-        runtimeInputs = [pkgs.bash pkgs.ffmpeg pkgs.manim typst];
+        runtimeInputs = [pkgs.bash pkgs.ffmpeg pkgs.gnumake pkgs.manim derivationsPython typst];
         text = ''
           export FONTCONFIG_FILE="${fontConfig}"
           export PLASMA_NEW_COMPUTER_MODERN_FONT="${newComputerModernFont}"
@@ -226,7 +228,9 @@
         src = ./.;
 
         nativeBuildInputs = [
+          derivationsPython
           pkgs.ffmpeg
+          pkgs.gnumake
           pkgs.manim
           newComputerModern
           typst
@@ -284,6 +288,8 @@
         packages = [
           typst
           pkgs.manim
+          derivationsPython
+          pkgs.gnumake
           newComputerModern
           pkgs.ffmpeg
           pkgs.alejandra

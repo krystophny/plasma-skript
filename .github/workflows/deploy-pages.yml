@@ -136,13 +136,17 @@ jobs:
           key: animations-${{ env.MANIM_VERSION }}-${{ hashFiles('animations/**', 'scripts/render-animations.sh') }}
           fail-on-cache-miss: true
 
-      - name: Build the site with Typst
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Build the site (derivation plots, then Typst)
         env:
           SITE_DIR: ${{ github.workspace }}/_site
           SKIP_ANIMATIONS: "1"
         run: |
           typst --version
-          bash scripts/build-site.sh
+          uv run bash scripts/build-site.sh
 
       - name: Check figure annotations
         run: typst query --root . scripts/check-figures.typ '<physics-check>' >/dev/null

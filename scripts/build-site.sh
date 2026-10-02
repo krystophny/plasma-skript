@@ -46,13 +46,24 @@ if ((missing)); then
   exit 1
 fi
 
+# Data plots come from the SymPy derivations (derivations/build/fig/*.svg),
+# which the Typst sources include; they need python3 with sympy and
+# matplotlib (in CI: `uv run`, locally: the Nix shell or app).
+if [[ -f "$repo_root/derivations/Makefile" ]]; then
+  export MPLCONFIGDIR="${MPLCONFIGDIR:-$site_dir/.mpl}"
+  make -C "$repo_root/derivations" fig PYTHON="${PYTHON:-python3}"
+  rm -rf -- "$site_dir/.mpl"
+fi
+
 TYPST_FEATURES=bundle,html typst compile \
+  --root "$repo_root" \
   --format bundle \
   --pretty \
   "$repo_root/src/main.typ" \
   "$site_dir"
 
 typst compile \
+  --root "$repo_root" \
   "$repo_root/src/print.typ" \
   "$site_dir/plasma-physics.pdf"
 
