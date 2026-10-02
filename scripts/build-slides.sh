@@ -28,7 +28,7 @@ fi
 
 mkdir -p "$build/media" "$out_dir"
 
-typst eval --root "$repo_root" --in "$repo_root/src/print.typ" \
+typst eval --root "$repo_root" --font-path "$repo_root/fonts" --in "$repo_root/src/print.typ" \
   '(chapters: query(<script-chapter>).map(m => m.value),
     sections: query(<script-section>).map(m => m.value))' \
   >"$build/script-outline.json.tmp"

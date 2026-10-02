@@ -12,6 +12,7 @@ from style import (
     ACCENT, CURVE_WIDTH, DOT_RADIUS, EASE, ELECTRON, FAINT, GRID, INK, ION,
     LINEAR, MUTED, POTENTIAL, SMALL_SIZE, THIN_WIDTH, StyledScene, axes,
     label, math,
+    MATH_SMALL,
 )
 
 
@@ -32,9 +33,9 @@ class LangmuirProbe(StyledScene):
 
     def build(self):
         ax = axes([-6, 2.5, 1], [-1.1, 0.25, 0.5], 7.2, 5.0).move_to([-2.75, -0.1, 0])
-        xlab = math(r"e(\phi_p-\phi_{pl})/k_BT_e\ [1]", color=MUTED, size=30)
-        xlab.next_to(ax.c2p(2.5, 0), UP, buff=0.18).align_to(ax.c2p(2.5, 0), RIGHT)
-        ylab = math(r"I_p/(e\,\Gamma_{e0}A)\ [1]", color=MUTED, size=30)
+        xlab = math(r"e(\phi_p-\phi_{pl})/k_BT_e\ [1]", color=MUTED, size=MATH_SMALL)
+        xlab.next_to(ax.c2p(2.5, -1.1), DOWN, buff=0.15).align_to(ax.c2p(2.5, 0), RIGHT)
+        ylab = math(r"I_p/(e\,\Gamma_{e0}A)\ [1]", color=MUTED, size=MATH_SMALL)
         ylab.next_to(ax.y_axis.get_top(), UP, buff=0.15)
 
         curve = ax.plot(probe_current, x_range=[-6, 2.5, 0.01], color=INK, stroke_width=CURVE_WIDTH)
@@ -45,17 +46,17 @@ class LangmuirProbe(StyledScene):
         e_sat = label("electron saturation", color=ELECTRON, size=SMALL_SIZE)
         e_sat.next_to(ax.c2p(0.15, -0.942), DOWN + RIGHT, buff=0.2)
         knee = Dot(ax.c2p(0, -0.942), radius=0.06, color=MUTED)
-        knee_lab = math(r"\phi_p=\phi_{pl}", color=MUTED, size=28).next_to(knee, LEFT, buff=0.18)
+        knee_lab = math(r"\phi_p=\phi_{pl}", color=MUTED, size=MATH_SMALL).next_to(knee, LEFT, buff=0.18)
         f_dot = Dot(ax.c2p(U_FLOAT, 0), radius=0.07, color=MUTED)
-        f_lab = math(r"\phi_f", color=MUTED, size=30).next_to(f_dot, DOWN + LEFT, buff=0.08)
+        f_lab = math(r"\phi_f", color=MUTED, size=MATH_SMALL).next_to(f_dot, DOWN + LEFT, buff=0.08)
 
         u = ValueTracker(-5.5)
         point = always_redraw(lambda: Dot(ax.c2p(u.get_value(), probe_current(u.get_value())),
                                           radius=0.11, color=ACCENT))
 
         # Probe sketch: electrons arrive from the left, ions from the right.
-        center = np.array([4.35, -0.1, 0])
-        frame = RoundedRectangle(width=4.0, height=5.0, corner_radius=0.15,
+        center = np.array([4.6, -0.1, 0])
+        frame = RoundedRectangle(width=3.6, height=5.0, corner_radius=0.15,
                                  stroke_color=GRID, stroke_width=1.6).move_to(center)
         sheath = RoundedRectangle(width=1.35, height=3.2, corner_radius=0.5, stroke_width=0,
                                   fill_color=POTENTIAL, fill_opacity=0.14).move_to(center)

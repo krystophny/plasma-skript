@@ -75,8 +75,10 @@ if [[ "${1:-}" == "--render-one" ]]; then
     exit 1
   fi
   cp "$video" "$work/$slug.mp4"
+  # Accurate YUV->RGB rounding keeps the white background at #FFFFFF (the
+  # default swscale path turns it into #FDFDFD, a grey box on the slides).
   ffmpeg -loglevel error -y -ss "$poster" -i "$video" -frames:v 1 \
-    -vf "scale=960:-1" "$work/$slug.png"
+    -vf "scale=960:-1:flags=lanczos+accurate_rnd+full_chroma_int" "$work/$slug.png"
   mv -f "$work/$slug.mp4" "$media_dir/$slug.mp4"
   mv -f "$work/$slug.png" "$media_dir/$slug.png"
   scene_stamp "$source" >"$media_dir/$slug.stamp"

@@ -36,6 +36,7 @@ import numpy as np
 from style import (
     ACCENT, AXIS_WIDTH, CURVE_WIDTH, ELECTRON, EASE, FAINT, GRID, INK, LINEAR, MUTED,
     THIN_WIDTH, StyledScene, axes, axis_labels, math,
+    MATH_SIZE, MATH_SMALL,
 )
 
 
@@ -182,7 +183,7 @@ def ensemble_panel(x_center, width, run, tag, temperature, edges, index):
     ph_labels = axis_labels(ph, r"\theta\ [1]", r"p\ [1]")
     ph_labels[0].next_to(ph, DOWN, buff=0.12)
     ticks = VGroup(*[
-        math(t, color=MUTED, size=24).next_to(ph.c2p(x, -P_MAX), DOWN, buff=0.12)
+        math(t, color=MUTED, size=MATH_SMALL).next_to(ph.c2p(x, -P_MAX), DOWN, buff=0.12)
         for t, x in ((r"-\pi", -PI), (r"\pi", PI))])
 
     def level(h, sign, x_rng):
@@ -201,14 +202,14 @@ def ensemble_panel(x_center, width, run, tag, temperature, edges, index):
 
     hx = axes([0, H_MAX, 1], [0, F_MAX, 0.5], width, 1.75).move_to([x_center, -2.15, 0])
     hx_labels = axis_labels(hx, r"H\ [1]", r"f(H)\ [1]")
-    hx_labels[1].next_to(hx.y_axis.get_top(), UP, buff=0.1)
+    hx_labels[1].next_to(hx.y_axis.get_top(), RIGHT, buff=0.15)  # below the -pi tick
     sep_mark = DashedLine(hx.c2p(2, 0), hx.c2p(2, F_MAX), color=MUTED,
                           stroke_width=THIN_WIDTH, dash_length=0.08)
-    sep_tick = math("2", color=MUTED, size=24).next_to(hx.c2p(2, 0), DOWN, buff=0.12)
+    sep_tick = math("2", color=MUTED, size=MATH_SMALL).next_to(hx.c2p(2, 0), DOWN, buff=0.12)
     grid_h = np.linspace(0.02, H_MAX, 300)
     gibbs = hx.plot_line_graph(grid_h, np.minimum(gibbs_energy_density(grid_h, temperature), F_MAX),
                                line_color=ACCENT, stroke_width=THIN_WIDTH, add_vertex_dots=False)
-    label_tag = math(tag, size=36).move_to([x_center, 3.22, 0]).align_to(ph, LEFT)
+    label_tag = math(tag, size=MATH_SIZE).move_to([x_center, 3.22, 0]).align_to(ph, LEFT)
 
     origin = ph.c2p(0, 0)
     e_theta, e_p = ph.c2p(1, 0) - origin, ph.c2p(0, 1) - origin
@@ -255,8 +256,8 @@ class PendulumEnsemble(StyledScene):
         def index():
             return min(last, int(np.searchsorted(times, tracker.get_value() - 1e-9)))
 
-        readout = VGroup(math(r"\omega_0 t =", color=MUTED, size=30),
-                         DecimalNumber(0, num_decimal_places=0, color=MUTED, font_size=30))
+        readout = VGroup(math(r"\omega_0 t =", color=MUTED, size=MATH_SMALL),
+                         DecimalNumber(0, num_decimal_places=0, color=MUTED, font_size=MATH_SIZE))
         readout.arrange(RIGHT, buff=0.15)
         readout[1].add_updater(lambda d: d.set_value(tracker.get_value()))
 

@@ -62,8 +62,11 @@ TYPST_FEATURES=bundle,html typst compile \
   "$repo_root/src/main.typ" \
   "$site_dir"
 
+# The print PDF sets its maths in Libertinus Math (fonts/, SIL OFL), which
+# Typst does not embed.
 typst compile \
   --root "$repo_root" \
+  --font-path "$repo_root/fonts" \
   "$repo_root/src/print.typ" \
   "$site_dir/plasma-physics.pdf"
 

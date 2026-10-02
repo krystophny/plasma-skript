@@ -23,7 +23,6 @@ env:
   MANIM_VERSION: "0.21.0"
   MEDIA_DIR: ${{ github.workspace }}/.cache/animations
   # New Computer Modern for Manim's Text labels (Typst embeds its own copy).
-  NEWCM_URL: https://raw.githubusercontent.com/typst/typst-assets/v0.14.0/files/fonts/NewCM10-Regular.otf
 
 jobs:
   derivations:
@@ -63,8 +62,9 @@ jobs:
       - name: Install Manim system dependencies
         if: steps.lookup.outputs.cache-hit != 'true'
         run: |
-          # The scenes use MathTex; Manim's default TeX template needs
-          # latex-extra, fonts-extra (dsfont, calligra), science (physics), tipa.
+          # The scenes use MathTex with the Libertinus template of
+          # animations/style.py: fonts-extra carries libertinus,
+          # libertinus-type1 and libertinust1math; standalone is in latex-extra.
           sudo apt-get update -qq
           sudo apt-get install -y -qq --no-install-recommends \
             ffmpeg libcairo2-dev libpango1.0-dev pkg-config \
@@ -75,18 +75,15 @@ jobs:
       - uses: astral-sh/setup-uv@v6
         if: steps.lookup.outputs.cache-hit != 'true'
 
-      - name: Install Manim and the font
+      # The scenes register Libertinus Serif from fonts/ themselves.
+      - name: Install Manim
         if: steps.lookup.outputs.cache-hit != 'true'
         run: |
           uv tool install --python 3.12 "manim==${MANIM_VERSION}"
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-          mkdir -p "$HOME/.local/share/fonts"
-          curl -fsSL -o "$HOME/.local/share/fonts/NewCM10-Regular.otf" "$NEWCM_URL"
 
       - name: Render the animations in parallel
         if: steps.lookup.outputs.cache-hit != 'true'
-        env:
-          PLASMA_NEW_COMPUTER_MODERN_FONT: /home/runner/.local/share/fonts/NewCM10-Regular.otf
         run: bash scripts/render-animations.sh "$MEDIA_DIR"
 
       - name: Save the rendered animations

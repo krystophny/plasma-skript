@@ -19,6 +19,7 @@ import numpy as np
 from style import (
     PURPLE, CURVE_WIDTH, E_FIELD, EASE, FAINT, LINEAR, MUTED, BLUE,
     THIN_WIDTH, StyledScene, axes, axis_labels, math,
+    MATH_SIZE,
 )
 
 
@@ -40,8 +41,10 @@ class WavePacketPropagation(StyledScene):
     """Show a carrier crest moving faster than its wave-packet envelope."""
 
     def build(self):
-        ax = axes([-6.0, 6.0, 1.0], [-1.3, 1.3, 0.5], 11.6, 4.6).move_to(DOWN * 0.55)
+        ax = axes([-6.0, 6.0, 1.0], [-1.3, 1.3, 0.5], 11.6, 4.3).move_to(DOWN * 0.45)
         ax_labels = axis_labels(ax, r"x/L_0\ [1]", r"E/E_0\ [1]")
+        # The packet sweeps under the axis; keep the x label below the box.
+        ax_labels[0].next_to(ax.c2p(6.0, -1.3), DOWN, buff=0.15).align_to(ax.x_axis, RIGHT)
 
         group_speed, phase_speed = 0.42, 0.90
         tracker = ValueTracker(TAU_START)
@@ -81,11 +84,11 @@ class WavePacketPropagation(StyledScene):
         # Stationary key: line style plus color identifies each marker.
         key_g = VGroup(
             DashedLine(ORIGIN, RIGHT * 0.6, color=BLUE, stroke_width=THIN_WIDTH, dash_length=0.1),
-            math(r"v_g", color=BLUE, size=32),
+            math(r"v_g", color=BLUE, size=MATH_SIZE),
         ).arrange(RIGHT, buff=0.2)
         key_p = VGroup(
             Line(ORIGIN, RIGHT * 0.6, color=PURPLE, stroke_width=THIN_WIDTH),
-            math(r"v_\varphi", color=PURPLE, size=32),
+            math(r"v_\varphi", color=PURPLE, size=MATH_SIZE),
         ).arrange(RIGHT, buff=0.2)
         key = VGroup(key_g, key_p).arrange(DOWN, aligned_edge=LEFT, buff=0.18)
         key.to_corner(UR, buff=0.55)

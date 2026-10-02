@@ -21,6 +21,7 @@ import numpy as np
 from style import (
     BG, E_FIELD, EASE, ELECTRON, FAINT, INK, ION, LINEAR, MUTED, CURVE_WIDTH,
     THIN_WIDTH, StyledScene, axes, axis_labels, math,
+    MATH_SIZE, MATH_SMALL,
 )
 
 
@@ -50,7 +51,7 @@ class PlasmaOscillation(StyledScene):
         # --- slab view ---------------------------------------------------
         slab_ax = axes([-5, 5, 1], [0, 1, 1], 10.5, 1.0).move_to(UP * 2.0)
         slab_ax.y_axis.set_opacity(0)
-        x_lab = math(r"x/L_0\ [1]", color=MUTED, size=30)
+        x_lab = math(r"x/L_0\ [1]", color=MUTED, size=MATH_SMALL)
         x_lab.next_to(slab_ax.x_axis.get_right(), DOWN, buff=0.22).align_to(
             slab_ax.x_axis.get_right(), RIGHT)
         y_ion, y_el = 0.78, 0.38
@@ -91,7 +92,7 @@ class PlasmaOscillation(StyledScene):
                                  fill_color=color, fill_opacity=0.22)
                 rect.move_to([(left + right) / 2, (top + bottom) / 2, 0])
                 group.add(rect)
-                mark = math(sign, color=color, size=36)
+                mark = math(sign, color=color, size=MATH_SIZE)
                 mark.next_to(rect, UP, buff=0.08)
                 mark.set_opacity(min(1.0, abs(d) / (0.5 * XI0)))
                 group.add(mark)
@@ -101,9 +102,9 @@ class PlasmaOscillation(StyledScene):
 
         # --- field and force arrows ---------------------------------------
         y_e, y_f = 0.4, -0.2
-        e_lab = math(r"E", color=E_FIELD, size=32)
+        e_lab = math(r"E", color=E_FIELD, size=MATH_SIZE)
         e_lab.move_to([-2.0, y_e, 0], aligned_edge=RIGHT)
-        f_lab = math(r"F_e", color=ELECTRON, size=32)
+        f_lab = math(r"F_e", color=ELECTRON, size=MATH_SIZE)
         f_lab.move_to([-2.0, y_f, 0], aligned_edge=RIGHT)
         center_tick = DashedLine([0, y_e + 0.35, 0], [0, y_f - 0.3, 0], color=FAINT,
                                  stroke_width=1.4, dash_length=0.06)
@@ -115,9 +116,9 @@ class PlasmaOscillation(StyledScene):
         # --- time trace ----------------------------------------------------
         t_ax = axes([0, 4 * PI, PI], [-1.2, 1.2, 1], 10.0, 1.7).move_to(DOWN * 2.15 + RIGHT * 0.4)
         t_labels = VGroup(
-            math(r"\omega_{pe}t\ [1]", color=MUTED, size=30).next_to(t_ax.x_axis.get_right(), DOWN, buff=0.22)
+            math(r"\omega_{pe}t\ [1]", color=MUTED, size=MATH_SMALL).next_to(t_ax.x_axis.get_right(), DOWN, buff=0.22)
             .align_to(t_ax.x_axis.get_right(), RIGHT),
-            math(r"\xi/\xi_0\ [1]", color=MUTED, size=30).next_to(t_ax.y_axis, LEFT, buff=0.2),
+            math(r"\xi/\xi_0\ [1]", color=MUTED, size=MATH_SMALL).next_to(t_ax.y_axis, LEFT, buff=0.2),
         )
         trace = always_redraw(lambda: t_ax.plot(
             lambda t: slab_state(t)[0], x_range=[0, max(tracker.get_value(), 1e-3), 0.03],

@@ -33,6 +33,7 @@ import numpy as np
 from style import (
     BG, CURVE_WIDTH, DOT_RADIUS, EASE, ELECTRON, FAINT, GRID, INK, ION, LINEAR,
     MUTED, StyledScene, label, math,
+    MATH_SMALL,
 )
 
 
@@ -163,7 +164,7 @@ class CollectiveResponse(StyledScene):
                               color=GRID, stroke_width=1.6).move_to(center)
             bar_left = to_scene((HALF_WIDTH - 1.3, -HALF_HEIGHT)) + DOWN * 0.25
             bar = Line(bar_left, bar_left + RIGHT * scale, color=MUTED, stroke_width=3)
-            bar_label = math(r"\lambda_D", color=MUTED, size=30).next_to(bar, LEFT, buff=0.15)
+            bar_label = math(r"\lambda_D", color=MUTED, size=MATH_SMALL).next_to(bar, LEFT, buff=0.15)
             return to_scene, frame, VGroup(bar, bar_label)
 
         def gas_view(to_scene, scale, clock):

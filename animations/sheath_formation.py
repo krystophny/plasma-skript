@@ -12,6 +12,7 @@ import numpy as np
 from style import (
     CURVE_WIDTH, DOT_RADIUS, EASE, ELECTRON, FAINT, GRID, INK, ION, LINEAR,
     MUTED, POTENTIAL, SMALL_SIZE, THIN_WIDTH, StyledScene, axes, label, math,
+    MATH_SIZE, MATH_SMALL,
 )
 
 EDGE, CURVATURE, MACH, ELECTRON_ENERGY = 5.0, 0.12, 1.5, 0.9
@@ -48,11 +49,11 @@ class SheathFormation(StyledScene):
 
         pot = axes([0, x_max, 1], [0, 3.2, 1], 10.4, 2.1).move_to([0.45, 1.45, 0])
         dens = axes([0, x_max, 1], [0, 1.2, 0.5], 10.4, 1.7).move_to([0.45, -1.8, 0])
-        pot_ylab = math(r"-e\phi/k_BT_e\ [1]", color=POTENTIAL, size=30)
+        pot_ylab = math(r"-e\phi/k_BT_e\ [1]", color=POTENTIAL, size=MATH_SMALL)
         pot_ylab.next_to(pot.y_axis.get_top(), UP, buff=0.12).shift(RIGHT * 0.9)
-        dens_ylab = math(r"n/n_0\ [1]", color=MUTED, size=30)
+        dens_ylab = math(r"n/n_0\ [1]", color=MUTED, size=MATH_SMALL)
         dens_ylab.next_to(dens.y_axis.get_top(), UP, buff=0.12).shift(RIGHT * 0.8)
-        xlab = math(r"x/\lambda_D\ [1]", color=MUTED, size=30)
+        xlab = math(r"x/\lambda_D\ [1]", color=MUTED, size=MATH_SMALL)
         xlab.next_to(dens.x_axis.get_right(), DOWN, buff=0.18).align_to(dens.x_axis.get_right(), RIGHT)
 
         # Wall at X=0 (hatched bar) and sheath edge at X=5.
@@ -72,8 +73,8 @@ class SheathFormation(StyledScene):
                        color=ELECTRON, stroke_width=CURVE_WIDTH)
         ni = DashedVMobject(dens.plot(lambda x: sheath_densities(x)[1], x_range=[0, x_max, 0.02],
                                       color=ION, stroke_width=CURVE_WIDTH), num_dashes=60)
-        ne_lab = math(r"n_e", color=ELECTRON, size=32).move_to(dens.c2p(0.75, 0.22))
-        ni_lab = math(r"n_i", color=ION, size=32).move_to(dens.c2p(0.75, 0.88))
+        ne_lab = math(r"n_e", color=ELECTRON, size=MATH_SIZE).move_to(dens.c2p(0.75, 0.22))
+        ni_lab = math(r"n_i", color=ION, size=MATH_SIZE).move_to(dens.c2p(0.75, 0.88))
 
         # Particle lane between the panels.
         lane_y = 0.0
@@ -89,7 +90,7 @@ class SheathFormation(StyledScene):
         turn = EDGE - np.sqrt(ELECTRON_ENERGY / CURVATURE)
         e_level = DashedLine(pot.c2p(turn, ELECTRON_ENERGY), pot.c2p(x_max, ELECTRON_ENERGY),
                              color=ELECTRON, stroke_width=THIN_WIDTH, dash_length=0.08)
-        e_level_lab = math(r"\varepsilon_e=0.9\,k_BT_e", color=ELECTRON, size=28)
+        e_level_lab = math(r"\varepsilon_e=0.9\,k_BT_e", color=ELECTRON, size=MATH_SMALL)
         e_level_lab.next_to(e_level.get_end(), UP, buff=0.12).align_to(e_level.get_end(), RIGHT)
         turn_mark = Dot(pot.c2p(turn, ELECTRON_ENERGY), radius=0.06, color=ELECTRON)
         e_on_level = always_redraw(lambda: Dot(
@@ -112,7 +113,7 @@ class SheathFormation(StyledScene):
         e_ghost = Dot(lane_point(EDGE), radius=0.11, color=ELECTRON, fill_opacity=0.35)
         ion = always_redraw(lambda: Triangle(color=ION, fill_opacity=1, stroke_width=0)
                             .scale(0.13).move_to(lane_point(ion_position(clock.get_value()))))
-        mach_lab = math(r"u_{\rm edge}=1.5\,c_s", color=ION, size=28)
+        mach_lab = math(r"u_{\rm edge}=1.5\,c_s", color=ION, size=MATH_SMALL)
         mach_lab.next_to(lane_point(EDGE), DOWN, buff=0.2).shift(RIGHT * 1.3)
 
         self.remove(electron, e_on_level)

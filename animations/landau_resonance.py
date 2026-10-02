@@ -19,6 +19,7 @@ import numpy as np
 from style import (
     ACCENT, BG, CURVE_WIDTH, EASE, ELECTRON, FAINT, INK, LINEAR, MUTED, SMALL_SIZE,
     THIN_WIDTH, StyledScene, axes, axis_labels, label, math,
+    MATH_SIZE, MATH_SMALL,
 )
 
 
@@ -107,23 +108,24 @@ class LandauResonance(StyledScene):
         trapped = label("trapped", color=MUTED, size=SMALL_SIZE).move_to(ph.c2p(0, -0.11))
         trapped = VGroup(BackgroundRectangle(trapped, color=BG, fill_opacity=1, buff=0.04), trapped)
         passing = label("passing", color=MUTED, size=SMALL_SIZE).next_to(ph.c2p(2.3, 0.88), UP, buff=0.05)
+        passing = VGroup(BackgroundRectangle(passing, color=BG, fill_opacity=1, buff=0.04), passing)
 
         # Right: Maxwellian marginal and its slope at the phase velocity.
-        fx = axes([-2.4, 2.4, 1], [0, 0.65, 0.2], 4.4, 4.4).move_to([4.05, 0.0, 0])
+        fx = axes([-2.4, 2.4, 1], [0, 0.65, 0.2], 4.4, 4.4).move_to([3.6, 0.0, 0])
         fx_labels = axis_labels(fx, r"v/v_0\ [1]", r"f_0 v_0/n_0\ [1]")
         v_phi = 0.92
         f0 = lambda v: np.exp(-v * v) / np.sqrt(np.pi)
         maxwellian = fx.plot(f0, x_range=[-2.4, 2.4], color=INK, stroke_width=CURVE_WIDTH - 1)
         res_line = DashedLine(fx.c2p(v_phi, 0), fx.c2p(v_phi, 0.6), color=ACCENT,
                               stroke_width=THIN_WIDTH, dash_length=0.1)
-        res_label = math(r"v_\varphi", color=ACCENT, size=32).next_to(res_line, UP, buff=0.1)
+        res_label = math(r"v_\varphi", color=ACCENT, size=MATH_SIZE).next_to(res_line, UP, buff=0.1)
         slope = -2 * v_phi * f0(v_phi)
         tangent = Line(fx.c2p(v_phi - 0.55, f0(v_phi) - 0.55 * slope),
                        fx.c2p(v_phi + 0.55, f0(v_phi) + 0.55 * slope),
                        color=ACCENT, stroke_width=THIN_WIDTH)
         touch = Dot(fx.c2p(v_phi, f0(v_phi)), radius=0.07, color=ACCENT)
-        slope_label = math(r"\partial f_0/\partial v<0", color=ACCENT, size=30)
-        slope_label.next_to(fx.c2p(1.25, 0.42), RIGHT, buff=0.0)
+        slope_label = math(r"\partial f_0/\partial v<0", color=ACCENT, size=MATH_SMALL)
+        slope_label.next_to(fx.c2p(1.1, 0.42), RIGHT, buff=0.0)
 
         self.play(Create(ph), Create(fx),
                   FadeIn(ph_labels), FadeIn(fx_labels), run_time=1.0, rate_func=EASE)

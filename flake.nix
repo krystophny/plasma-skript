@@ -15,7 +15,6 @@
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {inherit system;};
       newComputerModern = pkgs.newcomputermodern;
-      newComputerModernFont = "${newComputerModern}/share/fonts/opentype/public/NewCM10-Regular.otf";
       fontConfig = pkgs.makeFontsConf {
         fontDirectories = [newComputerModern];
       };
@@ -28,6 +27,31 @@
         ps.unify_0_8_1
       ]);
       playwrightCore = pkgs.playwright-driver;
+      # Manim with its own TeX: the MathTex template in animations/style.py
+      # loads Libertinus (Type 1 text and libertinust1math) through latex and
+      # dvisvgm.  nixpkgs' manim wrapper puts a TeX without Libertinus first on
+      # PATH, so the scenes run through `python -m manim` with this TeX instead.
+      manimTex = pkgs.texliveBasic.withPackages (ps: [
+        ps.amsmath
+        ps.babel-english
+        ps.dvisvgm
+        ps.etoolbox
+        ps.fontaxes
+        ps.iftex
+        ps.mweights
+        ps.xkeyval
+        ps.libertinus
+        ps.libertinus-type1
+        ps.libertinust1math
+        ps.preview
+        ps.standalone
+      ]);
+      manimPython = pkgs.python3.withPackages (ps: [ps.manim]);
+      manim = pkgs.writeShellApplication {
+        name = "manim";
+        runtimeInputs = [manimTex pkgs.ffmpeg];
+        text = ''exec ${manimPython}/bin/python -m manim "$@"'';
+      };
       physicsPython = pkgs.python3.withPackages (ps: [ps.numpy]);
       # SymPy derivations write the data plots that the Typst sources include.
       derivationsPython = pkgs.python3.withPackages (ps: [ps.numpy ps.sympy ps.matplotlib ps.pytest]);
@@ -52,10 +76,9 @@
       };
       buildSiteApp = pkgs.writeShellApplication {
         name = "plasma-build-site";
-        runtimeInputs = [pkgs.bash pkgs.ffmpeg pkgs.gnumake pkgs.manim derivationsPython typst];
+        runtimeInputs = [pkgs.bash pkgs.ffmpeg pkgs.gnumake manim derivationsPython typst];
         text = ''
           export FONTCONFIG_FILE="${fontConfig}"
-          export PLASMA_NEW_COMPUTER_MODERN_FONT="${newComputerModernFont}"
           site_dir="''${SITE_DIR:-$PWD/public}"
           export SITE_DIR="$site_dir"
           # Build the working tree when invoked from the project root, including
@@ -231,12 +254,11 @@
           derivationsPython
           pkgs.ffmpeg
           pkgs.gnumake
-          pkgs.manim
+          manim
           newComputerModern
           typst
         ];
         FONTCONFIG_FILE = fontConfig;
-        PLASMA_NEW_COMPUTER_MODERN_FONT = newComputerModernFont;
 
         buildPhase = ''
           runHook preBuild
@@ -284,10 +306,9 @@
 
       devShells.default = pkgs.mkShell {
         FONTCONFIG_FILE = fontConfig;
-        PLASMA_NEW_COMPUTER_MODERN_FONT = newComputerModernFont;
         packages = [
           typst
-          pkgs.manim
+          manim
           derivationsPython
           pkgs.gnumake
           newComputerModern

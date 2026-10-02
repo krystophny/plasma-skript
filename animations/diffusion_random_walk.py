@@ -19,6 +19,7 @@ import numpy as np
 from style import (
     ACCENT, CURVE_WIDTH, EASE, ELECTRON, FAINT, GREEN, INK, LINEAR, MUTED,
     THIN_WIDTH, StyledScene, axes, axis_labels, math,
+    MATH_SIZE,
 )
 
 
@@ -48,8 +49,8 @@ class DiffusionRandomWalk(StyledScene):
 
         d_star = diffusion_coefficient()
         laws = VGroup(
-            math(r"\langle \xi \rangle = 0", color=GREEN, size=34),
-            math(r"\langle \xi^2 \rangle = 2D_*\tau", color=ACCENT, size=34),
+            math(r"\langle \xi \rangle = 0", color=GREEN, size=MATH_SIZE),
+            math(r"\langle \xi^2 \rangle = 2D_*\tau", color=ACCENT, size=MATH_SIZE),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.35)
         laws.move_to([4.6, 0.0, 0])
 

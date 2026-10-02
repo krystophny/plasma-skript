@@ -27,6 +27,7 @@ import numpy as np
 from style import (
     ACCENT, B_FIELD, CURVE_WIDTH, EASE, GRID, INK, LINEAR, MUTED, BLUE,
     THIN_WIDTH, StyledScene, label, math,
+    MATH_SIZE, MATH_SMALL,
 )
 
 
@@ -84,8 +85,8 @@ class MagnetosonicWaves(StyledScene):
         def row_label(mode, y):
             speed, geom = names[mode]
             block = VGroup(
-                math(speed, color=INK, size=36),
-                math(geom, color=MUTED, size=28),
+                math(speed, color=INK, size=MATH_SIZE),
+                math(geom, color=MUTED, size=MATH_SMALL),
             ).arrange(DOWN, aligned_edge=LEFT, buff=0.15)
             return block.move_to([-5.6, y, 0], aligned_edge=LEFT)
 
@@ -130,7 +131,7 @@ class MagnetosonicWaves(StyledScene):
             return group
 
         def x_label(y):
-            lab = math(r"x/L_0\ [1]", color=MUTED, size=28)
+            lab = math(r"x/L_0\ [1]", color=MUTED, size=MATH_SMALL)
             return lab.next_to([sx(X_MAX), y - 0.62, 0], DOWN, buff=0.15).align_to([sx(X_MAX), 0, 0], RIGHT)
 
         # Sequential runs: one row, same layout, each wave from tau = 0.

@@ -26,6 +26,7 @@ import numpy as np
 from style import (
     EASE, ELECTRON, FAINT, GREEN, GRID, INK, LINEAR, MUTED, PURPLE, StyledScene,
     axes, math,
+    MATH_SIZE, MATH_SMALL,
 )
 
 
@@ -87,28 +88,28 @@ class ParticlesToMoments(StyledScene):
     """Particles in phase space, their smooth f(x, v), and the moments n(x), u(x)."""
 
     def build(self):
-        width = 8.6
-        left = -0.9
+        width = 7.8
+        left = -0.5
         phase = axes([0, 1, 0.25], [-3, 4, 1], width, 3.3).move_to([left + 0.3, 1.55, 0])
         dens = axes([0, 1, 0.25], [0, 2, 1], width, 1.05).move_to([left + 0.3, -1.05, 0])
         flow = axes([0, 1, 0.25], [0, 1, 0.5], width, 1.05).move_to([left + 0.3, -2.6, 0])
 
         def y_label(ax, tex):
-            lab = math(tex, color=MUTED, size=30)
-            return lab.next_to(ax.y_axis, LEFT, buff=0.3)
+            lab = math(tex, color=MUTED, size=MATH_SMALL)
+            return lab.next_to(ax.y_axis, LEFT, buff=0.7)  # clear of the tick labels
 
         labels = VGroup(
             y_label(phase, r"v/v_\mathrm{th}\ [1]"),
             y_label(dens, r"n/n_0\ [1]"),
             y_label(flow, r"u/v_\mathrm{th}\ [1]"),
         )
-        x_label = math(r"x/L\ [1]", color=MUTED, size=30)
+        x_label = math(r"x/L\ [1]", color=MUTED, size=MATH_SMALL)
         x_label.next_to(flow.c2p(1, 0), RIGHT, buff=0.3)
         tick_labels = VGroup(*[
-            math(text, color=MUTED, size=26).next_to(flow.c2p(x, 0), DOWN, buff=0.15)
+            math(text, color=MUTED, size=MATH_SMALL).next_to(flow.c2p(x, 0), DOWN, buff=0.15)
             for x, text in [(0, "0"), (0.5, "0.5"), (1, "1")]])
         for ax, values in [(phase, (-2, 0, 2, 4)), (dens, (0, 1, 2)), (flow, (0, 1))]:
-            labels.add(*[math(str(y), color=MUTED, size=24).next_to(ax.c2p(0, y), LEFT, buff=0.12)
+            labels.add(*[math(str(y), color=MUTED, size=MATH_SMALL).next_to(ax.c2p(0, y), LEFT, buff=0.12)
                          for y in values])
 
         x, v = sample_particles()
@@ -131,11 +132,11 @@ class ParticlesToMoments(StyledScene):
                 cells.add(Rectangle(width=1.04 * cell_w, height=1.04 * cell_h, stroke_width=0,
                                     fill_color=ELECTRON, fill_opacity=0.85 * level ** 0.7)
                           .move_to(phase.c2p(xc, vc)))
-        f_label = math(r"f(x, v)", color=INK, size=36).next_to(phase, RIGHT, buff=0.35)
+        f_label = math(r"f(x, v)", color=INK, size=MATH_SIZE).next_to(phase, RIGHT, buff=0.35)
 
         integrate = Arrow(f_label.get_bottom() + DOWN * 0.1, [f_label.get_center()[0], -1.05, 0],
                           buff=0.1, color=MUTED, stroke_width=2.5, max_tip_length_to_length_ratio=0.08)
-        integrate_label = math(r"\int dv", color=MUTED, size=30).next_to(integrate, RIGHT, buff=0.12)
+        integrate_label = math(r"\int dv", color=MUTED, size=MATH_SMALL).next_to(integrate, RIGHT, buff=0.12)
 
         n_curve = dens.plot(lambda s: density(s), x_range=[0, 1, 0.005], color=GREEN, stroke_width=4)
         u_curve = flow.plot(lambda s: bulk_velocity(s), x_range=[0, 1, 0.005], color=PURPLE, stroke_width=4)

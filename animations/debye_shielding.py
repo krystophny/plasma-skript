@@ -22,6 +22,7 @@ import numpy as np
 from style import (
     AXIS_WIDTH, BG, CURVE_WIDTH, EASE, ELECTRON, FAINT, GRID, INK, ION, LINEAR,
     MUTED, POTENTIAL, THIN_WIDTH, StyledScene, axes, math,
+    MATH_SMALL,
 )
 
 
@@ -198,9 +199,9 @@ class DebyeShielding(StyledScene):
 
         frame = Square(side_length=side, color=GRID, stroke_width=AXIS_WIDTH).move_to(panel_center)
         panel_labels = VGroup(
-            math(r"x/\lambda_D\ [1]", color=MUTED, size=30).next_to(frame, DOWN, buff=0.18)
+            math(r"x/\lambda_D\ [1]", color=MUTED, size=MATH_SMALL).next_to(frame, DOWN, buff=0.18)
             .align_to(frame, RIGHT),
-            math(r"y/\lambda_D\ [1]", color=MUTED, size=30).next_to(frame, UP, buff=0.18)
+            math(r"y/\lambda_D\ [1]", color=MUTED, size=MATH_SMALL).next_to(frame, UP, buff=0.18)
             .align_to(frame, LEFT),
         )
         debye_circle = DashedVMobject(
@@ -208,7 +209,7 @@ class DebyeShielding(StyledScene):
             num_dashes=36).move_to(panel_center)
         debye_label = VGroup(
             DashedLine(ORIGIN, RIGHT * 0.5, color=FAINT, stroke_width=THIN_WIDTH, dash_length=0.08),
-            math(r"r=\lambda_D", color=MUTED, size=30),
+            math(r"r=\lambda_D", color=MUTED, size=MATH_SMALL),
         ).arrange(RIGHT, buff=0.15)
         debye_label.next_to(frame, UP, buff=0.18).align_to(frame, RIGHT)
 
@@ -238,15 +239,15 @@ class DebyeShielding(StyledScene):
         dens_ax = axes([-8, 8, 2], [0.85, 1.3, 0.1], 6.0, 1.7).move_to([3.45, 1.5, 0])
         pot_ax = axes([-8, 8, 2], [-0.6, 1.05, 0.5], 6.0, 2.0).move_to([3.45, -1.45, 0])
         dens_labels = VGroup(
-            math(r"n_e/n_0\ [1]", color=ELECTRON, size=30).next_to(dens_ax, UP, buff=0.15)
+            math(r"n_e/n_0\ [1]", color=ELECTRON, size=MATH_SMALL).next_to(dens_ax, UP, buff=0.15)
             .align_to(dens_ax, LEFT),
-            math(r"x/\lambda_D\ [1]", color=MUTED, size=30).next_to(dens_ax, DOWN, buff=0.12)
+            math(r"x/\lambda_D\ [1]", color=MUTED, size=MATH_SMALL).next_to(dens_ax, DOWN, buff=0.12)
             .align_to(dens_ax, RIGHT),
         )
         pot_labels = VGroup(
-            math(r"\phi/\phi_0\ [1]", color=POTENTIAL, size=30).next_to(pot_ax, UP, buff=0.1)
+            math(r"\phi/\phi_0\ [1]", color=POTENTIAL, size=MATH_SMALL).next_to(pot_ax, UP, buff=0.1)
             .align_to(pot_ax, LEFT),
-            math(r"x/\lambda_D\ [1]", color=MUTED, size=30).next_to(pot_ax, DOWN, buff=0.12)
+            math(r"x/\lambda_D\ [1]", color=MUTED, size=MATH_SMALL).next_to(pot_ax, DOWN, buff=0.12)
             .align_to(pot_ax, RIGHT),
         )
         background = DashedLine(dens_ax.c2p(-8, 1.0), dens_ax.c2p(8, 1.0), color=FAINT,
@@ -258,7 +259,7 @@ class DebyeShielding(StyledScene):
 
         bare = DashedVMobject(profile(pot_ax, potential_history[0], color=FAINT,
                                       stroke_width=THIN_WIDTH), num_dashes=60)
-        bare_label = math(r"t=0", color=FAINT, size=28).next_to(pot_ax.c2p(1.6, 0.75), RIGHT, buff=0.1)
+        bare_label = math(r"t=0", color=FAINT, size=MATH_SMALL).next_to(pot_ax.c2p(1.6, 0.75), RIGHT, buff=0.1)
         density_curve = always_redraw(lambda: profile(
             dens_ax, density_history[frame_index()], color=ELECTRON, stroke_width=CURVE_WIDTH))
         potential_curve = always_redraw(lambda: profile(

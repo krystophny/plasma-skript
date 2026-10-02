@@ -21,6 +21,7 @@ import numpy as np
 from style import (
     CURVE_WIDTH, E_FIELD, EASE, FAINT, GREEN, GRID, INK, LINEAR, MUTED, BLUE,
     THIN_WIDTH, StyledScene, label, math,
+    MATH_SMALL,
 )
 
 
@@ -55,8 +56,8 @@ class MagnetizedPolarization(StyledScene):
         tracker = ValueTracker(0.0)
 
         # --- left: transverse plane at one fixed position ---------------
-        center = np.array([-4.2, 0.1, 0.0])
-        radius = 1.75  # screen length of |E|/E0 = 1
+        center = np.array([-4.55, 0.1, 0.0])
+        radius = 1.55  # screen length of |E|/E0 = 1
         frame = Circle(radius=radius, color=GRID, stroke_width=THIN_WIDTH - 0.8).move_to(center)
         half = DashedVMobject(Circle(radius=radius / 2, color=FAINT, stroke_width=1.4)
                               .move_to(center), num_dashes=36)
@@ -64,8 +65,8 @@ class MagnetizedPolarization(StyledScene):
             Line(center + LEFT * (radius + 0.2), center + RIGHT * (radius + 0.2), color=GRID, stroke_width=1.4),
             Line(center + DOWN * (radius + 0.2), center + UP * (radius + 0.2), color=GRID, stroke_width=1.4),
         )
-        ex_lab = math(r"E_x/E_0\ [1]", color=MUTED, size=28).next_to(cross[0], RIGHT, buff=0.1)
-        ey_lab = math(r"E_y/E_0\ [1]", color=MUTED, size=28).next_to(cross[1].get_top(), RIGHT, buff=0.15)
+        ex_lab = math(r"E_x/E_0\ [1]", color=MUTED, size=MATH_SMALL).next_to(cross[0], RIGHT, buff=0.1)
+        ey_lab = math(r"E_y/E_0\ [1]", color=MUTED, size=MATH_SMALL).next_to(cross[1].get_top(), RIGHT, buff=0.15)
         theta_p = (1.2 - 0.8) * Z_PANEL / 2
         axis_dir = np.array([np.cos(theta_p), np.sin(theta_p), 0.0])
         panel_axis = DashedLine(center - axis_dir * radius, center + axis_dir * radius,
@@ -86,10 +87,10 @@ class MagnetizedPolarization(StyledScene):
         vectors = always_redraw(panel_vectors)
 
         key = VGroup(
-            VGroup(_tip_vector(ORIGIN, RIGHT * 0.45, GREEN, "circle"), math(r"E_+", color=GREEN, size=30)).arrange(RIGHT, buff=0.15),
-            VGroup(_tip_vector(ORIGIN, RIGHT * 0.45, BLUE, "square"), math(r"E_-", color=BLUE, size=30)).arrange(RIGHT, buff=0.15),
-            VGroup(Line(ORIGIN, RIGHT * 0.45, color=E_FIELD, stroke_width=CURVE_WIDTH + 1), math(r"E", color=E_FIELD, size=30)).arrange(RIGHT, buff=0.15),
-        ).arrange(RIGHT, buff=0.5).next_to(frame, DOWN, buff=0.45)
+            VGroup(_tip_vector(ORIGIN, RIGHT * 0.45, GREEN, "circle"), math(r"E_+", color=GREEN, size=MATH_SMALL)).arrange(RIGHT, buff=0.15),
+            VGroup(_tip_vector(ORIGIN, RIGHT * 0.45, BLUE, "square"), math(r"E_-", color=BLUE, size=MATH_SMALL)).arrange(RIGHT, buff=0.15),
+            VGroup(Line(ORIGIN, RIGHT * 0.45, color=E_FIELD, stroke_width=CURVE_WIDTH + 1), math(r"E", color=E_FIELD, size=MATH_SMALL)).arrange(RIGHT, buff=0.15),
+        ).arrange(RIGHT, buff=0.4).next_to(frame, DOWN, buff=0.45)
 
         # --- right: the summed field at a row of positions --------------
         small = 0.42
@@ -105,7 +106,7 @@ class MagnetizedPolarization(StyledScene):
             d = np.array([np.cos(th), np.sin(th), 0.0])
             axes_lines.add(DashedLine(c - d * small, c + d * small, color=MUTED,
                                       stroke_width=1.3, dash_length=0.06))
-            ticks.add(math(f"{int(z)}", color=MUTED, size=28).next_to(c, DOWN, buff=small + 0.18))
+            ticks.add(math(f"{int(z)}", color=MUTED, size=MATH_SMALL).next_to(c, DOWN, buff=small + 0.18))
 
         def row_vectors():
             group = VGroup()
@@ -117,7 +118,7 @@ class MagnetizedPolarization(StyledScene):
         row = always_redraw(row_vectors)
         z_arrow = Arrow(np.array([xs[0] - 0.3, row_y - 1.45, 0]), np.array([xs[-1] + 0.45, row_y - 1.45, 0]),
                         buff=0, color=MUTED, stroke_width=2, max_tip_length_to_length_ratio=0.03)
-        z_axis_lab = math(r"z/L_0\ [1]", color=MUTED, size=30).next_to(z_arrow, DOWN, buff=0.15).align_to(z_arrow, RIGHT)
+        z_axis_lab = math(r"z/L_0\ [1]", color=MUTED, size=MATH_SMALL).next_to(z_arrow, DOWN, buff=0.15).align_to(z_arrow, RIGHT)
 
         self.play(Create(frame), FadeIn(cross), FadeIn(half), FadeIn(ex_lab), FadeIn(ey_lab),
                   FadeIn(rings), FadeIn(ticks), GrowArrow(z_arrow), FadeIn(z_axis_lab),

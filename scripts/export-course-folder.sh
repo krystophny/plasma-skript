@@ -6,7 +6,8 @@
 # exactly four subfolders of <dest>; everything else is left untouched:
 #   slides/              the live lecture decks, public/slides/<stem>.pdf
 #   animations/          rendered MP4s plus one PNG still per scene
-#   animation-sources/   animations/*.py (scenes and the shared style.py)
+#   animation-sources/   animations/*.py (scenes and the shared style.py) and
+#                        fonts/ (Libertinus Serif, OFL)
 #   derivations/         Makefile, helper modules, chapters/*.py, build/pdf/*.pdf
 #                        (SymPy derivations; no build/tex, no build/fig)
 # Files that are no longer produced are deleted from those subfolders; files
@@ -15,8 +16,8 @@
 # Requirements for students who want to re-render an animation:
 #   Python >= 3.11, `pip install manim==0.21.0`, ffmpeg, Cairo and Pango
 #   (system packages), a LaTeX installation with dvisvgm (the scenes use
-#   MathTex), and the New Computer Modern font: point the environment variable
-#   PLASMA_NEW_COMPUTER_MODERN_FONT at NewCM10-Regular.otf.  Then run, e.g.
+#   MathTex with the libertinus and libertinust1math packages).  The scenes
+#   register Libertinus Serif from animation-sources/fonts/.  Then run, e.g.
 #     manim render -qm debye_shielding.py DebyeShielding
 #   The derivations need sympy, numpy and pytest (make -C derivations test);
 #   the PDFs additionally need latexmk (make -C derivations pdf).
@@ -87,11 +88,14 @@ for entry in "${names[@]}"; do
     duration="$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$video")"
     at="$(awk -v d="$duration" 'BEGIN { printf "%.2f", 0.7 * d }')"
     ffmpeg -loglevel error -y -ss "$at" -i "$video" -frames:v 1 \
-      -vf "scale=960:-1" "$staging/animations/$name.png"
+      -vf "scale=960:-1:flags=lanczos+accurate_rnd+full_chroma_int" "$staging/animations/$name.png"
   fi
 done
 
 cp "$repo_root"/animations/*.py "$staging/animation-sources/"
+mkdir -p "$staging/animation-sources/fonts"
+cp "$repo_root"/fonts/LibertinusSerif-*.otf "$repo_root/fonts/OFL.txt" \
+  "$staging/animation-sources/fonts/"
 # derivations/: Makefile, the helper modules and test runner (*.py),
 # chapters/*.py and build/pdf/*.pdf (never build/tex or build/fig).
 deriv="$repo_root/derivations"

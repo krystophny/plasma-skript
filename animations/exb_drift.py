@@ -19,6 +19,7 @@ import numpy as np
 from style import (
     BG, B_FIELD, CURVE_WIDTH, DOT_RADIUS, E_FIELD, EASE, FAINT, INK, ION, LINEAR,
     MUTED, SMALL_SIZE, THIN_WIDTH, StyledScene, axes, axis_labels, label, math,
+    MATH_SIZE,
 )
 
 
@@ -45,7 +46,7 @@ class ExBDrift(StyledScene):
                 ).move_to(ax.c2p(x, y))
                 b_marks.add(mark)
         b_marks.set_opacity(0.85)
-        b_label = math(r"\mathbf{B}\ \odot", color=B_FIELD, size=32)
+        b_label = math(r"\mathbf{B}\ \odot", color=B_FIELD, size=MATH_SIZE)
         b_label.next_to(ax.c2p(2.5, 1.0), UP, buff=0.18)
 
         # Uniform E along +y.
@@ -54,7 +55,7 @@ class ExBDrift(StyledScene):
                   color=E_FIELD, stroke_width=3, max_tip_length_to_length_ratio=0.22)
             for y0 in (-1.75, -0.85)
         ])
-        e_label = math(r"\mathbf{E}", color=E_FIELD, size=32)
+        e_label = math(r"\mathbf{E}", color=E_FIELD, size=MATH_SIZE)
         e_label.next_to(e_arrows, LEFT, buff=0.15)
 
         tracker = ValueTracker(0)
@@ -86,7 +87,7 @@ class ExBDrift(StyledScene):
 
         drift_arrow = Arrow(ax.c2p(-1.0, 0.35), ax.c2p(1.0, 0.35), buff=0,
                             color=INK, stroke_width=3, max_tip_length_to_length_ratio=0.12)
-        drift_label = math(r"\mathbf{v}_E", color=INK, size=32)
+        drift_label = math(r"\mathbf{v}_E", color=INK, size=MATH_SIZE)
         drift_label.next_to(drift_arrow, UP, buff=0.15)
 
         self.play(Create(ax), FadeIn(ax_labels), run_time=0.8, rate_func=EASE)
