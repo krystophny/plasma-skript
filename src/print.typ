@@ -27,7 +27,7 @@
   #v(0.5em)
   #text(fill: muted)[Christopher Albert, TU Graz]
   #v(0.5em)
-  #text(size: 9pt, fill: muted)[SI units throughout, with $epsilon_0$ and $mu_0$; Gaussian CGS forms are collected in the appendix.]
+  #text(size: 9pt, fill: muted)[SI units throughout, with $epsilon_0$ and $mu_0$; CGS forms are collected in the appendix.]
 ]
 
 #v(1.5em)
