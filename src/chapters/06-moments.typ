@@ -825,7 +825,7 @@
     density, and total kinetic-energy density $W_i$.
 
     Numerical result: $epsilon_i=qty("0.0240", "J/m^3")$,
-    $W_("bulk",i)=qty("0.0837", "J/m^3")$, and
+    $W_("bulk",i)=qty("0.0836", "J/m^3")$, and
     $W_i=qty("0.108", "J/m^3")$.
   ]
 
