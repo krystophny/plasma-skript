@@ -20,7 +20,7 @@ import numpy as np
 
 from style import (
     CURVE_WIDTH, EASE, ELECTRON, FAINT, INK, ION, MUTED, POTENTIAL, THIN_WIDTH,
-    LABEL_SIZE, StyledScene, axes, label, math, title,
+    LABEL_SIZE, StyledScene, axes, label, math,
 )
 
 
@@ -133,11 +133,9 @@ class DebyePotentialReduction(StyledScene):
     """Compare the bare and Debye-screened potential of a finite sphere."""
 
     def build(self):
-        heading = title("Screened potential of a finite sphere")
-
         # --- left: cross-section with source and electron markers ---------
         scale = 1.6                      # Manim units per lambda_D
-        center = np.array([-3.75, -0.35, 0.0])
+        center = np.array([-3.75, 0.0, 0.0])
 
         def pp(position):
             return center + scale * np.array([position[0], position[1], 0.0])
@@ -166,11 +164,11 @@ class DebyePotentialReduction(StyledScene):
         electrons.add_updater(move_electrons)
         radius_line = Line(center, pp([SPHERE_RADIUS * np.cos(-0.6), SPHERE_RADIUS * np.sin(-0.6)]),
                            color=INK, stroke_width=1.8)
-        radius_label = math(r"R/\lambda_D=0.5\ [1]", color=MUTED, size=30)
-        radius_label.next_to(pp([0, -1.5]), DOWN, buff=0.25)
+        radius_label = math(r"R", color=INK, size=30).move_to(
+            pp([0.5, -0.6]))
 
         # --- right: radial potential ----------------------------------------
-        ax = axes([0, 4, 1], [0, 3.2, 1], 6.2, 4.6).move_to([3.45, -0.55, 0])
+        ax = axes([0, 4, 1], [0, 3.2, 1], 6.2, 4.6).move_to([3.45, -0.2, 0])
         ax_labels = VGroup(
             math(r"r/\lambda_D\ [1]", color=MUTED, size=30).next_to(ax.x_axis, DOWN, buff=0.2)
             .align_to(ax.x_axis, RIGHT),
@@ -199,7 +197,7 @@ class DebyePotentialReduction(StyledScene):
         bare_label = label("bare", color=INK, size=LABEL_SIZE).move_to(ax.c2p(2.95, 0.62))
         screened_label = label("screened", color=POTENTIAL, size=LABEL_SIZE).move_to(ax.c2p(1.8, 0.31))
 
-        self.play(FadeIn(heading), Create(ax), FadeIn(ax_labels), FadeIn(ax_numbers),
+        self.play(Create(ax), FadeIn(ax_labels), FadeIn(ax_numbers),
                   FadeIn(r_mark), FadeIn(r_mark_label), run_time=0.9, rate_func=EASE)
         self.play(FadeIn(sphere), FadeIn(plus), FadeIn(radius_line), FadeIn(radius_label),
                   FadeIn(electrons), Create(bare), FadeIn(bare_label), run_time=1.1, rate_func=EASE)

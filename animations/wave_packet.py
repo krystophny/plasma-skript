@@ -18,7 +18,7 @@ import numpy as np
 
 from style import (
     ACCENT, CURVE_WIDTH, E_FIELD, EASE, FAINT, LINEAR, MUTED, SKY,
-    THIN_WIDTH, StyledScene, axes, axis_labels, math, title,
+    THIN_WIDTH, StyledScene, axes, axis_labels, math,
 )
 
 
@@ -40,9 +40,7 @@ class WavePacketPropagation(StyledScene):
     """Show a carrier crest moving faster than its wave-packet envelope."""
 
     def build(self):
-        heading = title("Phase and group velocity")
-
-        ax = axes([-6.0, 6.0, 1.0], [-1.3, 1.3, 0.5], 11.6, 4.6).move_to(DOWN * 0.6)
+        ax = axes([-6.0, 6.0, 1.0], [-1.3, 1.3, 0.5], 11.6, 4.6).move_to(DOWN * 0.55)
         ax_labels = axis_labels(ax, r"x/L_0\ [1]", r"E/E_0\ [1]")
 
         group_speed, phase_speed = 0.42, 0.90
@@ -83,16 +81,16 @@ class WavePacketPropagation(StyledScene):
         # Stationary key: line style plus color identifies each marker.
         key_g = VGroup(
             DashedLine(ORIGIN, RIGHT * 0.6, color=SKY, stroke_width=THIN_WIDTH, dash_length=0.1),
-            math(r"v_g t_0/L_0 = 0.42\ [1]", color=SKY, size=30),
+            math(r"v_g", color=SKY, size=32),
         ).arrange(RIGHT, buff=0.2)
         key_p = VGroup(
             Line(ORIGIN, RIGHT * 0.6, color=ACCENT, stroke_width=THIN_WIDTH),
-            math(r"v_\varphi t_0/L_0 = 0.90\ [1]", color=ACCENT, size=30),
+            math(r"v_\varphi", color=ACCENT, size=32),
         ).arrange(RIGHT, buff=0.2)
         key = VGroup(key_g, key_p).arrange(DOWN, aligned_edge=LEFT, buff=0.18)
         key.to_corner(UR, buff=0.55)
 
-        self.play(FadeIn(heading), Create(ax), FadeIn(ax_labels), run_time=0.8, rate_func=EASE)
+        self.play(Create(ax), FadeIn(ax_labels), run_time=0.8, rate_func=EASE)
         self.play(FadeIn(upper), FadeIn(lower), Create(field), run_time=0.8, rate_func=EASE)
         self.play(FadeIn(g_mark), FadeIn(p_mark), FadeIn(key), run_time=0.5, rate_func=EASE)
         self.play(tracker.animate.set_value(TAU_END), run_time=8.0, rate_func=LINEAR)

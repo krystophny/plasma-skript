@@ -18,7 +18,7 @@ import numpy as np
 
 from style import (
     ACCENT, BG, CURVE_WIDTH, EASE, ELECTRON, FAINT, INK, LINEAR, MUTED, SMALL_SIZE,
-    THIN_WIDTH, StyledScene, axes, axis_labels, label, math, title,
+    THIN_WIDTH, StyledScene, axes, axis_labels, label, math,
 )
 
 
@@ -58,11 +58,9 @@ class LandauResonance(StyledScene):
     """Show a resonant particle and the slope of an equilibrium distribution."""
 
     def build(self):
-        heading = title("Landau resonance")
-        formula = math(r"v_\varphi=\omega/k", color=ACCENT, size=36).to_corner(UR, buff=0.55)
 
         # Left: wave-frame phase plane.
-        ph = axes([-3.6, 3.6, 1], [-1.0, 1.0, 0.5], 6.9, 4.4).move_to([-2.95, -0.55, 0])
+        ph = axes([-3.6, 3.6, 1], [-1.0, 1.0, 0.5], 6.9, 4.4).move_to([-2.95, 0.0, 0])
         ph_labels = axis_labels(ph, r"\xi=(x-v_\varphi t)/L_0\ [1]",
                                 r"u=(v-v_\varphi)/v_0\ [1]")
         ph_labels[0].next_to(ph, DOWN, buff=0.15).align_to(ph, RIGHT)
@@ -111,7 +109,7 @@ class LandauResonance(StyledScene):
         passing = label("passing", color=MUTED, size=SMALL_SIZE).next_to(ph.c2p(2.3, 0.88), UP, buff=0.05)
 
         # Right: Maxwellian marginal and its slope at the phase velocity.
-        fx = axes([-2.4, 2.4, 1], [0, 0.65, 0.2], 4.4, 4.4).move_to([4.05, -0.55, 0])
+        fx = axes([-2.4, 2.4, 1], [0, 0.65, 0.2], 4.4, 4.4).move_to([4.05, 0.0, 0])
         fx_labels = axis_labels(fx, r"v/v_0\ [1]", r"f_0 v_0/n_0\ [1]")
         v_phi = 0.92
         f0 = lambda v: np.exp(-v * v) / np.sqrt(np.pi)
@@ -127,7 +125,7 @@ class LandauResonance(StyledScene):
         slope_label = math(r"\partial f_0/\partial v<0", color=ACCENT, size=30)
         slope_label.next_to(fx.c2p(1.25, 0.42), RIGHT, buff=0.0)
 
-        self.play(FadeIn(heading), FadeIn(formula), Create(ph), Create(fx),
+        self.play(Create(ph), Create(fx),
                   FadeIn(ph_labels), FadeIn(fx_labels), run_time=1.0, rate_func=EASE)
         self.play(FadeIn(family), Create(separatrix), Create(maxwellian),
                   FadeIn(trapped), FadeIn(passing), run_time=0.8, rate_func=EASE)

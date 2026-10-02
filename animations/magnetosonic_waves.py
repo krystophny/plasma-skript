@@ -24,7 +24,7 @@ import numpy as np
 
 from style import (
     ACCENT, B_FIELD, CURVE_WIDTH, EASE, GRID, INK, LINEAR, MUTED, ORANGE,
-    THIN_WIDTH, StyledScene, label, math, title,
+    THIN_WIDTH, StyledScene, label, math,
 )
 
 
@@ -51,8 +51,8 @@ def longitudinal_displacement(x, tau, mode, amplitude=0.32):
 
 
 X_MIN, X_MAX = -5.0, 5.0
-SCREEN_LEFT, SCALE = -2.75, 0.92   # screen x = SCREEN_LEFT + SCALE (X - X_MIN)
-ROW_Y = (1.55, -0.45, -2.45)
+SCREEN_LEFT, SCALE = -3.7, 0.92   # screen x = SCREEN_LEFT + SCALE (X - X_MIN)
+ROW_Y = (2.0, 0.0, -2.0)
 
 
 def sx(x):
@@ -63,26 +63,21 @@ class MagnetosonicWaves(StyledScene):
     """Compare pressure, shear-Alfven, and magnetosonic wave patterns."""
 
     def build(self):
-        heading = title("Sound, Alfvén and magnetosonic waves")
-        formula = math(r"v_m^2 = v_A^2 + v_s^2", color=INK, size=36)
-        formula.to_corner(UR, buff=0.55)
-
         tracker = ValueTracker(0.0)
         k = 1.25
 
         names = [
-            ("sound", r"\mathbf{k}\parallel\mathbf{B}_0", r"v_s t_0/L_0 = 0.6\ [1]"),
-            ("shear Alfvén", r"\mathbf{k}\parallel\mathbf{B}_0", r"v_A t_0/L_0 = 1\ [1]"),
-            ("fast magnetosonic", r"\mathbf{k}\perp\mathbf{B}_0", r"v_m t_0/L_0 = 1.17\ [1]"),
+            (r"v_s", r"\mathbf{k}\parallel\mathbf{B}_0"),
+            (r"v_A", r"\mathbf{k}\parallel\mathbf{B}_0"),
+            (r"v_m", r"\mathbf{k}\perp\mathbf{B}_0"),
         ]
         row_labels = VGroup()
-        for (name, geom, speed), y in zip(names, ROW_Y):
+        for (speed, geom), y in zip(names, ROW_Y):
             block = VGroup(
-                label(name, color=INK, size=28),
+                math(speed, color=INK, size=36),
                 math(geom, color=MUTED, size=28),
-                math(speed, color=MUTED, size=26),
-            ).arrange(DOWN, aligned_edge=LEFT, buff=0.12)
-            block.move_to([-6.55, y, 0], aligned_edge=LEFT)
+            ).arrange(DOWN, aligned_edge=LEFT, buff=0.15)
+            block.move_to([-5.6, y, 0], aligned_edge=LEFT)
             row_labels.add(block)
 
         def frame_line(y):
@@ -155,7 +150,6 @@ class MagnetosonicWaves(StyledScene):
         dots, lines, tubes = (always_redraw(f) for f in (sound_dots, shear_lines, fast_tubes))
         markers = always_redraw(phase_markers)
 
-        self.play(FadeIn(heading), FadeIn(formula), run_time=0.7, rate_func=EASE)
         self.play(LaggedStart(*[FadeIn(b, shift=RIGHT * 0.2) for b in row_labels], lag_ratio=0.2),
                   FadeIn(baselines), FadeIn(x_lab), run_time=1.0, rate_func=EASE)
         self.play(FadeIn(b_guides), FadeIn(dots), Create(lines), FadeIn(tubes), FadeIn(markers),

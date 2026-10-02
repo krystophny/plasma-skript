@@ -21,7 +21,7 @@ import numpy as np
 
 from style import (
     AXIS_WIDTH, BG, CURVE_WIDTH, EASE, ELECTRON, FAINT, GRID, INK, ION, LINEAR,
-    MUTED, POTENTIAL, THIN_WIDTH, StyledScene, axes, math, title,
+    MUTED, POTENTIAL, THIN_WIDTH, StyledScene, axes, math,
 )
 
 
@@ -182,23 +182,16 @@ class DebyeShielding(StyledScene):
         electron_history = _two_dimensional_marker_history(
             history_count, scattered[marker_count:])
 
-        heading = title("Debye shielding")
         tracker = ValueTracker(0.0)
 
         def frame_index():
             return min(history_count - 1,
                        max(0, int(round(tracker.get_value() * (history_count - 1)))))
 
-        time_label = math(r"t/\tau_D\ [1] =", color=MUTED, size=32)
-        time_value = DecimalNumber(0.0, num_decimal_places=1, color=INK, font_size=32)
-        time_group = VGroup(time_label, time_value).arrange(RIGHT, buff=0.12)
-        time_group.to_corner(UR, buff=0.55)
-        time_value.add_updater(lambda m: m.set_value(times[frame_index()]))
-
         # --- left: 2D marker panel (prescribed motion) ----------------------
         half_range = 2.4
         side = 5.0
-        panel_center = np.array([-3.55, -0.65, 0.0])
+        panel_center = np.array([-3.55, 0.0, 0.0])
 
         def pp(x, y):
             return panel_center + np.array([x, y, 0.0]) * side / (2 * half_range)
@@ -242,8 +235,8 @@ class DebyeShielding(StyledScene):
         ).move_to(pp(0, 0))
 
         # --- right: 1D slab model profiles ---------------------------------
-        dens_ax = axes([-8, 8, 2], [0.85, 1.3, 0.1], 6.0, 1.7).move_to([3.45, 0.85, 0])
-        pot_ax = axes([-8, 8, 2], [-0.6, 1.05, 0.5], 6.0, 2.0).move_to([3.45, -2.1, 0])
+        dens_ax = axes([-8, 8, 2], [0.85, 1.3, 0.1], 6.0, 1.7).move_to([3.45, 1.5, 0])
+        pot_ax = axes([-8, 8, 2], [-0.6, 1.05, 0.5], 6.0, 2.0).move_to([3.45, -1.45, 0])
         dens_labels = VGroup(
             math(r"n_e/n_0\ [1]", color=ELECTRON, size=30).next_to(dens_ax, UP, buff=0.15)
             .align_to(dens_ax, LEFT),
@@ -271,7 +264,7 @@ class DebyeShielding(StyledScene):
         potential_curve = always_redraw(lambda: profile(
             pot_ax, potential_history[frame_index()], color=POTENTIAL, stroke_width=CURVE_WIDTH))
 
-        self.play(FadeIn(heading), FadeIn(time_group), Create(frame), FadeIn(panel_labels),
+        self.play(Create(frame), FadeIn(panel_labels),
                   Create(dens_ax), Create(pot_ax), FadeIn(dens_labels), FadeIn(pot_labels),
                   run_time=1.2, rate_func=EASE)
         self.play(FadeIn(ions), FadeIn(electrons), FadeIn(test_charge),

@@ -20,7 +20,7 @@ import numpy as np
 
 from style import (
     BG, E_FIELD, EASE, ELECTRON, FAINT, INK, ION, LINEAR, MUTED, CURVE_WIDTH,
-    THIN_WIDTH, StyledScene, axes, axis_labels, math, title,
+    THIN_WIDTH, StyledScene, axes, axis_labels, math,
 )
 
 
@@ -47,12 +47,8 @@ class PlasmaOscillation(StyledScene):
     """Show a collective electron displacement and its restoring field."""
 
     def build(self):
-        heading = title("Electron plasma oscillation")
-        formula = math(r"\xi/\xi_0=\cos\tau,\quad \tau=\omega_{pe}t", color=INK, size=34)
-        formula.to_corner(UR, buff=0.55)
-
         # --- slab view ---------------------------------------------------
-        slab_ax = axes([-5, 5, 1], [0, 1, 1], 10.5, 1.0).move_to(UP * 1.6)
+        slab_ax = axes([-5, 5, 1], [0, 1, 1], 10.5, 1.0).move_to(UP * 2.0)
         slab_ax.y_axis.set_opacity(0)
         x_lab = math(r"x/L_0\ [1]", color=MUTED, size=30)
         x_lab.next_to(slab_ax.x_axis.get_right(), DOWN, buff=0.22).align_to(
@@ -104,11 +100,11 @@ class PlasmaOscillation(StyledScene):
         sheets = always_redraw(charge_sheets)
 
         # --- field and force arrows ---------------------------------------
-        y_e, y_f = 0.05, -0.55
-        e_lab = math(r"E/E_0\ [1]", color=E_FIELD, size=32)
-        e_lab.move_to([-3.6, y_e, 0], aligned_edge=RIGHT)
-        f_lab = math(r"F_e/(eE_0)\ [1]", color=ELECTRON, size=32)
-        f_lab.move_to([-3.6, y_f, 0], aligned_edge=RIGHT)
+        y_e, y_f = 0.4, -0.2
+        e_lab = math(r"E", color=E_FIELD, size=32)
+        e_lab.move_to([-2.0, y_e, 0], aligned_edge=RIGHT)
+        f_lab = math(r"F_e", color=ELECTRON, size=32)
+        f_lab.move_to([-2.0, y_f, 0], aligned_edge=RIGHT)
         center_tick = DashedLine([0, y_e + 0.35, 0], [0, y_f - 0.3, 0], color=FAINT,
                                  stroke_width=1.4, dash_length=0.06)
         e_arrow = always_redraw(lambda: _signed_arrow(
@@ -117,9 +113,10 @@ class PlasmaOscillation(StyledScene):
             np.array([0, y_f, 0]), ARROW_SCALE * slab_state(tracker.get_value())[2], ELECTRON))
 
         # --- time trace ----------------------------------------------------
-        t_ax = axes([0, 4 * PI, PI], [-1.2, 1.2, 1], 10.0, 1.7).move_to(DOWN * 2.45 + RIGHT * 0.4)
+        t_ax = axes([0, 4 * PI, PI], [-1.2, 1.2, 1], 10.0, 1.7).move_to(DOWN * 2.15 + RIGHT * 0.4)
         t_labels = VGroup(
-            math(r"\tau\ [1]", color=MUTED, size=30).next_to(t_ax.x_axis.get_right(), RIGHT, buff=0.18),
+            math(r"\omega_{pe}t\ [1]", color=MUTED, size=30).next_to(t_ax.x_axis.get_right(), DOWN, buff=0.22)
+            .align_to(t_ax.x_axis.get_right(), RIGHT),
             math(r"\xi/\xi_0\ [1]", color=MUTED, size=30).next_to(t_ax.y_axis, LEFT, buff=0.2),
         )
         trace = always_redraw(lambda: t_ax.plot(
@@ -129,7 +126,7 @@ class PlasmaOscillation(StyledScene):
             t_ax.c2p(tracker.get_value(), slab_state(tracker.get_value())[0]),
             radius=0.07, color=ELECTRON))
 
-        self.play(FadeIn(heading), FadeIn(formula), Create(slab_ax.x_axis), FadeIn(x_lab),
+        self.play(Create(slab_ax.x_axis), FadeIn(x_lab),
                   Create(t_ax), FadeIn(t_labels), run_time=0.8, rate_func=EASE)
         self.play(FadeIn(ions), FadeIn(electrons), FadeIn(e_lab), FadeIn(f_lab),
                   FadeIn(center_tick), FadeIn(sheets), FadeIn(e_arrow), FadeIn(f_arrow),

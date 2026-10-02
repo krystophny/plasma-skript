@@ -15,7 +15,7 @@
   ]
 
   #callout(
-    [The central object],
+    [Distribution function in phase space],
     [The species distribution $f_(s)(t, bold(r), bold(v))$ is a density in
     phase space. Its velocity moments give density, bulk velocity, pressure,
     and higher transport variables. The kinetic equation tells this density
@@ -175,8 +175,8 @@
   ]
 
   #interpretation(
-    [What makes a plasma different from a gas?],
-    [The important distinction is the interaction range. Neutral collisions
+    [Interaction range in gases and plasmas],
+    [Gases and plasmas differ in the interaction range. Neutral collisions
     are often summarized by a finite cross section. Coulomb interactions are
     long range, and collective screening plus cumulative small-angle
     deflections determine the transport rate. A plasma can therefore be
@@ -379,7 +379,7 @@
   )
 
   #details(
-    [Why the three-dimensional average is $(3 k_B T_s)/2$],
+    [Mean random kinetic energy $(3 k_B T_s)/2$],
     [#derivation-step[Sum the independent velocity components]
     Each Cartesian component of a Maxwellian has variance
 
@@ -413,7 +413,7 @@
   #moment-ambiguity
 
   #interpretation(
-    [What information is lost by taking a moment?],
+    [Information retained by low-order moments],
     [The density keeps the total number at a position. The bulk velocity keeps
     the first velocity average. The pressure tensor keeps the covariance of
     random velocities. Distinct distributions can share these moments, so a
@@ -825,7 +825,7 @@
   )
 
   #interpretation(
-    [What does the collision operator change?],
+    [Collisional redistribution in velocity space],
     [Binary elastic collisions redistribute particles in velocity space. They
     can relax a non-equilibrium distribution toward a Maxwellian while
     conserving species particle number. Momentum and energy conservation are
@@ -972,12 +972,11 @@
   first velocity moments and makes the closure issue explicit.
 
   #interpretation(
-    [Why does equilibrium not erase kinetic theory?],
+    [Departures from equilibrium],
     [Equilibrium gives a useful reference distribution and a way to test a
     collision model. Perturbations, boundaries, waves, and weakly collisional
     transport can carry information in the parts of $f_s$ that a Maxwellian
-    does not contain. Kinetic theory is the framework that tracks both the
-    reference state and those departures.]
+    does not contain.]
   )
 
   #strong[Classical statistics and quantum degeneracy] <kinetic-degeneracy>

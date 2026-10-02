@@ -10,9 +10,8 @@
     Gradients and external forces drive net transport; collisions set how
     quickly momentum relaxes. Inhomogeneity produces diffusion, while an
     external force produces mobility and electrical current. Collisions alone
-    create no net flux in a homogeneous equilibrium. This chapter
-    builds the collision frequencies first and only then uses them in
-    resistivity and conductivity models.
+    create no net flux in a homogeneous equilibrium. Resistivity and
+    conductivity models are built on the collision frequencies.
   ]
 
   #callout(
@@ -523,8 +522,7 @@
     would make the cumulative rate ill-defined. Debye shielding supplies the
     physical upper scale. The lower scale is set by strong deflection or by a
     quantum correction when classical impact parameters become too small. The
-    Coulomb logarithm is therefore a controlled scale ratio, not a mysterious
-    fitting constant.]
+    Coulomb logarithm is therefore the logarithm of a controlled scale ratio.]
   )
 
   #summary[
@@ -915,7 +913,7 @@
   ]
 
   #interpretation(
-    [Three current directions, three physical responses],
+    [Parallel, Pedersen, and Hall responses],
     [The parallel conductivity measures current along $bold(B)_0$. The
     Pedersen conductivity is the dissipative perpendicular response, reduced
     when $abs(Omega_"e") >> nu_"e"$. The Hall conductivity rotates the

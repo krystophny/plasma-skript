@@ -16,3 +16,6 @@ __pycache__/
 .DS_Store
 .cache/
 derivations/build/
+
+# Manim scratch output from local renders
+/media/

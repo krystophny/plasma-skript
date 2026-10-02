@@ -334,7 +334,7 @@
   ]
 
   #interpretation(
-    [What makes the equations coupled],
+    [Electromagnetic and collisional coupling],
     [The electron and ion equations are separate, but they share
     $bold(E)$ and $bold(B)$. The fields depend on the total charge and current,
     while collisions can transfer momentum and energy between species. The
@@ -552,7 +552,7 @@
     ),
   ))
 
-  #section-title[Diamagnetic current and its interpretation] <multiple-diamagnetic-current>
+  #section-title[Diamagnetic current] <multiple-diamagnetic-current>
 
   #lead[
     Why can opposite particle drifts produce one current direction? Current is
@@ -896,7 +896,7 @@
   ]
 
   #interpretation(
-    [What the one-fluid limit keeps],
+    [Species differences in the one-fluid limit],
     [Summing removes the labels from the total mass balance, but it does not
     erase current, relative velocity, anisotropic pressure, or collision
     exchange. A one-fluid model becomes simpler only when an ordering or
@@ -908,7 +908,7 @@
     response and, in an isothermal collisionless limit, the Boltzmann density.
     Summing species equations defines one-fluid mass and momentum variables,
     but the relative-flow stress and current remain explicit until a further
-    closure is made. This is the route from multiple-fluid theory to MHD.
+    closure, such as the MHD ordering of Chapter 8, is made.
   ]
 
   #knowledge-check((

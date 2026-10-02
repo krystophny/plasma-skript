@@ -7,8 +7,7 @@
   #page-title[15. Plasma sheaths and Langmuir probes] <plasma-sheaths>
 
   #lead[
-    A material boundary is not a passive edge of a plasma. Electrons and ions
-    arrive at a surface with different thermal speeds, so the surface charges
+    Electrons and ions arrive at a material surface with different thermal speeds, so the surface charges
     until an electric field filters the particle fluxes. This chapter derives
     the planar collisionless sheath model, obtains the Bohm entry condition
     and floating potential, and turns the same flux picture into a
@@ -18,8 +17,7 @@
 
   #callout(
     [A sheath is a self-consistent boundary condition],
-    [The plasma does not simply stop at a wall. The surface potential, the
-    directed ion flow, the electron distribution, and Poisson's equation must
+    [At a wall, the surface potential, the directed ion flow, the electron distribution, and Poisson's equation must
     agree. A probe measures the resulting current--voltage response, not a
     local density or temperature in isolation.]
   )
@@ -469,10 +467,9 @@
 
   #lead[
     A conducting surface can be electrically isolated, externally biased, or
-    held at a prescribed potential. The isolated case is especially useful:
-    the surface settles at the floating potential for which the net
-    conventional current vanishes. The result makes the mass asymmetry of
-    the incoming flux visible in one logarithm.
+    held at a prescribed potential. An isolated surface settles at the
+    floating potential, for which the net conventional current vanishes. The
+    mass asymmetry of the incoming flux then enters through one logarithm.
   ]
 
   #objectives((
@@ -748,15 +745,16 @@
   #probe-iv-characteristic
   #animation(
     "../media/sheath-formation.mp4",
-    "A prescribed planar sheath has its wall at x/lambdaD equal to zero and its edge at five. A positive electron-energy barrier rises toward the wall. Boltzmann-electron and cold-ion densities follow this potential; a subthreshold electron turns inside the barrier and an ion accelerates to the wall. Separate clocks resolve their transit times. The potential is prescribed rather than obtained from Poisson's equation.",
+    "A prescribed planar sheath has its wall at x/lambdaD equal to zero and its edge at five. A positive electron-energy barrier rises toward the wall. Boltzmann-electron and cold-ion densities follow this potential; a subthreshold electron turns inside the barrier and an ion accelerates to the wall. The potential is prescribed rather than obtained from Poisson's equation.",
     caption: [
       The prescribed profile uses $X=x/lambda_D$, edge $X=5$,
       $eta=0.12 (5-X)^2$ inside the sheath, and $eta=0$ outside.
       Densities follow $n_e/n_0=exp(-eta)$ and
       $n_i/n_0=1.5/sqrt(1.5^2+2 eta)$; Poisson's equation is not solved.
       The electron's entry normal energy is $0.9 k_B T_e$. The electron
-      clock is $(t sqrt((k_B T_e)/m_e))/lambda_D$ and the ion clock is
-      $(t c_s)/lambda_D$, so their displayed transit times are not comparable.
+      transit is played in units of $lambda_D/sqrt((k_B T_e)/m_e)$ and the
+      ion transit in units of $lambda_D/c_s$, so their playback speeds are
+      not comparable.
       Physically the electron barrier is $-e phi>0$:
       reflection requires normal kinetic energy below this barrier, while
       sufficiently energetic electrons reach the wall. The equations above
@@ -792,8 +790,7 @@
   ]
   #interpretation(
     [A probe measures a model-dependent collection response],
-    [The semilog slope is powerful because it is local to the retarding
-    branch, but the density scale depends on area and collection geometry.
+    [The semilog slope uses only the retarding branch, but the density scale depends on area and collection geometry.
     Cylindrical or spherical probes, magnetized plasmas, collisional sheaths,
     ion drift, secondary emission, photoemission, RF fluctuations, and
     contamination can all alter the characteristic. A reliable analysis

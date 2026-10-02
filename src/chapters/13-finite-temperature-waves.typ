@@ -7,8 +7,7 @@
   #page-title[13. Collisions, ions, and finite-temperature effects on magnetized waves] <finite-temperature-waves>
 
   #lead[
-    The cold magnetized response is a useful organizing limit, not a universal
-    endpoint. Collisions make the response complex, ion inertia opens
+    The cold magnetized response is an organizing limit. Collisions make the response complex, ion inertia opens
     low-frequency branches, and pressure gives longitudinal waves a spatial
     dispersion. This chapter adds those effects in a controlled order and
     connects the resulting two-fluid branches to warm MHD, following
@@ -26,9 +25,8 @@
   #section-title[Collisional response and wave attenuation] <collisional-waves>
 
   #lead[
-    What changes when particles lose momentum between wave cycles? A simple
-    linear drag term is enough to show the essential effect: the cold
-    susceptibility becomes complex, the refractive index becomes complex, and
+    What changes when particles lose momentum between wave cycles? With a
+    linear drag term, the cold susceptibility becomes complex, the refractive index becomes complex, and
     a propagating wave acquires spatial attenuation.
   ]
 
@@ -53,8 +51,7 @@
     $exp(i (bold(k) dot bold(r)-omega t))$. Represent collisions by a
     velocity-independent drag $-m_s nu_s bold(u)_1$ against a stationary
     background. If the collision partner also moves, its velocity must enter
-    the relative drag. This is a deliberately
-    simple momentum-transfer model; energy exchange, velocity-dependent
+    the relative drag. In this momentum-transfer model, energy exchange, velocity-dependent
     Coulomb operators, and boundary collisions require a more detailed
     kinetic treatment.]
   )
@@ -324,7 +321,7 @@
     $ omega_(p,i)^2/omega_(p,e)^2
       =omega_(c,i)/omega_(c,e) ,$
 
-    put the terms over a common denominator, and note that the numerator is
+    and put the terms over a common denominator. The numerator is
 
     $ omega_(p,e)^2(1+omega_(c,i)/omega_(c,e)) .$
 
@@ -609,7 +606,7 @@
   ]
 
   #interpretation(
-    [Temperature creates a communication length],
+    [Pressure couples neighboring density perturbations],
     [Without pressure, each cold-fluid density displacement oscillates at the
     same plasma frequency. The pressure gradient couples neighboring density
     perturbations and introduces wave-number dependence. Its relative
@@ -906,10 +903,10 @@
   #section-title[Ordering map: from cold waves to warm MHD] <finite-temperature-ordering>
 
   #lead[
-    The preceding sections are not competing descriptions. They are branches
-    of a model-selection map. This final section collects the dimensionless
-    orderings that tell us whether a cold, collisional, two-fluid, warm-fluid,
-    MHD, or kinetic calculation is justified.
+    The collisional, two-fluid, warm-fluid, and MHD responses of the
+    preceding sections are branches of one model-selection map. Four
+    dimensionless orderings decide whether a cold, collisional, two-fluid,
+    warm-fluid, MHD, or kinetic calculation is justified.
   ]
 
   #objectives((
@@ -1051,7 +1048,7 @@
   ]
 
   #interpretation(
-    [A limit is a diagnostic, not a slogan],
+    [Limits as consistency checks],
     [Every reduction should be reversible in a stated asymptotic limit. If a
     proposed branch does not recover its cold, fixed-ion, or MHD endpoint, the
     first suspects are a sign convention, an omitted current, or an

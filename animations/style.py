@@ -15,7 +15,7 @@ exits and camera-free emphasis.
 import os
 
 from manim import (
-    DOWN, LEFT, RIGHT, UL, UP, Axes, Create, DashedVMobject, FadeIn, FadeOut,
+    DOWN, LEFT, RIGHT, UP, Axes, Create, DashedVMobject, FadeIn, FadeOut,
     Line, MathTex, Scene, Text, VGroup, Write, config, rate_functions,
 )
 from manim.mobject.text.text_mobject import register_font
@@ -47,7 +47,6 @@ ACCENT = VERMILION      # resonance, highlighted reference value
 
 # --- typography ----------------------------------------------------------
 FONT = "NewComputerModern"
-TITLE_SIZE = 34
 LABEL_SIZE = 28
 SMALL_SIZE = 24         # smallest size allowed anywhere in a scene
 MATH_SIZE = 34
@@ -71,14 +70,6 @@ def label(text, color=MUTED, size=LABEL_SIZE, **kwargs):
 def math(tex, color=INK, size=MATH_SIZE, **kwargs):
     """LaTeX label; Computer Modern matches the New Computer Modern prose."""
     return MathTex(tex, color=color, font_size=size, **kwargs)
-
-
-def title(text):
-    """Scene title in the upper-left corner, inside the margin."""
-    mob = Text(text, color=INK, font_size=TITLE_SIZE)
-    frame_w, frame_h = config.frame_width, config.frame_height
-    mob.move_to([-frame_w / 2 + MARGIN, frame_h / 2 - MARGIN, 0], aligned_edge=UL)
-    return mob
 
 
 def axes(x_range, y_range, x_length, y_length, ticks=True, **kwargs):

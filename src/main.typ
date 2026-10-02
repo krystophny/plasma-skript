@@ -276,7 +276,7 @@
 
     #html.section(class: "content-sections contributors")[
       #html.p(class: "eyebrow")[Contributors and license]
-      #html.h2[Build this with us]
+      #html.h2[Contributing]
       #html.p[
         Original teaching content is released under CC BY 4.0. Source code,
         Typst components, CSS, Nix expressions, build scripts, and Manim source

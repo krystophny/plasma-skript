@@ -15,9 +15,8 @@
   ]
 
   #callout(
-    [The central decision],
-    [A moment model is not obtained by simply deleting velocity dependence.
-    It is obtained by integrating the kinetic equation against a chosen weight,
+    [Moment models and closure],
+    [A moment model is obtained by integrating the kinetic equation against a chosen weight,
     keeping the resulting conservation laws, and then stating how the first
     omitted moment is represented. The closure is part of the model and must
     be visible.]
@@ -73,8 +72,8 @@
 
   #equation-note[
     The charge density $rho_q$ is in #unit("C/m^3"). The
-    current density $bold(j)$ is the charge-weighted particle flux. The sum
-    over species is essential: an electrically neutral plasma can have
+    current density $bold(j)$ is the charge-weighted particle flux. Because
+    both are sums over species, an electrically neutral plasma can have
     $rho_q approx 0$ while carrying a nonzero current.
   ]
 
@@ -157,13 +156,12 @@
       labels dimensional SI quantities, not normalized fields.
       The full third central tensor $Q_(i j k)$ contains more information
       than heat flux $q_i=(1/2) sum_j Q_(i j j)$.
-      This is a schematic, not measured data or a numerical solution.
     ],
     poster: "../media/moment-hierarchy.png",
   )
 
   #interpretation(
-    [What does each reduction forget?],
+    [Information discarded at each moment order],
     [The density forgets how particles are distributed in velocity. The flow
     velocity restores the first directional average. The pressure tensor
     retains the covariance of random motion, including anisotropy and shear.
@@ -830,7 +828,7 @@
   ]
 
   #interpretation(
-    [Why does the hierarchy continue?],
+    [Open moment hierarchy],
     [The continuity equation needs the first moment. The momentum equation
     needs the second moment. The scalar energy equation needs the contracted
     third central moment $bold(q)_s$; evolving a general anisotropic pressure
@@ -903,7 +901,7 @@
     reference $f_(M,s)$ have units #unit("s^3 m^-6"). The collision operator
     has units of distribution per time, #unit("s^2 m^-6").
     Closure parameters such as $gamma$, the Knudsen number,
-    and $nu_s tau$ are dimensionless. A closure is not a unit conversion.
+    and $nu_s tau$ are dimensionless.
   ]
 
   #definition(
@@ -1012,7 +1010,7 @@
   )
 
   #callout(
-    [Cold and warm are model labels],
+    [Cold and warm model assumptions],
     [“Warm” means that a pressure or temperature scale is retained, not that
     the distribution must be exactly Maxwellian. “Cold” means that pressure
     forces are neglected in the selected equations, not that electromagnetic

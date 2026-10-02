@@ -20,7 +20,7 @@ import numpy as np
 
 from style import (
     CURVE_WIDTH, E_FIELD, EASE, FAINT, GREEN, GRID, INK, LINEAR, MUTED, ORANGE,
-    THIN_WIDTH, StyledScene, label, math, title,
+    THIN_WIDTH, StyledScene, label, math,
 )
 
 
@@ -52,14 +52,10 @@ class MagnetizedPolarization(StyledScene):
     """Show circular eigenmodes and their accumulated polarization rotation."""
 
     def build(self):
-        heading = title("Faraday rotation")
-        formula = math(r"\theta_F = (k_+ - k_-)\,L/2", color=INK, size=36)
-        formula.to_corner(UR, buff=0.55)
-
         tracker = ValueTracker(0.0)
 
         # --- left: transverse plane at one fixed position ---------------
-        center = np.array([-4.2, -0.55, 0.0])
+        center = np.array([-4.2, 0.1, 0.0])
         radius = 1.75  # screen length of |E|/E0 = 1
         frame = Circle(radius=radius, color=GRID, stroke_width=THIN_WIDTH - 0.8).move_to(center)
         half = DashedVMobject(Circle(radius=radius / 2, color=FAINT, stroke_width=1.4)
@@ -70,8 +66,6 @@ class MagnetizedPolarization(StyledScene):
         )
         ex_lab = math(r"E_x/E_0\ [1]", color=MUTED, size=28).next_to(cross[0], RIGHT, buff=0.1)
         ey_lab = math(r"E_y/E_0\ [1]", color=MUTED, size=28).next_to(cross[1].get_top(), RIGHT, buff=0.15)
-        z_lab = math(r"z/L_0 = 3\ [1]", color=INK, size=30)
-        z_lab.move_to(cross[1].get_top()).align_to(frame, LEFT).shift(LEFT * 0.35)
         theta_p = (1.2 - 0.8) * Z_PANEL / 2
         axis_dir = np.array([np.cos(theta_p), np.sin(theta_p), 0.0])
         panel_axis = DashedLine(center - axis_dir * radius, center + axis_dir * radius,
@@ -100,7 +94,7 @@ class MagnetizedPolarization(StyledScene):
         # --- right: the summed field at a row of positions --------------
         small = 0.42
         xs = np.linspace(-0.2, 6.05, len(Z_SAMPLES))
-        row_y = -0.55
+        row_y = 0.1
         row_centers = [np.array([x, row_y, 0.0]) for x in xs]
         rings, axes_lines, ticks = VGroup(), VGroup(), VGroup()
         for z, c in zip(Z_SAMPLES, row_centers):
@@ -125,9 +119,8 @@ class MagnetizedPolarization(StyledScene):
                         buff=0, color=MUTED, stroke_width=2, max_tip_length_to_length_ratio=0.03)
         z_axis_lab = math(r"z/L_0\ [1]", color=MUTED, size=30).next_to(z_arrow, DOWN, buff=0.15).align_to(z_arrow, RIGHT)
 
-        self.play(FadeIn(heading), FadeIn(formula), run_time=0.7, rate_func=EASE)
         self.play(Create(frame), FadeIn(cross), FadeIn(half), FadeIn(ex_lab), FadeIn(ey_lab),
-                  FadeIn(z_lab), FadeIn(rings), FadeIn(ticks), GrowArrow(z_arrow), FadeIn(z_axis_lab),
+                  FadeIn(rings), FadeIn(ticks), GrowArrow(z_arrow), FadeIn(z_axis_lab),
                   run_time=0.9, rate_func=EASE)
         self.play(FadeIn(vectors), FadeIn(key), FadeIn(row), FadeIn(panel_axis), FadeIn(axes_lines),
                   run_time=0.5, rate_func=EASE)

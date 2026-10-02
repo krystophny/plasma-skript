@@ -19,7 +19,6 @@ import numpy as np
 from style import (
     B_FIELD, CURVE_WIDTH, DOT_RADIUS, E_FIELD, EASE, FAINT, INK, ION, LINEAR,
     MUTED, SMALL_SIZE, THIN_WIDTH, StyledScene, axes, axis_labels, label, math,
-    title,
 )
 
 
@@ -33,9 +32,7 @@ class ExBDrift(StyledScene):
     """Show clockwise ion gyromotion and the rightward E x B drift."""
 
     def build(self):
-        heading = title("E × B drift")
-
-        ax = axes([-3.5, 3.5, 1], [-2.0, 1.5, 1], 10.2, 5.1).move_to(DOWN * 0.55)
+        ax = axes([-3.5, 3.5, 1], [-2.0, 1.5, 1], 10.2, 5.1).move_to(DOWN * 0.2)
         ax_labels = axis_labels(ax, r"x/L_0\ [1]", r"y/L_0\ [1]")
 
         # Uniform B out of the page: a quiet lattice of dot-in-circle symbols.
@@ -89,17 +86,15 @@ class ExBDrift(StyledScene):
 
         drift_arrow = Arrow(ax.c2p(-1.0, 0.35), ax.c2p(1.0, 0.35), buff=0,
                             color=INK, stroke_width=3, max_tip_length_to_length_ratio=0.12)
-        drift_label = math(r"\mathbf{v}_E = \mathbf{E}\times\mathbf{B}/B^2", color=INK, size=32)
+        drift_label = math(r"\mathbf{v}_E", color=INK, size=32)
         drift_label.next_to(drift_arrow, UP, buff=0.15)
-        gc_label = label("guiding center", color=MUTED, size=SMALL_SIZE)
-        gc_label.add_updater(lambda m: m.move_to(center_point()).set_y(ax.c2p(0, -1.58)[1]))
 
-        self.play(FadeIn(heading), Create(ax), FadeIn(ax_labels), run_time=0.8, rate_func=EASE)
+        self.play(Create(ax), FadeIn(ax_labels), run_time=0.8, rate_func=EASE)
         self.play(LaggedStart(FadeIn(b_marks), FadeIn(b_label), GrowFromEdge(e_arrows, DOWN),
                               FadeIn(e_label), GrowArrow(drift_arrow), FadeIn(drift_label),
                               lag_ratio=0.15), run_time=0.9, rate_func=EASE)
         self.play(FadeIn(center_track), FadeIn(guiding_center), FadeIn(radius_line),
-                  FadeIn(particle), FadeIn(gc_label), run_time=0.4, rate_func=EASE)
+                  FadeIn(particle), run_time=0.4, rate_func=EASE)
         self.add(orbit)
         self.play(tracker.animate.set_value(8), run_time=7.5, rate_func=LINEAR)
         self.wait(1.5)

@@ -98,8 +98,8 @@
     departures from this bulk ordering.
   ]
 
-  The important distinction from a neutral gas is not simply the presence of
-  charged particles. It is the range of the response. A charge imbalance can
+  A plasma differs from a neutral gas in the range of its response, not merely
+  in the presence of charged particles. A charge imbalance can
   launch an electric field, a current can launch a magnetic perturbation, and
   the resulting fields can move many particles before local collisions erase
   the correlation.
@@ -122,7 +122,7 @@
         [Characteristic emphasis],
       ),
       [Solar wind], [$10^6$--$10^7$], [$1$--$100$], [dilute, weakly collisional, magnetized],
-      [Ionosphere], [$10^10$--$10^12$], [$0.1$--$1$], [partially ionized and collisional],
+      [Ionosphere], [$10^10$--$10^12$], [$0.03$--$0.3$], [partially ionized and collisional],
       [Glow discharge], [$10^15$--$10^18$], [$1$--$10$], [weak ionization and boundaries],
       [Solar corona], [$10^14$--$10^16$], [$10^2$--$10^3$], [hot, magnetized, nearly fully ionized],
       [Fusion plasma], [$10^19$--$10^21$], [$10^3$--$2 dot 10^4$], [hot, confined, collective],
@@ -355,8 +355,8 @@
   #section-title[From microscopic particles to a model] <intro-model-hierarchy>
 
   #lead[
-    Which description should be used for a given plasma problem? The answer is
-    a model-selection argument. Keep the variables needed by the observable,
+    Which description should be used for a given plasma problem? Keep the
+    variables needed by the observable,
     then justify every average, closure, and ordering that removes detail.
   ]
 

@@ -15,7 +15,7 @@ import numpy as np
 from style import (
     ACCENT, CURVE_WIDTH, DOT_RADIUS, E_FIELD, EASE, ELECTRON, FAINT, GREEN,
     INK, LINEAR, MUTED, SMALL_SIZE, THIN_WIDTH, StyledScene, axes, label,
-    math, title,
+    math,
 )
 
 
@@ -44,13 +44,12 @@ class TwoStreamInstability(StyledScene):
     """Show counter-streaming beams, a growing mode and the unstable band."""
 
     def build(self):
-        heading = title("Two-stream instability")
         half = WAVELENGTH
 
         # Beam panel: v/v0 against X, one row of electrons per beam.
         beam_ax = axes([-half, half, 5], [-1.6, 1.6, 1], 6.4, 1.9,
                        y_axis_config={"include_ticks": False})
-        beam_ax.move_to([-3.25, 1.05, 0])
+        beam_ax.move_to([-3.25, 1.3, 0])
         beam_ylab = math(r"v/v_0\ [1]", color=MUTED, size=30)
         beam_ylab.next_to(beam_ax.y_axis.get_top(), UP, buff=0.12)
 
@@ -72,7 +71,7 @@ class TwoStreamInstability(StyledScene):
         # Field panel: growing standing pattern with fixed nodes.
         field_ax = axes([-half, half, 5], [-0.1, 0.1, 0.05], 6.4, 2.1,
                         y_axis_config={"include_ticks": False})
-        field_ax.move_to([-3.25, -1.95, 0])
+        field_ax.move_to([-3.25, -1.7, 0])
         field_ylab = math(r"E/E_0\ [1]", color=MUTED, size=30)
         field_ylab.next_to(field_ax.y_axis.get_top(), UP, buff=0.12)
         field_xlab = math(r"x\,\omega_p/v_0\ [1]", color=MUTED, size=30)
@@ -84,15 +83,9 @@ class TwoStreamInstability(StyledScene):
         nodes = VGroup(*[Dot(field_ax.c2p(x, 0), radius=0.05, color=INK)
                          for x in np.arange(-half, half + 1e-6, half / 2)])
 
-        clock = VGroup(math(r"\omega_p t\ [1] =", color=MUTED, size=30),
-                       DecimalNumber(0, num_decimal_places=1, color=MUTED, font_size=30))
-        clock.arrange(RIGHT, buff=0.15)
-        clock.add_updater(lambda m: m[1].set_value(tau.get_value()))
-        clock.next_to(field_ax.c2p(-half, 0.1), RIGHT, buff=0.0).shift(UP * 0.05 + RIGHT * 0.35)
-
         # Growth-rate panel.
         g_ax = axes([0, 1.35, 0.25], [0, 0.4, 0.1], 4.8, 4.6)
-        g_ax.move_to([3.85, -0.45, 0])
+        g_ax.move_to([3.85, -0.2, 0])
         g_xlab = math(r"k v_0/\omega_p\ [1]", color=MUTED, size=30)
         g_xlab.next_to(g_ax.x_axis, DOWN, buff=0.6)
         g_ylab = math(r"\gamma/\omega_p\ [1]", color=MUTED, size=30)
@@ -105,19 +98,17 @@ class TwoStreamInstability(StyledScene):
         peak = Dot(g_ax.c2p(K_MAX, g_peak), radius=0.09, color=ACCENT)
         peak_guide = DashedLine(g_ax.c2p(K_MAX, 0), g_ax.c2p(K_MAX, g_peak),
                                 color=FAINT, stroke_width=THIN_WIDTH, dash_length=0.08)
-        peak_lab = math(r"\gamma_{\max}/\omega_p\ [1]=1/(2\sqrt{2})", color=ACCENT, size=30)
+        peak_lab = math(r"\gamma_{\max}=\omega_p/(2\sqrt{2})", color=ACCENT, size=30)
         peak_lab.next_to(peak, UP, buff=0.18)
         k_lab = math(r"\sqrt{3/8}", color=MUTED, size=28).next_to(g_ax.c2p(K_MAX, 0), DOWN, buff=0.15)
-        stable_lab = label("stable", color=MUTED, size=SMALL_SIZE)
-        stable_lab.move_to(g_ax.c2p(1.18, 0.04))
 
-        self.play(FadeIn(heading), Create(beam_ax), Create(field_ax), Create(g_ax),
+        self.play(Create(beam_ax), Create(field_ax), Create(g_ax),
                   FadeIn(VGroup(beam_ylab, field_ylab, field_xlab, g_xlab, g_ylab)),
                   run_time=0.9, rate_func=EASE)
         self.play(FadeIn(upper), FadeIn(lower), FadeIn(up_lab), FadeIn(lo_lab),
-                  Create(curve), FadeIn(band), FadeIn(one_tick), FadeIn(stable_lab),
+                  Create(curve), FadeIn(band), FadeIn(one_tick),
                   run_time=1.0, rate_func=EASE)
         self.play(FadeIn(peak_guide), FadeIn(peak), FadeIn(peak_lab), FadeIn(k_lab),
-                  FadeIn(wave), FadeIn(nodes), FadeIn(clock), run_time=0.6, rate_func=EASE)
+                  FadeIn(wave), FadeIn(nodes), run_time=0.6, rate_func=EASE)
         self.play(tau.animate.set_value(TAU_END), run_time=7.0, rate_func=LINEAR)
         self.wait(1.5)

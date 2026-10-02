@@ -11,7 +11,7 @@ import numpy as np
 from style import (
     ACCENT, CURVE_WIDTH, DOT_RADIUS, EASE, ELECTRON, FAINT, GRID, INK, ION,
     LINEAR, MUTED, POTENTIAL, SMALL_SIZE, THIN_WIDTH, StyledScene, axes,
-    label, math, title,
+    label, math,
 )
 
 
@@ -31,9 +31,7 @@ class LangmuirProbe(StyledScene):
     """Sweep the probe bias across the three regions of an ideal I-V curve."""
 
     def build(self):
-        heading = title("Langmuir probe")
-
-        ax = axes([-6, 2.5, 1], [-1.1, 0.25, 0.5], 7.2, 5.0).move_to([-2.75, -0.45, 0])
+        ax = axes([-6, 2.5, 1], [-1.1, 0.25, 0.5], 7.2, 5.0).move_to([-2.75, -0.1, 0])
         xlab = math(r"e(\phi_p-\phi_{pl})/k_BT_e\ [1]", color=MUTED, size=30)
         xlab.next_to(ax.c2p(2.5, 0), UP, buff=0.18).align_to(ax.c2p(2.5, 0), RIGHT)
         ylab = math(r"I_p/(e\,\Gamma_{e0}A)\ [1]", color=MUTED, size=30)
@@ -56,7 +54,7 @@ class LangmuirProbe(StyledScene):
                                           radius=0.11, color=ACCENT))
 
         # Probe sketch: electrons arrive from the left, ions from the right.
-        center = np.array([4.35, -0.45, 0])
+        center = np.array([4.35, -0.1, 0])
         frame = RoundedRectangle(width=4.0, height=5.0, corner_radius=0.15,
                                  stroke_color=GRID, stroke_width=1.6).move_to(center)
         sheath = RoundedRectangle(width=1.35, height=3.2, corner_radius=0.5, stroke_width=0,
@@ -90,17 +88,12 @@ class LangmuirProbe(StyledScene):
         i_arrows = flux_arrows(1, lambda: 0.058, ION,
                                lambda: Triangle(color=ION, fill_opacity=1, stroke_width=0).scale(0.09))
 
-        readout = VGroup(math(r"e(\phi_p-\phi_{pl})/k_BT_e\ [1] =", color=ACCENT, size=28),
-                         DecimalNumber(-5.5, num_decimal_places=1, color=ACCENT, font_size=28))
-        readout.arrange(RIGHT, buff=0.15).to_corner(UR, buff=0.55)
-        readout[1].add_updater(lambda m: m.set_value(u.get_value()))
-
-        self.play(FadeIn(heading), Create(ax), FadeIn(xlab), FadeIn(ylab), run_time=0.9, rate_func=EASE)
+        self.play(Create(ax), FadeIn(xlab), FadeIn(ylab), run_time=0.9, rate_func=EASE)
         self.play(Create(curve), FadeIn(frame), FadeIn(sheath), FadeIn(sheath_edge), FadeIn(probe),
                   run_time=1.2, rate_func=EASE)
         self.play(FadeIn(VGroup(ion_sat, retard, e_sat, knee, knee_lab, f_dot, f_lab,
                                 probe_lab, sheath_lab)),
-                  FadeIn(point), FadeIn(e_arrows), FadeIn(i_arrows), FadeIn(readout),
+                  FadeIn(point), FadeIn(e_arrows), FadeIn(i_arrows),
                   run_time=0.7, rate_func=EASE)
         self.play(u.animate.set_value(2.0), run_time=4.5, rate_func=LINEAR)
         self.play(u.animate.set_value(U_FLOAT), run_time=2.2, rate_func=EASE)

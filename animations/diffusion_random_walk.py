@@ -18,7 +18,7 @@ import numpy as np
 
 from style import (
     ACCENT, CURVE_WIDTH, EASE, ELECTRON, FAINT, GREEN, INK, LINEAR, MUTED,
-    THIN_WIDTH, StyledScene, axes, axis_labels, math, title,
+    THIN_WIDTH, StyledScene, axes, axis_labels, math,
 )
 
 
@@ -43,18 +43,15 @@ class DiffusionRandomWalk(StyledScene):
     """Show symmetric walkers spreading while their mean stays near zero."""
 
     def build(self):
-        heading = title("Random walk and diffusion")
-
-        ax = axes([-3.5, 3.5, 1], [0, 18, 3], 8.6, 5.6).move_to([-1.35, -0.45, 0])
+        ax = axes([-3.5, 3.5, 1], [0, 18, 3], 8.6, 5.4).move_to([-1.35, 0.0, 0])
         ax_labels = axis_labels(ax, r"\xi = x/L_0\ [1]", r"\tau = t/\tau_0\ [1]")
 
         d_star = diffusion_coefficient()
         laws = VGroup(
             math(r"\langle \xi \rangle = 0", color=GREEN, size=34),
             math(r"\langle \xi^2 \rangle = 2D_*\tau", color=ACCENT, size=34),
-            math(rf"D_* = {d_star:.4f}\ [1]", color=MUTED, size=30),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.35)
-        laws.move_to([5.0, 0.6, 0])
+        laws.move_to([4.6, 0.0, 0])
 
         positions = walker_positions()
         tracker = ValueTracker(0.0)
@@ -104,7 +101,7 @@ class DiffusionRandomWalk(StyledScene):
         mean_path = always_redraw(mean_curve)
         envelopes = VGroup(always_redraw(lambda: envelope(1)), always_redraw(lambda: envelope(-1)))
 
-        self.play(FadeIn(heading), Create(ax), FadeIn(ax_labels), run_time=0.8, rate_func=EASE)
+        self.play(Create(ax), FadeIn(ax_labels), run_time=0.8, rate_func=EASE)
         self.play(LaggedStart(*[FadeIn(m, shift=LEFT * 0.1) for m in laws], lag_ratio=0.25),
                   run_time=0.8, rate_func=EASE)
         self.add(faint_paths, envelopes, bold_paths, mean_path, walkers)

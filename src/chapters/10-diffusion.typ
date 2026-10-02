@@ -18,7 +18,7 @@
   ]
 
   #callout(
-    [A transport question],
+    [Microscopic origin of $D$],
     [Which microscopic step length and time set the macroscopic coefficient
     $D$? The answer depends on whether particles are unmagnetized, tied
     together by quasi-neutrality, interrupted by collisions across $bold(B)$,
@@ -147,11 +147,10 @@
       Random-walk spreading from 36 walkers taking 18 seeded independent
       symmetric steps. With $xi=x/L_0$ and $tau=t/tau_0$, each step has
       magnitude $Delta xi=0.34$ [1] and duration $Delta tau=1$ [1]. The
-      displayed $D_*=D tau_0/L_0^2=0.0578$ [1] is the coefficient
+      coefficient $D_*=D tau_0/L_0^2=0.0578$ [1] is
       $D_("norm")$ defined above. Restore dimensional steps as
       $Delta x=0.34 L_0$ and $Delta t=tau_0$. The ensemble mean is zero and
       its variance is $2 D_* tau$; finite-sample means and variances fluctuate.
-      This is an illustrative random-walk model, not measured plasma data.
     ],
     poster: "../media/diffusion-random-walk.png",
   )
@@ -697,8 +696,7 @@
 
   #interpretation(
     [Collisions facilitate cross-field transport],
-    [This is a counterintuitive but central ordering. More collisions shorten
-    the free path, yet a nonzero collision rate is needed to break the
+    [More collisions shorten the free path, yet a nonzero collision rate is needed to break the
     indefinite gyromotion. The competition is measured by
     $abs(Omega_s)/nu_s$: it is small for nearly isotropic transport and
     large for strong perpendicular suppression.]
@@ -886,7 +884,7 @@
   ]
 
   #interpretation(
-    [Classical, neoclassical, and anomalous are different claims],
+    [Classical, neoclassical, and anomalous transport],
     [The $B^(-2)$ classical law is a collisional consequence of the local
     force balance. Neoclassical transport modifies it through magnetic
     geometry and orbit effects. A Bohm-like $B^(-1)$ law is an empirical
@@ -898,8 +896,8 @@
     Fully ionized classical transport gives
     $D_perp^("cl")=(n k_(B)(T_e+T_i))/(sigma B^2)$ and
     $tau_"D"=L^2/D$. It scales as $B^(-2)$, while the empirical Bohm
-    estimate scales as $B^(-1)$. The two describe different physical
-    assumptions and must not be conflated.
+    estimate scales as $B^(-1)$. The two rest on different physical
+    assumptions.
   ]
 
   #knowledge-check((

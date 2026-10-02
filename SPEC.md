@@ -277,7 +277,7 @@ and at least one limiting-case or model-selection question when appropriate.
 
 Relevant questions from the exam catalogue should be placed in the section
 that supplies their physical and mathematical prerequisites. They must appear
-in a separate `Exam connection` or `Exam prompt` block, visually distinct from
+in a separate `Exam questions` block, visually distinct from
 the knowledge checks and preferably styled with the component library. The
 block invites the reader to think about the prompt and reproduces its exact
 wording, together with a source file and page or section. Uncertain wording is
@@ -560,7 +560,7 @@ Each scene must:
 - render every in-scene prose label with the project-provided New Computer
   Modern font (`NewComputerModern`), explicitly registered from the Nix-supplied
   font file so rendering never depends on a host-installed fallback,
-- append `[1]` to every normalized axis or other quantitative in-scene label;
+- append `[1]` to every normalized axis label; other in-scene labels are bare symbols without unit tags;
   do not write `(dimensionless)` in the scene,
 - have a stable scene name and output path,
 - include a still frame or poster asset,

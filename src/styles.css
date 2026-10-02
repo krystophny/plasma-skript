@@ -271,11 +271,9 @@ h1 + .lede {
   margin: 0 0 0.5rem;
   color: var(--muted);
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
   line-height: 1.4;
-  text-transform: uppercase;
 }
 
 .objectives ul {
@@ -322,16 +320,10 @@ h1 + .lede {
   line-height: 1.5;
 }
 
-.source-note,
-.exam-note {
+.source-note {
   margin: 0.6rem 0 0;
   color: var(--muted);
   font-size: 0.82rem;
-}
-
-.exam-note {
-  margin: 0 0 0.6rem;
-  font-style: italic;
 }
 
 .exam-prompt {

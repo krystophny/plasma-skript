@@ -10,9 +10,9 @@
     A static magnetic field turns the isotropic plasma response into a tensor.
     This chapter derives that tensor from the cold-fluid momentum equation and
     uses it to organize parallel, perpendicular, and oblique wave propagation.
-    The central habit is to carry the propagation direction, polarization, and
-    frequency ordering together, following the standard cold-plasma treatment
-    in @bittencourt2004.
+    Propagation direction, polarization, and frequency ordering are carried
+    together throughout, following the standard cold-plasma treatment in
+    @bittencourt2004.
   ]
 
   #callout(
@@ -179,8 +179,7 @@
       =bold(k)(bold(k) dot bold(E)_1)-k^2 bold(E)_1 .$
 
     A nonzero field amplitude requires the determinant of the resulting wave
-    matrix to vanish. The dielectric tensor is therefore the bridge between
-    the particle response and the dispersion branches.]
+    matrix to vanish.]
   )
 
   #magnetized-dielectric
@@ -217,7 +216,7 @@
   ]
 
   #interpretation(
-    [Anisotropy is a response, not a label],
+    [Anisotropy of a homogeneous plasma],
     [The tensor is anisotropic even though the equilibrium is homogeneous.
     Homogeneity lets us use plane waves; the magnetic field breaks rotational
     symmetry and determines which field components can exchange phase and
@@ -404,7 +403,8 @@
       polarization plane rotates. The prescribed illustration uses
       $k_+ L_0=1.2$, $k_- L_0=0.8$, and $omega t_0=1$, with each component
       of amplitude $E_0/2$. Here $L_0$, $t_0$, and $E_0$ are reference
-      length, time, and electric-field scales in SI units. At fixed
+      length, time, and electric-field scales in SI units. The transverse
+      panel shows the highlighted position $z=3 L_0$. At fixed
       position the polarization axis is stationary in time; these prescribed
       wave numbers illustrate superposition rather than a fitted plasma.
     ],
@@ -774,8 +774,8 @@
     For $theta=0$, the matrix separates into the longitudinal factor $P$ and
     circular transverse factors $S plus.minus D$. For $theta=pi/2$, the $z$
     component decouples as the ordinary mode and the $x-y$ block produces the
-    extraordinary mode. These checks are essential: an algebraic root without
-    its endpoint polarization can be assigned to the wrong physical branch.]
+    extraordinary mode. Without its endpoint polarization, an algebraic root
+    can be assigned to the wrong physical branch.]
   )
 
   #magnetized-oblique-geometry
@@ -833,11 +833,9 @@
   #section-title[Cutoffs, resonances, and controlled limits] <magnetized-limits>
 
   #lead[
-    Dispersion diagrams are useful only when their limits are read with the
-    model attached. A cutoff, a resonance, an evanescent interval, and a
-    high-frequency vacuum limit are different statements about the same
-    refractive-index equation. This section turns those statements into a
-    reusable diagnostic workflow.
+    A cutoff, a resonance, an evanescent interval, and a high-frequency
+    vacuum limit are different statements about the same refractive-index
+    equation. Each holds only within the model that produced the diagram.
   ]
 
   #objectives((
@@ -857,7 +855,7 @@
   ]
 
   #assumption(
-    [Interpret branches only within the cold model],
+    [Validity of the cold model near resonances],
     [The diagnostic uses a homogeneous, collisionless, cold, fixed-ion plasma
     with a uniform magnetic field. Near a cyclotron or upper-hybrid resonance,
     the wavelength can approach the particle orbit scale and the cold fluid
@@ -963,7 +961,7 @@
   ]
 
   #interpretation(
-    [A limit check is a physical unit test],
+    [Unmagnetized, vacuum, and sign checks],
     [The unmagnetized limit checks the tensor algebra, the vacuum limit checks
     the current response, and the sign of $N^2$ checks propagation. Failure of
     any one of these tests usually indicates a convention, polarization, or

@@ -18,7 +18,7 @@ import numpy as np
 
 from style import (
     CURVE_WIDTH, EASE, ELECTRON, FAINT, INK, LINEAR, MUTED, THIN_WIDTH,
-    StyledScene, axes, axis_labels, math, title,
+    StyledScene, axes, axis_labels, math,
 )
 
 
@@ -31,13 +31,7 @@ class PhaseSpaceAdvection(StyledScene):
     """Show a phase-space cloud shearing under collisionless free streaming."""
 
     def build(self):
-        heading = title("Free streaming in phase space")
-        formula = math(
-            r"\frac{\partial f}{\partial \tau}+\eta\,\frac{\partial f}{\partial \xi}=0",
-            color=INK, size=34,
-        ).to_corner(UR, buff=0.55)
-
-        ax = axes([-4.5, 3.5, 1.0], [0.0, 1.0, 0.2], 12.0, 4.7).move_to(DOWN * 0.45)
+        ax = axes([-4.5, 3.5, 1.0], [0.0, 1.0, 0.2], 12.0, 4.7).move_to(DOWN * 0.1)
         ax_labels = axis_labels(ax, r"\xi = x/L_0\ [1]", r"\eta = v/v_0\ [1]")
 
         # A fixed random seed makes the visual reproducible across builds.
@@ -84,7 +78,7 @@ class PhaseSpaceAdvection(StyledScene):
             for v in (0.25, 0.45, 0.65)
         ])
 
-        self.play(FadeIn(heading), Create(ax), FadeIn(ax_labels), FadeIn(formula),
+        self.play(Create(ax), FadeIn(ax_labels),
                   run_time=0.8, rate_func=EASE)
         self.play(LaggedStart(FadeIn(ghost), FadeIn(dots), FadeIn(flow_arrows), lag_ratio=0.2),
                   run_time=0.8, rate_func=EASE)

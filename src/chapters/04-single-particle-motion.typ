@@ -14,8 +14,9 @@
   #section-title[The Lorentz force and uniform-field gyromotion] <motion-lorentz>
 
   #lead[
-    What can an electric or magnetic field do to a charged particle? The force
-    decomposition answers this before any approximation is introduced.
+    What can an electric or magnetic field do to a charged particle? Splitting
+    the Lorentz force into its electric and magnetic parts separates energy
+    change from bending, before any approximation is introduced.
   ]
 
   #objectives((
@@ -274,7 +275,7 @@
   ]
 
   #details(
-    [Derivation: why the force drift is a cross product],
+    [Derivation: the force drift as a cross product],
     [#derivation-step[Start from the orbit-center force balance]
     A constant drift velocity satisfies
 
@@ -345,8 +346,8 @@
   #lead[
     Real plasmas rarely have perfectly uniform fields. How can a circular
     orbit remain a useful local picture when the field changes across the
-    orbit? The guiding-center approximation answers by separating fast and
-    slow scales.
+    orbit? The guiding-center approximation separates the fast gyration from
+    the slow field variation.
   ]
 
   #objectives((
@@ -705,7 +706,7 @@
   ]
 
   #interpretation(
-    [A compact drift inventory],
+    [Drift inventory],
     [The single-particle drifts developed here are the common $E times B$
     drift, the general homogeneous-force drift, the grad-$B$ drift, and the
     curvature drift. The first is species independent; the latter two reverse
@@ -930,7 +931,8 @@
   #lead[
     The slow polarization approximation has a sharp boundary. How does a
     rotating electric field exchange energy with a particle when its rotation
-    matches the particle's gyrofrequency? The answer is cyclotron resonance.
+    matches the particle's gyrofrequency? This matching condition is
+    cyclotron resonance.
   ]
 
   #objectives((

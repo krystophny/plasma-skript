@@ -18,7 +18,7 @@ import numpy as np
 
 from style import (
     ACCENT, EASE, ELECTRON, FAINT, GREEN, INK, MUTED, ORANGE, PURPLE, SKY,
-    SMALL_SIZE, StyledScene, label, math, title,
+    SMALL_SIZE, StyledScene, label, math,
 )
 
 
@@ -38,8 +38,6 @@ class MomentHierarchy(StyledScene):
     """Show the passage from a kinetic distribution to fluid moments."""
 
     def build(self):
-        heading = title("Velocity moments")
-
         # Kinetic state: f and a sketch of its velocity-space samples.
         f_eq = math(r"f(t,\mathbf{r},\mathbf{v})", size=40)
         f_unit = math(r"[\mathrm{s^3\,m^{-6}}]", color=MUTED, size=26)
@@ -54,32 +52,30 @@ class MomentHierarchy(StyledScene):
         vy = math("v_y", color=MUTED, size=26).next_to(frame[1], UP, buff=0.1)
         sketch = VGroup(frame, cloud, vx, vy)
         source = VGroup(f_eq, f_unit, sketch).arrange(DOWN, buff=0.3)
-        source.move_to([-4.95, 0.1, 0])
+        source.move_to([-4.5, 0.1, 0])
 
         # Moment ladder.
         ys = [2.25, 1.0, -0.25, -1.5]
         names, eqs = VGroup(), VGroup()
         for (name, unit, eq, color, _), y in zip(ROWS, ys):
-            nm = VGroup(label(name, color=color, size=26),
-                        math(unit, color=MUTED, size=24)).arrange(DOWN, buff=0.08, aligned_edge=LEFT)
-            nm.move_to([-2.05, y, 0], aligned_edge=LEFT)
-            ex = math(eq, size=32).move_to([0.6, y, 0], aligned_edge=LEFT)
+            ex = math(eq, size=32).move_to([-1.6, y, 0], aligned_edge=LEFT)
+            nm = math(unit, color=color, size=28).next_to(ex, RIGHT, buff=0.3)
             names.add(nm)
             eqs.add(ex)
 
         heat = math(r"q_i=\tfrac12\,Q_{ijj}", color=PURPLE, size=32)
-        heat.move_to([0.6, -2.55, 0], aligned_edge=LEFT)
-        heat_name = label("heat flux", color=PURPLE, size=SMALL_SIZE)
-        heat_name.move_to([-2.05, -2.55, 0], aligned_edge=LEFT)
-        contraction = Arrow([0.9, ys[3] - 0.38, 0], [0.9, heat.get_top()[1] + 0.06, 0], buff=0,
+        heat.move_to([-1.6, -2.55, 0], aligned_edge=LEFT)
+        heat_name = math(r"[\mathrm{W\,m^{-2}}]", color=PURPLE, size=28)
+        heat_name.next_to(heat, RIGHT, buff=0.3)
+        contraction = Arrow([-1.3, ys[3] - 0.38, 0], [-1.3, heat.get_top()[1] + 0.06, 0], buff=0,
                             color=FAINT, stroke_width=2, max_tip_length_to_length_ratio=0.25)
 
-        integrate = Arrow([-3.3, 0.35, 0], [-2.3, 0.35, 0], buff=0,
+        integrate = Arrow([-2.85, 0.35, 0], [-1.85, 0.35, 0], buff=0,
                           color=MUTED, stroke_width=2.5, max_tip_length_to_length_ratio=0.12)
         integrate_label = math(r"\int d^3v", color=MUTED, size=30).next_to(integrate, UP, buff=0.12)
 
         # Each transport equation contains the divergence of the next moment.
-        arc_x = 4.85
+        arc_x = 4.35
         arcs, arc_labels = VGroup(), VGroup()
         for i in range(3):
             arc = CurvedArrow([arc_x, ys[i] - 0.05, 0], [arc_x, ys[i + 1] + 0.05, 0],
@@ -91,7 +87,7 @@ class MomentHierarchy(StyledScene):
                                   angle=-PI / 2, color=ACCENT, stroke_width=2.4, tip_length=0.16)
         closure = label("closure", color=ACCENT, size=26).next_to(closure_arc, RIGHT, buff=0.12)
 
-        self.play(FadeIn(heading), FadeIn(source, shift=RIGHT * 0.2), run_time=1.0, rate_func=EASE)
+        self.play(FadeIn(source, shift=RIGHT * 0.2), run_time=1.0, rate_func=EASE)
         self.play(GrowArrow(integrate), FadeIn(integrate_label), run_time=0.6, rate_func=EASE)
         for i in range(4):
             anims = [FadeIn(names[i], shift=LEFT * 0.1), FadeIn(eqs[i], shift=LEFT * 0.1)]

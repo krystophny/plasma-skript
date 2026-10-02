@@ -16,11 +16,10 @@
   ]
 
   #callout(
-    [A wave is a model plus an ordering],
+    [Selecting a wave branch],
     [The same plasma can support an electrostatic oscillation, a transverse
-    electromagnetic wave, or an ion-acoustic response. The branch is selected
-    by the equilibrium, polarization, frequency, wavelength, and closure—not
-    by the word “wave” alone.]
+    electromagnetic wave, or an ion-acoustic response. The equilibrium,
+    polarization, frequency, wavelength, and closure select the branch.]
   )
 
   #section-title[Equilibrium, perturbation, and linearization] <wave-linearization>
@@ -186,7 +185,7 @@
   ]
 
   #interpretation(
-    [Linearization is an ordering, not a slogan],
+    [Amplitude ordering and regime ratios],
     [The small parameter controls amplitudes, while the ratios
     $omega/(k v_"th")$, $omega/omega_(p,e)$, and
     $k lambda_D$ control the physical regime. A perturbation can be small
@@ -763,7 +762,7 @@
     #normalized-label[$k lambda_D=qty("2.35e-4", "1")$].
   ]
   #interpretation(
-    [Fluid and kinetic limits answer different questions],
+    [Fluid and kinetic responses],
     [A warm-fluid dispersion relation is a controlled closure for selected
     moments and scales. A kinetic response resolves velocity-space structure,
     including resonant particles and Landau damping. Agreement of real
@@ -805,8 +804,7 @@
   #lead[
     How do we read a dispersion diagram without losing the assumptions?
     First normalize both axes, then identify real and imaginary wave numbers,
-    slopes, cutoffs, and asymptotic branches. A limiting-case check is a
-    physical test of the derivation, not merely a cosmetic algebra check.
+    slopes, cutoffs, and asymptotic branches.
   ]
   #objectives((
     [read cutoffs, slopes, and propagating regions from a dispersion plot],
@@ -822,7 +820,7 @@
     dimensionless.
   ]
   #assumption(
-    [A branch is interpreted with its model attached],
+    [Validity range of the plotted branches],
     [Read the cold electromagnetic curve only for a homogeneous,
     unmagnetized, collisionless, fixed-ion plasma. The vacuum line is a
     reference, not a second plasma mode. If a branch leaves the assumptions,
@@ -885,8 +883,7 @@
 
     $ omega^2=omega_(p,e)^2+k^2 c_e^2 .$
 
-    Pressure therefore supplies spatial propagation. Every plotted branch
-    must be read together with the approximation that produced it.]
+    Pressure therefore supplies spatial propagation.]
   )
   #wave-dispersion
   #rechenbeispiel[
@@ -905,7 +902,7 @@
     #normalized-label[$v_"g"/c=qty("0.866", "1")$].
   ]
   #interpretation(
-    [A good plot is a compact argument],
+    [Cutoff, slope, and asymptote checks],
     [The intercept identifies the cutoff, the slope gives group velocity,
     and the asymptote checks the vacuum limit. If a curve violates one of
     these tests, revisit signs, units, polarization, and the omitted physics

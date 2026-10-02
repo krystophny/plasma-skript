@@ -16,12 +16,11 @@
   ]
 
   #callout(
-    [The MHD reduction has a visible logic],
+    [Steps of the MHD reduction],
     [Add species equations to obtain mass and momentum. Take an appropriate
     species difference to obtain generalized Ohm's law. Then state which
     terms are small before reducing the field equations to ideal or resistive
-    MHD. The same sequence explains both the power and the limits of the
-    model.]
+    MHD. Each neglected term marks a limit of the resulting model.]
   )
 
   #section-title[Single-fluid variables and conservation laws] <mhd-definitions>
@@ -291,8 +290,8 @@
   Here $nu_(e i)$ is the electron--ion momentum-transfer frequency, and
   $sigma$ is the scalar conductivity in #unit("S/m"). The
   frequency itself depends on the collision model and plasma state; the later
-  collisions chapter supplies that kinetic input. In this chapter, the key
-  point is that resistivity is drag per current, not an independent force.
+  collisions chapter supplies that kinetic input. Here, resistivity enters as
+  drag per unit current, not as an independent force.
 
   #details(
     [Derivation: locate every term in generalized Ohm's law],
@@ -603,7 +602,7 @@
   ]
 
   #interpretation(
-    [What the linear system preserves and discards],
+    [Retained and discarded terms in linear MHD],
     [The linearized equations preserve pressure restoring forces, magnetic
     tension and compression, and the divergence-free field constraint. They
     discard perturbation--perturbation advection and any equilibrium gradients.
@@ -815,7 +814,7 @@
   ]
 
   #interpretation(
-    [Frozen flux is an approximation with a precise failure mode],
+    [Breakdown of frozen flux in thin current layers],
     [Ideal MHD preserves flux through a surface that moves with $bold(u)$, so
     field-line connectivity is maintained as long as the smooth ideal
     description remains valid. Finite resistivity permits slippage and, in
@@ -942,7 +941,7 @@
   Thus $j_(parallel)$ requires field-line geometry and boundary or closure data;
   it is not determined by the local pressure balance alone.
 
-  A useful dimensionless measure is
+  The ratio of thermal to magnetic pressure is the plasma beta,
 
   $ beta = (2 mu_0 p)/(B^2) $ <mhd-beta>
 
@@ -1100,9 +1099,9 @@
   ]
 
   #interpretation(
-    [Equilibrium is a geometry constraint],
-    [The equation $grad(p)=bold(j)times bold(B)$ says more than “forces
-    cancel.” Pressure cannot vary along a field line, and current-driven force
+    [Geometric constraints of MHD equilibrium],
+    [The equation $grad(p)=bold(j)times bold(B)$ constrains the geometry.
+    Pressure cannot vary along a field line, and current-driven force
     is perpendicular to the field. In a pinch, a pressure profile therefore
     determines the magnetic-field profile together with boundary conditions;
     the field is not chosen independently of the plasma pressure.]

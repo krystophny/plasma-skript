@@ -19,7 +19,7 @@
   ]
 
   #callout(
-    [Velocity space is part of the medium],
+    [Distribution slope at the phase velocity],
     [A hot-plasma dispersion relation is not specified by density and
     temperature alone. The slope of the velocity distribution projected along
     the wave helps decide whether resonant particles absorb energy from it or
@@ -833,7 +833,7 @@
   ]
 
   #interpretation(
-    [Transverse waves sample more than density],
+    [Velocity spread in the transverse response],
     [The cold cutoff depends only on the total plasma frequency. The kinetic
     correction samples perpendicular velocity spread and the pole at the
     parallel phase velocity. An isotropic distribution usually leaves the
@@ -872,8 +872,8 @@
   #section-title[Two-stream instability] <two-stream-instability>
 
   #lead[
-    A distribution with two separated beams provides a clean instability
-    mechanism. The electrostatic field couples the streams, and for a range of
+    A distribution with two separated beams is unstable to electrostatic
+    perturbations. The electrostatic field couples the streams, and for a range of
     wavelengths the two real oscillatory branches merge into a complex pair.
     The negative value of $omega^2$ on the lower branch is the algebraic signal
     of exponential growth.
@@ -1233,7 +1233,7 @@
   ]
 
   #interpretation(
-    [Cold branches are organizing limits],
+    [Cold branches as reference limits],
     [The cold dielectric tensor identifies the principal wave branches and
     their polarizations. The hot tensor adds orbit averaging, Doppler shifts,
     harmonic resonances, and distribution gradients. A cold cutoff or

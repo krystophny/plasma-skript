@@ -18,8 +18,8 @@
 
   #lead[
     A test charge disturbs the surrounding plasma. How far does its
-    electrostatic influence extend once mobile electrons rearrange? Debye
-    shielding answers this question in the weak-potential, equilibrium limit.
+    electrostatic influence extend once mobile electrons rearrange? In the
+    weak-potential, equilibrium limit, the answer is the Debye length.
   ]
 
   #objectives((
@@ -340,7 +340,7 @@
   simulation of the right-hand profiles.
 
   #interpretation(
-    [What the Debye length does not mean],
+    [Scope of the Debye length],
     [The Debye length is not a hard vacuum boundary and it does not make the
     plasma exactly neutral at every point. It is the distance over which this
     particular equilibrium response reduces a localized electrostatic field.

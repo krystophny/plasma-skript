@@ -84,6 +84,11 @@ SI_VALUES = {
 # Typical (n_e [m^-3], k_B T_e [eV]) of five example plasmas, one point each,
 # shared by the n-T map (ch02) and the plasma-frequency plot (ch03). Sources:
 # lecture-1 plan, lv/plasma/tex/slides/01_basics.md, "Parameter sources".
+# Order-of-magnitude (n_e [m^-3], k_B T_e [eV]); checked 2026-10-02 against
+# NRL Plasma Formulary (2019), "Approximate magnitudes in some typical plasmas"
+# (corona, gaseous nebula); Kelley (2009) and Schunk & Nagy (1978) (F-region
+# peak); Goebel & Katz (2008) ch. 7 (SPT-100 channel); ITER Q=10 reference
+# (<n_e> = 1.01e20 m^-3, <T_e> = 8.8 keV). Sources: lv/plasma/tex/slides/01_basics.md.
 EXAMPLE_PLASMAS = {
     "ionosphere": (1e12, 1e-1),
     "H II region": (1e9, 1.0),

@@ -7,16 +7,14 @@
 
   #lead[
     The course repeatedly moves between kinetic, fluid, and field
-    descriptions. This appendix collects two pieces of working mathematics
-    that make those translations auditable: the energy-weighted second moment
+    descriptions. This appendix collects the energy-weighted second moment
     of the kinetic equation and the differential operators used in Cartesian,
-    cylindrical, and spherical coordinates. The formulas are written as a
-    reference, but the derivation routes remain available when a result needs
-    to be reconstructed rather than memorized.
+    cylindrical, and spherical coordinates, with collapsed derivations for
+    reconstructing each result.
   ]
 
   #callout(
-    [Use the toolkit as a checklist],
+    [Checklist for compact plasma equations],
     [Before manipulating a compact plasma equation, identify the species,
     the integration measure, the active unit convention, the coordinate scale
     factors, and the boundary terms. Most apparent sign or missing-factor
@@ -109,8 +107,8 @@
     [Multiply the kinetic equation by $(m_s abs(bold(v))^2)/2$, integrate over
     all velocity space, commute time and space derivatives with the integral,
     integrate the acceleration term by parts in velocity, then decompose
-    $bold(v)=bold(u)_s+bold(c)_s$. The hidden derivation records each of those
-    steps and the boundary terms.]
+    $bold(v)=bold(u)_s+bold(c)_s$. The collapsed derivation gives each step
+    and the boundary terms.]
   )
 
   #details(
@@ -264,7 +262,7 @@
   )
 
   #interpretation(
-    [What the second moment remembers],
+    [Content of the second-moment equations],
     [The total-energy equation tracks directed and random kinetic energy
     together. The internal form isolates compressional work, anisotropic shear
     work, and heat-flux transport. A fluid model closes this equation only
@@ -281,8 +279,8 @@
     energy balance. Velocity-space integration by parts turns the Lorentz
     force into electric work; the magnetic part does no work. Decomposing
     velocity into bulk plus random motion separates total-energy advection, pressure
-    work, and heat-flux transport. The next omitted moment is therefore a
-    closure choice, not an algebraic accident.
+    work, and heat-flux transport. Representing $bold(P)_s$ and $bold(q)_s$
+    in terms of lower moments is a closure choice.
   ]
 
   #knowledge-check((
@@ -389,7 +387,7 @@
   )
 
   #details(
-    [Derivation: why scale factors enter],
+    [Derivation: origin of the scale factors],
     [#derivation-step[Derive the gradient components]
     The directional differential of a scalar field is
 
@@ -519,7 +517,7 @@
     $ dv(Phi,V)=(pdv(r A_(r),r))/r ,$
 
     exactly the cylindrical divergence. The factor $1/r$ converts radial
-    flux change into flux per physical volume; it is not optional.]
+    flux change into flux per physical volume.]
   )
 
   #rechenbeispiel[
