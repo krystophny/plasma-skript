@@ -183,8 +183,6 @@
     moment closure.]
   )
 
-  #hot-isotropic-dispersion
-
   #rechenbeispiel[
     Use $n_0=qty("1.0e16", "m^-3")$,
     $k_B T_e=qty("1.602e-18", "J")$ (that is, $qty("10", "eV")$),
@@ -531,6 +529,8 @@
     This relation applies to a simple branch with small damping and nonzero
     group velocity.]
   )
+
+  #hot-isotropic-dispersion
 
   #animation(
     "../media/landau-resonance.mp4",

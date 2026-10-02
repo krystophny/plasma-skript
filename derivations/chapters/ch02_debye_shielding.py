@@ -14,6 +14,7 @@ Coverage (Typst label or line -> test):
   small-source condition          l.213          -> test_small_source_condition
   <intro-debye-number>            l.356          -> test_debye_number_and_coupling
   Gamma_s, a_s                    l.367-368      -> test_debye_number_and_coupling
+  lambda_D = L and N_D = 1 lines  (figure)       -> test_regime_lines, plot_nt_map
 
 Run `python derivations/ch02_debye_shielding.py` to print the steps, or
 `pytest derivations` to check every chapter.
@@ -33,6 +34,17 @@ rho_s, lam_s = sp.symbols("rho_q lambda_D", positive=True)
 UNITS[lam_s] = u.meter
 Phi = sp.Function("phi")
 
+# Results as printed in the script. The tests derive and check them; the
+# plot_* functions below evaluate exactly these expressions.
+LAMBDA_D = sp.sqrt(eps0 * k_B * T_e / (n0 * e**2))  # :124, :150
+N_DEBYE = sp.Rational(4, 3) * sp.pi * n0 * lam_s**3  # :356, with lambda_D symbolic
+PHI_BARE_IN = Q / (8 * sp.pi * eps0 * R) * (3 - r**2 / R**2)  # :182, :238
+PHI_BARE_OUT = Q / (4 * sp.pi * eps0 * r)  # :186
+xs, pp = sp.Symbol("x", positive=True), sp.Symbol("phi_p")
+PHI_P = 3 * Q / (4 * sp.pi * eps0 * kap**2 * R**3)  # :255
+A_MATCH = -(R * pp * (xs + 1) * sp.exp(-xs)) / xs  # :271
+B_MATCH = (R * pp) / (2 * xs) * (sp.exp(xs) * (xs - 1) + (xs + 1) * sp.exp(-xs))  # :275
+
 
 def test_debye_length():
     d = Derivation("Debye length", "src/chapters/02-debye-shielding.typ:124")
@@ -43,8 +55,7 @@ def test_debye_length():
     # Poisson: laplacian(phi) = -rho/eps0 = phi / lambda_D^2.
     inv_lambda_sq = d.eq("Poisson", lam_s**-2, sp.simplify(-rho_lin / eps0 / phi))
     lambda_D = d.eq("solve", lam_s, sp.sqrt(1 / inv_lambda_sq))
-    stated = sp.sqrt(eps0 * k_B * T_e / (n0 * e**2))  # :124, :150
-    check(lambda_D, stated, unit=u.meter)
+    check(lambda_D, LAMBDA_D, unit=u.meter)
 
 
 def test_screened_potential():
@@ -121,8 +132,7 @@ def test_sphere_bare_potential():
     phi_out = d.eq("integrate outside", Phi(r), sp.integrate(E_out.subs(r, s_), (s_, r, sp.oo)))
     phi_in = d.eq("integrate inside", Phi(r),
                   sp.factor(phi_out.subs(r, R) + sp.integrate(E_in.subs(r, s_), (s_, r, R))))
-    stated_in = Q / (8 * sp.pi * eps0 * R) * (3 - r**2 / R**2)  # :182, :238
-    stated_out = Q / (4 * sp.pi * eps0 * r)  # :186
+    stated_in, stated_out = PHI_BARE_IN, PHI_BARE_OUT
     check(phi_in, stated_in, unit=u.volt, units=LOCAL)
     check(phi_out, stated_out, unit=u.volt)
     # Poisson inside: (1/r^2)(r^2 phi')' = -rho_Q/eps0.
@@ -141,8 +151,7 @@ def test_matched_finite_source():
     x = kap * R
     # Particular solution: -phi_p kappa^2 = -rho_Q/eps0.
     phi_p = d.eq("particular", sp.Symbol("phi_p"), rhoQ / (eps0 * kap**2))
-    check(phi_p, 3 * Q / (4 * sp.pi * eps0 * kap**2 * R**3), unit=u.volt, units=LOCAL)  # :255
-    pp = sp.Symbol("phi_p")
+    check(phi_p, PHI_P, unit=u.volt, units=LOCAL)  # :255
     phi_in = d.eq("regular inside", sp.Symbol("phi_in"), pp + A * sp.sinh(kap * r) / r)  # :253
     phi_out = d.eq("decaying outside", sp.Symbol("phi_out"), B * sp.exp(-kap * r) / r)  # :258
     # Both satisfy the screened Poisson equation in their region.  # :203-205
@@ -152,12 +161,10 @@ def test_matched_finite_source():
     # Match potential and slope at r = R.  # :263-267
     sol = sp.solve([(phi_in - phi_out).subs(r, R),
                     sp.diff(phi_in - phi_out, r).subs(r, R)], [A, B], dict=True)[0]
-    xs = sp.Symbol("x", positive=True)
     nice = lambda ex: sp.simplify(ex.rewrite(sp.exp).subs(kap, xs / R))
     sA = d.eq("match", A, nice(sol[A]))
     sB = d.eq("match", B, nice(sol[B]))
-    stated_A = -(R * pp * (xs + 1) * sp.exp(-xs)) / xs  # :271
-    stated_B = (R * pp) / (2 * xs) * (sp.exp(xs) * (xs - 1) + (xs + 1) * sp.exp(-xs))  # :275
+    stated_A, stated_B = A_MATCH, B_MATCH
     check(sA, stated_A)
     check(sB, stated_B)
     sB_full = stated_B.subs({pp: phi_p, xs: x})
@@ -178,11 +185,11 @@ def test_small_source_condition():
 
 def test_debye_number_and_coupling():
     d = Derivation("Debye number and coupling", "src/chapters/02-debye-shielding.typ:356")
-    lam = sp.sqrt(eps0 * k_B * T_e / (n0 * e**2))
+    lam = LAMBDA_D
     # Number of electrons in a Debye sphere.
     N_D = d.eq("count in Debye sphere", sp.Symbol("N_D"),
                sp.integrate(4 * sp.pi * s_**2 * n0, (s_, 0, lam_s)))
-    check(N_D, sp.Rational(4, 3) * sp.pi * n0 * lam_s**3, unit=u.meter / u.meter)  # :356
+    check(N_D, N_DEBYE, unit=u.meter / u.meter)  # :356
     # Mean spacing: one particle per sphere of radius a_s, (4 pi/3) a^3 n = 1.
     a = sp.symbols("a", positive=True)
     a_sol = d.eq("one particle per sphere", a,
@@ -197,6 +204,161 @@ def test_debye_number_and_coupling():
                  sp.simplify(Gamma * N_D.subs(lam_s, lam) ** sp.Rational(2, 3)))
     assert ratio.free_symbols == set(), ratio
 
+
+
+# --- n-T regime lines -------------------------------------------------------
+L_sys, T_eV = sp.symbols("L T_eV", positive=True)
+
+
+def _temperature_ev(condition):
+    """Solve condition(T_e) = 0 for T_e and express k_B T_e in eV."""
+    T_sol = sp.solve(condition, T_e)[0]
+    return sp.simplify(k_B * T_sol / e)
+
+
+def test_regime_lines():
+    d = Derivation("Regime lines in the n-T plane", "src/chapters/02-debye-shielding.typ:356")
+    # lambda_D = L: the system size equals the screening length.
+    T_L = d.eq(r"\lambda_D = L", T_eV, _temperature_ev(LAMBDA_D**2 - L_sys**2))
+    check(T_L, e * n0 * L_sys**2 / eps0, unit=u.volt, units={L_sys: u.meter})
+    # N_D = 1: one electron per Debye sphere, the edge of the collective regime.
+    T_1 = d.eq("N_D = 1", T_eV, _temperature_ev(N_DEBYE.subs(lam_s, LAMBDA_D) - 1))
+    check(T_1, e / eps0 * (3 / (4 * sp.pi)) ** sp.Rational(2, 3) * n0 ** sp.Rational(1, 3),
+          unit=u.volt)
+
+
+# --- Plots ------------------------------------------------------------------
+
+
+def _numeric(expr, *args):
+    """lambdify expr in args with SI constants substituted."""
+    from si import SI_VALUES
+
+    return sp.lambdify(args, expr.subs(SI_VALUES), "numpy")
+
+
+def plot_debye_potential():
+    """Bare and Debye-screened potential of the uniform sphere, R = lambda_D/2."""
+    import numpy as np
+
+    from si import BLUE, ORANGE, figure, label, save
+
+    # Units: r in lambda_D (kappa = 1), phi in Q/(4 pi eps0 lambda_D).
+    norm = {Q: 1, eps0: 1 / (4 * sp.pi), kap: 1}
+    a = sp.Rational(1, 2)
+    phi_p = PHI_P.subs(norm).subs(R, a)
+    A = A_MATCH.subs({pp: phi_p, xs: a, R: a})
+    B = B_MATCH.subs({pp: phi_p, xs: a, R: a})
+    bare = sp.Piecewise((PHI_BARE_IN.subs(norm).subs(R, a), r <= a),
+                        (PHI_BARE_OUT.subs(norm), True))
+    screened = sp.Piecewise((phi_p + A * sp.sinh(r) / r, r <= a),
+                            (B * sp.exp(-r) / r, True))
+    x = np.linspace(1e-6, 4, 400)
+    f_bare, f_scr = (sp.lambdify(r, ex, "numpy") for ex in (bare, screened))
+    fig, ax = figure(3.4, 2.8)
+    ax.plot(x, f_bare(x), color=ORANGE, ls="--")
+    ax.plot(x, f_scr(x), color=BLUE)
+    ax.axvline(float(a), color="0.8", lw=0.6, zorder=0)
+    ax.text(float(a), 3.2, r"$R$", ha="center", va="bottom", color="0.4")
+    label(ax, 2.8, f_bare(2.8) + 0.08, "bare", ORANGE)
+    label(ax, 1.6, f_scr(1.6) + 0.08, "screened", BLUE)
+    ax.set(xlim=(0, 4), ylim=(0, 3.2),
+           xlabel=r"$r/\lambda_D$", ylabel=r"$4\pi\varepsilon_0\lambda_D\,\phi/Q$")
+    save(fig, "debye_potential")
+
+
+def _nt_axes():
+    from si import figure, log_ticks
+
+    fig, ax = figure(5.0, 3.0)
+    ax.set(xscale="log", yscale="log", xlim=(1e6, 1e32), ylim=(1e-2, 1e5),
+           xlabel=r"$n_e\ [\mathrm{m^{-3}}]$", ylabel=r"$k_B T_e\ [\mathrm{eV}]$")
+    log_ticks(ax.xaxis, 6, 32, 4)
+    log_ticks(ax.yaxis, -2, 5)
+    ax.grid(True, color="0.9", lw=0.5)
+    return fig, ax
+
+
+def _along(ax, x, slope, text, f, color):
+    """Label a power law T = f(n) of log-slope `slope` along the line, just above it."""
+    import numpy as np
+
+    fig = ax.figure
+    fig.canvas.draw()
+    p0 = ax.transData.transform((x, f(x)))
+    p1 = ax.transData.transform((10 * x, f(10 * x)))
+    ang = np.degrees(np.arctan2(p1[1] - p0[1], p1[0] - p0[0]))
+    off = 5 * np.array([-np.sin(np.radians(ang)), np.cos(np.radians(ang))])
+    ax.annotate(text, (x, f(x)), xytext=off, textcoords="offset points",
+                rotation=ang, rotation_mode="anchor", color=color, ha="center",
+                va="bottom")
+
+
+def plot_nt_plane():
+    """Empty n-T plane, the canvas of the lecture-1 regime map."""
+    from si import save
+
+    fig, _ = _nt_axes()
+    save(fig, "nt_plane")
+
+
+def plot_nt_map():
+    """Debye-length lines, the N_D = 1 boundary and five example plasmas."""
+    import numpy as np
+
+    from si import BLUE, EXAMPLE_PLASMAS, GRAY, ORANGE, save
+
+    T_L = _numeric(_temperature_ev(LAMBDA_D**2 - L_sys**2), n0, L_sys)
+    T_1 = _numeric(_temperature_ev(N_DEBYE.subs(lam_s, LAMBDA_D) - 1), n0)
+    fig, ax = _nt_axes()
+    n = np.logspace(6, 32, 300)
+    for L, text, at in [(1e-6, r"$\lambda_D = 1\,\mu\mathrm{m}$", 3e22),
+                        (1e-2, r"$\lambda_D = 1\,\mathrm{cm}$", 3e14),
+                        (1e2, r"$\lambda_D = 100\,\mathrm{m}$", 5e7)]:
+        ax.plot(n, T_L(n, L), color=GRAY, ls="--", lw=0.9)
+        _along(ax, at, 1, text, lambda x, L=L: T_L(x, L), GRAY)
+    ax.plot(n, T_1(n), color=ORANGE)
+    ax.fill_between(n, 1e-3, T_1(n), color=ORANGE, alpha=0.10, lw=0)
+    _along(ax, 3e29, 1 / 3, r"$N_D = 1$", T_1, ORANGE)
+    ax.text(3e27, 2e-2, r"$N_D < 1$", color=ORANGE, va="bottom")
+    for name, (ne, T) in EXAMPLE_PLASMAS.items():
+        ax.plot(ne, T, "o", ms=5, color=BLUE)
+        ax.annotate(name, (ne, T), xytext=(5, 0), textcoords="offset points",
+                    va="center", color="#1c1f23")
+    save(fig, "nt_map")
+
+
+def plot_debye_number():
+    """N_D(n_e) at three temperatures; N_D >> 1 holds except at high n and low T."""
+    import numpy as np
+
+    from si import BLUE, GRAY, ORANGE, figure, label, log_ticks, save
+
+    N_of = _numeric(N_DEBYE.subs(lam_s, LAMBDA_D), n0, T_e)
+    kelvin = _kelvin_per_ev()
+    n = np.logspace(6, 32, 300)
+    fig, ax = figure(3.4, 2.8)
+    for T, text, color, ls in [(1e4, r"$10\,\mathrm{keV}$", BLUE, "-"),
+                               (1e1, r"$10\,\mathrm{eV}$", ORANGE, "--"),
+                               (1e-1, r"$0.1\,\mathrm{eV}$", GRAY, ":")]:
+        N = N_of(n, T * kelvin)
+        ax.plot(n, N, color=color, ls=ls)
+        k = np.searchsorted(n, 1e8)
+        label(ax, n[k], N[k] * 4, text, color)
+    ax.axhline(1, color=ORANGE, lw=0.6)
+    ax.fill_between(n, 1e-6, 1, color=ORANGE, alpha=0.10, lw=0)
+    ax.set(xscale="log", yscale="log", xlim=(1e6, 1e32), ylim=(1e-4, 1e16),
+           xlabel=r"$n_e\ [\mathrm{m^{-3}}]$", ylabel=r"$N_D$")
+    log_ticks(ax.xaxis, 6, 30, 8)
+    log_ticks(ax.yaxis, -4, 16, 4)
+    save(fig, "debye_number")
+
+
+def _kelvin_per_ev():
+    """Kelvin per electron-volt of k_B T, from the SI values."""
+    from si import SI_VALUES
+
+    return float((e / k_B).subs(SI_VALUES))
 
 if __name__ == "__main__":
     from si import run_as_script

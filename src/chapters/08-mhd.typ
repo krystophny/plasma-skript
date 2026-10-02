@@ -1,5 +1,5 @@
 #import "../theme.typ": *
-#import "../figures.typ": mhd-reduction, mhd-ohm-balance, mhd-flux-diffusion, mhd-force-balance
+#import "../figures.typ": mhd-reduction, mhd-flux-diffusion, mhd-force-balance
 #import "@preview/physica:0.9.8": div, grad, pdv, dv, curl, laplacian
 #import "@preview/unify:0.8.1": qty, unit
 
@@ -355,8 +355,6 @@
     approximation by the full electron-inertia operator; the displayed
     generalized law is then insufficient.]
   )
-
-  #mhd-ohm-balance
 
   #rechenbeispiel[
     Context: an electron--ion plasma has

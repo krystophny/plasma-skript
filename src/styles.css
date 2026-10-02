@@ -703,11 +703,28 @@ figcaption > strong:first-child {
   overflow-x: auto;
 }
 
-.quantitative-plot svg {
+.quantitative-plot svg,
+.quantitative-plot img {
   display: block;
   max-width: 100%;
   height: auto;
   margin-inline: auto;
+}
+
+/* Matplotlib plots of derived results (derivations/build/fig/*.svg) are
+   transparent with dark ink. Inside .quantitative-plot they get the card
+   above; an SVG image placed without that wrapper gets the same surface. */
+figure img[src^="data:image/svg+xml"] {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+figure > img[src^="data:image/svg+xml"] {
+  padding: clamp(0.4rem, 2vw, 1rem);
+  border-radius: 6px;
+  background: var(--plot-surface);
 }
 
 .concept-figure {

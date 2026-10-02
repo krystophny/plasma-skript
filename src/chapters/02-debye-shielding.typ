@@ -1,6 +1,6 @@
 #import "../theme.typ": *
 #import "@preview/physica:0.9.8": grad, div, curl, laplacian, pdv, dv, vb
-#import "../figures.typ": debye-profile, debye-potential-comparison
+#import "../figures.typ": debye-potential-comparison, debye-regime-map
 
 #let chapter = [
   #page-title[2. Debye shielding] <debye-shielding>
@@ -288,8 +288,6 @@
     Coulomb tail is therefore strongly reduced rather than abruptly cut off.]
   )
 
-  #debye-profile
-
   #debye-potential-comparison
 
   #animation(
@@ -382,6 +380,8 @@
   quasineutrality away from boundaries; it does not establish a collisional
   fluid closure. Collision scales are treated in
   #chapter-link("kinetic-collisions")[Collisions in gases and plasmas].
+
+  #debye-regime-map
 
   #summary[
     Debye shielding is a linear equilibrium response: the Boltzmann electron

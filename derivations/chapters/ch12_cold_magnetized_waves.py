@@ -35,8 +35,8 @@ Coverage (src/chapters/12-cold-magnetized-waves.typ line -> test):
 import sympy as sp
 from sympy.physics import units as u
 
-from si import (UNITS, Derivation, c, check, e, eps0, m_e, mu0, same_unit,
-                si_unit)
+from si import (BLUE, GRAY, ORANGE, UNITS, Derivation, c, check, e, eps0, figure,
+                label, m_e, mu0, same_unit, save, si_unit)
 
 SRC = "src/chapters/12-cold-magnetized-waves.typ"
 
@@ -55,6 +55,15 @@ N, theta = sp.symbols("N theta", positive=True)
 Ex, Ey, Ez = sp.symbols("E_x E_y E_z")
 UNITS.update({w: u.second**-1, k: u.meter**-1, B0: u.tesla,
               n0: u.meter**-3, wpe: u.second**-1, wce: u.second**-1})
+
+# Results shared by the tests and the plots: each test proves its derivation
+# equals one of these expressions, and each plot_* lambdifies the same one.
+s_ = sp.Symbol("s")  # circular label s = +1 or -1
+EPS_CIRC = 1 - wpe**2 / (w * (w + s_ * wce))  # N_s^2, line 348
+N_O2 = 1 - wpe**2 / w**2  # ordinary mode, line 539
+N_X2 = 1 - (wpe**2 * (w**2 - wpe**2)) / (w**2 * (w**2 - wpe**2 - wce**2))  # line 570
+W_, Y_ = sp.symbols("W Y", positive=True)  # W = omega/omega_pe, Y = omega_ce/omega_pe
+NORM = {w: W_ * wpe, wce: Y_ * wpe}
 
 
 def close(x, ref, rtol=5e-3):
@@ -228,7 +237,7 @@ def test_circular_modes():
     M = wave_matrix(eps, 0)
     S, Dx = eps[0, 0], eps[1, 0] / I
     # src/chapters/12-cold-magnetized-waves.typ:348
-    stated = 1 - wpe**2 / (w * (w + s * wce))
+    stated = EPS_CIRC.subs(s_, s)
     for sv in (1, -1):
         Ns2 = d.eq(f"s = {sv}", sp.Symbol(f"N_{{{sv:+d}}}^2"), sp.factor(S - sv * Dx))
         check(Ns2, stated.subs(s, sv))
@@ -310,7 +319,7 @@ def test_perpendicular_matrix():
     assert (M - stated).applyfunc(sp.simplify) == sp.zeros(3, 3)
     # Ordinary mode from the decoupled z row, lines 501 and 539.
     NO2 = d.eq("z row", sp.Symbol("N_O^2"), sp.solve(M[2, 2], N**2)[0])
-    check(NO2, 1 - wpe**2 / w**2)
+    check(NO2, N_O2)
     # X-block determinant (line 548) and its root (lines 503, 552).
     det = d.eq("determinant", sp.Symbol(r"\det_{xy}"), sp.expand(Mgen[:2, :2].det()))
     check(det, Ss * (Ss - N**2) - Ds**2)
@@ -341,7 +350,7 @@ def test_extraordinary_upper_hybrid():
     # src/chapters/12-cold-magnetized-waves.typ:566
     check(NX2, ((dd - p)**2 - (wce**2 * p**2) / w**2) / (dd * (dd - p)))
     # src/chapters/12-cold-magnetized-waves.typ:570 (and definition line 506)
-    stated = 1 - (wpe**2 * (w**2 - wpe**2)) / (w**2 * (w**2 - wpe**2 - wce**2))
+    stated = N_X2
     d.eq("simplify", sp.Symbol("N_X^2"), sp.factor(NX2))
     check(NX2, stated)
     # Resonance where the denominator vanishes, line 576.
@@ -535,6 +544,80 @@ def test_landmark_example():
     # W = 1.30: both propagate (lines 960-962).
     d.eq("W = 1.30", sp.Symbol("N_O"), close(sp.sqrt(NO2(1.30)), 0.639))
     d.eq("W = 1.30", sp.Symbol("N_X"), close(sp.sqrt(NX2(1.30)), 0.565))
+
+
+Y_PLOT = 0.3  # omega_ce/omega_pe of the plots and the worked example (line 946)
+
+
+def _normalized(expr, **subs):
+    """Lambdify a dielectric expression in W at Y = Y_PLOT (omega_pe cancels)."""
+    return sp.lambdify(W_, sp.simplify(expr.subs(NORM).subs(Y_, Y_PLOT).subs(subs)), "numpy")
+
+
+def plot_magnetized_parallel_dispersion():
+    """Parallel circular branches W(K) from N_s^2 = EPS_CIRC, with K = W N_s."""
+    import numpy as np
+
+    Y = Y_PLOT
+    fig, ax = figure(4.2, 3.0)
+    K = np.linspace(0, 3, 50)
+    ax.plot(K, K, color=GRAY, ls=":", lw=1.2)
+    ax.axhline(Y, color=GRAY, lw=0.8, ls="-.")
+    t = np.linspace(0, 1, 400)
+    branches = []
+    for sv, color, ls in ((1, BLUE, "-"), (-1, ORANGE, "--")):
+        N2 = _normalized(EPS_CIRC, s=sv)
+        cut = (np.sqrt(Y**2 + 4) - sv * Y) / 2  # tested in test_normalized_landmarks
+        W = cut + (3.2 - cut) * t**2  # quadratic sampling resolves the cutoff
+        ax.plot(W * np.sqrt(np.clip(N2(W), 0, None)), W, color=color, ls=ls)
+        ax.plot([0], [cut], "o", color=color, ms=4, clip_on=False, zorder=3)
+        branches.append(cut)
+    # s = -1 below the cyclotron resonance W = Y: the whistler branch.
+    N2 = _normalized(EPS_CIRC, s=-1)
+    W = Y * (1 - np.geomspace(1, 1e-4, 400))
+    ax.plot(W * np.sqrt(N2(W)), W, color=ORANGE, ls="--")
+    label(ax, 1.0, 1.75, "$s=-1$", ORANGE, ha="right")
+    label(ax, 1.6, 1.35, "$s=+1$", BLUE, va="top")
+    label(ax, 2.95, Y, "resonance $\\omega=\\omega_{ce}$", GRAY, ha="right")
+    label(ax, 2.95, Y * 0.62, "whistler, $s=-1$", ORANGE, ha="right", va="top")
+    label(ax, 2.55, 2.3, "vacuum", GRAY, va="top")
+    # Cutoffs and the resonance are read off as labelled ticks on the W axis.
+    ticks = [0, Y, *branches, 2, 3]
+    ax.set(xlim=(0, 3), ylim=(0, 3), xticks=[0, 1, 2, 3], yticks=ticks,
+           yticklabels=["0", f"{Y:.1f}", f"{branches[0]:.3f}", f"{branches[1]:.3f}", "2", "3"],
+           xlabel=r"$K=kc/\omega_{pe}$ [1]", ylabel=r"$W=\omega/\omega_{pe}$ [1]")
+    save(fig, "magnetized-parallel-dispersion")
+
+
+def plot_magnetized_cutoff_map():
+    """Perpendicular N_O^2 and N_X^2 against W: cutoffs, resonance, stop bands."""
+    import numpy as np
+
+    Y = Y_PLOT
+    NO2, NX2 = _normalized(N_O2), _normalized(N_X2)
+    w_uh = np.sqrt(1 + Y**2)  # tested in test_normalized_landmarks
+    cuts = [(np.sqrt(Y**2 + 4) - sv * Y) / 2 for sv in (1, -1)]
+    fig, ax = figure(4.2, 3.0)
+    ax.axhspan(-4, 0, color="#eeeeee", lw=0, zorder=0)
+    ax.axhline(0, color="#333333", lw=0.6)
+    ax.axvline(w_uh, color=GRAY, lw=0.8, ls="-.")
+    W = np.linspace(0.6, 1.8, 600)
+    ax.plot(W, NO2(W), color=ORANGE, ls="--")
+    for lo, hi in ((0.6, w_uh - 1e-4), (w_uh + 1e-4, 1.8)):
+        Wb = np.linspace(lo, hi, 600)
+        ax.plot(Wb, NX2(Wb), color=BLUE)
+    ax.plot(cuts, [0, 0], "o", color=BLUE, ms=4, zorder=3)
+    ax.plot([1], [0], "o", color=ORANGE, ms=4, zorder=3)
+    label(ax, 1.79, NX2(1.79) + 0.1, "X", BLUE, ha="right")
+    label(ax, 1.79, NO2(1.79) - 0.12, "O", ORANGE, ha="right", va="top")
+    label(ax, w_uh + 0.015, 2.85, f"upper-hybrid\nresonance\n$W={w_uh:.3f}$", GRAY, va="top")
+    label(ax, 0.62, 1.6, "propagating\n$N^2>0$", GRAY)
+    label(ax, 0.62, -3.6, "evanescent, $N^2<0$", GRAY)
+    ax.set(xlim=(0.6, 1.8), ylim=(-4, 3), yticks=[-4, -2, 0, 2],
+           xticks=[0.6, cuts[0], 1, cuts[1], 1.4, 1.8],
+           xticklabels=["0.6", f"{cuts[0]:.3f}", "1", f"{cuts[1]:.3f}", "1.4", "1.8"],
+           xlabel=r"$W=\omega/\omega_{pe}$ [1]", ylabel=r"$N^2=(kc/\omega)^2$ [1]")
+    save(fig, "magnetized-cutoff-map")
 
 
 if __name__ == "__main__":

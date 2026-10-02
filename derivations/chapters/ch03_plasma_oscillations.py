@@ -23,6 +23,9 @@ LOCAL = {n0: u.meter**-3, xi: u.meter, x: u.meter, t: u.second, T_e: u.kelvin,
          n_s: u.meter**-3, q_s: u.coulomb, m_s: u.kilogram}
 w_pe, lam_D, v_th = sp.symbols("omega_pe lambda_D v_th", positive=True)
 
+# Electron plasma frequency as printed (:67); tested below and plotted.
+OMEGA_PE = sp.sqrt(n0 * e**2 / (eps0 * m_e))
+
 
 def test_sheet_field():
     d = Derivation("Charge-separation field", "src/chapters/03-plasma-oscillations.typ:47")
@@ -49,7 +52,7 @@ def test_oscillator():
     check(newton.rhs, -(n0 * e**2) / eps0 * X(t))  # :58
     # Dividing by m_e: xi'' + omega^2 xi = 0 identifies omega_pe.
     omega_sq = d.eq("divide by mass", w_pe**2, sp.simplify(-newton.rhs / X(t) / m_e))
-    stated = sp.sqrt(n0 * e**2 / (eps0 * m_e))  # :67
+    stated = OMEGA_PE  # :67
     check(sp.sqrt(omega_sq), stated, unit=1 / u.second, units=LOCAL)
     # dsolve gives harmonic motion at omega_pe, consistent with :127.
     sol = d.eq("dsolve", X(t), sp.dsolve(newton, X(t)).rhs)
@@ -88,6 +91,30 @@ def test_inertial_length_unit():
     ds = d.eq("definition", sp.Symbol("d_s"), c / sp.sqrt(n_s * q_s**2 / (eps0 * m_s)))
     check(ds, ds, unit=u.meter, units=LOCAL)  # :99
 
+
+
+def plot_plasma_frequency():
+    """f_pe = omega_pe/(2 pi) against n_e, with five example plasmas."""
+    import numpy as np
+
+    from si import BLUE, EXAMPLE_PLASMAS, SI_VALUES, figure, log_ticks, save
+
+    f_pe = sp.lambdify(n0, (OMEGA_PE / (2 * sp.pi)).subs(SI_VALUES), "numpy")
+    n = np.logspace(6, 32, 200)
+    fig, ax = figure(3.4, 2.8)
+    for f, text in [(1e6, "MHz"), (1e9, "GHz"), (1e12, "THz")]:
+        ax.axhline(f, color="0.85", lw=0.6, zorder=0)
+        ax.text(1.5e6, f * 1.6, text, color="0.4", va="bottom")
+    ax.plot(n, f_pe(n), color=BLUE)
+    for name, (ne, _) in EXAMPLE_PLASMAS.items():
+        ax.plot(ne, f_pe(ne), "o", ms=4, color="#1c1f23")
+        ax.annotate(name, (ne, f_pe(ne)), xytext=(5, -3), textcoords="offset points",
+                    va="top", fontsize=9)
+    ax.set(xscale="log", yscale="log", xlim=(1e6, 1e32), ylim=(1e3, 1e15),
+           xlabel=r"$n_e\ [\mathrm{m^{-3}}]$", ylabel=r"$f_{pe}\ [\mathrm{Hz}]$")
+    log_ticks(ax.xaxis, 6, 30, 8)
+    log_ticks(ax.yaxis, 3, 15, 3)
+    save(fig, "plasma_frequency")
 
 if __name__ == "__main__":
     from si import run_as_script

@@ -25,6 +25,7 @@ Coverage (Typst line -> test):
   838-846 animation speed ratio sqrt(1.36)          -> test_animation_speeds
   853-867 MHD worked example                        -> test_example_mhd
   971-998 cold limits (nu -> 0, T_s -> 0)           -> test_cold_limits
+  figure ion-wave-branches: normalized RH/LH roots  -> test_normalized_ion_branches
   1035-1042 ordering example, M = m_e/m_p           -> test_ordering_example
 Not covered: 1021-1023 and 943-961 are ordering inequalities, not formulas.
 """
@@ -32,7 +33,8 @@ Not covered: 1021-1023 and 943-961 are ordering inequalities, not formulas.
 import sympy as sp
 from sympy.physics import units as u
 
-from si import UNITS, Derivation, check, e, eps0, k_B, m_e, m_i, mu0, c
+from si import (BLUE, GRAY, ORANGE, UNITS, Derivation, c, check, e, eps0, figure,
+                k_B, label, log_ticks, m_e, m_i, mu0, save)
 
 I = sp.I
 w, nu, k, kpar = sp.symbols("omega nu k k_\\parallel", positive=True)
@@ -183,6 +185,20 @@ SRC = "src/chapters/13-finite-temperature-waves.typ:"
 # Singly charged ions with n_i = n_e: ion frequencies follow from the electron ones.
 ION = {wpi: wpe * sp.sqrt(m_e / m_i), wci: wce * m_e / m_i}
 
+# Results shared by the tests and the plots: each test proves its derivation
+# equals one of these expressions, and each plot_* lambdifies the same one.
+# Circular two-fluid indices without the O(m_e/m_i) numerator term (279, 281-283).
+N2_RH = 1 - wpe**2 / ((w + wci) * (w - wce))
+N2_LH = 1 - wpe**2 / ((w - wci) * (w + wce))
+Kn, Wn = sp.symbols("K W", positive=True)  # K = k v_A/omega_ci, W = omega/omega_ci
+W_RH = (Kn**2 + sp.sqrt(Kn**4 + 4 * Kn**2)) / 2  # figure ion-wave-branches
+W_LH = (sp.sqrt(Kn**4 + 4 * Kn**2) - Kn**2) / 2
+# Two-species warm longitudinal condition times both denominators (566-568),
+# a quadratic in X = omega^2.
+X2 = sp.symbols("X", positive=True)
+POLY_LONG = ((X2 - k**2 * cse**2) * (X2 - k**2 * csi**2)
+             - wpe**2 * (X2 - k**2 * csi**2) - wpi**2 * (X2 - k**2 * cse**2))
+
 
 def two_species():
     ion = (e, n0, m_i, e * B0 / m_i, 0)
@@ -252,8 +268,8 @@ def test_circular_branches():
                sp.simplify((1 - rh_sum) * ((w + wci) * (w - wce)).subs(ION)))
     check(num, (wpe**2 * (1 + wci / wce)).subs(ION))
     # Drop the O(m_e/m_i) numerator correction, keep ion denominators.
-    rh = 1 - wpe**2 / ((w + wci) * (w - wce))  # src/...typ:279, 334-335
-    lh = 1 - wpe**2 / ((w - wci) * (w + wce))  # src/...typ:281-283
+    rh = N2_RH  # src/...typ:279, 334-335
+    lh = N2_LH  # src/...typ:281-283
     M = sp.symbols("M", positive=True)
     small = {wci: wce * M, wpi: wpe * sp.sqrt(M)}
     for exact, approx in ((R, rh), (L, lh)):
@@ -266,8 +282,7 @@ def test_circular_branches():
 
 
 def test_alfven_limit():
-    rh = 1 - wpe**2 / ((w + wci) * (w - wce))
-    lh = 1 - wpe**2 / ((w - wci) * (w + wce))
+    rh, lh = N2_RH, N2_LH
     d = Derivation("Low-frequency Alfven limit", SRC + "343")
     stated = 1 + wpe**2 / (wce * wci)  # src/...typ:286, 343
     d.eq("limit w to 0", sp.Symbol("N^2"), sp.limit(rh, w, 0))
@@ -290,6 +305,24 @@ def test_alfven_limit():
     N2 = (k * c / w) ** 2
     wk = d.eq("N = k c / w", w / k, sp.solve(sp.Eq(N2, c**2 / vA**2), w)[0] / k)
     check(wk, vA, unit=u.meter / u.second)
+
+
+def test_normalized_ion_branches():
+    # omega << omega_ce and N^2 >> 1 (v_A << c): keep the leading term of
+    # N^2 - 1 in 1/omega_ce, then normalize K = k v_A/omega_ci, W = omega/omega_ci.
+    d = Derivation("Normalized ion-cyclotron and whistler branches", SRC + "367")
+    vA = c * sp.sqrt(wce * wci) / wpe  # tested in test_alfven_limit
+    for N2, stated in ((N2_RH, W_RH), (N2_LH, W_LH)):
+        lead = sp.limit((N2 - 1) * wce, wce, sp.oo) / wce
+        disp = sp.Eq((k * c / w) ** 2, lead)
+        disp = disp.subs({k: Kn * wci / vA, w: Wn * wci})
+        roots = [r for r in sp.solve(disp, Wn) if r.subs(Kn, 1).is_positive]
+        d.eq("positive root", Wn, roots[0])
+        assert len(roots) == 1 and sp.simplify(roots[0] - stated) == 0
+    # Both start along the Alfven line W = K; LH approaches the ion cyclotron W = 1.
+    for root in (W_RH, W_LH):
+        assert sp.limit(root / Kn, Kn, 0) == 1
+    assert sp.limit(W_LH, Kn, sp.oo) == 1
 
 
 def warm_velocity(q, m, n, cs2, E1):
@@ -354,8 +387,7 @@ def test_ion_acoustic():
                 1 - wpe**2 / (W - k**2 * cse**2) - wpi**2 / (W - k**2 * csi**2))
     poly = sp.expand(sp.numer(sp.together(disp)))
     # Product form, src/...typ:566-568.
-    stated_poly = ((W - k**2 * cse**2) * (W - k**2 * csi**2)
-                   - wpe**2 * (W - k**2 * csi**2) - wpi**2 * (W - k**2 * cse**2))
+    stated_poly = POLY_LONG.subs(X2, W)
     check(poly, stated_poly)
     # Low root: expand the smaller root in k to order k^2.
     roots = sp.solve(poly, W)
@@ -548,6 +580,55 @@ def test_ordering_example():
     d = Derivation("Example: mass ratio", SRC + "1038")
     d.eq("CODATA", sp.Symbol("M"), sp.Float(CODATA[m_e] / CODATA[m_i], 4))
     close(CODATA[m_e] / CODATA[m_i], 5.45e-4)
+
+
+def plot_ion_wave_branches():
+    """Normalized RH (whistler) and LH (ion cyclotron) roots and the Alfven line."""
+    import numpy as np
+
+    K = np.linspace(0, 2.4, 300)
+    rh, lh = (sp.lambdify(Kn, r, "numpy") for r in (W_RH, W_LH))
+    fig, ax = figure(4.2, 2.8)
+    ax.plot(K, K, color=GRAY, ls=":", lw=1.2)
+    ax.axhline(1, color=GRAY, lw=0.8, ls="-.")
+    ax.plot(K, rh(K), color=BLUE)
+    ax.plot(K, lh(K), color=ORANGE, ls="--")
+    label(ax, 1.0, rh(1.0), "RH (whistler)", BLUE, ha="right")
+    label(ax, 2.38, lh(2.38) - 0.25, "LH (ion cyclotron)", ORANGE, ha="right", va="top")
+    label(ax, 1.95, 1.65, r"$\mathrm{Alfv\acute{e}n}$ $W=K$", GRAY, va="top")
+    label(ax, 0.05, 1.03, "resonance $\\omega=\\omega_{ci}$", GRAY)
+    ax.set(xlim=(0, 2.4), ylim=(0, 3), xticks=[0, 1, 2], yticks=[0, 1, 2, 3],
+           xlabel=r"$K=kv_A/\omega_{ci}$ [1]", ylabel=r"$W=\omega/\omega_{ci}$ [1]")
+    save(fig, "ion-wave-branches")
+
+
+def plot_warm_longitudinal_modes():
+    """Both roots of the tested two-species quadratic: Langmuir and ion acoustic.
+
+    Isothermal electrons (gamma_e = 1, c_se^2 = omega_pe^2 lambda_De^2), cold
+    ions (c_si = 0), m_i/m_e = 1836; K = k lambda_De, W = omega/omega_pe.
+    """
+    import numpy as np
+
+    mass = sp.Rational(1, 1836)
+    poly = POLY_LONG.subs({csi: 0, cse: wpe, wpi: wpe * sp.sqrt(mass)})
+    poly = sp.expand(poly.subs({k: Kn, X2: Wn**2 * wpe**2}) / wpe**4)  # lambda_De = 1
+    roots = [sp.lambdify(Kn, sp.sqrt(r), "numpy") for r in sp.solve(poly, Wn**2)]
+    K = np.geomspace(1e-2, 3, 300)
+    hi, lo = sorted(roots, key=lambda f: -f(1.0))
+    w_pi = float(sp.sqrt(mass))
+    fig, ax = figure(4.2, 2.8)
+    ax.axhline(w_pi, color=GRAY, lw=0.8, ls="-.")
+    ax.plot(K, hi(K), color=BLUE)
+    ax.plot(K, lo(K), color=ORANGE, ls="--")
+    label(ax, 0.012, hi(0.012) * 1.25, "electron plasma wave", BLUE)
+    label(ax, 0.06, lo(0.06) * 1.3, "ion acoustic", ORANGE, ha="right")
+    label(ax, 2.9, w_pi * 1.25, "$\\omega_{pi}/\\omega_{pe}$", GRAY, ha="right")
+    ax.set(xscale="log", yscale="log", xlim=(1e-2, 3), ylim=(1e-4, 10),
+           xlabel=r"$K=k\lambda_{De}$ [1]", ylabel=r"$W=\omega/\omega_{pe}$ [1]")
+    log_ticks(ax.xaxis, -2, 0)
+    log_ticks(ax.yaxis, -4, 1)
+    save(fig, "warm-longitudinal-modes")
 
 
 if __name__ == "__main__":

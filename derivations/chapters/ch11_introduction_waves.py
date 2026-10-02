@@ -32,7 +32,8 @@ animation ansatz at 512 (prescribed illustration, not a result).
 import sympy as sp
 from sympy.physics import units as u
 
-from si import UNITS, Derivation, c, check, e, eps0, k_B, m_e, m_i, mu0
+from si import (BLUE, GRAY, ORANGE, UNITS, Derivation, c, check, e, eps0, figure,
+                k_B, label, m_e, m_i, mu0, save)
 
 # Wave and plasma symbols.
 omega, k, n0, T_e, T_i = sp.symbols("omega k n_0 T_e T_i", positive=True)
@@ -59,6 +60,12 @@ def omega_pe_sq(n=n0):
 
 SRC = "src/chapters/11-introduction-waves.typ:"
 wpe_s = sp.Symbol("omega_pe", positive=True)  # omega_pe as one symbol
+
+# Results shared by the tests and the plots: each test proves its derivation
+# equals one of these expressions, and each plot_* lambdifies the same one.
+K_ = sp.Symbol("K", positive=True)  # K = k c / omega_pe
+# Cold transverse branch omega^2 = omega_pe^2 + c^2 k^2 in W = omega/omega_pe.
+W2_EM = sp.expand(((wpe_s**2 + c**2 * k**2) / wpe_s**2).subs(k, K_ * wpe_s / c))
 
 
 def test_plane_wave_replacement():
@@ -260,9 +267,8 @@ def test_example_ion_acoustic():
 
 def test_normalized_branch_limits():
     d = Derivation("Normalized branch and limits", SRC + "846")
-    K = sp.symbols("K", positive=True)
-    W2 = d.eq("normalize", sp.Symbol("W") ** 2,
-              sp.expand(((wpe_s**2 + c**2 * k**2) / wpe_s**2).subs(k, K * wpe_s / c)))
+    K = K_
+    W2 = d.eq("normalize", sp.Symbol("W") ** 2, W2_EM)
     check(W2, 1 + K**2)  # src/chapters/11-introduction-waves.typ:846
     W = sp.sqrt(W2)
     vg = d.eq("dW/dK", sp.Symbol("v_g") / c, sp.diff(W, K))
@@ -291,6 +297,26 @@ def test_example_drive_classification():
     close(kk, 32.7)  # src/chapters/11-introduction-waves.typ:903
     close(w / (kk * CODATA[c]), 1.15)  # src/chapters/11-introduction-waves.typ:904
     close(kk * CODATA[c] / w, 0.866)  # src/chapters/11-introduction-waves.typ:905
+
+
+def plot_wave_dispersion():
+    """Cold unmagnetized branches: transverse W^2 = 1 + K^2 and longitudinal W = 1."""
+    import numpy as np
+
+    W = sp.lambdify(K_, sp.sqrt(W2_EM), "numpy")
+    K = np.linspace(0, 3, 200)
+    fig, ax = figure(4.2, 2.8)
+    ax.plot(K, K, color=GRAY, ls=":", lw=1.2)
+    ax.plot(K, W(K), color=BLUE)
+    ax.plot(K, np.ones_like(K), color=ORANGE, ls="--")
+    ax.plot([0], [1], "o", color=BLUE, ms=4, clip_on=False, zorder=3)
+    label(ax, 0.08, 1.04, "cutoff", BLUE, va="bottom")
+    label(ax, 1.55, 2.05, "electromagnetic\n$W^2=1+K^2$", BLUE, ha="right")
+    label(ax, 2.95, 1.05, "electrostatic $W=1$", ORANGE, ha="right")
+    label(ax, 2.6, 2.4, "vacuum $W=K$", GRAY, ha="left", va="top")
+    ax.set(xlim=(0, 3), ylim=(0, 3.2), xticks=[0, 1, 2, 3], yticks=[0, 1, 2, 3],
+           xlabel=r"$K=kc/\omega_{pe}$ [1]", ylabel=r"$W=\omega/\omega_{pe}$ [1]")
+    save(fig, "wave-dispersion")
 
 
 if __name__ == "__main__":

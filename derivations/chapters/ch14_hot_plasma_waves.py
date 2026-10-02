@@ -50,8 +50,10 @@ Coverage (src/chapters/14-hot-plasma-waves.typ line -> test):
   1190-1196  orbit x and Bessel (Jacobi-Anger) weights -> test_flr_bessel_weights
   1214-1232  numerical example (magnetized)            -> test_example_magnetized
 
-Not covered: the figure functions imported from src/figures.typ (plots, not
-formulas) and the single test-particle animation ODE at lines 539-545, which is
+Plots: plot_hot_isotropic_dispersion (exact root of EPS_L_MAXWELL against
+W_BOHM_GROSS and GAMMA_LANDAU) and plot_two_stream_growth (G2_TWO_STREAM).
+Not covered: the illustrative bump-on-tail figure in src/figures.typ and the
+single test-particle animation ODE at lines 539-545, which is
 an illustrative prescribed-wave orbit rather than a derived result.
 """
 
@@ -59,7 +61,8 @@ import mpmath as mp
 import sympy as sp
 from sympy.physics import units as u
 
-from si import UNITS, Derivation, c, check, e, eps0, k_B, m_e
+from si import (BLUE, GRAY, ORANGE, UNITS, Derivation, c, check, e, eps0, figure,
+                k_B, label, m_e, save)
 
 I = sp.I
 n0, T_e, k, v, omega, q, m, phi, E1 = sp.symbols(
@@ -76,6 +79,13 @@ UNITS.update({
     lam_D: u.meter, w_pe: u.second**-1, gamma: u.second**-1,
     v_g: u.meter / u.second, k_i: u.meter**-1,
 })
+
+# Results shared by the tests and the plots: each test proves its derivation
+# equals one of these expressions, and each plot_* lambdifies the same one.
+# Electron Maxwellian, a = k lambda_D, zeta = omega/(k v_te), Zs = Z(zeta).
+EPS_L_MAXWELL = 1 + (1 + zeta * Zs) / a**2  # line 166
+W_BOHM_GROSS = sp.sqrt(1 + 3 * a**2)  # omega_r/omega_pe, line 499
+GAMMA_LANDAU = -sp.sqrt(sp.pi / 8) * a**(-3) * sp.exp(-1 / (2 * a**2) - sp.Rational(3, 2))  # 508
 
 # CODATA 2018 values for the worked examples.
 CODATA = {e: 1.602176634e-19, m_e: 9.1093837015e-31, eps0: 8.8541878128e-12,
@@ -177,6 +187,7 @@ def test_maxwellian_gives_Z():
     # src/chapters/14-hot-plasma-waves.typ:166
     stated = 1 + 1 / (k**2 * lamD2) * (1 + zeta * Zs)
     check(eps_L, stated)
+    check(stated.subs(k, a / sp.sqrt(lamD2)), EPS_L_MAXWELL)
     # The dimension of lambda_D^2 (line 101) is m^2.
     check(sp.sqrt(lamD2), sp.sqrt(eps0 * k_B * T_e / (n0 * e**2)), unit=u.meter)
 
@@ -248,6 +259,7 @@ def test_kinetic_bohm_gross():
     # src/chapters/14-hot-plasma-waves.typ:499
     stated_499 = w_p2 * (1 + 3 * (k * sp.sqrt(lamD2))**2)
     check(derived, stated_499)
+    check(stated_499.subs(k, a / sp.sqrt(lamD2)) / w_p2, W_BOHM_GROSS**2)
 
 
 def test_integration_by_parts_forms():
@@ -335,17 +347,27 @@ def test_landau_rate():
     pref = (sp.sqrt(sp.pi) * zeta / a**2).subs(zeta, 1 / (sp.sqrt(2) * a))
     derived = d.eq("weak rate", gamma / w_pe, -pref * sp.exp(-zeta2) / der0 / w_pe)
     # src/chapters/14-hot-plasma-waves.typ:508
-    stated = -sp.sqrt(sp.pi / 8) * a**(-3) * sp.exp(-1 / (2 * a**2) - sp.Rational(3, 2))
+    stated = GAMMA_LANDAU
     check(derived, stated)
     # src/chapters/14-hot-plasma-waves.typ:462 (governing-law form)
     stated_462 = -sp.sqrt(sp.pi / 8) * w_pe * sp.exp(-sp.Rational(3, 2)) * a**(-3) \
         * sp.exp(-1 / (2 * a**2))
     check(derived * w_pe, stated_462)
     # Sanity: compare with the exact complex root at a = 0.2 (within ~25%).
-    aa = mp.mpf("0.2")
-    f = lambda W: 1 + (1 + W / (mp.sqrt(2) * aa) * z_function(W / (mp.sqrt(2) * aa))) / aa**2
-    root = mp.findroot(f, mp.mpc(mp.sqrt(1 + 3 * aa**2), -0.001))
+    root = kinetic_root(0.2, mp.mpc(mp.sqrt(1 + 3 * 0.2**2), -0.001))
     close(mp.im(root), float(stated.subs(a, 0.2)), 0.25)
+
+
+def kinetic_root(a_value, guess):
+    """Complex root W = omega/omega_pe of EPS_L_MAXWELL = 0 at k lambda_D = a."""
+    eps = sp.lambdify((zeta, Zs, a), EPS_L_MAXWELL, "mpmath")
+    aa = mp.mpf(a_value)
+
+    def f(W):
+        z = W / (mp.sqrt(2) * aa)  # zeta = omega/(k v_te), v_te = sqrt(2) omega_pe lambda_D
+        return eps(z, z_function(z), aa)
+
+    return mp.findroot(f, guess)
 
 
 def test_spatial_rate():
@@ -598,6 +620,7 @@ def test_example_anisotropic():
 xx, yy = sp.symbols("x y", positive=True)
 v0, w_p = sp.symbols("v_0 omega_p", positive=True)
 UNITS.update({v0: u.meter / u.second, w_p: u.second**-1})
+G2_TWO_STREAM = sp.sqrt(1 + 8 * xx) / 2 - xx - sp.Rational(1, 2)  # (gamma/w_p)^2, line 977
 
 
 def test_two_stream_dispersion():
@@ -642,12 +665,12 @@ def test_two_stream_roots():
     assert band == sp.Interval.open(0, 1)
     # omega = i gamma -> gamma^2/w_p^2 = -y_- (lines 972, 977, 925).
     g2 = d.eq("i gamma", gamma**2 / w_p**2, -y_minus)
-    check(g2, sp.sqrt(1 + 8 * xx) / 2 - xx - sp.Rational(1, 2))
+    check(g2, G2_TWO_STREAM)
 
 
 def test_two_stream_maximum():
     d = Derivation("Maximum two-stream growth", "src/chapters/14-hot-plasma-waves.typ:986")
-    g2 = sp.sqrt(1 + 8 * xx) / 2 - xx - sp.Rational(1, 2)
+    g2 = G2_TWO_STREAM
     xs = sp.solve(sp.diff(g2, xx), xx)
     d.eq("extremum", xx, xs[0])
     assert xs == [sp.Rational(3, 8)]  # line 979
@@ -778,6 +801,58 @@ def test_example_magnetized():
           d=d, name=r"k_\parallel")  # line 1231
     close(w * 1.76e9, 1.41e9, 2e-3,
           d=d, name=r"\omega")  # line 1232
+
+
+def plot_hot_isotropic_dispersion():
+    """Exact Maxwellian Langmuir root against its Bohm-Gross and Landau asymptotes."""
+    import numpy as np
+
+    mp.mp.dps = 30
+    A = np.linspace(0.12, 0.6, 97)
+    guess = mp.mpc(float(W_BOHM_GROSS.subs(a, A[0])), float(GAMMA_LANDAU.subs(a, A[0])))
+    exact = []
+    for av in A:  # continuation in k lambda_D from the weakly damped end
+        guess = kinetic_root(av, guess)
+        exact.append(complex(guess))
+    mp.mp.dps = 15
+    exact = np.array(exact)
+    bg = sp.lambdify(a, W_BOHM_GROSS, "numpy")
+    gl = sp.lambdify(a, GAMMA_LANDAU, "numpy")
+    fig, top = figure(4.2, 4.0)
+    top.remove()
+    top, bot = fig.subplots(2, 1, sharex=True)
+    for ax in (top, bot):
+        ax.spines[["top", "right"]].set_visible(False)
+    top.plot(A, exact.real, color=BLUE)
+    top.plot(A, bg(A), color=ORANGE, ls="--")
+    label(top, 0.45, exact.real[np.searchsorted(A, 0.45)] + 0.02, "exact root", BLUE, ha="right")
+    label(top, 0.3, 1.08, "Bohm-Gross $\\sqrt{1+3a^2}$", ORANGE, va="top")
+    top.set(ylabel=r"$\omega_r/\omega_{pe}$ [1]", ylim=(1, 1.6), yticks=[1, 1.2, 1.4, 1.6])
+    bot.plot(A, -exact.imag, color=BLUE)
+    bot.plot(A, -gl(A), color=ORANGE, ls="--")
+    label(bot, 0.42, 0.18, "exact root", BLUE, ha="right")
+    label(bot, 0.14, 0.12, "weak-damping\nasymptote", ORANGE)
+    bot.set(ylabel=r"$-\gamma/\omega_{pe}$ [1]", ylim=(0, 0.3), yticks=[0, 0.1, 0.2, 0.3],
+            xlabel=r"$a=k\lambda_{De}$ [1]", xlim=(0.12, 0.6))
+    save(fig, "hot-isotropic-dispersion")
+
+
+def plot_two_stream_growth():
+    """Growth rate gamma/omega_p = sqrt(-y_-) over the unstable band 0 < K < 1."""
+    import numpy as np
+
+    g = sp.lambdify(xx, sp.sqrt(G2_TWO_STREAM), "numpy")
+    K = np.linspace(0, 1, 300)
+    kmax, gmax = np.sqrt(3 / 8), 1 / (2 * np.sqrt(2))  # tested in test_two_stream_maximum
+    fig, ax = figure(4.2, 2.6)
+    ax.plot(K, g(K**2), color=BLUE)
+    ax.plot([kmax], [gmax], "o", color=ORANGE, ms=4, zorder=3)
+    label(ax, kmax + 0.03, gmax + 0.005,
+          "max $1/(2\\sqrt{2})$ at $K=\\sqrt{3/8}$", ORANGE)
+    label(ax, 0.99, 0.02, "stable for $K>1$", GRAY, ha="right")
+    ax.set(xlim=(0, 1.1), ylim=(0, 0.42), xticks=[0, 0.25, 0.5, 0.75, 1],
+           xlabel=r"$K=|k v_0|/\omega_p$ [1]", ylabel=r"$\gamma/\omega_p$ [1]")
+    save(fig, "two-stream-growth")
 
 
 if __name__ == "__main__":

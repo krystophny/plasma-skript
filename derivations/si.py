@@ -153,8 +153,38 @@ def run_as_script(module_globals):
 # defines plot_<name>() functions that lambdify the derived expressions and
 # call save(fig, "<name>"); run_as_script writes build/fig/<name>.svg (script
 # website) and build/fig/<name>.pdf (slides).
+#
+# One figure, one source: the script includes the SVG with
+# `derived-plot("<name>", width: ...)` from src/figures.typ (a light card in
+# dark mode), the lecture slides include the PDF unchanged. Text is drawn as
+# paths in Computer Modern, so the SVG looks the same in every browser. The
+# relative text size follows from the figure size: a 10 pt label on a
+# 3.4 in wide figure stays readable when a slide scales it up to ~16 cm.
+# Plot in SI units (or say so in the axis label when normalized), encode each
+# curve by color *and* dash or marker, and label curves directly.
 
 BLUE, ORANGE, GRAY = "#0072B2", "#D55E00", "#555555"
+
+# CODATA 2018 SI values for numerical evaluation (lambdify) of the symbols above.
+SI_VALUES = {
+    e: 1.602176634e-19,
+    m_e: 9.1093837015e-31,
+    eps0: 8.8541878128e-12,
+    mu0: 1.25663706212e-6,
+    k_B: 1.380649e-23,
+    c: 299792458.0,
+}
+
+# Typical (n_e [m^-3], k_B T_e [eV]) of five example plasmas, one point each,
+# shared by the n-T map (ch02) and the plasma-frequency plot (ch03). Sources:
+# lecture-1 plan, lv/plasma/tex/slides/01_basics.md, "Parameter sources".
+EXAMPLE_PLASMAS = {
+    "ionosphere": (1e12, 1e-1),
+    "H II region": (1e9, 1.0),
+    "solar corona": (1e15, 1e2),
+    "Hall thruster": (1e18, 2e1),
+    "tokamak core": (1e20, 1e4),
+}
 
 
 def figure(width=4.2, height=2.8):
@@ -168,8 +198,16 @@ def figure(width=4.2, height=2.8):
         "font.size": 10, "axes.linewidth": 0.8, "lines.linewidth": 1.6,
         "axes.spines.top": False, "axes.spines.right": False,
         "xtick.direction": "out", "ytick.direction": "out",
-        "legend.frameon": False, "svg.fonttype": "none",
-        "mathtext.fontset": "cm", "figure.dpi": 150,
+        "legend.frameon": False, "figure.dpi": 150,
+        # Glyphs as paths: identical rendering without installed fonts.
+        "svg.fonttype": "path", "svg.hashsalt": "plasma-skript",
+        # Computer Modern for text and math, matching Typst and the slides.
+        "font.family": "serif", "font.serif": ["cmr10"],
+        "mathtext.fontset": "cm", "axes.formatter.use_mathtext": True,
+        "axes.unicode_minus": False,
+        "axes.edgecolor": "#333333", "xtick.color": "#333333",
+        "ytick.color": "#333333", "axes.labelcolor": "#1c1f23",
+        "text.color": "#1c1f23",
     })
     fig, ax = plt.subplots(figsize=(width, height), layout="constrained")
     return fig, ax
@@ -183,6 +221,25 @@ def save(fig, name):
 
     out = Path("build/fig")
     out.mkdir(parents=True, exist_ok=True)
-    for ext in ("svg", "pdf"):
-        fig.savefig(out / f"{name}.{ext}", transparent=False, facecolor="white")
+    # Transparent background: the page or slide supplies the paper; on the
+    # website the .quantitative-plot card keeps dark text readable in dark mode.
+    # No date metadata, so unchanged plots give byte-identical files.
+    fig.savefig(out / f"{name}.svg", transparent=True, metadata={"Date": None})
+    fig.savefig(out / f"{name}.pdf", transparent=True,
+                metadata={"CreationDate": None, "ModDate": None})
     plt.close(fig)
+
+
+def label(ax, x, y, text, color, **kw):
+    """Direct curve label in data coordinates, in the curve's color."""
+    kw.setdefault("ha", "left")
+    kw.setdefault("va", "bottom")
+    return ax.text(x, y, text, color=color, **kw)
+
+
+def log_ticks(axis, lo, hi, step=1):
+    """Major ticks at 10^lo ... 10^hi in steps of `step` decades, no minor ticks."""
+    from matplotlib.ticker import NullLocator
+
+    axis.set_ticks([10.0**k for k in range(lo, hi + 1, step)])
+    axis.set_minor_locator(NullLocator())

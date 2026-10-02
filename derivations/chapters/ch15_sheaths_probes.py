@@ -26,12 +26,14 @@ Coverage (line in src/chapters/15-sheaths-probes.typ -> test):
   755-756         animation density profile n_i/n0 at M = 1.5  -> test_cold_ion_density
   775             animation ion-saturation level 0.058         -> test_probe_animation_level
   782-791         numerical example (0.40 V^-1, 4.0 mA)        -> test_example_probe_numbers
+  figure sheath-profile: first integral of the sheath equation -> test_sheath_first_integral
 """
 
 import sympy as sp
 from sympy.physics import units as u
 
-from si import UNITS, Derivation, check, e, eps0, k_B, m_e, m_i
+from si import (BLUE, GRAY, ORANGE, UNITS, Derivation, check, e, eps0, figure, k_B,
+                label, m_e, m_i, save)
 
 SRC = "src/chapters/15-sheaths-probes.typ"
 
@@ -48,6 +50,17 @@ UNITS.update({
     A: u.meter**2, phi: u.volt, phi_w: u.volt, phi_p: u.volt, phi_pl: u.volt,
     lam: u.meter,
 })
+
+# Results shared by the tests and the plots: each test proves its derivation
+# equals one of these expressions, and each plot_* lambdifies the same one.
+N_E = sp.exp(-eta)  # n_e/n_0, line 278
+N_I = M / sp.sqrt(M**2 + 2 * eta)  # n_i/n_s, line 305
+SHEATH_RHS = N_I - N_E  # d^2 eta/d xi^2, line 324
+# Sagdeev potential: (d eta/d xi)^2/2 = SAGDEEV with eta = eta' = 0 at the edge.
+SAGDEEV = M * (sp.sqrt(M**2 + 2 * eta) - M) + sp.exp(-eta) - 1
+FLUX_RATIO = sp.sqrt(2 * sp.pi * m_e / m_i)  # Gamma_i/Gamma_e0, lines 565-566
+u_b = sp.Symbol("u", real=True)  # u = e (phi_p - phi_pl)/(k_B T_e)
+PROBE_RETARDING = Gam_i / Gam_e0 - sp.exp(u_b)  # I_p/(e A Gamma_e0) for u <= 0, line 676
 
 # CODATA 2018 values (SI, exact where defined).
 E_CODATA = 1.602176634e-19
@@ -138,7 +151,7 @@ def test_boltzmann_electrons():
     sol = d.eq("solve", ne(phi), sp.dsolve(ode, ne(phi), ics={ne(0): n0}).rhs)
     check(sol, n0 * sp.exp(e * phi / (k_B * T_e)))  # :278
     out = d.eq("eta", ne(phi), sol.subs(phi, -k_B * T_e * eta / e))
-    check(out, n0 * sp.exp(-eta))  # :278
+    check(out, n0 * N_E)  # :278
 
 
 def ion_density_ratio(d=None):
@@ -165,7 +178,7 @@ def test_cold_ion_density():
     d = Derivation("Cold ion density in the sheath", f"{SRC}:283-305")
     ratio = d.eq("Mach number", sp.Symbol("n_i") / sp.Symbol("n_s"),
                  sp.simplify(ion_density_ratio(d)))
-    check(ratio, M / (M**2 + 2 * eta) ** sp.Rational(1, 2))  # :305
+    check(ratio, N_I)  # :305
     anim = d.eq("M = 1.5", sp.Symbol("n_i") / n0, ratio.subs(M, sp.Rational(3, 2)))
     check(anim, sp.Rational(3, 2) / sp.sqrt(sp.Rational(9, 4) + 2 * eta))  # :756
 
@@ -184,7 +197,20 @@ def test_sheath_equation():
     check(eta2, ni / n0 - ne / n0)  # :323
     rhs = d.eq("densities", etaf.diff(xi, 2),
                sp.simplify(eta2.subs({ni: n0 * ion_density_ratio(), ne: n0 * sp.exp(-eta)})))
-    check(rhs, M / (M**2 + 2 * eta) ** sp.Rational(1, 2) - sp.exp(-eta))  # :324
+    check(rhs, SHEATH_RHS)  # :324
+
+
+def test_sheath_first_integral():
+    # Multiply eta'' = SHEATH_RHS by eta' and integrate from the edge (eta = eta' = 0).
+    d = Derivation("Sheath first integral (Sagdeev potential)", f"{SRC}:324")
+    S = d.eq("integrate", sp.Symbol("S"), sp.integrate(SHEATH_RHS.subs(eta, xi), (xi, 0, eta)))
+    check(S, SAGDEEV)
+    assert sp.simplify(sp.diff(SAGDEEV, eta) - SHEATH_RHS) == 0 and SAGDEEV.subs(eta, 0) == 0
+    # Near the edge S ~ (1 - 1/M^2) eta^2/2: real eta' requires the Bohm criterion.
+    lead = d.eq("series", sp.Symbol("S"), sp.series(SAGDEEV, eta, 0, 3).removeO())
+    check(lead, (1 - M**-2) * eta**2 / 2)
+    # At M = 1 the leading term is cubic and positive.
+    check(sp.series(SAGDEEV.subs(M, 1), eta, 0, 4).removeO(), eta**3 / 3)
 
 
 def test_bohm_criterion():
@@ -305,6 +331,7 @@ def test_floating_potential():
     Ge = d.eq("Maxwellian", Gam_e0, half_space_flux(n0, T_e, m_e))
     check(Ge, n0 * sp.sqrt((k_B * T_e) / (2 * sp.pi * m_e)))  # :566
     ratio = d.eq("flux ratio", Gam_i / Gam_e0, sp.simplify(Gi / Ge))
+    check(ratio, FLUX_RATIO)
     # ln(ratio) = ln(ratio^2)/2 keeps the mass ratio inside one logarithm.
     val = d.eq("Bohm flux", sp.Symbol("phi_f"),
                sp.Mul(k_B * T_e / (2 * e), sp.log(sp.simplify(ratio**2)), evaluate=False))
@@ -351,6 +378,7 @@ def test_probe_semilog():
     check(abs_Ie, e * A * Gam_e0 * sp.exp((e * (phi_p - phi_pl)) / (k_B * T_e)),
           unit=u.ampere)  # :709
     I_e0 = e * A * Gam_e0  # :687
+    check(I_p / I_e0, PROBE_RETARDING.subs(u_b, e * (phi_p - phi_pl) / (k_B * T_e)))
     line = d.eq("log", sp.log(sp.Abs(sp.Symbol("I_e")) / sp.Symbol("I_e0")),
                 sp.expand_log(sp.log(sp.simplify(abs_Ie / I_e0)), force=True))
     check(line, (e * (phi_p - phi_pl)) / (k_B * T_e))  # :715
@@ -389,6 +417,54 @@ def test_example_probe_numbers():
     n = num(d, "density", sp.Symbol("n_e"),
              I0 / (E_CODATA * A_ * (kT / (2 * sp.pi * ME_CODATA)) ** 0.5))
     close(n, 9.44e15, 2e-3)  # :791
+
+
+def plot_sheath_profile():
+    """Poisson solution of the Bohm sheath (M = 1) from the wall at hydrogen floating potential."""
+    import mpmath as mp
+    import numpy as np
+
+    Mv = 1  # ions enter at the Bohm speed
+    eta_w = float(-sp.log(FLUX_RATIO.subs({m_e: ME_CODATA, m_i: MP_CODATA})))  # 2.84
+    S = sp.lambdify(eta, SAGDEEV.subs(M, Mv), "mpmath")
+    # Wall at x = 0: x(eta) = int_eta^eta_w d eta'/sqrt(2 S(eta')).
+    etas = np.geomspace(eta_w, 0.02, 120)
+    xs = [float(mp.quad(lambda t: 1 / mp.sqrt(2 * S(t)), [h, eta_w])) for h in etas]
+    ne, ni = (sp.lambdify(eta, f.subs(M, Mv), "numpy") for f in (N_E, N_I))
+    fig, ax = figure(4.2, 2.8)
+    ax.plot(xs, etas, color=GRAY, ls=":")
+    ax.plot(xs, ni(etas), color=ORANGE, ls="--")
+    ax.plot(xs, ne(etas), color=BLUE)
+    at = lambda x: np.interp(x, xs, etas)  # eta at distance x
+    label(ax, 1.0, at(1.0) + 0.1, "potential $\\eta=-e\\phi/k_BT_e$", GRAY)
+    label(ax, 0.3, 0.68, "ions $n_i/n_0$", ORANGE)
+    label(ax, 8.0, 0.62, "electrons $n_e/n_0$", BLUE, va="top")
+    ax.set(xlim=(0, 12), ylim=(0, 3), yticks=[0, 1, 2, 3],
+           xlabel=r"$x/\lambda_D$ from the wall [1]", ylabel="$n/n_0$, $\\eta$ [1]")
+    save(fig, "sheath-profile")
+
+
+def plot_probe_iv_characteristic():
+    """Planar probe current I/(e A Gamma_e0): retarding branch, flat electron saturation."""
+    import numpy as np
+
+    ratio = float(FLUX_RATIO.subs({m_e: ME_CODATA, m_i: MP_CODATA}))  # hydrogen, 0.0585
+    f = sp.lambdify(u_b, PROBE_RETARDING.subs(Gam_i, ratio * Gam_e0) / 1, "numpy")
+    U = np.linspace(-8, 2, 400)
+    I = np.where(U <= 0, f(np.minimum(U, 0)), f(0))  # electron saturation for u > 0
+    u_f = np.log(ratio)  # tested in test_floating_potential: -2.84
+    fig, ax = figure(4.2, 2.8)
+    ax.axhline(0, color="#333333", lw=0.6)
+    ax.axvline(0, color=GRAY, lw=0.8, ls=":")
+    ax.plot(U, I, color=BLUE)
+    ax.plot([u_f], [0], "o", color=ORANGE, ms=4, zorder=3)
+    label(ax, u_f + 0.15, 0.03, f"floating $u_f={u_f:.2f}$", ORANGE)
+    label(ax, -7.9, ratio + 0.03, "ion saturation", BLUE)
+    label(ax, 1.9, -0.88, "electron\nsaturation", BLUE, ha="right")
+    label(ax, 0.1, -0.45, "plasma\npotential", GRAY)
+    ax.set(xlim=(-8, 2), ylim=(-1.1, 0.25), yticks=[-1, -0.5, 0],
+           xlabel=r"$u=e(\phi_p-\phi_{pl})/k_BT_e$ [1]", ylabel=r"$I/(eA\Gamma_{e0})$ [1]")
+    save(fig, "probe-iv-characteristic")
 
 
 if __name__ == "__main__":

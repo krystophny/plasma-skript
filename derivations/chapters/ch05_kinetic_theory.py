@@ -23,6 +23,7 @@ Coverage (Typst label or line -> test):
   <kinetic-equilibrium-distribution>, <kinetic-boltzmann-response>
                                       l.914-951          -> test_boltzmann_equilibrium
   Fermi energy, theta_e               l.986-989          -> test_fermi_energy
+  same n, u, T but different f (figure) -> test_moments_do_not_fix_f, plot_moment_ambiguity
 
 Not checked: particle-field model l.688-699 (Maxwell equations and Klimontovich
 sources are definitions restated from electrodynamics; no derived result).
@@ -320,6 +321,56 @@ def test_fermi_energy():
     check(EF, stated, unit=u.joule, units=U)
     check(k_B * T / stated, k_B * T / stated, unit=u.joule / u.joule, units={**U, T: u.kelvin})
 
+
+
+# --- Same moments, different distributions (figure at l.413) ----------------
+# One velocity component, s = (v - u)/v_th with v_th = sqrt(2 k_B T/m), and
+# f normalized by n/v_th. A Maxwellian and two half-density beams at
+# s = +-alpha whose width keeps the variance: w^2 = 1 - 2 alpha^2.
+s1, alpha = sp.symbols("s alpha", real=True)
+w_b = sp.Symbol("w", positive=True)
+W_BEAM = sp.sqrt(1 - 2 * alpha**2)
+F_MAXWELL_1D = sp.exp(-s1**2) / sp.sqrt(sp.pi)
+F_BEAMS_1D = sum(sp.exp(-((s1 - sgn * alpha) / w_b) ** 2)
+                 for sgn in (1, -1)) / (2 * sp.sqrt(sp.pi) * w_b)
+ALPHA_PLOT = sp.Rational(3, 5)
+
+
+def _moment(f, k):
+    m_k = sp.integrate(sp.expand(s1**k * f), (s1, -sp.oo, sp.oo))
+    return sp.simplify(sp.expand(m_k.subs(w_b, W_BEAM)))
+
+
+def test_moments_do_not_fix_f():
+    d = Derivation("Same n, u, T; different f", "src/chapters/05-kinetic-theory.typ:413")
+    for f in (F_MAXWELL_1D, F_BEAMS_1D):
+        check(_moment(f, 0), 1)  # same density n
+        check(_moment(f, 1), 0)  # same bulk velocity u
+        # <(v-u)^2> = v_th^2/2 = k_B T/m: same temperature.
+        check(_moment(f, 2), sp.Rational(1, 2))
+    d.eq("Maxwellian, 4th moment", sp.Symbol(r"\langle s^{4} \rangle_M"), _moment(F_MAXWELL_1D, 4))
+    m4 = d.eq("beams, 4th moment", sp.Symbol(r"\langle s^{4} \rangle_B"), _moment(F_BEAMS_1D, 4))
+    check(m4, sp.Rational(3, 4) - 2 * alpha**4)  # differs for every alpha != 0
+    assert 0 < ALPHA_PLOT < 1 / sp.sqrt(2)
+
+
+def plot_moment_ambiguity():
+    """A Maxwellian and two beams with identical n, u and T."""
+    import numpy as np
+
+    from si import BLUE, ORANGE, figure, label, save
+
+    x = np.linspace(-3, 3, 400)
+    fM = sp.lambdify(s1, F_MAXWELL_1D, "numpy")
+    fB = sp.lambdify(s1, F_BEAMS_1D.subs(w_b, W_BEAM).subs(alpha, ALPHA_PLOT), "numpy")
+    fig, ax = figure(3.4, 2.4)
+    ax.plot(x, fM(x), color=BLUE)
+    ax.plot(x, fB(x), color=ORANGE, ls="--")
+    label(ax, 1.35, fM(1.35) + 0.04, "Maxwellian", BLUE)
+    label(ax, -0.95, fB(-0.95) + 0.06, "two beams", ORANGE, ha="right")
+    ax.set(xlim=(-3, 3), ylim=(0, 0.8), yticks=[0, 0.25, 0.5, 0.75],
+           xlabel=r"$(v-u)/v_{\mathrm{th}}$", ylabel=r"$f\,v_{\mathrm{th}}/n$")
+    save(fig, "moment_ambiguity")
 
 if __name__ == "__main__":
     from si import run_as_script

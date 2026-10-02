@@ -52,6 +52,16 @@ LOCAL.update({n: u.meter**-3, sig: u.meter**2, v: u.meter / u.second, L: u.meter
               T: u.kelvin, ell: u.meter, b: u.meter, b90: u.meter, lamD: u.meter,
               nu: u.second**-1})
 
+# Results shared by the tests and the plots: each test proves its derivation
+# equals one of these expressions, and each plot_* lambdifies the same one.
+ONE_MINUS_COS = 2 * b90**2 / (b**2 + b90**2)   # Rutherford 1 - cos chi (line 240)
+OM_S, OMEGA = sp.symbols("Omega_s omega", real=True)
+q_s, m_s = sp.Symbol("q_s", real=True), sp.Symbol("m_s", positive=True)
+A_S = nu - sp.I * OMEGA                         # a_s = nu_s - i omega
+SIGMA_PAR = n * q_s**2 / (m_s * A_S)           # lines 853-860
+SIGMA_PERP = n * q_s**2 * A_S / (m_s * (A_S**2 + OM_S**2))
+SIGMA_HALL = n * q_s**2 * OM_S / (m_s * (A_S**2 + OM_S**2))
+
 
 # ---------------------------------------------------------------------------
 # Neutral collisions
@@ -151,7 +161,7 @@ def test_momentum_transfer_cross_section():
     bmax = sp.Symbol("b_max", positive=True)
     # 1 - cos chi = 2 sin^2(chi/2) with tan(chi/2) = b90/b.
     one_minus_cos = sp.simplify(2 * sp.sin(sp.atan(b90 / b)) ** 2)
-    check(one_minus_cos, 2 * b90**2 / (b**2 + b90**2))
+    check(one_minus_cos, ONE_MINUS_COS)
     # sigma_mt = int (1 - cos chi) dsigma, dsigma = 2 pi b db, screened at b_max.
     s_mt = d.eq("int (1 - cos chi) 2 pi b db", Tex(r"\sigma_{mt}"),
                 sp.integrate(2 * sp.pi * b * one_minus_cos, (b, 0, bmax)))
@@ -249,8 +259,7 @@ def test_example_spitzer():
 
 def test_conductivity_tensor():
     d = Derivation("Conductivity tensor", "src/chapters/09-collisions-conductivity.typ:853")
-    q, w = sp.symbols("q_s omega", real=True)
-    m = sp.Symbol("m_s", positive=True)
+    q, w, m = q_s, OMEGA, m_s
     B0 = sp.Symbol("B_0", positive=True)
     Ex, Ey, Ez = sp.symbols("E_x E_y E_z")
     ux, uy, uz = sp.symbols("u_x u_y u_z")
@@ -260,9 +269,7 @@ def test_conductivity_tensor():
     sol = sp.solve(eqs, [ux, uy, uz], dict=True)[0]
     J = [sp.simplify(n * q * sol[c]) for c in (ux, uy, uz)]
     Om = q * B0 / m
-    s_perp = n * q**2 * a / (m * (a**2 + Om**2))
-    s_H = n * q**2 * Om / (m * (a**2 + Om**2))
-    s_par = n * q**2 / (m * a)
+    s_perp, s_H, s_par = (S.subs(OM_S, Om) for S in (SIGMA_PERP, SIGMA_HALL, SIGMA_PAR))
     # Tensor form (line 805) with the AC entries (lines 853-860).
     check(J[0], s_perp * Ex + s_H * Ey)
     check(J[1], -s_H * Ex + s_perp * Ey)
@@ -300,6 +307,79 @@ def test_example_tensor():
     close(sp_, "2.28e-7")
     close(sH, "-0.160")
 
+
+# ---------------------------------------------------------------------------
+# Plots of derived results (written to build/fig by run_as_script)
+# ---------------------------------------------------------------------------
+def plot_coulomb_cutoff():
+    """Momentum-transfer weight per logarithmic impact-parameter interval."""
+    import math
+
+    import numpy as np
+
+    from si import BLUE, GRAY, figure, label, save
+
+    # d sigma_mt / d ln b = 2 pi b^2 (1 - cos chi), in units of 4 pi b90^2.
+    beta = sp.Symbol("beta", positive=True)  # b / b90
+    weight = sp.simplify((2 * sp.pi * b**2 * ONE_MINUS_COS / (4 * sp.pi * b90**2)).subs(b, beta * b90))
+    w = sp.lambdify(beta, weight, "numpy")
+    # Upper cutoff from the 10 eV, 1e16 m^-3 worked example: lambda_D/b90 = 32 n lambda_D^3.
+    ne, kT = 1.0e16, 1.602e-18
+    lam = (CODATA[eps0] * kT / (ne * CODATA[e] ** 2)) ** 0.5
+    Lcut = 32 * ne * lam**3
+    area = 0.5 * math.log(1 + Lcut**2)  # integral of the weight over ln b, 0 < b < lambda_D
+
+    fig, ax = figure(4.2, 2.4)
+    bb = np.logspace(-2, math.log10(Lcut), 400)
+    ax.fill_between(bb, w(bb), color=BLUE, alpha=0.15, lw=0)
+    ax.plot(bb, w(bb), color=BLUE)
+    ax.plot([Lcut, Lcut], [w(Lcut), 0], color=BLUE)
+    ax.plot([Lcut, 3e8], [0, 0], color=BLUE)
+    for xb, txt in [(1, r"$b_{90}$"), (Lcut, r"$\lambda_D$")]:
+        ax.axvline(xb, color=GRAY, lw=0.8, ls=":")
+        ax.text(xb, 1.12, txt, color=GRAY, ha="center", va="bottom")
+    label(ax, math.sqrt(Lcut), 0.45, rf"$\mathrm{{area}}=\ln\Lambda_{{\rm cut}}\approx{area:.1f}$",
+          BLUE, ha="center", va="center")
+    ax.set_xscale("log")
+    ax.set_xlim(1e-2, 3e8)
+    ax.set_ylim(0, 1.25)
+    ax.set_xticks([1e-2, 1, 1e2, 1e4, 1e6, 1e8])
+    ax.minorticks_off()
+    ax.set_yticks([0, 0.5, 1])
+    ax.set_xlabel(r"impact parameter $b/b_{90}$")
+    ax.set_ylabel(r"$d\sigma_{\rm mt}/d\ln b$  [$4\pi b_{90}^2$]")
+    save(fig, "coulomb-cutoff")
+
+
+def plot_conductivity_tensor():
+    """DC Pedersen and Hall conductivity versus magnetization, one species."""
+    import numpy as np
+
+    from si import BLUE, GRAY, ORANGE, figure, label, save
+
+    X = sp.Symbol("X", positive=True)  # |Omega_s| / nu_s
+    dc = {OMEGA: 0, OM_S: X * nu}
+    perp = sp.lambdify(X, sp.simplify((SIGMA_PERP / SIGMA_PAR).subs(dc)), "numpy")
+    hall = sp.lambdify(X, sp.simplify((SIGMA_HALL / SIGMA_PAR).subs(dc)), "numpy")
+
+    fig, ax = figure(4.2, 2.6)
+    xx = np.logspace(-2, 2, 300)
+    ax.axhline(1, color=GRAY, lw=1.0, ls=(0, (1, 2)))
+    ax.plot(xx, perp(xx), color=BLUE)
+    ax.plot(xx, hall(xx), color=ORANGE, ls="--")
+    label(ax, 1.2e-2, 1.02, r"parallel $\sigma_\parallel$", GRAY)
+    label(ax, 0.12, 0.72, r"Pedersen $\sigma_\perp$", BLUE, ha="right")
+    label(ax, 3.5, 0.33, r"Hall $|\sigma_{\rm H}|$", ORANGE)
+    ax.plot([1], [0.5], "o", color="#333333", ms=3.5)
+    ax.text(1.25, 0.6, r"$|\Omega_s|=\nu_s$", color="#333333", va="center", fontsize=9)
+    ax.set_xscale("log")
+    ax.set_xticks([1e-2, 1e-1, 1, 1e1, 1e2])
+    ax.minorticks_off()
+    ax.set_ylim(0, 1.12)
+    ax.set_yticks([0, 0.5, 1])
+    ax.set_xlabel(r"magnetization $|\Omega_s|/\nu_s$")
+    ax.set_ylabel(r"$\sigma/\sigma_\parallel$ (DC)")
+    save(fig, "conductivity-tensor")
 
 if __name__ == "__main__":
     from si import run_as_script

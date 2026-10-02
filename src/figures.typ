@@ -24,6 +24,14 @@
   if target() == "paged" { body }
   else { html.div(class: "quantitative-plot")[#body] }
 }
+// A plot of a derived result: plot_<name>() in derivations/chapters/chNN_*.py
+// lambdifies the tested SymPy expression and writes
+// derivations/build/fig/<name>.svg (used here) and .pdf (used by the slides).
+#let derived-plot(name, width: 9cm) = context {
+  let img = image("/derivations/build/fig/" + name + ".svg", width: width)
+  if target() == "paged" { align(center, img) }
+  else { html.div(class: "quantitative-plot", img) }
+}
 #let samples(lo, hi, n: 80) = range(n + 1).map(i => lo + (hi - lo) * i / n)
 // Okabe–Ito blue and vermilion plus a neutral gray. Every curve also carries
 // a distinct dash pattern and a direct label, so color is never the only cue.
@@ -88,168 +96,18 @@
 }
 
 #let model-hierarchy = context {
-  let alt-description = "A plasma-model hierarchy titled Plasma Models. Plasma phenomena branch to single-particle motion and a distribution function. The distribution function leads to the Boltzmann equation and then to moments of the Boltzmann equation, which branch to single-fluid MHD and multiple-fluid models. Annotations identify about 10^20 coupled particle ODEs, four Maxwell PDEs in 3+1 dimensions, a kinetic PDE in 6+1 dimensions, and the removal of velocity detail in the fluid description. A lower panel compares the illustrative grid costs of 3D and 6D descriptions using 100 points per coordinate and shows a two-dimensional position-velocity grid."
+  let alt-description = "Particle ODEs coupled to Maxwell's equations branch to a prescribed-field single trajectory, or to one kinetic PDE per species in six phase-space coordinates and time. Velocity moments and closure give one fluid per species in three spatial coordinates and time; combining species with MHD assumptions gives one bulk fluid."
   let caption-text = [
-    Plasma model hierarchy from coupled particle trajectories and Maxwell's
-    equations to kinetic and fluid descriptions. Prescribed electromagnetic forces remain in the test-particle model. Each kinetic species equation is coupled to field equations. The counts are illustrative:
-    100 points per coordinate gives $10^6$ points in 3D and $10^12$ points in
-    6D; the memory hints assume one 8-byte scalar per point. This is the
-    curse of dimensionality: at fixed resolution per coordinate, the size
-    of a full grid grows exponentially with the number of coordinates.
-    The schematic
-    phase-space axes use SI position in #unit("m") and velocity in
-    #unit("m/s").
+    Two reductions of the particle--field description. Prescribing the
+    fields gives a test-particle model; retaining collective feedback leads
+    to kinetic and fluid descriptions, with an additional assumption at each
+    step. 6+1D: three position and three velocity coordinates and time;
+    3+1D: position and time. At 100 grid points per coordinate a 3D grid has
+    $10^6$ points and a 6D grid $10^12$: the curse of dimensionality.
   ]
 
   if target() == "paged" {
-    figure(
-      alt: alt-description,
-      caption: caption-text,
-    )[
-      #align(center)[#text(size: 15pt, weight: "bold")[Plasma Models]]
-
-      #grid(
-        columns: (1fr, 1fr),
-        gutter: 0.55cm,
-        align(right)[
-          #text(size: 9pt, weight: "bold", fill: accent)[Illustrative $10^20$ particles] \
-          #text(size: 8pt, fill: muted)[one vector second-order equation per particle]
-        ],
-        align(left)[
-          #text(size: 9pt, weight: "bold", fill: blue)[Maxwell: 4 field equations in 3+1D] \
-          #text(size: 8pt, fill: muted)[vector/scalar equations, including constraints]
-        ],
-      )
-
-      #grid(
-        columns: (2.6cm, 1fr, 2.8cm),
-        gutter: 0.35cm,
-        align(center + horizon)[
-          #v(0.55cm)
-          #block(
-            width: 100%,
-            inset: 0.45em,
-            radius: 0.3em,
-            fill: accent-light,
-            stroke: 0.8pt + accent,
-          )[
-            #text(size: 8.5pt, weight: "bold", fill: accent)[Neglect \
-              interactions] \
-            #text(size: 8pt)[test particle]
-          ]
-        ],
-        [
-          #scale(x: 70%, y: 70%, reflow: true)[
-            #fletcher.diagram(
-              spacing: (1.05cm, 1.15cm),
-              node-stroke: 0.9pt,
-              edge-stroke: 0.9pt,
-              node((0, 0), [Plasma phenomena], name: <phenomena>),
-              node((-1.55, 1), [Single-particle \
-                motion], name: <single_particle>),
-              node((1.15, 1), [Distribution \
-                function], name: <distribution>),
-              node((2.85, 1), [Boltzmann \
-                equation], name: <boltzmann>),
-              node((2.85, 2), [Moments of Boltzmann \
-                equation], name: <moments>),
-              node((1.85, 3), [Single fluid \
-                (MHD)], name: <single_fluid>),
-              node((3.95, 3), [Multiple fluids], name: <multiple_fluids>),
-              edge(
-                (<phenomena.south-west>, 45%, <phenomena.south-east>),
-                (<single_particle.north-west>, 75%, <single_particle.north-east>),
-                [test particle],
-                "->",
-                label-side: left,
-              ),
-              edge(
-                (<phenomena.south-west>, 55%, <phenomena.south-east>),
-                (<distribution.north-west>, 25%, <distribution.north-east>),
-                [coarse grain],
-                "->",
-                label-side: right,
-              ),
-              edge(<distribution.east>, <boltzmann.west>, [kinetic PDE], "->", label-sep: 0.25em),
-              edge(<boltzmann.south>, <moments.north>, [take moments], "->", label-sep: 0.25em),
-              edge(
-                (<moments.south-west>, 45%, <moments.south-east>),
-                (<single_fluid.north-west>, 75%, <single_fluid.north-east>),
-                [closure],
-                "->",
-                label-side: left,
-              ),
-              edge(
-                (<moments.south-west>, 55%, <moments.south-east>),
-                (<multiple_fluids.north-west>, 25%, <multiple_fluids.north-east>),
-                [species moments],
-                "->",
-                label-side: right,
-              ),
-            )
-          ]
-        ],
-        align(center + horizon)[
-          #block(
-            width: 100%,
-            inset: 0.45em,
-            radius: 0.3em,
-            fill: rgb("#FFF3E5"),
-            stroke: 0.8pt + orange,
-          )[
-            #text(size: 8.5pt, weight: "bold", fill: orange)[Coarse graining] \
-            #text(size: 8pt)[1 kinetic PDE per species in 6+1D] \
-            #text(size: 8pt)[$f(bold(x), bold(v), t)$] \
-            #text(size: 8.5pt, weight: "bold", fill: orange)[kinetic]
-          ]
-        ],
-      )
-
-      #align(center)[
-        #text(size: 8.5pt, weight: "bold", fill: blue)[Remove velocity detail $bold(v)$] \
-        #text(size: 8pt, fill: muted)[fluid variables in 3+1D]
-      ]
-
-      #grid(
-        columns: (1.55fr, 1fr),
-        gutter: 0.55cm,
-        [
-          #block(
-            width: 100%,
-            inset: 0.55em,
-            radius: 0.3em,
-            fill: paper,
-            stroke: 0.7pt + muted,
-          )[
-            #text(size: 8.5pt, weight: "bold")[Curse of dimensionality] \
-            #text(size: 8pt)[100 grid points per coordinate] \
-            #text(size: 8pt)[$3D$: $10^6$ points, about 8 MB] \
-            #text(size: 8pt)[$6D$: $10^12$ points, about 8 TB]
-          ]
-        ],
-        [
-          #align(center)[
-            #cetz.canvas({
-              import cetz.draw: *
-              line((0, 0), (4.1, 0), stroke: 1pt + ink)
-              line((0, 0), (0, 2.4), stroke: 1pt + ink)
-              line((0, 0.48), (4.1, 0.48), stroke: 0.55pt + muted)
-              line((0, 0.96), (4.1, 0.96), stroke: 0.55pt + muted)
-              line((0, 1.44), (4.1, 1.44), stroke: 0.55pt + muted)
-              line((0, 1.92), (4.1, 1.92), stroke: 0.55pt + muted)
-              line((0.82, 0), (0.82, 2.4), stroke: 0.55pt + muted)
-              line((1.64, 0), (1.64, 2.4), stroke: 0.55pt + muted)
-              line((2.46, 0), (2.46, 2.4), stroke: 0.55pt + muted)
-              line((3.28, 0), (3.28, 2.4), stroke: 0.55pt + muted)
-              content((4.25, -0.1), [x #text(size: 7pt)[(#unit("m") )]])
-              content((-0.25, 2.55), [v #text(size: 7pt)[(#unit("m/s") )]])
-              content((3.45, 2.55), [2D])
-              content((1.55, -0.48), [$10^4$ points])
-            })
-          ]
-        ],
-      )
-    ]
+    figure(alt: alt-description, caption: caption-text, web-model-map())
   } else {
     html.figure(
       class: "concept-figure model-figure",
@@ -318,11 +176,13 @@
 }
 
 #let gyroradius-geometry = figure(
-  alt: "A circular orbit in a uniform magnetic field. The orbit center is marked, the radius from the center to the particle is labelled gyroradius, and a straight arrow shows the perpendicular velocity at the particle.",
+  alt: "A circular orbit of a positive charge in a uniform magnetic field pointing into the page, traversed counterclockwise. The orbit center is marked, the radius from the center to the particle is labelled gyroradius, and a straight arrow shows the perpendicular velocity at the particle.",
   caption: [
-    Geometry of uniform-field gyromotion. The radius is the gyroradius
+    Geometry of uniform-field gyromotion for a positive charge, with
+    $bold(B)$ into the page ($times.o$). The radius is the gyroradius
     $rho$ (a length in #unit("m")), and the tangent arrow represents the
-    perpendicular velocity $bold(v)_perp$.
+    perpendicular velocity $bold(v)_perp$; a negative charge circles the
+    other way.
   ],
 )[
   #graphic(cetz.canvas({
@@ -335,797 +195,313 @@
     content((0, -0.32), text(size: 0.9em)[guiding center])
     content((0.75, 0.24), [$rho$])
     content((1.82, 0.95), [$bold(v)_perp$])
+    content((-1.55, 1.3), [$times.o thin bold(B)$])
   }))
 ]
 
-#let debye-profile = figure(
-  alt: "A normalized planar sheet-source plot of screened electrostatic potential versus distance measured in Debye lengths. The potential is largest at zero distance and decreases symmetrically toward zero as the distance exceeds several Debye lengths.",
-  caption: [
-    Planar sheet-source screening, $phi/phi_0=exp(-abs(x)/lambda_D)$. This is not the spherical point-source Yukawa potential. Both axes use unit #text("[1]"): the
-    distance is normalized by the electron Debye length $lambda_D$, and the
-    potential is normalized by its value $phi_0$ at the source.
-  ],
-)[
-  #plot-diagram(
-    width: 10cm,
-    height: 5.2cm,
-    xlabel: normalized-axis[$x \/ lambda_D$],
-    ylabel: normalized-axis[$phi \/ phi_0$],
-    ..curve(samples(-4, 4, n: 160), x => calc.exp(-calc.abs(x))),
-  )
-]
-
 #let debye-potential-comparison = figure(
-  alt: "A normalized radial plot compares the potential of a finite uniformly charged sphere with and without Debye shielding. The bare potential follows a quadratic curve inside the sphere, joins a 1 over r Coulomb tail outside it, and remains above the screened curve. The Debye-screened curve is continuous at the sphere boundary and falls exponentially faster outside the source.",
+  alt: "Radial plot of the potential of a uniformly charged sphere of radius half a Debye length, with and without Debye shielding. The dashed bare potential is quadratic inside the sphere and falls off as 1 over r outside. The solid screened potential is lower everywhere and decays to nearly zero within about three Debye lengths.",
   caption: [
-    Linear Debye shielding for a permeable, uniformly charged sphere with
-    $R/lambda_D = 0.5$. Both axes use unit #text("[1]"): the radius is
-    normalized by the electron Debye length, and the potential by
-    $Q/(4 pi epsilon_0 lambda_D)$ in SI. The dashed curve is the bare spherical source and the solid
-    curve is the solution of the linearized spherical Debye--Hückel
-    equation, including mobile plasma inside the source. Linearization requires $abs(e phi)/(k_B T_e) << 1$ throughout; normalization by $Q/(4 pi epsilon_0 lambda_D)$ alone does not guarantee this. The curves are normalized SI results.
+    Bare (dashed) and Debye-screened (solid) potential of the permeable,
+    uniformly charged sphere, $R = lambda_D\/2$, from the expressions derived
+    above. Radius in units of $lambda_D$, potential in units of
+    $Q\/(4 pi epsilon_0 lambda_D)$. The linear model assumes
+    $abs(e phi) << k_B T_e$ throughout, which this normalization does not
+    impose by itself.
   ],
-)[
-  #plot-diagram(
-    width: 10cm,
-    height: 5.6cm,
-    xlabel: normalized-axis[$r \/ lambda_D$],
-    ylabel: normalized-axis[$phi \/ (Q \/ (4 pi epsilon_0 lambda_D))$],
-    ..curve(samples(0, 4, n: 160), r => model.sphere-bare(r),
-      color: plot-orange, dash: "dashed"),
-    ..curve(samples(0, 4, n: 160), r => model.sphere-screened(r)),
-    tag(1.25, model.sphere-bare(1.25), color: plot-orange, align: left + bottom)[bare],
-    tag(0.75, model.sphere-screened(0.75), align: left + bottom)[screened],
-  )
-]
+)[#derived-plot("debye_potential", width: 8.6cm)]
 
-#let maxwellian-profile = figure(
-  alt: "A normalized one-dimensional velocity plot compares a centered Maxwellian distribution with a second Maxwellian shifted toward positive velocity. The centered curve peaks at zero velocity, while the shifted curve peaks at positive normalized velocity and has the same Gaussian width.",
+#let debye-regime-map = figure(
+  alt: "Log-log plane of electron density from 10 to the 6 to 10 to the 32 per cubic metre and electron temperature from 0.01 eV to 100 keV. Three dashed lines of slope one mark Debye lengths of 100 m, 1 cm and 1 micrometre. A solid line of slope one third marks N_D equal to one; the shaded region below it, at high density and low temperature, has N_D below one. Five example plasmas, ionosphere, H II region, solar corona, Hall thruster and tokamak core, all lie far above that line.",
   caption: [
-    Centered and drifting one-dimensional Maxwellians. The horizontal axis is
-    velocity normalized by $v_"th"=sqrt((2 k_B T)/m)$, and the vertical axis is
-    distribution value normalized by the centered peak. Line style and direct
-    labels distinguish the curves independently of color.
+    Where the collective ordering holds. Dashed: $lambda_D = L$, i.e.
+    $k_B T_e = e^2 n_e L^2\/epsilon_0$, for three system sizes $L$; plasmas
+    to the right of a line are quasineutral on that scale. Solid:
+    $N_D = 1$, i.e. $k_B T_e = (e^2\/epsilon_0)(3\/(4 pi))^(2\/3) n_e^(1\/3)$;
+    the shaded side has $N_D < 1$. Dots: typical parameters of five example
+    plasmas (order of magnitude).
   ],
-)[
-  #plot-diagram(
-    width: 10cm,
-    height: 5.2cm,
-    xlabel: normalized-axis[$v \/ v_"th"$],
-    ylabel: normalized-axis[$f \/ f_0$],
-    ..curve(samples(-3, 4, n: 140), x => model.maxwellian(x)),
-    ..curve(samples(-3, 4, n: 140), x => model.maxwellian(x, drift: 1),
-      color: plot-orange, dash: "dashed"),
-    tag(-0.75, model.maxwellian(-0.75), align: right)[centered],
-    tag(1.8, model.maxwellian(1.8, drift: 1), color: plot-orange)[drifting, #normalized-label[$u \/ v_"th"=1$]],
-  )
-]
+)[#derived-plot("nt_map", width: 12.5cm)]
+
+#let moment-ambiguity = figure(
+  alt: "One-dimensional velocity distributions with the same density, bulk velocity and temperature. The solid Maxwellian has a single peak at the bulk velocity. The dashed distribution consists of two narrower beams at plus and minus 0.6 thermal speeds, with a dip at the bulk velocity.",
+  caption: [
+    Same $n$, $bold(u)$ and $T$, different $f$: a Maxwellian (solid) and two
+    beams at $(v-u)\/v_"th" = plus.minus 0.6$ (dashed) whose width is chosen
+    to give the same variance $k_B T\/m$. One velocity component,
+    $v_"th" = sqrt(2 k_B T\/m)$; $f$ in units of $n\/v_"th"$. The moments
+    first differ at fourth order.
+  ],
+)[#derived-plot("moment_ambiguity", width: 8.6cm)]
+
+#let plasma-frequency-scale = figure(
+  alt: "Log-log plot of the electron plasma frequency in hertz against electron density per cubic metre. A straight line of slope one half rises from about 10 kilohertz at 10 to the 6 per cubic metre. Horizontal guides mark megahertz, gigahertz and terahertz. Five example plasmas lie on the line: H II region near 0.3 MHz, ionosphere near 9 MHz, solar corona near 0.3 GHz, Hall thruster near 9 GHz and tokamak core near 90 GHz.",
+  caption: [
+    Electron plasma frequency $f_(p,e) = omega_(p,e)\/(2 pi)$ against
+    electron density, with the five example plasmas of the
+    density--temperature map. $f_(p,e)$ grows as $sqrt(n_e)$: radio for
+    space plasmas, microwave for laboratory and fusion plasmas.
+  ],
+)[#derived-plot("plasma_frequency", width: 8.6cm)]
 
 #let collision-paths = figure(
-  alt: "A conceptual comparison of two normalized particle paths. The neutral-gas path is a zigzag made of straight flights separated by a few marked hard collisions. The plasma path bends smoothly through many small deflections distributed along the flight, with no isolated hard-sphere event. The paths are illustrative, not measured trajectories.",
+  alt: "Two illustrative particle paths from left to right. Top, neutral gas: straight flights broken by four sharp turns, each marked by a dot for a hard collision. Bottom, plasma: a path made of many short segments, each turned by a small random angle, so the direction wanders gradually without any single sharp turn. The paths are illustrative, not computed trajectories.",
   caption: [
-    Collision geometry in a neutral gas and a weakly coupled plasma. The
-    horizontal distance and transverse displacement are normalized by the
-    reference mean free path $lambda_"ref"$ and use unit #text("[1]").
-    Dots mark the isolated hard collisions of the neutral path; the plasma
-    path is a continuous curve with many small deflections, so the two
-    interaction models are distinguished without relying on color.
+    Neutral gas (top): straight flights between a few hard, large-angle
+    collisions (dots). Plasma (bottom): many small-angle Coulomb deflections
+    whose accumulated effect turns the particle by a comparable angle.
+    Illustrative paths, not computed trajectories.
   ],
 )[
   #let neutral = ((0, 0), (1.3, 0.06), (2.2, 0.42), (3.4, -0.22), (4.6, -0.1), (5.8, 0.3))
-  // Illustrative small-angle path: a slowly varying heading built from a few
-  // incommensurate sines, integrated in steps of 0.05 [1].
-  #let plasma = range(120).fold(((0, 0),), (acc, i) => {
-    let th = 0.3*calc.sin(0.09*i) - 0.22*calc.sin(0.23*i + 0.5) + 0.04*calc.sin(2.7*i)
-    let (x, y) = acc.last()
-    acc + ((x + 0.05*calc.cos(th), y + 0.05*calc.sin(th)),)
-  })
-  #plot-diagram(
-    width: 10cm,
-    height: 5.2cm,
-    ylim: (-0.45, 0.6),
-    xlabel: normalized-axis[$ell \/ lambda_"ref"$],
-    ylabel: normalized-axis[$y \/ lambda_"ref"$],
-    lq.plot(neutral.map(p => p.first()), neutral.map(p => p.last()),
-      color: plot-blue, mark: none, stroke: plot-stroke),
-    lq.plot(neutral.slice(1, -1).map(p => p.first()), neutral.slice(1, -1).map(p => p.last()),
-      color: plot-blue, stroke: none, mark: "o", mark-size: 4pt),
-    lq.plot(plasma.map(p => p.first()), plasma.map(p => p.last()),
-      color: plot-orange, mark: none, stroke: plot-stroke),
-    tag(3.4, -0.22, align: left + top)[neutral gas: hard collisions],
-    tag(3.5, 0.47, color: plot-orange, align: left)[plasma: many weak deflections],
-  )
+  // Small random kicks to the heading (fixed pseudo-random sequence), with a
+  // weak pull back to the row: 75 steps of length 0.078.
+  #let plasma = range(75).fold(((0, 0, 0),), (acc, i) => {
+    let (x, y, th) = acc.last()
+    let th2 = 0.95*th + 0.22*calc.sin(i*i*2.399 + 1.3) - 0.12*y
+    acc + ((x + 0.078*calc.cos(th2), y + 0.078*calc.sin(th2), th2),)
+  }).map(p => (p.at(0), p.at(1)))
+  #graphic(cetz.canvas(length: 1.5cm, {
+    import cetz.draw: *
+    let row(dy, pts) = pts.map(((x, y)) => (x, y + dy))
+    line(..row(1.2, neutral), stroke: 1pt + plot-blue)
+    for p in row(1.2, neutral).slice(1, -1) {
+      circle(p, radius: 0.06, fill: plot-blue, stroke: none)
+    }
+    line(..plasma, stroke: 1pt + plot-orange)
+    content((6.1, 1.5), anchor: "west", text(fill: plot-blue)[neutral gas])
+    content((6.1, plasma.last().at(1)), anchor: "west", text(fill: plot-orange)[plasma])
+  }))
 ]
 
 #let moment-hierarchy = figure(
-  alt: "A hierarchy diagram starts with the full distribution function f of position and velocity and branches to progressively higher velocity moments: number density n, bulk velocity u, pressure tensor P, and heat flux q. Each lower-level description retains less velocity-space information and requires a closure for the next moment.",
+  alt: "The distribution function f supplies, by velocity moments (thin dashed lines), the density n, the bulk velocity u, the pressure tensor P, and the third central tensor Q. Solid arrows run from each moment to the next: the continuity equation for n contains u, the momentum equation contains P, the pressure equation contains Q, and the Q equation contains a still higher moment. A closure must cut the chain.",
   caption: [
-    Velocity moments compress the distribution function into macroscopic
-    fields. The hierarchy is not a sequence of unrelated equations: the
-    transport law for one moment generally contains the next moment. Here
-    $bold(w)=bold(v)-bold(u)$; heat flux contracts the third central tensor,
-    which is needed in full for a general pressure-tensor evolution.
-    Arrows denote equation dependencies, not recovery of higher moments.
+    Each moment equation contains the next moment. The equation for $n$
+    contains $bold(u)$, the one for $bold(u)$ contains $bold(P)$, and the
+    one for $bold(P)$ contains the third central tensor $bold(Q)$, whose
+    contraction is the heat flux $bold(q)$. A fluid model cuts the chain
+    with a closure. Dashed lines: moments of $f$.
   ],
 )[
   #graphic(fletcher.diagram(
-    spacing: (1.1cm, 1.3cm),
+    spacing: (1.25cm, 1.2cm),
     ..concept-style,
-    node((0, 0), [Distribution $f(t, bold(r), bold(v))$]),
-    node((-2.2, 1), [0th moment \ $n$]),
-    node((0, 1), [normalized 1st raw moment \ $bold(u)$]),
-    node((2.2, 1), [2nd central moment \ $bold(P)$]),
-    node((2.2, 2), [contracted 3rd central moment \ $bold(q)$]),
-    edge((0, 0), (-2.2, 1), [integrate], "->"),
-    edge((0, 0), (0, 1), [weight $bold(v)$], "->"),
-    edge((0, 0), (2.2, 1), [weight $bold(w) bold(w)$], "->"),
-    edge((2.2, 1), (2.2, 2), [higher transport], "->"),
+    node((1.5, 0), [$f(t, bold(r), bold(v))$]),
+    node((0, 1), [$n$]),
+    node((1, 1), [$bold(u)$]),
+    node((2, 1), [$bold(P)$]),
+    node((3, 1), [$bold(Q)$]),
+    node((4.1, 1), [closure], stroke: (paint: luma(55%), thickness: 0.6pt, dash: "dashed")),
+    ..range(4).map(i => edge((1.5, 0), (i, 1), stroke: (paint: luma(60%), thickness: 0.5pt, dash: "dashed"))),
+    edge((0, 1), (1, 1), [cont.], "->", label-side: right),
+    edge((1, 1), (2, 1), [mom.], "->", label-side: right),
+    edge((2, 1), (3, 1), [pressure], "->", label-side: right),
+    edge((3, 1), (4.1, 1), [$dots.c$], "->", label-side: right),
   ))
 ]
 
-#let multiple-fluid-hierarchy = context {
-  let alt-description = "A schematic multiple-fluid hierarchy starts with one kinetic distribution for each species. The electron and ion distributions are separately reduced to electron and ion density, velocity, and pressure fields. Their coupled equations share electric and magnetic fields, and summing the species equations gives one-fluid variables only after the relative-flow stress is accounted for."
-  let caption-text = [
-    Species-resolved moments retain the relative motion of electrons and ions.
-    The electromagnetic field couples the two fluid systems: each fluid
-    supplies charge and current to Maxwell's equations and feels the Lorentz
-    force of the shared field. A one-fluid
-    description is obtained only after their sums and relative-flow terms are
-    defined.
-  ]
+#let multiple-fluid-hierarchy = figure(
+  alt: "A multiple-fluid hierarchy starts with one kinetic distribution for each species. The electron and ion distributions are separately reduced to electron and ion density, velocity, and pressure fields. Both fluids exchange sources and forces with the shared electric and magnetic fields; summing the species equations gives one-fluid variables.",
+  caption: [
+    Species-resolved moments retain the relative motion of electrons and
+    ions. Each fluid supplies charge and current to Maxwell's equations and
+    feels the Lorentz force of the shared field. A one-fluid description
+    follows only after the sums and relative-flow terms are defined.
+  ],
+)[
+  #graphic(fletcher.diagram(
+    spacing: (2.6cm, 1.15cm),
+    ..concept-style,
+    node((0, 0), [Kinetic species states \ $f_(e), f_(i)$]),
+    node((-1.7, 1), [Electron fluid \ $n_(e), bold(u)_(e), bold(P)_(e)$]),
+    node((1.7, 1), [Ion fluid \ $n_(i), bold(u)_(i), bold(P)_(i)$]),
+    node((0, 2), [Coupled fields \ $bold(E), bold(B)$]),
+    node((0, 3), [One-fluid sums \ $rho, bold(u), bold(P), bold(j)$]),
+    edge((0, 0), (-1.7, 1), [velocity moments], "->"),
+    edge((0, 0), (1.7, 1), [velocity moments], "->"),
+    edge((-1.7, 1), (0, 2), [sources, force], "<->"),
+    edge((1.7, 1), (0, 2), [sources, force], "<->"),
+    edge((0, 2), (0, 3), [sum and define], "->"),
+  ))
+]
 
-  if target() == "paged" {
-    figure(
-      alt: alt-description,
-      caption: caption-text,
-    )[
-      #fletcher.diagram(
-        spacing: (2.6cm, 1.15cm),
-        ..concept-style,
-        node((0, 0), [Kinetic species states \
-          $f_(e), f_(i)$]),
-        node((-1.7, 1), [Electron fluid \
-          $n_(e), bold(u)_(e), bold(P)_(e)$]),
-        node((1.7, 1), [Ion fluid \
-          $n_(i), bold(u)_(i), bold(P)_(i)$]),
-        node((0, 2), [Coupled fields \
-          $bold(E), bold(B)$]),
-        node((0, 3), [One-fluid sums \
-          $rho, bold(u), bold(P), bold(j)$]),
-        edge((0, 0), (-1.7, 1), [velocity moments], "->"),
-        edge((0, 0), (1.7, 1), [velocity moments], "->"),
-        edge((-1.7, 1), (0, 2), [sources, force], "<->"),
-        edge((1.7, 1), (0, 2), [sources, force], "<->"),
-        edge((0, 2), (0, 3), [sum and define], "->"),
-      )
-    ]
-  } else {
-    // Fletcher and CeTZ diagrams are intentionally replaced by a semantic
-    // HTML fallback: the typed HTML target does not always emit their canvas.
-    html.figure(class: "concept-figure")[
-      #html.div(
-        class: "hierarchy-fallback",
-        role: "img",
-        aria-label: alt-description,
-      )[
-        #html.div(class: "hierarchy-node hierarchy-source")[
-          #html.strong[Kinetic species states]
-          #html.span[$f_(e), f_(i)$]
-        ]
-        #html.div(class: "hierarchy-arrow")[↓ velocity moments]
-        #html.div(class: "hierarchy-branches")[
-          #html.div(class: "hierarchy-node")[
-            #html.strong[Electron fluid]
-            #html.span[$n_(e), bold(u)_(e), bold(P)_(e)$]
-          ]
-          #html.div(class: "hierarchy-node")[
-            #html.strong[Ion fluid]
-            #html.span[$n_(i), bold(u)_(i), bold(P)_(i)$]
-          ]
-        ]
-        #html.div(class: "hierarchy-arrow")[↕ charge and current sources; Lorentz force]
-        #html.div(class: "hierarchy-node hierarchy-fields")[
-          #html.strong[Coupled fields]
-          #html.span[$bold(E), bold(B)$]
-        ]
-        #html.div(class: "hierarchy-arrow")[↓ sum and define]
-        #html.div(class: "hierarchy-node hierarchy-sums")[
-          #html.strong[One-fluid sums]
-          #html.span[$rho, bold(u), bold(P), bold(j)$]
-        ]
-      ]
-      #html.figcaption[#caption-text]
-    ]
-  }
-}
-
-#let mhd-reduction = context {
-  let alt-description = "A reduction map shows electron and ion fluid equations being combined into total mass and momentum balances, while their difference supplies a generalized Ohm law. Ordering and closure assumptions then reduce the system to single-fluid MHD."
-  let caption-text = [
+#let mhd-reduction = figure(
+  alt: "A reduction map shows electron and ion fluid equations being combined into total mass and momentum balances, while their difference supplies a generalized Ohm law. Closure and ordering assumptions then reduce the system to single-fluid MHD.",
+  caption: [
     Single-fluid MHD keeps the variables that survive a mass-weighted sum and
     records the species difference through Ohm's law. Every arrow is an
     approximation or definition that must be stated.
-  ]
+  ],
+)[
+  #graphic(fletcher.diagram(
+    spacing: (1.35cm, 1.15cm),
+    ..concept-style,
+    node((0, 0), [Electron + ion equations]),
+    node((-1.45, 1), [Mass-weighted sum \ $rho, bold(u), bold(P)$]),
+    node((1.45, 1), [Species difference \ $bold(E)+bold(u) times bold(B)$]),
+    node((0, 2), [Single-fluid MHD \ mass, momentum, induction]),
+    edge((0, 0), (-1.45, 1), [sum], "->"),
+    edge((0, 0), (1.45, 1), [subtract], "->"),
+    edge((-1.45, 1), (0, 2), [closure], "->"),
+    edge((1.45, 1), (0, 2), [ordering], "->"),
+  ))
+]
 
-  if target() == "paged" {
-    figure(
-      alt: alt-description,
-      caption: caption-text,
-    )[
-      #fletcher.diagram(
-        spacing: (1.35cm, 1.15cm),
-        ..concept-style,
-        node((0, 0), [Electron + ion equations]),
-        node((-1.45, 1), [Mass-weighted sum \
-          $rho, bold(u), bold(P)$]),
-        node((1.45, 1), [Species difference \
-          $bold(E)+bold(u) times bold(B)$]),
-        node((0, 2), [Single-fluid MHD \
-          mass, momentum, induction]),
-        edge((0, 0), (-1.45, 1), [sum], "->"),
-        edge((0, 0), (1.45, 1), [subtract], "->"),
-        edge((-1.45, 1), (0, 2), [closure], "->"),
-        edge((1.45, 1), (0, 2), [ordering], "->"),
-      )
-    ]
-  } else {
-    html.figure(class: "concept-figure")[
-      #html.div(
-        class: "mhd-diagram mhd-reduction-fallback",
-        role: "img",
-        aria-label: alt-description,
-      )[
-        #html.div(class: "mhd-node mhd-node-wide")[
-          #html.strong[Electron + ion equations]
-        ]
-        #html.div(class: "mhd-arrow")[↙ weighted sum &nbsp; ↘ species difference]
-        #html.div(class: "mhd-branches")[
-          #html.div(class: "mhd-node")[
-            #html.strong[Mass-weighted sum]
-            #html.span[$rho, bold(u), bold(P)$]
-          ]
-          #html.div(class: "mhd-node mhd-node-ohm")[
-            #html.strong[Species difference]
-            #html.span[$bold(E)+bold(u) times bold(B)$]
-          ]
-        ]
-        #html.div(class: "mhd-arrow")[↓ closure and ordering]
-        #html.div(class: "mhd-node mhd-node-result")[
-          #html.strong[Single-fluid MHD]
-          #html.span[mass · momentum · induction]
-        ]
-      ]
-      #html.figcaption[#caption-text]
-    ]
-  }
-}
+#let mhd-flux-diffusion = figure(
+  alt: "The induction equation splits into two regimes. At high magnetic Reynolds number, advection dominates and magnetic flux through a material loop is approximately frozen. With finite resistivity, the magnetic diffusivity D_B = eta/mu_0 lets field diffuse on the time L squared over D_B, and field topology can change.",
+  caption: [
+    The magnetic Reynolds number $R_m$ compares advection with diffusion in
+    the induction equation. For $R_m >> 1$ field lines move with the fluid;
+    finite resistivity lets them slip and diffuse.
+  ],
+)[
+  #graphic(fletcher.diagram(
+    spacing: (1.45cm, 1.15cm),
+    ..concept-style,
+    node((0, 0), [Induction equation \
+      $partial_t bold(B)=curl (bold(u) times bold(B))+D_B laplacian bold(B)$]),
+    node((-1.35, 1), [$R_m >> 1$ \ flux frozen, field moves with $bold(u)$]),
+    node((1.35, 1), [$D_B=eta \/ mu_0$ finite \ diffusion in $tau_D=L^2 \/ D_B$]),
+    edge((0, 0), (-1.35, 1), [advection dominates], "->"),
+    edge((0, 0), (1.35, 1), [diffusion retained], "->"),
+  ))
+]
 
-#let mhd-ohm-balance = context {
-  let alt-description = "A generalized Ohm-law map places the ideal combination of electric field and bulk magnetic advection, E plus u cross B, at the top. Four arrows lead to the separate right-hand-side terms: resistive, Hall, electron-pressure, and electron-inertia."
-  let caption-text = [
-    Generalized Ohm's law is a balance of distinct physical effects. The
-    simplified ideal form is obtained only after the retained corrections are
-    compared with the chosen scales.
-  ]
+#let mhd-force-balance = figure(
+  alt: "Cross-section of a z-pinch. Shading marks the pressure, highest on the axis. The current j_z flows out of the page on the axis, and the azimuthal field B_theta circles it. At a point inside the column, the pressure force minus grad p points outward and the magnetic force j cross B points inward with equal length: static force balance grad p = j cross B.",
+  caption: [
+    Static force balance $grad p=bold(j) times bold(B)$ in a $z$-pinch cross
+    section. Pressure (shading) peaks on the axis, so $-grad p$ pushes
+    outward; the axial current $j_z$ and its azimuthal field $B_theta$ give
+    an inward $bold(j) times bold(B)$ of equal size.
+  ],
+)[
+  #graphic(cetz.canvas(length: 1.25cm, {
+    import cetz.draw: *
+    for (r, l) in ((2.0, 95%), (1.5, 90%), (1.0, 85%), (0.5, 80%)) {
+      circle((0, 0), radius: r, fill: luma(l), stroke: none)
+    }
+    circle((0, 0), radius: 2.0, stroke: 0.6pt + luma(55%))
+    // B_theta: counterclockwise for j_z out of the page
+    arc((0, 0), start: 150deg, stop: 420deg, radius: 2.35, anchor: "origin",
+      stroke: 0.8pt + ink, mark: (end: ">", fill: ink))
+    content((-2.45, -1.1), anchor: "east", $B_theta$)
+    // axial current out of the page
+    circle((0, 0), radius: 0.14, fill: white, stroke: 0.8pt + ink)
+    circle((0, 0), radius: 0.035, fill: ink, stroke: none)
+    content((-0.4, -0.3), $j_z$)
+    // forces at a point inside the column, radius 1.35 at 100 degrees
+    let (c, s) = (calc.cos(100deg), calc.sin(100deg))
+    let at(r) = (r * c, r * s)
+    circle(at(1.35), radius: 0.05, fill: ink, stroke: none)
+    line(at(1.35), at(2.15), stroke: 1.3pt + orange, mark: (end: ">", fill: orange))
+    line(at(1.35), at(0.55), stroke: 1.3pt + blue, mark: (end: ">", fill: blue))
+    content((2.15 * c, 2.15 * s + 0.1), anchor: "south", text(fill: orange)[$-grad p$])
+    content((0.95 * c + 0.2, 0.95 * s), anchor: "west",
+      text(fill: blue)[$bold(j) times bold(B)$])
+  }))
+]
 
-  if target() == "paged" {
-    figure(
-      alt: alt-description,
-      caption: caption-text,
-    )[
-      #fletcher.diagram(
-        spacing: (0.55cm, 1.3cm),
-        ..concept-style,
-        node((0, 0), [Generalized Ohm law \
-          $bold(E)+bold(u) times bold(B) = dots$]),
-        node((-3, 1), [Resistive \ $eta bold(j)$]),
-        node((-1, 1), [Hall \ $bold(j) times bold(B) \/ (e n c)$]),
-        node((1, 1), [Electron pressure \ $-grad p_e \/ (e n)$]),
-        node((3, 1), [Electron inertia \ $m_e \/ (e^2 n) thin partial_t bold(j)$]),
-        edge((0, 0), (-3, 1), "->"),
-        edge((0, 0), (-1, 1), "->"),
-        edge((0, 0), (1, 1), "->"),
-        edge((0, 0), (3, 1), "->"),
-      )
-    ]
-  } else {
-    html.figure(class: "concept-figure")[
-      #html.div(
-        class: "mhd-diagram mhd-ohm-fallback",
-        role: "img",
-        aria-label: alt-description,
-      )[
-        #html.div(class: "mhd-node mhd-node-wide")[
-          #html.strong[Generalized Ohm law]
-          #html.span[$bold(E)+bold(u) times bold(B)$]
-        ]
-        #html.div(class: "mhd-arrow")[four corrections are ordered separately]
-        #html.div(class: "mhd-term-grid")[
-          #html.div(class: "mhd-node mhd-node-hall")[
-            #html.strong[Hall]
-            #html.span[$bold(j) times bold(B) \/ (e n c)$]
-          ]
-          #html.div(class: "mhd-node")[
-            #html.strong[Electron pressure]
-            #html.span[$-grad p_e \/ (e n)$]
-          ]
-          #html.div(class: "mhd-node mhd-node-resistive")[
-            #html.strong[Resistive]
-            #html.span[$eta bold(j)$]
-          ]
-          #html.div(class: "mhd-node")[
-            #html.strong[Electron inertia]
-            #html.span[$m_e \/ (e^2 n) thin partial_t bold(j)$]
-          ]
-        ]
-      ]
-      #html.figcaption[#caption-text]
-    ]
-  }
-}
+#let collision-regimes = figure(
+  alt: "Two drivers of transport and their collisional responses. A density or temperature gradient, through collisional randomization, gives diffusion with flux minus D grad n. An applied force qE, through collisional drag, gives mobility u = mu E and, for charges, conductivity sigma.",
+  caption: [
+    Gradients and forces drive transport; collisions set the response.
+    Collisions alone drive no current in a homogeneous equilibrium.
+  ],
+)[
+  #graphic(fletcher.diagram(
+    spacing: (2.2cm, 1.15cm),
+    ..concept-style,
+    node((0, 0), [Gradient \ $grad n, grad T$]),
+    node((1, 0), [Applied force \ $q bold(E)$]),
+    node((0, 1), [Diffusion \ $bold(Gamma)=-D grad n$]),
+    node((1, 1), [Mobility $bold(u)=mu bold(E)$ \ conductivity $sigma$]),
+    edge((0, 0), (0, 1), [randomize], "->", label-side: left),
+    edge((1, 0), (1, 1), [drag], "->", label-side: right),
+  ))
+]
 
-#let mhd-flux-diffusion = context {
-  let alt-description = "A transport map separates two regimes of the induction equation. At high magnetic Reynolds number, magnetic flux through a material loop is approximately constant on the chosen scales. With finite resistivity, a magnetic-diffusion term permits changes of field topology on a diffusion timescale."
-  let caption-text = [
-    The magnetic Reynolds number compares advection with diffusion. Ideal MHD
-    transports field lines with the fluid; finite resistivity permits field-line
-    slippage and diffusion.
-  ]
+#let coulomb-cutoff = figure(
+  alt: "Momentum-transfer weight per logarithmic interval of impact parameter, in units of 4 pi b90 squared, versus b/b90 on a logarithmic axis from 0.01 to 1e8. The weight rises from zero below b90, is flat at one for every decade above b90, and is cut to zero at the Debye length, lambda_D/b90 = 4.2e6. The shaded area equals ln Lambda_cut, about 15.2.",
+  caption: [
+    Momentum transfer per logarithmic interval of impact parameter,
+    $2 pi b^2 (1-cos chi)$ with $tan(chi\/2)=b_90/b$, in units of
+    $4 pi b_90^2$. Above $b_90$ every decade of $b$ contributes equally
+    until screening cuts the integral at $lambda_D$, so the shaded area is a
+    logarithm, $ln Lambda_"cut"$. Here $lambda_D/b_90=4.2 times 10^6$ from the
+    example below: $ln Lambda_"cut" approx 15.2=ln Lambda+ln 32$.
+  ],
+)[
+  #derived-plot("coulomb-cutoff", width: 10cm)
+]
 
-  if target() == "paged" {
-    figure(
-      alt: alt-description,
-      caption: caption-text,
-    )[
-      #fletcher.diagram(
-        spacing: (1.45cm, 1.15cm),
-        ..concept-style,
-        node((0, 0), [Induction equation \
-          $partial_t bold(B)=curl (bold(u) times bold(B))+D_B laplacian bold(B)$]),
-        node((-1.35, 1), [Nearly ideal \
-          $R_m >> 1$]),
-        node((1.35, 1), [Finite resistivity \
-          $D_B=eta \/ mu_0$]),
-        node((-1.35, 2), [Approximately frozen flux \
-          field lines move with $bold(u)$]),
-        node((1.35, 2), [Diffusion \
-          $tau_D=L^2 \/ D_B$]),
-        edge((0, 0), (-1.35, 1), [advection dominates], "->"),
-        edge((0, 0), (1.35, 1), [diffusion retained], "->"),
-        edge((-1.35, 1), (-1.35, 2), [approximately conserved], "->"),
-        edge((1.35, 1), (1.35, 2), [topology can change], "->"),
-      )
-    ]
-  } else {
-    html.figure(class: "concept-figure")[
-      #html.div(
-        class: "mhd-diagram mhd-flux-fallback",
-        role: "img",
-        aria-label: alt-description,
-      )[
-        #html.div(class: "mhd-node mhd-node-wide")[
-          #html.strong[Induction equation]
-          #html.span[$pdv(bold(B),t)=curl (bold(u) times bold(B))+D_(B) laplacian bold(B)$]
-        ]
-        #html.div(class: "mhd-branches")[
-          #html.div(class: "mhd-node mhd-node-ideal")[
-            #html.strong[Nearly ideal: $R_m >> 1$]
-            #html.span[Approximately frozen flux; field lines move with $bold(u)$]
-          ]
-          #html.div(class: "mhd-node mhd-node-diffusion")[
-            #html.strong[Finite resistivity]
-            #html.span[$D_B=eta \/ mu_0$; diffusion time $tau_D=L^2 \/ D_B$]
-          ]
-        ]
-        #html.div(class: "mhd-arrow")[advection dominates ↔ diffusion permits topology changes]
-      ]
-      #html.figcaption[#caption-text]
-    ]
-  }
-}
+#let conductivity-tensor = figure(
+  alt: "DC conductivity of one species divided by the parallel conductivity, versus magnetization |Omega_s|/nu_s on a logarithmic axis from 0.01 to 100. The parallel value stays at one (gray dotted). The Pedersen conductivity (blue, solid) falls from one to zero; the Hall magnitude (orange, dashed) rises from zero to a maximum of one half at |Omega_s| = nu_s, where both are equal, and falls again.",
+  caption: [
+    DC conductivity tensor of one species:
+    $sigma_perp/sigma_parallel=1/(1+X^2)$ and
+    $abs(sigma_"H")/sigma_parallel=X/(1+X^2)$ with
+    $X=abs(Omega_s)/nu_s$. Weakly magnetized, the current follows
+    $bold(E)$; at $abs(Omega_s)=nu_s$ Pedersen and Hall are equal; strongly
+    magnetized, both vanish while $sigma_parallel$ is unchanged. The sign of
+    $sigma_"H"$ follows the sign of $q_s$.
+  ],
+)[
+  #derived-plot("conductivity-tensor", width: 10cm)
+]
 
-#let mhd-force-balance = context {
-  let alt-description = "A static MHD force-balance diagram shows pressure-gradient force balanced by magnetic force density. The equilibrium condition is grad p equals j cross B, and both forces are perpendicular to the magnetic field."
-  let caption-text = [
-    Static MHD equilibrium is a local force balance. In a smooth isotropic
-    plasma, pressure gradients are perpendicular to the field and are balanced
-    by the magnetic force density.
-  ]
+#let random-walk-diffusion = figure(
+  alt: "Two Gaussian density profiles n/n0 versus x/L0, at t = tau_D (blue, solid) and t = 4 tau_D (orange, dashed). Double arrows mark plus and minus the rms width. From the first to the second time the rms width doubles and the peak halves, while the area stays the same.",
+  caption: [
+    A conserved pulse spreads by diffusion:
+    $n/n_0=tau^(-1/2) exp(-xi^2/(4 tau))$ with $xi=x/L_0$, $tau=t/tau_D$,
+    $tau_D=L_0^2/D$, and $n_0=N_0/(sqrt(4 pi) L_0)$. From $t=tau_D$ to
+    $t=4 tau_D$ the rms width $⟨x^2⟩^(1/2)=sqrt(2 D t)$ (arrows) doubles and
+    the peak halves; the area $N_0$ is conserved.
+  ],
+)[
+  #derived-plot("random-walk-diffusion", width: 10cm)
+]
 
-  if target() == "paged" {
-    figure(
-      alt: alt-description,
-      caption: caption-text,
-    )[
-      #fletcher.diagram(
-        spacing: (1.4cm, 1.15cm),
-        ..concept-style,
-        node((0, 0), [Static MHD \
-          $partial_t=0, bold(u)=bold(0)$]),
-        node((-1.4, 1), [Pressure force \
-          $-grad p$]),
-        node((1.4, 1), [Magnetic force \
-          $bold(j) times bold(B)$]),
-        node((0, 2), [Force balance \
-          $grad p=bold(j) times bold(B)$]),
-        edge((0, 0), (-1.4, 1), [pressure], "->"),
-        edge((0, 0), (1.4, 1), [magnetic], "->"),
-        edge((-1.4, 1), (0, 2), [balance], "->"),
-        edge((1.4, 1), (0, 2), [balance], "->"),
-      )
-    ]
-  } else {
-    html.figure(class: "concept-figure")[
-      #html.div(
-        class: "mhd-diagram mhd-force-fallback",
-        role: "img",
-        aria-label: alt-description,
-      )[
-        #html.div(class: "mhd-node mhd-node-wide")[
-          #html.strong[Static MHD]
-          #html.span[$partial_t=0, bold(u)=bold(0)$]
-        ]
-        #html.div(class: "mhd-arrow")[two force densities act in opposite directions]
-        #html.div(class: "mhd-branches")[
-          #html.div(class: "mhd-node mhd-node-pressure")[
-            #html.strong[Pressure force]
-            #html.span[$-grad p$]
-          ]
-          #html.div(class: "mhd-node mhd-node-magnetic")[
-            #html.strong[Magnetic force]
-            #html.span[$bold(j) times bold(B)$]
-          ]
-        ]
-        #html.div(class: "mhd-arrow")[↓ equilibrium]
-        #html.div(class: "mhd-node mhd-node-result")[
-          #html.strong[Force balance]
-          #html.span[$grad p=bold(j) times bold(B)$]
-        ]
-      ]
-      #html.figcaption[#caption-text]
-    ]
-  }
-}
+#let ambipolar-balance = figure(
+  alt: "Horizontal arrows show the x components of the electron and ion particle fluxes in the ambipolar worked example, in units of 1e17 per square metre per second. Electron diffusion alone gives about 17.6; the ambipolar field drift subtracts about 15.8. Ion diffusion gives about 1.0 and the field drift adds about 0.9. Both totals end on the common ambipolar flux 1.82, marked by a dotted vertical line.",
+  caption: [
+    Ambipolar diffusion in the example below. Diffusion alone (solid arrows)
+    would carry electrons about 18 times faster than ions. The ambipolar
+    field $E_a=0.897$ #unit("V/m") drifts electrons back and ions forward
+    (dashed arrows) until both fluxes equal
+    $Gamma_a=D_a abs(partial_x n)=1.82 times 10^17$ #unit("m^-2 s^-1").
+  ],
+)[
+  #derived-plot("ambipolar-balance", width: 10cm)
+]
 
-#let collision-regimes = context {
-  let alt-description = "A transport map starts with moving charged particles and separates two causes of organized motion: spatial inhomogeneity produces diffusion, while an applied external force produces mobility and conductivity. Both routes are mediated by collisions."
-  let caption-text = [
-    Gradients or external forces drive transport; collisions mediate its response.
-    Collisions alone do not drive a current in homogeneous equilibrium.
-    Density or temperature inhomogeneity produces diffusion; an applied force
-    produces mobility and, for charged particles, electrical conductivity.
-  ]
+#let cross-field-diffusion = figure(
+  alt: "Log-log plot of perpendicular diffusion D_perp divided by the unmagnetized coefficient D_s versus magnetization |Omega_s|/nu_s from 0.01 to 1000. The curve is flat at one for weak magnetization and falls with slope minus two, as (nu_s/Omega_s) squared, beyond |Omega_s| = nu_s. A marked point at |Omega_s|/nu_s = 176 shows the worked electron example, about 3e-5.",
+  caption: [
+    Gyration suppresses diffusion across $bold(B)$:
+    $D_(s,perp)/D_s=1/(1+(Omega_s/nu_s)^2)$ with
+    $D_s=(k_B T_s)/(m_s nu_s)$, the unmagnetized and parallel coefficient.
+    Beyond $abs(Omega_s)=nu_s$ it falls as $(nu_s/Omega_s)^2$. The point is
+    the electron example below, $D_perp/D_parallel=3.23 times 10^(-5)$.
+  ],
+)[
+  #derived-plot("cross-field-diffusion", width: 10cm)
+]
 
-  if target() == "paged" {
-    figure(
-      alt: alt-description,
-      caption: caption-text,
-    )[
-      #fletcher.diagram(
-        spacing: (1.45cm, 1.15cm),
-        ..concept-style,
-        node((0, 0), [Moving charge carriers]),
-        node((-1.35, 1), [Inhomogeneity \
-          diffusion]),
-        node((1.35, 1), [External force \
-          mobility]),
-        node((0, 2), [Transport and conductivity]),
-        edge((0, 0), (-1.35, 1), [redirection], "->"),
-        edge((0, 0), (1.35, 1), [drag], "->"),
-        edge((-1.35, 1), (0, 2), [flux], "->"),
-        edge((1.35, 1), (0, 2), [current], "->"),
-      )
-    ]
-  } else {
-    html.figure(class: "concept-figure")[
-      #html.div(
-        class: "mhd-diagram collision-diagram",
-        role: "img",
-        aria-label: alt-description,
-      )[
-        #html.div(class: "mhd-node mhd-node-wide")[
-          #html.strong[Moving charge carriers]
-        ]
-        #html.div(class: "mhd-arrow")[two transport mechanisms]
-        #html.div(class: "mhd-branches")[
-          #html.div(class: "mhd-node")[
-            #html.strong[Inhomogeneity]
-            #html.span[Diffusion]
-          ]
-          #html.div(class: "mhd-node mhd-node-ohm")[
-            #html.strong[External force]
-            #html.span[Mobility and conductivity]
-          ]
-        ]
-        #html.div(class: "mhd-arrow")[collisions provide the drag or scattering]
-        #html.div(class: "mhd-node mhd-node-result")[
-          #html.strong[Transport response]
-          #html.span[particle flux or electric current]
-        ]
-      ]
-      #html.figcaption[#caption-text]
-    ]
-  }
-}
-
-#let coulomb-cutoff = context {
-  let alt-description = "A Coulomb-scattering scale map shows the lower impact-parameter cutoff b ninety, set by strong ninety-degree deflection, and the upper cutoff at the Debye length. Their ratio defines a plasma parameter with unit [1] and its Coulomb logarithm."
-  let caption-text = [
-    Coulomb scattering is accumulated between a strong-deflection scale
-    $b_90$ and the shielding scale $lambda_D$. The logarithm
-    $ln Lambda=ln(lambda_D/b_90)$ records the broad range of effective
-    impact parameters; the exact prefactor depends on the collision model.
-  ]
-
-  if target() == "paged" {
-    figure(
-      alt: alt-description,
-      caption: caption-text,
-    )[
-      #fletcher.diagram(
-        spacing: (1.35cm, 1.15cm),
-        ..concept-style,
-        node((0, 0), [Coulomb encounter]),
-        node((-1.35, 1), [Strong deflection \
-          $b_90$]),
-        node((1.35, 1), [Screening cutoff \
-          $lambda_D$]),
-        node((0, 2), [Coulomb logarithm \
-          #normalized-label[$ln Lambda$]]),
-        edge((0, 0), (-1.35, 1), [lower scale], "->"),
-        edge((0, 0), (1.35, 1), [upper scale], "->"),
-        edge((-1.35, 1), (0, 2), [ratio], "->"),
-        edge((1.35, 1), (0, 2), [ratio], "->"),
-      )
-    ]
-  } else {
-    html.figure(class: "concept-figure")[
-      #html.div(
-        class: "mhd-diagram collision-diagram",
-        role: "img",
-        aria-label: alt-description,
-      )[
-        #html.div(class: "mhd-node mhd-node-wide")[
-          #html.strong[Coulomb encounter]
-          #html.span[impact parameter controls the deflection]
-        ]
-        #html.div(class: "mhd-branches")[
-          #html.div(class: "mhd-node mhd-node-hall")[
-            #html.strong[Strong-deflection cutoff]
-            #html.span[$b_90=(Z e^2)/(m_r v_"rel"^2)$]
-          ]
-          #html.div(class: "mhd-node mhd-node-ideal")[
-            #html.strong[Shielding cutoff]
-            #html.span[$b_"max" approx lambda_D$]
-          ]
-        ]
-        #html.div(class: "mhd-arrow")[integrate over $b_90 < b < lambda_D$]
-        #html.div(class: "mhd-node mhd-node-result")[
-          #html.strong[Coulomb logarithm]
-          #html.span[#normalized-label[$ln Lambda=ln(lambda_D/b_90)$]]
-        ]
-      ]
-      #html.figcaption[#caption-text]
-    ]
-  }
-}
-
-#let conductivity-tensor = context {
-  let alt-description = "A conductivity map decomposes an applied electric field relative to a background magnetic field into parallel and perpendicular components. The parallel current follows the field, the Pedersen current follows the perpendicular field, and the Hall current is perpendicular to both the electric and magnetic fields."
-  let caption-text = [
-    A static magnetic field makes conductivity anisotropic. The parallel,
-    Pedersen, and Hall entries are the three components of the conductivity
-    tensor; their signs depend on the signed charge convention.
-  ]
-
-  if target() == "paged" {
-    figure(
-      alt: alt-description,
-      caption: caption-text,
-    )[
-      #fletcher.diagram(
-        spacing: (1.45cm, 1.15cm),
-        ..concept-style,
-        node((0, 0), [Applied field \
-          $bold(E)$]),
-        node((-1.35, 1), [Parallel response \
-          $sigma_parallel$]),
-        node((1.35, 1), [Pedersen response \
-          $sigma_perp$]),
-        node((1.35, 2), [Hall response \
-          $sigma_"H"$]),
-        edge((0, 0), (-1.35, 1), [along $bold(B)_0$], "->"),
-        edge((0, 0), (1.35, 1), [across $bold(B)_0$], "->"),
-        edge((1.35, 1), (1.35, 2), [rotated current], "->"),
-      )
-    ]
-  } else {
-    html.figure(class: "concept-figure")[
-      #html.div(
-        class: "mhd-diagram collision-diagram",
-        role: "img",
-        aria-label: alt-description,
-      )[
-        #html.div(class: "mhd-node mhd-node-wide")[
-          #html.strong[Applied electric field]
-          #html.span[$bold(E)$ relative to $bold(B)_0$]
-        ]
-        #html.div(class: "mhd-branches")[
-          #html.div(class: "mhd-node mhd-node-ideal")[
-            #html.strong[Parallel]
-            #html.span[$bold(J)_parallel=sigma_parallel bold(E)_parallel$]
-          ]
-          #html.div(class: "mhd-node")[
-            #html.strong[Pedersen]
-            #html.span[$sigma_perp$ follows $bold(E)_perp$]
-          ]
-        ]
-        #html.div(class: "mhd-arrow")[the Hall term rotates the perpendicular current]
-        #html.div(class: "mhd-node mhd-node-hall")[
-          #html.strong[Hall]
-          #html.span[$bold(J)_"H"$ is perpendicular to both $bold(E)$ and $bold(B)_0$]
-        ]
-      ]
-      #html.figcaption[#caption-text]
-    ]
-  }
-}
-
-#let random-walk-diffusion = context {
-  let alt-description = "Conserved Gaussian density profiles versus x/L0, with density n/n0 and both axes normalized. At t/tauD=4 the profile is twice as wide and half as high as at t/tauD=1, with the same center and full-line area."
-  let caption-text = [
-    Conserved one-dimensional diffusion from a point source:
-    $n/n_0=tau^(-1/2) exp(-xi^2/(4 tau))$, where $xi=x/L_0$,
-    $tau=t/tau_D$, $tau_D=L_0^2/D$, and $n_0=N_0/(sqrt(4 pi) L_0)$.
-    For volumetric density $n$ in #unit("m^-3"), the conserved column
-    $N_0=integral n dif x$ has units #unit("m^-2").
-    At $tau=4$ the width doubles and the peak halves relative to $tau=1$.
-    The full-line area is constant; the displayed window truncates the tails.
-    Both axes and normalized times use unit #text("[1]").
-  ]
-
-  figure(
-    alt: alt-description,
-    caption: caption-text,
-  )[
-    #plot-diagram(
-      width: 10cm,
-      height: 5.2cm,
-      xlabel: normalized-axis[$x \/ L_0$],
-      ylabel: normalized-axis[$n \/ n_0$],
-      ..curve(samples(-8, 8, n: 160), x => model.diffusion(x, 1)),
-      ..curve(samples(-8, 8, n: 160), x => model.diffusion(x, 4),
-        color: plot-orange, dash: "dashed"),
-      tag(1.3, model.diffusion(1.3, 1), align: left + bottom)[#normalized-label[$t \/ tau_D=1$]],
-      tag(3.6, model.diffusion(3.6, 4), color: plot-orange, align: left + bottom)[#normalized-label[$t \/ tau_D=4$]],
-    )
-  ]
-
-}
-
-#let ambipolar-balance = context {
-  let alt-description = "An ambipolar transport map starts with a density gradient, sends ions and electrons toward opposite electric-force responses, and ends with a self-consistent ambipolar electric field and one common particle flux under a zero-current boundary condition. The electric field prevents the faster species from separating from the slower species."
-  let caption-text = [
-    Ambipolar diffusion couples the species fluxes. Quasi-neutrality together with a zero-current boundary condition determines
-    the electric field that makes the electron and ion particle fluxes equal,
-    producing the ambipolar coefficient $D_a$.
-  ]
-
-  if target() == "paged" {
-    figure(
-      alt: alt-description,
-      caption: caption-text,
-    )[
-      #fletcher.diagram(
-        spacing: (2.1cm, 1.1cm),
-        ..concept-style,
-        node((0, 0), [Density gradient \
-          $grad n$]),
-        node((-1.35, 1), [Ion response \
-          $mu_i bold(E)-D_i grad n \/ n$]),
-        node((1.35, 1), [Electron response \
-          $-mu_e bold(E)-D_e grad n \/ n$]),
-        node((0, 2), [Ambipolar field \
-          $bold(E)=(D_i-D_e)/(mu_i+mu_e) thin grad n \/ n$]),
-        node((0, 3), [Common flux \
-          $bold(Gamma)=-D_a grad n$]),
-        edge((0, 0), (-1.35, 1), [], "->"),
-        edge((0, 0), (1.35, 1), [], "->"),
-        edge((-1.35, 1), (0, 2), [balance], "->"),
-        edge((1.35, 1), (0, 2), [balance], "->"),
-        edge((0, 2), (0, 3), [zero current], "->"),
-      )
-    ]
-  } else {
-    html.figure(class: "concept-figure")[
-      #html.div(
-        class: "mhd-diagram collision-diagram",
-        role: "img",
-        aria-label: alt-description,
-      )[
-        #html.div(class: "mhd-node mhd-node-wide")[
-          #html.strong[Density gradient]
-          #html.span[$grad n$]
-        ]
-        #html.div(class: "mhd-branches")[
-          #html.div(class: "mhd-node mhd-node-ideal")[
-            #html.strong[Ion response]
-            #html.span[$mu_i bold(E)-D_i grad n \/ n$]
-          ]
-          #html.div(class: "mhd-node mhd-node-ohm")[
-            #html.strong[Electron response]
-            #html.span[$-mu_e bold(E)-D_e grad n \/ n$]
-          ]
-        ]
-        #html.div(class: "mhd-arrow")[equal particle flux]
-        #html.div(class: "mhd-node mhd-node-result")[
-          #html.strong[Ambipolar field]
-          #html.span[$bold(E)=(D_i-D_e)/(mu_i+mu_e) thin grad n \/ n$]
-        ]
-        #html.div(class: "mhd-arrow")[zero-current common flux]
-        #html.div(class: "mhd-node mhd-node-wide")[
-          #html.strong[$bold(Gamma)=-D_a grad n$]
-        ]
-      ]
-      #html.figcaption[#caption-text]
-    ]
-  }
-}
-
-#let cross-field-diffusion = context {
-  let alt-description = "A normalized plot shows perpendicular diffusion falling as magnetization increases. The horizontal axis is the absolute cyclotron frequency divided by collision frequency with unit [1]; the vertical axis is perpendicular diffusion divided by the unmagnetized diffusion coefficient. The curve starts at one and approaches zero as the inverse square of magnetization."
-  let caption-text = [
-    Collisions enable cross-field steps by interrupting gyromotion. With
-    $D_0=(k_B T)/(m nu)$, the classical single-species result is
-    $D_perp/D_0=1/(1+(Omega/nu)^2)$.
-  ]
-
-  figure(
-    alt: alt-description,
-    caption: caption-text,
-  )[
-    #plot-diagram(
-      width: 10cm,
-      height: 5.2cm,
-      xlabel: normalized-axis[$abs(Omega) \/ nu$],
-      ylabel: normalized-axis[$D_perp \/ D_0$],
-      ..curve(samples(0, 10, n: 160), model.cross-field),
-    )
-  ]
-
-}
-
-#let diffusion-scalings = context {
-  let alt-description = "A normalized transport plot compares two fully ionized cross-field diffusion scalings as magnetic field strength increases. Classical diffusion decreases as one over magnetic field squared, while the empirical Bohm estimate decreases only as one over magnetic field."
-  let caption-text = [
-    Classical and Bohm-like cross-field scalings have different magnetic-field
-    dependence. Each curve is normalized to its value at $B=B_0$; the Bohm
-    curve is empirical and represents unresolved turbulent transport.
-    Logarithmic axes turn the power laws into straight lines of slope $-2$
-    and $-1$.
-  ]
-
-  figure(
-    alt: alt-description,
-    caption: caption-text,
-  )[
-    #plot-diagram(
-      width: 10cm,
-      height: 5.2cm,
-      xscale: "log",
-      yscale: "log",
-      xaxis: (ticks: decimal-ticks((0.5, 1, 2, 4, 8))),
-      yaxis: (ticks: decimal-ticks((0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 4))),
-      xlabel: normalized-axis[$B \/ B_0$],
-      ylabel: normalized-axis[$D_(perp)(B) \/ D_(perp)(B_0)$],
-      ..curve(samples(0.5, 8), model.classical),
-      ..curve(samples(0.5, 8), model.bohm, color: plot-orange, dash: "dashed"),
-      tag(3, model.classical(3), align: right + top)[classical $prop B^(-2)$],
-      tag(3, model.bohm(3), color: plot-orange, align: left + bottom)[Bohm $prop B^(-1)$],
-    )
-  ]
-
-}
+#let diffusion-scalings = figure(
+  alt: "Log-log plot of perpendicular diffusion coefficient in square metres per second versus magnetic field from 1 mT to 1 T for the worked-example plasma. The empirical Bohm estimate (orange, dashed) falls as 1/B, the classical collisional coefficient (blue, solid) as 1/B squared. At 10 mT a double arrow marks the ratio 1.95e4.",
+  caption: [
+    Classical and Bohm cross-field diffusion for the plasma of the example
+    below: $n=10^16$ #unit("m^-3"), $k_B T_e=k_B T_i=10$ #unit("eV"),
+    $sigma=10^5$ #unit("S/m"). At $B=10$ #unit("mT") the empirical Bohm
+    estimate exceeds the classical value by $1.95 times 10^4$, and the gap
+    grows in proportion to $B$.
+  ],
+)[
+  #derived-plot("diffusion-scalings", width: 10cm)
+]
 
 #let wave-linearization = context {
   let alt-description = "A wave-model map starts with a homogeneous equilibrium, adds small perturbations, applies the plane-wave derivative rules, and ends with a linear algebra system whose determinant selects the allowed mode."
@@ -1197,33 +573,15 @@
   }
 }
 
-#let wave-dispersion = context {
-  let alt-description = "A normalized dispersion plot compares a vacuum electromagnetic line, a cold plasma electromagnetic branch that starts at the plasma cutoff, and a horizontal cold electrostatic plasma-oscillation branch. The vertical axis is frequency divided by the electron plasma frequency and the horizontal axis is wave number times the speed of light divided by that frequency."
-  let caption-text = [
-    Normalized dispersion relations. The vacuum line is $W=K$, the cold
-    transverse plasma branch is $W=sqrt(1+K^2)$, and the fixed-ion cold
-    electrostatic oscillation is $W=1$.
-  ]
-
-  figure(
-    alt: alt-description,
-    caption: caption-text,
-  )[
-    #plot-diagram(
-      width: 10cm,
-      height: 5.4cm,
-      xlabel: normalized-axis[$K=k c \/ omega_(p,e)$],
-      ylabel: normalized-axis[$W=omega \/ omega_(p,e)$],
-      ..curve(samples(0, 4), x => x, color: plot-gray, dash: "dotted"),
-      ..curve(samples(0, 4), model.cold-em),
-      ..curve(samples(0, 4), x => 1, color: plot-orange, dash: "dashed"),
-      tag(3.2, 3.2, color: plot-gray, align: left + top)[vacuum, $W=K$],
-      tag(2.2, model.cold-em(2.2), align: right + bottom)[cold EM, $W=sqrt(1+K^2)$],
-      tag(4, 1, color: plot-orange, align: right + bottom)[cold electrostatic, $W=1$],
-    )
-  ]
-
-}
+// Plot: plot_wave_dispersion() in derivations/chapters/ch11_introduction_waves.py.
+#let wave-dispersion = figure(
+  alt: "A normalized dispersion plot of frequency over electron plasma frequency against wave number times c over plasma frequency. The cold electromagnetic branch starts at the cutoff W=1 for K=0 and approaches the dotted vacuum line W=K; the cold electrostatic branch is the horizontal line W=1.",
+  caption: [
+    Cold, unmagnetized, fixed-ion branches. The electromagnetic branch
+    $W^2=1+K^2$ has its cutoff at $W=1$ and approaches the vacuum line
+    $W=K$; the electrostatic oscillation $W=1$ has zero group velocity.
+  ],
+)[#derived-plot("wave-dispersion", width: 9.5cm)]
 
 #let warm-kinetic-limits = context {
   let alt-description = "A model-limit ladder starts with a cold fluid response, adds pressure to obtain a warm-fluid branch, and then resolves particle velocities with a kinetic response. Each step adds physics and changes which damping and dispersion effects can be represented."
@@ -1350,51 +708,18 @@
   }
 }
 
-#let magnetized-parallel-dispersion = context {
-  // Quadratic sampling resolves the square-root rise above each cutoff.
-  let branch(sense, color: plot-blue, dash: none) = {
-    let lo = model.circular-cutoff(sense: sense)
-    let ws = range(161).map(i => lo + (4 - lo)*calc.pow(i/160, 2))
-    (lq.plot(ws.map(w => model.circular-index(w, sense: sense)), ws,
-      color: color, mark: none, stroke: (thickness: plot-stroke, dash: dash)),)
-  }
-  let alt-description = "Cold parallel dispersion versus refractive index N=kc/omega, with normalized frequency W=omega/omega_pe on the vertical axis. Two upper circular branches start at different cutoffs and approach the vertical vacuum line N=1. A horizontal W=1 line marks the longitudinal oscillation. All axes use unit [1]."
-  let caption-text = [
+// Plot: plot_magnetized_parallel_dispersion() in derivations/chapters/ch12_cold_magnetized_waves.py.
+#let magnetized-parallel-dispersion = figure(
+  alt: "Cold parallel dispersion, normalized frequency W against K=kc/omega_pe at Y=0.3. The s=+1 branch starts at the cutoff W=0.861, the s=-1 branch at W=1.161; both approach the dotted vacuum line W=K. Below the electron cyclotron resonance W=0.3 the s=-1 whistler branch rises from zero and flattens toward the resonance.",
+  caption: [
     Cold fixed-ion parallel propagation at
-    #normalized-label[$Y=omega_(c,e)/omega_(p,e)=0.3$].
-    The upper propagating branches satisfy $N_s^2=1-1/(W(W+s Y))$ with the
-    circular-mode label $s=±1$ of the text: $s=+1$ (solid) has the lower
-    cutoff, $s=-1$ (dashed) the higher one.
-    Here $N=(k c)/omega$ is the refractive index, $W=omega/omega_(p,e)$,
-    and $K=(k c)/omega_(p,e)=W N$ is a different quantity.
-    Vacuum is the vertical line $N=1$, not $W=N$.
-    The low-frequency cyclotron continuation is not shown.
-  ]
-
-  figure(
-    alt: alt-description,
-    caption: caption-text,
-  )[
-    #plot-diagram(
-      width: 10cm,
-      height: 5.4cm,
-      xlabel: normalized-axis[$N=k c \/ omega$],
-      ylabel: normalized-axis[$W=omega \/ omega_(p,e)$],
-      xlim: (0, 1.3),
-      lq.plot((1, 1), (0, 4), color: plot-gray, mark: none,
-        stroke: (thickness: plot-stroke, dash: "dotted")),
-      ..branch(1, color: plot-blue),
-      ..branch(-1, color: plot-orange, dash: "dashed"),
-      lq.plot((0, 1.3), (1, 1), color: plot-gray, mark: none,
-        stroke: (thickness: plot-stroke, dash: "dash-dotted")),
-      tag(1, 3, color: plot-gray, align: left)[vacuum, $N=1$],
-      tag(0.02, model.circular-cutoff(), align: left + top)[$s=+1$],
-      tag(0.02, model.circular-cutoff(sense: -1), color: plot-orange, align: left + bottom)[$s=-1$],
-      tag(0.55, 1, color: plot-gray, align: left + top)[longitudinal, $W=1$],
-    )
-  ]
-
-}
+    #normalized-label[$Y=omega_(c,e)/omega_(p,e)=0.3$], from
+    $N_s^2=1-1/(W(W+s Y))$ with $K=W N_s$. The two circular modes have
+    different cutoffs $W_"cut,s"=(sqrt(Y^2+4)-s Y)/2$ (dots); only $s=-1$
+    has the cyclotron resonance $W=Y$, below which it propagates as the
+    whistler.
+  ],
+)[#derived-plot("magnetized-parallel-dispersion", width: 9.5cm)]
 
 #let magnetized-oblique-geometry = context {
   let alt-description = "A coordinate geometry diagram places the uniform background magnetic field along the z axis. The wave vector lies in the x-z plane, its z component is parallel to the field, its x component is perpendicular to the field, and the angle theta is measured between the wave vector and the magnetic field."
@@ -1465,76 +790,17 @@
   }
 }
 
-#let magnetized-cutoff-map = context {
-  let alt-description = "A frequency map distinguishes three cold-plasma landmarks. A cutoff is marked where the refractive index squared reaches zero and the wave number vanishes. A resonance is marked where the refractive index grows without bound and the wavelength tends to zero. A positive refractive-index-squared interval is labelled propagating, while a negative interval is labelled evanescent."
-  let caption-text = [
-    Cutoffs and resonances are different limits of the same dispersion
-    relation. Cutoffs bound propagation intervals from the low-wave-number
-    side; resonances are singular responses where the cold model must be
-    checked against warm, collisional, or kinetic physics.
-  ]
-
-  if target() == "paged" {
-    figure(
-      alt: alt-description,
-      caption: caption-text,
-    )[
-      #fletcher.diagram(
-        spacing: (2.2cm, 1.15cm),
-        ..concept-style,
-        node((0, 0), [Frequency scan \
-          $omega$]),
-        node((-1.6, 1), [Cutoff \
-          $N^2=0$, $k=0$]),
-        node((0, 1), [Propagating \
-          $N^2>0$]),
-        node((1.6, 1), [Evanescent \
-          $N^2<0$]),
-        node((0, 2), [Resonance \
-          $N^2 -> infinity$]),
-        node((0, 3), [Recheck omitted physics]),
-        edge((0, 0), (-1.6, 1), [branch endpoint], "->"),
-        edge((0, 0), (0, 1), [real $k$], "->"),
-        edge((0, 0), (1.6, 1), [imaginary $k$], "->"),
-        edge((0, 1), (0, 2), [short scale], "->"),
-        edge((0, 2), (0, 3), [warm or kinetic], "->"),
-      )
-    ]
-  } else {
-    html.figure(class: "concept-figure")[
-      #html.div(
-        class: "mhd-diagram collision-diagram",
-        role: "img",
-        aria-label: alt-description,
-      )[
-        #html.div(class: "mhd-node mhd-node-wide")[
-          #html.strong[Frequency scan]
-          #html.span[$omega$ along a selected dispersion branch]
-        ]
-        #html.div(class: "mhd-branches")[
-          #html.div(class: "mhd-node mhd-node-result")[
-            #html.strong[Cutoff]
-            #html.span[$N^2=0$, so $k=0$]
-          ]
-          #html.div(class: "mhd-node mhd-node-ohm")[
-            #html.strong[Propagating]
-            #html.span[$N^2>0$, real $k$]
-          ]
-        ]
-        #html.div(class: "mhd-node mhd-node-pressure")[
-          #html.strong[Evanescent]
-          #html.span[$N^2<0$, imaginary $k$]
-        ]
-        #html.div(class: "mhd-arrow")[singular short-scale response]
-        #html.div(class: "mhd-node mhd-node-wide")[
-          #html.strong[Resonance]
-          #html.span[$N^2 -> infinity$; recheck cold ordering]
-        ]
-      ]
-      #html.figcaption[#caption-text]
-    ]
-  }
-}
+// Plot: plot_magnetized_cutoff_map() in derivations/chapters/ch12_cold_magnetized_waves.py.
+#let magnetized-cutoff-map = figure(
+  alt: "Perpendicular propagation at Y=0.3: squared refractive index N^2 against W=omega/omega_pe for the ordinary (dashed) and extraordinary (solid) modes. The ordinary mode crosses zero at its cutoff W=1. The extraordinary mode crosses zero at W=0.861, diverges at the upper-hybrid resonance W=1.044, returns from minus infinity and crosses zero again at W=1.161. The shaded region N^2<0 is evanescent.",
+  caption: [
+    Perpendicular cold modes at
+    #normalized-label[$Y=omega_(c,e)/omega_(p,e)=0.3$], the values of the
+    following example. Cutoffs are zeros of $N^2$ (dots), the upper-hybrid
+    resonance is a pole of $N_X^2$; between a resonance and the next cutoff
+    the extraordinary mode is evanescent (shaded, $N^2<0$).
+  ],
+)[#derived-plot("magnetized-cutoff-map", width: 9.5cm)]
 
 #let collisional-wave-response = context {
   let alt-description = "A response map starts with the collisionless cold-plasma dielectric response. Adding a collision frequency makes the effective mass complex, which makes the refractive index and wave number complex; the real part controls phase advance and the positive imaginary part produces spatial attenuation in the chosen Fourier convention."
@@ -1599,77 +865,30 @@
   }
 }
 
-#let ion-wave-branches = context {
-  let alt-description = "Normalized cold two-fluid parallel dispersion. Both circular branches approach the Alfvén line at small K=kvA/omega_ci. The RH whistler branch bends above that line; the LH branch stays below it and approaches W=omega/omega_ci=1. Both axes use unit [1]."
-  let caption-text = [
-    Cold parallel two-fluid limit with negligible electron inertia,
-    $omega << abs(Omega_e)$ and $v_A << c$.
-    For $K=(k v_A)/omega_(c,i)$ and $W=omega/omega_(c,i)$,
+// Plot: plot_ion_wave_branches() in derivations/chapters/ch13_finite_temperature_waves.py.
+#let ion-wave-branches = figure(
+  alt: "Normalized cold two-fluid parallel dispersion, W=omega/omega_ci against K=k v_A/omega_ci. Both circular branches start along the dotted Alfvén line W=K. The RH whistler branch bends above it; the LH branch bends below and approaches the ion cyclotron resonance W=1.",
+  caption: [
+    Cold parallel two-fluid branches for $omega << omega_(c,e)$ and
+    $v_A << c$, with $K=(k v_A)/omega_(c,i)$ and $W=omega/omega_(c,i)$:
     $W_"RH"=(K^2+sqrt(K^4+4 K^2))/2$ and
-    $W_"LH"=(sqrt(K^4+4 K^2)-K^2)/2$.
-    Both approach $W=K$ at small $K$; RH bends upward and LH approaches
-    $W=1$. All plotted ratios use unit #text("[1]").
-  ]
+    $W_"LH"=(sqrt(K^4+4 K^2)-K^2)/2$. Both start as Alfvén waves; LH
+    stops at the ion cyclotron resonance, RH continues as the whistler.
+  ],
+)[#derived-plot("ion-wave-branches", width: 9.5cm)]
 
-  figure(
-    alt: alt-description,
-    caption: caption-text,
-  )[
-    #plot-diagram(
-      width: 10cm,
-      height: 5.2cm,
-      xlim: (0, 2.75),
-      xaxis: (ticks: (0, 0.5, 1, 1.5, 2)),
-      xlabel: normalized-axis[$K=k v_A \/ omega_(c,i)$],
-      ylabel: normalized-axis[$W=omega \/ omega_(c,i)$],
-      ..curve(samples(0, 2), k => k, color: plot-gray, dash: "dotted"),
-      ..curve(samples(0, 2), model.ion-rh),
-      ..curve(samples(0, 2), model.ion-lh, color: plot-orange, dash: "dashed"),
-      tag(1.2, model.ion-rh(1.2), align: right + bottom)[RH (whistler)],
-      tag(2, 2, color: plot-gray)[Alfvén, $W=K$],
-      tag(2, model.ion-lh(2), color: plot-orange)[LH (ion cyclotron)],
-    )
-  ]
-
-}
-
-#let warm-longitudinal-modes = context {
-  let ks = range(121).map(i => calc.pow(10, -2 + 2.5*i/120))
-  let alt-description = "A qualitative normalized dispersion plot on logarithmic axes compares a cold plasma-oscillation line at constant normalized frequency, a warm electron plasma-oscillation branch that rises above it as the Debye-scale wave number approaches one, and a low-frequency ion-acoustic branch that rises linearly and then levels off near the ion plasma frequency, far below the electron branches. Thermal pressure gives the branches wave-number dependence."
-  let caption-text = [
-    Unmagnetized isothermal-electron fluid comparison, $K=k lambda_(D,e)$:
-    the fixed-ion electron branch is $W=sqrt(1+K^2)$, with
-    $W=omega/omega_(p,e)$. The negligible-electron-inertia, cold-ion branch
-    is $W=K/sqrt(1836(1+K^2))$ for $m_i/m_e=1836$.
-    This compares separate limiting reductions, not two exact roots of one
-    kinetic model. Logarithmic axes keep the ion branch visible: it is
-    smaller by about $sqrt(m_e/m_i)$ and saturates at
-    $omega_(p,i)/omega_(p,e)=sqrt(m_e/m_i)$ for $K>>1$, where both fluid
-    closures are outside their controlled small-$K$ regime.
-    Ratios use unit #text("[1]"). Here $lambda_(D,e)^2=(k_B T_e)/(m_e omega_(p,e)^2)$.
-  ]
-
-  figure(
-    alt: alt-description,
-    caption: caption-text,
-  )[
-    #plot-diagram(
-      width: 10cm,
-      height: 5.2cm,
-      xscale: "log",
-      yscale: "log",
-      xlabel: normalized-axis[$K=k lambda_(D,e)$],
-      ylabel: normalized-axis[$W=omega \/ omega_(p,e)$],
-      ..curve(ks, k => 1, color: plot-gray, dash: "dotted"),
-      ..curve(ks, model.warm-electron),
-      ..curve(ks, model.ion-acoustic, color: plot-orange, dash: "dashed"),
-      tag(0.012, 1, color: plot-gray, align: left + top)[cold electron, $W=1$],
-      tag(1.2, model.warm-electron(1.2), align: right + bottom)[isothermal electron],
-      tag(0.05, model.ion-acoustic(0.05), color: plot-orange, align: left + top)[ion acoustic],
-    )
-  ]
-
-}
+// Plot: plot_warm_longitudinal_modes() in derivations/chapters/ch13_finite_temperature_waves.py.
+#let warm-longitudinal-modes = figure(
+  alt: "Both roots of the two-species warm-fluid longitudinal dispersion relation on logarithmic axes, W=omega/omega_pe against K=k lambda_De. The electron plasma wave stays near W=1 and rises for K of order one. The ion-acoustic branch rises linearly, far below, and levels off at the ion plasma frequency, marked by a horizontal line.",
+  caption: [
+    The two roots of the warm two-species longitudinal relation for
+    isothermal electrons ($gamma_e=1$), cold ions and $m_i/m_e=1836$, with
+    $K=k lambda_(D,e)$ and $W=omega/omega_(p,e)$. The electron plasma wave
+    follows $W^2 approx 1+K^2$; the ion-acoustic branch rises as
+    $W approx K sqrt(m_e/m_i)$ and saturates at $omega_(p,i)/omega_(p,e)$
+    for $K >> 1$, where the fluid closure is no longer controlled.
+  ],
+)[#derived-plot("warm-longitudinal-modes", width: 9.5cm)]
 
 #let mhd-wave-speeds = context {
   let alt-description = "A warm MHD wave map combines magnetic pressure and thermal pressure for perpendicular compression. Magnetic tension instead restores parallel shear-Alfvén waves. For perpendicular compression the pressure terms combine to give the magnetosonic speed v_m equal to the square root of v_A squared plus v_s squared."
@@ -1799,33 +1018,19 @@
   }
 }
 
-#let hot-isotropic-dispersion = context {
-  let alt-description = "A normalized dispersion plot compares a cold plasma-oscillation line at constant frequency with a warm long-wavelength branch that rises as k times the Debye length increases. The warm branch is a fluid asymptote to the kinetic real response, and the plot is not a precision kinetic calculation."
-  let caption-text = [
-    Maxwellian long-wave Bohm–Gross asymptote
-    $omega_r/omega_(p,e)=sqrt(1+3(k lambda_(D,e))^2)$ over
-    $0 <= k lambda_(D,e) <= 0.3$. This is an asymptotic real frequency,
-    not a full kinetic root or a damping calculation.
-    $lambda_(D,e)^2=(k_B T_e)/(m_e omega_(p,e)^2)$; both axes use unit #text("[1]").
-  ]
-
-  figure(
-    alt: alt-description,
-    caption: caption-text,
-  )[
-    #plot-diagram(
-      width: 10cm,
-      height: 5.2cm,
-      xlabel: normalized-axis[$k lambda_(D,e)$],
-      ylabel: normalized-axis[$omega_r \/ omega_(p,e)$],
-      ..curve(samples(0, 0.3), k => 1, color: plot-gray, dash: "dotted"),
-      ..curve(samples(0, 0.3), model.bohm-gross),
-      tag(0.3, 1, color: plot-gray, align: right + bottom)[cold response],
-      tag(0.2, model.bohm-gross(0.2), align: right + bottom)[Bohm–Gross asymptote],
-    )
-  ]
-
-}
+// Plot: plot_hot_isotropic_dispersion() in derivations/chapters/ch14_hot_plasma_waves.py.
+#let hot-isotropic-dispersion = figure(
+  alt: "Two stacked panels against a=k lambda_De from 0.12 to 0.6. Top: real frequency of the exact Maxwellian Langmuir root and the Bohm-Gross asymptote; they agree for small a and separate beyond about 0.25. Bottom: damping rate of the exact root and the weak-damping asymptote; both are negligible below a of about 0.2, the asymptote overestimates near 0.3 and saturates, while the exact rate keeps growing.",
+  caption: [
+    Exact complex root $omega=omega_r+i gamma$ of
+    $epsilon_L=1+(1+zeta Z(zeta))/a^2=0$ for one electron Maxwellian,
+    $a=k lambda_(D,e)$, against the asymptotes
+    $omega_r/omega_(p,e)=sqrt(1+3a^2)$ and
+    $gamma/omega_(p,e)=-sqrt(pi\/8) a^(-3) exp(-1\/(2a^2)-3\/2)$.
+    The asymptotes hold for $a lt.tilde 0.25$; beyond, the wave is
+    strongly damped and only the full root is meaningful.
+  ],
+)[#derived-plot("hot-isotropic-dispersion", width: 9cm)]
 
 #let hot-velocity-space-slopes = context {
   let alt-description = "A normalized velocity-space plot compares a Maxwellian distribution, which decreases through a marked positive phase velocity, with a bump-on-tail distribution that has a positive slope near the same region. A negative slope supports Landau damping; a positive slope can support wave growth."
@@ -1861,35 +1066,17 @@
 
 }
 
-#let two-stream-growth = context {
-  let alt-description = "A normalized two-stream growth plot starts at zero wave growth, rises to a maximum at k v zero divided by omega p equal to the square root of three eighths, and returns to zero at the unstable-band boundary k v zero divided by omega p equal to one. The curve shows the cold symmetric two-stream model."
-  let caption-text = [
-    Exact cold symmetric equal-density electron beams with immobile ions.
+// Plot: plot_two_stream_growth() in derivations/chapters/ch14_hot_plasma_waves.py.
+#let two-stream-growth = figure(
+  alt: "Two-stream growth rate gamma/omega_p against K=|k v_0|/omega_p. The rate rises from zero, peaks at 1/(2 sqrt 2) for K=sqrt(3/8) (marked), and falls to zero at the band edge K=1; larger K is stable.",
+  caption: [
+    Cold symmetric equal-density electron beams with immobile ions;
     $omega_p$ uses the total electron density and $K=abs(k v_0)/omega_p$.
     The unstable root gives
-    $gamma/omega_p=sqrt((sqrt(1+8 K^2)-1-2 K^2)/2)$ for $0<K<1$.
-    The marked maximum is $1/(2 sqrt(2))$ at $K=sqrt(3/8)$.
-    Both axes use unit #text("[1]").
-  ]
-
-  figure(
-    alt: alt-description,
-    caption: caption-text,
-  )[
-    #plot-diagram(
-      width: 10cm,
-      height: 5.2cm,
-      xlabel: normalized-axis[$K=abs(k v_0) \/ omega_p$],
-      ylabel: normalized-axis[$gamma \/ omega_p$],
-      ylim: (0, 0.42),
-      ..curve((samples(0, 1, n: 160) + (calc.sqrt(3/8),)).sorted(), model.two-stream),
-      lq.plot((calc.sqrt(3/8),), (1/(2*calc.sqrt(2)),), color: plot-orange,
-        stroke: none, mark: "o", mark-size: 4.5pt),
-      tag(calc.sqrt(3/8), 1/(2*calc.sqrt(2)), color: plot-orange, align: center + bottom)[maximum $1\/(2 sqrt(2))$ at $K=sqrt(3\/8)$],
-    )
-  ]
-
-}
+    $gamma/omega_p=sqrt((sqrt(1+8 K^2)-1-2 K^2)/2)$ for $0<K<1$,
+    with the maximum $1/(2 sqrt(2))$ at $K=sqrt(3/8)$.
+  ],
+)[#derived-plot("two-stream-growth", width: 9.5cm)]
 
 #let hot-magnetized-resonance = context {
   let alt-description = "A hot magnetized response map begins with a gyrotropic equilibrium distribution, expands the perturbed distribution into cyclotron harmonics, and ends at Doppler-shifted Landau and cyclotron resonances. The resonant denominator is omega minus k parallel v parallel minus harmonic number times the signed gyrofrequency."
@@ -2011,73 +1198,29 @@
   }
 }
 
-#let sheath-profile = context {
-  let alt-description = "A normalized boundary-profile plot uses distance from the wall in Debye lengths on the horizontal axis. The electron density rises from a depleted wall-side value toward the plasma density, the ion density stays larger in the sheath, and the positive normalized potential-energy drop decreases toward zero at the sheath edge."
-  let caption-text = [
-    Illustrative prescribed barrier $eta=2.8(1-x/(6 lambda_D))^2$
-    on $0<=x/lambda_D<=6$, with wall at zero and potential referenced to
-    the sheath edge: $eta=-(e phi)/(k_B T_e)$.
-    Boltzmann electrons obey $n_e/n_0=exp(-eta)$; cold ions entering at
-    the Bohm speed obey $n_i/n_0=1/sqrt(1+2 eta)$.
-    These responses satisfy energy and particle flux conservation for the
-    prescribed potential, but the potential is not a Poisson solution.
-    All three plotted ratios and the position axis use unit #text("[1]").
-  ]
+// Plot: plot_sheath_profile() in derivations/chapters/ch15_sheaths_probes.py.
+#let sheath-profile = figure(
+  alt: "Self-consistent planar sheath against distance from the wall in Debye lengths. The normalized potential drop eta falls from the hydrogen floating value 2.84 at the wall toward zero in the plasma. The ion density stays above the electron density everywhere; both rise toward n_0 away from the wall, the electrons from about 0.06 and the ions from about 0.39.",
+  caption: [
+    Poisson solution of the sheath equation
+    $eta''=M/sqrt(M^2+2 eta)-exp(-eta)$ for ions entering at the Bohm speed
+    ($M=1$), integrated from a hydrogen wall at the floating potential
+    $eta_w=-ln sqrt((2 pi m_e)/m_i)=2.84$, with
+    $eta=-(e phi)/(k_B T_e)$ and $x$ measured from the wall. Boltzmann
+    electrons $n_e/n_0=exp(-eta)$ are depleted faster than the cold ions
+    $n_i/n_0=M/sqrt(M^2+2 eta)$, so the sheath carries positive space charge.
+  ],
+)[#derived-plot("sheath-profile", width: 9.5cm)]
 
-  figure(
-    alt: alt-description,
-    caption: caption-text,
-  )[
-    #plot-diagram(
-      width: 10cm,
-      height: 5.2cm,
-      xlabel: normalized-axis[$x \/ lambda_D$ (wall at $0$)],
-      ylabel: normalized-axis[$n_e \/ n_0$, $n_i \/ n_0$, $eta$],
-      ..curve(samples(0, 6), model.sheath-barrier, color: plot-gray, dash: "dotted"),
-      ..curve(samples(0, 6), model.sheath-electron),
-      ..curve(samples(0, 6), model.sheath-ion, color: plot-orange, dash: "dashed"),
-      tag(0.9, model.sheath-barrier(0.9), color: plot-gray, align: left + bottom)[$eta$],
-      tag(2.2, model.sheath-ion(2.2), color: plot-orange, align: right + bottom)[$n_i \/ n_0$],
-      tag(2.2, model.sheath-electron(2.2), align: left + top)[$n_e \/ n_0$],
-    )
-  ]
-
-}
-
-#let probe-iv-characteristic = context {
-  let alt-description = "A normalized Langmuir-probe current--voltage curve has an ion-saturation plateau at strongly negative bias, crosses zero at the floating potential, rises in magnitude through an electron-retardation region, and approaches an electron-saturation regime at positive bias."
-  let caption-text = [
-    Idealized planar collection with ion-positive, electron-negative current:
-    $I/(e Gamma_(e,0) A)=0.058-exp(min(u,0))$,
-    $u=(e(phi_p-phi_"pl"))/(k_B T_e)$. The ion term is
-    $Gamma_i/Gamma_(e,0)=sqrt((2 pi m_e)/m_i) approx 0.058$ for hydrogen, with
-    $Gamma_i=n_0 sqrt((k_B T_e)/m_i)$ and
-    $Gamma_(e,0)=n_0 sqrt((k_B T_e)/(2 pi m_e))$; the current vanishes at
-    the floating value $u_f=ln 0.058 approx -2.85$.
-    The constant ion contribution is an approximation; the positive-bias
-    electron branch saturates continuously at the plasma potential.
-    The electron-retardation exponential supplies the temperature diagnostic.
-    All plotted ratios use unit #text("[1]"). Real collection depends on geometry.
-  ]
-
-  figure(
-    alt: alt-description,
-    caption: caption-text,
-  )[
-    #plot-diagram(
-      width: 10cm,
-      height: 5.2cm,
-      xlabel: normalized-axis[$u=e (phi_p-phi_"pl") \/ (k_B T_e)$],
-      ylabel: normalized-axis[$I \/ (e Gamma_(e,0) A)$],
-      ylim: (-1.1, 0.25),
-      lq.plot((-6, 2), (0, 0), color: plot-gray, mark: none, stroke: 0.5pt),
-      ..curve(samples(-6, 2, n: 160), model.probe),
-      lq.plot((calc.ln(0.058),), (0,), color: plot-orange, stroke: none,
-        mark: "o", mark-size: 4.5pt),
-      tag(calc.ln(0.058), 0, color: plot-orange, align: left + bottom)[floating, $u_f approx -2.85$],
-      tag(-6, model.probe(-6), align: left + bottom)[ion saturation],
-      tag(0.1, model.probe(1), align: left + top)[electron saturation],
-    )
-  ]
-
-}
+// Plot: plot_probe_iv_characteristic() in derivations/chapters/ch15_sheaths_probes.py.
+#let probe-iv-characteristic = figure(
+  alt: "Normalized planar Langmuir-probe current against bias u. A small positive ion-saturation plateau at strongly negative bias, a zero crossing at the floating value u_f=-2.84 (marked), an exponential electron-retardation rise in magnitude, and a flat electron-saturation level -1 above the plasma potential u=0.",
+  caption: [
+    Idealized planar probe, ion current positive:
+    $I/(e Gamma_(e,0) A)=Gamma_i/Gamma_(e,0)-exp(u)$ for $u<=0$ and
+    electron saturation for $u>0$, with $u=(e(phi_p-phi_"pl"))/(k_B T_e)$.
+    For hydrogen $Gamma_i/Gamma_(e,0)=sqrt((2 pi m_e)/m_i)=0.0585$, so the
+    current vanishes at $u_f=-2.84$. The exponential retardation branch
+    carries the temperature diagnostic; real saturation depends on geometry.
+  ],
+)[#derived-plot("probe-iv-characteristic", width: 9.5cm)]

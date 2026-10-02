@@ -1,5 +1,5 @@
 #import "../theme.typ": *
-#import "../figures.typ": collision-paths, maxwellian-profile
+#import "../figures.typ": collision-paths, moment-ambiguity
 #import "@preview/physica:0.9.8": div, grad, curl, pdv, dv
 #import "@preview/unify:0.8.1": qty, unit
 
@@ -410,7 +410,7 @@
   described by the Maxwellian above, whereas a collisionless species may
   retain beams or other non-Maxwellian structure.
 
-  #maxwellian-profile
+  #moment-ambiguity
 
   #interpretation(
     [What information is lost by taking a moment?],

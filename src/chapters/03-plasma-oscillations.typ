@@ -1,5 +1,6 @@
 #import "../theme.typ": *
 #import "@preview/physica:0.9.8": grad, div, curl, laplacian, pdv, dv, vb
+#import "../figures.typ": plasma-frequency-scale
 
 #let chapter = [
   #page-title[3. Plasma oscillations] <plasma-oscillations>
@@ -83,6 +84,8 @@
     The corresponding ordinary frequency is $f_(p,s) = omega_(p,s)/(2 pi)$
     in hertz.
   ]
+
+  #plasma-frequency-scale
 
   The electron Debye length $lambda_D$, in #unit("m"), is also related to the distance an electron at the thermal
   speed travels during an inverse plasma frequency:
