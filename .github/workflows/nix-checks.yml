@@ -1,0 +1,26 @@
+name: Nix flake checks
+
+# Slow checks kept off the deploy path: the Nix site build, the physics and
+# SPEC checks inside the Nix sandbox and the NixOS VM site-integration test.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 4 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  flake-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v22
+
+      - name: Run Nix checks
+        run: nix flake check -L

@@ -1,5 +1,8 @@
 name: Build and deploy to GitHub Pages
 
+# Plain ubuntu-latest pipeline without Nix.  The Nix flake checks (including
+# the NixOS VM site-integration test) run separately in nix-checks.yml.
+
 on:
   push:
     branches:
@@ -11,34 +14,144 @@ permissions:
   contents: read
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  TYPST_VERSION: "0.15.0"
+  RIPGREP_VERSION: "14.1.1"
+  MANIM_VERSION: "0.21.0"
+  MEDIA_DIR: ${{ github.workspace }}/.cache/animations
+  # New Computer Modern for Manim's Text labels (Typst embeds its own copy).
+  NEWCM_URL: https://raw.githubusercontent.com/typst/typst-assets/v0.14.0/files/fonts/NewCM10-Regular.otf
+
 jobs:
-  build:
+  derivations:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: Run the SymPy derivations
+        run: uv run pytest -q
+      - name: Check animation models against physics oracles
+        run: uv run python scripts/check-physics.py
 
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v22
+  animations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
 
-      - name: Run Nix checks
-        run: nix flake check
+      - name: Look up the rendered animations
+        id: lookup
+        uses: actions/cache/restore@v4
+        with:
+          path: .cache/animations
+          key: animations-${{ env.MANIM_VERSION }}-${{ hashFiles('animations/**', 'scripts/render-animations.sh') }}
+          lookup-only: true
 
-      - name: Build the Pages site
-        run: nix build .#
+      # Everything below runs only on a cache miss.
+      - name: Restore older renders (per-scene stamps skip unchanged scenes)
+        if: steps.lookup.outputs.cache-hit != 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: .cache/animations
+          key: ${{ steps.lookup.outputs.cache-primary-key }}
+          restore-keys: animations-${{ env.MANIM_VERSION }}-
 
-      - name: Verify the checkout and public artifact
-        run: nix run .#verify-spec -- result
-
-      - name: Prepare the Pages artifact
+      - name: Install Manim system dependencies
+        if: steps.lookup.outputs.cache-hit != 'true'
         run: |
-          mkdir -p _site
-          cp -R --dereference result/. _site/
+          # The scenes use MathTex; Manim's default TeX template needs
+          # latex-extra, fonts-extra (dsfont, calligra), science (physics), tipa.
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends \
+            ffmpeg libcairo2-dev libpango1.0-dev pkg-config \
+            texlive-latex-base texlive-latex-recommended texlive-latex-extra \
+            texlive-fonts-recommended texlive-fonts-extra texlive-science \
+            tipa lmodern dvisvgm >/dev/null
+
+      - uses: astral-sh/setup-uv@v6
+        if: steps.lookup.outputs.cache-hit != 'true'
+
+      - name: Install Manim and the font
+        if: steps.lookup.outputs.cache-hit != 'true'
+        run: |
+          uv tool install --python 3.12 "manim==${MANIM_VERSION}"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          mkdir -p "$HOME/.local/share/fonts"
+          curl -fsSL -o "$HOME/.local/share/fonts/NewCM10-Regular.otf" "$NEWCM_URL"
+
+      - name: Render the animations in parallel
+        if: steps.lookup.outputs.cache-hit != 'true'
+        env:
+          PLASMA_NEW_COMPUTER_MODERN_FONT: /home/runner/.local/share/fonts/NewCM10-Regular.otf
+        run: bash scripts/render-animations.sh "$MEDIA_DIR"
+
+      - name: Save the rendered animations
+        if: steps.lookup.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .cache/animations
+          key: ${{ steps.lookup.outputs.cache-primary-key }}
+
+  site:
+    needs: animations
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Cache the Typst and ripgrep binaries
+        id: tools
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/tools
+          key: tools-typst-${{ env.TYPST_VERSION }}-rg-${{ env.RIPGREP_VERSION }}
+
+      - name: Install Typst and ripgrep
+        if: steps.tools.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/.local/tools
+          curl -fsSL "https://github.com/typst/typst/releases/download/v${TYPST_VERSION}/typst-x86_64-unknown-linux-musl.tar.xz" \
+            | tar -xJ --strip-components=1 -C ~/.local/tools typst-x86_64-unknown-linux-musl/typst
+          curl -fsSL "https://github.com/BurntSushi/ripgrep/releases/download/${RIPGREP_VERSION}/ripgrep-${RIPGREP_VERSION}-x86_64-unknown-linux-musl.tar.gz" \
+            | tar -xz --strip-components=1 -C ~/.local/tools "ripgrep-${RIPGREP_VERSION}-x86_64-unknown-linux-musl/rg"
+
+      - name: Put the tools on PATH
+        run: |
+          echo "$HOME/.local/tools" >> "$GITHUB_PATH"
+
+      - name: Cache Typst packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/typst/packages
+          key: typst-packages-${{ hashFiles('src/**/*.typ', 'scripts/*.typ') }}
+          restore-keys: typst-packages-
+
+      - name: Restore the rendered animations
+        uses: actions/cache/restore@v4
+        with:
+          path: .cache/animations
+          key: animations-${{ env.MANIM_VERSION }}-${{ hashFiles('animations/**', 'scripts/render-animations.sh') }}
+          fail-on-cache-miss: true
+
+      - name: Build the site with Typst
+        env:
+          SITE_DIR: ${{ github.workspace }}/_site
+          SKIP_ANIMATIONS: "1"
+        run: |
+          typst --version
+          bash scripts/build-site.sh
+
+      - name: Check figure annotations
+        run: typst query --root . scripts/check-figures.typ '<physics-check>' >/dev/null
+
+      - name: Verify the site against SPEC.md
+        run: bash scripts/verify-spec.sh _site
 
       - name: Configure GitHub Pages
+        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v5
 
       - name: Upload the Pages artifact
@@ -48,8 +161,11 @@ jobs:
 
   deploy:
     if: github.event_name != 'pull_request'
-    needs: build
+    needs: [site, derivations]
     runs-on: ubuntu-latest
+    concurrency:
+      group: pages-deploy
+      cancel-in-progress: false
     permissions:
       pages: write
       id-token: write

@@ -104,7 +104,7 @@
                 echo "Building website before serving..."
                 SITE_DIR="$site_dir" ${buildSiteApp}/bin/plasma-build-site
               elif [[ -f "$site_dir/index.html" && -d "$PWD/src" && -d "$PWD/animations" && -f "$PWD/scripts/build-site.sh" ]]; then
-                newer_source="$(find "$PWD/src" "$PWD/animations" "$PWD/scripts/build-site.sh" "$PWD/flake.nix" "$PWD/flake.lock" \
+                newer_source="$(find "$PWD/src" "$PWD/animations" "$PWD/scripts/build-site.sh" "$PWD/scripts/render-animations.sh" "$PWD/flake.nix" "$PWD/flake.lock" \
                   -type f ! -path '*/__pycache__/*' -newer "$site_dir/index.html" -print -quit)"
                 if [[ -n "$newer_source" ]]; then
                   echo "Warning: the site may be stale; source files are newer than index.html." >&2
