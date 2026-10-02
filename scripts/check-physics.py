@@ -204,5 +204,189 @@ class MotionPhysics(unittest.TestCase):
         self.assertAlmostEqual(m["growth_rate"](np.sqrt(3/8)), 1/(2*np.sqrt(2)))
 
 
+class PendulumEnsemblePhysics(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("pendulum_ensemble.py")
+        m = cls.m
+        theta0, p0 = m["initial_blob"]()
+        cls.mean_energy = float(np.mean(m["pendulum_energy"](theta0, p0)))
+        cls.temperature = m["gibbs_temperature"](cls.mean_energy)
+        cls.edges = np.linspace(0.0, 6.0, 49)
+        centers = 0.5 * (cls.edges[1:] + cls.edges[:-1])
+        cls.gibbs = m["gibbs_energy_density"](centers, cls.temperature)
+        cls.times = np.linspace(0.0, 480.0, 97)  # the scene's time span
+
+    def l1_to_gibbs(self, theta, p):
+        hist = self.m["energy_histogram"](theta, p, self.edges)
+        return float(np.sum(np.abs(hist - self.gibbs)) * (self.edges[1] - self.edges[0]))
+
+    def test_collisionless_leapfrog_conserves_energy(self):
+        m = self.m
+        theta, p = m["simulate_ensemble"](0.0, self.times)
+        energy = m["pendulum_energy"](theta, p)
+        self.assertLess(np.max(np.abs(energy - energy[0])), 3e-3)
+        self.assertLess(np.max(np.abs(energy.mean(axis=1) - energy[0].mean())), 1e-3)
+        self.assertTrue(np.all((theta >= -np.pi) & (theta < np.pi)))
+
+    def test_leapfrog_period_matches_density_of_states(self):
+        # g(H) inside the separatrix is the orbit period; time two upward
+        # zero crossings of p for a single librating pendulum.
+        m = self.m
+        for h in (0.3, 1.2, 1.7, 1.9):
+            theta, p = np.array([0.0]), np.array([np.sqrt(2 * h)])
+            dt, t, crossings, prev = 1e-3, 0.0, [], p[0]
+            while len(crossings) < 3:
+                theta, p = m["leapfrog_step"](theta, p, dt)
+                t += dt
+                if prev < 0 <= p[0]:
+                    crossings.append(t - dt * p[0] / (p[0] - prev))
+                prev = p[0]
+            self.assertAlmostEqual(crossings[2] - crossings[1],
+                                   float(m["density_of_states"](h)), delta=2e-3)
+
+    def test_density_of_states_against_phase_space_area(self):
+        # Independent oracle: dA/dH from uniform phase-space sampling.
+        rng = np.random.default_rng(7)
+        theta = rng.uniform(-np.pi, np.pi, 4_000_000)
+        p = rng.uniform(-4.0, 4.0, theta.size)
+        energy = self.m["pendulum_energy"](theta, p)
+        edges = np.array([0.4, 0.6, 1.4, 1.6, 2.6, 2.8, 4.0, 4.2])
+        counts, _ = np.histogram(energy, bins=edges)
+        area = counts * (2 * np.pi * 8.0) / theta.size / np.diff(edges)
+        for k in (0, 2, 4, 6):
+            h = np.linspace(edges[k], edges[k + 1], 201)
+            expected = np.mean(self.m["density_of_states"](h))
+            self.assertAlmostEqual(area[k] / expected, 1.0, delta=0.02)
+
+    def test_gibbs_temperature_matches_canonical_energy(self):
+        # Independent 2D quadrature of <H> = int H exp(-H/T) / int exp(-H/T).
+        theta = np.linspace(-np.pi, np.pi, 400, endpoint=False)
+        p = np.linspace(-15, 15, 3001)
+        energy = self.m["pendulum_energy"](theta[:, None], p[None, :])
+        weight = np.exp(-energy / self.temperature)
+        self.assertAlmostEqual(float(np.sum(energy * weight) / np.sum(weight)),
+                               self.mean_energy, places=6)
+        h = np.linspace(1e-6, 60, 600_001)
+        density = self.m["gibbs_energy_density"](h, self.temperature)
+        self.assertAlmostEqual(float(np.sum(density) * (h[1] - h[0])), 1.0, delta=2e-3)
+
+    def test_kac_collision_conserves_pair_kinetic_energy(self):
+        rng = np.random.default_rng(3)
+        p = rng.standard_normal(10)
+        first, second = np.array([0, 4, 7]), np.array([2, 9, 1])
+        angle = rng.uniform(0, 2 * np.pi, 3)
+        q = self.m["kac_collide"](p, first, second, angle)
+        np.testing.assert_allclose(q[first]**2 + q[second]**2,
+                                   p[first]**2 + p[second]**2, rtol=1e-14)
+        untouched = np.setdiff1d(np.arange(10), np.concatenate([first, second]))
+        np.testing.assert_array_equal(q[untouched], p[untouched])
+        self.assertGreater(np.max(np.abs(q - p)), 0.1)
+
+    def test_collisional_run_conserves_energy_and_reaches_gibbs(self):
+        m = self.m
+        theta, p = m["simulate_ensemble"](m["NU_STRONG"], self.times)
+        energy = m["pendulum_energy"](theta, p).mean(axis=1)
+        self.assertLess(np.max(np.abs(energy - self.mean_energy)), 1e-3)
+        late = self.times >= 40
+        l1 = [self.l1_to_gibbs(a, b) for a, b in zip(theta[late], p[late])]
+        self.assertLess(np.mean(l1), 0.15)
+        self.assertLess(np.max(l1), 0.25)
+        self.assertGreater(self.l1_to_gibbs(theta[0], p[0]), 1.2)
+
+    def test_weak_run_stays_non_gibbs_at_mid_animation(self):
+        m = self.m
+        theta, p = m["simulate_ensemble"](m["NU_WEAK"], self.times)
+        mid = int(np.searchsorted(self.times, 240.0))
+        self.assertGreater(self.l1_to_gibbs(theta[mid], p[mid]), 0.6)
+        # The band at the initial energies is still there, and relaxation
+        # has begun by the end of the scene.
+        energy = m["pendulum_energy"](theta, p)
+        band = np.abs(energy - self.mean_energy) < 0.3
+        self.assertGreater(band[mid].mean(), 0.5)
+        self.assertLess(self.l1_to_gibbs(theta[-1], p[-1]),
+                        self.l1_to_gibbs(theta[0], p[0]) - 0.5)
+
+
+class CollectiveResponsePhysics(unittest.TestCase):
+    def setUp(self):
+        self.m = model("collective_response.py")
+
+    def test_screened_force_is_minus_gradient_of_potential(self):
+        force = self.m["screened_force"]
+        h = 1e-6
+        for eps in (0.0, 0.12):
+            def energy(p):
+                r_s = math.sqrt(p[0]**2 + p[1]**2 + eps**2)
+                return -math.exp(-r_s) / r_s
+            for p in ((0.3, -0.4), (1.1, 0.7), (-2.0, 0.5)):
+                grad = [(energy((p[0] + h, p[1])) - energy((p[0] - h, p[1]))) / (2*h),
+                        (energy((p[0], p[1] + h)) - energy((p[0], p[1] - h))) / (2*h)]
+                np.testing.assert_allclose(force(np.array(p), eps), -np.array(grad), rtol=1e-6)
+
+    def test_straight_pass_impulse_is_two_k1(self):
+        # Yukawa impulse in the straight-line limit: dv = 2 K_1(b) for unit
+        # coupling and speed; K_1 from its integral representation.
+        s = np.linspace(0, 12, 40001)
+        for b in (0.5, 1.0, 2.0):
+            k1 = np.trapezoid(np.exp(-b*np.cosh(s))*np.cosh(s), s)
+            coupling = 1e-5
+            _, _, vel = self.m["plasma_test_path"](np.array([[0.0, b]]), start=(-30.0, 0.0),
+                                                   duration=60.0, dt=0.002,
+                                                   coupling=coupling, softening=0.0)
+            self.assertAlmostEqual(vel[1] / coupling / (2*k1), 1.0, places=3)
+            self.assertLess(abs(vel[0] - 1.0), 1e-6)
+
+    def test_hard_sphere_events_conserve_and_do_not_overlap(self):
+        m = self.m
+        positions = m["particle_positions"]()
+        contact = m["CONTACT"]
+        events = m["hard_sphere_events"](positions)
+        self.assertGreaterEqual(len(events), 2)
+        pos, vel, t0 = np.array(m["GAS_START"]), np.array([1.0, 0.0]), 0.0
+        struck = set()
+        for (t, p, v_after, j, v_neutral) in events:
+            # Straight flight with no contact with any resting sphere.
+            for frac in np.linspace(0, 1, 400)[:-1]:
+                q = pos + frac*(t - t0)*vel
+                rest = [k for k in range(len(positions)) if k not in struck]
+                self.assertGreaterEqual(np.min(np.linalg.norm(positions[rest] - q, axis=1)),
+                                        contact - 1e-9)
+            np.testing.assert_allclose(pos + (t - t0)*vel, p, atol=1e-12)
+            self.assertAlmostEqual(np.linalg.norm(positions[j] - p), contact, places=9)
+            np.testing.assert_allclose(v_after + v_neutral, vel, atol=1e-12)
+            self.assertAlmostEqual(v_after @ v_after + v_neutral @ v_neutral, vel @ vel, places=12)
+            pos, vel, t0 = p, v_after, t
+            struck.add(j)
+
+
+class ParticlesToMomentsPhysics(unittest.TestCase):
+    def setUp(self):
+        self.m = model("particles_to_moments.py")
+
+    def test_moments_of_model_distribution(self):
+        v = np.linspace(-14, 14, 200001)
+        for x in (0.0, 0.2, 0.5, 0.85):
+            f = self.m["distribution"](x, v)
+            n = np.trapezoid(f, v)
+            self.assertAlmostEqual(n, self.m["density"](x), places=9)
+            self.assertAlmostEqual(np.trapezoid(v*f, v) / n, self.m["bulk_velocity"](x), places=9)
+
+    def test_binned_sample_moments_within_sampling_error(self):
+        m = self.m
+        x, v = m["sample_particles"]()
+        bins = m["N_BINS"]
+        centers, n_est, u_est = m["binned_moments"](x, v, bins, 1 + m["BEAM"])
+        self.assertAlmostEqual(np.sum(n_est) / bins, 1 + m["BEAM"], places=12)
+        index = np.minimum((x*bins).astype(int), bins - 1)
+        for k, c in enumerate(centers):
+            fine = np.linspace(c - 0.5/bins, c + 0.5/bins, 2001)
+            n_exact = np.mean(m["density"](fine))
+            u_exact = np.mean(m["density"](fine)*m["bulk_velocity"](fine)) / n_exact
+            count = np.sum(index == k)
+            self.assertLess(abs(n_est[k] - n_exact), 4*n_exact/np.sqrt(count))
+            self.assertLess(abs(u_est[k] - u_exact), 4*np.std(v[index == k])/np.sqrt(count))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

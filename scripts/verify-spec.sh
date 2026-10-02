@@ -61,7 +61,6 @@ for chapter in "${chapter_sources[@]}"; do
   if [[ -f "$source_file" ]]; then
     sections="$(count_matches '^[[:space:]]*#section-title\[' "$source_file")"
     objectives="$(count_matches '^[[:space:]]*#objectives\(' "$source_file")"
-    ledgers="$(count_matches '^[[:space:]]*#unit-ledger\[' "$source_file")"
     summaries="$(count_matches '^[[:space:]]*#summary\[' "$source_file")"
     checks="$(count_matches '^[[:space:]]*#knowledge-check\(' "$source_file")"
     questions="$(count_matches '^[[:space:]]*question:' "$source_file")"
@@ -69,7 +68,7 @@ for chapter in "${chapter_sources[@]}"; do
     if [[ "$sections" -eq 0 ]]; then
       fail "$source_file has no section-title blocks"
     fi
-    for anchor in objectives ledgers summaries checks; do
+    for anchor in objectives summaries checks; do
       if [[ "${!anchor}" -ne "$sections" ]]; then
         fail "$source_file has $sections sections but ${!anchor} $anchor"
       fi

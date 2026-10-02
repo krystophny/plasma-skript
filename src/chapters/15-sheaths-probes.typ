@@ -40,12 +40,8 @@
   ))
 
   #unit-ledger[
-    SI units are used. Number density $n_s$ is in #unit("m^-3"),
-    velocity is in #unit("m/s"), mass is in #unit("kg"), and the directed
-    particle flux $Gamma_s$ is in #unit("m^-2 s^-1"). Charge is in
-    #unit("C"), so a current density $J_s=q_s Gamma_s$ is in
-    #unit("A/m^2"). Thermal energy $k_B T_s$
-    and potential energy $q_s phi$ are in #unit("J") (or #unit("eV")). Ratios such as
+    The directed particle flux $Gamma_s$ is in #unit("m^-2 s^-1"), so a
+    current density $J_s=q_s Gamma_s$ is in #unit("A/m^2"). Ratios such as
     $Gamma_e/Gamma_i$ and $(e phi)/(k_B T_e)$ are dimensionless.
   ]
 

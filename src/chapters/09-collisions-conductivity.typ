@@ -39,11 +39,10 @@
   ))
 
   #unit-ledger[
-    SI units are used. Number density $n_s$ is in #unit("m^-3"), a
-    cross section $sigma_(a b)$ is in #unit("m^2"), speed is in
-    #unit("m/s"), mean free path is in #unit("m"), and collision frequency
-    $nu_(a b)$ is in #unit("s^-1"). Time is in #unit("s"); a normalized
-    collision count such as $nu tau$ and a Knudsen number are dimensionless.
+    A cross section $sigma_(a b)$ is in #unit("m^2"), mean free path is in
+    #unit("m"), and collision frequency $nu_(a b)$ is in #unit("s^-1"). A
+    normalized collision count such as $nu tau$ and a Knudsen number are
+    dimensionless.
   ]
 
   #definition(
@@ -179,7 +178,7 @@
       small-angle encounters.]
     ),
     (
-      question: [What are the SI units of a collision cross section and mean free path?],
+      question: [What are the units of a collision cross section and mean free path?],
       answer: [A cross section is an area in #unit("m^2"), and a mean free
       path is a length in #unit("m"). The collision frequency is in
       #unit("s^-1").]
@@ -215,14 +214,6 @@
     [write the neutral drag force for stationary and moving neutrals],
     [explain why momentum and energy relaxation need not have the same rate],
   ))
-
-  #unit-ledger[
-    Neutral density $n_"n"$ is in #unit("m^-3"); electron or ion speed is
-    in #unit("m/s"); the momentum-transfer cross section
-    $sigma_"mt"$ is in #unit("m^2"); and $nu_"en"$, $nu_"in"$, and their
-    relaxation times are in #unit("s^-1") and #unit("s"), respectively. The
-    drag force density is in #unit("N/m^3").
-  ]
 
   #assumption(
     [Weak ionization and stationary neutrals],
@@ -372,14 +363,9 @@
   ))
 
   #unit-ledger[
-    SI units are used: charge is in #unit("C"), reduced mass $m_r$ is in
-    #unit("kg"), relative speed is in #unit("m/s"), the vacuum permittivity
-    $epsilon_0$ is in #unit("F/m"), and the impact parameter
-    $b_90$ and Debye length $lambda_D$ are in #unit("m"). The Coulomb
-    cutoff logarithm $ln Lambda_"cut"$ and plasma parameter
-    $Lambda=n_"e"lambda_D^3$ are dimensionless, as is $ln Lambda$;
-    thermal energy $k_B T_s$ is in #unit("J") (or #unit("eV")), and collision frequencies are
-    in #unit("s^-1").
+    The impact parameter $b_90$ is in #unit("m"). The Coulomb cutoff logarithm
+    $ln Lambda_"cut"$ and plasma parameter $Lambda=n_"e"lambda_D^3$ are
+    dimensionless, as is $ln Lambda$.
   ]
 
   #assumption(
@@ -577,16 +563,14 @@
     [derive scalar resistivity from a drag force and the current],
     [distinguish neutral-limited and Coulomb-limited resistivity],
     [obtain the temperature and density scaling of Spitzer resistivity],
-    [connect resistivity to conductivity in SI units],
+    [connect resistivity to conductivity],
   ))
 
   #unit-ledger[
-    SI units are used: $bold(E)$ is in #unit("V/m"), current density
-    $bold(j)$ is in #unit("A/m^2"), resistivity
-    $eta$ in $bold(E)=eta bold(j)$ is in #unit("ohm meter"), and conductivity
-    $sigma=1/eta$ is in #unit("S/m"). Here $sigma$ denotes conductivity;
-    the collision cross sections earlier in this chapter have area units.
-    The drag force density is in #unit("N/m^3").
+    The resistivity $eta$ in $bold(E)=eta bold(j)$ is in #unit("ohm meter"),
+    and conductivity $sigma=1/eta$ is in #unit("S/m"). Here $sigma$ denotes
+    conductivity; the collision cross sections earlier in this chapter have
+    area units.
   ]
 
   #assumption(
@@ -710,7 +694,7 @@
       $eta=(m_"e"nu)/(n_"e"e^2)$ in the scalar model.]
     ),
     (
-      question: [How are resistivity and conductivity related in SI units?],
+      question: [How are resistivity and conductivity related?],
       answer: [They are reciprocals in the scalar model:
       $sigma=1/eta$. Resistivity has units #unit("ohm meter") and conductivity has
       units #unit("S/m") when $bold(E)=eta bold(j)$.]
@@ -748,12 +732,7 @@
   ))
 
   #unit-ledger[
-    SI units are used: $bold(E)$ is in #unit("V/m"),
-    $bold(B)_0$ is in #unit("T"), $bold(j)$ is in #unit("A/m^2"), and all
-    collision, cyclotron, and wave frequencies are in
-    #unit("s^-1"). The conductivity tensor entries are in #unit("S/m");
-    $omega$ and $Omega$ are frequencies, while $i$ is the dimensionless
-    imaginary unit with $i^2=-1$.
+    The conductivity tensor entries are in #unit("S/m").
   ]
 
   #assumption(

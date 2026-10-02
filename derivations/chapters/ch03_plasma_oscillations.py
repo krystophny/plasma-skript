@@ -19,7 +19,7 @@ SI_UNITS = {n0: u.meter**-3, xi0: u.meter, x: u.meter, t: u.second, T_e: u.kelvi
             n_s: u.meter**-3, q_s: u.coulomb, m_s: u.kilogram}
 
 # %% Charge-separation field
-section("Charge-separation field", "03-plasma-oscillations.typ:47")
+section("Charge-separation field", "03-plasma-oscillations.typ:45")
 note("Electrons shifted by", xi0, "leave an ion sheet at", sp.Eq(x, 0, evaluate=False),
      "and an electron sheet at", sp.Eq(x, L))
 sheet = show(sp.Eq(sigma, e * n0 * xi0))
@@ -41,7 +41,7 @@ outside = show(sp.Eq(E, two_sheets.rhs.subs(x, 2 * L)))
 assert outside.rhs == 0
 
 # %% Electron plasma oscillation
-section("Electron plasma oscillation", "03-plasma-oscillations.typ:58")
+section("Electron plasma oscillation", "03-plasma-oscillations.typ:56")
 note("Newton for an electron in the field", sp.Eq(E, e * n0 * xi / eps0))
 newton = sp.Eq(m_e * sp.Derivative(xi, t, 2), -e * (e * n0 * xi / eps0))
 agrees(newton.rhs, -(n0 * e**2) / eps0 * xi, ":58", lhs=newton.lhs)
@@ -58,7 +58,7 @@ trial = amplitude * sp.cos(omega_pe_expr * t + delta)  # amplitude-phase form, :
 assert sp.simplify(m_e * trial.diff(t, 2) + e**2 * n0 / eps0 * trial) == 0
 
 # %% Species plasma frequency
-section("Species plasma frequency", "03-plasma-oscillations.typ:79")
+section("Species plasma frequency", "03-plasma-oscillations.typ:77")
 note("Same oscillator for species", sp.Symbol("s"), "with charge", q_s, ", density", n_s, ", mass", m_s)
 species = show(newton.subs({e: q_s, n0: n_s, m_e: m_s}))
 omega_ps_expr = sp.sqrt(-species.rhs / (m_s * xi))
@@ -70,7 +70,7 @@ check(frequency.rhs.subs(omega_ps, omega_ps_expr), frequency.rhs.subs(omega_ps, 
       unit=u.hertz, units=SI_UNITS)  # :83
 
 # %% Plasma frequency and Debye length
-section("Plasma frequency and Debye length", "03-plasma-oscillations.typ:90")
+section("Plasma frequency and Debye length", "03-plasma-oscillations.typ:88")
 definitions = {lambda_D: sp.sqrt(eps0 * k_B * T_e / (n0 * e**2)),
                omega_pe: omega_pe_expr, v_th: sp.sqrt(2 * k_B * T_e / m_e)}
 for symbol, expr in definitions.items():
@@ -90,7 +90,7 @@ ratio_alt = show(sp.Eq(ratio.lhs, sp.simplify(ratio.lhs.subs({**definitions, v_t
 agrees(sp.solve(ratio_alt, lambda_D)[0], v_th / omega_pe, ":96", lhs=lambda_D)
 
 # %% Inertial length
-section("Inertial length", "03-plasma-oscillations.typ:99")
+section("Inertial length", "03-plasma-oscillations.typ:97")
 inertial = show(sp.Eq(d_s, c / omega_ps))
 check(inertial.rhs.subs(omega_ps, omega_ps_expr), inertial.rhs.subs(omega_ps, omega_ps_expr),
       unit=u.meter, units=SI_UNITS)

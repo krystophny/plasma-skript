@@ -37,7 +37,7 @@ def agrees_vector(derived, printed, source, name):
 
 
 # %% Magnetic force does no work
-section("Magnetic force does no work", "04-single-particle-motion.typ:39")
+section("Magnetic force does no work", "04-single-particle-motion.typ:32")
 v, E, B_vec = vec("v", real=True), vec("E", real=True), vec("B", real=True)
 velocity = sp.Matrix([sp.Function(f"v_{axis}")(t) for axis in "xyz"])
 note("Lorentz force")
@@ -52,7 +52,7 @@ agrees(sp.expand(v.dot(q * (E + v.cross(B_vec)))), q * E.dot(v), ":49",
        lhs=sp.Derivative(sp.Function("K")(t), t))
 
 # %% Cyclotron motion
-section("Cyclotron motion", "04-single-particle-motion.typ:59")
+section("Cyclotron motion", "04-single-particle-motion.typ:52")
 v_x, v_y = sp.Function("v_x")(t), sp.Function("v_y")(t)
 force = q * sp.Matrix([v_x, v_y, 0]).cross(B * e_z)
 gyrofrequency = q * B / m
@@ -74,7 +74,7 @@ speed_sq = show(sp.Eq(v_x**2 + v_y**2, sp.simplify(vx_orbit**2 + vy_orbit**2)))
 assert speed_sq.rhs == v_perp**2
 
 # %% Gyroradius
-section("Gyroradius", "04-single-particle-motion.typ:73")
+section("Gyroradius", "04-single-particle-motion.typ:66")
 rho = sp.Symbol("rho", positive=True)
 note("Centripetal balance")
 centripetal = show(sp.Eq(m * v_perp**2 / rho, sp.Abs(q) * v_perp * B))
@@ -92,7 +92,7 @@ assert sp.simplify(radius_sq - v_perp**2 / Omega**2) == 0
 agrees(sp.sqrt(radius_sq.subs(Omega, gyrofrequency)), gyroradius, ":77", lhs=rho)
 
 # %% Thermal gyroradius
-section("Thermal gyroradius", "04-single-particle-motion.typ:100")
+section("Thermal gyroradius", "04-single-particle-motion.typ:93")
 rho_s, omega_c, v_th = sp.symbols("rho_s omega_c v_th", positive=True)
 definitions = {v_th: sp.sqrt(2 * k_B * T_s / m), omega_c: sp.Abs(q) * B / m}
 for symbol, expr in definitions.items():
@@ -102,7 +102,7 @@ check(definitions[omega_c], definitions[omega_c], unit=1 / u.second, units=SI_UN
 check(thermal.rhs.subs(definitions), thermal.rhs.subs(definitions), unit=u.meter, units=SI_UNITS)
 
 # %% Worked examples: plasma scales at 1 T and thermonuclear scales at 5 T
-section("Worked example: scales at a million kelvin and 1 T", "04-single-particle-motion.typ:122")
+section("Worked example: scales at a million kelvin and 1 T", "04-single-particle-motion.typ:115")
 n, T_e, T_i, m_i = sp.symbols("n T_e T_i m_i", positive=True)
 lambda_D, omega_pe, omega_ce, omega_ci, rho_e, rho_i = sp.symbols(
     "lambda_D omega_pe omega_ce omega_ci rho_e rho_i", positive=True)
@@ -124,7 +124,7 @@ for symbol, printed, line in [(lambda_D, "6.9e-6", ":135"), (omega_pe, "5.6e11",
     value = evaluate(symbol, scales[symbol], plasma_1T, SCALE_UNITS[symbol])
     close_to(value, float(printed), rtol=rounding_rtol(printed), source=line)
 
-section("Worked example: thermonuclear scales", "04-single-particle-motion.typ:141")
+section("Worked example: thermonuclear scales", "04-single-particle-motion.typ:134")
 note("Input", sp.Eq(T_e, 1e8 * u.kelvin, evaluate=False), ",", sp.Eq(B, 5 * u.tesla, evaluate=False),
      ", same density")
 thermonuclear = {**plasma_1T, T_e: 1e8 * u.kelvin, T_i: 1e8 * u.kelvin, B: 5 * u.tesla}
@@ -136,14 +136,14 @@ for symbol, printed in [(lambda_D, "6.9e-5"), (omega_pe, "5.6e11"), (omega_ce, "
     close_to(value, float(printed), rtol=rounding_rtol(printed), source=":156-162")
 
 # %% Parallel acceleration
-section("Parallel acceleration", "04-single-particle-motion.typ:229")
+section("Parallel acceleration", "04-single-particle-motion.typ:220")
 note("Project the Lorentz force on the field direction z")
 F_parallel = (q * (E + v.cross(B * e_z))).dot(e_z)
 agrees(F_parallel, q * E.dot(e_z), ":229", lhs=sp.Symbol("F_par"))
 check(F_parallel, q * E.dot(e_z), unit=u.newton, units={**SI_UNITS, E[2]: u.volt / u.meter})
 
 # %% Homogeneous-force drift
-section("Homogeneous-force drift", "04-single-particle-motion.typ:251")
+section("Homogeneous-force drift", "04-single-particle-motion.typ:242")
 F, v_D = vec("F", real=True), vec("v_D")
 F_perp = sp.Matrix([F[0], F[1], 0])
 note("Force balance; field", B, "along z and a perpendicular force,", sp.Eq(F[2], 0))
@@ -165,7 +165,7 @@ check(F_0 / (q * B_0), F_0 / (q * B_0), unit=VELOCITY,
       units={**SI_UNITS, F_0: u.newton, B_0: u.tesla})
 
 # %% E x B drift
-section("E x B drift", "04-single-particle-motion.typ:269")
+section("E x B drift", "04-single-particle-motion.typ:260")
 E_perp = sp.Matrix([E[0], E[1], 0])
 note("Electric force", sp.Eq(sp.Symbol("F"), q * sp.Symbol("E")), "in the force drift")
 exb = F_perp.cross(B * e_z) / (q * B**2)
@@ -179,14 +179,14 @@ E_0 = sp.Symbol("E_0", positive=True)
 check(E_0 / B, E_0 / B, unit=VELOCITY, units={**SI_UNITS, E_0: u.volt / u.meter})
 
 # %% Guiding-centre split
-section("Guiding-centre split", "04-single-particle-motion.typ:378")
+section("Guiding-centre split", "04-single-particle-motion.typ:368")
 R_x, rho_x = sp.Function("R_x")(t), sp.Function("rho_x")(t)
 note("Position = guiding centre + gyration, per component")
 split = show(sp.Eq(sp.Derivative(R_x + rho_x, t), (R_x + rho_x).diff(t)))
 assert sp.simplify(split.lhs.doit() - R_x.diff(t) - rho_x.diff(t)) == 0  # :388
 
 # %% Magnetic moment of a gyro-orbit
-section("Magnetic moment of a gyro-orbit", "04-single-particle-motion.typ:402")
+section("Magnetic moment of a gyro-orbit", "04-single-particle-motion.typ:392")
 current, area = sp.symbols("I A")
 note("Current of one charge per gyration period, enclosing the area", sp.Eq(area, sp.pi * rho**2))
 loop_current = show(sp.Eq(current, sp.Abs(q) / (2 * sp.pi / omega_c))).rhs  # :425
@@ -198,7 +198,7 @@ check(mu_expr, mu_expr, unit=u.joule / u.tesla, units=SI_UNITS)
 check(mu_expr, mu_expr, unit=u.ampere * u.meter**2, units=SI_UNITS)
 
 # %% Adiabatic balance for mu
-section("Adiabatic balance for mu", "04-single-particle-motion.typ:439")
+section("Adiabatic balance for mu", "04-single-particle-motion.typ:429")
 s_t, v_par_t = sp.Function("s")(t), sp.Function("v_par")(t)
 B_s, mu_t = sp.Function("B")(s_t), sp.Function("mu")(t)
 note("Averaged mirror force along the field line, and motion along it")
@@ -214,7 +214,7 @@ agrees(sp.simplify(dK_par + dmuB), B_s * mu_t.diff(t), ":458",
 # Static B conserves K = K_par + mu B, so B dmu/dt = 0: mu is constant.
 
 # %% Worked example: adiabatic compression
-section("Worked example: adiabatic compression", "04-single-particle-motion.typ:471")
+section("Worked example: adiabatic compression", "04-single-particle-motion.typ:461")
 B_0, B_1, v_0, v_1 = sp.symbols("B_0 B_1 v_0 v_1", positive=True)
 note("Proton", sp.Eq(m, m_p), "with", mu, "conserved while the field rises from", B_0, "to", B_1)
 conserved = show(sp.Eq(m * v_0**2 / (2 * B_0), m * v_1**2 / (2 * B_1)))
@@ -231,7 +231,7 @@ radius_1 = evaluate(rho_1, m_p * v_1_expr / (e * B_1), compression, u.meter)
 close_to(radius_1, 0.0522, rtol=rounding_rtol("0.0522"), source=":482")
 
 # %% Mirror force from the gyro-average
-section("Mirror force from the gyro-average", "04-single-particle-motion.typ:553")
+section("Mirror force from the gyro-average", "04-single-particle-motion.typ:536")
 kappa, X, theta = sp.symbols("kappa X theta", real=True)
 x_g = sp.Symbol("x")
 note("Weak gradient", sp.Eq(sp.Symbol("B_z"), B_0 * (1 + kappa * x_g)), "; unperturbed orbit with",
@@ -249,7 +249,7 @@ agrees(sp.simplify(average.rhs.doit()).subs(m, 2 * B_0 * mu / v_perp**2), -mu * 
 assert sp.simplify(averaged - (-mu_0 * sp.Matrix([B_0 * kappa, 0, 0]))) == sp.zeros(3, 1)
 
 # %% Grad-B drift
-section("Grad-B drift", "04-single-particle-motion.typ:563")
+section("Grad-B drift", "04-single-particle-motion.typ:546")
 G = vec("G", real=True)  # G = grad B
 note("Mirror force", sp.Eq(sp.Symbol("F_mu"), -mu * sp.Symbol("G")), "with", sp.Symbol("G"),
      "the gradient of the field strength, in the force drift")
@@ -259,7 +259,7 @@ g = sp.Symbol("g", positive=True)
 check(mu * B * g / (q * B**2), mu * g / (q * B), unit=VELOCITY, units={**SI_UNITS, g: u.tesla / u.meter})
 
 # %% Curvature force and drift
-section("Curvature force and drift", "04-single-particle-motion.typ:574")
+section("Curvature force and drift", "04-single-particle-motion.typ:557")
 R_c, v_par = sp.symbols("R_c v_par", positive=True)
 note("Guiding centre moving at", v_par, "along a field line of radius", R_c, "feels the centrifugal force",
      -m * sp.Symbol("a"), "; the curvature vector points from it to the centre of curvature")
@@ -276,7 +276,7 @@ check(m * v_par**2 / (q * B * R_c), m * v_par**2 / (q * B * R_c), unit=VELOCITY,
       units={**SI_UNITS, R_c: u.meter, v_par: VELOCITY})
 
 # %% Mirror energy and loss cone
-section("Mirror energy and loss cone", "04-single-particle-motion.typ:631")
+section("Mirror energy and loss cone", "04-single-particle-motion.typ:614")
 mu_const = {mirror.lhs: mirror.rhs.subs(mu_t, mu), streaming.lhs: streaming.rhs}
 energy = show(sp.Eq(sp.Function("K")(t), m * v_par_t**2 / 2 + mu * B_s)).rhs
 agrees(sp.simplify(energy.diff(t).subs(mu_const).doit()), 0, ":642",
@@ -297,7 +297,7 @@ angle = evaluate(alpha_c, loss_cone * u.radian, mirror_ratio, u.degree)
 close_to(angle, 26.6, rtol=rounding_rtol("26.6"), source=":703")
 
 # %% Polarization drift
-section("Polarization drift", "04-single-particle-motion.typ:789")
+section("Polarization drift", "04-single-particle-motion.typ:770")
 ramp = sp.Symbol("Edot", real=True)
 c_0, c_1 = vec("c0"), vec("c1")
 note("Linearly ramping field", sp.Eq(E[0], ramp * t), "perpendicular to", B, "along z;",
@@ -321,7 +321,7 @@ check(m * E_rate / (q * B**2), m * E_rate / (q * B**2), unit=VELOCITY,
       units={**SI_UNITS, E_rate: u.volt / u.meter / u.second})
 
 # %% Polarization current
-section("Polarization current", "04-single-particle-motion.typ:858")
+section("Polarization current", "04-single-particle-motion.typ:839")
 n_1, n_2, m_1, m_2, q_1, q_2 = sp.symbols("n_1 n_2 m_1 m_2 q_1 q_2", positive=True)
 note("Sum of", n * q * sp.Symbol("v_pol"), "over ions (charge", q_1, ") and electrons (charge", -q_2, ")")
 j_pol = sum(density * charge * mass / (charge * B**2) * E_rate
@@ -332,7 +332,7 @@ check(j_pol, j_pol, unit=u.ampere / u.meter**2,
              E_rate: u.volt / u.meter / u.second})
 
 # %% Worked example: electron polarization drift
-section("Worked example: electron polarization drift", "04-single-particle-motion.typ:868")
+section("Worked example: electron polarization drift", "04-single-particle-motion.typ:849")
 omega_d, E_0 = sp.symbols("omega_d E_0", positive=True)
 note("Field oscillating at", omega_d, "with amplitude", E_0, ", so the rate amplitude is", omega_d * E_0)
 electron = {B: 0.01 * u.tesla, E_0: 3e4 * u.volt / u.meter, omega_d: 1e5 / u.second}
@@ -344,7 +344,7 @@ ordering = show(sp.Eq(omega_d / sp.Symbol("Omega_e"), sp.Float(1e5 / Omega_e, 3)
 close_to(float(ordering), 5.69e-5, rtol=rounding_rtol("5.69e-5"), source=":880")
 
 # %% Circular cyclotron response
-section("Circular cyclotron response", "04-single-particle-motion.typ:973")
+section("Circular cyclotron response", "04-single-particle-motion.typ:952")
 E_x, E_y = sp.Function("E_x")(t), sp.Function("E_y")(t)
 v_cw, v_ccw, E_cw, E_ccw = sp.symbols("v_cw v_ccw E_cw E_ccw")
 note("Lorentz force with", B, "along z and", sp.Eq(Omega, gyrofrequency))
@@ -370,7 +370,7 @@ assert sp.simplify((free - v_perp * sp.exp(-sp.I * Omega * t)).rewrite(sp.exp)) 
 show(sp.Eq(v_cw, v_perp * sp.exp(-sp.I * Omega * t)))
 
 # %% Worked example: cyclotron resonance
-section("Worked example: cyclotron resonance", "04-single-particle-motion.typ:1029")
+section("Worked example: cyclotron resonance", "04-single-particle-motion.typ:1008")
 note("Resonance at", sp.Eq(omega, Omega), "for", sp.Eq(B, 0.01 * u.tesla, evaluate=False))
 weak_field = {B: 0.01 * u.tesla}
 omega_res_e = evaluate(sp.Symbol("omega_res,e"), e * B / m_e, weak_field, 1 / u.second)

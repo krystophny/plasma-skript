@@ -38,15 +38,12 @@
   ))
 
   #unit-ledger[
-    SI units are used. Position is in #unit("m"), velocity is in
-    #unit("m/s"), mass is in #unit("kg"), and charge is in #unit("C").
-    Number density is in #unit("m^-3"). Mass density is in
-    #unit("kg/m^3"), momentum density is in
-    #unit("kg m^-2 s^-1"), and pressure is in
-    #unit("Pa") $=$ #unit("N/m^2") $=$ #unit("kg m^-1 s^-2"). The symbols $bold(u)_s$, $bold(P)_s$, and $bold(q)_s$ below
-    denote velocity, pressure tensor, and heat-flux vector, respectively. The
-    bold heat-flux symbol $bold(q)_s$ is distinct from the scalar particle
-    charge $q_s$.
+    Mass density is in #unit("kg/m^3"), momentum density is in
+    #unit("kg m^-2 s^-1"), and pressure is in #unit("Pa") $=$ #unit("N/m^2")
+    $=$ #unit("kg m^-1 s^-2"). The symbols $bold(u)_s$, $bold(P)_s$, and
+    $bold(q)_s$ below denote velocity, pressure tensor, and heat-flux vector,
+    respectively. The bold heat-flux symbol $bold(q)_s$ is distinct from the
+    scalar particle charge $q_s$.
   ]
 
   #definition(
@@ -153,7 +150,7 @@
     "A schematic reduces the distribution function to number density, bulk velocity, pressure tensor, and the full third central moment tensor. Heat flux is identified as a contraction of the third central tensor. Arrows show how each transport equation introduces a higher moment and therefore requires closure.",
     caption: [
       Moment hierarchy from kinetic information to fluid fields. The animation
-      labels dimensional SI quantities, not normalized fields.
+      labels dimensional quantities, not normalized fields.
       The full third central tensor $Q_(i j k)$ contains more information
       than heat flux $q_i=(1/2) sum_j Q_(i j j)$.
     ],
@@ -229,13 +226,9 @@
   ))
 
   #unit-ledger[
-    SI units are used. The kinetic distribution has the phase-space units
-    implied by $d N_s=f_s dif^3 bold(r) dif^3 bold(v)$, namely
-    #unit("s^3 m^-6"). The continuity equation
-    balances a density in #unit("m^-3") per #unit("s") with the divergence
-    of a flux in #unit("m^-2 s^-1"). The same balance multiplied by
-    mass or charge gives mass or charge continuity. No normalized variable is
-    used in this derivation.
+    The continuity equation balances a density in #unit("m^-3") per #unit("s")
+    with the divergence of a flux in #unit("m^-2 s^-1"). The same balance
+    multiplied by mass or charge gives mass or charge continuity.
   ]
 
   #assumption(
@@ -410,17 +403,14 @@
   #objectives((
     [derive the momentum equation by weighting the kinetic equation with $m_s bold(v)$],
     [separate directed momentum flux from the pressure tensor],
-    [evaluate the Lorentz force moment in SI units],
+    [evaluate the Lorentz force moment],
     [interpret the collision moment as interspecies momentum exchange],
   ))
 
   #unit-ledger[
-    SI units are used. Momentum density $rho_s bold(u)_s$ is in
-    #unit("kg m^-2 s^-1"). The divergence of a pressure
-    tensor and an electromagnetic force density are in
-    #unit("N/m^3") $=$ #unit("kg m^-2 s^-2"). The Lorentz acceleration is
-    $bold(a)_s=q_s/m_s (bold(E)+bold(v) times bold(B))$, with $bold(E)$ in
-    #unit("V/m") and $bold(B)$ in #unit("T").
+    The divergence of a pressure tensor and an electromagnetic force density
+    are in #unit("N/m^3") $=$ #unit("kg m^-2 s^-2"). The Lorentz acceleration
+    is $bold(a)_s=q_s/m_s (bold(E)+bold(v) times bold(B))$.
   ]
 
   #assumption(
@@ -621,12 +611,11 @@
   ))
 
   #unit-ledger[
-    SI units are used. Energy density is in
-    #unit("J/m^3") $=$ #unit("kg m^-1 s^-2"), and
-    energy flux is in #unit("W/m^2") $=$ #unit("kg s^-3"). Heat flux $bold(q)_s$ is an energy flux. The scalar pressure
-    $p_s$ has the same units as $bold(P)_s$. The ratio
-    $gamma=5/3$ below is dimensionless and applies to a three-dimensional
-    monatomic closure.
+    Energy density is in #unit("J/m^3") $=$ #unit("kg m^-1 s^-2"), and energy
+    flux is in #unit("W/m^2") $=$ #unit("kg s^-3"). Heat flux $bold(q)_s$ is
+    an energy flux. The scalar pressure $p_s$ has the same units as
+    $bold(P)_s$. The ratio $gamma=5/3$ below is dimensionless and applies to a
+    three-dimensional monatomic closure.
   ]
 
   #assumption(
@@ -896,12 +885,10 @@
   ))
 
   #unit-ledger[
-    SI units are used for all dimensional quantities. The collision
-    frequency $nu_s$ is in #unit("s^-1"), while $f_s$ and its Maxwellian
-    reference $f_(M,s)$ have units #unit("s^3 m^-6"). The collision operator
-    has units of distribution per time, #unit("s^2 m^-6").
-    Closure parameters such as $gamma$, the Knudsen number,
-    and $nu_s tau$ are dimensionless.
+    The Maxwellian reference $f_(M,s)$ has the units of $f_s$,
+    #unit("s^3 m^-6"). The collision operator has units of distribution per
+    time, #unit("s^2 m^-6"). Closure parameters such as $gamma$, the Knudsen
+    number, and $nu_s tau$ are dimensionless.
   ]
 
   #definition(

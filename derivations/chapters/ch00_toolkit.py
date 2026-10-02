@@ -50,7 +50,7 @@ def over_c(weight):
 
 
 # %% Energy moments
-section("Energy moments", "mathematical-toolkit.typ:70")
+section("Energy moments", "mathematical-toolkit.typ:66")
 u_vec, c_vec = sp.Matrix(U3), sp.Matrix(C3)
 v_vec = u_vec + c_vec
 K, U_int, p = sp.symbols("K_s U_s p")
@@ -71,7 +71,7 @@ check(rho * speed**2 / 2, rho * speed**2 / 2, unit=u.joule / u.meter**3,
       units={rho: u.kilogram / u.meter**3, speed: u.meter / u.second})
 
 # %% Energy-flux decomposition
-section("Energy-flux decomposition", "mathematical-toolkit.typ:196")
+section("Energy-flux decomposition", "mathematical-toolkit.typ:192")
 heat = [moment(m * c_vec.dot(c_vec) * c_vec[k] / 2) for k in range(3)]  # q_s definition
 q_x = sp.Symbol("q_x")
 Q_x = sp.Symbol("Q_x")
@@ -87,7 +87,7 @@ for k in range(3):
     assert sp.expand(fluxes[k] - ((K_expr + U_expr) * U3[k] + P_dot_u[k] + heat[k])) == 0  # :207
 
 # %% Lorentz work by parts
-section("Lorentz work by parts", "mathematical-toolkit.typ:121")
+section("Lorentz work by parts", "mathematical-toolkit.typ:117")
 V3 = sp.symbols("v_x v_y v_z", real=True)
 E3, B3 = sp.symbols("E_x E_y E_z", real=True), sp.symbols("B_x B_y B_z", real=True)
 v, E_vec, B_vec = sp.Matrix(V3), sp.Matrix(E3), sp.Matrix(B3)
@@ -140,7 +140,7 @@ rho1, u1, P1, n1, E1, R1, U1, q1, Q1 = (one_d(name) for name in ("rho", "u", "P"
 K1 = rho1 * u1**2 / 2
 
 # %% Bulk kinetic-energy equation
-section("Bulk kinetic-energy equation", "mathematical-toolkit.typ:232")
+section("Bulk kinetic-energy equation", "mathematical-toolkit.typ:228")
 note("Momentum balance and continuity in one dimension (the magnetic force has no x component)")
 momentum = show(sp.Eq(sp.Derivative(rho1 * u1, t) + sp.Derivative(rho1 * u1**2 + P1, x), q * n1 * E1 + R1))
 continuity = show(sp.Eq(sp.Derivative(rho1, t) + sp.Derivative(rho1 * u1, x), 0))
@@ -151,7 +151,7 @@ agrees(sp.expand(bulk.doit() - residuals), q * n1 * E1 * u1 - u1 * P1.diff(x) + 
 assert sp.expand(u_f.dot(momentum_3d) - u_f.dot(u_f) / 2 * continuity_3d - bulk_3d) == 0
 
 # %% Pressure work
-section("Pressure-work identity", "mathematical-toolkit.typ:254")
+section("Pressure-work identity", "mathematical-toolkit.typ:250")
 pressure_flux = sp.Derivative(P1 * u1, x)
 agrees(pressure_flux.doit(), u1 * P1.diff(x) + P1 * u1.diff(x), ":254", lhs=pressure_flux)
 assert sp.expand(div3(P_f * u_f) - (u_f.dot(div_tensor(P_f)) + P_grad_u)) == 0
@@ -162,7 +162,7 @@ isotropic = sum((p_f * sp.eye(3))[i, j] * sp.diff(u_f[i], R3[j]) for i in range(
 agrees(isotropic, p_f * div3(u_f), ":261")
 
 # %% Internal-energy equation
-section("Internal-energy equation", "mathematical-toolkit.typ:216")
+section("Internal-energy equation", "mathematical-toolkit.typ:212")
 W1 = one_d("W")
 note("Total energy in one dimension, with", sp.Eq(W1, sp.Symbol("K") + U1))
 total = show(sp.Eq(sp.Derivative(W1, t) + sp.Derivative(W1 * u1 + P1 * u1 + q1, x), q * n1 * E1 * u1 + Q1))
@@ -185,7 +185,7 @@ SYSTEMS = {
     "cylindrical": ((r, ph, zc), sp.Matrix([r * sp.cos(ph), r * sp.sin(ph), zc]), (1, r, 1)),
     "spherical": ((r, th, ph), sp.Matrix([r * sp.sin(th) * sp.cos(ph), r * sp.sin(th) * sp.sin(ph),
                                           r * sp.cos(th)]), (1, r, r * sp.sin(th))),
-}  # printed scale factors, mathematical-toolkit.typ:349-353
+}  # printed scale factors, mathematical-toolkit.typ:344-353
 
 
 def basis(pos, qs):
@@ -228,7 +228,7 @@ def is_zero(expr):
 
 
 # %% Scale factors
-section("Scale factors", "mathematical-toolkit.typ:349")
+section("Scale factors", "mathematical-toolkit.typ:344")
 h_1, h_2, h_3 = sp.symbols("h_1 h_2 h_3")
 note("Each scale factor is the length of the derivative of the position vector along its coordinate")
 for name, (qs, pos, h_printed) in SYSTEMS.items():
@@ -244,7 +244,7 @@ for name, (qs, pos, h_printed) in SYSTEMS.items():
         assert sp.simplify(cols[i].dot(cols[j])) == 0
 
 # %% Orthogonal-coordinate operators
-section("Orthogonal-coordinate operators", "mathematical-toolkit.typ:363")
+section("Orthogonal-coordinate operators", "mathematical-toolkit.typ:358")
 X, Y, Z = sp.symbols("X Y Z", real=True)
 psi_test = X**2 * Y + Y * Z**3 + X * Z
 A_test = sp.Matrix([X * Y, Y * Z**2, X**2 * Z])
@@ -273,7 +273,7 @@ note("Gradient, divergence, curl and Laplacian match the oracle in Cartesian, cy
 show(sp.Eq(laplacian(sp.Symbol("psi")), lap_c))
 
 # %% Cylindrical and spherical forms
-section("Cylindrical and spherical forms", "mathematical-toolkit.typ:453")
+section("Cylindrical and spherical forms", "mathematical-toolkit.typ:448")
 psi = sp.Function("psi")
 A_fn = [sp.Function(f"A_{i}") for i in (1, 2, 3)]
 note("Cylindrical", sp.Tuple(r, ph, zc), ", printed at :453-456")
@@ -297,7 +297,7 @@ agrees(gradient[1], sp.diff(s_s, th) / r, ":469", lhs=sp.Function("grad_theta")(
 agrees(gradient[2], sp.diff(s_s, ph) / (r * sp.sin(th)), ":469", lhs=sp.Function("grad_phi")(sp.Symbol("psi")))
 
 # %% Identity checks
-section("Identity checks", "mathematical-toolkit.typ:484")
+section("Identity checks", "mathematical-toolkit.typ:479")
 note("Spherical coordinates, arbitrary", s_s, "and", sp.Tuple(*A_s))
 A_sym, psi_sym = sp.Symbol("A"), sp.Symbol("psi")
 agrees(sp.simplify(div_g(curl_g(A_s, qs, h), qs, h)), 0, ":486", lhs=div(curl(A_sym)))
@@ -308,7 +308,7 @@ note("Inverse-square radial field", sp.Eq(sp.Symbol("A_r"), C / r**2))
 agrees(div_g([C / r**2, 0, 0], qs, h), 0, ":490", lhs=div(A_sym))
 
 # %% Cylindrical flux check
-section("Cylindrical flux check", "mathematical-toolkit.typ:497")
+section("Cylindrical flux check", "mathematical-toolkit.typ:492")
 L = sp.Symbol("L", positive=True)
 A_r = sp.Function("A_r")(r)
 Phi, volume = sp.Function("Phi")(r), sp.Function("V")(r)
@@ -322,7 +322,7 @@ agrees(flux_per_volume, div_g([A_r, 0, 0], qs, h), ":519",
 agrees(flux_per_volume, sp.diff(r * A_r, r) / r, ":502", lhs=div(sp.Symbol("A")))
 
 # %% Worked example: radial flux C/r
-section("Worked example: radial flux C/r", "mathematical-toolkit.typ:525")
+section("Worked example: radial flux C/r", "mathematical-toolkit.typ:520")
 C_flux = sp.Symbol("C", positive=True)
 Gamma = sp.Symbol("Gamma_r")
 flux_density = show(sp.Eq(Gamma, C_flux / r)).rhs

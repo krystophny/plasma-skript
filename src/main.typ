@@ -175,7 +175,7 @@
       #link("appendices/mathematical-toolkit.html")[Open the mathematical toolkit →]
       #html.h2[Gaussian CGS translation]
       #html.p[
-        A one-table dictionary from the SI equations of this script to the
+        A one-table dictionary from the equations of this script to the
         Gaussian CGS forms used in much of the older plasma literature.
       ]
       #link("appendices/cgs-translation.html")[Open the CGS translation →]
@@ -187,8 +187,8 @@
       #html.dl[
         #html.dt[SI units]
         #html.dd[
-          The default unit convention, with vacuum permittivity $epsilon_0$
-          and permeability $mu_0$. For a charge $q$, the Lorentz force is
+          This script uses SI units throughout, with vacuum permittivity
+          $epsilon_0$ and permeability $mu_0$. For a charge $q$, the Lorentz force is
           $bold(F)=q (bold(E) + bold(v) times bold(B))$, and electrostatic
           Poisson's equation for charge density $rho_q$ is
           $laplacian(phi) = -rho_q/epsilon_0$. The symbol $rho$ without the
@@ -204,14 +204,14 @@
         ]
         #html.dt[Gyrofrequency]
         #html.dd[
-          The positive rate $omega_c = (abs(q) B)/m$ in SI. The
+          The positive rate $omega_c = (abs(q) B)/m$. The
           signed quantity $Omega = (q B)/m$ retains charge orientation.
         ]
         #html.dt[Debye length]
         #html.dd[
           The electron screening length when ions do not respond and the
           electrons have thermodynamic temperature $T_e$ is
-          $lambda_D = sqrt((epsilon_0 k_B T_e)/(n_e e^2))$ in SI.
+          $lambda_D = sqrt((epsilon_0 k_B T_e)/(n_e e^2))$.
           If several classical species respond with Boltzmann densities,
           $lambda_D^(-2)=sum_s (n_s q_s^2)/(epsilon_0 k_B T_s)$.
         ]

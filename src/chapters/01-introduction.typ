@@ -1,5 +1,5 @@
 #import "../theme.typ": *
-#import "../figures.typ": model-hierarchy
+#import "../figures.typ": model-hierarchy, intro-enclosed-charge, intro-heating-drift, intro-speed-distribution, intro-thermal-speed, intro-scale-ordering
 #import "@preview/physica:0.9.8": grad, div, curl, laplacian, pdv, dv, vb
 
 #let chapter = [
@@ -31,12 +31,9 @@
   ))
 
   #unit-ledger[
-    The dimensional convention is SI. Number density $n_s$ is in
-    #unit("m^-3"), charge $q_s$ is in #unit("C"), mass $m_s$ is in #unit("kg"),
-    time is in seconds, electric field $bold(E)$ is in #unit("V/m"),
-    magnetic field $bold(B)$ is in #unit("T"), and energy is in #unit("J"). The temperature
-    $T_s$ below is a thermodynamic temperature in kelvin, so $k_B T_s$ is an
-    energy in #unit("J"). A symbol without a unit is explicitly marked dimensionless.
+    The temperature $T_s$ below is a thermodynamic temperature in kelvin, so
+    $k_B T_s$ is an energy in #unit("J"). A symbol without a unit is
+    explicitly marked dimensionless.
   ]
 
   #definition(
@@ -71,7 +68,7 @@
   $ rho_q = sum_s q_s n_s $ <intro-charge-density>
 
   #equation-note[
-    SI. The charge density $rho_q$ is in #unit("C m^-3").
+    The charge density $rho_q$ is in #unit("C m^-3").
     The sum runs over all charged species.
   ]
 
@@ -91,18 +88,35 @@
     quad n_e approx sum_i Z_i n_i $ <intro-quasineutrality>
 
   #equation-note[
-    SI. $e$ is the positive elementary charge in #unit("C") and
+    $e$ is the positive elementary charge in #unit("C") and
     $Z_i$ is the integer ion charge state. For a singly ionized hydrogen
     plasma, the condition reduces to $n_e approx n_i$. Charge-separated
     regions of Debye-scale thickness and boundary sheaths are controlled
     departures from this bulk ordering.
   ]
 
+  #intro-enclosed-charge
+
   A plasma differs from a neutral gas in the range of its response, not merely
   in the presence of charged particles. A charge imbalance can
   launch an electric field, a current can launch a magnetic perturbation, and
   the resulting fields can move many particles before local collisions erase
   the correlation.
+
+  #animation(
+    "../media/collective-response.mp4",
+    "Two panels with the same particle positions. Left, neutral gas: a test particle flies straight and changes direction sharply at three contact collisions; only the struck neutrals start to move. Right, plasma: a positive test charge passes through resting electrons; arrows show an attractive force on every electron within about one to two Debye lengths of it at each moment, and its own path bends only slightly under the sum of many weak pulls.",
+    caption: [
+      Range of the interaction. Neutral gas: hard spheres of equal mass
+      that interact only at contact. Plasma: a positive test charge and
+      resting electrons with the screened force derived from
+      $-e^(-r\/lambda_D)\/r$; arrow length grows with the force and
+      saturates near the charge. Lengths in units of $lambda_D$; the
+      dashed circle has radius $lambda_D$. Illustration, not a
+      self-consistent simulation.
+    ],
+    poster: "../media/collective-response.png",
+  )
 
   #details(
     [Order-of-magnitude examples],
@@ -194,10 +208,7 @@
   ))
 
   #unit-ledger[
-    SI is active. Mass $m_s$ is in #unit("kg"), speed $v$ in
-    #unit("m/s"), and kinetic energy and $k_B T_s$ are in #unit("J").
-    Temperature $T_s$ itself is in kelvin. When temperature is quoted in
-    electron-volts, the intended quantity is the energy $k_B T_s$, not the
+    When temperature is quoted in electron-volts, the intended quantity is the energy $k_B T_s$, not the
     thermodynamic temperature symbol by itself.
   ]
 
@@ -221,9 +232,13 @@
   $ v_("th,s") = sqrt((2 k_B T_s)/m_s) $ <intro-thermal-speed>
 
   #equation-note[
-    SI. $v_("th,s")$ is in #unit("m/s"). It is a characteristic
+    $v_("th,s")$ is in #unit("m/s"). It is a characteristic
     width, not the mean speed of the particles.
   ]
+
+  #intro-heating-drift
+
+  #intro-speed-distribution
 
   #chapter-link("kinetic-distribution")[Distribution functions and phase space]
   develops the Maxwellian, its normalization, and the connection between
@@ -235,6 +250,8 @@
   roughly $1.16 dot 10^5$ K, while the electron and ion temperatures may still
   differ. A temperature also does not specify the total heat content: that
   depends on the number of particles and the volume.
+
+  #intro-thermal-speed
 
   Electron and ion temperatures can differ when energy exchange between
   species is slow. Outside thermal equilibrium, one temperature does not
@@ -295,9 +312,8 @@
   ))
 
   #unit-ledger[
-    Dimensional lengths are measured in metres and times in seconds
-    (SI). Comparing two lengths or two times produces a
-    dimensionless ratio; both must refer to the same physical problem.
+    Comparing two lengths or two times produces a dimensionless ratio; both
+    must refer to the same physical problem.
   ]
 
   Screening describes how mobile charges rearrange around an electric
@@ -320,6 +336,8 @@
   its motion changes appreciably through scattering.
   #chapter-link("kinetic-collisions")[Collisions in gases and plasmas]
   relates this mean free path to the collision rate.
+
+  #intro-scale-ordering
 
   For example, an instrument that averages over many tiny orbits may not
   need a model of each turn. An experiment that resolves a single orbit does.
@@ -366,12 +384,6 @@
     [connect equilibrium distributions to the next kinetic description],
   ))
 
-  #unit-ledger[
-    SI remains the dimensional convention. A density is a particle
-    count per cubic metre, a bulk velocity is in #unit("m/s"), and
-    temperature is in kelvin. The hierarchy below is a conceptual map.
-  ]
-
   The most complete classical description follows all charged particles
   together with the fields they generate. A single-particle approximation
   instead prescribes the fields; #chapter-link("motion-lorentz")[the Lorentz-force model]
@@ -390,6 +402,20 @@
   #chapter-link("moments-closures")[closure assumption].
   Combining species into a single conducting fluid leads to
   #chapter-link("single-fluid-mhd")[magnetohydrodynamics], when its scale assumptions hold.
+
+  #animation(
+    "../media/particles-to-moments.mp4",
+    "Top, about 700 particle points in the position-velocity plane: a dense band around zero velocity whose density varies along x, and a narrow beam near two and a half thermal speeds. The points are replaced by the smooth distribution f(x, v). Integrating over velocity gives, below, the density n(x), largest at the ends and smallest in the middle, and the bulk velocity u(x), largest where the density is smallest. Square markers from the particle sample lie on the exact curves; neither curve shows that some particles form a beam.",
+    caption: [
+      Particles, distribution function and moments in one dimension: a
+      density-modulated Maxwellian at rest plus a uniform beam at
+      $v = 2.5 v_"th"$. Integration over $v$ gives $n(x)$ and $u(x)$;
+      squares are estimates from the plotted particles. Position in units
+      of the period $L$, velocity in units of $v_"th"$, density in units of
+      the mean background density $n_0$.
+    ],
+    poster: "../media/particles-to-moments.png",
+  )
 
   #model-hierarchy
 

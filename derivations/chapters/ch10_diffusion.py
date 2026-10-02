@@ -48,7 +48,7 @@ def given(values, *more):
 
 
 # %% Random walk
-section("Random walk", "10-diffusion.typ:92")
+section("Random walk", "10-diffusion.typ:90")
 M1, x_rms, N = sp.symbols("xbar x_rms N")
 M2 = x_rms**2
 note("Steps of", sp.Tuple(dx, -dx), "with probability 1/2 each; average position", M1,
@@ -71,7 +71,7 @@ has_unit(dx**2 / (2 * dt), u.meter**2 / u.second)
 has_unit(L**2 / D, u.second)                    # tau_D = L^2/D
 
 # %% Fick's law and the diffusion equation
-section("Fick's law and the diffusion equation", "10-diffusion.typ:104")
+section("Fick's law and the diffusion equation", "10-diffusion.typ:102")
 n_x = sp.Function("n")
 x0 = sp.Symbol("x_0", real=True)
 Gamma = sp.Symbol("Gamma")
@@ -86,7 +86,7 @@ agrees(-Partial(-D_x * Partial(n_xt, x), x).doit(), Partial(D_x * Partial(n_xt, 
        lhs=Partial(n_xt, t))
 
 # %% Green function
-section("Green function of the diffusion equation", "10-diffusion.typ:118")
+section("Green function of the diffusion equation", "10-diffusion.typ:116")
 N0, tp = sp.symbols("N_0 t", positive=True)
 GREEN = N0 / sp.sqrt(4 * sp.pi * D * tp) * sp.exp(-x**2 / (4 * D * tp))   # also plotted below
 n_G = sp.Symbol("n_G")
@@ -109,7 +109,7 @@ agrees(sp.integrate((x**2 + y**2 + z**2) * G3, (x, -sp.oo, sp.oo), (y, -sp.oo, s
 has_unit(N0 / sp.sqrt(D * t0), u.meter**-3, {N0: u.meter**-2})
 
 # %% Normalized variables
-section("Normalized diffusion variables", "10-diffusion.typ:134")
+section("Normalized diffusion variables", "10-diffusion.typ:132")
 L0, tau0, n0, xi, tau = sp.symbols("L_0 tau_0 n_0 xi tau", positive=True)
 D_norm, L_norm = sp.symbols("D_norm L_norm", positive=True)
 Nf = sp.Function("N")
@@ -126,7 +126,7 @@ D_star = sp.Symbol("D_*")
 close_to(ratio(D_star, 0.34**2 / 2), 0.0578, source=":150")
 
 # %% Example: random-walk diffusion
-section("Example: random-walk diffusion", "10-diffusion.typ:163")
+section("Example: random-walk diffusion", "10-diffusion.typ:161")
 walk = {dx: 2.0e-3 * u.meter, dt: 1.0e-7 * u.second, L: 0.1 * u.meter}
 given(walk)
 D_walk = evaluate(D, dx**2 / (2 * dt), walk, u.meter**2 / u.second)
@@ -134,7 +134,7 @@ close_to(D_walk, 2.0e1, source=":166")
 close_to(evaluate(tau_D, L**2 / (dx**2 / (2 * dt)), walk, u.second), 5.0e-4, source=":168")
 
 # %% Mobility and diffusion
-section("Mobility and diffusion", "10-diffusion.typ:291")
+section("Mobility and diffusion", "10-diffusion.typ:286")
 q, nu, m, T = sp.symbols("q_s nu_s m_s T_s", positive=True)   # q > 0 here; sign handled below
 UNITS.update({q: u.coulomb, nu: u.second**-1, m: u.kilogram, T: u.kelvin})
 n_s = sp.Symbol("n_s", positive=True)
@@ -155,7 +155,7 @@ has_unit(q / (m * nu), u.meter**2 / u.volt / u.second)
 has_unit(k_B * T / (m * nu), u.meter**2 / u.second)
 
 # %% Example: electron mobility
-section("Example: electron mobility and diffusion", "10-diffusion.typ:317")
+section("Example: electron mobility and diffusion", "10-diffusion.typ:312")
 electron = {nu: 1.0e8 / u.second, T: 2.0 * u.electronvolt / u.boltzmann_constant}
 note("Electrons,", sp.Eq(nu, rounded(electron[nu])), ",", sp.Eq(k_B * T, 2.0 * u.electronvolt))
 mu_e, D_e = sp.symbols("mu_e D_e")
@@ -164,7 +164,7 @@ close_to(evaluate(mu_e, e / (m_e * nu), electron, u.meter**2 / (u.volt * u.secon
 close_to(evaluate(D_e, k_B * T / (m_e * nu), electron, u.meter**2 / u.second), 3.52e3, source=":323")
 
 # %% Ambipolar diffusion
-section("Ambipolar diffusion", "10-diffusion.typ:457")
+section("Ambipolar diffusion", "10-diffusion.typ:448")
 mui, mue, Di, De, n_a = sp.symbols("mu_i mu_e D_i D_e n", positive=True)
 E_x, g_n = sp.symbols("E g", real=True)          # field and density gradient along x
 GAMMA_I = mui * n_a * E_x - Di * g_n             # shared with the plot below
@@ -191,7 +191,7 @@ agrees(sp.limit((expansion - (Di + eps * De)) / Di, eps, 0), 0, ":479",
        lhs=sp.Limit((D_a - (Di + eps * De)) / Di, eps, 0))
 
 # %% Example: ambipolar field and flux
-section("Example: ambipolar field and flux", "10-diffusion.typ:492")
+section("Example: ambipolar field and flux", "10-diffusion.typ:483")
 nu_i, nu_e, m_p = sp.symbols("nu_i nu_e m_p", positive=True)
 T_a, gradient = sp.symbols("T g_n", positive=True)
 hydrogen = {mui: e / (m_p * nu_i), mue: e / (m_e * nu_e), Di: k_B * T_a / (m_p * nu_i),
@@ -210,7 +210,7 @@ close_to(evaluate(sp.Abs(Gamma_a), -D_AMB.subs(hydrogen) * g_n, {**discharge, **
                   1 / (u.meter**2 * u.second)), 1.82e17, source=":504")
 
 # %% Magnetized diffusion
-section("Diffusion across a magnetic field", "10-diffusion.typ:604")
+section("Diffusion across a magnetic field", "10-diffusion.typ:594")
 OM = sp.Symbol("Omega_s", real=True)
 D_S = k_B * T / (m * nu)                         # unmagnetized D_s (line 304), shared with plots
 D_PERP = D_S / (1 + (OM / nu) ** 2)              # line 626
@@ -256,7 +256,7 @@ agrees(sp.diff(hall[0], X_) + sp.diff(hall[1], Y_), 0, ":657",
        lhs=sp.Derivative(-D_H * sp.Derivative(n_XY, Y_), X_) + sp.Derivative(D_H * sp.Derivative(n_XY, X_), Y_))
 
 # %% Example: magnetized electron diffusion
-section("Example: magnetized electron diffusion", "10-diffusion.typ:675")
+section("Example: magnetized electron diffusion", "10-diffusion.typ:665")
 magnetized = {B_m: 1.0e-2 * u.tesla, nu: 1.0e7 / u.second, T: 1.0 * u.electronvolt / u.boltzmann_constant}
 note("Electrons,", sp.Eq(B_m, rounded(magnetized[B_m])), ",", sp.Eq(nu, rounded(magnetized[nu])), ",",
      sp.Eq(k_B * T, 1.0 * u.electronvolt))
@@ -276,7 +276,7 @@ close_to(D_perp_value, 0.569, source=":683")
 close_to(ratio(D_perp / D_par, D_perp_value / D_par_value), 3.23e-5, source=":686")
 
 # %% Classical cross-field diffusion
-section("Classical cross-field diffusion", "10-diffusion.typ:831")
+section("Classical cross-field diffusion", "10-diffusion.typ:818")
 sig, B_f, n_f = sp.symbols("sigma B n", positive=True)
 Te, Ti = sp.symbols("T_e T_i", positive=True)
 D_CL = n_f * k_B * (Te + Ti) / (sig * B_f**2)    # classical, line 849 (shared with plots)
@@ -313,7 +313,7 @@ agrees(sp.simplify(B_f * sp.diff(D_BOHM, B_f) / D_BOHM), -1, ":797",
        lhs=B_f * sp.Derivative(D_B, B_f) / D_B)
 
 # %% Example: classical and Bohm diffusion
-section("Example: classical and Bohm diffusion", "10-diffusion.typ:873")
+section("Example: classical and Bohm diffusion", "10-diffusion.typ:860")
 worked = {n_f: 1.0e16 / u.meter**3, Te: 10 * u.electronvolt / u.boltzmann_constant,
           Ti: 10 * u.electronvolt / u.boltzmann_constant, sig: 1.0e5 * u.siemens / u.meter,
           B_f: 1.0e-2 * u.tesla, L: 1.0 * u.meter}

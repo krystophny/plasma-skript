@@ -52,7 +52,7 @@ def given(values, *more):
 
 
 # %% Mean free path
-section("Survival probability and mean free path", "09-collisions-conductivity.typ:105")
+section("Survival probability and mean free path", "09-collisions-conductivity.typ:104")
 P0 = sp.Function("P_0")
 note("Each length", ell, "removes the fraction", n * sigma, "per metre of the unscattered beam")
 survival = show(sp.Eq(P0(ell).diff(ell), -n * sigma * P0(ell)))
@@ -68,7 +68,7 @@ has_unit(n * sigma * v, u.second**-1)
 has_unit(lam / L, u.meter / u.meter, {lam: u.meter})              # Knudsen number
 
 # %% Example: collision times
-section("Example: collision frequency and Knudsen number", "09-collisions-conductivity.typ:138")
+section("Example: collision frequency and Knudsen number", "09-collisions-conductivity.typ:137")
 beam = {n: 1.0e19 / u.meter**3, sigma: 2.0e-19 * u.meter**2, v: 1.0e5 * u.meter / u.second,
         L: 10.0 * u.meter}
 given(beam)
@@ -81,14 +81,14 @@ close_to(path, 0.50, source=":148")
 close_to(ratio(sp.Symbol("K_n"), path / 10.0), 0.050, source=":151")
 
 # %% Neutral drag
-section("Drag on stationary neutrals", "09-collisions-conductivity.typ:281")
+section("Drag on stationary neutrals", "09-collisions-conductivity.typ:272")
 u_a, R_an = sp.symbols("u_a R_an", real=True)
 note("Momentum", m_e * u_a, "lost per encounter,", n * nu, "encounters per volume and time")
 drag = show(sp.Eq(R_an, -m_e * n * nu * u_a)).rhs
 has_unit(drag, u.newton / u.meter**3, {u_a: u.meter / u.second})
 
 # %% Example: electron-neutral collisions
-section("Example: electron-neutral collisions", "09-collisions-conductivity.typ:296")
+section("Example: electron-neutral collisions", "09-collisions-conductivity.typ:287")
 gas = {n: 2.0e20 / u.meter**3, sigma: 2.0e-19 * u.meter**2, v: 1.0e5 * u.meter / u.second}
 given(gas)
 nu_en, lam_en = sp.symbols("nu_en lambda_en")
@@ -96,7 +96,7 @@ close_to(evaluate(nu_en, n * sigma * v, gas, u.second**-1), 4.0e6, source=":300"
 close_to(evaluate(lam_en, 1 / (n * sigma), gas, u.meter), 2.5e-2, source=":304")
 
 # %% Rutherford deflection
-section("Rutherford deflection and the 90-degree impact parameter", "09-collisions-conductivity.typ:400")
+section("Rutherford deflection and the 90-degree impact parameter", "09-collisions-conductivity.typ:386")
 q_a, q_b, m_r = sp.symbols("q_a q_b m_r", positive=True)
 w = sp.Symbol("w", positive=True)                 # inverse radius 1/r
 theta0, chi, w_max = sp.symbols("theta_0 chi w_max", positive=True)
@@ -134,14 +134,14 @@ agrees(b90_e, e**2 / (4 * sp.pi * eps0 * m_e * v**2), ":402", lhs=b90)
 has_unit(b90_e, u.meter)
 
 # %% Large-angle collision rate
-section("Large-angle collision rate", "09-collisions-conductivity.typ:410")
+section("Large-angle collision rate", "09-collisions-conductivity.typ:396")
 nu90 = sp.Symbol("nu_90")
 note("Cross section", sp.Eq(sp.Symbol("sigma_90"), sp.pi * b90**2))
 agrees(n * sp.pi * b90_e**2 * v, n * e**4 / (16 * sp.pi * eps0**2 * m_e**2 * v**3), ":411", lhs=nu90)
 has_unit(n * sp.pi * b90_e**2 * v, u.second**-1)
 
 # %% Momentum-transfer cross section
-section("Momentum-transfer cross section for Coulomb scattering", "09-collisions-conductivity.typ:240")
+section("Momentum-transfer cross section for Coulomb scattering", "09-collisions-conductivity.typ:231")
 b_max, sigma_mt = sp.symbols("b_max sigma_mt", positive=True)
 ONE_MINUS_COS = 2 * b90**2 / (b**2 + b90**2)       # also used by the plot below
 note("With", sp.Eq(sp.tan(chi / 2), b90 / b), ":")
@@ -153,7 +153,7 @@ agrees(sp.limit(transfer.rhs.doit() - 4 * sp.pi * b90**2 * sp.log(b_max / b90), 
        ":240", lhs=sp.Limit(sigma_mt - 4 * sp.pi * b90**2 * sp.log(b_max / b90), b_max, sp.oo))
 
 # %% Coulomb logarithm
-section("Coulomb logarithm and plasma parameter", "09-collisions-conductivity.typ:433")
+section("Coulomb logarithm and plasma parameter", "09-collisions-conductivity.typ:419")
 speed = sp.Symbol("v_e", positive=True)
 mean_v = sp.Symbol("vbar_e")
 maxwellian = (2 * sp.pi * k_B * T / m_e) ** sp.Rational(-3, 2) * sp.exp(-m_e * speed**2 / (2 * k_B * T))
@@ -185,7 +185,7 @@ agrees(sp.simplify(T * sp.diff(NU_EI, T) / NU_EI), sp.Rational(-3, 2), ":425",
        lhs=T * sp.Derivative(sp.Function("nu_ei")(T), T) / sp.Function("nu_ei")(T))
 
 # %% Example: Coulomb collisions at 10 eV
-section("Example: Coulomb collisions at 10 eV", "09-collisions-conductivity.typ:498")
+section("Example: Coulomb collisions at 10 eV", "09-collisions-conductivity.typ:484")
 plasma = {n: 1.0e16 / u.meter**3, T: 1.602e-18 * u.joule / u.boltzmann_constant}
 note("Input", sp.Eq(n, rounded(plasma[n])), "and", sp.Eq(k_B * T, 1.602e-18 * u.joule))
 debye = evaluate(lamD, lambda_D, plasma, u.meter)
@@ -205,7 +205,7 @@ close_to(evaluate(lam_ei, v / nu, {v: 2.12e6 * u.meter / u.second, nu: 3.60e3 / 
 close_to(mean_speed / rate, 5.89e2, source=":516")
 
 # %% Spitzer resistivity
-section("Spitzer resistivity", "09-collisions-conductivity.typ:662")
+section("Spitzer resistivity", "09-collisions-conductivity.typ:646")
 j, u_i, u_e = sp.symbols("j u_i u_e", real=True)
 eta, eta_Sp = sp.symbols("eta eta_Sp")
 note("Electron-ion drag per charge density, with", sp.Eq(u_i - u_e, j / (e * n)))
@@ -227,7 +227,7 @@ agrees(sp.simplify(T * sp.diff(SPITZER, T) / SPITZER), sp.Rational(-3, 2), ":664
        lhs=T * sp.Derivative(sp.Function("eta_Sp")(T), T) / sp.Function("eta_Sp")(T))
 
 # %% Example: Spitzer resistivity
-section("Example: Spitzer resistivity", "09-collisions-conductivity.typ:674")
+section("Example: Spitzer resistivity", "09-collisions-conductivity.typ:658")
 spitzer_case = {n: 1.0e16 / u.meter**3, nu: 3.60e3 / u.second}
 given(spitzer_case)
 eta_value = evaluate(eta_Sp, resistivity, spitzer_case, u.ohm * u.meter)
@@ -236,7 +236,7 @@ close_to(evaluate(sp.Symbol("sigma_dc"), 1 / resistivity, spitzer_case, u.siemen
          7.83e4, source=":682")
 
 # %% Conductivity tensor
-section("Conductivity tensor", "09-collisions-conductivity.typ:853")
+section("Conductivity tensor", "09-collisions-conductivity.typ:832")
 OM_S, OMEGA = sp.symbols("Omega_s omega", real=True)
 q_s, m_s = sp.Symbol("q_s", real=True), sp.Symbol("m_s", positive=True)
 A_S = nu - sp.I * OMEGA                          # a_s = nu_s - i omega
@@ -290,7 +290,7 @@ for symbol, stated in [(sig_par, eps0 * omega_p**2 / A_S),
     agrees_with(entries[symbol], stated, plasma_freq, ":875", lhs=symbol)
 
 # %% Example: magnetized DC conductivity
-section("Example: magnetized DC conductivity", "09-collisions-conductivity.typ:897")
+section("Example: magnetized DC conductivity", "09-collisions-conductivity.typ:876")
 B_value = {B_0: 0.010 * u.tesla, n: 1.0e16 / u.meter**3, nu: 2.5e3 / u.second}
 given(B_value)
 electron = {q_s: -e, m_s: m_e}

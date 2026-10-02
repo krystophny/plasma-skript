@@ -16,10 +16,11 @@ HTML-specific components have an equivalent paged fallback.
   maintainers. No university ownership claim applies to their work.
 - The first publication is in English. The source structure and component
   interfaces should remain translation-ready for a later German edition.
-- SI (with the vacuum constants ε₀ and μ₀) is the default
-  dimensional unit system. Normalized variables are welcome, but every
-  normalization must state its reference scales in SI and how to reconstruct
-  dimensional quantities. A single appendix, "Gaussian CGS translation", lists
+- SI (with the vacuum constants ε₀ and μ₀) is the dimensional unit system
+  throughout. It is stated once, in the notation glossary, and is not
+  repeated at individual equations, notes, captions, or sections. Normalized
+  variables are welcome, but every normalization must state its reference
+  scales and how to reconstruct dimensional quantities. A single appendix, "Gaussian CGS translation", lists
   the corresponding Gaussian CGS forms for readers of older literature; it is
   the only place where CGS units or CGS-form equations may appear.
 - Use the versioned `unify` Typst package for unit-bearing quantities and
@@ -41,16 +42,17 @@ HTML-specific components have an equivalent paged fallback.
   Keep `dif x` for differentials in integrals and differential forms. Put
   indices on the operand, for example `dv(g_(s), t)`, rather than on the
   derivative operator.
-- Every equation, numerical value, table, plot, animation, caption, axis,
-  legend, and alternative description must label its unit system. A quantity
-  without a unit is explicitly marked as dimensionless or normalized.
+- Quantities in equations, numerical values, tables, plots, animations,
+  captions, axes, legends, and alternative descriptions carry their units;
+  the unit system itself is not restated. A quantity without a unit is
+  explicitly marked as dimensionless or normalized.
 - A simulation, diagram, or animation using dimensionless or normalized units
   must show the unit as `[1]` after each normalized quantity in its visible
   labels, for example `$x/lambda_D$ [1]`. The word `dimensionless` must not
   appear in an axis, legend, or other in-graphic label. Captions and
   alternative descriptions still state the normalization and its reference
   scales.
-- SI and normalized conventions must not be mixed silently. Temperature
+- Dimensional and normalized quantities must not be mixed silently. Temperature
   conventions (kelvin or electronvolt) and field conventions must be stated at
   the point of use.
 - The website is authoritative. A PDF may be generated from the same source
@@ -67,7 +69,8 @@ HTML-specific components have an equivalent paged fallback.
   bibliography uses a numeric physics style.
 - The website provides an overview page, table of contents, chapter pages,
   stable section anchors, and previous or next chapter navigation.
-- A shared notation glossary records the SI conventions, symbols,
+- A shared notation glossary holds the single statement of the SI
+  convention and records symbols,
   sign conventions, temperature conventions, and normalized-variable names.
 - The `solutions/` directory is author-only material. It is ignored by Git and
   excluded from every public build and GitHub Pages artifact.
@@ -249,22 +252,25 @@ The narrative must distinguish clearly between:
 - exact identities and model equations,
 - assumptions and consequences,
 - illustrative normalized simulations and measured data,
-- dimensional SI quantities and normalized quantities,
+- dimensional quantities and normalized quantities,
 - equilibrium, linearized, weakly nonlinear, and fully nonlinear statements.
 
 ### 3.1 Unit-system contract
 
-Each chapter or section must state the active unit convention before its first
-dimensional equation. In SI this includes the use of ε₀ and μ₀
-in the field equations and the temperature convention. A normalized model must show
+The SI convention (with ε₀ and μ₀ in the field equations) is stated once, in
+the notation glossary; chapters, sections, equation notes, and captions do not
+restate it. A section carries a unit ledger only when it introduces quantities
+with new units (for example a phase-space density, a diffusion coefficient, or
+a resistivity) or a normalization, and the ledger lists only those. Temperature
+conventions are stated where temperature is first used. A normalized model must show
 the definitions of its dimensionless variables and identify every reference
 scale needed to recover a dimensional result.
 
 Plots and animations must label normalized axes with the normalization itself,
 followed by the unit syntax `[1]`, not only with a variable name. Numerical
-results must either be dimensional in SI or explicitly say that they are
+results must either carry their units or explicitly say that they are
 dimensionless. Conversions to Gaussian CGS belong only in the translation
-appendix and never replace the primary SI statement.
+appendix and never replace the primary SI equations.
 
 ## 4. Knowledge checks
 
@@ -424,7 +430,8 @@ The authoring environment is defined by `flake.nix`:
   including new files not yet added to Git.
 - The `verify-spec` app checks both the public artifact boundary and the
   source-level section contract: every chapter must provide matching section,
-  objective, unit-ledger, summary, and knowledge-check blocks, with four
+  objective, summary, and knowledge-check blocks (unit ledgers are optional
+  and appear only where a section introduces new units), with four
   knowledge-check questions per section; the summary, optional exam prompt,
   and knowledge check must occur in that order at the end of each section.
 - `nix flake check` must build the site as a behavioral check.
@@ -446,8 +453,8 @@ snapshots provide these starting API baselines:
   phase-space projections, and other data-driven plots.
 - `frame-it` for definitions, assumptions, examples, warnings, derivation
   summaries, physical interpretations, and knowledge-check presentation.
-- `unify` for unit-bearing quantities and numerical results, with the active
-  SI or normalized convention stated nearby; use its default SI unit catalogue.
+- `unify` for unit-bearing quantities and numerical results, with any
+  normalized convention stated nearby; use its default SI unit catalogue.
 
 Use the APIs documented in the corresponding PDFs under `resources/typst/`.
 The imported version must be updated deliberately when the package API or the

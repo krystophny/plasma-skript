@@ -33,7 +33,7 @@ def moment(weight):
 
 
 # %% Survival law and mean free path
-section("Survival law and mean free path", "05-kinetic-theory.typ:61")
+section("Survival law and mean free path", "05-kinetic-theory.typ:59")
 S = sp.Function("S")(ell)
 note("Fraction of test particles that travel a path", ell, "without a collision")
 survival = show(sp.Eq(S.diff(ell), -n_b * sigma * S))
@@ -53,7 +53,7 @@ rate = agrees(v_rel / mean_path, n_b * sigma * v_rel, ":109", lhs=nu)
 check(rate, rate, unit=1 / u.second, units=SI_UNITS)
 
 # %% Ninety-degree impact parameter
-section("Ninety-degree impact parameter", "05-kinetic-theory.typ:138")
+section("Ninety-degree impact parameter", "05-kinetic-theory.typ:136")
 q_a, q_b, m_r, w_orbit, z = sp.symbols("q_a q_b m_r u z", positive=True)
 b_0, chi, b_90 = sp.symbols("b_0 chi b_90", positive=True)
 note("Repulsive Kepler orbit in", sp.Eq(w_orbit, 1 / sp.Symbol("r")), "with the Coulomb length",
@@ -79,7 +79,7 @@ reduced = agrees(1 / (1 / m_a + 1 / m_b), m_a * m_b / (m_a + m_b), lhs=m_r)
 check(reduced, reduced, unit=u.kilogram, units={m_a: u.kilogram, m_b: u.kilogram})
 
 # %% Coulomb logarithm and deflection frequency
-section("Coulomb logarithm and deflection frequency", "05-kinetic-theory.typ:151")
+section("Coulomb logarithm and deflection frequency", "05-kinetic-theory.typ:149")
 b_max, b_min, Lambda, v_a = sp.symbols("b_max b_min Lambda v_a", positive=True)
 ln_Lambda = sp.log(Lambda)
 coulomb_log = show(sp.Eq(ln_Lambda, sp.log(b_max / b_min))).rhs  # :153
@@ -97,7 +97,7 @@ check(nu_printed, nu_printed, unit=1 / u.second,
              v_a: u.meter / u.second, Lambda: sp.E})  # Lambda is a pure number
 
 # %% Worked example: neutral collisions
-section("Worked example: neutral collisions", "05-kinetic-theory.typ:198")
+section("Worked example: neutral collisions", "05-kinetic-theory.typ:196")
 neutral = {n_b: 1e18 / u.meter**3, sigma: 1e-19 * u.meter**2, v_rel: 1e6 * u.meter / u.second}
 note("Input", sp.Eq(n_b, neutral[n_b], evaluate=False), ",", sp.Eq(sigma, neutral[sigma], evaluate=False),
      ",", sp.Eq(v_rel, neutral[v_rel], evaluate=False))
@@ -109,7 +109,7 @@ nu_s = sp.Symbol("nu", positive=True)
 check(nu_s * tau, nu_s * tau, unit=u.second / u.second, units={tau: u.second, nu_s: 1 / u.second})
 
 # %% Maxwellian: units and moments
-section("Maxwellian: units and moments", "05-kinetic-theory.typ:270")
+section("Maxwellian: units and moments", "05-kinetic-theory.typ:265")
 f_M_sym = sp.Function("f_M")(*V)
 
 
@@ -143,7 +143,7 @@ note("so the Gaussian width parameter is", sp.Eq(a, m / (2 * k_B * T)))
 assert sp.simplify(1 / (2 * a) - variance.subs(T, m / (2 * a * k_B))) == 0
 
 # %% Mean random kinetic energy
-section("Mean random kinetic energy", "05-kinetic-theory.typ:386")
+section("Mean random kinetic energy", "05-kinetic-theory.typ:382")
 w_sq = w_x**2 + w_y**2 + w_z**2
 mean_energy = agrees(moment(m * w_sq / 2) / n_s, sp.Rational(3, 2) * k_B * T, ":390",
                      lhs=average(m * w_sq / 2))
@@ -158,7 +158,7 @@ v_th = sp.sqrt(2 * k_B * T / m)
 agrees(sp.simplify(mean_speed / v_th), 2 / sp.sqrt(sp.pi), ":397", lhs=sp.Symbol("<w>") / sp.Symbol("v_th"))
 
 # %% Same n, u, T but different f
-section("Same n, u, T; different f", "05-kinetic-theory.typ:413")
+section("Same n, u, T; different f", "05-kinetic-theory.typ:409")
 s, alpha = sp.symbols("s alpha", real=True)
 w_b = sp.Symbol("w", positive=True)
 note("One velocity component,", sp.Eq(s, (sp.Symbol("v") - sp.Symbol("u")) / sp.Symbol("v_th")),
@@ -206,7 +206,7 @@ ax.set(xlim=(-3, 3), ylim=(0, 0.8), yticks=[0, 0.25, 0.5, 0.75],
 save(fig, "moment_ambiguity")
 
 # %% Convective derivative
-section("Convective derivative", "05-kinetic-theory.typ:493")
+section("Convective derivative", "05-kinetic-theory.typ:487")
 t = sp.Symbol("t")
 x_t, v_t = sp.Function("x")(t), sp.Function("v")(t)
 g, accel = sp.Function("g"), sp.Function("a")
@@ -218,7 +218,7 @@ agrees(chain.subs({x_t: x, v_t: v}).doit(),
        lhs=sp.Derivative(g(t, x_t, v_t), t))
 
 # %% Normalized free streaming
-section("Normalized free streaming", "05-kinetic-theory.typ:523")
+section("Normalized free streaming", "05-kinetic-theory.typ:517")
 t_p, x_p, v_p, L_0, v_0 = sp.symbols("t x v L_0 v_0", positive=True)
 tau, xi, eta = sp.symbols("tau xi eta")
 F = sp.Function("F")
@@ -234,7 +234,7 @@ agrees(sp.simplify(G_free.diff(tau) + eta * G_free.diff(xi)), 0, ":523",
        lhs=sp.Derivative(G_free, tau) + eta * sp.Derivative(G_free, xi))
 
 # %% Conservative and convective kinetic equation
-section("Conservative and convective kinetic equation", "05-kinetic-theory.typ:712")
+section("Conservative and convective kinetic equation", "05-kinetic-theory.typ:702")
 y, z_r = sp.symbols("y z", real=True)
 x_r = sp.Symbol("x", real=True)
 R = [x_r, y, z_r]
@@ -271,7 +271,7 @@ check(q_s / m * E_0, q_s / m * E_0, unit=u.meter / u.second**2,
       units={q_s: u.coulomb, m: u.kilogram, E_0: u.volt / u.meter})
 
 # %% Particle-number conservation
-section("Particle-number conservation", "05-kinetic-theory.typ:803")
+section("Particle-number conservation", "05-kinetic-theory.typ:793")
 E_x0, B_z0 = sp.symbols("E_x B_z", real=True)
 acceleration = sp.Matrix([q_s / m * E_x0, 0, 0]) + q_s / m * velocity.cross(sp.Matrix([0, 0, B_z0]))
 note("Maxwellian in uniform fields", E_x0, "and", B_z0)
@@ -293,7 +293,7 @@ agrees(sp.simplify(kinetic_moment.subs(f_sym, f_1d).doit()),
        density.diff(t) + (density * drift).diff(x), ":820", lhs=kinetic_moment)
 
 # %% Boltzmann equilibrium in a potential
-section("Boltzmann equilibrium in a potential", "05-kinetic-theory.typ:914")
+section("Boltzmann equilibrium in a potential", "05-kinetic-theory.typ:901")
 n_0s = sp.Symbol("n_0s", positive=True)
 x_1 = sp.Symbol("x", real=True)
 Phi = sp.Function("Phi")(x_1)
@@ -314,7 +314,7 @@ check(q_s * Phi_0 / (k_B * T), q_s * Phi_0 / (k_B * T), unit=u.joule / u.joule,
       units={q_s: u.coulomb, Phi_0: u.volt, T: u.kelvin})
 
 # %% Fermi energy
-section("Fermi energy", "05-kinetic-theory.typ:986")
+section("Fermi energy", "05-kinetic-theory.typ:973")
 hbar, k_F, n_e, m_e = sp.symbols("hbar k_F n_e m_e", positive=True)
 note("Two spin states per k-space cell", (2 * sp.pi) ** 3, "fill a sphere of radius", k_F)
 states = show(sp.Eq(n_e, 2 * sp.Rational(4, 3) * sp.pi * k_F**3 / (2 * sp.pi) ** 3))

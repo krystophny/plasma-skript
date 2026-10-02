@@ -37,12 +37,10 @@
   ))
 
   #unit-ledger[
-    SI units are active. Number density $n_s$ is in #unit("m^-3"), a
-    neutral collision cross section $sigma$ is in #unit("m^2"), speed is in
-    #unit("m/s"), mean free path is in #unit("m"), and collision frequency
-    is in #unit("s^-1"). Charge is in #unit("C") and energy is in
-    #unit("J"). The dimensionless parameters $K_"n"$ and $ln Lambda$ are
-    explicitly marked as such.
+    A neutral collision cross section $sigma$ is in #unit("m^2"), mean free
+    path is in #unit("m"), and collision frequency is in #unit("s^-1"). The
+    dimensionless parameters $K_"n"$ and $ln Lambda$ are explicitly marked as
+    such.
   ]
 
   #definition(
@@ -61,7 +59,7 @@
   $ dv(S,ell) = -n_b sigma_(a b) S, quad S(0)=1 $ <kinetic-survival>
 
   #equation-note[
-    The coefficient $n_b sigma_(a b)$ has units #unit("m^-1") in SI.
+    The coefficient $n_b sigma_(a b)$ has units #unit("m^-1").
     The equation describes loss from the uncollided population, not loss
     of particles from the plasma.
   ]
@@ -140,7 +138,7 @@
     m_r = (m_a m_b)/(m_a+m_b) $ <kinetic-b90>
 
   #equation-note[
-    SI units are used in the electrostatic relation. The potential energy
+    The potential energy
     of two charges is $(q_a q_b)/(4 pi epsilon_0 r)$ in #unit("J"), so
     $b_90$ is in #unit("m").]
 
@@ -264,12 +262,10 @@
   ))
 
   #unit-ledger[
-    SI units are active. Position is in #unit("m"), velocity in
-    #unit("m/s"), and the phase-space measure
-    $dif^3 bold(r) dif^3 bold(v)$ has units #unit("m^6 s^-3"). The
-    distribution $f_s$ therefore has units #unit("s^3 m^-6") so that its
-    integral over a phase-space cell gives a particle count. The moments $n_s$
-    and $bold(u)_s$ are in #unit("m^-3") and #unit("m/s"), respectively.
+    The phase-space measure $dif^3 bold(r) dif^3 bold(v)$ has units
+    #unit("m^6 s^-3"). The distribution $f_s$ therefore has units
+    #unit("s^3 m^-6") so that its integral over a phase-space cell gives a
+    particle count.
   ]
 
   #definition(
@@ -316,7 +312,7 @@
   #equation-note[
     $bold(w)$ is the random velocity measured in the local bulk frame. The
     dyadic product $bold(w) bold(w)$ has components $w_i w_j$: each pairs two
-    components of the random velocity. In SI,
+    components of the random velocity.
     $bold(P)_s$ is a momentum-flux or pressure tensor in #unit("Pa")
     (force per area). Its scalar isotropic part is introduced in the moments chapter.
   ]
@@ -478,12 +474,10 @@
   ))
 
   #unit-ledger[
-    SI units are active. The dimensional variables are $bold(r)$ in
-    #unit("m"), $bold(v)$ in #unit("m/s"), and $bold(a)$ in #unit("m/s^2"). For the phase-space
-    characteristic $bold(z)=(bold(r),bold(v))$, the two blocks of its velocity
-    are $bold(V)_z=(bold(v),bold(a))$. We also use the normalized variables
-    $xi=bold(r)/L_0$, $eta=bold(v)/v_0$, and
-    $tau=(t v_0)/L_0$, all explicitly dimensionless.
+    For the phase-space characteristic $bold(z)=(bold(r),bold(v))$, the two
+    blocks of its velocity are $bold(V)_z=(bold(v),bold(a))$. We also use the
+    normalized variables $xi=bold(r)/L_0$, $eta=bold(v)/v_0$, and $tau=(t
+    v_0)/L_0$, all explicitly dimensionless.
   ]
 
   #definition(
@@ -661,19 +655,15 @@
   ]
 
   #objectives((
-    [write the Boltzmann equation for a species in SI units],
+    [write the Boltzmann equation for a species],
     [transform its conservative form into convective form],
     [state the phase-space incompressibility condition for Lorentz motion],
     [distinguish the collisional Boltzmann equation from the collisionless Vlasov equation],
   ))
 
   #unit-ledger[
-    SI units are active. For species $s$, $q_s$ is in #unit("C"), $m_s$ is
-    in #unit("kg"), $bold(E)$ is in #unit("V/m"), $bold(B)$ is in #unit("T"),
-    and $bold(a)_s$ is in #unit("m/s^2"). The vacuum permittivity
-    $epsilon_0$ and permeability $mu_0$ appear in the field equations. The collision operator has units
-    of $f_s$ per second, so it is written as #unit("s^-1") times a
-    distribution density.
+    The collision operator has units of $f_s$ per second, so it is written as
+    #unit("s^-1") times a distribution density.
   ]
 
   #strong[From discrete particles to a distribution] <kinetic-particle-model>
@@ -706,7 +696,7 @@
     assumptions stated here.]
   )
 
-  The electromagnetic acceleration follows from the SI Lorentz
+  The electromagnetic acceleration follows from the Lorentz
   force:
 
   $ bold(a)_s = q_s/m_s (bold(E) + bold(v) times bold(B)) $ <kinetic-acceleration>
@@ -890,11 +880,8 @@
   ))
 
   #unit-ledger[
-    SI units are active. The electrostatic potential $Phi$ is in #unit("V"),
-    so $q_s Phi$ is an energy in #unit("J"). Temperature enters through
-    $k_B T_s$ in #unit("J"). The ratios $nu tau$, $K_"n"$, and
-    $lambda_D/L$ are dimensionless and must not be read as dimensional
-    frequencies or lengths.
+    The ratios $nu tau$, $K_"n"$, and $lambda_D/L$ are dimensionless and must
+    not be read as dimensional frequencies or lengths.
   ]
 
   #assumption(
@@ -988,7 +975,7 @@
   $ E_(F,e) = (ℏ^2 / (2 m_e)) (3 pi^2 n_e)^(2/3) $
 
   #equation-note[
-    SI units. $E_(F,e)$ and $k_B T_e$ are energies in #unit("J"),
+    $E_(F,e)$ and $k_B T_e$ are energies in #unit("J"),
     and $theta_e$ is dimensionless. The classical limit has $theta_e >> 1$;
     $theta_e <= 1$ signals quantum degeneracy. White-dwarf interiors and
     dense laser-compressed matter are representative settings.

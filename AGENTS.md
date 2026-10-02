@@ -20,8 +20,11 @@ Before changing files:
 
 - Write the first edition in English for a graduate plasma-physics audience.
 - Keep waves and plasma sheaths as separate top-level chapters.
-- Use SI (with ε₀ and μ₀) as the default dimensional convention.
-  Gaussian CGS may appear only in the single appendix "Gaussian CGS
+- Use SI (with ε₀ and μ₀) throughout. State this once, in the notation
+  glossary of `src/main.typ`; do not write "SI" or "in SI units" at
+  individual equations, notes, captions, or sections. Add a `#unit-ledger`
+  only where a section introduces quantities with new units or a
+  normalization, and list only those. Gaussian CGS may appear only in the single appendix "Gaussian CGS
   translation" for readers of older literature. Label every unit,
   normalization, reference scale, and dimensionless quantity at its point of
   use. In a simulation, diagram, or animation using dimensionless units, put

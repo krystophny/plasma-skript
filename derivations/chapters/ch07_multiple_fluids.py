@@ -48,7 +48,7 @@ def given(values, *more):
     note(*parts[:-1], *more)
 
 # %% Species moments
-section("Species-resolved charge and current", "07-multiple-fluids.typ:107")
+section("Species-resolved charge and current", "07-multiple-fluids.typ:97")
 n_e, n_i = sp.symbols("n_e n_i", positive=True)
 q_e, q_i = sp.symbols("q_e q_i", real=True)
 u_e, u_i = sp.symbols("u_e u_i", real=True)
@@ -64,7 +64,7 @@ has_unit(qs * ns * us, u.ampere / u.meter**2)
 has_unit(ms * ns, u.kilogram / u.meter**3)
 
 # %% Momentum forms
-section("Conservative and material momentum forms", "07-multiple-fluids.typ:202")
+section("Conservative and material momentum forms", "07-multiple-fluids.typ:189")
 rho = field("rho_s")
 E, B, R = vec("E"), vec("B"), vec("R")
 C_mass, M_x = sp.symbols("C M_x")
@@ -98,7 +98,7 @@ agrees((conservative[0] - U[0] * mass).doit(), material[0], ":210", lhs=M_x - U[
 has_unit(ms * ns * us**2 / Ls, u.newton / u.meter**3)
 
 # %% Energy balance
-section("Species energy balance", "07-multiple-fluids.typ:239")
+section("Species energy balance", "07-multiple-fluids.typ:226")
 MOMENTS = moment_values()
 T_W, K, C = sp.symbols("T_W K C")             # energy moment, kinetic operator, collisions
 note("On the test distribution of Chapter 6, the energy density")
@@ -120,7 +120,7 @@ assert same(integrate(energy), (Partial(W, t) + sum(Partial(split[j], X[j]) for 
 has_unit(ms * ns * us**3, u.watt / u.meter**2)
 
 # %% Maxwell equations and charge continuity
-section("Maxwell equations and charge continuity", "07-multiple-fluids.typ:246")
+section("Maxwell equations and charge continuity", "07-multiple-fluids.typ:233")
 rho_qf, J = field("rho_q"), vec("j")
 gauss = show(sp.Eq(rho_qf, eps0 * sum(Partial(E[k], X[k]) for k in range(3))))
 note("Ampere with displacement current, x component (y, z alike)")
@@ -133,7 +133,7 @@ note("Faraday keeps the divergence of B constant:")
 agrees(div(curl(E)), 0, ":251", lhs=sum(Partial(-curl(E)[k], X[k]) for k in range(3)))
 
 # %% Example: current
-section("Example: current with equal densities", "07-multiple-fluids.typ:321")
+section("Example: current with equal densities", "07-multiple-fluids.typ:308")
 n_0, j_x, rho_qx = sp.symbols("n_0 j_x rho_q")
 plasma = {n_0: 1.0e16 / u.meter**3, u_i: 2.0e5 * u.meter / u.second,
           u_e: 1.5e5 * u.meter / u.second}
@@ -145,7 +145,7 @@ close_to(evaluate(j_x, current.rhs.subs(charges).subs(equal), plasma, u.ampere /
          80.1, source=":330")
 
 # %% Perpendicular drift
-section("Perpendicular drift balance", "07-multiple-fluids.typ:427")
+section("Perpendicular drift balance", "07-multiple-fluids.typ:407")
 q_, n_ = sp.symbols("q_s n_s", nonzero=True)
 Bv, Ev = sp.symbols("B_x B_y B_z", real=True), sp.symbols("E_x E_y E_z", real=True)
 Gp = sp.symbols("g_x g_y g_z", real=True)          # components of grad p_s
@@ -178,7 +178,7 @@ has_unit(Em / Bm, u.meter / u.second)
 has_unit(ps / (Ls * qs * ns * Bm), u.meter / u.second)
 
 # %% Example: drifts
-section("Example: E x B and diamagnetic drifts", "07-multiple-fluids.typ:492")
+section("Example: E x B and diamagnetic drifts", "07-multiple-fluids.typ:472")
 E_0, B_0, g_0, n0_ = sp.symbols("E_0 B_0 g_0 n_0", positive=True)
 E_vec, B_vec, g_vec = [E_0, 0, 0], [0, 0, B_0], [g_0, 0, 0]
 slab = {E_0: 30.0 * u.volt / u.meter, B_0: 0.0100 * u.tesla,
@@ -193,7 +193,7 @@ close_to(evaluate(u_si, Bxg[1] / (e * n0_ * B_0**2), slab, speed), 1.00e2, sourc
 close_to(evaluate(u_se, Bxg[1] / (-e * n0_ * B_0**2), slab, speed), -1.00e2, source=":503")
 
 # %% Diamagnetic current
-section("Diamagnetic current", "07-multiple-fluids.typ:589")
+section("Diamagnetic current", "07-multiple-fluids.typ:561")
 qe, qi, ne_, ni_ = sp.symbols("q_e q_i n_e n_i", nonzero=True)
 ge, gi = sp.symbols("g_ex g_ey g_ez", real=True), sp.symbols("g_ix g_iy g_iz", real=True)
 drift = lambda qq, nn, g: [drift_ExB[i] + cross(Bv, g)[i] / (qq * nn * B2) for i in range(3)]
@@ -220,7 +220,7 @@ agrees(pressure.doit(), k_B * ((Te + Ti) * Partial(nf, x) + nf * Partial(Te + Ti
 has_unit(ps / (Ls * Bm), u.ampere / u.meter**2)
 
 # %% Example: diamagnetic current
-section("Example: diamagnetic current density", "07-multiple-fluids.typ:661")
+section("Example: diamagnetic current density", "07-multiple-fluids.typ:633")
 j_star = sp.Symbol("j_*,y")
 gradient = {g_0: 3.204e-5 * u.pascal / u.meter, B_0: 0.0100 * u.tesla}
 given(gradient)
@@ -228,7 +228,7 @@ close_to(evaluate(j_star, Bxg[1] / B_0**2, gradient, u.ampere / u.meter**2), 3.2
          source=":668")
 
 # %% Parallel momentum equation
-section("Parallel momentum equation", "07-multiple-fluids.typ:773")
+section("Parallel momentum equation", "07-multiple-fluids.typ:737")
 p = field("p_s")
 b = sp.symbols("b_x b_y b_z", real=True)          # constant unit vector along B
 B_mag = sp.Symbol("B", positive=True)
@@ -253,7 +253,7 @@ agrees_with(sp.expand(dot(b, rhs)),
             parallel, ":777", lhs=dot(b, Fv))
 
 # %% Boltzmann relation
-section("Electron Boltzmann relation", "07-multiple-fluids.typ:793")
+section("Electron Boltzmann relation", "07-multiple-fluids.typ:757")
 s_ = sp.Symbol("s", real=True)                     # arc length along b
 T_e = sp.Symbol("T_e", positive=True)
 n_s = sp.Function("n_e", positive=True)(s_)
@@ -277,7 +277,7 @@ assert sp.simplify(profile.subs(phi, phi0) - n_e0) == 0
 has_unit(k_B * Ts / (e * Ls), u.volt / u.meter)
 
 # %% One-fluid momentum
-section("One-fluid momentum equation", "07-multiple-fluids.typ:815")
+section("One-fluid momentum equation", "07-multiple-fluids.typ:779")
 species = ("e", "i")
 mass_s = {s: sp.Symbol(f"m_{s}", positive=True) for s in species}
 charge_q = {s: sp.Symbol(f"q_{s}", real=True) for s in species}
@@ -357,7 +357,7 @@ agrees_with(d1["total"][0],
             names, ":815", lhs=M_e + M_i)
 
 # %% Example: Boltzmann density
-section("Example: Boltzmann density ratio", "07-multiple-fluids.typ:883")
+section("Example: Boltzmann density ratio", "07-multiple-fluids.typ:847")
 phi1, n_e = sp.symbols("phi_1 n_e")
 probe = {phi1: 3.00 * u.volt, phi0: 0 * u.volt, T_e: 3.00 * u.elementary_charge * u.volt / u.boltzmann_constant,
          n_e0: 1.0e16 / u.meter**3}

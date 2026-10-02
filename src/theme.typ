@@ -364,9 +364,9 @@
   #list(..sections.map(section => [#section]))
 
   #unit-ledger[
-    SI is the default dimensional convention. Each chapter will declare its
-    field and temperature conventions before its first dimensional equation
-    and will identify every normalized reference scale.
+    Each chapter will declare its field and temperature conventions before
+    its first dimensional equation and will identify every normalized
+    reference scale.
   ]
 
   #summary[

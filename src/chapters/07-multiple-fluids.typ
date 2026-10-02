@@ -39,16 +39,6 @@
     [trace the information retained when kinetic distributions become fluids],
   ))
 
-  #unit-ledger[
-    SI units are used. Position is in #unit("m"), time is in
-    #unit("s"), velocity is in #unit("m/s"), mass is in #unit("kg"), number
-    density is in #unit("m^-3"), and mass density is in
-    #unit("kg/m^3"). Pressure and energy density are in
-    #unit("J/m^3") (equivalently #unit("Pa")), electric field is in
-    #unit("V/m"), magnetic field is in #unit("T"), and the current density is
-    in #unit("A/m^2"). A species label is an index, not a unit.
-  ]
-
   #definition(
     [Hydrogen two-fluid variables],
     [Use $s in {e, i}$ for electrons and singly charged ions. Their charges
@@ -175,12 +165,9 @@
   ))
 
   #unit-ledger[
-    The equations use SI units with $epsilon_0$ and $mu_0$. The Lorentz force
-    density is in #unit("N/m^3"), because
-    $q_(s)n_(s) bold(E)$ and
-    $q_(s)n_(s)(bold(u)_(s) times bold(B))$ have that unit. The pressure
-    divergence and $bold(R)_(s)$ are also force densities. Energy density is
-    in #unit("J/m^3"), and an energy flux is in #unit("W/m^2").
+    The Lorentz force density is in #unit("N/m^3"), because $q_(s)n_(s)
+    bold(E)$ and $q_(s)n_(s)(bold(u)_(s) times bold(B))$ have that unit. The
+    pressure divergence and $bold(R)_(s)$ are also force densities.
   ]
 
   #assumption(
@@ -405,13 +392,6 @@
     [identify the terms that invalidate the low-inertia drift ordering],
   ))
 
-  #unit-ledger[
-    SI units are used. $bold(B)$ is in #unit("T"), $bold(E)$ is in
-    #unit("V/m"), $q_(s)$ is in #unit("C"), $n_(s)$ is in
-    #unit("m^-3"), and all drift velocities are in #unit("m/s"). The
-    pressure gradient is in #unit("Pa/m"), equivalently #unit("N/m^3").
-  ]
-
   #assumption(
     [Local drift ordering],
     [Assume a locally uniform magnetic field, an isotropic pressure tensor, and
@@ -567,14 +547,6 @@
     [relate the diamagnetic current to the total pressure gradient],
     [distinguish current response from bulk mass transport],
   ))
-
-  #unit-ledger[
-    The current density is in #unit("A/m^2"). The pressure sum
-    $p_(e)+p_(i)$ is in #unit("Pa"), and
-    $(bold(B)times grad(p))/(B^2)$ has the same current-density unit after the
-    charge and density factors cancel. All displayed drift velocities remain
-    in #unit("m/s").
-  ]
 
   #assumption(
     [Quasi-neutral local sum],
@@ -745,14 +717,6 @@
     [identify the relative-flow stress retained when species equations are
     summed],
   ))
-
-  #unit-ledger[
-    SI units remain in use. Parallel velocity is in #unit("m/s"),
-    pressure gradient is in #unit("Pa/m"), the parallel electric field is
-    in #unit("V/m"), and the parallel force density is in #unit("N/m^3"). A
-    mass-weighted one-fluid velocity has units #unit("m/s"); relative-flow
-    stresses have pressure units #unit("Pa").
-  ]
 
   #assumption(
     [Parallel ordering],

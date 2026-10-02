@@ -40,16 +40,8 @@
   ))
 
   #unit-ledger[
-    SI units are used. Number density $n_s$ is in #unit("m^-3"),
-    position and wavelength are in #unit("m"), time and frequency are in
-    #unit("s") and #unit("s^-1"), velocity is in #unit("m/s"), mass is in
-    #unit("kg"), pressure is in #unit("Pa"), $k_B T_s$ is in
-    #unit("J") (or #unit("eV")), $q_s$ is in #unit("C"), $bold(E)$ is in
-    #unit("V/m"), $bold(B)$ is in #unit("T"), and current density is in
-    #unit("A/m^2"). The vacuum permittivity $epsilon_0$ is in #unit("F/m"),
-    the vacuum permeability $mu_0$ is in #unit("H/m"), and the speed of
-    light $c=1/sqrt(mu_0 epsilon_0)$ is in #unit("m/s"). The phase $bold(k) dot bold(r)-omega t$ and normalized
-    variables such as $omega/omega_(p,e)$ are dimensionless.
+    The phase $bold(k) dot bold(r)-omega t$ and normalized variables such as
+    $omega/omega_(p,e)$ are dimensionless.
   ]
 
   #assumption(
@@ -171,8 +163,8 @@
     wavelength $lambda=qty("0.10", "m")$ at angular frequency
     $omega=qty("1.0e10", "s^-1")$, with $k=(2 pi)/lambda$.
 
-    Assumptions: cold fixed-ion ordering for the plasma-frequency estimate,
-    small-amplitude perturbation, and SI dimensional quantities.
+    Assumptions: cold fixed-ion ordering for the plasma-frequency estimate
+    and small-amplitude perturbation.
 
     Target: report the perturbation parameter, Debye-scale ordering
     $k lambda_D$, and frequency ordering $omega/omega_(p,e)$.
@@ -246,11 +238,8 @@
   ))
 
   #unit-ledger[
-    The electron density $n_0$ is in #unit("m^-3"), charge $e$ is in
-    #unit("C"), electron mass $m_e$ is in #unit("kg"), $epsilon_0$ is in
-    #unit("F/m"), electric field is in #unit("V/m"), and the plasma frequency
-    $omega_(p,e)$ is in #unit("s^-1"). The normalized displacement
-    $xi/xi_0$ and time $omega_(p,e) t$ are dimensionless.
+    The plasma frequency $omega_(p,e)$ is in #unit("s^-1"). The normalized
+    displacement $xi/xi_0$ and time $omega_(p,e) t$ are dimensionless.
   ]
 
   #assumption(
@@ -325,7 +314,7 @@
 
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, longitudinal electrostatic
-    perturbation with fixed ions and SI quantities. For a cold
+    perturbation with fixed ions. For a cold
     hydrogen plasma use
     $n_0=qty("1.0e16", "m^-3")$,
     $e=qty("1.602e-19", "C")$,
@@ -400,11 +389,8 @@
   ))
 
   #unit-ledger[
-    The wave number $k$ is in #unit("m^-1"), frequency $omega$ is in
-    #unit("s^-1"), and $c$ is in #unit("m/s"). The velocities
-    $v_"phi"$ and $v_"g"$ are in #unit("m/s"). The current density is in
-    #unit("A/m^2") and $epsilon_0$ is in #unit("F/m"). The dielectric factor
-    $epsilon_(r)$, $(k c)/omega_(p,e)$, and $omega/omega_(p,e)$ are
+    The velocities $v_"phi"$ and $v_"g"$ are in #unit("m/s"). The dielectric
+    factor $epsilon_(r)$, $(k c)/omega_(p,e)$, and $omega/omega_(p,e)$ are
     dimensionless.
   ]
 
@@ -516,7 +502,7 @@
       $A=exp(-(X-0.42 tau)^2/(2 (1.15)^2))
         cos(5.2 (X-0.90 tau))$.
       Here $L_0$, $t_0$, and $E_0$ are arbitrary reference length, time,
-      and field scales in SI units; velocities are in units $L_0/t_0$.
+      and field scales; velocities are in units $L_0/t_0$.
       Thus $sigma/L_0=1.15$, $k L_0=5.2$,
       $(v_"g" t_0)/L_0=0.42$, and $(v_"phi" t_0)/L_0=0.90$ are
       prescribed dimensionless parameters. This ansatz is not an exact
@@ -529,7 +515,7 @@
 
   #rechenbeispiel[
     Assume the homogeneous, cold, collisionless, unmagnetized, fixed-ion
-    transverse electromagnetic model in SI units. A cold electromagnetic
+    transverse electromagnetic model. A cold electromagnetic
     wave has #normalized-label[$omega/omega_(p,e)=2$] in a plasma with
     $omega_(p,e)=qty("5.64e9", "s^-1")$ and
     $c=qty("2.998e8", "m/s")$.
@@ -602,13 +588,9 @@
   ))
 
   #unit-ledger[
-    Species temperature energy $k_B T_s$ is in #unit("J") (or #unit("eV")),
-    mass is in #unit("kg"), thermal speed and ion-acoustic speed are in
-    #unit("m/s"), $k$ is in #unit("m^-1"), $omega$ is in #unit("s^-1"),
-    density is in #unit("m^-3"), charge is in #unit("C"), $epsilon_0$ is in
-    #unit("F/m"), and $lambda_D=sqrt((epsilon_0 k_B T_e)/(n_0 e^2))$ is in
-    #unit("m"). The phase parameters
-    $k lambda_D$ and $omega/(k v_"th,s")$ are dimensionless.
+    Thermal speed and ion-acoustic speed are in #unit("m/s"), and
+    $lambda_D=sqrt((epsilon_0 k_B T_e)/(n_0 e^2))$ is in #unit("m"). The phase
+    parameters $k lambda_D$ and $omega/(k v_"th,s")$ are dimensionless.
   ]
 
   #assumption(
@@ -748,8 +730,8 @@
 
   #rechenbeispiel[
     Assume an unmagnetized, electrostatic warm-fluid model with cold ions,
-    an isothermal electron response, quasi-neutral long-wavelength ordering,
-    and SI units. For cold ions and an isothermal electron response use
+    an isothermal electron response, and quasi-neutral long-wavelength ordering.
+    For cold ions and an isothermal electron response use
     $k_B T_e=qty("10", "eV")=qty("1.602e-18", "J")$,
     $m_i=qty("1.673e-27", "kg")$, and
     $k=qty("1.0", "m^-1")$.
@@ -888,7 +870,7 @@
   #wave-dispersion
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, unmagnetized, fixed-ion
-    electromagnetic model in SI units. A radio source drives a plasma with
+    electromagnetic model. A radio source drives a plasma with
     $n_0=qty("1.0e16", "m^-3")$ and
     $c=qty("2.998e8", "m/s")$. Classify a drive at
     $omega=qty("4.0e9", "s^-1")$ and another at

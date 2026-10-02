@@ -67,7 +67,7 @@ N2_RH = 1 - wpe**2 / ((w + wci) * (w - wce))
 N2_LH = 1 - wpe**2 / ((w - wci) * (w + wce))
 
 # %% Complex effective mass
-section("Complex effective mass", "13-finite-temperature-waves.typ:99")
+section("Complex effective mass", "13-finite-temperature-waves.typ:97")
 m, m_eff = sp.Symbol("m", positive=True), sp.Symbol("m_eff")
 note("Drag", -m * nu * sp.Symbol("u"), "moved to the left of the momentum equation")
 law = show(sp.Eq(-I * w * m + m * nu, -I * w * m_eff))
@@ -79,7 +79,7 @@ assert sp.simplify(cold_velocity(-e, m, Om, drag=nu)
 note("Same velocity response as a collisionless species of mass", m_eff)
 
 # %% Collisional RH branch
-section("Collisional RH branch", "13-finite-temperature-waves.typ:82")
+section("Collisional RH branch", "13-finite-temperature-waves.typ:80")
 eps = dielectric([electron(drag=nu)])
 note("Cold electron tensor with drag; right-hand circular combination",
      sp.Eq(sp.Symbol("N_RH") ** 2, sp.Symbol("epsilon_xx") + I * sp.Symbol("epsilon_xy")))
@@ -93,7 +93,7 @@ agrees(effective_form, wpe**2 / (w * (w - wce + I * nu)), ":126",
        lhs=sp.UnevaluatedExpr(effective_form))
 
 # %% Weak-collision susceptibility
-section("Weak-collision susceptibility", "13-finite-temperature-waves.typ:135")
+section("Weak-collision susceptibility", "13-finite-temperature-waves.typ:133")
 chi_e = sp.Symbol("chi_e")
 chi = show(sp.Eq(chi_e, wpe**2 / (w * (w + I * nu)))).rhs
 note("First order in", nu / w)
@@ -104,7 +104,7 @@ assert sp.im(sp.expand(1 - first_order)).subs({nu: 1, w: 2, wpe: 1}) > 0
 note("so", sp.Eq(sp.Symbol("N") ** 2, 1 - chi_e), "has a positive imaginary part")
 
 # %% Spatial attenuation
-section("Spatial attenuation", "13-finite-temperature-waves.typ:143")
+section("Spatial attenuation", "13-finite-temperature-waves.typ:141")
 k_r, k_i, t = sp.symbols("k_r k_i t", positive=True)
 field = sp.exp(I * (k_r + I * k_i) * z - I * w * t)
 note("Complex wave number", sp.Eq(k, k_r + I * k_i, evaluate=False))
@@ -116,7 +116,7 @@ agrees(L_I, 1 / (2 * k_i), ":147", lhs=sp.Symbol("L_I"))
 si.check(L_I, 1 / (2 * k_i), unit=u.meter, units={k_i: u.meter**-1})
 
 # %% Worked example: collisional attenuation
-section("Worked example: collisional attenuation", "13-finite-temperature-waves.typ:166")
+section("Worked example: collisional attenuation", "13-finite-temperature-waves.typ:164")
 drive = {wpe: 5.64e9 / u.second, w: 2.00e10 / u.second, nu: 1.00e9 / u.second}
 note("Frequencies in 1/s:", sp.Eq(wpe, sp.Float(5.64e9, 3)), ",", sp.Eq(w, sp.Float(2.0e10, 3)),
      ",", sp.Eq(nu, sp.Float(1.0e9, 3)))
@@ -139,7 +139,7 @@ L_value = evaluate(sp.Symbol("L"), 1 / sp.Symbol("k_i"), {sp.Symbol("k_i"): wave
 close_to(L_value, 7.23, source=":179")
 
 # %% Two-species cold tensor
-section("Two-species cold tensor", "13-finite-temperature-waves.typ:257")
+section("Two-species cold tensor", "13-finite-temperature-waves.typ:252")
 note("Electrons", sp.Eq(sp.Symbol("Omega_e"), -wce), "and ions", sp.Eq(sp.Symbol("Omega_i"), wci))
 eps = dielectric([electron(), ion()])
 eps_perp = 1 - (wpe**2 / (w**2 - wce**2) + wpi**2 / (w**2 - wci**2))
@@ -152,7 +152,7 @@ for derived, stated, symbol, line in [(eps[0, 0], eps_perp, S, ":257"),
     si.check(sp.simplify(derived.subs(ION)), stated.subs(ION), unit=1, units=UNITS)
 
 # %% Mass-ratio identities
-section("Mass-ratio identities", "13-finite-temperature-waves.typ:324")
+section("Mass-ratio identities", "13-finite-temperature-waves.typ:319")
 note("Equal densities, singly charged ions")
 plasma_sq = lambda mass: n0 * e**2 / (eps0 * mass)  # noqa: E731
 cyclotron = lambda mass: e * B0 / mass  # noqa: E731
@@ -161,7 +161,7 @@ agrees(cyclotron(m_i) / cyclotron(m_e), m_e / m_i, ":983", lhs=wci / wce)
 si.check(plasma_sq(m_i) / plasma_sq(m_e), cyclotron(m_i) / cyclotron(m_e))  # :324
 
 # %% Parallel-propagation determinant
-section("Parallel-propagation determinant", "13-finite-temperature-waves.typ:313")
+section("Parallel-propagation determinant", "13-finite-temperature-waves.typ:308")
 N_sq = sp.Symbol("N^2")
 M_transverse = sp.Matrix([[S, -I * D], [I * D, S]]) - N_sq * sp.eye(2)
 note("Transverse block of the wave matrix for k along", B0)
@@ -173,7 +173,7 @@ for root in sorted(roots, key=str):
     show(sp.Eq(N_sq, root))
 
 # %% Circular branches with ions
-section("Circular branches with ions", "13-finite-temperature-waves.typ:319")
+section("Circular branches with ions", "13-finite-temperature-waves.typ:314")
 R = sp.simplify(eps[0, 0] + I * eps[0, 1])
 L = sp.simplify(eps[0, 0] - I * eps[0, 1])
 rh_sum = 1 - wpe**2 / (w * (w - wce)) - wpi**2 / (w * (w + wci))
@@ -195,7 +195,7 @@ for exact, approx in ((R, N2_RH), (L, N2_LH)):
 note("The dropped terms are first order in", sp.Eq(M_ratio, m_e / m_i))
 
 # %% Low-frequency Alfvén limit
-section("Low-frequency Alfvén limit", "13-finite-temperature-waves.typ:343")
+section("Low-frequency Alfvén limit", "13-finite-temperature-waves.typ:338")
 alfven_index = 1 + wpe**2 / (wce * wci)
 for N2, name in ((N2_RH, "N_RH"), (N2_LH, "N_LH")):
     show(sp.Eq(sp.Limit(sp.Symbol(name) ** 2, w, 0), sp.limit(N2, w, 0)))
@@ -222,7 +222,7 @@ agrees(phase.subs(to_v_A), v_A, ":356", lhs=w / k)
 si.check(phase, alfven, unit=u.meter / u.second, units=UNITS)
 
 # %% Normalized ion-cyclotron and whistler branches
-section("Normalized ion-cyclotron and whistler branches", "13-finite-temperature-waves.typ:367")
+section("Normalized ion-cyclotron and whistler branches", "13-finite-temperature-waves.typ:362")
 K, W = sp.symbols("K W", positive=True)  # K = k v_A/omega_ci, W = omega/omega_ci
 note("For", sp.Lt(w, wce), "and", sp.Lt(v_A, c), ": keep the leading term in", 1 / wce,
      "; normalize", sp.Eq(K, k * v_A / wci), ",", sp.Eq(W, w / wci))
@@ -245,7 +245,7 @@ note("Both start on the Alfvén line", sp.Eq(W, K), "; LH approaches",
      sp.Eq(sp.Limit(sp.Symbol("W_LH"), K, sp.oo), 1))
 
 # %% Warm species response
-section("Warm species response", "13-finite-temperature-waves.typ:498")
+section("Warm species response", "13-finite-temperature-waves.typ:490")
 q, m_s, n_s, E1, T_s = sp.symbols("q m n E_1 T_s", positive=True)
 u1, n1 = sp.symbols("u_1 n_1")
 
@@ -268,14 +268,14 @@ si.check(n1_warm / n_s, k * u1_warm / w)  # :506
 agrees(u1_warm, I * q * w * E1 / (m_s * (w**2 - k**2 * c_se**2)), ":529", lhs=u1)
 
 # %% Warm longitudinal susceptibility
-section("Warm longitudinal susceptibility", "13-finite-temperature-waves.typ:535")
+section("Warm longitudinal susceptibility", "13-finite-temperature-waves.typ:527")
 note("Current", sp.Eq(sp.Symbol("j"), q * n_s * u1), "in", sp.Eq(sp.Symbol("epsilon") * E1,
                                                                     E1 + I * sp.Symbol("j") / (eps0 * w)))
 chi_s = sp.simplify(I / (eps0 * w) * q * n_s * u1_warm / E1)
 agrees(chi_s, -(n_s * q**2 / (eps0 * m_s)) / (w**2 - k**2 * c_se**2), ":539", lhs=sp.Symbol("chi_s"))
 
 # %% Warm Langmuir branch
-section("Warm Langmuir branch", "13-finite-temperature-waves.typ:547")
+section("Warm Langmuir branch", "13-finite-temperature-waves.typ:539")
 w_sq = sp.Symbol("omega^2")
 note("Fixed ions")
 langmuir = show(sp.Eq(1 - wpe**2 / (w_sq - k**2 * c_se**2), 0))
@@ -295,7 +295,7 @@ agrees(bohm_gross.subs(c_se, sp.sqrt(gamma_e) * wpe * lambda_De),
        wpe**2 * (1 + gamma_e * k**2 * lambda_De**2), ":468", lhs=w**2)
 
 # %% Ion-acoustic root
-section("Ion-acoustic root", "13-finite-temperature-waves.typ:566")
+section("Ion-acoustic root", "13-finite-temperature-waves.typ:558")
 X = sp.Symbol("X", positive=True)  # X = omega^2
 two_species = 1 - wpe**2 / (X - k**2 * c_se**2) - wpi**2 / (X - k**2 * c_si**2)
 note("Electrons and ions, with", sp.Eq(X, w**2))
@@ -334,7 +334,7 @@ agrees(same_gamma, k**2 * gamma * k_B * (T_e + T_i) / m_i, ":489", lhs=w**2)
 si.check(same_gamma, k**2 * gamma * k_B * (T_e + T_i) / m_i, unit=u.second**-2, units=UNITS)
 
 # %% Worked example: warm Langmuir
-section("Worked example: warm Langmuir", "13-finite-temperature-waves.typ:594")
+section("Worked example: warm Langmuir", "13-finite-temperature-waves.typ:586")
 example = {n0: 1e16 / u.meter**3, T_e: 10 * u.electronvolt / u.boltzmann_constant}
 note("Input", sp.Eq(n0, example[n0], evaluate=False), ",",
      sp.Eq(k_B * T_e, 10 * u.electronvolt, evaluate=False), ", isothermal", sp.Eq(gamma_e, 1),
@@ -348,7 +348,7 @@ show(sp.Eq(w / wpe, sp.Float(ratio, 3)))
 close_to(ratio, 1.28, source=":609")
 
 # %% Warm upper hybrid
-section("Warm upper hybrid", "13-finite-temperature-waves.typ:723")
+section("Warm upper hybrid", "13-finite-temperature-waves.typ:712")
 Om_e, q_e = sp.symbols("Omega_e q_e", real=True)
 n1, ux, uy = sp.symbols("n_1 u_x u_y")
 note("Fixed ions;", sp.Eq(sp.Symbol("k"), k * sp.Symbol("e_x")), ",",
@@ -391,7 +391,7 @@ def mhd_matrix(kx, kz):
 
 
 # %% Perpendicular magnetosonic wave
-section("Perpendicular magnetosonic wave", "13-finite-temperature-waves.typ:794")
+section("Perpendicular magnetosonic wave", "13-finite-temperature-waves.typ:783")
 note("Ideal MHD,", sp.Eq(sp.Symbol("p_1"), v_s**2 * sp.Symbol("rho_1")), ",",
      sp.Eq(v_A, B0 / sp.sqrt(mu0 * rho0)), "; k across", B0)
 A, rho1, B1, vel = mhd_matrix(k, 0)
@@ -419,7 +419,7 @@ agrees(sound_sq, gamma * p0 / rho0, ":696", lhs=v_s**2)
 si.check(sound_sq, gamma * p0 / rho0, unit=(u.meter / u.second) ** 2, units=UNITS)
 
 # %% Shear Alfvén wave
-section("Shear Alfvén wave", "13-finite-temperature-waves.typ:822")
+section("Shear Alfvén wave", "13-finite-temperature-waves.typ:811")
 A, rho1, _, vel = mhd_matrix(0, k_par)
 note("k along", B0)
 show(sp.Eq(matmul(A, vel), sp.ImmutableMatrix(sp.zeros(3, 1)), evaluate=False))
@@ -434,14 +434,14 @@ wave = sp.simplify((sp.diff(f, t, 2) - v_A**2 * sp.diff(f, z, 2)) / f)
 si.check(sp.solve(wave.subs(w, sp.sqrt(w_sq)), w_sq)[0], shear)  # :822, same relation
 
 # %% Animation speeds
-section("Animation speeds", "13-finite-temperature-waves.typ:842")
+section("Animation speeds", "13-finite-temperature-waves.typ:831")
 note("Units", sp.Symbol("L_0") / sp.Symbol("t_0"), ":", sp.Eq(v_s, sp.Rational(6, 10)), ",",
      sp.Eq(v_A, 1, evaluate=False))
 agrees((v_A**2 + v_s**2).subs({v_s: sp.Rational(6, 10), v_A: 1}), sp.Rational(136, 100), ":843",
        lhs=sp.Symbol("v_m") ** 2)
 
 # %% Worked example: MHD speeds
-section("Worked example: MHD speeds", "13-finite-temperature-waves.typ:853")
+section("Worked example: MHD speeds", "13-finite-temperature-waves.typ:842")
 n_val = 1e16 / u.meter**3
 example = {rho0: n_val * PROTON_MASS, B0: 1e-2 * u.tesla, gamma: 1,
            p0: 2 * n_val * 10 * u.electronvolt}
@@ -462,7 +462,7 @@ close_to(evaluate(w, k * sp.Symbol("v_m"), {k: 1e-3 / u.meter,
                   1 / u.second), 2.18e3, source=":867")
 
 # %% Cold limits
-section("Cold limits", "13-finite-temperature-waves.typ:971")
+section("Cold limits", "13-finite-temperature-waves.typ:960")
 agrees(sp.limit(m * (1 + I * nu / w), nu, 0), m, ":971", lhs=sp.Limit(m_eff, nu, 0))
 T_s = sp.Symbol("T_s", positive=True)
 agrees(sp.limit(w**2 - k**2 * gamma * k_B * T_s / m, T_s, 0), w**2, ":996",
@@ -475,7 +475,7 @@ for a, b in ((0, 0), (0, 1), (2, 2)):
 show(sp.Eq(sp.Limit(S, m_i, sp.oo), sp.simplify(sp.limit(eps[0, 0], m_i, sp.oo))))
 
 # %% Worked example: mass ratio
-section("Worked example: mass ratio", "13-finite-temperature-waves.typ:1038")
+section("Worked example: mass ratio", "13-finite-temperature-waves.typ:1027")
 mass_ratio = number(m_e / m_i, {m_i: PROTON_MASS})
 show(sp.Eq(M_ratio, sp.Float(mass_ratio, 3)))
 close_to(mass_ratio, 5.45e-4, source=":1038")

@@ -143,8 +143,8 @@
         leads to kinetic and fluid descriptions, with an additional
         assumption at each reduction.
         Here 6+1D means three position coordinates, three velocity
-        coordinates, and time; 3+1D retains position and time. In SI,
-        these coordinates are in #unit("m"), #unit("m/s"), and
+        coordinates, and time; 3+1D retains position and time.
+        These coordinates are in #unit("m"), #unit("m/s"), and
         #unit("s"), respectively. ODE and PDE denote ordinary and partial
         differential equations.
       ]
@@ -1259,3 +1259,60 @@
     carries the temperature diagnostic; real saturation depends on geometry.
   ],
 )[#derived-plot("probe-iv-characteristic", width: 9.5cm)]
+
+// Chapter 1 plots: cells in derivations/chapters/ch01_introduction.py.
+#let intro-enclosed-charge = figure(
+  alt: "Net charge inside a sphere of radius r around a point charge, divided by the charge, against r over the Debye length. The bare value is a dashed horizontal line at one. The screened curve starts at one and falls smoothly, to about 0.74 at one Debye length and 0.2 at three Debye lengths.",
+  caption: [
+    Net charge inside radius $r$ around a point charge $Q$: bare (dashed)
+    and Debye-screened (solid), $Q_"enc"\/Q = (1 + r\/lambda_D) e^(-r\/lambda_D)$
+    from Gauss's law and the screened potential derived in the Debye-shielding
+    chapter. Radius in units of $lambda_D$.
+  ],
+)[#derived-plot("enclosed_charge", width: 8.6cm)]
+
+#let intro-heating-drift = figure(
+  alt: "Two plots on identical axes of one velocity component of a Maxwellian. Left, heating: the solid curve at temperature T and a dashed curve at 4T, both centred at zero; the hotter one is twice as wide and half as high. Right, acceleration: the solid curve at rest and a dashed curve of the same shape shifted to two thermal speeds.",
+  caption: [
+    One velocity component of a Maxwellian with the same density. Left:
+    heating from $T$ to $4T$ doubles the width $v_"th"$ at fixed bulk
+    velocity. Right: acceleration to $u = 2 v_"th"$ shifts the distribution
+    at fixed width. Velocity in units of the initial $v_"th"$, $f$ in units
+    of $n\/v_"th"$.
+  ],
+)[#derived-plot-pair("maxwellian_heating", "maxwellian_drift")]
+
+#let intro-speed-distribution = figure(
+  alt: "Distribution of particle speeds in an isotropic Maxwellian against v over the thermal speed. The curve rises from zero, peaks at v equal to v_th and decays. Vertical lines mark v_th at the peak, the mean speed at 1.13 v_th and the root-mean-square speed at 1.22 v_th.",
+  caption: [
+    Speed distribution $F(v)$ of an isotropic Maxwellian,
+    $integral_0^oo F dif v = 1$. The thermal speed $v_"th"$ is the most
+    probable speed; the mean speed is $2 v_"th"\/sqrt(pi)$ and the
+    root-mean-square speed $sqrt(3\/2) v_"th"$. Speed in units of $v_"th"$.
+  ],
+)[#derived-plot("maxwell_speed", width: 8.6cm)]
+
+#let intro-thermal-speed = figure(
+  alt: "Log-log plot of thermal speed in metres per second against k_B T in electron-volts from 0.01 eV to 10 keV, with the temperature in kelvin on the top axis. Two parallel lines of slope one half: electrons from about 6 times 10 to the 4 to 6 times 10 to the 7 metres per second, and protons a factor 43 lower.",
+  caption: [
+    Thermal speed $v_"th" = sqrt(2 k_B T\/m)$ of electrons (solid) and
+    protons (dashed) against $k_B T$ in #unit("eV"); top axis: $T$ in
+    #unit("K"), $1 #unit("eV") \/ k_B approx 1.16 dot 10^4 #unit("K")$. Both
+    lines have slope $1\/2$; their ratio is $sqrt(m_p\/m_e) approx 43$.
+    Nonrelativistic.
+  ],
+)[#derived-plot("thermal_speed", width: 8.6cm)]
+
+#let intro-scale-ordering = figure(
+  alt: "Two panels with one row per example plasma: H II region, ionosphere, solar corona, Hall thruster and tokamak core. Left, lengths in metres on a logarithmic axis from a micrometre to 10 to the 18 metres: Debye length (circle), electron gyroradius (triangle), Coulomb mean free path (square) and system size (bar). Right, rates in inverse seconds: electron plasma frequency (circle), electron cyclotron frequency (triangle) and electron-ion collision frequency (square). In every row the Debye length lies far below the system size; the mean free path exceeds the system size in the tokamak core and the Hall thruster; the collision frequency lies far below the plasma frequency in every row.",
+  caption: [
+    Characteristic lengths (left) and rates (right) of five example
+    plasmas: Debye length $lambda_D$, electron thermal gyroradius
+    $rho_e = v_("th",e)\/omega_(c e)$, Coulomb mean free path
+    $lambda_"mfp" = chevron.l v chevron.r\/nu_(e i)$, system size $L$; electron
+    plasma and cyclotron frequencies $omega_(p e)$, $omega_(c e)$ and
+    electron--ion collision frequency $nu_(e i)$. Order-of-magnitude
+    $n_e$, $k_B T_e$, $B$ and $L$; the ionosphere's dominant
+    electron--neutral collisions are not included.
+  ],
+)[#derived-plot("scale_ordering", width: 16.2cm)]

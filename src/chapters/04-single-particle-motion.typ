@@ -25,13 +25,6 @@
     [use the charge sign to determine the sense of gyration],
   ))
 
-  #unit-ledger[
-    SI is active. The particle has mass $m$ in #unit("kg"), charge $q$ in
-    #unit("C"), velocity in #unit("m/s"), electric field in #unit("V/m"),
-    magnetic field $B$ in #unit("T"), and time in #unit("s"). Electric and
-    magnetic forces enter the Lorentz force with the same prefactor $q$.
-  ]
-
   #governing-law(
     [Lorentz force],
     [For prescribed fields, a particle obeys]
@@ -40,7 +33,7 @@
   $ m dv(bold(v),t) = q (bold(E) + bold(v) times bold(B)) $ <motion-lorentz-force>
 
   #equation-note[
-    SI. Multiplying each field term by $q$ gives its contribution
+    Multiplying each field term by $q$ gives its contribution
     to the force, in #unit("N"). Dividing the total force by $m$ gives the
     particle acceleration.
   ]
@@ -50,7 +43,7 @@
   $ dv((m v^2)/2,t) = q bold(E) dot bold(v) $ <motion-energy>
 
   #equation-note[
-    SI. The kinetic energy is in #unit("J"). The magnetic term does no work
+    The kinetic energy is in #unit("J"). The magnetic term does no work
     because $bold(v) dot (bold(v) times bold(B)) = 0$.
   ]
 
@@ -60,7 +53,7 @@
   $ dv(v_x,t) = Omega v_y, quad dv(v_y,t) = -Omega v_x, quad Omega = (q B)/m $ <motion-cyclotron-components>
 
   #equation-note[
-    SI. $Omega$ is a signed angular frequency in $upright("s")^(-1)$. The
+    $Omega$ is a signed angular frequency in $upright("s")^(-1)$. The
     parallel velocity is constant, so the full orbit is a helix unless
     $v_parallel = 0$.
   ]
@@ -136,7 +129,7 @@
     Numerical result: $lambda_D = qty("6.9e-6", "m")$,
     $omega_(p,e) = qty("5.6e11", "s^-1")$,
     $rho_e = qty("3.1e-5", "m")$, and $rho_i = qty("1.3e-3", "m")$.
-    These values are dimensional SI results.
+    These values are dimensional results.
   ]
 
   #rechenbeispiel[
@@ -161,7 +154,7 @@
     $omega_(c,i) = qty("4.8e8", "s^-1")$,
     $rho_e = qty("6.3e-5", "m")$, and
     $rho_i = qty("2.7e-3", "m")$. These are rough dimensional
-    SI values for a hot confined plasma.
+    values for a hot confined plasma.
   ]
 
   #summary[
@@ -190,7 +183,7 @@
     ),
     (
       question: [How does the gyroradius scale with particle mass at fixed $v_perp$ and $B$?],
-      answer: [It is proportional to $m$, because $rho = (m v_perp)/(abs(q)B)$ in SI.],
+      answer: [It is proportional to $m$, because $rho = (m v_perp)/(abs(q)B)$.],
     ),
     (
       question: [What changes when the sign of $q$ changes in a uniform magnetic field?],
@@ -217,10 +210,8 @@
   ))
 
   #unit-ledger[
-    SI is active. The homogeneous force $bold(F)$ is in #unit("N"),
-    $bold(B)$ in #unit("T"), $q$ in #unit("C"), and drift velocity in
-    #unit("m/s"). A drift ratio such as $v_D/v_perp$ is dimensionless
-    only after both speeds use the same reference state.
+    A drift ratio such as $v_D/v_perp$ is dimensionless only after both speeds
+    use the same reference state.
   ]
 
   Resolve the electric field into components parallel and perpendicular to the
@@ -252,7 +243,7 @@
   $ bold(F) + q (bold(v)_D times bold(B)) = 0 $ <motion-force-balance>
 
   #equation-note[
-    SI. This is a vector force balance in #unit("N"). The drift has no
+    This is a vector force balance in #unit("N"). The drift has no
     acceleration because it describes the constant orbit-center translation.
   ]
 
@@ -261,7 +252,7 @@
   $ bold(v)_D = (bold(F) times bold(B))/(q B^2) $ <motion-general-drift>
 
   #equation-note[
-    SI. The result has velocity units, #unit("m/s"). It is valid for a homogeneous
+    The result has velocity units, #unit("m/s"). It is valid for a homogeneous
     perpendicular force and a uniform magnetic field.
   ]
 
@@ -270,7 +261,7 @@
   $ bold(v)_(E times B) = (bold(E) times bold(B))/(B^2) $ <motion-exb-drift>
 
   #equation-note[
-    SI. With $E$ in #unit("V/m") and $B$ in #unit("T"), $E/B$ is directly a
+    With $E$ in #unit("V/m") and $B$ in #unit("T"), $E/B$ is directly a
     speed in #unit("m/s"). The common $E times B$ drift is independent of species mass and charge sign.
   ]
 
@@ -357,12 +348,11 @@
   ))
 
   #unit-ledger[
-    SI is active. Let $L_B$ denote the magnetic-field variation
-    length in #unit("m") and $omega_c^(-1)$ the characteristic gyration time in
-    seconds; the gyroperiod is $(2 pi)/omega_c$. The ordering
-    parameters $rho/L_B$ and $omega_"slow"/omega_c$ are dimensionless.
-    The magnetic moment defined below is in #unit("J/T"), equivalently
-    #unit("A m^2").
+    Let $L_B$ denote the magnetic-field variation length in #unit("m") and
+    $omega_c^(-1)$ the characteristic gyration time in seconds; the gyroperiod
+    is $(2 pi)/omega_c$. The ordering parameters $rho/L_B$ and
+    $omega_"slow"/omega_c$ are dimensionless. The magnetic moment defined
+    below is in #unit("J/T"), equivalently #unit("A m^2").
   ]
 
   #assumption(
@@ -379,7 +369,7 @@
   $ bold(r)(t) = bold(R)(t) + bold(rho)(t), quad abs(bold(rho)) approx rho $ <motion-position-split>
 
   #equation-note[
-    SI geometry. $bold(R)$ is the guiding-center position and
+    $bold(R)$ is the guiding-center position and
     $bold(rho)$ is the fast gyroradius vector. Both positions and $rho$ are in
     #unit("m").
   ]
@@ -391,7 +381,7 @@
     bold(v) = bold(v)_parallel + bold(v)_perp $ <motion-velocity-split>
 
   #equation-note[
-    SI. Every velocity is in #unit("m/s"). The first equality
+    Every velocity is in #unit("m/s"). The first equality
     follows from the position split; the second is the local decomposition
     relative to $bold(B)$. The guiding-center derivative includes parallel
     motion and slow drifts, so it is not generally identical to
@@ -403,7 +393,7 @@
   $ mu = (m v_perp^2)/(2 B) $ <motion-magnetic-moment>
 
   #equation-note[
-    SI. $mu$ is an energy divided by magnetic field, in #unit("J/T"). It is an
+    $mu$ is an energy divided by magnetic field, in #unit("J/T"). It is an
     adiabatic invariant under the stated slow-variation ordering: it remains
     approximately constant as the particle samples a slowly changing field.
     Here “adiabatic” refers to the separation of orbit and field-variation
@@ -425,7 +415,7 @@
 
     $ I_"gyro"=abs(q)/T_"c"=(abs(q) omega_c)/(2 pi) .$
 
-    In SI, the magnetic dipole moment is current times area:
+    The magnetic dipole moment is current times area:
 
     $ mu=I_"gyro" S
       =(abs(q) omega_c rho^2)/2
@@ -538,13 +528,6 @@
     [explain magnetic-mirror reflection using the adiabatic invariant],
   ))
 
-  #unit-ledger[
-    SI is active. $grad(B)$ has #unit("T/m"), the effective
-    force is in #unit("N"), and all drift velocities are in #unit("m/s").
-    The symbols $mu$, $m$, $q$, and $B$ use the definitions of the prior
-    section.
-  ]
-
   #assumption(
     [Adiabatic guiding-center force],
     [Use the same $rho/L_B << 1$ ordering and neglect rapid changes of $mu$.
@@ -554,7 +537,7 @@
   $ bold(F)_mu = -mu grad(B) $ <motion-mu-force>
 
   #equation-note[
-    SI. $bold(F)_mu$ is in #unit("N") when $mu$ is in #unit("J/T") and
+    $bold(F)_mu$ is in #unit("N") when $mu$ is in #unit("J/T") and
     $grad(B)$ in #unit("T/m").
   ]
 
@@ -564,7 +547,7 @@
   $ bold(v)_(grad B) = (bold(F)_mu times bold(B))/(q B^2) = (mu (bold(B) times grad(B)))/(q B^2) $ <motion-gradb-drift>
 
   #equation-note[
-    SI. The drift is perpendicular to both $bold(B)$ and the field
+    The drift is perpendicular to both $bold(B)$ and the field
     gradient. Its direction changes with the sign of $q$.
   ]
 
@@ -575,7 +558,7 @@
   $ bold(F)_"curv" = -(m v_parallel^2 bold(R)_c)/(R_c^2) $ <motion-curvature-force>
 
   #equation-note[
-    SI. The effective centrifugal force is in #unit("N"). The vector
+    The effective centrifugal force is in #unit("N"). The vector
     convention for $bold(R)_c$ points from the particle toward the centre of
     curvature, so the minus sign points outward from that centre.
   ]
@@ -586,7 +569,7 @@
   $ bold(v)_"curv" = (bold(F)_"curv" times bold(B))/(q B^2) = (m v_parallel^2)/(q B) (bold(b) times bold(kappa)) $ <motion-curvature-drift>
 
   #equation-note[
-    SI. The curvature drift is in #unit("m/s"). The sign of $q$
+    The curvature drift is in #unit("m/s"). The sign of $q$
     determines its direction; the expression uses the stated convention for
     $bold(R)_c$ and assumes the same adiabatic ordering as the grad-$B$ drift.
   ]
@@ -768,11 +751,9 @@
   ))
 
   #unit-ledger[
-    SI is active. The electric field is in #unit("V/m"),
-    the magnetic field is in #unit("T"), mass is in #unit("kg"), charge is in
-    #unit("C"), and all velocities are in #unit("m/s"). The drive frequency
-    $omega_"d"$ and $Omega$ are in #unit("s^-1"). The ordering ratio
-    $omega_"d"/abs(Omega)$ is normalized and therefore carries unit [1].
+    The drive frequency $omega_"d"$ and $Omega$ are in #unit("s^-1"). The
+    ordering ratio $omega_"d"/abs(Omega)$ is normalized and therefore carries
+    unit [1].
   ]
 
   #assumption(
@@ -794,7 +775,7 @@
   $ bold(v)_(E times B) = (bold(E)_perp times bold(B))/(B^2) $ <motion-polarization-exb>
 
   #equation-note[
-    SI. The leading drift is in #unit("m/s") and follows the
+    The leading drift is in #unit("m/s") and follows the
     instantaneous electric field. The notation $bold(v)_"gyro"$ denotes the
     rapidly rotating residual motion, not an additional secular drift.
   ]
@@ -804,7 +785,7 @@
   $ bold(v)_"pol" = m/(q B^2) pdv(bold(E)_perp,t) $ <motion-polarization-drift>
 
   #equation-note[
-    SI. The factor $1/q$ makes the polarization drift point in
+    The factor $1/q$ makes the polarization drift point in
     opposite directions for positive and negative charges. Unlike the
     $E times B$ drift, it depends on particle mass.
   ]
@@ -861,7 +842,7 @@
       pdv(bold(E)_perp,t) $ <motion-polarization-current>
 
   #equation-note[
-    SI. The current density is in #unit("A/m^2"). The charge signs cancel in the species sum, so the mass
+    The current density is in #unit("A/m^2"). The charge signs cancel in the species sum, so the mass
     density weights the polarization current; in an electron--ion plasma the
     ion contribution is usually larger.
   ]
@@ -943,11 +924,9 @@
   ))
 
   #unit-ledger[
-    SI is active. The angular frequency $omega$, signed gyrofrequency
-    $Omega=(q B)/m$, and detuning are in #unit("s^-1"). The complex electric
-    field amplitude is in #unit("V/m"), velocity in #unit("m/s"),
-    and $i$ is the dimensionless imaginary unit with $i^2=-1$. The resonance
-    condition $omega/abs(Omega)=1$ is normalized and carries unit [1].
+    The angular frequency $omega$, signed gyrofrequency $Omega=(q B)/m$, and
+    detuning are in #unit("s^-1"). The resonance condition
+    $omega/abs(Omega)=1$ is normalized and carries unit [1].
   ]
 
   #assumption(
@@ -975,7 +954,7 @@
   $ pdv(v_"cw",t) + i Omega v_"cw" = (q/m) E_"cw" $ <motion-cyclotron-response>
 
   #equation-note[
-    SI. For a harmonic drive
+    For a harmonic drive
     $E_"cw"=tilde(E)_"cw" exp(-i omega t)$, the response amplitude is
     $tilde(v)_"cw"=(q tilde(E)_"cw")/(i m (Omega-omega))$. The denominator
     becomes small when the drive rotation matches the signed gyrofrequency.

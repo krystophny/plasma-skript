@@ -58,7 +58,7 @@ def given(values, *more):
     note(*parts[:-1], *more)
 
 # %% Mass and charge continuity
-section("Mass and charge continuity", "08-mhd.typ:70")
+section("Mass and charge continuity", "08-mhd.typ:62")
 C = {s: sp.Symbol(f"C_{s}") for s in species}
 continuity = {s: Partial(n_s[s], t) + sum(Partial(n_s[s] * u_s[s][j], X[j]) for j in range(3))
               for s in species}
@@ -82,7 +82,7 @@ agrees_with(sum(charge[s] * continuity[s] for s in species),
             ":108", lhs=sum(charge[s] * C[s] for s in species))
 
 # %% Summed Lorentz force
-section("Summed Lorentz force", "08-mhd.typ:132")
+section("Summed Lorentz force", "08-mhd.typ:124")
 E, B = vec("E"), vec("B")
 lorentz = [sum(charge[s] * n_s[s] * (E[i] + cross(u_s[s], B)[i]) for s in species)
            for i in range(3)]
@@ -92,7 +92,7 @@ note("x component (y, z asserted)")
 agrees_with(lorentz[0], stated[0], charges, ":132", lhs=lorentz[0])
 
 # %% Example: one-fluid variables
-section("Example: one-fluid density, velocity and current", "08-mhd.typ:144")
+section("Example: one-fluid density, velocity and current", "08-mhd.typ:136")
 n_0, u_i0, u_e0, m_p = sp.symbols("n_0 u_i u_e m_p", positive=True)
 rho_0, u_x, j_x = sp.symbols("rho u_x j_x")
 beam = {n_0: 1.0e16 / u.meter**3, u_i0: 2.0e5 * u.meter / u.second,
@@ -108,7 +108,7 @@ close_to(evaluate(u_x, velocity, {**beam, **electron_kg}, u.meter / u.second), 2
 close_to(evaluate(j_x, e * n_0 * (u_i0 - u_e0), beam, u.ampere / u.meter**2), 80.1, source=":156")
 
 # %% Generalized Ohm law
-section("Generalized Ohm law", "08-mhd.typ:264")
+section("Generalized Ohm law", "08-mhd.typ:255")
 mu = sp.Symbol("mu", positive=True)              # mass ratio m_e/m_i, taken to zero
 n = sp.Symbol("n", positive=True)                # uniform density
 g = vec("g")                                     # grad p_e
@@ -143,7 +143,7 @@ agrees(sp.expand(E_solved[0] + cross(U, B)[0] - neglected[0]).subs(mu, 0), ohm[0
 has_unit(m_e / (e**2 * nn) / tau0, u.ohm * u.meter)
 
 # %% Drag and resistivity
-section("Drag and resistivity", "08-mhd.typ:288")
+section("Drag and resistivity", "08-mhd.typ:279")
 j_ = sp.Symbol("j", real=True)
 note("The drag per charge density balances a field", sp.Eq(E[0], eta * j_))
 eta_drag = sp.simplify(m_e * nu * j_ / e / (e * nn) / j_)
@@ -153,7 +153,7 @@ agrees(1 / eta_drag, nn * e**2 / (m_e * nu), ":289", lhs=1 / eta)
 has_unit(1 / eta_drag, u.siemens / u.meter)
 
 # %% Example: resistivity
-section("Example: resistivity from the collision rate", "08-mhd.typ:363")
+section("Example: resistivity from the collision rate", "08-mhd.typ:354")
 eta_s, sigma_s = sp.symbols("eta sigma")
 collisions = {nn: 1.0e16 / u.meter**3, nu: 2.54e3 / u.second}
 given(collisions)
@@ -161,7 +161,7 @@ close_to(evaluate(eta_s, eta_drag, collisions, u.ohm * u.meter), 9.01e-6, source
 close_to(evaluate(sigma_s, 1 / eta_drag, collisions, u.siemens / u.meter), 1.11e5, source=":370")
 
 # %% Linearized ideal MHD
-section("Linearized ideal MHD", "08-mhd.typ:508")
+section("Linearized ideal MHD", "08-mhd.typ:496")
 epsilon = sp.Symbol("epsilon", positive=True)    # perturbation amplitude
 gamma, rho0, p0 = sp.symbols("gamma rho_0 p_0", positive=True)
 B0 = sp.symbols("B_0x B_0y B_0z", real=True)    # uniform equilibrium field
@@ -208,7 +208,7 @@ show(sp.Eq(c_s**2, pressure1 / rho1))
 has_unit(sp.sqrt(gamma * p0_ / (nn * m_i)), u.meter / u.second, {gamma: sp.S.One})
 
 # %% Example: sound wave
-section("Example: sound speed and pressure perturbation", "08-mhd.typ:593")
+section("Example: sound speed and pressure perturbation", "08-mhd.typ:581")
 c_sound, dp = sp.symbols("c_s p_1")
 gas = {rho0: 1.0e-11 * u.kilogram / u.meter**3, p0: 0.10 * u.pascal,
        gamma: sp.Rational(5, 3), rho1: 1.0e-13 * u.kilogram / u.meter**3}
@@ -220,7 +220,7 @@ close_to(pressure, 1.67e-3, source=":600")
 close_to(ratio(dp / p0, pressure / 0.10), 0.0167, source=":603")
 
 # %% Resistive induction
-section("Resistive induction equation", "08-mhd.typ:707")
+section("Resistive induction equation", "08-mhd.typ:692")
 note("Reduced Ampere, resistive Ohm and Faraday (x components; y, z asserted)")
 ampere = [curl(B)[k] / mu0 for k in range(3)]
 ohm_E = [-cross(U, B)[k] + eta * J[k] for k in range(3)]
@@ -243,7 +243,7 @@ agrees(inserted[0] - stated[0], -eta / mu0 * Partial(divB, x), ":707",
 has_unit(eta / mu0, u.meter**2 / u.second, {mu0: u.henry / u.meter})
 
 # %% Magnetic Reynolds number
-section("Magnetic Reynolds number", "08-mhd.typ:715")
+section("Magnetic Reynolds number", "08-mhd.typ:700")
 B_s, D_B, R_m, tau_A, tau_D = sp.symbols("B D_B R_m tau_A tau_D", positive=True)
 note("Scale estimates of advection and diffusion,", sp.Eq(D_B, eta / mu0))
 estimate = show(sp.Eq(R_m, (Um * B_s / Lm) / (D_B * B_s / Lm**2)))
@@ -256,7 +256,7 @@ has_unit(times[tau_D].subs(D_B, eta / mu0), u.second, {mu0: u.henry / u.meter})
 has_unit(Um * Lm * mu0 / eta, u.meter / u.meter, {mu0: u.henry / u.meter})
 
 # %% Flux freezing
-section("Flux through a material surface element", "08-mhd.typ:775")
+section("Flux through a material surface element", "08-mhd.typ:760")
 note("Locally linear flow u = A r and field B = b + G r near the element; the element is spanned"
      " by tangent vectors s, r that move with the flow")
 A_m = sp.Matrix(3, 3, sp.symbols("a_:3:3", real=True))
@@ -276,7 +276,7 @@ note("Material derivative of the flux", Psi_dot, "versus the stated integrand", 
 agrees(sp.expand(rate - integrand), 0, ":775", lhs=Psi_dot - I_s)
 
 # %% Example: magnetic Reynolds number
-section("Example: magnetic Reynolds number", "08-mhd.typ:802")
+section("Example: magnetic Reynolds number", "08-mhd.typ:787")
 flow = {Lm: 10.0 * u.meter, Um: 1.0e5 * u.meter / u.second, eta: 9.0e-3 * u.ohm * u.meter}
 given(flow)
 mu0_value = evaluate(mu0, mu0, {}, u.henry / u.meter, digits=4)
@@ -290,7 +290,7 @@ close_to(tD, 1.40e-2, source=":812")
 close_to(ratio(R_m, tD / tA), 1.40e2, source=":814")
 
 # %% Magnetic pressure and tension
-section("Magnetic pressure and tension", "08-mhd.typ:916")
+section("Magnetic pressure and tension", "08-mhd.typ:899")
 B2 = dot(B, B)
 note("Vector identity for the Lorentz force (x shown; y, z asserted)")
 for k in (1, 2):
@@ -304,7 +304,7 @@ show(sp.Eq(Partial(p_f + B2 / (2 * mu0), x), sum(B[j] * Partial(B[0], X[j]) for 
 has_unit(B0_**2 / (2 * mu0), u.pascal, {mu0: u.henry / u.meter})
 
 # %% Equilibrium geometry
-section("Equilibrium geometry and currents", "08-mhd.typ:924")
+section("Equilibrium geometry and currents", "08-mhd.typ:907")
 jxB = cross(J, B)                                # = grad p in equilibrium
 note("Force balance: pressure is constant along field lines and current lines")
 show(sp.Eq(Partial(p_f, x), jxB[0]))
@@ -330,7 +330,7 @@ agrees(div([f_par * B[k] for k in range(3)]),
        lhs=sum(Partial(f_par * B[k], X[k]) for k in range(3)))
 
 # %% Theta- and z-pinch
-section("Theta- and z-pinch balance", "08-mhd.typ:972")
+section("Theta- and z-pinch balance", "08-mhd.typ:955")
 r = sp.Symbol("r", positive=True)
 xx, yy = sp.symbols("x y", positive=True)
 B_z, B_th, p_r = (lambda a: field("B_z", a)), (lambda a: field("B_theta", a)), field("p", r)
@@ -357,7 +357,7 @@ agrees(pinch + Partial(B_th(r) ** 2 / (2 * mu0), r) + B_th(r) ** 2 / (mu0 * r), 
        lhs=Partial(p_r, r) + Partial(B_th(r) ** 2 / (2 * mu0), r) + B_th(r) ** 2 / (mu0 * r))
 
 # %% Example: theta-pinch pressure balance
-section("Example: theta-pinch pressure balance", "08-mhd.typ:1091")
+section("Example: theta-pinch pressure balance", "08-mhd.typ:1074")
 p_in, p_out, B_in, B_out, p_B = sp.symbols("p_in p_out B_in B_out p_B", positive=True)
 pinch_values = {p_in: 1.00e6 * u.pascal, B_in: 1.00 * u.tesla, B_out: 1.20 * u.tesla}
 mu0_SI = {mu0: u.convert_to(u.magnetic_constant, u.henry / u.meter)}   # sums need SI

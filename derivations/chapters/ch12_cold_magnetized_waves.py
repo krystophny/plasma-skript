@@ -73,7 +73,7 @@ N_O2 = 1 - wpe**2 / w**2  # ordinary mode, :539
 N_X2 = 1 - (wpe**2 * (w**2 - wpe**2)) / (w**2 * (w**2 - wpe**2 - wce**2))  # :570
 
 # %% Cold velocity response
-section("Cold magnetized velocity response", "12-cold-magnetized-waves.typ:142")
+section("Cold magnetized velocity response", "12-cold-magnetized-waves.typ:136")
 q, m = sp.symbols("q_s m_s", real=True)
 Om = sp.Symbol("Omega_s")
 note("Cold species in", sp.Eq(sp.Symbol("B"), B0 * sp.Symbol("e_z")), "with",
@@ -90,7 +90,7 @@ agrees(sp.simplify(velocity[uy]), q * Om / denominator * Ex + I * q * w / denomi
 agrees(velocity[uz], (q / m) * Ez / (-I * w), ":137", lhs=uz)
 
 # %% Cold dielectric tensor
-section("Cold dielectric tensor", "12-cold-magnetized-waves.typ:78")
+section("Cold dielectric tensor", "12-cold-magnetized-waves.typ:72")
 q1, q2 = sp.symbols("q_1 q_2", real=True)
 m1, m2 = sp.symbols("m_1 m_2", positive=True)
 Om1, Om2, wp1, wp2 = sp.symbols("Omega_1 Omega_2 omega_p1 omega_p2", real=True)
@@ -121,7 +121,7 @@ sigma = (chi1 + chi2) * (-I * w * eps0)
 assert (eps * E - (E + I / (w * eps0) * sigma * E)).applyfunc(sp.simplify) == sp.zeros(3, 1)  # :159
 
 # %% Magnetized wave equation
-section("Magnetized wave equation", "12-cold-magnetized-waves.typ:105")
+section("Magnetized wave equation", "12-cold-magnetized-waves.typ:99")
 k_vec = sp.Matrix(sp.symbols("k_x k_y k_z"))
 j = sp.Matrix(sp.symbols("j_x j_y j_z"))
 B = k_vec.cross(E) / w  # Faraday k x E = w B
@@ -142,7 +142,7 @@ assert residual.applyfunc(sp.simplify) == sp.zeros(3, 1)  # :107
 show(sp.Eq(k_cross_k_cross_E[0] + w**2 / c**2 * (TENSOR * E)[0], 0))
 
 # %% Worked example: plasma and cyclotron frequency
-section("Worked example: plasma and cyclotron frequency", "12-cold-magnetized-waves.typ:194")
+section("Worked example: plasma and cyclotron frequency", "12-cold-magnetized-waves.typ:188")
 omega_p = sp.sqrt(n0 * e**2 / (eps0 * m_e))
 omega_c = e * B0 / m_e
 assert si.same_unit(si.si_unit(omega_p, UNITS), u.second**-1)
@@ -156,7 +156,7 @@ show(sp.Eq(wce / wpe, sp.Float(ratio, 3)))
 close_to(ratio, 0.312, source=":200")
 
 # %% Worked example: cold dielectric coefficients
-section("Worked example: cold dielectric coefficients", "12-cold-magnetized-waves.typ:205")
+section("Worked example: cold dielectric coefficients", "12-cold-magnetized-waves.typ:199")
 drive = {w: 1.00e10, wpe: 5.64e9, wce: 1.76e9}
 note("Frequencies in 1/s:", sp.Eq(w, sp.Float(drive[w], 3)), ",",
      sp.Eq(wpe, sp.Float(drive[wpe], 3)), ",", sp.Eq(wce, sp.Float(drive[wce], 3)))
@@ -167,7 +167,7 @@ for symbol, expr, printed, line in [(S, S_e, 0.672, ":214"), (D, D_e, -5.78e-2, 
     close_to(value, printed, source=line)
 
 # %% Parallel wave matrix
-section("Parallel wave matrix", "12-cold-magnetized-waves.typ:323")
+section("Parallel wave matrix", "12-cold-magnetized-waves.typ:317")
 note("Wave equation divided by", w**2 / c**2, "with", sp.Eq(N, k * c / w), "and",
      sp.Eq(theta, 0, evaluate=False))
 M_parallel = wave_matrix(TENSOR, 0)
@@ -183,7 +183,7 @@ show(sp.Eq(N**2, roots[0]))
 show(sp.Eq(N**2, roots[1]))
 
 # %% Circular eigenmodes
-section("Circular eigenmodes", "12-cold-magnetized-waves.typ:348")
+section("Circular eigenmodes", "12-cold-magnetized-waves.typ:342")
 note("One electron species,", sp.Eq(sp.Symbol("Omega_e"), -wce), ":")
 show(sp.Eq(S, S_e))
 show(sp.Eq(D, D_e))
@@ -197,7 +197,7 @@ note("Eigenvectors", sp.Eq(Ey, -I * s * Ex), "; resonance of", sp.Eq(s, -1), "at
 assert sp.solve(sp.denom(sp.together(N_CIRC2.subs(s, -1))), w) == [wce]  # :296
 
 # %% Parallel cutoffs
-section("Parallel cutoffs", "12-cold-magnetized-waves.typ:313")
+section("Parallel cutoffs", "12-cold-magnetized-waves.typ:307")
 assert sp.solve(P_e, w) == [wpe]  # longitudinal branch, :309
 note("Longitudinal branch", sp.Eq(P, 0), "at", sp.Eq(w, wpe), "; circular cutoffs", sp.Eq(N, 0, evaluate=False))
 cutoff = sp.numer(sp.together(N_CIRC2 * w * (w + s * wce)))
@@ -212,7 +212,7 @@ for sv in (1, -1):
 note("The other root of each quadratic is negative")
 
 # %% Faraday rotation
-section("Faraday rotation", "12-cold-magnetized-waves.typ:368")
+section("Faraday rotation", "12-cold-magnetized-waves.typ:362")
 k_p, k_m, t, E0, L = sp.symbols("k_+ k_- t E_0 L", positive=True)
 Phi, Delta = sp.symbols("Phi Delta", real=True)  # mean phase, half phase difference
 note("Equal circular modes", sp.Eq(s, 1), "and", sp.Eq(s, -1), "with phases",
@@ -231,7 +231,7 @@ note("Slowly varying plasma:", sp.Eq(sp.Symbol("theta_F"), sp.Integral(k_pz - k_
 si.check(sp.diff(sp.Integral(k_pz - k_mz, (z, 0, z)) / 2, z), (k_pz - k_mz) / 2)  # :373
 
 # %% Worked example: Faraday rotation
-section("Worked example: Faraday rotation", "12-cold-magnetized-waves.typ:415")
+section("Worked example: Faraday rotation", "12-cold-magnetized-waves.typ:409")
 drive = {w: 2.00e10, wpe: 5.64e9, wce: 1.76e9}
 note("Frequencies in 1/s:", sp.Eq(w, sp.Float(drive[w], 3)), ",",
      sp.Eq(wpe, sp.Float(drive[wpe], 3)), ",", sp.Eq(wce, sp.Float(drive[wce], 3)),
@@ -250,7 +250,7 @@ close_to(angle, 2.45e-2, source=":426")
 close_to(evaluate(theta_F, angle * u.radian, {}, u.degree), 1.41, source=":426")
 
 # %% Perpendicular O and X modes
-section("Perpendicular O and X modes", "12-cold-magnetized-waves.typ:530")
+section("Perpendicular O and X modes", "12-cold-magnetized-waves.typ:524")
 note("Wave matrix at", sp.Eq(theta, sp.pi / 2, evaluate=False))
 M_perp = wave_matrix(TENSOR, sp.pi / 2)
 show(sp.Eq(matmul(M_perp, E), sp.ImmutableMatrix(sp.zeros(3, 1)), evaluate=False))
@@ -273,7 +273,7 @@ show(sp.Eq(first_row, 0))
 agrees(sp.solve(first_row, Ex)[0] / Ey, I * D / S, ":587", lhs=Ex / Ey)
 
 # %% Extraordinary mode and upper hybrid
-section("Extraordinary mode and upper hybrid", "12-cold-magnetized-waves.typ:570")
+section("Extraordinary mode and upper hybrid", "12-cold-magnetized-waves.typ:564")
 agrees(S_e, 1 - wpe**2 / (w**2 - wce**2), ":556", lhs=S)
 agrees(D_e, -(wce * wpe**2) / (w * (w**2 - wce**2)), ":560", lhs=D)
 N_X2_electron = (S_e**2 - D_e**2) / S_e
@@ -288,7 +288,7 @@ agrees(pole[0] ** 2, wpe**2 + wce**2, ":576", lhs=upper_hybrid**2)
 si.check(pole[0] ** 2, wpe**2 + wce**2, unit=u.second**-2, units=UNITS)
 
 # %% Worked example: perpendicular branches
-section("Worked example: perpendicular branches", "12-cold-magnetized-waves.typ:593")
+section("Worked example: perpendicular branches", "12-cold-magnetized-waves.typ:587")
 drive = {w: 5.50e9 / u.second, wpe: 5.64e9 / u.second, wce: 1.76e9 / u.second}
 note("Frequencies in 1/s:", sp.Eq(w, sp.Float(5.50e9, 3)), ",", sp.Eq(wpe, sp.Float(5.64e9, 3)),
      ",", sp.Eq(wce, sp.Float(1.76e9, 3)))
@@ -308,7 +308,7 @@ close_to(evaluate(sp.Symbol("lambda_X"), 2 * sp.pi * c / (sp.sqrt(N_X2) * w), dr
          0.425, source=":605")
 
 # %% Oblique wave matrix and quadratic
-section("Oblique wave matrix and quadratic", "12-cold-magnetized-waves.typ:735")
+section("Oblique wave matrix and quadratic", "12-cold-magnetized-waves.typ:729")
 Sx, Dx, Px, Z = sp.symbols("S D P Z")  # Stix S, D, P and Z = N^2
 stix = sp.Matrix([[Sx, -I * Dx, 0], [I * Dx, Sx, 0], [0, 0, Px]])
 note("Stix notation", sp.Eq(Sx, S), ",", sp.Eq(Dx, D), ",", sp.Eq(Px, P), "; k in the x-z plane")
@@ -348,7 +348,7 @@ for sign in (1, -1):
                (B_ + sign * sp.sqrt(B_**2 - 4 * A * C)) / (2 * A)))
 
 # %% S, D, P for one electron species
-section("S, D, P for one electron species", "12-cold-magnetized-waves.typ:755")
+section("S, D, P for one electron species", "12-cold-magnetized-waves.typ:749")
 X_w, Y_w = sp.symbols("X_omega Y_omega", positive=True)
 to_XY = {wpe: sp.sqrt(X_w) * w, wce: Y_w * w}
 note("Normalize by the wave frequency:", sp.Eq(X_w, wpe**2 / w**2), ",", sp.Eq(Y_w, wce / w))
@@ -361,7 +361,7 @@ agrees(sp.factor(S_XY**2 - D_XY**2), ((1 - X_w)**2 - Y_w**2) / (1 - Y_w**2), ":7
        lhs=Sx**2 - Dx**2)
 
 # %% Appleton-Hartree roots
-section("Appleton-Hartree roots", "12-cold-magnetized-waves.typ:686")
+section("Appleton-Hartree roots", "12-cold-magnetized-waves.typ:680")
 Q, T, R = sp.symbols("Q T R")
 note("Appleton-Hartree form", sp.Eq(Z, 1 - X_w / Q), "with", sp.Eq(Q, 1 - T + R), "or",
      sp.Eq(Q, 1 - T - R))
@@ -380,7 +380,7 @@ show(sp.Eq(sp.Symbol("q_AH") / sp.Symbol("q_Stix"), ratio))
 assert Z not in ratio.free_symbols, ratio  # same pair of roots
 
 # %% Oblique endpoints
-section("Oblique endpoints", "12-cold-magnetized-waves.typ:774")
+section("Oblique endpoints", "12-cold-magnetized-waves.typ:768")
 note("Parallel,", sp.Eq(theta, 0, evaluate=False), ": P and the two circular modes")
 agrees(sp.factor(wave_matrix(stix, 0).det()), Px * (Sx + Dx - N**2) * (Sx - Dx - N**2), ":774",
        lhs=sp.Determinant(M_sym))
@@ -389,7 +389,7 @@ agrees(sp.factor(wave_matrix(stix, sp.pi / 2).det()), (Px - N**2) * (Sx * (Sx - 
        ":776", lhs=sp.Determinant(M_sym))
 
 # %% Worked example: oblique Appleton-Hartree roots
-section("Worked example: oblique Appleton-Hartree roots", "12-cold-magnetized-waves.typ:785")
+section("Worked example: oblique Appleton-Hartree roots", "12-cold-magnetized-waves.typ:779")
 note("Input", sp.Eq(W, sp.Float(1.5, 3)), ",", sp.Eq(Y, sp.Float(0.3, 2)), ",",
      sp.Eq(theta, sp.pi / 4, evaluate=False))
 X_of_W, Y_of_W = (wpe**2 / w**2).subs(NORM), (wce / w).subs(NORM)
@@ -417,7 +417,7 @@ assert any(abs(r - N_plus) < 1e-9 for r in full_roots)
 assert any(abs(r - N_minus) < 1e-9 for r in full_roots)
 
 # %% Normalized landmarks and limits
-section("Normalized landmarks and limits", "12-cold-magnetized-waves.typ:882")
+section("Normalized landmarks and limits", "12-cold-magnetized-waves.typ:876")
 note("Normalize by", wpe, ":", sp.Eq(W, w / wpe), ",", sp.Eq(Y, wce / wpe))
 eps_s = sp.simplify(N_CIRC2.subs(NORM))
 show(sp.Eq(sp.Symbol("N_s") ** 2, eps_s))
@@ -443,7 +443,7 @@ show(sp.Eq(sp.Limit(sp.Symbol("N_s") ** 2, W, sp.oo), sp.limit(eps_s, W, sp.oo))
 note("and the same limit for", sp.Symbol("N_O") ** 2, "and", sp.Symbol("N_X") ** 2)
 
 # %% Worked example: landmarks and classification
-section("Worked example: landmarks and classification", "12-cold-magnetized-waves.typ:944")
+section("Worked example: landmarks and classification", "12-cold-magnetized-waves.typ:938")
 Y_PLOT = 0.3  # omega_ce/omega_pe of the plots and the worked example (:946)
 note("Input", sp.Eq(Y, sp.Float(Y_PLOT, 2)))
 for symbol, expr, printed, line in [("W_cut,+", (sp.sqrt(Y**2 + 4) - Y) / 2, 0.861, ":953"),

@@ -41,14 +41,8 @@
   ))
 
   #unit-ledger[
-    SI units with $epsilon_0$ and $mu_0$ are used. Number density $n_s$ is
-    in #unit("m^-3"), charge $q_s$ is in #unit("C"), mass $m_s$ is in
-    #unit("kg"), $bold(E)$ is in #unit("V/m"), $bold(B)$ is in #unit("T"),
-    and $bold(j)$ is in #unit("A/m^2"). The vacuum permittivity
-    $epsilon_0$ is in #unit("F/m") and $mu_0$ in #unit("H/m").
-    Frequencies $omega$ and $Omega_s$ are in #unit("s^-1"), wave number $k$
-    is in #unit("m^-1"), and $c=1/sqrt(mu_0 epsilon_0)$ is in #unit("m/s"). The dielectric
-    coefficients and refractive index $N=(k c)/omega$ are dimensionless.
+    The dielectric coefficients and refractive index $N=(k c)/omega$ are
+    dimensionless.
   ]
 
   #assumption(
@@ -186,8 +180,8 @@
 
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, magnetized electron response
-    with fixed ions, a uniform field $bold(B)_0=B_0 bold(e)_z$, and SI
-    units. For a hydrogen plasma use
+    with fixed ions and a uniform field $bold(B)_0=B_0 bold(e)_z$.
+    For a hydrogen plasma use
     $n_0=qty("1.0e16", "m^-3")$, $B_0=qty("1.0e-2", "T")$,
     $e=qty("1.602e-19", "C")$,
     $m_e=qty("9.109e-31", "kg")$, and
@@ -201,7 +195,7 @@
 
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, fixed-ion electron response
-    with $bold(B)_0$ along $z$ and SI conventions. At angular
+    with $bold(B)_0$ along $z$. At angular
     frequency $omega=qty("1.00e10", "s^-1")$, use
     $omega_(p,e)=qty("5.64e9", "s^-1")$,
     $omega_(c,e)=qty("1.76e9", "s^-1")$, and the signed convention
@@ -403,7 +397,7 @@
       polarization plane rotates. The prescribed illustration uses
       $k_+ L_0=1.2$, $k_- L_0=0.8$, and $omega t_0=1$, with each component
       of amplitude $E_0/2$. Here $L_0$, $t_0$, and $E_0$ are reference
-      length, time, and electric-field scales in SI units. The transverse
+      length, time, and electric-field scales. The transverse
       panel shows the highlighted position $z=3 L_0$. At fixed
       position the polarization axis is stationary in time; these prescribed
       wave numbers illustrate superposition rather than a fitted plasma.
@@ -413,7 +407,7 @@
 
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, fixed-ion electron response
-    with uniform $bold(B)_0$, parallel propagation, and SI units. For the
+    with uniform $bold(B)_0$ and parallel propagation. For the
     fixed-ion plasma with
     $omega_(p,e)=qty("5.64e9", "s^-1")$,
     $omega_(c,e)=qty("1.76e9", "s^-1")$, and a parallel wave with
@@ -591,7 +585,7 @@
 
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, fixed-ion electron response
-    with perpendicular propagation, uniform $bold(B)_0$, and SI units.
+    with perpendicular propagation and uniform $bold(B)_0$.
     For $n_0=qty("1.0e16", "m^-3")$ and $B_0=qty("1.0e-2", "T")$, use
     $omega_(p,e)=qty("5.64e9", "s^-1")$,
     $omega_(c,e)=qty("1.76e9", "s^-1")$, and
@@ -782,7 +776,7 @@
 
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, fixed-ion electron response
-    with uniform $bold(B)_0$, oblique propagation, and SI units. Use the
+    with uniform $bold(B)_0$ and oblique propagation. Use the
     normalized parameters
     #normalized-label[$Y=omega_(c,e)/omega_(p,e)=qty("0.30", "1")$],
     #normalized-label[$W=omega/omega_(p,e)=qty("1.50", "1")$], and
@@ -940,7 +934,7 @@
 
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, fixed-ion electron response
-    with uniform $bold(B)_0$ and SI units. Let
+    with uniform $bold(B)_0$. Let
     #normalized-label[$Y=omega_(c,e)/omega_(p,e)=qty("0.30", "1")$].
     Determine the normalized circular cutoffs and upper-hybrid resonance,
     then classify the ordinary and extraordinary modes at

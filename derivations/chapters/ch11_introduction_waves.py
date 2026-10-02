@@ -33,7 +33,7 @@ lambda_D_sq = eps0 * k_B * T_e / (n0 * e**2)
 LAB = {n0: 1e16 / u.meter**3}
 
 # %% Plane-wave replacement
-section("Plane-wave replacement", "11-introduction-waves.typ:140")
+section("Plane-wave replacement", "11-introduction-waves.typ:132")
 show(sp.Eq(sp.Symbol("f"), plane_wave))
 note("Acting on the plane wave, each derivative becomes a factor")
 d_dt = sp.simplify(sp.diff(plane_wave, t) / plane_wave)
@@ -43,7 +43,7 @@ agrees(d_dx * plane_wave, I * k * plane_wave, ":142", lhs=sp.Derivative(plane_wa
 assert d_dt == -I * omega and d_dx == I * k
 
 # %% Linearized continuity
-section("Linearized continuity", "11-introduction-waves.typ:147")
+section("Linearized continuity", "11-introduction-waves.typ:139")
 eps = sp.Symbol("epsilon")
 n, v = sp.Function("n")(x, t), sp.Function("u")(x, t)
 continuity = show(sp.Eq(sp.Derivative(n, t) + sp.Derivative(n * v, x), 0))
@@ -58,7 +58,7 @@ first_order = sp.expand(sp.diff(expanded, eps).subs(eps, 0) / plane_wave)
 agrees(first_order, -I * omega * n1 + I * n0 * k * u1, ":147", lhs=sp.S.Zero)
 
 # %% Electron plasma frequency
-section("Electron plasma frequency", "11-introduction-waves.typ:314")
+section("Electron plasma frequency", "11-introduction-waves.typ:303")
 note("Cold electrons, immobile ions; plane-wave momentum, continuity, Poisson")
 momentum = show(sp.Eq(-I * omega * m_e * u1, -e * E1))
 continuity = show(sp.Eq(first_order, 0))
@@ -76,7 +76,7 @@ agrees(omega_sq, n0 * e**2 / (eps0 * m_e), ":314", lhs=w_pe**2)
 si.check(omega_sq, omega_pe_sq, unit=u.second**-2, units=UNITS)
 
 # %% Multi-species plasma frequency
-section("Multi-species plasma frequency", "11-introduction-waves.typ:321")
+section("Multi-species plasma frequency", "11-introduction-waves.typ:310")
 q1, q2, n_1, n_2, m1, m2 = sp.symbols("q_1 q_2 n_1 n_2 m_1 m_2", positive=True)
 rho1 = sp.Symbol("rho_1")
 note("Each cold species responds like the electrons:",
@@ -92,7 +92,7 @@ ratio = sp.simplify((n0 * e**2 / (eps0 * m_i)) / omega_pe_sq)
 agrees(ratio, m_e / m_i, ":321", lhs=sp.Symbol("omega_pi") ** 2 / w_pe**2)
 
 # %% Worked example: linearization scales
-section("Worked example: linearization scales", "11-introduction-waves.typ:166")
+section("Worked example: linearization scales", "11-introduction-waves.typ:158")
 example = {**LAB, T_e: 1 * u.electronvolt / u.boltzmann_constant}
 note("Input", sp.Eq(n0, example[n0], evaluate=False), "and",
      sp.Eq(k_B * T_e, 1 * u.electronvolt, evaluate=False), "; wavelength 10 cm")
@@ -108,14 +108,14 @@ show(sp.Eq(omega / w_pe, sp.Float(drive, 3)))
 close_to(drive, 1.77, source=":185")
 
 # %% Worked example: plasma frequency
-section("Worked example: plasma frequency", "11-introduction-waves.typ:339")
+section("Worked example: plasma frequency", "11-introduction-waves.typ:328")
 wpe = evaluate(w_pe, sp.sqrt(omega_pe_sq), LAB, 1 / u.second)
 close_to(wpe, 5.64e9, source=":339")
 f_p = evaluate(sp.Symbol("f_p"), sp.sqrt(omega_pe_sq) / (2 * sp.pi), LAB, u.hertz)
 close_to(f_p, 8.98e8, source=":340")
 
 # %% Cold electromagnetic branch
-section("Cold electromagnetic branch", "11-introduction-waves.typ:493")
+section("Cold electromagnetic branch", "11-introduction-waves.typ:479")
 E = sp.Matrix(sp.symbols("E_x E_y E_z"))
 k_vec = sp.Matrix([0, 0, k])
 note("Cold electron velocity and current, with", sp.Eq(sp.Symbol("u"), -I * e * sp.Symbol("E") / (m_e * omega)))
@@ -139,7 +139,7 @@ agrees(sp.expand(c**2 * k_sq / omega**2), 1 - omega_pe_sq / omega**2, ":497",
        lhs=c**2 * k**2 / omega**2)
 
 # %% Phase and group velocity
-section("Phase and group velocity", "11-introduction-waves.typ:437")
+section("Phase and group velocity", "11-introduction-waves.typ:423")
 branch = show(sp.Eq(omega, sp.sqrt(w_pe**2 + c**2 * k**2)))
 v_phi, v_g = sp.symbols("v_phi v_g")
 phase = branch.rhs / k
@@ -152,7 +152,7 @@ si.check(group, c**2 * k / branch.rhs, unit=u.meter / u.second, units=UNITS)
 agrees(sp.simplify(phase * group), c**2, ":559", lhs=v_phi * v_g)
 
 # %% Worked example: electromagnetic branch
-section("Worked example: electromagnetic branch", "11-introduction-waves.typ:540")
+section("Worked example: electromagnetic branch", "11-introduction-waves.typ:526")
 K, W = sp.symbols("K W", positive=True)
 note("Drive at", sp.Eq(W, 2), "with", rounded(sp.Eq(w_pe, 5.64e9 / u.second)))
 K_value = number(sp.sqrt(W**2 - 1), {W: 2})
@@ -171,7 +171,7 @@ close_to(evaluate(sp.Symbol("lambda"), 2 * sp.pi * c / (K * w_pe), drive, u.mete
          0.193, source=":544")
 
 # %% Warm-fluid dispersion
-section("Warm-fluid dispersion", "11-introduction-waves.typ:697")
+section("Warm-fluid dispersion", "11-introduction-waves.typ:679")
 q, n_s, m_s, gamma_s, T_s = sp.symbols("q_s n_s m_s gamma_s T_s", positive=True)
 c_s = sp.Symbol("c_s", positive=True)  # c_s^2 = gamma_s k_B T_s / m_s
 note("Adiabatic pressure", sp.Eq(sp.Symbol("p_1"), gamma_s * k_B * T_s * n1))
@@ -198,7 +198,7 @@ si.check(omega_sq, omega_pe_sq + gamma_e * k**2 * k_B * T_e / m_e, unit=u.second
          units=UNITS)
 
 # %% Ion-acoustic limit
-section("Ion-acoustic limit", "11-introduction-waves.typ:711")
+section("Ion-acoustic limit", "11-introduction-waves.typ:693")
 c_e, c_i, w_pi = sp.symbols("c_e c_i omega_pi", positive=True)
 sound_speeds = {c_e: sp.sqrt(gamma_e * k_B * T_e / m_e), c_i: sp.sqrt(gamma_i * k_B * T_i / m_i),
                 w_pe: sp.sqrt(omega_pe_sq), w_pi: sp.sqrt(n0 * e**2 / (eps0 * m_i))}
@@ -213,7 +213,7 @@ agrees(omega_sq.subs(sound_speeds), ion_acoustic, ":711", lhs=omega**2)
 si.check(omega_sq.subs(sound_speeds), ion_acoustic, unit=u.second**-2, units=UNITS)
 
 # %% Kinetic susceptibility limits
-section("Kinetic susceptibility limits", "11-introduction-waves.typ:729")
+section("Kinetic susceptibility limits", "11-introduction-waves.typ:711")
 zeta, s = sp.symbols("zeta s", positive=True)
 Z = sp.Function("Z")(zeta)
 show(sp.Eq(Z, sp.Integral(sp.exp(-s**2) / (s - zeta), (s, -sp.oo, sp.oo)) / sp.sqrt(sp.pi)))
@@ -245,7 +245,7 @@ agrees(sp.simplify(2 * omega_pe_sq / (k**2 * v_th2)), 1 / (k**2 * lambda_D_sq),
        ":729", lhs=chi_e)
 
 # %% Worked example: ion-acoustic wave
-section("Worked example: ion-acoustic wave", "11-introduction-waves.typ:760")
+section("Worked example: ion-acoustic wave", "11-introduction-waves.typ:742")
 example = {**LAB, T_e: 10 * u.electronvolt / u.boltzmann_constant, m_i: PROTON_MASS}
 note("Hydrogen,", sp.Eq(k_B * T_e, 10 * u.electronvolt, evaluate=False), ", cold ions,",
      sp.Eq(k, 1 / u.meter, evaluate=False))
@@ -260,7 +260,7 @@ show(sp.Eq(k * lambda_D, sp.Float(k_lam, 3)))
 close_to(k_lam, 2.35e-4, source=":763")
 
 # %% Normalized branch and limits
-section("Normalized branch and limits", "11-introduction-waves.typ:846")
+section("Normalized branch and limits", "11-introduction-waves.typ:828")
 note("Normalize", sp.Eq(W, omega / w_pe), "and", sp.Eq(K, k * c / w_pe))
 W_sq = sp.expand(((w_pe**2 + c**2 * k**2) / w_pe**2).subs(k, K * w_pe / c))
 agrees(W_sq, 1 + K**2, ":846", lhs=W**2)
@@ -274,7 +274,7 @@ assert large_K == 1 and sp.limit(K / W_K, K, sp.oo) == 1  # :858-862
 show(sp.Eq(sp.Limit(v_phi / c, K, sp.oo), large_K))
 
 # %% Evanescent branch
-section("Evanescent branch", "11-introduction-waves.typ:875")
+section("Evanescent branch", "11-introduction-waves.typ:857")
 below = show(sp.Eq(k**2, (omega**2 - w_pe**2) / c**2))
 alpha = sp.Symbol("alpha", positive=True)
 note("Below cutoff,", sp.Lt(omega, w_pe), ": write", sp.Eq(k, I * alpha, evaluate=False))
@@ -283,7 +283,7 @@ si.check((I * alpha_value) ** 2, below.rhs)
 agrees(alpha_value**2, (sp.sqrt(w_pe**2 - omega**2) / c) ** 2, ":875", lhs=alpha**2)
 
 # %% Worked example: drive classification
-section("Worked example: drive classification", "11-introduction-waves.typ:901")
+section("Worked example: drive classification", "11-introduction-waves.typ:883")
 wpe = evaluate(w_pe, sp.sqrt(omega_pe_sq), LAB, 1 / u.second)
 close_to(wpe, 5.64e9, source=":901")
 plasma = {w_pe: wpe / u.second}

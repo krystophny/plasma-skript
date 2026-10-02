@@ -41,13 +41,11 @@
   ))
 
   #unit-ledger[
-    SI units are used. Number density $n$ is in #unit("m^-3"), position
-    and length scales are in #unit("m"), time is in #unit("s"), a diffusion
-    coefficient $D$ is in #unit("m^2/s"), and particle flux
-    $bold(Gamma)$ is in #unit("m^-2/s"). The normalized variables
-    $xi=x/L_0$ and $tau=t/tau_0$ are dimensionless.
-    In the one-dimensional Green function, $N_0=integral_(-infinity)^infinity
-    n(x,t) dif x$ is the conserved column density in #unit("m^-2").
+    A diffusion coefficient $D$ is in #unit("m^2/s"), and particle flux
+    $bold(Gamma)$ is in #unit("m^-2/s"). The normalized variables $xi=x/L_0$
+    and $tau=t/tau_0$ are dimensionless. In the one-dimensional Green
+    function, $N_0=integral_(-infinity)^infinity n(x,t) dif x$ is the
+    conserved column density in #unit("m^-2").
   ]
 
   #assumption(
@@ -157,7 +155,7 @@
 
   #rechenbeispiel[
     Assume independent symmetric one-dimensional steps in a neutral-collision
-    model, with no directed drift, and use SI units. The model has a step
+    model, with no directed drift. The model has a step
     magnitude
     $Delta x=qty("2.0e-3", "m")$ every
     $Delta t=qty("1.0e-7", "s")$. For a device of length
@@ -228,13 +226,10 @@
   ))
 
   #unit-ledger[
-    In SI units, $q_s$ is in #unit("C"), $m_s$ in #unit("kg"), collision
-    frequency $nu_s$ in #unit("s^-1"), temperature energy $k_B T_s$ in
-    #unit("J"), mobility $mu_s$ has units of velocity divided by electric
-    field, #unit("m^2/V/s"), and $D_s$ is in #unit("m^2/s"). This
-    electric-field mobility includes charge, unlike the force-based mobility
-    introduced in Chapter 9. The flux remains in
-    #unit("m^-2/s").
+    The mobility $mu_s$ has units of velocity divided by electric field,
+    #unit("m^2/V/s"), and $D_s$ is in #unit("m^2/s"). This electric-field
+    mobility includes charge, unlike the force-based mobility introduced in
+    Chapter 9.
   ]
 
   #assumption(
@@ -311,7 +306,7 @@
 
   #rechenbeispiel[
     Assume local, isothermal, steady, unmagnetized neutral drag with
-    negligible inertia, and use SI units. For electrons in a weakly
+    negligible inertia. For electrons in a weakly
     ionized plasma, use
     $k_B T_e=qty("2.0", "eV")=qty("3.204e-19", "J")$,
     $m_e=qty("9.109e-31", "kg")$,
@@ -385,11 +380,7 @@
   ))
 
   #unit-ledger[
-    The density $n$ is in #unit("m^-3"), density gradient is in
-    #unit("m^-4"), species fluxes and the common ambipolar flux are in
-    #unit("m^-2/s"), the ambipolar field is in #unit("V/m"),
-    and $D_a$ is in #unit("m^2/s"). The hydrogen charge magnitude $e$ is in
-    #unit("C").
+    The ambipolar diffusion coefficient $D_a$ is in #unit("m^2/s").
   ]
 
   #assumption(
@@ -485,8 +476,8 @@
 
   #rechenbeispiel[
     Assume local isothermal neutral drag in a weakly ionized, quasi-neutral,
-    singly charged hydrogen plasma with no externally imposed current. Use
-    SI units and let the ambipolar field adjust rapidly compared with the
+    singly charged hydrogen plasma with no externally imposed current. Let
+    the ambipolar field adjust rapidly compared with the
     density evolution. Consider the plasma with
     $n=qty("1.0e16", "m^-3")$,
     $(grad(n))/n=qty("-1.0", "m^-1")$, and
@@ -565,10 +556,9 @@
   ))
 
   #unit-ledger[
-    In SI units, $bold(B)$ is in #unit("T"), the signed cyclotron frequency
-    $Omega_s=(q_s B)/m_s$ is in #unit("s^-1"), and the magnetization
-    parameter $abs(Omega_s)/nu_s$ is dimensionless. Parallel, perpendicular,
-    and Hall diffusion coefficients are in #unit("m^2/s").
+    The magnetization parameter $abs(Omega_s)/nu_s$ is dimensionless.
+    Parallel, perpendicular, and Hall diffusion coefficients are in
+    #unit("m^2/s").
   ]
 
   #assumption(
@@ -668,8 +658,8 @@
   #cross-field-diffusion
 
   #rechenbeispiel[
-    Assume a local uniform magnetic field, isotropic steady collisional drag,
-    SI units, and the scalar diffusion model derived above. Ignore field
+    Assume a local uniform magnetic field, isotropic steady collisional drag
+    and the scalar diffusion model derived above. Ignore field
     curvature, finite-orbit effects, and turbulence. For electrons at
     $k_B T_e=qty("1.0", "eV")=qty("1.602e-19", "J")$, use
     $m_e=qty("9.109e-31", "kg")$,
@@ -756,10 +746,7 @@
   ))
 
   #unit-ledger[
-    SI units are used. Pressure is in #unit("Pa"), current density
-    in #unit("A/m^2"), conductivity $sigma$ in #unit("S/m") (the resistivity
-    $eta=1/sigma$ is in #unit("ohm meter")), $bold(B)$ in #unit("T"), and the
-    classical and Bohm-like diffusion coefficients are in #unit("m^2/s").
+    The classical and Bohm-like diffusion coefficients are in #unit("m^2/s").
   ]
 
   #assumption(
@@ -865,7 +852,7 @@
 
   #rechenbeispiel[
     Assume a quasi-neutral, fully ionized hydrogen plasma in steady classical
-    perpendicular force balance, with scalar conductivity and SI units.
+    perpendicular force balance, with scalar conductivity.
     Neglect turbulent and finite-orbit corrections; use the Bohm expression
     only as an empirical comparison. For the plasma, use
     $n=qty("1.0e16", "m^-3")$,

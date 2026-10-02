@@ -40,13 +40,9 @@
   ))
 
   #unit-ledger[
-    SI units are active. The species distribution is defined by
-    $d N_s=f_(s) dif^3 bold(r) dif^3 bold(v)$, with position in #unit("m")
-    and velocity in #unit("m/s"). The mass density $rho_s=m_s n_s$ is in
-    #unit("kg m^-3"). The energy density and energy flux below are in
-    #unit("J m^-3") and #unit("W m^-2"), respectively. The Lorentz force uses
-    $bold(E)+bold(v) times bold(B)$ with $bold(E)$ in #unit("V/m") and
-    $bold(B)$ in #unit("T"). No normalized variable is used in this section.
+    The species distribution is defined by $d N_s=f_(s) dif^3 bold(r) dif^3
+    bold(v)$. The energy density and energy flux below are in #unit("J m^-3")
+    and #unit("W m^-2"), respectively.
   ]
 
   #assumption(
@@ -322,13 +318,12 @@
   ))
 
   #unit-ledger[
-    SI units are active. Coordinates $x,y,z,r$ are lengths in #unit("m"),
-    angles $phi$ and $theta$ are dimensionless, and a scalar field $psi$ and
-    vector field $bold(A)$ retain whatever physical units the model assigns.
-    Thus $grad(psi)$ has units of $psi$ per #unit("m"), $div(bold(A))$ has
-    units of $bold(A)$ per #unit("m"), and $curl(bold(A))$ has the same
-    units. The formulas below are dimensional coordinate identities; no
-    normalized radius is implied.
+    Coordinates $x,y,z,r$ are lengths in #unit("m"), angles $phi$ and $theta$
+    are dimensionless, and a scalar field $psi$ and vector field $bold(A)$
+    retain whatever physical units the model assigns. Thus $grad(psi)$ has
+    units of $psi$ per #unit("m"), $div(bold(A))$ has units of $bold(A)$ per
+    #unit("m"), and $curl(bold(A))$ has the same units. The formulas below are
+    dimensional coordinate identities; no normalized radius is implied.
   ]
 
   #assumption(

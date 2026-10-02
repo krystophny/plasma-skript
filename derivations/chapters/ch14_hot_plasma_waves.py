@@ -42,7 +42,7 @@ def z_function(zeta_value):
 
 
 # %% Linear Vlasov response
-section("Linear Vlasov response", "14-hot-plasma-waves.typ:128")
+section("Linear Vlasov response", "14-hot-plasma-waves.typ:122")
 z, t = sp.symbols("z t", real=True)
 f1_zt = sp.Function("f_1")(z, t)
 note("Linearize about", F(v), "with", sp.Eq(sp.Symbol("k"), k * sp.Symbol("e_z")), ":")
@@ -56,7 +56,7 @@ f1_response = sp.solve(vlasov, f1)[0]
 agrees(f1_response, -I * q / m * E1 * sp.diff(F(v), v) / (omega - k * v), ":128", lhs=f1)
 
 # %% Electrostatic dielectric function
-section("Electrostatic dielectric function", "14-hot-plasma-waves.typ:87")
+section("Electrostatic dielectric function", "14-hot-plasma-waves.typ:81")
 note("Potential", sp.Eq(E1, -I * k * phi, evaluate=False))
 f1_phi = f1_response.subs(E1, -I * k * phi)
 agrees(q * f1_phi, -(q**2 * phi) / m * (k * sp.diff(F(v), v)) / (omega - k * v), ":143",
@@ -71,7 +71,7 @@ agrees(sp.expand(sp.simplify((k**2 * phi - rho1 / eps0) / (k**2 * phi))),
        1 + q**2 / (eps0 * m * k**2) * I_k, ":86", lhs=eps_L)
 
 # %% Maxwellian dielectric and Z
-section("Maxwellian dielectric and Z", "14-hot-plasma-waves.typ:166")
+section("Maxwellian dielectric and Z", "14-hot-plasma-waves.typ:160")
 vx, vy, vz = sp.symbols("v_x v_y v_z", real=True)
 maxwellian = n0 / (sp.pi**sp.Rational(3, 2) * v_te**3) * sp.exp(-(vx**2 + vy**2 + vz**2) / v_te**2)
 show(sp.Eq(sp.Symbol("f_0"), maxwellian))
@@ -99,7 +99,7 @@ show(sp.Eq(eps_L, EPS_L_MAXWELL))
 si.check(sp.sqrt(lambda_D_sq), sp.sqrt(eps0 * k_B * T_e / (n0 * e**2)), unit=u.meter, units=UNITS)
 
 # %% Cold limit
-section("Cold limit", "14-hot-plasma-waves.typ:171")
+section("Cold limit", "14-hot-plasma-waves.typ:165")
 w = sp.Symbol("v", real=True)
 note("Integrated form with a cold marginal", sp.Eq(F(w), n0 * sp.DiracDelta(w)))
 cold_integral = sp.integrate(n0 * sp.DiracDelta(w) / (w - omega / k) ** 2, (w, -sp.oo, sp.oo))
@@ -107,7 +107,7 @@ show(sp.Eq(sp.Integral(F(w) / (w - omega / k) ** 2, (w, -sp.oo, sp.oo)), cold_in
 agrees(1 - e**2 / (eps0 * m_e * k**2) * cold_integral, 1 - omega_pe_sq / omega**2, ":171", lhs=eps_L)
 
 # %% Imaginary part of Z
-section("Imaginary part of Z", "14-hot-plasma-waves.typ:490")
+section("Imaginary part of Z", "14-hot-plasma-waves.typ:484")
 note("Plemelj: the causal contour adds", I * sp.pi, "times the integrand at the pole")
 gaussian = sp.exp(-x**2) / sp.sqrt(sp.pi)
 agrees(sp.pi * gaussian.subs(x, zeta), sp.sqrt(sp.pi) * sp.exp(-zeta**2), ":490", lhs=sp.im(sp.Function("Z")(zeta)))
@@ -116,7 +116,7 @@ for zeta_value in (0.5, 1.7, 3.0):  # against the Faddeeva closed form
     assert abs(exact - float(sp.sqrt(sp.pi) * sp.exp(-zeta_value**2))) <= 1e-12 * abs(exact)
 
 # %% Asymptotic Z
-section("Asymptotic Z", "14-hot-plasma-waves.typ:175")
+section("Asymptotic Z", "14-hot-plasma-waves.typ:169")
 note("For", sp.Gt(zeta, 1), "expand the denominator,")
 show(sp.Eq(1 / (x - zeta), -sp.Sum(x**sp.Symbol("n") / zeta ** (sp.Symbol("n") + 1),
                                    (sp.Symbol("n"), 0, sp.oo))))
@@ -129,7 +129,7 @@ exact = float(mp.re(z_function(8.0)))
 assert abs(exact - float(Z_asymptotic.subs(zeta, 8))) <= 2e-5 * abs(exact)  # at zeta = 8
 
 # %% Kinetic Bohm-Gross root
-section("Kinetic Bohm-Gross root", "14-hot-plasma-waves.typ:179")
+section("Kinetic Bohm-Gross root", "14-hot-plasma-waves.typ:173")
 W_sq, small = sp.symbols("W varepsilon", positive=True)  # W = omega^2, small = bookkeeping
 note("Insert the asymptotic", sp.re(sp.Function("Z")(zeta)), "into", eps_L)
 eps_asymptotic = show(sp.Eq(eps_L, 1 + sp.expand(1 + zeta * Z_asymptotic) / (k**2 * lambda_D_sq))).rhs
@@ -151,7 +151,7 @@ agrees(sp.sqrt(stated_499.subs(k, a / sp.sqrt(lambda_D_sq)) / omega_pe_sq), W_BO
        lhs=sp.Symbol("omega_r") / w_pe)
 
 # %% First-derivative and integrated forms
-section("First-derivative and integrated forms", "14-hot-plasma-waves.typ:328")
+section("First-derivative and integrated forms", "14-hot-plasma-waves.typ:322")
 a_res = sp.Symbol("a")  # a = omega/k
 agrees(sp.factor(k * sp.diff(F(v), v) / (omega - k * v)), -sp.diff(F(v), v) / (v - omega / k), ":321",
        lhs=k * sp.diff(F(v), v) / (omega - k * v))
@@ -167,7 +167,7 @@ right = mp.quad(lambda t: mp.exp(-t**2) / (t - a_complex) ** 2, [-mp.inf, 0, mp.
 assert abs(left - right) < 1e-10  # :328
 
 # %% Resonant imaginary part
-section("Resonant imaginary part", "14-hot-plasma-waves.typ:346")
+section("Resonant imaginary part", "14-hot-plasma-waves.typ:340")
 v_res, eta = 0.8, 1e-6  # numerical Plemelj check, :341
 shifted = lambda t: mp.exp(-(t - 0.3) ** 2)  # noqa: E731
 boundary = mp.quad(lambda t: shifted(t) / (t - v_res - 1j * eta),
@@ -179,7 +179,7 @@ eps_plemelj = show(sp.Eq(eps_L, 1 - q**2 / (eps0 * m * k**2) * (PV + I * sp.pi *
 agrees(sp.im(eps_plemelj), -(sp.pi * q**2) / (eps0 * m * k**2) * S, ":346", lhs=sp.im(eps_L))
 
 # %% Weak-rate relation
-section("Weak-rate relation", "14-hot-plasma-waves.typ:483")
+section("Weak-rate relation", "14-hot-plasma-waves.typ:477")
 eps_r, eps_i, rate = sp.symbols("epsilon_r epsilon_i gamma", real=True)
 slope = sp.Symbol("epsilon_r'", real=True)
 note("Taylor expand at", sp.Symbol("omega_r") + I * rate, "with",
@@ -192,7 +192,7 @@ assert sp.re(expansion) == eps_r  # real part: eps_r(omega_r) = 0
 agrees(sp.solve(sp.im(expansion), rate)[0], -eps_i / slope, ":483", lhs=rate)
 
 # %% Landau damping rate
-section("Landau damping rate", "14-hot-plasma-waves.typ:508")
+section("Landau damping rate", "14-hot-plasma-waves.typ:502")
 si.check(sp.sqrt(2) * sp.sqrt(omega_pe_sq) * sp.sqrt(lambda_D_sq), v_te_value,
          unit=u.meter / u.second, units=UNITS)  # v_te = sqrt(2) omega_pe lambda_D
 w = sp.Symbol("omega", positive=True)
@@ -233,7 +233,7 @@ note("against", sp.Eq(gamma / w_pe, sp.Float(float(GAMMA_LANDAU.subs(a, 0.2)), 3
      sp.Eq(a, sp.Float(0.2, 2)))
 
 # %% Spatial damping rate
-section("Spatial damping rate", "14-hot-plasma-waves.typ:529")
+section("Spatial damping rate", "14-hot-plasma-waves.typ:523")
 k_i, k_r = sp.symbols("k_i k_r", real=True)
 w_r = sp.Symbol("omega_r", positive=True)
 note("Real frequency, complex wave number:")
@@ -243,7 +243,7 @@ agrees(spatial, -rate / v_g, ":529", lhs=k_i)
 si.check(spatial.subs(rate, gamma), -gamma / v_g, unit=u.meter**-1, units=UNITS)
 
 # %% Worked example: warm Langmuir root
-section("Worked example: warm Langmuir root", "14-hot-plasma-waves.typ:200")
+section("Worked example: warm Langmuir root", "14-hot-plasma-waves.typ:194")
 example = {**LAB, T_e: 10 * u.electronvolt / u.boltzmann_constant}
 note("Input", sp.Eq(n0, LAB[n0], evaluate=False), ",", sp.Eq(k_B * T_e, 10 * u.electronvolt, evaluate=False),
      ",", sp.Eq(a, sp.Float(0.2, 2)))
@@ -258,7 +258,7 @@ close_to(evaluate(sp.Symbol("omega_r"), W_BOHM_GROSS * sp.sqrt(omega_pe_sq), {**
          5.97e9, rtol=3e-3, source=":203")
 
 # %% Worked example: resonant velocity
-section("Worked example: resonant velocity", "14-hot-plasma-waves.typ:369")
+section("Worked example: resonant velocity", "14-hot-plasma-waves.typ:363")
 close_to(evaluate(w_pe, sp.sqrt(omega_pe_sq), LAB, 1 / u.second), 5.64e9, rtol=1e-3, source=":364")
 note("At", sp.Eq(a, sp.Float(0.3, 2)), "; resonance at the phase velocity,",
      sp.Eq(sp.Symbol("v_res"), sp.Symbol("omega_r") / k))
@@ -270,7 +270,7 @@ show(sp.Eq(sp.Symbol("v_res") / v_te, sp.Float(resonance, 3)))
 close_to(resonance, 2.66, rtol=3e-3, source=":371")
 
 # %% Worked example: spatial damping
-section("Worked example: spatial damping", "14-hot-plasma-waves.typ:562")
+section("Worked example: spatial damping", "14-hot-plasma-waves.typ:556")
 damping = {rate: -1.13e8 / u.second, v_g: 1.0e6 * u.meter / u.second}
 note("Input", rounded(sp.Eq(rate, damping[rate])), ",", rounded(sp.Eq(v_g, damping[v_g])))
 k_i_value = evaluate(k_i, spatial, damping, 1 / u.meter)
@@ -279,7 +279,7 @@ close_to(evaluate(sp.Symbol("L_amp"), 1 / spatial, damping, u.meter), 8.85e-3, r
 close_to(evaluate(sp.Symbol("tau_d"), -1 / rate, damping, u.second), 8.85e-9, rtol=1e-3, source=":564")
 
 # %% Transverse Vlasov response
-section("Transverse Vlasov response", "14-hot-plasma-waves.typ:695")
+section("Transverse Vlasov response", "14-hot-plasma-waves.typ:684")
 vx, vy, vz = sp.symbols("v_x v_y v_z", real=True)
 
 
@@ -310,7 +310,7 @@ agrees(f1_transverse, (-I * q * E1) / (m * omega) * (
     (omega - k * vz) * sp.diff(f0, vx) + k * vx * sp.diff(f0, vz)) / (omega - k * vz), ":695", lhs=f1)
 
 # %% Transverse Ampère law
-section("Transverse Ampère law", "14-hot-plasma-waves.typ:708")
+section("Transverse Ampère law", "14-hot-plasma-waves.typ:697")
 J = sp.Symbol("J_1")
 note("Ampère with Faraday, for", sp.Eq(sp.Symbol("J"), J * sp.Symbol("e_x")), ":")
 residual = I * k_vec.cross(B1) - (sp.Matrix([J, 0, 0]) / (eps0 * c**2) - I * omega * E_vec / c**2)
@@ -322,7 +322,7 @@ agrees(integrand, q**2 / (eps0 * m) * (vx * sp.diff(f0, vx) + k * vx**2 / (omega
                                          * sp.diff(f0, vz)), ":708", lhs=k**2 * c**2 - omega**2)
 
 # %% Transverse integration by parts
-section("Transverse integration by parts", "14-hot-plasma-waves.typ:734")
+section("Transverse integration by parts", "14-hot-plasma-waves.typ:723")
 agrees(sp.diff(1 / (omega - k * vz), vz), k / (omega - k * vz) ** 2, ":717",
        lhs=sp.Derivative(1 / (omega - k * vz), vz))
 a_x, a_y, a_z = sp.symbols("a_x a_y a_z", positive=True)
@@ -344,7 +344,7 @@ agrees(assembled, omega**2 - n0 * q**2 / (eps0 * m) - q**2 * k**2 / (eps0 * m) *
        lhs=k**2 * c**2)
 
 # %% Cold transverse branch
-section("Cold transverse branch", "14-hot-plasma-waves.typ:752")
+section("Cold transverse branch", "14-hot-plasma-waves.typ:741")
 w_p = sp.Symbol("omega_p", positive=True)
 cold = n0 * sp.DiracDelta(vx) * sp.DiracDelta(vy) * sp.DiracDelta(vz)
 note("Cold plasma", sp.Eq(sp.Symbol("f_0"), cold))
@@ -356,7 +356,7 @@ agrees(cold_branch, omega**2 - w_p**2, ":748", lhs=k**2 * c**2)
 agrees(sp.solve(sp.Eq(k**2 * c**2, cold_branch), omega**2)[0], k**2 * c**2 + w_p**2, ":752", lhs=omega**2)
 
 # %% Anisotropic transverse instability
-section("Anisotropic transverse instability", "14-hot-plasma-waves.typ:767")
+section("Anisotropic transverse instability", "14-hot-plasma-waves.typ:756")
 F_perp = sp.Function("F")(vx, vy)
 v_rms = sp.Symbol("v_x,rms", positive=True)
 vx2 = v_rms**2  # mean square v_x of the equilibrium
@@ -389,7 +389,7 @@ agrees(growth_sq.subs(to_wp), ((root_disc - root_sum) / 2).subs(to_wp), ":807", 
 si.check(growth_sq, (root_disc - root_sum) / 2, unit=u.second**-2, units={**UNITS, v_rms: u.meter / u.second})
 
 # %% Worked example: anisotropic growth
-section("Worked example: anisotropic growth", "14-hot-plasma-waves.typ:828")
+section("Worked example: anisotropic growth", "14-hot-plasma-waves.typ:817")
 wp_value = evaluate(w_p, sp.sqrt(wp_sq), LAB, 1 / u.second)
 close_to(wp_value, 5.64e9, rtol=1e-3, source=":828")
 note("At", sp.Eq(k * c / w_p, sp.Float(0.5, 2)), "and", sp.Eq(vx2 / c**2, sp.Float(0.01, 2)))
@@ -408,7 +408,7 @@ close_to(growth, 4.47e-2, rtol=1e-3, source=":831")
 close_to(evaluate(gamma, growth * w_p, plasma, 1 / u.second), 2.52e8, rtol=2e-3, source=":832")
 
 # %% Two-stream dispersion
-section("Two-stream dispersion", "14-hot-plasma-waves.typ:938")
+section("Two-stream dispersion", "14-hot-plasma-waves.typ:927")
 v0 = sp.Symbol("v_0", positive=True)
 w = sp.Symbol("v", real=True)
 beams = n0 / 2 * (sp.DiracDelta(w - v0) + sp.DiracDelta(w + v0))
@@ -420,7 +420,7 @@ D = (1 - e**2 / (eps0 * m_e * k**2) * beam_integral).subs(to_wp)
 agrees(D, 1 - w_p**2 / (2 * (omega - k * v0) ** 2) - w_p**2 / (2 * (omega + k * v0) ** 2), ":938", lhs=eps_L)
 
 # %% Two-stream roots
-section("Two-stream roots", "14-hot-plasma-waves.typ:958")
+section("Two-stream roots", "14-hot-plasma-waves.typ:947")
 xx, yy = sp.symbols("x y", positive=True)
 note("Clear denominators:")
 quartic = sp.expand(sp.simplify(D * (omega**2 - k**2 * v0**2) ** 2))
@@ -443,7 +443,7 @@ G2_TWO_STREAM = sp.sqrt(1 + 8 * xx) / 2 - xx - sp.Rational(1, 2)
 agrees(-y_minus, G2_TWO_STREAM, ":977", lhs=gamma**2 / w_p**2)
 
 # %% Maximum two-stream growth
-section("Maximum two-stream growth", "14-hot-plasma-waves.typ:986")
+section("Maximum two-stream growth", "14-hot-plasma-waves.typ:975")
 extrema = sp.solve(sp.diff(G2_TWO_STREAM, xx), xx)
 assert extrema == [sp.Rational(3, 8)]  # :979
 show(sp.Eq(sp.Derivative(gamma**2 / w_p**2, xx), sp.diff(G2_TWO_STREAM, xx)))
@@ -453,7 +453,7 @@ agrees(sp.sqrt(G2_TWO_STREAM.subs(xx, extrema[0])), 1 / (2 * sp.sqrt(2)), ":986"
 agrees(sp.sqrt(extrema[0]), sp.sqrt(sp.Rational(3, 8)), ":1004", lhs=k * v0 / w_p)
 
 # %% Worked example: two-stream growth
-section("Worked example: two-stream growth", "14-hot-plasma-waves.typ:1020")
+section("Worked example: two-stream growth", "14-hot-plasma-waves.typ:1009")
 wp_value = evaluate(w_p, sp.sqrt(wp_sq), LAB, 1 / u.second)
 close_to(wp_value, 5.64e9, rtol=1e-3, source=":1020")
 note("Beams at", sp.Eq(v0, sp.Float(0.1, 2) * c), ",", sp.Eq(k * v0 / w_p, sp.Float(0.5, 2)))
@@ -468,7 +468,7 @@ close_to(evaluate(gamma, growth * w_p, {w_p: wp_value / u.second}, 1 / u.second)
          source=":1024")
 
 # %% Gyro-orbit characteristics
-section("Gyro-orbit characteristics", "14-hot-plasma-waves.typ:1147")
+section("Gyro-orbit characteristics", "14-hot-plasma-waves.typ:1131")
 B0, v_perp, v_par = sp.symbols(r"B_0 v_\perp v_\parallel", real=True)
 theta = sp.Function("theta")(t)
 Omega = q * B0 / m  # signed gyrofrequency, :1110
@@ -488,7 +488,7 @@ assert sp.simplify(sp.diff(g(v_orbit[2], sp.sqrt(v_orbit[0] ** 2 + v_orbit[1] **
 note("Any", g(v_par, v_perp), "is constant along the orbit: a gyrotropic equilibrium")
 
 # %% Gyroangle harmonic response
-section("Gyroangle harmonic response", "14-hot-plasma-waves.typ:1173")
+section("Gyroangle harmonic response", "14-hot-plasma-waves.typ:1157")
 th, n_h = sp.symbols("theta n", real=True)
 Om, k_par = sp.symbols(r"Omega_s k_\parallel", real=True)
 harmonic = sp.exp(I * (k_par * z - omega * t + n_h * th))
@@ -506,7 +506,7 @@ agrees(sp.solve(w_r - k_par * v_par - n_h * Om, v_par)[0], (w_r - n_h * Om) / k_
        lhs=sp.Symbol("v_res"))
 
 # %% Circular forcing
-section("Circular forcing", "14-hot-plasma-waves.typ:1181")
+section("Circular forcing", "14-hot-plasma-waves.typ:1165")
 E_x = sp.Symbol("E_x")
 v_x, v_y = v_perp * sp.cos(th), -v_perp * sp.sin(th)
 for sigma in (1, -1):
@@ -517,7 +517,7 @@ for sigma in (1, -1):
 note("so circular forcing selects the single harmonic", sp.Eq(n_h, sp.Symbol("sigma")))
 
 # %% Finite-Larmor-radius weights
-section("Finite-Larmor-radius weights", "14-hot-plasma-waves.typ:1195")
+section("Finite-Larmor-radius weights", "14-hot-plasma-waves.typ:1179")
 X0, th0 = sp.symbols("X theta_0", real=True)
 Om_pos = sp.Symbol("Omega", positive=True)
 theta_t = Om_pos * t + th0
@@ -536,7 +536,7 @@ rhs = sum(sp.series(sp.besselj(n, a_j), a_j, 0, order).removeO() * sp.exp(I * n 
 assert sp.simplify(sp.expand((lhs - rhs).rewrite(sp.exp))) == 0
 
 # %% Worked example: cyclotron resonances
-section("Worked example: cyclotron resonances", "14-hot-plasma-waves.typ:1227")
+section("Worked example: cyclotron resonances", "14-hot-plasma-waves.typ:1211")
 w_ce = sp.Symbol("omega_ce", positive=True)
 close_to(evaluate(w_ce, e * B0 / m_e, {B0: 1e-2 * u.tesla}, 1 / u.second), 1.76e9, rtol=1e-3,
          source=":1218")

@@ -28,10 +28,8 @@
   ))
 
   #unit-ledger[
-    SI is active. Let the equilibrium density be $n_0$ in
-    #unit("m^-3"), the electron displacement $xi$ in #unit("m"), the electric field in
-    #unit("V/m"), and time in seconds; $epsilon_0$ is the vacuum permittivity. Ions are singly charged and
-    initially stationary.
+    The electron displacement $xi$ is in #unit("m"). Ions are singly charged
+    and initially stationary.
   ]
 
   #assumption(
@@ -48,7 +46,7 @@
   $ bold(E) = (e n_0 xi)/epsilon_0 bold(e)_x $ <plasma-oscillation-field>
 
   #equation-note[
-    SI. $bold(e)_x$ is a fixed unit vector and $xi$ is the signed
+    $bold(e)_x$ is a fixed unit vector and $xi$ is the signed
     electron displacement along it. The field reverses when $xi$ changes sign
     and the electron force points opposite to it. The field
     is in #unit("V/m") when $n_0$ is in #unit("m^-3") and $xi$ in #unit("m").
@@ -59,7 +57,7 @@
   $ m_e dv(xi,t,2) = -e E = -(n_0 e^2)/epsilon_0 xi $ <plasma-oscillation-force>
 
   #equation-note[
-    SI. The force is in #unit("N"). The negative sign is the restoring
+    The force is in #unit("N"). The negative sign is the restoring
     sign for the electron charge $-e$.
   ]
 
@@ -68,7 +66,7 @@
   $ dv(xi,t,2) + omega_(p,e)^2 xi = 0, quad omega_(p,e) = sqrt((n_0 e^2)/(epsilon_0 m_e)) $ <plasma-oscillation-frequency>
 
   #equation-note[
-    SI. $omega_(p,e)$ is an angular frequency in $upright("s")^(-1)$.
+    $omega_(p,e)$ is an angular frequency in $upright("s")^(-1)$.
     The cold model has no damping and no thermal dispersive correction.
   ]
 
@@ -80,7 +78,7 @@
   $ omega_(p,s) = sqrt((n_s q_s^2) / (epsilon_0 m_s)) $ <intro-plasma-frequency>
 
   #equation-note[
-    SI. $omega_(p,s)$ is in $upright("s")^(-1)$ as an angular frequency.
+    $omega_(p,s)$ is in $upright("s")^(-1)$ as an angular frequency.
     The corresponding ordinary frequency is $f_(p,s) = omega_(p,s)/(2 pi)$
     in hertz.
   ]
@@ -94,13 +92,13 @@
     quad omega_(p,e) = v_("th,e")/(sqrt(2) lambda_D) $ <intro-plasma-frequency-debye-relation>
 
   #equation-note[
-    SI. The factor $sqrt(2)$ follows from the convention
+    The factor $sqrt(2)$ follows from the convention
     $v_("th,e")=sqrt((2 k_B T_e)/m_e)$. If a source defines thermal speed as
     $sqrt((k_B T_e)/m_e)$, the same relation is written without that factor.
   ]
 
   The species inertial length $d_s=c/omega_(p,s)$ compares a light-transit
-  time with the plasma-response time. In SI, $c$ is in
+  time with the plasma-response time. Here $c$ is in
   #unit("m/s") and $d_s$ is in #unit("m"). This electromagnetic scale
   differs from the thermal screening length derived in
   #chapter-link("intro-debye-shielding")[Debye shielding].

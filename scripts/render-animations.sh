@@ -15,7 +15,7 @@ self="$repo_root/scripts/render-animations.sh"
 # source file | scene class | output slug | poster time in seconds
 scenes=(
   "exb_drift.py|ExBDrift|exb-drift|3.5"
-  "plasma_oscillation.py|PlasmaOscillation|plasma-oscillation|2.5"
+  "plasma_oscillation.py|PlasmaOscillation|plasma-oscillation|5.3"
   "debye_shielding.py|DebyeShielding|debye-shielding|9.0"
   "debye_potential.py|DebyePotentialReduction|debye-potential-reduction|8.5"
   "phase_space_advection.py|PhaseSpaceAdvection|phase-space-advection|4.0"
@@ -28,6 +28,9 @@ scenes=(
   "two_stream_instability.py|TwoStreamInstability|two-stream-instability|6.0"
   "sheath_formation.py|SheathFormation|sheath-formation|8.5"
   "langmuir_probe.py|LangmuirProbe|langmuir-probe|6.0"
+  "collective_response.py|CollectiveResponse|collective-response|5.0"
+  "particles_to_moments.py|ParticlesToMoments|particles-to-moments|11.0"
+  "pendulum_ensemble.py|PendulumEnsemble|pendulum-ensemble|16.0"
 )
 
 if [[ "${1:-}" == "--slugs" ]]; then

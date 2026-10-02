@@ -29,10 +29,7 @@
   ))
 
   #unit-ledger[
-    SI is active. The electrostatic potential $phi$ is in #unit("V"),
-    charge density $rho_q$ in #unit("C m^-3"), and the electron
-    temperature $T_e$ is in kelvin. The screening length $lambda_D$ is in
-    #unit("m"); $epsilon_0$ is the vacuum permittivity.
+    The screening length $lambda_D$ is in #unit("m").
   ]
 
   A first estimate of the size of a charge-separated region can be obtained
@@ -45,7 +42,7 @@
     => R approx sqrt((3 epsilon_0 k_B T_e)/(N e^2)) $ <debye-charge-separation-scale>
 
   #equation-note[
-    SI. $N$ is a number density in #unit("m^-3"), $R$ is in #unit("m"),
+    $N$ is a number density in #unit("m^-3"), $R$ is in #unit("m"),
     and $phi$ is in #unit("V"). The numerical factor depends on the assumed
     charge profile; the robust result is the scaling
     $R$ proportional to $sqrt((epsilon_0 k_B T_e)/(N e^2))$.
@@ -96,7 +93,7 @@
   $ n_e = n_0 exp((e phi) / (k_B T_e)) approx n_0 (1 + (e phi) / (k_B T_e)) $ <debye-boltzmann-response>
 
   #equation-note[
-    SI. $n_e$ and $n_0$ are in #unit("m^-3"), and $e phi$ and $k_B T_e$
+    $n_e$ and $n_0$ are in #unit("m^-3"), and $e phi$ and $k_B T_e$
     are energies in #unit("J"). The approximation is dimensionless and requires
     $abs(e phi)/(k_B T_e) << 1$.
   ]
@@ -106,16 +103,16 @@
   $ rho_q = e n_i - e n_e approx - (e^2 n_0)/(k_B T_e) phi $ <debye-charge-response>
 
   #equation-note[
-    SI. The sign expresses the restoring response of electrons to a
+    The sign expresses the restoring response of electrons to a
     positive potential perturbation.
   ]
 
-  Poisson's equation in SI is
+  Poisson's equation is
 
   $ laplacian phi = -rho_q/epsilon_0 $ <debye-poisson>
 
   #equation-note[
-    SI. This equation defines the electrostatic field convention used
+    This equation defines the electrostatic field convention used
     here, with vacuum permittivity $epsilon_0$ in #unit("F/m").
   ]
 
@@ -124,7 +121,7 @@
   $ laplacian phi - phi / lambda_D^2 = 0, quad lambda_D = sqrt((epsilon_0 k_B T_e) / (n_0 e^2)) $ <debye-screened-equation>
 
   #equation-note[
-    SI. $lambda_D$ is in #unit("m"). The equation is valid outside the
+    $lambda_D$ is in #unit("m"). The equation is valid outside the
     localized source and within the linearized, static response model.
   ]
 
@@ -149,7 +146,7 @@
 
     $ lambda_D^(-2)=(n_0 e^2)/(epsilon_0 k_B T_e) .$
 
-    Inserting the charge response into the SI Poisson equation gives
+    Inserting the charge response into the Poisson equation gives
 
     $ laplacian phi-phi/lambda_D^2=0 .$
 
@@ -179,7 +176,7 @@
     sphere, whose boundary conditions would be different.]
   )
 
-  For this finite source, the exact bare potential in SI is
+  For this finite source, the exact bare potential is
 
   $ phi_"C" (r) = Q/(8 pi epsilon_0 R) (3 - r^2/R^2), quad 0 <= r <= R $ <debye-sphere-potential-inside>
 
@@ -188,7 +185,7 @@
   $ phi_"C" (r) = Q/(4 pi epsilon_0 r), quad r >= R $ <debye-sphere-potential-outside>
 
   #equation-note[
-    SI. $Q$ is in #unit("C"), $r$ and $R$ are in #unit("m"), and $phi_"C"$
+    $Q$ is in #unit("C"), $r$ and $R$ are in #unit("m"), and $phi_"C"$
     is in #unit("V") when the reference potential is zero at infinity. The
     interior expression is quadratic in $r$ and joins the exterior Coulomb
     expression continuously at $r=R$: both give $Q/(4 pi epsilon_0 R)$ there.
@@ -207,7 +204,7 @@
   $ laplacian phi_"D" - phi_"D"/lambda_D^2 = 0, quad r > R .$
 
   #equation-note[
-    SI. $rho_Q$ is the source charge density, while the mobile
+    $rho_Q$ is the source charge density, while the mobile
     electron response has already been absorbed into the term
     $-phi_"D"/lambda_D^2$. The fields and potentials are matched at the source
     boundary, and the exterior solution decays at infinity. Linearization
@@ -373,7 +370,7 @@
   )
 
   #equation-note[
-    SI. $a_s$ is in #unit("m"), $(q_s^2) / (4 pi epsilon_0 a_s k_B T_s)$ is
+    $a_s$ is in #unit("m"), $(q_s^2) / (4 pi epsilon_0 a_s k_B T_s)$ is
     dimensionless, and the weak-coupling condition is $Gamma_s << 1$.
   ]
 

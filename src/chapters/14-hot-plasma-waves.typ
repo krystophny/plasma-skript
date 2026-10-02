@@ -43,15 +43,9 @@
   ))
 
   #unit-ledger[
-    SI units are used throughout. Number density $n_s$ is in #unit("m^-3"),
-    velocity is in #unit("m/s"), position is in #unit("m"), frequency and
-    wave number are in #unit("s^-1") and #unit("m^-1"), mass is in #unit("kg"),
-    charge is in #unit("C"), $bold(E)$ is in #unit("V/m"), and $f_s$ is a
-    phase-space density with units #unit("m^-6 s^3"). The vacuum
-    permittivity $epsilon_0$ is in #unit("F/m"). The Debye length is in
-    #unit("m").
-    The plasma dispersion function, $k lambda_D$, and $omega/omega_(p,e)$ are
-    dimensionless.
+    The distribution $f_s$ is a phase-space density with units
+    #unit("m^-6 s^3"). The plasma dispersion function, $k lambda_D$, and
+    $omega/omega_(p,e)$ are dimensionless.
   ]
 
   #assumption(
@@ -144,7 +138,7 @@
       integral (bold(k) dot pdv(f_(s,0),bold(v)))/
       (omega-bold(k) dot bold(v)) dif^3 bold(v) .$
 
-    In SI units, Poisson's equation is
+    Poisson's equation is
 
     $ div(bold(E)_1)=rho_1/epsilon_0 .$
 
@@ -544,7 +538,7 @@
       It starts at $X=-1.4$, $V=1.12$ and displays
       $X-0.92 tau$ and $V-0.92$. The field scale is
       $E_0=(m_e v_0^2)/(e L_0)$; $L_0$ and $v_0$ are reference length
-      and speed in SI units. In the distribution panel $v_0=v_"te"$;
+      and speed. In the distribution panel $v_0=v_"te"$;
       the plotted $f_0$ is the marginal $F_(e,0)$ defined above, with
       $(F_(e,0) v_0)/n_0=exp(-V^2)/sqrt(pi)$.
     ],
@@ -620,13 +614,8 @@
   ))
 
   #unit-ledger[
-    SI units are used. The electric and magnetic perturbations are in
-    #unit("V/m") and #unit("T"), respectively. The wave number
-    $k$ is in #unit("m^-1"), $omega$ and $omega_(p,s)$ are in #unit("s^-1"),
-    and particle speeds are in #unit("m/s"). The phase-space density
-    $f_(s,0)$ is in #unit("m^-6 s^3"); $c$ is in #unit("m/s"). The ratios
-    $k c/omega_(p,s)$, $omega/omega_(p,s)$, and
-    $v_x^2/c^2$ are dimensionless.
+    The phase-space density $f_(s,0)$ is in #unit("m^-6 s^3"). The ratios $k
+    c/omega_(p,s)$, $omega/omega_(p,s)$, and $v_x^2/c^2$ are dimensionless.
   ]
 
   #assumption(
@@ -1079,18 +1068,13 @@
   ))
 
   #unit-ledger[
-    SI units are used. Magnetic field $B_0$ is in #unit("T"), mass is in
-    #unit("kg"), charge is in #unit("C"), gyrofrequency and wave frequency
-    are in #unit("s^-1"), parallel and perpendicular wave numbers are in
-    #unit("m^-1"), and parallel or perpendicular particle speeds are in
-    #unit("m/s"). The signed gyrofrequency $Omega_s=(q_s B_0)/m_s$ has units
-    #unit("s^-1"). For a characteristic perpendicular speed $v_(perp,"s")$,
-    define the thermal gyroradius
-    $rho_s=v_(perp,"s")/abs(Omega_s)$, which is in #unit("m"). Harmonic number
-    $n$, $k_perp rho_s$, $omega/abs(Omega_s)$, and the resonance condition
-    after division by a frequency are dimensionless. The individual orbit
-    radius $r_(L,s)=v_perp/abs(Omega_s)$ is in #unit("m") and varies
-    across the velocity integral; it differs from the thermal scale $rho_s$.
+    For a characteristic perpendicular speed $v_(perp,"s")$, define the
+    thermal gyroradius $rho_s=v_(perp,"s")/abs(Omega_s)$, which is in
+    #unit("m"). Harmonic number $n$, $k_perp rho_s$, $omega/abs(Omega_s)$, and
+    the resonance condition after division by a frequency are dimensionless.
+    The individual orbit radius $r_(L,s)=v_perp/abs(Omega_s)$ is in #unit("m")
+    and varies across the velocity integral; it differs from the thermal scale
+    $rho_s$.
   ]
 
   #assumption(

@@ -38,11 +38,9 @@
   ))
 
   #unit-ledger[
-    SI units are used throughout. The collision frequency $nu$, wave frequency
-    $omega$, and damping rate are in #unit("s^-1"). Masses are in #unit("kg"),
-    $bold(E)$ is in #unit("V/m"), $bold(B)$ is in #unit("T"),
-    and wave numbers $k_r$ and $k_i$ are in #unit("m^-1"). The effective
-    mass has units #unit("kg"), while $N$ and $m_"eff"/m$ are dimensionless.
+    The damping rate is in #unit("s^-1"), and wave numbers $k_r$ and $k_i$ are
+    in #unit("m^-1"). The effective mass has units #unit("kg"), while $N$ and
+    $m_"eff"/m$ are dimensionless.
   ]
 
   #assumption(
@@ -159,8 +157,8 @@
 
   #rechenbeispiel[
     Assume a homogeneous, cold, unmagnetized, weakly collisional, fixed-ion
-    electron plasma with linear momentum drag, the stated Fourier convention,
-    and SI units. Use
+    electron plasma with linear momentum drag and the stated Fourier
+    convention. Use
     $omega_(p,e)=qty("5.64e9", "s^-1")$,
     $omega=qty("2.00e10", "s^-1")$, and a constant
     $nu_e=qty("1.00e9", "s^-1")$. In the high-frequency weak-collision
@@ -230,11 +228,8 @@
   ))
 
   #unit-ledger[
-    Densities are in #unit("m^-3"), masses in #unit("kg"), and $B_0$ in
-    #unit("T"). The positive gyrofrequencies $omega_(c,e)$ and
-    $omega_(c,i)$ are in #unit("s^-1"). The Alfvén, sound, and wave phase
-    speeds are in #unit("m/s"); $k$ is in #unit("m^-1") and wavelengths are
-    in #unit("m"). All refractive indices are dimensionless.
+    The Alfvén, sound, and wave phase speeds are in #unit("m/s"). All
+    refractive indices are dimensionless.
   ]
 
   #assumption(
@@ -365,7 +360,7 @@
 
   #rechenbeispiel[
     Assume a homogeneous, cold, collisionless, two-fluid hydrogen plasma with
-    both species mobile, parallel low-frequency propagation, and SI units.
+    both species mobile and parallel low-frequency propagation.
     For the neutral hydrogen plasma use $n_0=qty("1.0e16", "m^-3")$,
     $B_0=qty("1.0e-2", "T")$, $m_i=qty("1.673e-27", "kg")$,
     and $e=qty("1.602e-19", "C")$. Consider a parallel
@@ -431,11 +426,8 @@
   ))
 
   #unit-ledger[
-    Temperature is represented by the energy $k_B T$ in #unit("J") (or
-    #unit("eV")); number density is in #unit("m^-3"), Debye length $lambda_D$
-    is in #unit("m"), thermal or sound speeds are in #unit("m/s"), $k$ is in
-    #unit("m^-1"), and frequencies are in #unit("s^-1"). The normalized
-    combination $k lambda_D$ and the ratio $omega/omega_p$ are dimensionless.
+    The normalized combination $k lambda_D$ and the ratio $omega/omega_p$ are
+    dimensionless.
   ]
 
   #assumption(
@@ -588,7 +580,7 @@
 
   #rechenbeispiel[
     Assume a homogeneous, unmagnetized, collisionless, fixed-ion warm-fluid
-    electron plasma with an isothermal closure and SI units. Use
+    electron plasma with an isothermal closure. Use
     $n_0=qty("1.0e16", "m^-3")$,
     $k_B T_e=qty("1.602e-18", "J")$ (the same energy as
     $qty("10", "eV")$), $e=qty("1.602e-19", "C")$,
@@ -662,11 +654,8 @@
   ))
 
   #unit-ledger[
-    In SI units, $rho_0$ is in #unit("kg/m^3"), pressure is in
-    #unit("Pa"), $B_0$ is in #unit("T"), and $v_A$, $v_s$, and $v_m$
-    are in #unit("m/s"). The wave number is in #unit("m^-1") and angular
-    frequency in #unit("s^-1"). The ratios $omega/omega_(c,i)$ and
-    $k lambda_D$ are dimensionless.
+    The speeds $v_A$, $v_s$, and $v_m$ are in #unit("m/s"). The ratios
+    $omega/omega_(c,i)$ and $k lambda_D$ are dimensionless.
   ]
 
   #assumption(
@@ -777,7 +766,7 @@
     #derivation-step[Recover the perpendicular MHD branch]
     For the low-frequency one-fluid limit, use continuity,
     $pdv(rho,t)+div(rho bold(u))=0$, the ideal induction equation,
-    $pdv(bold(B),t)=curl(bold(u)times bold(B))$, and the SI MHD
+    $pdv(bold(B),t)=curl(bold(u)times bold(B))$, and the MHD
     momentum equation
 
     $ rho pdv(bold(u),t)=-grad(p)+[curl(bold(B))times bold(B)]/mu_0 .$
@@ -848,7 +837,7 @@
   #rechenbeispiel[
     Assume a homogeneous, quasineutral hydrogen plasma in the low-frequency,
     strongly conducting ideal-MHD limit, with perpendicular and parallel
-    propagation compared in SI units. Use
+    propagation compared. Use
     $n_0=qty("1.0e16", "m^-3")$, $B_0=qty("1.0e-2", "T")$,
     $m_i=qty("1.673e-27", "kg")$,
     $k_B T_e=k_B T_i=qty("1.602e-18", "J")$ (10 eV), and isothermal

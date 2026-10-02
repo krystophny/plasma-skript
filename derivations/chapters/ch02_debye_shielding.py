@@ -27,7 +27,7 @@ def laplacian(f):
 
 
 # %% Charge-separation scale
-section("Charge-separation scale", "02-debye-shielding.typ:43")
+section("Charge-separation scale", "02-debye-shielding.typ:40")
 note("Electrons removed from a sphere leave the charge density", N * e)
 enclosed = show(sp.Eq(sp.Function("Q")(r), sp.Integral(4 * sp.pi * s**2 * N * e, (s, 0, r))))
 Q_r = agrees(enclosed.rhs.doit(), sp.Rational(4, 3) * sp.pi * N * e * r**3, ":59", lhs=enclosed.lhs)
@@ -50,7 +50,7 @@ agrees(R_scale.subs(N, n0) / sp.sqrt(eps0 * k_B * T_e / (n0 * e**2)), sp.sqrt(3)
        lhs=R / lambda_D)
 
 # %% Debye length
-section("Debye length", "02-debye-shielding.typ:96")
+section("Debye length", "02-debye-shielding.typ:93")
 note("Boltzmann factor", sp.exp(-W / (k_B * T_e)), "with the electron energy", sp.Eq(W, -e * phi_0))
 boltzmann = agrees((n0 * sp.exp(-W / (k_B * T_e))).subs(W, -e * phi_0),
                    n0 * sp.exp(e * phi_0 / (k_B * T_e)), ":96", lhs=n_e)
@@ -74,7 +74,7 @@ lambda_D_expr = agrees(sp.sqrt(lambda_D_sq), sp.sqrt(eps0 * k_B * T_e / (n0 * e*
 check(lambda_D_expr, lambda_D_expr, unit=u.meter, units=SI_UNITS)
 
 # %% Screened point charge
-section("Screened point charge", "02-debye-shielding.typ:158")
+section("Screened point charge", "02-debye-shielding.typ:155")
 screening = show(sp.Eq(laplacian(phi), phi / lambda_D**2))
 w = sp.Function("w")(r)
 note("Substitute", sp.Eq(phi, w / r))
@@ -91,7 +91,7 @@ bare = sp.limit(screened * r, r, 0) / r  # r << lambda_D
 check(bare, Q / (4 * sp.pi * eps0 * r), unit=u.volt, units=SI_UNITS)
 
 # %% Bare potential of a uniform sphere
-section("Bare potential of a uniform sphere", "02-debye-shielding.typ:170")
+section("Bare potential of a uniform sphere", "02-debye-shielding.typ:167")
 note("Total charge", Q, "spread uniformly over a sphere of radius", R)
 rho_Q_expr = agrees(Q / (sp.Rational(4, 3) * sp.pi * R**3), 3 * Q / (4 * sp.pi * R**3), ":170",
                     lhs=rho_Q)
@@ -115,7 +115,7 @@ assert sp.simplify(phi_in.subs(r, R) - phi_out.subs(r, R)) == 0
 assert sp.simplify((phi_in.diff(r) - phi_out.diff(r)).subs(r, R)) == 0
 
 # %% Small-source condition
-section("Small-source condition", "02-debye-shielding.typ:213")
+section("Small-source condition", "02-debye-shielding.typ:210")
 note("The bare potential peaks at the centre")
 phi_centre = show(sp.Eq(sp.Function("phi")(0), phi_in.subs(r, 0))).rhs
 small_source = agrees(e * phi_centre / (k_B * T_e), 3 * e * Q / (8 * sp.pi * eps0 * R * k_B * T_e),
@@ -123,7 +123,7 @@ small_source = agrees(e * phi_centre / (k_B * T_e), 3 * e * Q / (8 * sp.pi * eps
 check(small_source, small_source, unit=u.meter / u.meter, units=SI_UNITS)
 
 # %% Matched finite-source response
-section("Matched finite-source Debye response", "02-debye-shielding.typ:253")
+section("Matched finite-source Debye response", "02-debye-shielding.typ:250")
 A, B, phi_p = sp.symbols("A B phi_p")
 x = sp.Symbol("x", positive=True)
 note("Inside the source, with", sp.Eq(kappa, 1 / lambda_D))
@@ -163,7 +163,7 @@ note("Point-source limit", sp.Eq(R, 0, evaluate=False), "recovers the screened C
 agrees(sp.limit(B_full, R, 0), Q / (4 * sp.pi * eps0), ":158", lhs=B)
 
 # %% Debye number and coupling
-section("Debye number and coupling", "02-debye-shielding.typ:356")
+section("Debye number and coupling", "02-debye-shielding.typ:353")
 N_D, Gamma = sp.symbols("N_D Gamma", positive=True)
 note("Electrons in a Debye sphere")
 count = show(sp.Eq(N_D, sp.Integral(4 * sp.pi * s**2 * n0, (s, 0, lambda_D))))
@@ -183,7 +183,7 @@ link = show(sp.Eq(Gamma * N_D ** sp.Rational(2, 3),
 assert link.rhs.free_symbols == set(), link
 
 # %% Regime lines in the n-T plane
-section("Regime lines in the n-T plane", "02-debye-shielding.typ:354")
+section("Regime lines in the n-T plane", "02-debye-shielding.typ:351")
 T_eV = k_B * T_e / e
 
 

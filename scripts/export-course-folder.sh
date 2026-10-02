@@ -47,6 +47,9 @@ names=(
   "two-stream-instability|two_stream_instability"
   "sheath-formation|sheath_formation"
   "langmuir-probe|langmuir_probe"
+  "collective-response|collective_response"
+  "particles-to-moments|particles_to_moments"
+  "pendulum-ensemble|pendulum_ensemble"
 )
 
 staging="$(mktemp -d "${TMPDIR:-/tmp}/plasma-export.XXXXXX")"

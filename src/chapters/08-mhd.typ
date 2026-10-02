@@ -40,14 +40,6 @@
     [separate exact sums from quasi-neutral and one-fluid approximations],
   ))
 
-  #unit-ledger[
-    SI units are used throughout. Mass density is in #unit("kg/m^3"), velocity
-    in #unit("m/s"), pressure in #unit("Pa") (#unit("J/m^3")), magnetic field
-    in #unit("T"), electric field in #unit("V/m"), and current density in
-    #unit("A/m^2"). The magnetic force density $bold(j) times bold(B)$ is in
-    #unit("N/m^3").
-  ]
-
   #definition(
     [Single-fluid variables are weighted sums],
     [Let $rho=sum_s rho_(s)$ be the total mass density and define the mass
@@ -229,8 +221,7 @@
   ))
 
   #unit-ledger[
-    $bold(E)$ is in #unit("V/m"), $bold(j)$ is in #unit("A/m^2"), and a
-    scalar resistivity defined by $bold(E)=eta bold(j)$ has units
+    A scalar resistivity defined by $bold(E)=eta bold(j)$ has units
     #unit("ohm meter"); the conductivity $sigma=1/eta$ is in #unit("S/m"). The
     electron pressure force per charge density is in #unit("V/m"). The
     coefficient $m_(e)/(e^2 n)$ multiplying a current time derivative has the
@@ -362,7 +353,7 @@
     $e=qty("1.602e-19", "C")$, and
     $nu_(e i)=qty("2.54e3", "s^-1")$.
 
-    Assumptions: scalar linear electron--ion drag, SI resistivity,
+    Assumptions: scalar linear electron--ion drag
     and the Spitzer form $eta=(m_(e)nu_(e i))/(n e^2)$.
 
     Target: report the scalar resistivity and conductivity.
@@ -446,12 +437,9 @@
   ))
 
   #unit-ledger[
-    The dimensional MHD variables use SI units: $rho$ in #unit("kg/m^3"),
-    $bold(u)$ in #unit("m/s"), $p$ in #unit("Pa"), and $bold(B)$ in
-    #unit("T"). The adiabatic sound speed
-    $c_(s)=sqrt((gamma p_0)/rho_0)$ is in #unit("m/s"). Perturbation symbols
-    such as $(delta rho)/rho_0$, $(delta p)/p_0$, and
-    $(delta bold(B))/B_0$ are dimensionless ratios.
+    The adiabatic sound speed $c_(s)=sqrt((gamma p_0)/rho_0)$ is in
+    #unit("m/s"). Perturbation symbols such as $(delta rho)/rho_0$, $(delta
+    p)/p_0$, and $(delta bold(B))/B_0$ are dimensionless ratios.
   ]
 
   #assumption(
@@ -675,10 +663,7 @@
   ))
 
   #unit-ledger[
-    The magnetic field is in #unit("T"), characteristic length $L$ in
-    #unit("m"), bulk speed $U$ in #unit("m/s"), resistivity $eta$ in
-    #unit("ohm meter"), and magnetic diffusivity $D_(B)=eta/mu_0$ in
-    #unit("m^2/s"). The
+    The magnetic diffusivity $D_(B)=eta/mu_0$ is in #unit("m^2/s"). The
     magnetic Reynolds number $R_(m)=(U L)/D_(B)$ is dimensionless. The
     advection time $tau_(A)=L/U$ and diffusion time $tau_(D)=L^2/D_(B)$ are
     both in #unit("s").
@@ -825,7 +810,7 @@
 
   #summary[
     Faraday's law plus Ohm's law produces advection and diffusion in the
-    magnetic induction equation. In SI units,
+    magnetic induction equation. Here
     $D_(B)=eta/mu_0$, $tau_(D)=L^2/D_(B)$, and
     $R_(m)=(U L)/D_(B)$. The ideal limit conserves flux through material surfaces;
     resistivity breaks that material conservation on the diffusion scale.
@@ -885,10 +870,8 @@
   ))
 
   #unit-ledger[
-    Static pressure $p$ and magnetic pressure $B^2/(2 mu_0)$ are both in
-    #unit("Pa") (#unit("J/m^3")). The current density is in #unit("A/m^2"),
-    and $bold(j)times bold(B)$ is a force density in #unit("N/m^3"). The
-    plasma beta $beta=(2 mu_0 p)/(B^2)$ is dimensionless.
+    Magnetic pressure $B^2/(2 mu_0)$ has the same unit as static pressure,
+    #unit("Pa"). The plasma beta $beta=(2 mu_0 p)/(B^2)$ is dimensionless.
   ]
 
   #assumption(
@@ -1108,7 +1091,7 @@
   )
 
   #summary[
-    Static MHD balances pressure force against magnetic force. In SI units,
+    Static MHD balances pressure force against magnetic force:
     $grad(p)=((curl(bold(B)))times bold(B))/mu_0$, or equivalently the gradient
     of gas plus magnetic pressure balances field-line tension. Pressure is
     constant along field lines, the perpendicular current follows from the
