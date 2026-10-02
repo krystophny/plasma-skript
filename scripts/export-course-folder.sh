@@ -7,8 +7,8 @@
 # left untouched:
 #   animations/          rendered MP4s plus one PNG still per scene
 #   animation-sources/   animations/*.py (scenes and the shared style.py)
-#   derivations/         Makefile, si.py, chapters/*.py and build/pdf/*.pdf
-#                        (SymPy derivations; no conftest.py, no build/tex)
+#   derivations/         Makefile, helper modules, chapters/*.py, build/pdf/*.pdf
+#                        (SymPy derivations; no build/tex, no build/fig)
 # Files that are no longer produced are deleted from those subfolders; files
 # with unchanged content are not rewritten.
 #
@@ -83,19 +83,12 @@ for entry in "${names[@]}"; do
 done
 
 cp "$repo_root"/animations/*.py "$staging/animation-sources/"
-# derivations/: Makefile, si.py, chapters/*.py and build/pdf/*.pdf
-# (never conftest.py or build/tex).  Before the chapters/ split the chapter
-# scripts lived directly in derivations/; that layout is still accepted.
+# derivations/: Makefile, the helper modules and test runner (*.py),
+# chapters/*.py and build/pdf/*.pdf (never build/tex or build/fig).
 deriv="$repo_root/derivations"
-for file in "$deriv/Makefile" "$deriv/si.py"; do
-  if [[ -f "$file" ]]; then cp "$file" "$staging/derivations/"; fi
-done
-if [[ -d "$deriv/chapters" ]]; then
-  mkdir -p "$staging/derivations/chapters"
-  cp "$deriv"/chapters/*.py "$staging/derivations/chapters/"
-else
-  cp "$deriv"/ch*.py "$staging/derivations/"
-fi
+cp "$deriv/Makefile" "$deriv"/*.py "$staging/derivations/"
+mkdir -p "$staging/derivations/chapters"
+cp "$deriv"/chapters/*.py "$staging/derivations/chapters/"
 if [[ -f "$deriv/Makefile" ]] && ! compgen -G "$deriv/build/pdf/*.pdf" >/dev/null; then
   if command -v latexmk >/dev/null 2>&1; then
     make -C "$deriv" pdf

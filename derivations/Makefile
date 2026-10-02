@@ -21,7 +21,7 @@ PDF      := $(NAMES:%=build/pdf/%.pdf)
 all: pdf
 
 test:
-	$(PYTHON) -m pytest -q chapters
+	$(PYTHON) -m pytest -q test_chapters.py
 
 tex: $(TEX)
 fig: $(TEX)
