@@ -547,7 +547,7 @@
     (
       question: [How does the ninety-degree impact parameter scale with speed?],
       answer: [For fixed charges and reduced mass,
-      $b_90=abs(q_a q_b)/(m_r v_"rel"^2)$, so faster particles have a smaller
+      $b_90=abs(q_a q_b)/(4 pi epsilon_0 m_r v_"rel"^2)$, so faster particles have a smaller
       strong-deflection scale.]
     ),
     (
@@ -683,7 +683,7 @@
     Target: report the scalar resistivity and DC conductivity.
 
     Numerical result: $eta_"Sp"=qty("1.28e-5", "ohm meter")$ and
-    $sigma_"dc"=qty("7.84e4", "S/m")$.
+    $sigma_"dc"=qty("7.83e4", "S/m")$.
   ]
 
   #interpretation(
