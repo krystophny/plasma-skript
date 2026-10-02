@@ -18,6 +18,7 @@
 #import "chapters/14-hot-plasma-waves.typ": chapter as hot-waves
 #import "chapters/15-sheaths-probes.typ": chapter as sheaths
 #import "appendices/mathematical-toolkit.typ": appendix as mathematical-toolkit
+#import "appendices/cgs-translation.typ": appendix as cgs-translation
 
 #let chapters = (
   (
@@ -172,6 +173,12 @@
         Full derivation routes are available as collapsed supplemental detail.
       ]
       #link("appendices/mathematical-toolkit.html")[Open the mathematical toolkit →]
+      #html.h2[Gaussian CGS translation]
+      #html.p[
+        A one-table dictionary from the SI equations of this script to the
+        Gaussian CGS forms used in much of the older plasma literature.
+      ]
+      #link("appendices/cgs-translation.html")[Open the CGS translation →]
     ]
 
     #html.section(class: "content-sections", id: "glossary")[
@@ -185,7 +192,8 @@
           $bold(F)=q (bold(E) + bold(v) times bold(B))$, and electrostatic
           Poisson's equation for charge density $rho_q$ is
           $laplacian(phi) = -rho_q/epsilon_0$. The symbol $rho$ without the
-          subscript denotes mass density.
+          subscript denotes mass density. Gaussian CGS equivalents are listed
+          only in the #link("appendices/cgs-translation.html")[CGS translation appendix].
         ]
         #html.dt[Normalized quantity]
         #html.dd[
@@ -346,6 +354,10 @@
 
 #document("appendices/mathematical-toolkit.html", title: [Mathematical toolkit])[
   #page-shell(stylesheet: "../styles.css")[#mathematical-toolkit]
+]
+
+#document("appendices/cgs-translation.html", title: [Gaussian CGS translation])[
+  #page-shell(stylesheet: "../styles.css")[#cgs-translation]
 ]
 
 #asset("styles.css", read("styles.css"))

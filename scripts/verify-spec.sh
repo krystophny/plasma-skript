@@ -168,6 +168,29 @@ for animation_source in "$repo_root"/animations/*.py; do
   fi
 done
 
+# SI unit-system contract (SPEC.md): Gaussian CGS units and CGS-form text may
+# appear only in the CGS translation appendix. The patterns are word-bounded so
+# that "energy", "dynamics", "Gauss's law", the label <multiple-gauss-laws>
+# and "Gaussian distribution" pass.
+# The phrase "Gaussian CGS" is additionally allowed in src/main.typ, whose hub
+# card, glossary entry and document title point to that appendix.
+cgs_appendix="src/appendices/cgs-translation.typ"
+cgs_unit_pattern='\bstat(C|V|A|coulomb|volt|ampere)\b|\berg\b|\bdyn(e|es)?\b|\bcm\b|(^|[^-[:alnum:]])gauss([^-[:alnum:]]|$)'
+cgs_phrase_pattern='Gaussian[ -]CGS'
+if [[ -d "$repo_root/src" ]]; then
+  cgs_hits="$(
+    cd "$repo_root" && {
+      rg -n --glob "!$cgs_appendix" -e "$cgs_unit_pattern" -- src animations || true
+      rg -n --glob "!$cgs_appendix" --glob '!src/main.typ' \
+        -e "$cgs_phrase_pattern" -- src animations || true
+    }
+  )"
+  if [[ -n "$cgs_hits" ]]; then
+    printf '%s\n' "$cgs_hits" >&2
+    fail "CGS units or Gaussian-CGS text found outside $cgs_appendix"
+  fi
+fi
+
 # Check the Git boundary in a worktree. Nix evaluates the same script from a
 # source snapshot without .git, so the artifact checks below remain authoritative
 # in that environment and this branch runs in the checkout-based CI job.

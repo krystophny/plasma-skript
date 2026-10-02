@@ -15,6 +15,7 @@
 #import "chapters/14-hot-plasma-waves.typ": chapter as hot-waves
 #import "chapters/15-sheaths-probes.typ": chapter as sheaths
 #import "appendices/mathematical-toolkit.typ": appendix as mathematical-toolkit
+#import "appendices/cgs-translation.typ": appendix as cgs-translation
 
 #show: frame-style(styles.boxy)
 
@@ -61,6 +62,8 @@
 #sheaths
 #pagebreak()
 #mathematical-toolkit
+#pagebreak()
+#cgs-translation
 #pagebreak()
 #bibliography(
   "sources.bib",
