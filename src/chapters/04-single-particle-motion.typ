@@ -64,19 +64,19 @@
     The magnetic force is perpendicular to $bold(v)_perp$, so it supplies
     centripetal acceleration without changing $v_perp$. Equating magnitudes,
 
-    $ (m v_perp^2)/rho=abs(q) v_perp B ,$
+    $ (m v_perp^2)/rho=abs(q) v_perp B , $
 
     gives
 
     $ rho=(m v_perp)/(abs(q) B)=v_perp/omega_c, quad
-      omega_c=(abs(q) B)/m .$
+      omega_c=(abs(q) B)/m . $
 
     #derivation-step[Integrate the component motion]
     Solving the perpendicular component equations gives, for the chosen
     coordinate orientation,
 
     $ v_x=v_perp cos(Omega t+delta), quad
-      v_y=-v_perp sin(Omega t+delta) .$
+      v_y=-v_perp sin(Omega t+delta) . $
 
     Integrating once gives a circle in the perpendicular plane plus a constant
     guiding-center position. Reversing $q$ reverses the sign of $Omega$ and
@@ -270,17 +270,17 @@
     [#derivation-step[Start from the orbit-center force balance]
     A constant drift velocity satisfies
 
-    $ bold(F)+q (bold(v)_D times bold(B))=bold(0) .$
+    $ bold(F)+q (bold(v)_D times bold(B))=bold(0) . $
 
     The drift is perpendicular to $bold(B)$, so crossing the equation with
     $bold(B)$ uses
 
-    $ (bold(v)_D times bold(B)) times bold(B)=-bold(v)_D B^2 .$
+    $ (bold(v)_D times bold(B)) times bold(B)=-bold(v)_D B^2 . $
 
     #derivation-step[Solve for the drift]
     The cross-product equation becomes
 
-    $ bold(v)_D=(bold(F) times bold(B))/(q B^2) .$
+    $ bold(v)_D=(bold(F) times bold(B))/(q B^2) . $
 
     For an electric force, $bold(F)=q bold(E)$, so both the charge magnitude
     and its sign cancel. Direct substitution into the original force balance
@@ -408,17 +408,17 @@
     #derivation-step[Compute the magnetic moment of one orbit]
     For one circular orbit, the gyroperiod and orbit area are
 
-    $ T_"c"=(2 pi)/omega_c, quad S=pi rho^2 .$
+    $ T_"c"=(2 pi)/omega_c, quad S=pi rho^2 . $
 
     The magnitude of the orbit current is
 
-    $ I_"gyro"=abs(q)/T_"c"=(abs(q) omega_c)/(2 pi) .$
+    $ I_"gyro"=abs(q)/T_"c"=(abs(q) omega_c)/(2 pi) . $
 
     The magnetic dipole moment is current times area:
 
     $ mu=I_"gyro" S
       =(abs(q) omega_c rho^2)/2
-      =(m v_perp^2)/(2 B) .$
+      =(m v_perp^2)/(2 B) . $
 
     Here $mu$ is the positive scalar magnitude; the gyration produces a
     diamagnetic vector dipole.
@@ -427,25 +427,25 @@
     Let $s$ measure distance along a field line. The averaged mirror force is
 
     $ F_parallel=-mu pdv(B,s), quad
-      m dv(v_parallel,t)=-mu pdv(B,s) .$
+      m dv(v_parallel,t)=-mu pdv(B,s) . $
 
     Since $dv(s,t)=v_parallel$, the particle samples the field according to
 
-    $ dv(B,t)=v_parallel pdv(B,s) .$
+    $ dv(B,t)=v_parallel pdv(B,s) . $
 
     Therefore the parallel kinetic energy changes as
 
     $ dv((m v_parallel^2)/2,t)
-      =-mu v_parallel pdv(B,s) .$
+      =-mu v_parallel pdv(B,s) . $
 
     #derivation-step[Show adiabatic conservation]
     The magnetic part changes according to
 
-    $ dv(mu B,t)=B dv(mu,t)+mu v_parallel pdv(B,s) .$
+    $ dv(mu B,t)=B dv(mu,t)+mu v_parallel pdv(B,s) . $
 
     Adding the two balances gives
 
-    $ dv((m v_parallel^2)/2+mu B,t)=B dv(mu,t) .$
+    $ dv((m v_parallel^2)/2+mu B,t)=B dv(mu,t) . $
 
     In this static, leading-order guiding-center approximation, the total
     guiding-center energy is conserved, so $dv(mu,t) approx 0$. The ordering
@@ -497,7 +497,7 @@
   #knowledge-check((
     (
       question: [What is the small parameter that compares a gyroradius with magnetic-field structure?],
-      answer: [$rho/L_B$. Guiding-center averaging requires this dimensionless ratio to be much smaller than one.],
+      answer: [ $rho/L_B$. Guiding-center averaging requires this dimensionless ratio to be much smaller than one.],
     ),
     (
       question: [Which part of the orbit is averaged out in guiding-center theory?],
@@ -570,28 +570,28 @@
   #equation-note[
     The curvature drift is in #unit("m/s"). The sign of $q$
     determines its direction; the expression uses the stated convention for
-    $bold(R)_c$ and assumes the same adiabatic ordering as the grad-$B$ drift.
+    $bold(R)_c$ and assumes the same adiabatic ordering as the grad- $B$ drift.
   ]
 
   #details(
-    [Derivation: grad-$B$ drift],
+    [Derivation: grad- $B$ drift],
     [#derivation-step[Identify the magnetic-moment force]
     The guiding-center force from the adiabatic magnetic moment is
 
-    $ bold(F)_mu=-mu grad(B) .$
+    $ bold(F)_mu=-mu grad(B) . $
 
     #derivation-step[Apply the general force-drift formula]
     A perpendicular homogeneous force drifts at
 
-    $ bold(v)_D=(bold(F) times bold(B))/(q B^2) .$
+    $ bold(v)_D=(bold(F) times bold(B))/(q B^2) . $
 
     Substitute the magnetic-moment force and use
 
-    $ -grad(B) times bold(B)=bold(B) times grad(B) .$
+    $ -grad(B) times bold(B)=bold(B) times grad(B) . $
 
     The grad-$B$ drift is therefore
 
-    $ bold(v)_(grad B)=(mu (bold(B) times grad(B)))/(q B^2) .$
+    $ bold(v)_(grad B)=(mu (bold(B) times grad(B)))/(q B^2) . $
 
     Reversing $q$ while holding $bold(B)$ fixed checks the direction of the
     drift.]
@@ -636,41 +636,41 @@
     Along a field line, the chain rule gives
 
     $ dv(B(s(t)),t)=dv(s,t) pdv(B,s)
-      =v_parallel pdv(B,s) .$
+      =v_parallel pdv(B,s) . $
 
     The parallel kinetic energy therefore obeys
 
     $ dv((m v_parallel^2)/2,t)
       =m v_parallel dv(v_parallel,t)
-      =-mu v_parallel pdv(B,s) .$
+      =-mu v_parallel pdv(B,s) . $
 
     If $dv(mu,t)=0$, the magnetic energy changes as
 
-    $ dv(mu B,t)=mu v_parallel pdv(B,s) .$
+    $ dv(mu B,t)=mu v_parallel pdv(B,s) . $
 
     The two terms cancel, proving conservation of
 
-    $ K=(m v_parallel^2)/2+mu B .$
+    $ K=(m v_parallel^2)/2+mu B . $
 
     #derivation-step[Find the mirror point]
     At the initial point, use
 
     $ v_(perp,0)=v_0 sin alpha_0, quad
-      v_(parallel,0)=v_0 cos alpha_0 .$
+      v_(parallel,0)=v_0 cos alpha_0 . $
 
     At the mirror point $B_m$, $v_parallel$ is zero. Conservation of $K$
     and $mu$ gives
 
     $ mu B_m=(m v_0^2)/2, quad
-      mu B_0=(m v_0^2 sin^2 alpha_0)/2 .$
+      mu B_0=(m v_0^2 sin^2 alpha_0)/2 . $
 
     Hence
 
-    $ B_m/B_0=1/(sin^2 alpha_0) .$
+    $ B_m/B_0=1/(sin^2 alpha_0) . $
 
     If the largest available field is $B_"max"$, reflection occurs when
 
-    $ sin^2 alpha_0 >= B_0/B_"max" .$
+    $ sin^2 alpha_0 >= B_0/B_"max" . $
 
     The complementary range is the loss cone: particles with
     $sin^2 alpha_0 < B_0/B_"max"$ pass through the mirror and escape.]
@@ -699,7 +699,7 @@
 
   #summary[
     Gradients and curvature create effective guiding-center forces. The force
-    drift turns $-mu grad(B)$ into grad-$B$ drift, while parallel inertia in a
+    drift turns $-mu grad(B)$ into grad- $B$ drift, while parallel inertia in a
     curved field produces curvature drift. Magnetic mirrors follow from
     conserving $mu$ while the field strength changes.
   ]
@@ -724,7 +724,7 @@
       answer: [Perpendicular energy $mu B$ increases while parallel kinetic energy decreases if total energy is conserved.],
     ),
     (
-      question: [What is the common geometric direction of grad-$B$ drift?],
+      question: [What is the common geometric direction of grad- $B$ drift?],
       answer: [It is perpendicular to the local field and to $grad(B)$, with its sign set by the charge.],
     ),
     (
@@ -795,38 +795,38 @@
     For a uniform magnetic field, the perpendicular Lorentz equation is
 
     $ m pdv(bold(v)_perp,t)=q (bold(E)_perp+
-      bold(v)_perp times bold(B)) .$
+      bold(v)_perp times bold(B)) . $
 
     Define $bold(v)_E=bold(v)_(E times B)$ by
 
-    $ bold(E)_perp+bold(v)_E times bold(B)=bold(0) .$
+    $ bold(E)_perp+bold(v)_E times bold(B)=bold(0) . $
 
     Write the remaining slow correction as $bold(delta v)$. Keeping the
     leading inertial term gives
 
-    $ m pdv(bold(v)_E,t)=q (bold(delta v) times bold(B)) .$
+    $ m pdv(bold(v)_E,t)=q (bold(delta v) times bold(B)) . $
 
     #derivation-step[Invert the magnetic operator]
     Cross with $bold(B)$. Because the correction is perpendicular to the
     field,
 
     $ (bold(delta v) times bold(B)) times bold(B)
-      =-B^2 bold(delta v) .$
+      =-B^2 bold(delta v) . $
 
     Thus
 
     $ bold(delta v)=m/(q B^2)
-      (bold(B) times pdv(bold(v)_E,t)) .$
+      (bold(B) times pdv(bold(v)_E,t)) . $
 
     Since $bold(B)$ is constant,
 
     $ pdv(bold(v)_E,t)=
-      (pdv(bold(E)_perp,t) times bold(B))/(B^2) .$
+      (pdv(bold(E)_perp,t) times bold(B))/(B^2) . $
 
     Use $bold(B) times (bold(A) times bold(B))=B^2 bold(A)$ for
     $bold(A) dot bold(B)=0$. The correction is therefore
 
-    $ bold(delta v)=m/(q B^2) pdv(bold(E)_perp,t) .$
+    $ bold(delta v)=m/(q B^2) pdv(bold(E)_perp,t) . $
 
     #derivation-step[State the ordering]
     The discarded term $m pdv(bold(delta v),t)$ is smaller by
@@ -858,7 +858,7 @@
     slowly varying-field approximation.
 
     Numerical result: $abs(v_"pol,e")=qty("171", "m/s")$ and
-    #normalized-label[$omega_"d"/abs(Omega_e)=qty("5.69e-5", "1")$].
+    #normalized-label[ $omega_"d"/abs(Omega_e)=qty("5.69e-5", "1")$].
   ]
 
   #interpretation(
@@ -965,27 +965,27 @@
     With $bold(B)=B bold(e)_z$, the component equations are
 
     $ pdv(v_x,t)=(q/m) E_x+Omega v_y, quad
-      pdv(v_y,t)=(q/m) E_y-Omega v_x .$
+      pdv(v_y,t)=(q/m) E_y-Omega v_x . $
 
     Define $v_"cw"=v_x+i v_y$ and $E_"cw"=E_x+i E_y$. Adding $i$ times
     the second equation to the first gives
 
-    $ pdv(v_"cw",t)+i Omega v_"cw"=(q/m)E_"cw" .$
+    $ pdv(v_"cw",t)+i Omega v_"cw"=(q/m)E_"cw" . $
 
     #derivation-step[Insert a harmonic drive]
     Use
 
     $ E_"cw" (t)=tilde(E)_"cw" exp(-i omega t), quad
-      v_"cw" (t)=tilde(v)_"cw" exp(-i omega t) .$
+      v_"cw" (t)=tilde(v)_"cw" exp(-i omega t) . $
 
     The forced amplitude satisfies
 
     $ -i omega tilde(v)_"cw"+i Omega tilde(v)_"cw"
-      =(q/m) tilde(E)_"cw" ,$
+      =(q/m) tilde(E)_"cw" , $
 
     so
 
-    $ tilde(v)_"cw"=(q tilde(E)_"cw")/(i m (Omega-omega)) .$
+    $ tilde(v)_"cw"=(q tilde(E)_"cw")/(i m (Omega-omega)) . $
 
     The homogeneous solution is $v_("cw",0) exp(-i Omega t)$. The forced
     response therefore resonates at $omega=Omega$ for this polarization.
@@ -993,7 +993,7 @@
     #derivation-step[Reverse the circular polarization]
     With $v_"ccw"=v_x-i v_y$ and $E_"ccw"=E_x-i E_y$,
 
-    $ pdv(v_"ccw",t)-i Omega v_"ccw"=(q/m)E_"ccw" .$
+    $ pdv(v_"ccw",t)-i Omega v_"ccw"=(q/m)E_"ccw" . $
 
     Its denominator is proportional to $omega+Omega$. For positive drive
     frequency, one circular polarization resonates at $omega=abs(Omega)$;

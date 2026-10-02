@@ -48,10 +48,10 @@
   assumptions: (
     ([kinetic energy], $epsilon_("kin",s) = m_s v^2 slash 2$),
     ([thermal energy], $epsilon_("th",s) = k_B T_s$),
-    ([Maxwellian, drift $u_s$], $f prop exp(-(v_x - u_s)^2 slash v_"th"^2)$),
-    ([species temperatures], $T_e != T_i$),
+    ([Maxwellian], $f prop exp(-(v_x - u_s)^2 slash v_"th"^2)$),
+    ([temperatures], $T_e != T_i$),
   ),
-  symbols: [$m_s$~mass, $v$~speed, $v_x$~velocity component,
+  symbols: [$m_s$~mass, $v$~speed, $v_x$~velocity component, $u_s$~drift,
     $T_s$~temperature, $k_B$~Boltzmann constant, $f$~distribution function],
   derivation: (
     ([convention], $m_s v_"th"^2 slash 2 = k_B T_s$),

@@ -28,21 +28,17 @@
       ]);
       playwrightCore = pkgs.playwright-driver;
       # Manim with its own TeX: the MathTex template in animations/style.py
-      # loads Libertinus (Type 1 text and libertinust1math) through latex and
-      # dvisvgm.  nixpkgs' manim wrapper puts a TeX without Libertinus first on
+      # loads STIX Two (the Type 1 stix2 package) through latex and dvisvgm.
+      # nixpkgs' manim wrapper puts a TeX without STIX Two first on
       # PATH, so the scenes run through `python -m manim` with this TeX instead.
       manimTex = pkgs.texliveBasic.withPackages (ps: [
         ps.amsmath
         ps.babel-english
         ps.dvisvgm
         ps.etoolbox
-        ps.fontaxes
         ps.iftex
-        ps.mweights
         ps.xkeyval
-        ps.libertinus
-        ps.libertinus-type1
-        ps.libertinust1math
+        ps.stix2-type1
         ps.preview
         ps.standalone
       ]);

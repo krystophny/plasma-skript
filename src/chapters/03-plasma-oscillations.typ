@@ -115,17 +115,17 @@
 
     Gauss's law for two infinite sheets gives the uniform internal field
 
-    $ E=(e n_0 xi)/epsilon_0 .$
+    $ E=(e n_0 xi)/epsilon_0 . $
 
     #derivation-step[Identify the oscillator]
     An electron feels $F=-e E$, so
 
-    $ m_e dv(xi,t,2)=-(n_0 e^2)/epsilon_0 xi .$
+    $ m_e dv(xi,t,2)=-(n_0 e^2)/epsilon_0 xi . $
 
     The coefficient of $xi$ has units of $upright("s")^(-2)$ and identifies the
     square of the plasma frequency. Within the small-amplitude model,
 
-    $ xi(t)=xi_0 cos(omega_(p,e) t+delta) .$
+    $ xi(t)=xi_0 cos(omega_(p,e) t+delta) . $
     ]
   )
 

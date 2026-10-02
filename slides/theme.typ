@@ -5,7 +5,8 @@
 // element starts and ends on a column edge. Content starts at the top margin;
 // on the first page of a section it starts below the section title.
 //
-// Type: Libertinus Serif and Libertinus Math, the typefaces of the script.
+// Type: STIX Two Text and STIX Two Math, the typefaces of the script
+// (fonts/; block labels use its real small caps, OpenType smcp).
 // Two text sizes: 26 pt for the section and chapter title, 18 pt for
 // everything else, formulas included. Page numbers, the photo credit lines
 // and the title page's transparency line are page furniture at 11 pt.
@@ -133,9 +134,11 @@
     author: "Christopher Albert",
   )
   set page(width: 297mm, height: 210mm, margin: margin, fill: white)
-  set text(font: "Libertinus Serif", size: body-size, fill: ink, lang: "en",
-    top-edge: "cap-height", bottom-edge: "baseline")
-  show math.equation: set text(font: "Libertinus Math")
+  // STIX Two Math supplies the symbols STIX Two Text lacks (arrows such as ⇒
+  // in prose).
+  set text(font: ("STIX Two Text", "STIX Two Math"), size: body-size,
+    fill: ink, lang: "en", top-edge: "cap-height", bottom-edge: "baseline")
+  show math.equation: set text(font: "STIX Two Math")
   set par(leading: 0.62em, spacing: 0.62em)
   title-page(chapter)
   body

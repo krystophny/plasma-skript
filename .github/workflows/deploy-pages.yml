@@ -62,9 +62,9 @@ jobs:
       - name: Install Manim system dependencies
         if: steps.lookup.outputs.cache-hit != 'true'
         run: |
-          # The scenes use MathTex with the Libertinus template of
-          # animations/style.py: fonts-extra carries libertinus,
-          # libertinus-type1 and libertinust1math; standalone is in latex-extra.
+          # The scenes use MathTex with the STIX Two template of
+          # animations/style.py: fonts-extra carries stix2-type1 (the stix2
+          # package); standalone is in latex-extra.
           sudo apt-get update -qq
           sudo apt-get install -y -qq --no-install-recommends \
             ffmpeg libcairo2-dev libpango1.0-dev pkg-config \
@@ -75,7 +75,7 @@ jobs:
       - uses: astral-sh/setup-uv@v6
         if: steps.lookup.outputs.cache-hit != 'true'
 
-      # The scenes register Libertinus Serif from fonts/ themselves.
+      # The scenes register STIX Two Text from fonts/ themselves.
       - name: Install Manim
         if: steps.lookup.outputs.cache-hit != 'true'
         run: |

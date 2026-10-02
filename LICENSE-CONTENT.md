@@ -22,5 +22,5 @@ outside the public repository and site bundle.
 
 Two directories carry their own notices: the photos in `slides/photos/` are
 public domain or CC BY 4.0 as recorded per file in `slides/photos/credits.md`,
-and the Libertinus fonts in `fonts/` are licensed under the SIL Open Font
+and the STIX Two fonts in `fonts/` are licensed under the SIL Open Font
 License 1.1 (`fonts/OFL.txt`).

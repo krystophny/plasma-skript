@@ -88,7 +88,7 @@
 )
 
 #let web-model-map() = context {
-  set text(font: "Libertinus Serif", size: 11pt, fill: rgb("#1c1f23"))
+  set text(font: "STIX Two Text", size: 11pt, fill: rgb("#1c1f23"))
   let note(body) = text(size: 10.5pt, fill: rgb("#4a5058"), style: "italic", body)
   let detail(body) = text(size: 9.5pt, fill: rgb("#4a5058"), body)
   let box(pos, body, name) = node(pos, align(center, body), name: name,
@@ -390,7 +390,7 @@
   ],
 )[
   #graphic(fletcher.diagram(
-    spacing: (1.45cm, 1.15cm),
+    spacing: (1.1cm, 1.15cm),
     ..concept-style,
     node((0, 0), [Induction equation \
       $partial_t bold(B)=curl (bold(u) times bold(B))+D_B laplacian bold(B)$]),
@@ -1002,7 +1002,7 @@
       caption: caption-text,
     )[
       #fletcher.diagram(
-        spacing: (1.8cm, 1.1cm),
+        spacing: (1.3cm, 1.35cm),
         ..concept-style,
         node((0, 0), [Cold magnetized wave]),
         node((-1.45, 1), [Collisions \

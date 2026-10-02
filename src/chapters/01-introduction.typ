@@ -128,7 +128,7 @@
       inset: 0.35em,
       table.header(
         [Setting],
-        [$n_e$],
+        [ $n_e$],
         [$k_B T_e$],
         [Characteristic emphasis],
       ),

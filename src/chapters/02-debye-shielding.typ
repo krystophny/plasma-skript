@@ -53,27 +53,27 @@
     [#derivation-step[Compute the enclosed charge and field]
     The enclosed charge at radius $r$ is
 
-    $ Q(r)=(4 pi)/3 N e r^3 .$
+    $ Q(r)=(4 pi)/3 N e r^3 . $
 
     Applying Gauss's flux law to a sphere gives
 
-    $ E(r) 4 pi r^2=Q(r)/epsilon_0 ,$
+    $ E(r) 4 pi r^2=Q(r)/epsilon_0 , $
 
     and hence
 
-    $ E(r)=(N e r)/(3 epsilon_0) .$
+    $ E(r)=(N e r)/(3 epsilon_0) . $
 
     #derivation-step[Estimate the boundary potential]
     Measured relative to infinity, the potential at the boundary of the
     uniformly charged sphere is
 
-    $ phi(R)=Q(R)/(4 pi epsilon_0 R)=(N e R^2)/(3 epsilon_0) .$
+    $ phi(R)=Q(R)/(4 pi epsilon_0 R)=(N e R^2)/(3 epsilon_0) . $
 
     A thermal particle can cross or substantially rearrange the region when
     $abs(e phi(R))$ is comparable to $k_B T_e$. Solving that balance gives the
     displayed estimate. If $N=n_0$, then
 
-    $ R approx sqrt(3) lambda_D .$
+    $ R approx sqrt(3) lambda_D . $
 
     The order-one factor depends on the charge geometry.]
   )
@@ -130,28 +130,28 @@
     For a positive test potential, the electron potential energy is $-e phi$.
     The equilibrium Boltzmann factor is therefore
 
-    $ exp((-(-e phi))/(k_B T_e))=exp((e phi)/(k_B T_e)) .$
+    $ exp((-(-e phi))/(k_B T_e))=exp((e phi)/(k_B T_e)) . $
 
     When $abs(e phi)/(k_B T_e) << 1$, expand it to first order:
 
-    $ n_e approx n_0 (1+(e phi)/(k_B T_e)) .$
+    $ n_e approx n_0 (1+(e phi)/(k_B T_e)) . $
 
     With immobile ions, the charge density becomes
 
-    $ rho_q=e n_0-e n_e approx -(e^2 n_0 phi)/(k_B T_e) .$
+    $ rho_q=e n_0-e n_e approx -(e^2 n_0 phi)/(k_B T_e) . $
 
     #derivation-step[Insert the response into Poisson's equation]
     Define the Debye coefficient by
 
-    $ lambda_D^(-2)=(n_0 e^2)/(epsilon_0 k_B T_e) .$
+    $ lambda_D^(-2)=(n_0 e^2)/(epsilon_0 k_B T_e) . $
 
     Inserting the charge response into the Poisson equation gives
 
-    $ laplacian phi-phi/lambda_D^2=0 .$
+    $ laplacian phi-phi/lambda_D^2=0 . $
 
     In spherical symmetry, the decaying source solution has the form
 
-    $ phi(r) "proportional to" exp(-r/lambda_D)/r .$
+    $ phi(r) "proportional to" exp(-r/lambda_D)/r . $
 
     The exponential factor is the shielding; $1/r$ is the unscreened geometric
     spreading of a point source.]
@@ -207,7 +207,7 @@
     charge be a uniformly charged three-dimensional sphere of radius $R$ and
     total charge $Q$. Its volume charge density is
 
-    $ rho_Q = (3 Q)/(4 pi R^3) .$
+    $ rho_Q = (3 Q)/(4 pi R^3) . $
 
     The animation shows a two-dimensional cross-section of this sphere. The
     randomly scattered source markers represent the continuous charge density.
@@ -240,7 +240,7 @@
 
   $ laplacian phi_"D" - phi_"D"/lambda_D^2 = -rho_Q/epsilon_0, quad r < R $
 
-  $ laplacian phi_"D" - phi_"D"/lambda_D^2 = 0, quad r > R .$
+  $ laplacian phi_"D" - phi_"D"/lambda_D^2 = 0, quad r > R . $
 
   #equation-note[
     $rho_Q$ is the source charge density, while the mobile
@@ -258,16 +258,16 @@
     [#derivation-step[Enclose the source]
     For $r<R$, the charge enclosed by a concentric spherical surface is
 
-    $ Q_"enc" (r) = rho_Q (4 pi r^3)/3 = Q r^3/R^3 .$
+    $ Q_"enc" (r) = rho_Q (4 pi r^3)/3 = Q r^3/R^3 . $
 
     Gauss's law then gives
 
     $ E_"C" (r) 4 pi r^2 = Q_"enc" (r)/epsilon_0
-      => E_"C" (r) = (Q r)/(4 pi epsilon_0 R^3), quad r<R .$
+      => E_"C" (r) = (Q r)/(4 pi epsilon_0 R^3), quad r<R . $
 
     For $r>R$, the enclosed charge is $Q$, so
 
-    $ E_"C" (r) = Q/(4 pi epsilon_0 r^2), quad r>R .$
+    $ E_"C" (r) = Q/(4 pi epsilon_0 r^2), quad r>R . $
 
     #derivation-step[Integrate the field with the boundary condition]
     Set $phi_"C" (infinity)=0$ and integrate inward from the exterior. This
@@ -289,11 +289,11 @@
     particular solution and the regular homogeneous solution give
 
     $ phi_(D,"in")(r) = phi_"p" + A (sinh(kappa r))/r,
-      quad phi_"p" = rho_Q/(epsilon_0 kappa^2) = (3 Q)/(4 pi epsilon_0 kappa^2 R^3) .$
+      quad phi_"p" = rho_Q/(epsilon_0 kappa^2) = (3 Q)/(4 pi epsilon_0 kappa^2 R^3) . $
 
     Outside the source, decay at infinity selects
 
-    $ phi_(D,"out")(r) = B e^(-kappa r)/r .$
+    $ phi_(D,"out")(r) = B e^(-kappa r)/r . $
 
     #derivation-step[Match the source boundary]
     Continuity of potential and radial derivative at $r=R$ gives
@@ -302,7 +302,7 @@
 
     and
 
-    $ dv(phi_(D,"in"), r) |_(r=R) = dv(phi_(D,"out"), r) |_(r=R) .$
+    $ dv(phi_(D,"in"), r) |_(r=R) = dv(phi_(D,"out"), r) |_(r=R) . $
 
     Solving these two equations gives
 
@@ -310,7 +310,7 @@
 
     and
 
-    $ B = (R phi_"p")/(2 x) (e^x (x-1) + (x+1) e^(-x)) .$
+    $ B = (R phi_"p")/(2 x) (e^x (x-1) + (x+1) e^(-x)) . $
 
     Therefore the exterior response contains both the geometrical Coulomb
     factor $1/r$ and the shielding factor $e^(-r/lambda_D)$. For a finite

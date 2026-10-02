@@ -100,21 +100,21 @@
     $n_b sigma_(a b) dif ell$. If $P_(0)(ell)$ is the probability of no
     collision, independent segments give
 
-    $ dif P_0=-n_b sigma_(a b)P_0 dif ell .$
+    $ dif P_0=-n_b sigma_(a b)P_0 dif ell . $
 
     With $P_(0)(0)=1$, integration gives
 
-    $ P_(0)(ell)=exp(-n_b sigma_(a b)ell) .$
+    $ P_(0)(ell)=exp(-n_b sigma_(a b)ell) . $
 
     #derivation-step[Compute the mean free path and rate]
     The mean distance is the survival-probability integral
 
     $ lambda_(a b)=integral_0^infinity P_(0)(ell) dif ell
-      =1/(n_b sigma_(a b)) .$
+      =1/(n_b sigma_(a b)) . $
 
     For fixed relative speed, $dif ell=v_"rel" dif t$, so
 
-    $ nu_(a b)=n_b sigma_(a b)v_"rel" .$
+    $ nu_(a b)=n_b sigma_(a b)v_"rel" . $
 
     Averaging over the relative-velocity distribution replaces the product by
     $n_b ⟨sigma_(a b)v_"rel"⟩$ and fixes the corresponding convention for the
@@ -123,7 +123,7 @@
     #derivation-step[Compare with a macroscopic length]
     For length $L$, the Knudsen number is
 
-    $ K_"n"=lambda/L .$
+    $ K_"n"=lambda/L . $
 
     The fluid ordering is $K_"n" << 1$, $K_"n" approx 1$ marks a transition,
     and $K_"n" >> 1$ requires kinetic or ballistic reasoning.]
@@ -255,20 +255,20 @@
     A collision changes the average directed momentum by an amount that scales
     as
 
-    $ Delta bold(p)_a "scales as" m_a (bold(u)_a-bold(u)_n) .$
+    $ Delta bold(p)_a "scales as" m_a (bold(u)_a-bold(u)_n) . $
 
     During $dif t$, the number of encounters per particle is
     $nu_(a n)dif t$. Multiplying the momentum change by the charged-particle
     density gives the force-density scaling
 
     $ bold(R)_(a n) "scales as"
-      -m_a n_a nu_(a n)(bold(u)_a-bold(u)_n) .$
+      -m_a n_a nu_(a n)(bold(u)_a-bold(u)_n) . $
 
     #derivation-step[Check the stationary-neutral limit]
     The force is restorative: it vanishes when the charged species and neutral
     background share a velocity. For stationary neutrals,
 
-    $ bold(R)_(a n)=-m_a n_a nu_(a n)bold(u)_a .$
+    $ bold(R)_(a n)=-m_a n_a nu_(a n)bold(u)_a . $
 
     The rate is a momentum-transfer rate, not necessarily the frequency of
     every microscopic encounter.
@@ -433,22 +433,22 @@
     [#derivation-step[Accumulate deflection over impact parameters]
     For $b >> b_90$, Rutherford scattering gives
 
-    $ chi(b) approx (2 b_90)/b .$
+    $ chi(b) approx (2 b_90)/b . $
 
     During $dif t$, the number of target ions in the annulus from $b$ to
     $b+dif b$ scales as
 
-    $ n_"i"v_"rel" 2 pi b dif b dif t .$
+    $ n_"i"v_"rel" 2 pi b dif b dif t . $
 
     The squared transverse kick scales as $v_"rel"^2 chi(b)^2$. Hence the
     accumulated squared deflection has the scale
 
     $ dv(⟨Delta v_perp^2⟩,t) ∝ n_"i"v_"rel"^3 b_90^2
-      integral_(b_90)^(lambda_D) (dif b)/b .$
+      integral_(b_90)^(lambda_D) (dif b)/b . $
 
     The integral is
 
-    $ ln(lambda_D/b_90)=ln Lambda_"cut" ,$
+    $ ln(lambda_D/b_90)=ln Lambda_"cut" , $
 
     the Coulomb logarithm. Distant deflections therefore cannot be discarded
     merely because each individual kick is small.
@@ -456,11 +456,11 @@
     #derivation-step[Insert the Maxwellian velocity scale]
     For Maxwellian electrons, use
 
-    $ ⟨v_"e"⟩=sqrt((8 k_B T_"e")/(pi m_"e")) .$
+    $ ⟨v_"e"⟩=sqrt((8 k_B T_"e")/(pi m_"e")) . $
 
     Insert this scale and
 
-    $ omega_(p,e)^2=(n_"e"e^2)/(epsilon_0 m_"e") .$
+    $ omega_(p,e)^2=(n_"e"e^2)/(epsilon_0 m_"e") . $
 
     This gives the scaling $nu_(e i) ∝ T_"e"^(-3/2)ln Lambda_"cut"$.
     It does not fix a kinetic transport prefactor. The displayed textbook
@@ -470,7 +470,7 @@
     #derivation-step[State the weak-coupling condition]
     The ratio of distant to strong-scattering scales is large only when
 
-    $ Lambda=n_"e"lambda_D^3 >> 1 .$
+    $ Lambda=n_"e"lambda_D^3 >> 1 . $
 
     Otherwise independent binary encounters and a weak-coupling collision
     operator are not self-consistent.]
@@ -614,36 +614,36 @@
     Start with the electron--ion frictional force density
 
     $ bold(R)_"e i"=m_"e"n_"e"nu_"e i"
-      (bold(u)_"i"-bold(u)_"e") .$
+      (bold(u)_"i"-bold(u)_"e") . $
 
     For singly charged hydrogen and quasi-neutrality,
 
-    $ bold(j)=e n_"e" (bold(u)_"i"-bold(u)_"e") .$
+    $ bold(j)=e n_"e" (bold(u)_"i"-bold(u)_"e") . $
 
     Dividing by the charge-density scale $e n_"e"$ gives
 
     $ bold(R)_"e i"/(e n_"e")
-      =(m_"e"nu_"e i"bold(j))/(n_"e"e^2) .$
+      =(m_"e"nu_"e i"bold(j))/(n_"e"e^2) . $
 
     #derivation-step[Identify scalar resistivity and conductivity]
     The coefficient of $bold(j)$ is the resistivity:
 
-    $ eta=(m_"e"nu_"e i")/(n_"e"e^2) .$
+    $ eta=(m_"e"nu_"e i")/(n_"e"e^2) . $
 
     Its reciprocal is the DC conductivity:
 
-    $ sigma_"dc"=(n_"e"e^2)/(m_"e"nu_"e i") .$
+    $ sigma_"dc"=(n_"e"e^2)/(m_"e"nu_"e i") . $
 
     #derivation-step[Insert the Coulomb rate]
     Use
 
-    $ omega_(p,e)^4=((n_"e"e^2)/(epsilon_0 m_"e"))^2 .$
+    $ omega_(p,e)^4=((n_"e"e^2)/(epsilon_0 m_"e"))^2 . $
 
     Inserting the Coulomb rate gives
 
     $ eta_"Sp"=m_"e"/(n_"e"e^2)
       [(sqrt(2)omega_(p,e)^4)/(64 pi n_"e")]
-      ((k_B T_"e")/m_"e")^(-3/2)ln Lambda .$
+      ((k_B T_"e")/m_"e")^(-3/2)ln Lambda . $
 
     Cancelling explicit density factors leaves the displayed temperature
     scaling and only weak logarithmic density dependence. Density remains
@@ -812,16 +812,16 @@
     $n_"e"q_"e"$ and using $bold(j)=n_"e"q_"e"bold(u)_"e"$ gives
 
     $ bold(j)=(n_"e"q_"e"^2)/(m_"e"a_"e")bold(E)
-      +(Omega_"e"/a_"e")(bold(j)times hat(bold(z))) .$
+      +(Omega_"e"/a_"e")(bold(j)times hat(bold(z))) . $
 
     In components,
 
     $ J_x=sigma_0 E_x+(Omega_"e"/a_"e")J_y, quad
-      J_y=sigma_0 E_y-(Omega_"e"/a_"e")J_x ,$
+      J_y=sigma_0 E_y-(Omega_"e"/a_"e")J_x , $
 
     with
 
-    $ sigma_0=(n_"e"q_"e"^2)/(m_"e"a_"e") .$
+    $ sigma_0=(n_"e"q_"e"^2)/(m_"e"a_"e") . $
 
     #derivation-step[Invert the perpendicular response]
     Solving the two coupled equations gives
@@ -829,11 +829,11 @@
     $ sigma_(perp)=(n_"e"q_"e"^2 a_"e")
       /(m_"e" (a_"e"^2+Omega_"e"^2)), quad
       sigma_"H"=(n_"e"q_"e"^2 Omega_"e")
-      /(m_"e" (a_"e"^2+Omega_"e"^2)) .$
+      /(m_"e" (a_"e"^2+Omega_"e"^2)) . $
 
     The parallel entry is
 
-    $ sigma_(parallel)=(n_"e"q_"e"^2)/(m_"e"a_"e") .$
+    $ sigma_(parallel)=(n_"e"q_"e"^2)/(m_"e"a_"e") . $
 
     Setting $omega=0$ recovers the displayed real DC tensor.
 
@@ -842,19 +842,19 @@
     collisionless response), define
 
     $ omega_(p,s)^2=(n_s q_s^2)/(epsilon_0 m_s), quad
-      Omega_s=(q_s B_0)/m_s, quad a_s=nu_s-i omega .$
+      Omega_s=(q_s B_0)/m_s, quad a_s=nu_s-i omega . $
 
     The species responses sum to
 
-    $ sigma_(parallel)=epsilon_0 sum_s (omega_(p,s)^2/a_s) ,$
+    $ sigma_(parallel)=epsilon_0 sum_s (omega_(p,s)^2/a_s) , $
 
     $ sigma_(perp)=epsilon_0 sum_s
-      (omega_(p,s)^2 a_s)/(a_s^2+Omega_s^2) ,$
+      (omega_(p,s)^2 a_s)/(a_s^2+Omega_s^2) , $
 
     and
 
     $ sigma_"H"=epsilon_0 sum_s
-      (omega_(p,s)^2 Omega_s)/(a_s^2+Omega_s^2) .$
+      (omega_(p,s)^2 Omega_s)/(a_s^2+Omega_s^2) . $
 
     Current always adds as $bold(j)=sum_s n_s q_s bold(u)_s$, but these
     independent Drude tensors also require the stated drag model. For mutual

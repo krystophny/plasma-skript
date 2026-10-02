@@ -317,7 +317,7 @@ for T_example, text, color, ls in [(1e4, r"$10\,\mathrm{keV}$", BLUE, "-"),
     if T_example < 1:
         label(ax, 2e6, 10**2.2, text, color)
     else:
-        label(ax, density[k], count_curve[k] * 20, text, color)
+        label(ax, density[k], count_curve[k] * 60, text, color)
 ax.axhline(1, color=ORANGE, lw=0.6)
 ax.fill_between(density, 1e-6, 1, color=ORANGE, alpha=0.10, lw=0)
 ax.set(xscale="log", yscale="log", xlim=(1e6, 1e32), ylim=(1e-4, 1e16),

@@ -28,7 +28,7 @@ fi
 
 mkdir -p "$build/media" "$out_dir"
 
-typst eval --root "$repo_root" --font-path "$repo_root/fonts" --in "$repo_root/src/print.typ" \
+typst eval --root "$repo_root" --font-path "$repo_root/fonts" --ignore-system-fonts --in "$repo_root/src/print.typ" \
   '(chapters: query(<script-chapter>).map(m => m.value),
     sections: query(<script-section>).map(m => m.value))' \
   >"$build/script-outline.json.tmp"
@@ -56,7 +56,7 @@ stems=()
 for deck in "$repo_root"/slides/[0-9]*.typ; do
   stem="$(basename "$deck" .typ)"
   stems+=("$stem")
-  typst compile --root "$repo_root" --font-path "$repo_root/fonts" \
+  typst compile --root "$repo_root" --font-path "$repo_root/fonts" --ignore-system-fonts \
     "$deck" "$out_dir/$stem.pdf"
 done
 

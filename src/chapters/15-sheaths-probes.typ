@@ -86,50 +86,50 @@
 
     $ f_(s)(bold(v))=
       n_s (m_s/(2 pi k_B T_s))^(3/2)
-      exp(-(m_s (v_x^2+v_y^2+v_z^2))/(2 k_B T_s)) .$
+      exp(-(m_s (v_x^2+v_y^2+v_z^2))/(2 k_B T_s)) . $
 
     Insert it into the half-space flux definition:
 
     $ Gamma_(s,0)=
       integral_0^infinity integral_(-infinity)^infinity
       integral_(-infinity)^infinity
-      v_z f_(s)(bold(v)) dif v_x dif v_y dif v_z .$
+      v_z f_(s)(bold(v)) dif v_x dif v_y dif v_z . $
 
     #derivation-step[Evaluate the tangential integrals]
     Each tangential Gaussian integral is
 
     $ integral_(-infinity)^infinity
       exp(-(m_s v_x^2)/(2 k_B T_s)) dif v_x
-      =sqrt((2 pi k_B T_s)/m_s) .$
+      =sqrt((2 pi k_B T_s)/m_s) . $
 
     Evaluating both tangential integrals leaves
 
     $ Gamma_(s,0)=
       n_s sqrt(m_s/(2 pi k_B T_s))
       integral_0^infinity v_z
-      exp(-(m_s v_z^2)/(2 k_B T_s)) dif v_z .$
+      exp(-(m_s v_z^2)/(2 k_B T_s)) dif v_z . $
 
     #derivation-step[Evaluate the normal half-space integral]
     Use
 
     $ integral_0^infinity v exp(-a v^2) dif v=1/(2a), quad
-      a=m_s/(2 k_B T_s) .$
+      a=m_s/(2 k_B T_s) . $
 
     The normal integral is $(k_B T_s)/m_s$, so
 
-    $ Gamma_(s,0)=n_s sqrt((k_B T_s)/(2 pi m_s)) .$
+    $ Gamma_(s,0)=n_s sqrt((k_B T_s)/(2 pi m_s)) . $
 
     With $v_"th,s"=sqrt((2 k_B T_s)/m_s)$, this becomes
 
-    $ Gamma_(s,0)=(n_s v_"th,s")/(2 sqrt(pi)) .$
+    $ Gamma_(s,0)=(n_s v_"th,s")/(2 sqrt(pi)) . $
 
     The mean speed of the same Maxwellian is
 
-    $ v_"mean,s"=sqrt((8 k_B T_s)/(pi m_s)) ,$
+    $ v_"mean,s"=sqrt((8 k_B T_s)/(pi m_s)) , $
 
     which gives the equivalent form
 
-    $ Gamma_(s,0)=(n_s v_"mean,s")/4 .$
+    $ Gamma_(s,0)=(n_s v_"mean,s")/4 . $
     ]
   )
 
@@ -262,69 +262,69 @@
     Maxwell--Boltzmann response is
 
     $ n_(s)(phi)=n_(s,infinity)
-      exp(-(q_s phi)/(k_B T_s)) .$
+      exp(-(q_s phi)/(k_B T_s)) . $
 
     For electrons $q_e=-e$ and with $phi(infinity)=0$ as the plasma
     reference,
 
-    $ n_e=n_0 exp((e phi)/(k_B T_e))=n_0 exp(-eta) .$
+    $ n_e=n_0 exp((e phi)/(k_B T_e))=n_0 exp(-eta) . $
 
     #derivation-step[Use ion continuity and energy]
     For cold steady ions,
 
-    $ dv(n_i u_i,x)=0, quad n_i u_i=n_s u_s=Gamma_i .$
+    $ dv(n_i u_i,x)=0, quad n_i u_i=n_s u_s=Gamma_i . $
 
     The ion momentum equation is
 
-    $ m_i u_i dv(u_i,x)=-e dv(phi,x) .$
+    $ m_i u_i dv(u_i,x)=-e dv(phi,x) . $
 
     Since $u_i dv(u_i,x)=dv(u_i^2/2,x)$, direct integration gives the
     conserved energy:
 
-    $ dv((m_i u_i^2)/2+e phi,x)=0 .$
+    $ dv((m_i u_i^2)/2+e phi,x)=0 . $
 
     At the edge, where $eta=0$,
 
-    $ (m_i u_i^2)/2+e phi=(m_i u_s^2)/2 .$
+    $ (m_i u_i^2)/2+e phi=(m_i u_s^2)/2 . $
 
     Since $e phi=-k_B T_e eta$,
 
     $ u_i^2=u_s^2+(2 k_B T_e eta)/m_i
-      =c_s^2 (M^2+2 eta) .$
+      =c_s^2 (M^2+2 eta) . $
 
     Continuity then gives
 
-    $ n_i/n_s=u_s/u_i=M/(M^2+2 eta)^(1/2) .$
+    $ n_i/n_s=u_s/u_i=M/(M^2+2 eta)^(1/2) . $
 
     #derivation-step[Nondimensionalize Poisson's equation]
     Gauss's law reads
 
-    $ div(bold(E))=rho_q/epsilon_0=(e(n_i-n_e))/epsilon_0 .$
+    $ div(bold(E))=rho_q/epsilon_0=(e(n_i-n_e))/epsilon_0 . $
 
     In one dimension, $E_x=-dv(phi,x)$, so
 
-    $ -dv(phi,x,2)=(e(n_i-n_e))/epsilon_0 .$
+    $ -dv(phi,x,2)=(e(n_i-n_e))/epsilon_0 . $
 
     Set $phi=-((k_B T_e)/e) eta$ and $x=lambda_D xi$. The left side becomes
 
-    $ ((k_B T_e)/(e lambda_D^2)) dv(eta,xi,2) .$
+    $ ((k_B T_e)/(e lambda_D^2)) dv(eta,xi,2) . $
 
     Using $lambda_D^2=(epsilon_0 k_B T_e)/(n_0 e^2)$ and $n_s=n_0$ at the
     ideal matching edge gives
 
     $ dv(eta,xi,2)=n_i/n_0-n_e/n_0
-      =M/(M^2+2 eta)^(1/2)-exp(-eta) .$
+      =M/(M^2+2 eta)^(1/2)-exp(-eta) . $
 
     #derivation-step[Expand at the sheath edge]
     For small $eta$,
 
     $ M/(M^2+2 eta)^(1/2)
       =(1+(2 eta)/(M^2))^(-1/2)
-      approx 1-eta/M^2 ,$
+      approx 1-eta/M^2 , $
 
     while
 
-    $ exp(-eta) approx 1-eta .$
+    $ exp(-eta) approx 1-eta . $
 
     Their difference is $(1-M^(-2))eta$. If $M<1$, the coefficient is
     negative and the edge curvature has the wrong sign for a monotone
@@ -346,52 +346,52 @@
     the idealized Child--Langmuir boundary, not an exact match to the Bohm
     sheath, whose entry speed is finite. In this idealization ion energy gives
 
-    $ u_i approx sqrt((2 e V)/m_i) .$
+    $ u_i approx sqrt((2 e V)/m_i) . $
 
     Constant ion flux $Gamma_i=n_i u_i$ then gives
 
-    $ n_i=Gamma_i sqrt(m_i/(2 e V)) .$
+    $ n_i=Gamma_i sqrt(m_i/(2 e V)) . $
 
     #derivation-step[Reduce Poisson's equation]
     For $phi=-V$, Poisson's equation is
 
-    $ dv(V,x,2)=(e n_i)/epsilon_0=C V^(-1/2) ,$
+    $ dv(V,x,2)=(e n_i)/epsilon_0=C V^(-1/2) , $
 
     where $C=(Gamma_i/epsilon_0) sqrt((e m_i)/2)$. Introduce the inward distance
     $s=d-x$ measured from the electron-free edge toward the wall. The equation
     becomes
 
-    $ dv(V,s,2)=C V^(-1/2) .$
+    $ dv(V,s,2)=C V^(-1/2) . $
 
     #derivation-step[Integrate from the sheath edge]
     Multiply by $dv(V,s)$ and integrate once:
 
-    $ ((dv(V,s))^2)/2=2 C V^(1/2)+C_1 .$
+    $ ((dv(V,s))^2)/2=2 C V^(1/2)+C_1 . $
 
     At the idealized injection boundary, $s=0$, $V=0$, and the separately
     imposed zero-field condition gives
     $dv(V,s)=0$, so $C_1=0$. Taking the positive branch gives
 
-    $ V^(-1/4) dv(V,s)=2 sqrt(C) .$
+    $ V^(-1/4) dv(V,s)=2 sqrt(C) . $
 
     Integrating from the edge,
 
-    $ 4/3 V^(3/4)=2 sqrt(C) s ,$
+    $ 4/3 V^(3/4)=2 sqrt(C) s , $
 
     and therefore
 
-    $ V(s)=((9 C)/4)^(2/3) s^(4/3) .$
+    $ V(s)=((9 C)/4)^(2/3) s^(4/3) . $
 
     #derivation-step[Evaluate the space-charge current]
     At the wall, $s=d$ and $V=V_w$:
 
-    $ V_w^(3/2)=((9 C)/4)d^2 .$
+    $ V_w^(3/2)=((9 C)/4)d^2 . $
 
     Solving for the ion flux and multiplying by $e$ gives the planar
     Child--Langmuir law:
 
     $ J_i=e Gamma_i
-      =(4 epsilon_0)/9 sqrt((2 e)/m_i) V_w^(3/2)/d^2 .$
+      =(4 epsilon_0)/9 sqrt((2 e)/m_i) V_w^(3/2)/d^2 . $
 
     This is a near-wall space-charge result. It does not replace the
     Boltzmann-electron sheath equation across the complete boundary layer.]
@@ -527,7 +527,7 @@
 
     $ Gamma_(e)(phi_w)=Gamma_(e,0)
       exp(-(e abs(phi_w))/(k_B T_e))
-      =Gamma_(e,0) exp((e phi_w)/(k_B T_e)) .$
+      =Gamma_(e,0) exp((e phi_w)/(k_B T_e)) . $
 
     The final equality uses $phi_w<0$.
 
@@ -535,30 +535,30 @@
     Take ion current into the wall as positive and electron charge transport
     as negative:
 
-    $ J_i=+e Gamma_i, quad J_e=-e Gamma_e .$
+    $ J_i=+e Gamma_i, quad J_e=-e Gamma_e . $
 
     Thus
 
     $ J(phi_w)=e Gamma_i-e Gamma_(e,0)
-      exp((e phi_w)/(k_B T_e)) .$
+      exp((e phi_w)/(k_B T_e)) . $
 
     A floating surface has no external current, so $J(phi_f)=0$ and
 
-    $ Gamma_(e,0) exp((e phi_f)/(k_B T_e))=Gamma_i .$
+    $ Gamma_(e,0) exp((e phi_f)/(k_B T_e))=Gamma_i . $
 
     Taking the logarithm gives
 
-    $ phi_f=((k_B T_e)/e)ln(Gamma_i/Gamma_(e,0)) .$
+    $ phi_f=((k_B T_e)/e)ln(Gamma_i/Gamma_(e,0)) . $
 
     #derivation-step[Insert the ideal edge fluxes]
     The cold-ion Bohm flux and the unretarded thermal electron flux are
 
     $ Gamma_i=n_0 sqrt((k_B T_e)/m_i), quad
-      Gamma_(e,0)=n_0 sqrt((k_B T_e)/(2 pi m_e)) .$
+      Gamma_(e,0)=n_0 sqrt((k_B T_e)/(2 pi m_e)) . $
 
     Their ratio is $sqrt((2 pi m_e)/m_i)$. Therefore
 
-    $ phi_f=((k_B T_e)/(2e))ln((2 pi m_e)/m_i) .$
+    $ phi_f=((k_B T_e)/(2e))ln((2 pi m_e)/m_i) . $
 
     For hydrogen, $(2 pi m_e)/m_i approx 0.00342$, whose logarithm is
     approximately $-5.68$. The ideal cold-ion floating potential is thus
@@ -691,27 +691,27 @@
     The negative-bias electron flux is
 
     $ Gamma_(e)(phi_p)=Gamma_(e,0)
-      exp((e (phi_p-phi_"pl"))/(k_B T_e)) .$
+      exp((e (phi_p-phi_"pl"))/(k_B T_e)) . $
 
     With $I_e=-e A Gamma_e$, its magnitude is
 
     $ abs(I_e)=e A Gamma_(e,0)
-      exp((e (phi_p-phi_"pl"))/(k_B T_e)) .$
+      exp((e (phi_p-phi_"pl"))/(k_B T_e)) . $
 
     Divide by the fixed reference $I_(e,0)=e A Gamma_(e,0)$ and take
     the natural logarithm to obtain a straight line:
 
     $ ln(abs(I_e)/I_(e,0))
-      =(e (phi_p-phi_"pl"))/(k_B T_e) .$
+      =(e (phi_p-phi_"pl"))/(k_B T_e) . $
 
     #derivation-step[Read temperature from the semilog slope]
     Differentiate with respect to probe potential:
 
-    $ dv(ln(abs(I_e)/I_(e,0)),phi_p)=e/(k_B T_e) .$
+    $ dv(ln(abs(I_e)/I_(e,0)),phi_p)=e/(k_B T_e) . $
 
     Inverting the slope gives
 
-    $ k_B T_e=e (dv(ln(abs(I_e)/I_(e,0)),phi_p))^(-1) .$
+    $ k_B T_e=e (dv(ln(abs(I_e)/I_(e,0)),phi_p))^(-1) . $
 
     If the voltage unit is volts and the energy unit is electron-volts, the
     numerical value of $k_B T_e$ in eV is the inverse slope in
@@ -720,16 +720,16 @@
     #derivation-step[Read density from electron saturation]
     At the extrapolated electron-saturation reference,
 
-    $ abs(I_(e,0))=e A Gamma_(e,0) .$
+    $ abs(I_(e,0))=e A Gamma_(e,0) . $
 
     The Maxwellian half-space flux is
 
-    $ Gamma_(e,0)=n_e sqrt((k_B T_e)/(2 pi m_e)) .$
+    $ Gamma_(e,0)=n_e sqrt((k_B T_e)/(2 pi m_e)) . $
 
     Solving for density gives
 
     $ n_e=abs(I_(e,0))/
-      (e A sqrt((k_B T_e)/(2 pi m_e))) .$
+      (e A sqrt((k_B T_e)/(2 pi m_e))) . $
 
     The measured current must be in amperes and the area in square metres for
     this expression to return $n_e$ in #unit("m^-3").]

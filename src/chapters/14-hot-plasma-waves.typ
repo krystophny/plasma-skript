@@ -105,41 +105,41 @@
     $bold(B)_0=bold(0)$, the linear equation is
 
     $ pdv(f_(s,1),t)+bold(v) dot grad(f_(s,1))+
-      q_s/m_s bold(E)_1 dot pdv(f_(s,0),bold(v))=0 .$
+      q_s/m_s bold(E)_1 dot pdv(f_(s,0),bold(v))=0 . $
 
     For the Fourier convention used here,
 
-    $ pdv(f,t) -> -i omega f, quad grad(f) -> i bold(k) f .$
+    $ pdv(f,t) -> -i omega f, quad grad(f) -> i bold(k) f . $
 
     Therefore
 
     $ i (bold(k) dot bold(v)-omega) tilde(f)_(s,1)+
-      q_s/m_s bold(E)_1 dot pdv(f_(s,0),bold(v))=0 ,$
+      q_s/m_s bold(E)_1 dot pdv(f_(s,0),bold(v))=0 , $
 
     and
 
     $ tilde(f)_(s,1)=(-i q_s)/m_s
       (bold(E)_1 dot pdv(f_(s,0),bold(v)))/
-      (omega-bold(k) dot bold(v)) .$
+      (omega-bold(k) dot bold(v)) . $
 
     #derivation-step[Close the electrostatic response with Poisson's equation]
     For an electrostatic wave, set
 
-    $ bold(E)_1=-i bold(k) phi_1 .$
+    $ bold(E)_1=-i bold(k) phi_1 . $
 
     The perturbed charge density is
 
-    $ rho_1=sum_s q_s integral tilde(f)_(s,1) dif^3 bold(v) .$
+    $ rho_1=sum_s q_s integral tilde(f)_(s,1) dif^3 bold(v) . $
 
     Inserting the distribution response gives
 
     $ rho_1=-sum_s (q_s^2 phi_1)/m_s
       integral (bold(k) dot pdv(f_(s,0),bold(v)))/
-      (omega-bold(k) dot bold(v)) dif^3 bold(v) .$
+      (omega-bold(k) dot bold(v)) dif^3 bold(v) . $
 
     Poisson's equation is
 
-    $ div(bold(E)_1)=rho_1/epsilon_0 .$
+    $ div(bold(E)_1)=rho_1/epsilon_0 . $
 
     After the Fourier substitution, $k^2 phi_1=rho_1/epsilon_0$. A nonzero
     potential therefore requires the displayed condition $epsilon_L=0$.
@@ -149,27 +149,27 @@
     reduce the response to the one-dimensional plasma-dispersion function
 
     $ Z(zeta)=1/sqrt(pi) integral_(-infinity)^infinity
-      exp(-x^2)/(x-zeta) dif x .$
+      exp(-x^2)/(x-zeta) dif x . $
 
     Define the integral first for $Im(omega)>0$ and $k>0$, then continue
     causally, keeping the contour below the pole as it crosses the real axis.
     For one
     isotropic electron Maxwellian, the result is
 
-    $ epsilon_L=1+1/(k^2 lambda_D^2)[1+zeta Z(zeta)] .$
+    $ epsilon_L=1+1/(k^2 lambda_D^2)[1+zeta Z(zeta)] . $
 
     #derivation-step[Recover cold and warm limits]
     For a cold distribution, the integration-by-parts form reduces to
 
-    $ epsilon_L=1-omega_(p,e)^2/omega^2 ,$
+    $ epsilon_L=1-omega_(p,e)^2/omega^2 , $
 
     so $omega=omega_(p,e)$. For $abs(zeta)>>1$,
 
-    $ Z(zeta) approx -1/zeta-1/(2 zeta^3)-3/(4 zeta^5) .$
+    $ Z(zeta) approx -1/zeta-1/(2 zeta^3)-3/(4 zeta^5) . $
 
     Substitution into $epsilon_L=0$ gives
 
-    $ omega^2 approx omega_(p,e)^2+(3 k^2 k_B T_e)/m_e .$
+    $ omega^2 approx omega_(p,e)^2+(3 k^2 k_B T_e)/m_e . $
 
     The warm-fluid coefficient is the leading real kinetic correction, while
     the contour contribution contains collisionless damping omitted by the
@@ -311,7 +311,7 @@
 
     $ epsilon_L=1-sum_s q_s^2/(epsilon_0 m_s k^2)
       integral_(-infinity)^infinity
-      (dv(F_(s,0),v))/(v-omega/k) dif v .$
+      (dv(F_(s,0),v))/(v-omega/k) dif v . $
 
     The boundary term $F_(s,0)(v)/(v-omega/k)$ vanishes at infinity.
     Since $dv(1/(v-omega/k),v)=-1/(v-omega/k)^2$, this becomes
@@ -319,7 +319,7 @@
     $ epsilon_L=1-
       sum_s q_s^2/(epsilon_0 m_s k^2)
       integral_(-infinity)^infinity
-      F_(s,0)(v)/(v-omega/k)^2 dif v .$
+      F_(s,0)(v)/(v-omega/k)^2 dif v . $
 
     The contour prescription is unchanged. The equivalent first-derivative
     form is useful because the pole contribution is directly proportional to
@@ -330,13 +330,13 @@
     test function $g(v)$, the boundary value is
 
     $ integral (g(v))/(v-v_"res"-i 0) dif v
-      =upright("PV") integral (g(v))/(v-v_"res") dif v+i pi g(v_"res") .$
+      =upright("PV") integral (g(v))/(v-v_"res") dif v+i pi g(v_"res") . $
 
     Here $upright("PV")$ denotes the Cauchy principal value. Consequently,
 
     $ Im(epsilon_(L)(omega_r,k))=
       -sum_s (pi q_s^2)/(epsilon_0 m_s k^2)
-        dv(F_(s,0),v) .$
+        dv(F_(s,0),v) . $
 
     Each derivative on the right is evaluated at $v=omega_r/k$.
 
@@ -461,18 +461,18 @@
     [#derivation-step[Expand the complex dispersion relation]
     Write
 
-    $ epsilon_(L)(omega,k)=epsilon_(r)(omega,k)+i epsilon_(i)(omega,k) ,$
+    $ epsilon_(L)(omega,k)=epsilon_(r)(omega,k)+i epsilon_(i)(omega,k) , $
 
     and let $omega=omega_(r)+i gamma$. To first order in $gamma$,
 
     $ 0 approx epsilon_(r)(omega_(r),k)+i epsilon_(i)(omega_(r),k)+
-      i gamma pdv(epsilon_(r)(omega,k),omega) .$
+      i gamma pdv(epsilon_(r)(omega,k),omega) . $
 
     Separating real and imaginary parts gives
 
     $ epsilon_(r)(omega_(r),k)=0, quad
       gamma=-epsilon_(i)(omega_(r),k)/
-      (pdv(epsilon_(r)(omega,k),omega)) .$
+      (pdv(epsilon_(r)(omega,k),omega)) . $
 
     #derivation-step[Evaluate the Maxwellian contour contribution]
     Causal continuation gives
@@ -481,12 +481,12 @@
 
     for real positive $zeta$, while
 
-    $ Re(Z(zeta)) approx -1/zeta-1/(2 zeta^3)-... .$
+    $ Re(Z(zeta)) approx -1/zeta-1/(2 zeta^3)-... . $
 
     The imaginary contribution near a positive phase velocity is therefore
     proportional to $zeta exp(-zeta^2)$. The real expansion supplies
 
-    $ omega_r^2 approx omega_(p,e)^2[1+3(k lambda_D)^2] .$
+    $ omega_r^2 approx omega_(p,e)^2[1+3(k lambda_D)^2] . $
 
     Put $a=k lambda_D$. Then $zeta=omega_r/(sqrt(2) a omega_(p,e))$,
     $epsilon_i=(sqrt(pi) zeta exp(-zeta^2))/a^2$, and
@@ -496,7 +496,7 @@
     formula then gives
 
     $ gamma/omega_(p,e) approx
-      -sqrt(pi/8) a^(-3) exp(-1/(2 a^2)-3/2) .$
+      -sqrt(pi/8) a^(-3) exp(-1/(2 a^2)-3/2) . $
 
     #derivation-step[Interpret the sign by energy exchange]
     The field establishes correlations between particle phase and velocity.
@@ -512,11 +512,11 @@
     #derivation-step[Relate temporal and spatial descriptions]
     Expand a real-frequency dispersion relation around a temporal root:
 
-    $ omega(k_r+i k_i) approx omega_r+i gamma+i k_i v_"g" .$
+    $ omega(k_r+i k_i) approx omega_r+i gamma+i k_i v_"g" . $
 
     Holding $omega$ real requires $gamma+k_i v_"g"=0$, hence
 
-    $ k_i=-gamma/v_"g" .$
+    $ k_i=-gamma/v_"g" . $
 
     This relation applies to a simple branch with small damping and nonzero
     group velocity.]
@@ -675,7 +675,7 @@
         (q_s/m_s) E_(1,x) [
           (1-(k v_z)/omega) pdv(f_(s,0),v_x)+
           (k v_x)/omega pdv(f_(s,0),v_z)
-        ] = 0 .$
+        ] = 0 . $
 
     Solving for the distribution perturbation gives
 
@@ -683,12 +683,12 @@
         [
           (omega-k v_z) pdv(f_(s,0),v_x)+
           k v_x pdv(f_(s,0),v_z)
-        ]/(omega-k v_z) .$
+        ]/(omega-k v_z) . $
 
     #derivation-step[Insert the distribution into the current]
     The transverse current is
 
-    $ J_(1,x)=sum_s q_s integral_(RR^3) v_x f_(s,1) dif^3 bold(v) .$
+    $ J_(1,x)=sum_s q_s integral_(RR^3) v_x f_(s,1) dif^3 bold(v) . $
 
     Substitution into the transverse component of Ampere's law gives
 
@@ -696,12 +696,12 @@
         sum_s q_s^2/(epsilon_0 m_s) integral_(RR^3) [
           v_x pdv(f_(s,0),v_x)+
           (k v_x^2)/(omega-k v_z) pdv(f_(s,0),v_z)
-        ] dif^3 bold(v) .$
+        ] dif^3 bold(v) . $
 
     #derivation-step[Integrate the velocity derivative by parts]
     To integrate the second term by parts, use
 
-    $ pdv((1)/(omega-k v_z),v_z)=k/((omega-k v_z)^2) .$
+    $ pdv((1)/(omega-k v_z),v_z)=k/((omega-k v_z)^2) . $
 
     The boundary terms vanish for a decaying distribution. The two needed
     identities are
@@ -714,7 +714,7 @@
         pdv(f_(s,0),v_z) dif^3 bold(v)=
         -integral_(RR^3) [
           (k^2 v_x^2 f_(s,0))/((omega-k v_z)^2)
-        ] dif^3 bold(v) .$
+        ] dif^3 bold(v) . $
 
     These identities produce the equivalent governing law
 
@@ -722,21 +722,21 @@
         sum_s (q_s^2 k^2)/(epsilon_0 m_s)
         integral_(RR^3) [
           (v_x^2 f_(s,0))/((omega-k v_z)^2)
-        ] dif^3 bold(v) .$
+        ] dif^3 bold(v) . $
 
     #derivation-step[Recover the cold electromagnetic branch]
     For a cold equilibrium
 
-    $ f_(s,0)=n_s delta(v_x) delta(v_y) delta(v_z) ,$
+    $ f_(s,0)=n_s delta(v_x) delta(v_y) delta(v_z) , $
 
     the resonant integral containing $v_x^2$ vanishes in the distributional
     limit. Therefore
 
-    $ k^2 c^2=omega^2-sum_s omega_(p,s)^2 ,$
+    $ k^2 c^2=omega^2-sum_s omega_(p,s)^2 , $
 
     or
 
-    $ omega^2=k^2 c^2+sum_s omega_(p,s)^2 .$
+    $ omega^2=k^2 c^2+sum_s omega_(p,s)^2 . $
 
     This is the cold electromagnetic cutoff already obtained from the fluid
     model.]
@@ -770,7 +770,7 @@
 
     $ integral_(RR^3) [
         (v_x^2 f_(0)(bold(v)))/((omega-k v_z)^2)
-      ] dif^3 bold(v)=n_0 ⟨v_x^2⟩/omega^2 .$
+      ] dif^3 bold(v)=n_0 ⟨v_x^2⟩/omega^2 . $
 
     Inserting this result together with
 
@@ -783,7 +783,7 @@
 
     $ Y_±=[(k^2 c^2+omega_p^2) ±
         sqrt((k^2 c^2+omega_p^2)^2+
-          4 k^2 omega_p^2 ⟨v_x^2⟩)]/2 .$
+          4 k^2 omega_p^2 ⟨v_x^2⟩)]/2 . $
 
     Since the square root is larger than $k^2 c^2+omega_p^2$ when
     $k != 0$ and $⟨v_x^2⟩>0$, the lower root satisfies $Y_-<0$.
@@ -793,7 +793,7 @@
 
     $ gamma^2=[sqrt((k^2 c^2+omega_p^2)^2+
           4 k^2 omega_p^2 ⟨v_x^2⟩)-
-        (k^2 c^2+omega_p^2)]/2 .$
+        (k^2 c^2+omega_p^2)]/2 . $
 
     Thus the idealized anisotropy produces exponential growth. A finite
     parallel temperature, collisions, magnetic field, or nonlinear
@@ -923,54 +923,54 @@
     frequency to $omega-k v_0$ or $omega+k v_0$. The total response is
 
     $ D(omega,k)=1-(omega_p^2)/(2(omega-k v_0)^2)-
-        (omega_p^2)/(2(omega+k v_0)^2) .$
+        (omega_p^2)/(2(omega+k v_0)^2) . $
 
     #derivation-step[Clear the beam denominators]
     Multiply by $(omega^2-k^2 v_0^2)^2$ and collect powers of $omega^2$:
 
     $ omega^4-(2 k^2 v_(0)^(2)+omega_p^2)omega^2+
-        k^2 v_(0)^(2) (k^2 v_(0)^(2)-omega_p^2)=0 .$
+        k^2 v_(0)^(2) (k^2 v_(0)^(2)-omega_p^2)=0 . $
 
     Define the dimensionless variables
 
     $ x=(k^2 v_0^2)/(omega_p^2), quad
-      y=omega^2/omega_p^2 .$
+      y=omega^2/omega_p^2 . $
 
     Dividing by $omega_p^4$ gives
 
-    $ y^2-(2x+1)y+x(x-1)=0 .$
+    $ y^2-(2x+1)y+x(x-1)=0 . $
 
     The quadratic formula yields
 
-    $ y_±=x+1/2 ± (sqrt(1+8x))/2 .$
+    $ y_±=x+1/2 ± (sqrt(1+8x))/2 . $
 
     #derivation-step[Identify the unstable interval]
     The upper branch is positive for all $x>=0$. For the lower branch,
     $y_-<0$ precisely when
 
-    $ sqrt(1+8x)>1+2x .$
+    $ sqrt(1+8x)>1+2x . $
 
     Both sides are nonnegative, so squaring gives
 
-    $ 1+8x>1+4x+4x^2 ,$
+    $ 1+8x>1+4x+4x^2 , $
 
     or $0<x<1$. In that interval write $omega=i gamma$ and obtain
 
-    $ gamma/omega_p=sqrt(-y_-) .$
+    $ gamma/omega_p=sqrt(-y_-) . $
 
     #derivation-step[Locate the maximum growth rate]
     To locate the maximum, differentiate
 
-    $ gamma^2/omega_p^2=(sqrt(1+8x))/2-x-1/2 .$
+    $ gamma^2/omega_p^2=(sqrt(1+8x))/2-x-1/2 . $
 
     The derivative vanishes when $2/sqrt(1+8x)=1$, so $x=3/8$.
     Substitution gives
 
-    $ gamma^2/omega_p^2=1/8 ,$
+    $ gamma^2/omega_p^2=1/8 , $
 
     and therefore
 
-    $ gamma_"max"/omega_p=1/(2 sqrt(2)) .$
+    $ gamma_"max"/omega_p=1/(2 sqrt(2)) . $
 
     The instability draws on the relative drift energy. Beam temperature,
     collisions, boundaries, and nonlinear trapping all modify this ideal
@@ -1128,7 +1128,7 @@
 
     $ dv(v_(parallel),t)=0, quad
       dv(v_(perp),t)=0, quad
-      dv(theta,t)=Omega_s .$
+      dv(theta,t)=Omega_s . $
 
     Indeed, differentiating $v_x=v_perp cos(theta)$ and
     $v_y=-v_perp sin(theta)$ gives $dv(v_x,t)=Omega_s v_y$ and
@@ -1136,7 +1136,7 @@
 
     A stationary gyrotropic equilibrium therefore satisfies
 
-    $ Omega_s pdv(f_(s,0),theta)=0 ,$
+    $ Omega_s pdv(f_(s,0),theta)=0 , $
 
     and can depend on $v_(parallel)$ and $v_(perp)$ but not on $theta$.
 
@@ -1146,14 +1146,14 @@
     The streaming and gyroangle pieces of the operator become
 
     $ pdv(f,t)+v_(parallel) pdv(f,z)+Omega_s pdv(f,theta)
-        -> -i(omega-k_(parallel)v_(parallel)-n Omega_s) f .$
+        -> -i(omega-k_(parallel)v_(parallel)-n Omega_s) f . $
 
     Define $S_(s,n)$ as the harmonic of the negative perturbed-force term,
     so $-i(omega-k_(parallel)v_(parallel)-n Omega_s)f_(s,1,n)=S_(s,n)$.
     Its response is
 
     $ f_(s,1,n)=(i S_(s,n))/
-        [omega-k_(parallel)v_(parallel)-n Omega_s] .$
+        [omega-k_(parallel)v_(parallel)-n Omega_s] . $
 
     #derivation-step[Identify the parallel and cyclotron harmonics]
     For parallel propagation, the transverse electric field decomposes into
@@ -1165,7 +1165,7 @@
     positive-frequency cyclotron pole has $n=-1$ because $Omega_e<0$.
     The resonance condition is therefore
 
-    $ omega-k_(parallel)v_(parallel)-n Omega_s=0 .$
+    $ omega-k_(parallel)v_(parallel)-n Omega_s=0 . $
 
     #derivation-step[Add finite-Larmor-radius weights]
     For oblique propagation take $bold(k)_perp=k_perp bold(e)_x$. Integrating
@@ -1176,7 +1176,7 @@
 
     $ exp(i a_s sin(theta))=
         sum_n J_(n)(a_s) exp(i n theta), quad
-      a_s=(k_perp v_perp)/Omega_s .$
+      a_s=(k_perp v_perp)/Omega_s . $
 
     Finite-Larmor-radius physics thus supplies Bessel weights but leaves the
     same Doppler-shifted cyclotron denominator. These weights remain inside

@@ -52,12 +52,12 @@ POTENTIAL = GREEN
 ACCENT = VERMILION      # resonance, highlighted reference value
 
 # --- typography ----------------------------------------------------------
-# Libertinus Serif and Libertinus Math, the typefaces of the script, the plots
-# and the slides.  Prose labels use the OTF files in fonts/ (registered with
-# Pango per scene); MathTex/Tex go through latex + dvisvgm with the Type 1
-# Libertinus text and libertinust1math fonts (texlive-fonts-extra on Debian,
-# manimTex in flake.nix).
-FONT = "Libertinus Serif"
+# STIX Two Text and STIX Two Math, the typefaces of the script, the plots and
+# the slides.  Prose labels use the OTF files in fonts/ (registered with Pango
+# per scene); MathTex/Tex go through latex + dvisvgm with the Type 1 fonts of
+# the stix2 package (stix2-type1; texlive-fonts-extra on Debian, manimTex in
+# flake.nix).
+FONT = "STIX Two Text"
 _HERE = os.path.dirname(os.path.abspath(__file__))
 FONT_DIRS = [
     os.environ.get("PLASMA_FONT_DIR", ""),
@@ -68,8 +68,7 @@ TEX_TEMPLATE = TexTemplate(preamble=r"""
 \usepackage[english]{babel}
 \usepackage{amsmath}
 \usepackage[T1]{fontenc}
-\usepackage{libertinus}
-\usepackage{libertinust1math}
+\usepackage{stix2}
 """)
 MathTex.set_default(tex_template=TEX_TEMPLATE)
 Tex.set_default(tex_template=TEX_TEMPLATE)
@@ -94,12 +93,12 @@ LINEAR = rate_functions.linear
 
 
 def label(text, color=MUTED, size=LABEL_SIZE, **kwargs):
-    """Prose label in Libertinus Serif."""
+    """Prose label in STIX Two Text."""
     return Text(text, color=color, font_size=size, **kwargs)
 
 
 def math(tex, color=INK, size=MATH_SIZE, **kwargs):
-    """LaTeX label in Libertinus Math (TEX_TEMPLATE)."""
+    """LaTeX label in STIX Two Math (TEX_TEMPLATE)."""
     return MathTex(tex, color=color, font_size=size, **kwargs)
 
 
@@ -181,12 +180,12 @@ class StyledScene(Scene):
 
 
 def _font_files():
-    """Libertinus Serif OTF files; empty when only a system install exists."""
+    """STIX Two Text OTF files; empty when only a system install exists."""
     for folder in FONT_DIRS:
-        path = os.path.join(folder, "LibertinusSerif-Regular.otf") if folder else ""
+        path = os.path.join(folder, "STIXTwoText-Regular.otf") if folder else ""
         if path and os.path.isfile(path):
             return [os.path.join(folder, f) for f in sorted(os.listdir(folder))
-                    if f.startswith("LibertinusSerif-") and f.endswith(".otf")]
+                    if f.startswith("STIXTwoText-") and f.endswith(".otf")]
     return []
 
 

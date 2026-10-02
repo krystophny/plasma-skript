@@ -81,7 +81,7 @@
     Let one step be $+Delta x$ or $-Delta x$ with equal probability. Then
 
     $ ⟨Delta x⟩=(Delta x)/2+(-Delta x)/2=0, quad
-      ⟨(Delta x)^2⟩=((Delta x)^2)/2+((-Delta x)^2)/2=(Delta x)^2 .$
+      ⟨(Delta x)^2⟩=((Delta x)^2)/2+((-Delta x)^2)/2=(Delta x)^2 . $
 
     #derivation-step[Accumulate independent steps]
     After $N=t/(Delta t)$ statistically independent steps, cross terms in the
@@ -89,7 +89,7 @@
 
     $ ⟨x⟩=0, quad
       ⟨x^2⟩=N(Delta x)^2
-        =(((Delta x)^2 t)/(Delta t))=2 D t .$
+        =(((Delta x)^2 t)/(Delta t))=2 D t . $
 
     This defines the one-dimensional coefficient
     $D=(Delta x)^2/(2 Delta t).$
@@ -99,21 +99,21 @@
     populations sample densities displaced by one step. Expanding those
     densities to first order gives
 
-    $ bold(Gamma)^(D)=-((Delta x)^2/(2 Delta t)) grad(n)=-D grad(n) .$
+    $ bold(Gamma)^(D)=-((Delta x)^2/(2 Delta t)) grad(n)=-D grad(n) . $
 
     Particle conservation is
 
-    $ pdv(n,t)+div(bold(Gamma))=0 .$
+    $ pdv(n,t)+div(bold(Gamma))=0 . $
 
     #derivation-step[Obtain the diffusion equation and Green function]
     Substitution yields
 
-    $ pdv(n,t)=div(D grad(n)) .$
+    $ pdv(n,t)=div(D grad(n)) . $
 
     For uniform $D$, this reduces to $pdv(n,t)=D laplacian(n)$. A point-like
     initial sheet $n(x,0)=N_0 delta(x)$ has Green-function solution
 
-    $ n(x,t)=N_0/sqrt(4 pi D t) exp(-x^2/(4 D t)) .$
+    $ n(x,t)=N_0/sqrt(4 pi D t) exp(-x^2/(4 D t)) . $
 
     Its second moment is $⟨x^2⟩=2 D t$. Independent Cartesian directions add,
     giving $⟨abs(bold(r))^2⟩=6 D t$ in three dimensions.]
@@ -272,30 +272,30 @@
     [#derivation-step[Apply the isothermal pressure law]
     Start with the species momentum equation and use
 
-    $ grad(p_s)=k_B T_s grad(n_s) .$
+    $ grad(p_s)=k_B T_s grad(n_s) . $
 
     #derivation-step[Take the long-time force balance]
     On times longer than $nu_s^(-1)$, neglect inertia and solve
 
     $ m_s n_s nu_s bold(u)_s
-        =q_s n_s bold(E)-k_B T_s grad(n_s) .$
+        =q_s n_s bold(E)-k_B T_s grad(n_s) . $
 
     Division by $m_s n_s nu_s$ gives
 
     $ bold(u)_s=q_s/(m_s nu_s) bold(E)
-        -(k_B T_s)/(m_s nu_s) ((grad(n_s))/n_s) .$
+        -(k_B T_s)/(m_s nu_s) ((grad(n_s))/n_s) . $
 
     #derivation-step[Identify mobility and diffusion]
     Define the signed mobility and diffusion coefficient
 
     $ mu_s^(q)=q_s/(m_s nu_s), quad
-      D_s=(k_B T_s)/(m_s nu_s) .$
+      D_s=(k_B T_s)/(m_s nu_s) . $
 
     Multiplication by $n_s$ produces the particle flux. With the positive
     mobility magnitude
     $abs(mu_s^(q))=abs(q_s)/(m_s nu_s)$, the Einstein relation is
 
-    $ D_s/abs(mu_s^(q))=(k_B T_s)/abs(q_s) .$
+    $ D_s/abs(mu_s^(q))=(k_B T_s)/abs(q_s) . $
 
     #derivation-step[State the approximation boundary]
     The derivation assumes local, isothermal, unmagnetized drag. Inertia
@@ -427,46 +427,46 @@
     For positive ions, the electric force drives a flux in the direction of
     $bold(E):$
 
-    $ bold(Gamma)_i=mu_i n bold(E)-D_i grad(n) .$
+    $ bold(Gamma)_i=mu_i n bold(E)-D_i grad(n) . $
 
     Electrons have the opposite charge:
 
-    $ bold(Gamma)_e=-mu_e n bold(E)-D_e grad(n) .$
+    $ bold(Gamma)_e=-mu_e n bold(E)-D_e grad(n) . $
 
     #derivation-step[Impose zero current]
     The current-free condition is
 
-    $ bold(0)=bold(j)=e(bold(Gamma)_i-bold(Gamma)_e) .$
+    $ bold(0)=bold(j)=e(bold(Gamma)_i-bold(Gamma)_e) . $
 
     Equating the two fluxes and collecting the field terms gives
 
-    $ (mu_i+mu_e)n bold(E)=(D_i-D_e)grad(n) .$
+    $ (mu_i+mu_e)n bold(E)=(D_i-D_e)grad(n) . $
 
     Hence
 
-    $ bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) ((grad(n))/n) .$
+    $ bold(E)_a=((D_i-D_e)/(mu_i+mu_e)) ((grad(n))/n) . $
 
     #derivation-step[Insert the ambipolar field into the flux]
     The ion flux becomes
 
     $ bold(Gamma)_i
         =((mu_i n (D_i-D_e))/(mu_i+mu_e)) ((grad(n))/n)
-        -D_i grad(n) .$
+        -D_i grad(n) . $
 
     Putting both terms over the common denominator produces
 
     $ bold(Gamma)_i
-        =-(mu_i D_e+mu_e D_i)/(mu_i+mu_e) grad(n) .$
+        =-(mu_i D_e+mu_e D_i)/(mu_i+mu_e) grad(n) . $
 
     The same result follows from the electron flux, so define
 
-    $ D_a=(mu_i D_e+mu_e D_i)/(mu_i+mu_e) .$
+    $ D_a=(mu_i D_e+mu_e D_i)/(mu_i+mu_e) . $
 
     #derivation-step[Interpret the mobility hierarchy]
     For equal temperatures and comparable collision models, often
     $mu_e >> mu_i$. Then
 
-    $ D_a approx D_i+(mu_i/mu_e) D_e .$
+    $ D_a approx D_i+(mu_i/mu_e) D_e . $
 
     Electron diffusion is consequently largely converted into the ambipolar
     electric field rather than a net current.]
@@ -593,35 +593,35 @@
     $ mat(nu_s,-Omega_s;Omega_s,nu_s)
         mat(u_(s,x);u_(s,y))
         =(q_s/m_s) mat(E_x;E_y)
-        -(k_B T_s)/(m_s n_s) mat(pdv(n_s,x);pdv(n_s,y)) .$
+        -(k_B T_s)/(m_s n_s) mat(pdv(n_s,x);pdv(n_s,y)) . $
 
     #derivation-step[Invert the drag--gyro matrix]
     Its inverse is
 
     $ (1)/(nu_s^2+Omega_s^2)
-        mat(nu_s,Omega_s;-Omega_s,nu_s) .$
+        mat(nu_s,Omega_s;-Omega_s,nu_s) . $
 
     #derivation-step[Read off the diffusion tensor]
     The gradient part of the flux has diagonal coefficient
 
     $ (k_(B) T_s nu_s)/(m_(s)(nu_s^2+Omega_s^2))
-        =(D_s nu_s^2)/(nu_s^2+Omega_s^2) ,$
+        =(D_s nu_s^2)/(nu_s^2+Omega_s^2) , $
 
     and signed off-diagonal coefficient
 
     $ (k_(B) T_s Omega_s)/(m_(s)(nu_s^2+Omega_s^2))
-        =(D_s nu_s Omega_s)/(nu_s^2+Omega_s^2) .$
+        =(D_s nu_s Omega_s)/(nu_s^2+Omega_s^2) . $
 
     These are the displayed $D_(s,perp)$ and $D_(s,H)$.
 
     #derivation-step[Check the strongly magnetized limit]
     The electric-force part contains the crossed-field drift
 
-    $ bold(u)_(E times B)=(bold(E) times bold(B))/(B^2) .$
+    $ bold(u)_(E times B)=(bold(E) times bold(B))/(B^2) . $
 
     When $abs(Omega_s)>>nu_s$,
 
-    $ D_(s,perp) approx D_(s)(nu_s/Omega_s)^2 .$
+    $ D_(s,perp) approx D_(s)(nu_s/Omega_s)^2 . $
 
     Thus $nu_s -> 0$ suppresses classical cross-field diffusion: without
     interruptions, guiding centers do not make a collisional random walk
@@ -631,12 +631,12 @@
     With the Chapter 1 convention,
 
     $ v_("th,s")=sqrt((2 k_B T_s)/m_s), quad
-      rho_("th,s")=v_("th,s")/abs(Omega_s) .$
+      rho_("th,s")=v_("th,s")/abs(Omega_s) . $
 
     Therefore
 
     $ rho_("th,s")^2=(2 k_B T_s)/(m_s Omega_s^2), quad
-      D_(s,perp) approx (nu_s/2) rho_("th,s")^2 .$
+      D_(s,perp) approx (nu_s/2) rho_("th,s")^2 . $
 
     An alternative one-dimensional scale would give
     $D_(s,perp) approx nu_s rho_("1D,s")^2$; it is not the thermal gyroradius
@@ -798,7 +798,7 @@
 
     and substitute
 
-    $ bold(j)=sigma(bold(E)+bold(u) times bold(B)) .$
+    $ bold(j)=sigma(bold(E)+bold(u) times bold(B)) . $
 
     Using
 
@@ -808,30 +808,30 @@
 
     $ bold(0)=-grad_(perp)(p)
         +sigma (bold(E) times bold(B))
-        -sigma B^2 bold(u)_perp .$
+        -sigma B^2 bold(u)_perp . $
 
     #derivation-step[Solve for the perpendicular velocity]
     Rearranging gives
 
     $ bold(u)_perp=(bold(E) times bold(B))/(B^2)
-        -(grad_(perp)(p))/(sigma B^2) .$
+        -(grad_(perp)(p))/(sigma B^2) . $
 
     #derivation-step[Identify the pressure-driven diffusion]
     Multiply by $n$. The first term is a common crossed-field drift and does
     not diffuse a uniform density. For an isothermal two-temperature hydrogen
     plasma,
 
-    $ grad_(perp)(p)=k_(B)(T_e+T_i)grad_(perp)(n) .$
+    $ grad_(perp)(p)=k_(B)(T_e+T_i)grad_(perp)(n) . $
 
     The pressure term in the particle flux is consequently
 
     $ bold(Gamma)_perp^("diff")
-        =-(n k_(B)(T_e+T_i) grad_(perp)(n))/(sigma B^2) .$
+        =-(n k_(B)(T_e+T_i) grad_(perp)(n))/(sigma B^2) . $
 
     Therefore
 
     $ D_perp^("cl")=(n k_(B)(T_e+T_i))/(sigma B^2)
-        =(eta n k_(B)(T_e+T_i))/(B^2) .$
+        =(eta n k_(B)(T_e+T_i))/(B^2) . $
 
     The factor $1/B^2$ arises because the field enters twice: once through
     the Lorentz force density $bold(j) times bold(B)$ and once through the
@@ -840,7 +840,7 @@
     #derivation-step[State the comparison with anomalous transport]
     The classical loss time for a macroscopic length $L$ is
 
-    $ tau_"D"=L^2/D_perp^("cl") .$
+    $ tau_"D"=L^2/D_perp^("cl") . $
 
     The Bohm expression is not obtained by this force-balance derivation; it
     is a phenomenological comparison motivated by turbulent or anomalous

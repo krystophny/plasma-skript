@@ -115,7 +115,7 @@ as its publishing source in the repository settings.
 Teaching content is released under [CC BY 4.0 International](LICENSE-CONTENT.md).
 Code and build infrastructure are released under the [MIT License](LICENSE).
 The photos in `slides/photos/` are public domain or CC BY 4.0, each credited
-in [`slides/photos/credits.md`](slides/photos/credits.md). The Libertinus
+in [`slides/photos/credits.md`](slides/photos/credits.md). The STIX Two
 fonts in `fonts/` are distributed under the SIL Open Font License 1.1
 ([`fonts/OFL.txt`](fonts/OFL.txt)).
 Contribution and attribution terms are documented in

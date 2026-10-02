@@ -569,9 +569,10 @@ Each scene must:
 
 - use a deterministic parameter set and document whether quantities are
   dimensional or normalized,
-- render every in-scene prose label with the project-provided New Computer
-  Modern font (`NewComputerModern`), explicitly registered from the Nix-supplied
-  font file so rendering never depends on a host-installed fallback,
+- render every in-scene prose label in STIX Two Text, explicitly registered
+  from the repository's `fonts/` so rendering never depends on a
+  host-installed fallback, and every MathTex label in STIX Two through the
+  `stix2` LaTeX package (`animations/style.py`),
 - append `[1]` to every normalized axis label; other in-scene labels are bare symbols without unit tags;
   do not write `(dimensionless)` in the scene,
 - have a stable scene name and output path,

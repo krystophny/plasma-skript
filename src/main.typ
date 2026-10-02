@@ -2,6 +2,10 @@
 #import "@preview/physica:0.9.8": laplacian, dv
 
 #show: frame-style(styles.boxy)
+// SVG frames in the HTML (CeTZ, Fletcher, Lilaq) use the script's typefaces,
+// STIX Two Text and STIX Two Math (fonts/, compile with --font-path fonts).
+#set text(font: "STIX Two Text")
+#show math.equation: set text(font: "STIX Two Math")
 #import "chapters/01-introduction.typ": chapter as introduction
 #import "chapters/02-debye-shielding.typ": chapter as debye-shielding
 #import "chapters/03-plasma-oscillations.typ": chapter as plasma-oscillations
@@ -361,6 +365,9 @@
 ]
 
 #asset("styles.css", read("styles.css"))
-#asset("fonts/LibertinusMath-Regular.otf",
-  read("../fonts/LibertinusMath-Regular.otf", encoding: none))
+#for name in ("STIXTwoMath-Regular", "STIXTwoText-Regular",
+    "STIXTwoText-Italic", "STIXTwoText-Bold", "STIXTwoText-BoldItalic") {
+  asset("fonts/" + name + ".otf",
+    read("../fonts/" + name + ".otf", encoding: none))
+}
 #asset("fonts/OFL.txt", read("../fonts/OFL.txt"))

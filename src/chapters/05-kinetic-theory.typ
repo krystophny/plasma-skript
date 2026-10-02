@@ -82,29 +82,29 @@
     During a path segment $d ell$, the probability $S$ of having no collision
     changes by
 
-    $ d S=-S n_b sigma_(a b) d ell .$
+    $ d S=-S n_b sigma_(a b) d ell . $
 
     Dividing by $d ell$ gives the differential equation for survival.
 
     #derivation-step[Find the first-collision distribution]
     Integrating from $0$ to $ell$ gives
 
-    $ S(ell)=exp(-n_b sigma_(a b)ell) .$
+    $ S(ell)=exp(-n_b sigma_(a b)ell) . $
 
     The probability density for the first collision is the loss of survival
     probability per unit length:
 
-    $ p(ell)=n_b sigma_(a b) exp(-n_b sigma_(a b)ell) .$
+    $ p(ell)=n_b sigma_(a b) exp(-n_b sigma_(a b)ell) . $
 
     #derivation-step[Calculate the mean free path and collision rate]
     The mean path length is
 
-    $ integral_0^infinity ell p(ell) dif ell=1/(n_b sigma_(a b)) .$
+    $ integral_0^infinity ell p(ell) dif ell=1/(n_b sigma_(a b)) . $
 
     A particle traveling at $v_"rel"$ samples this length in a mean time
     $lambda_"mfp"/v_"rel"$. The inverse time is therefore
 
-    $ nu_(a b)=v_"rel"/lambda_"mfp" .$
+    $ nu_(a b)=v_"rel"/lambda_"mfp" . $
 
     The exponential model is valid when successive encounters can be treated
     as independent and the background properties are approximately constant
@@ -338,18 +338,18 @@
     Set
 
     $ bold(c)=bold(v)-bold(u)_s, quad
-      a=m_s/(2 k_B T_s) .$
+      a=m_s/(2 k_B T_s) . $
 
     In these variables the three-dimensional Gaussian factorizes:
 
     $ integral exp(-a abs(bold(c))^2) dif^3 bold(c)
         = (integral exp(-a c_x^2) dif c_x)^3
-        = (sqrt(pi/a))^3 .$
+        = (sqrt(pi/a))^3 . $
 
     #derivation-step[Normalize the distribution]
     The prefactor in $f_(M,s)$ is chosen so that the velocity integral is
 
-    $ integral f_(M,s) dif^3 bold(v)=n_s .$
+    $ integral f_(M,s) dif^3 bold(v)=n_s . $
 
     Thus $n_s$ is the zeroth moment, independent of the choice of bulk
     velocity.
@@ -357,17 +357,17 @@
     #derivation-step[Evaluate the first and second central moments]
     Symmetry gives
 
-    $ integral bold(c) f_(M,s) dif^3 bold(v)=bold(0) ,$
+    $ integral bold(c) f_(M,s) dif^3 bold(v)=bold(0) , $
 
     so the first raw moment is $n_s bold(u)_s$. Each Cartesian component has
     variance
 
-    $ 1/(2a)=(k_B T_s)/m_s .$
+    $ 1/(2a)=(k_B T_s)/m_s . $
 
     Therefore the pressure tensor is isotropic:
 
     $ bold(P)_s=m_s n_s ((k_B T_s)/m_s) bold(I)
-        =n_s k_B T_s bold(I) .$
+        =n_s k_B T_s bold(I) . $
 
     The derivation assumes a smooth Maxwellian with finite temperature; a
     cold delta distribution has the same density and flow moments but zero
@@ -379,13 +379,13 @@
     [#derivation-step[Sum the independent velocity components]
     Each Cartesian component of a Maxwellian has variance
 
-    $ ⟨(v_j-u_(s,j))^2⟩=(k_B T_s)/m_s .$
+    $ ⟨(v_j-u_(s,j))^2⟩=(k_B T_s)/m_s . $
 
     The three components are independent, so their kinetic-energy average is
 
     $ ⟨(m_s (bold(v)-bold(u)_s)^2)/2⟩
       =(m_s)/2 sum_j ⟨(v_j-u_(s,j))^2⟩
-      =(3 k_B T_s)/2 .$
+      =(3 k_B T_s)/2 . $
 
     #derivation-step[Interpret the thermal-speed convention]
     The convention
@@ -434,7 +434,7 @@
   #knowledge-check((
     (
       question: [What does $f_s dif^3 bold(r) dif^3 bold(v)$ count?],
-      answer: [It gives the number of species-$s$ particles in the specified
+      answer: [It gives the number of species- $s$ particles in the specified
       six-dimensional phase-space cell.],
     ),
     (
@@ -484,7 +484,7 @@
     [For a scalar $g(t,bold(r),bold(v))$, the derivative along a particle
     trajectory is
     $ dv(g_(s),t,d:upright(D)) = pdv(g_(s),t) + bold(v) dot grad(g_(s))
-    + bold(a)_s dot pdv(g_(s),bold(v))$. It follows the particle through both
+    + bold(a)_s dot pdv(g_(s),bold(v)) $. It follows the particle through both
     real space and velocity space.]
   )
 
@@ -531,18 +531,18 @@
     $bold(r)=bold(r)(t)$ and $bold(v)=bold(v)(t)$. A small time step gives
 
     $ d g=pdv(g,t) d t+grad(g) dot d bold(r)
-        +pdv(g,bold(v)) dot d bold(v) .$
+        +pdv(g,bold(v)) dot d bold(v) . $
 
     #derivation-step[Insert the characteristic velocities]
     Divide by $d t$ and use
 
     $ dv(bold(r),t)=bold(v), quad
-      dv(bold(v),t)=bold(a)_s .$
+      dv(bold(v),t)=bold(a)_s . $
 
     The derivative along the characteristic is then
 
     $ dv(g,t)=pdv(g,t)+bold(v) dot grad(g)
-        +bold(a)_s dot pdv(g,bold(v)) .$
+        +bold(a)_s dot pdv(g,bold(v)) . $
 
     #derivation-step[Distinguish the two viewpoints]
     At a fixed phase-space point, only the partial derivative $pdv(g,t)$ is
@@ -563,12 +563,12 @@
     $f bold(a)_s$. Dividing the cell balance by its volume and taking the
     cell-size limit gives
 
-    $ pdv(f,t)+div(f bold(v))+div(f bold(a)_s)=S .$
+    $ pdv(f,t)+div(f bold(v))+div(f bold(a)_s)=S . $
 
     #derivation-step[Combine position and velocity space]
     Define the phase-space velocity
 
-    $ bold(V)_z=(bold(v),bold(a)_s) .$
+    $ bold(V)_z=(bold(v),bold(a)_s) . $
 
     The two divergence terms are then the compact conservative flux of
     particles through phase space. This form is valid provided the source
@@ -765,14 +765,14 @@
     [#derivation-step[Start from the conservative equation]
     Use
 
-    $ pdv(f_s,t)+div(f_s bold(v))+div(f_s bold(a)_s)=C_(s)[f] .$
+    $ pdv(f_s,t)+div(f_s bold(v))+div(f_s bold(a)_s)=C_(s)[f] . $
 
     #derivation-step[Apply the product rule]
     Expanding both flux divergences gives
 
     $ pdv(f_s,t)+bold(v) dot grad(f_s)
         +bold(a)_s dot pdv(f_s,bold(v))
-        +f_s dot [div(bold(v))+div(bold(a)_s)]=C_(s)[f] .$
+        +f_s dot [div(bold(v))+div(bold(a)_s)]=C_(s)[f] . $
 
     #derivation-step[Use incompressibility of Lorentz characteristics]
     For Lorentz motion, $div(bold(v))=0$ because $bold(v)$ is an independent
@@ -796,17 +796,17 @@
     #derivation-step[Use the collision invariant]
     Number-conserving binary collisions obey
 
-    $ integral C_(s)[f] dif^3 bold(v)=0 .$
+    $ integral C_(s)[f] dif^3 bold(v)=0 . $
 
     #derivation-step[Identify the fluid density and flux]
     The remaining velocity integrals are
 
     $ integral f_s dif^3 bold(v)=n_s, quad
-      integral bold(v)f_s dif^3 bold(v)=n_s bold(u)_s .$
+      integral bold(v)f_s dif^3 bold(v)=n_s bold(u)_s . $
 
     Therefore
 
-    $ pdv(n_s,t)+div(n_s bold(u)_s)=0 .$
+    $ pdv(n_s,t)+div(n_s bold(u)_s)=0 . $
 
     This species continuity equation is the first bridge from kinetic theory
     to fluid theory. It assumes that no particles are created or removed by
@@ -852,7 +852,7 @@
     ),
     (
       question: [Why must $C_(s)[f]$ integrate to zero over velocity for ordinary collisions?],
-      answer: [Collisions rearrange the velocities of species-$s$ particles,
+      answer: [Collisions rearrange the velocities of species- $s$ particles,
       so they do not create or destroy the number of particles of that species.],
     ),
     (
@@ -915,17 +915,17 @@
     [#derivation-step[Use the single-particle invariant]
     In a static electrostatic field, the single-particle energy is
 
-    $ H_s=(m_s v^2)/2+q_s Phi(bold(r)) .$
+    $ H_s=(m_s v^2)/2+q_s Phi(bold(r)) . $
 
     A stationary collisional equilibrium depends on velocity through this
     invariant and has the Maxwellian form
 
-    $ f_("eq,s")=A_s exp(-(H_s)/(k_B T_s)) .$
+    $ f_("eq,s")=A_s exp(-(H_s)/(k_B T_s)) . $
 
     #derivation-step[Choose the normalization]
     Choose
 
-    $ A_s=n_(0,s)(m_s/(2 pi k_B T_s))^(3/2) .$
+    $ A_s=n_(0,s)(m_s/(2 pi k_B T_s))^(3/2) . $
 
     At $Phi=0$, the velocity integral is then $n_(0,s)$.
 
@@ -933,7 +933,7 @@
     Factor the exponential into a velocity part and a position part. The
     normalized Gaussian integrates to one, leaving
 
-    $ n_(s)(bold(r))=n_(0,s) exp(-(q_s Phi)/(k_B T_s)) .$
+    $ n_(s)(bold(r))=n_(0,s) exp(-(q_s Phi)/(k_B T_s)) . $
 
     The result assumes a static potential, a spatially uniform temperature,
     and an equilibrium that is Maxwellian in the conserved single-particle

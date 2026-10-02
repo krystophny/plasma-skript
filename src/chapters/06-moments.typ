@@ -118,12 +118,12 @@
 
     $ bold(v) bold(v)=bold(u)_s bold(u)_s
         +bold(u)_s bold(w)_s+bold(w)_s bold(u)_s
-        +bold(w)_s bold(w)_s .$
+        +bold(w)_s bold(w)_s . $
 
     #derivation-step[Use the definition of the local mean]
     By construction,
 
-    $ integral bold(w)_s f_s dif^3 bold(v)=bold(0) .$
+    $ integral bold(w)_s f_s dif^3 bold(v)=bold(0) . $
 
     The two cross terms therefore vanish. The bulk term gives
     $n_s bold(u)_s bold(u)_s$, which becomes
@@ -132,11 +132,11 @@
     #derivation-step[Identify the pressure tensor]
     The remaining central term is the pressure tensor:
 
-    $ bold(P)_s=m_s integral bold(w)_s bold(w)_s f_s dif^3 bold(v) .$
+    $ bold(P)_s=m_s integral bold(w)_s bold(w)_s f_s dif^3 bold(v) . $
 
     Consequently,
 
-    $ bold(M)_s=bold(P)_s+rho_s bold(u)_s bold(u)_s .$
+    $ bold(M)_s=bold(P)_s+rho_s bold(u)_s bold(u)_s . $
 
     Both terms are momentum fluxes with units
     #unit("Pa") $=$ #unit("kg m^-1 s^-2"). The central tensor vanishes for
@@ -295,30 +295,30 @@
 
     $ integral_(V_v) pdv(f_s,t) dif^3 bold(v)
         =pdv(integral_(V_v) f_s dif^3 bold(v),t)
-        -> pdv(n_s,t) .$
+        -> pdv(n_s,t) . $
 
     #derivation-step[Identify the spatial particle flux]
     Commute the spatial divergence with the velocity integral:
 
     $ integral_(V_v) div(f_s bold(v)) dif^3 bold(v)
         =div(integral_(V_v) bold(v) f_s dif^3 bold(v))
-        =div(n_s bold(u)_s) .$
+        =div(n_s bold(u)_s) . $
 
     #derivation-step[Discard velocity-space and collision sources]
     The velocity-space divergence becomes a boundary integral:
 
     $ integral_(V_v) div(f_s bold(a)_s) dif^3 bold(v)
-        =integral_(partial V_v) f_s bold(a)_s dot d bold(S)_v .$
+        =integral_(partial V_v) f_s bold(a)_s dot d bold(S)_v . $
 
     It vanishes when the distribution decays faster than the surface measure
     grows. Number-conserving collisions obey
 
-    $ integral_(RR^3) C_(s)[f] dif^3 bold(v)=0 .$
+    $ integral_(RR^3) C_(s)[f] dif^3 bold(v)=0 . $
 
     #derivation-step[Assemble the continuity equation]
     Substituting the four terms yields
 
-    $ pdv(n_s,t)+div(n_s bold(u)_s)=0 .$
+    $ pdv(n_s,t)+div(n_s bold(u)_s)=0 . $
 
     Integrating this local equation over a finite spatial volume gives a rate
     of change equal to the negative outward particle flux. The local and
@@ -493,12 +493,12 @@
     [#derivation-step[Evaluate the time and streaming terms]
     Commute the time derivative with the velocity integral and use
 
-    $ m_s integral bold(v) f_s dif^3 bold(v)=rho_s bold(u)_s .$
+    $ m_s integral bold(v) f_s dif^3 bold(v)=rho_s bold(u)_s . $
 
     For spatial streaming, the component identity is
 
     $ m_s integral v_i pdv((v_j f_s),x_j) dif^3 bold(v)
-        =pdv((m_s integral v_i v_j f_s dif^3 bold(v)),x_j) .$
+        =pdv((m_s integral v_i v_j f_s dif^3 bold(v)),x_j) . $
 
     This is the divergence of the raw second-moment tensor.
 
@@ -507,7 +507,7 @@
 
     $ m_s integral v_i pdv((a_(s,j)f_s),v_j) dif^3 bold(v)
         =m_s integral_("boundary") v_i a_(s,j)f_s d S_j
-        -m_s integral pdv(v_i,v_j) a_(s,j)f_s dif^3 bold(v) .$
+        -m_s integral pdv(v_i,v_j) a_(s,j)f_s dif^3 bold(v) . $
 
     The surface term vanishes and $pdv(v_i,v_j)=delta_(i j)$. The force term
     is therefore $-m_s integral a_(s,i) f_s dif^3 bold(v)$ on the left.
@@ -518,19 +518,19 @@
 
     $ q_s bold(E) integral f_s dif^3 bold(v)
         +q_s (integral bold(v)f_s dif^3 bold(v)) times bold(B)
-        =q_s n_s (bold(E)+bold(u)_s times bold(B)) .$
+        =q_s n_s (bold(E)+bold(u)_s times bold(B)) . $
 
     #derivation-step[Split the momentum flux and use continuity]
     Insert $bold(v)=bold(u)_s+bold(w)_s$ into the raw second moment. The terms
     linear in $bold(w)_s$ vanish, leaving
 
-    $ bold(M)_s=rho_s bold(u)_s bold(u)_s+bold(P)_s .$
+    $ bold(M)_s=rho_s bold(u)_s bold(u)_s+bold(P)_s . $
 
     Finally use
 
     $ pdv(rho_s bold(u)_s,t)+div(rho_s bold(u)_s bold(u)_s)
         =rho_s (pdv(bold(u)_s,t)+bold(u)_s dot grad(bold(u)_s))
-        +bold(u)_s (pdv(rho_s,t)+div(rho_s bold(u)_s)) .$
+        +bold(u)_s (pdv(rho_s,t)+div(rho_s bold(u)_s)) . $
 
     The final bracket is zero by mass continuity, so the conservative equation
     becomes the species material-acceleration equation.]
@@ -710,46 +710,46 @@
     Multiply the kinetic equation by $(m_s v^2)/2$ and integrate. The time
     derivative gives $pdv(W_s,t)$. The spatial streaming term gives
 
-    $ div((m_s/2) integral v^2 bold(v) f_s dif^3 bold(v)) .$
+    $ div((m_s/2) integral v^2 bold(v) f_s dif^3 bold(v)) . $
 
     #derivation-step[Evaluate the force work]
     Integrating the force term by parts in velocity gives
 
     $ (m_s/2) integral v^2 div(f_s bold(a)_s) dif^3 bold(v)
         =-(m_s/2) integral pdv(v^2,bold(v)) dot bold(a)_s f_s dif^3 bold(v)
-        =-m_s integral bold(v) dot bold(a)_s f_s dif^3 bold(v) .$
+        =-m_s integral bold(v) dot bold(a)_s f_s dif^3 bold(v) . $
 
     The magnetic force does no work because
     $bold(v) dot (bold(v) times bold(B))=0$. The remaining electric term is
     $-q_s bold(E) dot integral bold(v) f_s dif^3 bold(v)$ on the left. Move it
     to the right and use
 
-    $ integral bold(v)f_s dif^3 bold(v)=n_s bold(u)_s .$
+    $ integral bold(v)f_s dif^3 bold(v)=n_s bold(u)_s . $
 
     #derivation-step[Split the energy flux]
     Use
 
     $ abs(bold(v))^2=abs(bold(u)_s)^2+2 bold(u)_s dot bold(w)_s
         +abs(bold(w)_s)^2, quad
-      bold(v)=bold(u)_s+bold(w)_s .$
+      bold(v)=bold(u)_s+bold(w)_s . $
 
     The terms separate into bulk kinetic energy transported by
     $bold(u)_s$, internal energy transported by $bold(u)_s$, the pressure-work
     cross term
 
     $ m_s integral (bold(u)_s dot bold(w)_s) bold(w)_s f_s dif^3 bold(v)
-        =bold(P)_s dot bold(u)_s ,$
+        =bold(P)_s dot bold(u)_s , $
 
     and the third central moment $bold(q)_s$. Terms with one unpaired
     $bold(w)_s$ vanish by the definition of the local mean. The total energy
     flux is
 
-    $ bold(F)_s=W_s bold(u)_s+bold(P)_s dot bold(u)_s+bold(q)_s .$
+    $ bold(F)_s=W_s bold(u)_s+bold(P)_s dot bold(u)_s+bold(q)_s . $
 
     #derivation-step[Check the pressure divergence]
     In Cartesian components,
 
-    $ (div(bold(P)_s))_i=sum_j pdv((P_s)_(i j),x_j) .$
+    $ (div(bold(P)_s))_i=sum_j pdv((P_s)_(i j),x_j) . $
 
     If $P_(i j)=p_s delta_(i j)$, the sum reduces to
     $pdv(p_s,x_i)$, which is $grad(p_s)$. A scalar pressure is therefore a
@@ -765,7 +765,7 @@
     $ pdv((rho_s abs(bold(u)_s)^2)/2,t)
         +div((rho_s abs(bold(u)_s)^2 bold(u)_s)/2)
         +bold(u)_s dot div(bold(P)_s)
-        =q_s n_s bold(u)_s dot bold(E)+bold(u)_s dot bold(R)_s .$
+        =q_s n_s bold(u)_s dot bold(E)+bold(u)_s dot bold(R)_s . $
 
     #derivation-step[Rewrite the pressure work]
     The colon denotes a double contraction: multiply corresponding tensor
@@ -773,7 +773,7 @@
 
     $ bold(u)_s dot div(bold(P)_s)
         =div(bold(P)_s dot bold(u)_s)
-        -bold(P)_s:grad(bold(u)_s) .$
+        -bold(P)_s:grad(bold(u)_s) . $
 
     #derivation-step[Subtract from the total energy balance]
     Subtract the bulk equation from the total energy equation. The electric
@@ -782,18 +782,18 @@
 
     $ pdv(epsilon_s,t)+div(epsilon_s bold(u)_s+bold(q)_s)
         +bold(P)_s:grad(bold(u)_s)
-        =Q_s-bold(u)_s dot bold(R)_s .$
+        =Q_s-bold(u)_s dot bold(R)_s . $
 
     #derivation-step[Apply the isotropic adiabatic closure]
     For an isotropic three-dimensional pressure tensor,
 
     $ epsilon_s=(3 p_s)/2, quad
-      bold(P)_s:grad(bold(u)_s)=p_s div(bold(u)_s) .$
+      bold(P)_s:grad(bold(u)_s)=p_s div(bold(u)_s) . $
 
     With no heat flux and no net collisional internal heating, this becomes
 
     $ pdv(p_s,t)+bold(u)_s dot grad(p_s)
-        +(5 p_s)/3 div(bold(u)_s)=0 .$
+        +(5 p_s)/3 div(bold(u)_s)=0 . $
 
     This is the adiabatic pressure law used by one common warm-fluid closure;
     retaining anisotropy or heat flux requires the unclosed tensor equation.]
@@ -802,7 +802,7 @@
   #rechenbeispiel[
     Context: an isotropic hydrogen-ion population has
     $n_i=qty("1.0e16", "m^-3")$, $m_i=qty("1.673e-27", "kg")$,
-    $k_B T_i=qty("1.602e-18", "J")$ ($qty("10", "eV")$), and bulk speed
+    $k_B T_i=qty("1.602e-18", "J")$ ( $qty("10", "eV")$), and bulk speed
     $u_i=qty("1.0e5", "m/s")$.
 
     Assumptions: Maxwellian random motion, isotropic pressure, and the
@@ -967,7 +967,7 @@
 
     $ S_("N,s")=integral C_(s)[f] dif^3 bold(v), quad
       bold(R)_s=m_s integral bold(v) C_(s)[f] dif^3 bold(v), quad
-      Q_s=(m_s/2) integral v^2 C_(s)[f] dif^3 bold(v) .$
+      Q_s=(m_s/2) integral v^2 C_(s)[f] dif^3 bold(v) . $
 
     Ordinary elastic collisions within one species have
     $S_("N,s")=0$. Interspecies collisions can give nonzero
@@ -977,7 +977,7 @@
     For an isolated elastic system, summing over all collision partners gives
 
     $ sum_s bold(R)_s=bold(0), quad
-      sum_s Q_s=0 .$
+      sum_s Q_s=0 . $
 
     Individual species equations may still contain exchange terms; only the
     total balance removes them.
@@ -985,7 +985,7 @@
     #derivation-step[Inspect the BGK example]
     For BGK relaxation, substitute
 
-    $ C_("BGK")[f_s]=-nu_s dot (f_s-f_(M,s)) .$
+    $ C_("BGK")[f_s]=-nu_s dot (f_s-f_(M,s)) . $
 
     Matching the density makes the zeroth moment zero. Matching density, flow,
     and temperature additionally makes the first and second collision moments

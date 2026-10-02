@@ -18,7 +18,8 @@
 #let orange = rgb("#B86418")
 #let paper = rgb("#F7F9FC")
 
-#set text(font: "Libertinus Serif", size: 11pt, fill: ink)
+#set text(font: "STIX Two Text", size: 11pt, fill: ink)
+#show math.equation: set text(font: "STIX Two Math")
 #set par(leading: 0.72em)
 
 // Frame-It supplies the shared visual grammar for the teaching blocks. The
@@ -179,13 +180,15 @@
 
 #let details(title, body) = context {
   if target() == "paged" {
+    // Breakable: a long derivation must continue on the next page rather
+    // than run past the bottom margin.
     block(
       width: 100%,
       inset: 0.9em,
       radius: 0.45em,
       fill: paper,
       stroke: 0.8pt + muted,
-      breakable: false,
+      breakable: true,
     )[
       #strong(title) \
       #body

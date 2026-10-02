@@ -1,11 +1,44 @@
 /* Plasma physics lecture script: quiet, typographic reading layout.
    Light by default, dark when the reader's system asks for it. */
 
-/* Maths in Libertinus Math, as in the print PDF, the slides, and the plots.
-   Served from fonts/ next to this stylesheet (SIL OFL, fonts/OFL.txt). */
+/* STIX Two Text and STIX Two Math, as in the print PDF, the slides, the plots
+   and the animations. Served from fonts/ next to this stylesheet (SIL OFL,
+   fonts/OFL.txt). */
 @font-face {
-  font-family: "Libertinus Math";
-  src: url("fonts/LibertinusMath-Regular.otf") format("opentype");
+  font-family: "STIX Two Math";
+  src: url("fonts/STIXTwoMath-Regular.otf") format("opentype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("fonts/STIXTwoText-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("fonts/STIXTwoText-Italic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("fonts/STIXTwoText-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("fonts/STIXTwoText-BoldItalic.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
   font-display: swap;
 }
 
@@ -27,12 +60,12 @@
   --video-frame: var(--line);
   --reading-width: 42rem;
   --wide-width: 52rem;
-  --serif: "Iowan Old Style", "Charter", "Bitstream Charter", "Sitka Text",
-    Cambria, Georgia, serif;
+  --serif: "STIX Two Text", "STIX Two Math", "Iowan Old Style", "Charter",
+    "Sitka Text", Cambria, Georgia, serif;
   --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
     Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --math: "Libertinus Math", "STIX Two Math", "Latin Modern Math",
+  --math: "STIX Two Math", "Latin Modern Math",
     "New Computer Modern Math", "Cambria Math", math;
 }
 
@@ -463,7 +496,7 @@ h1 + .lede {
 }
 
 .disclosure-body > p {
-  margin: 0.55rem 0;
+  margin: 0.75rem 0;
 }
 
 .disclosure-body > p:last-child {
@@ -491,7 +524,7 @@ h1 + .lede {
 }
 
 .disclosure-body > math[display="block"] {
-  margin: 0.8rem 0;
+  margin: 0.9rem 0;
 }
 
 .disclosure-body > math[display="block"]:first-child {
@@ -643,10 +676,32 @@ main div[id^="frame-wrapper-"] > figure > div:nth-child(2) {
 
 main math[display="block"] {
   max-width: 100%;
-  margin: 1.1rem 0;
-  padding: 0.15rem 0 0.25rem;
+  margin: 1.25rem 0;
+  padding: 0.35rem 0 0.45rem;
   font-size: 1.06em;
   white-space: nowrap;
+}
+
+/* Consecutive display equations keep a visible gap: the padding above
+   stays even where the margins collapse into one. */
+main math[display="block"] + math[display="block"] {
+  margin-top: 0.6rem;
+}
+
+/* Inline maths is an atomic inline box in Chrome, so block padding enlarges
+   the line box only where an expression (fraction, root, sub/superscript
+   stack) is taller than the line height; plain lines keep their rhythm. */
+main p math:not([display="block"]),
+main li math:not([display="block"]),
+main dd math:not([display="block"]),
+main td math:not([display="block"]) {
+  padding-block: 0.22em;
+}
+
+/* Extra room above and below inline fractions, which otherwise touch the
+   descenders of the line above. */
+main math:not([display="block"]) mfrac {
+  padding-block: 0.08em;
 }
 
 /* A CSS block around exported MathML otherwise makes Chrome's direct math

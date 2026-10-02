@@ -21,9 +21,22 @@
 
 #set page(paper: "a4", margin: 2.2cm)
 #set par(justify: true)
-// Maths in Libertinus Math to match the Libertinus Serif text, the lecture
-// slides, and the plots (fonts/; compile with --font-path fonts).
-#show math.equation: set text(font: "Libertinus Math")
+// Text in STIX Two Text and maths in STIX Two Math, as in the lecture slides,
+// the plots and the animations (fonts/, SIL OFL; compile with --font-path
+// fonts).
+#set text(font: "STIX Two Text", size: 11pt)
+#show math.equation: set text(font: "STIX Two Math")
+// Inline maths: Typst sizes a line by the text edges (cap height to
+// baseline), so inline fractions overlapped the neighbouring lines. Tall
+// inline equations (fractions, stacked scripts) take their glyph bounds as
+// edges, so only their lines grow; equations still break across lines.
+#show math.equation.where(block: false): it => context {
+  let bounds(body) = {
+    set text(top-edge: "bounds", bottom-edge: "bounds")
+    body
+  }
+  if measure(bounds(it)).height > 1.3 * text.size { bounds(it) } else { it }
+}
 
 #align(center)[
   #text(size: 24pt, weight: "bold")[Plasma Physics]

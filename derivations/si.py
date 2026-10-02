@@ -112,17 +112,24 @@ def slide_width(columns):
 
 
 def _register_fonts():
-    """Register the repository's Libertinus fonts (SIL OFL, fonts/) with
+    """Register the repository's STIX Two Text fonts (SIL OFL, fonts/) with
     Matplotlib so that plots use the script's typeface without a system
     install. Without the directory (e.g. an exported copy), Matplotlib falls
-    back to an installed Libertinus Serif or its default serif."""
+    back to an installed STIX Two Text or its built-in STIX."""
     from pathlib import Path
 
     from matplotlib import font_manager
 
     fonts = Path(__file__).resolve().parent.parent / "fonts"
-    for path in sorted(fonts.glob("LibertinusSerif-*.otf")):
-        font_manager.fontManager.addfont(str(path))
+    paths = sorted(fonts.glob("STIXTwoText-*.otf"))
+    if not paths:
+        return
+    manager = font_manager.fontManager
+    # Use only the repository files, not a system STIX Two Text (macOS ships
+    # a variable version), so that every machine renders the same glyphs.
+    manager.ttflist = [f for f in manager.ttflist if f.name != "STIX Two Text"]
+    for path in paths:
+        manager.addfont(str(path))
 
 
 def figure(width=4.2, height=2.8):
@@ -140,16 +147,17 @@ def figure(width=4.2, height=2.8):
         "legend.frameon": False, "figure.dpi": 150,
         # Glyphs as paths: identical rendering without installed fonts.
         "svg.fonttype": "path", "svg.hashsalt": "plasma-skript",
-        # Libertinus Serif for text and math, matching the script and the
-        # slides; glyphs missing from it (some relations) come from STIX.
+        # STIX Two Text for text and math, matching the script and the
+        # slides; glyphs missing from it (some relations) come from
+        # Matplotlib's built-in STIX, of which STIX Two is the redesign.
         "font.family": "serif",
-        "font.serif": ["Libertinus Serif", "STIXGeneral", "DejaVu Serif"],
+        "font.serif": ["STIX Two Text", "STIXGeneral", "DejaVu Serif"],
         "mathtext.fontset": "custom", "mathtext.fallback": "stix",
-        "mathtext.rm": "Libertinus Serif",
-        "mathtext.it": "Libertinus Serif:italic",
-        "mathtext.bf": "Libertinus Serif:bold",
-        "mathtext.sf": "Libertinus Serif",
-        "mathtext.cal": "Libertinus Serif:italic",
+        "mathtext.rm": "STIX Two Text",
+        "mathtext.it": "STIX Two Text:italic",
+        "mathtext.bf": "STIX Two Text:bold",
+        "mathtext.sf": "STIX Two Text",
+        "mathtext.cal": "STIX Two Text:italic",
         "mathtext.tt": "DejaVu Sans Mono",
         "axes.formatter.use_mathtext": True,
         "axes.unicode_minus": False,

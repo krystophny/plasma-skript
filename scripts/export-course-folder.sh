@@ -7,7 +7,7 @@
 #   slides/              the live lecture decks, public/slides/<stem>.pdf
 #   animations/          rendered MP4s plus one PNG still per scene
 #   animation-sources/   animations/*.py (scenes and the shared style.py) and
-#                        fonts/ (Libertinus Serif, OFL)
+#                        fonts/ (STIX Two Text, OFL)
 #   derivations/         Makefile, helper modules, chapters/*.py, build/pdf/*.pdf
 #                        (SymPy derivations; no build/tex, no build/fig)
 # Files that are no longer produced are deleted from those subfolders; files
@@ -16,8 +16,8 @@
 # Requirements for students who want to re-render an animation:
 #   Python >= 3.11, `pip install manim==0.21.0`, ffmpeg, Cairo and Pango
 #   (system packages), a LaTeX installation with dvisvgm (the scenes use
-#   MathTex with the libertinus and libertinust1math packages).  The scenes
-#   register Libertinus Serif from animation-sources/fonts/.  Then run, e.g.
+#   MathTex with the stix2 package, stix2-type1).  The scenes register
+#   STIX Two Text from animation-sources/fonts/.  Then run, e.g.
 #     manim render -qm debye_shielding.py DebyeShielding
 #   The derivations need sympy, numpy and pytest (make -C derivations test);
 #   the PDFs additionally need latexmk (make -C derivations pdf).
@@ -94,7 +94,7 @@ done
 
 cp "$repo_root"/animations/*.py "$staging/animation-sources/"
 mkdir -p "$staging/animation-sources/fonts"
-cp "$repo_root"/fonts/LibertinusSerif-*.otf "$repo_root/fonts/OFL.txt" \
+cp "$repo_root"/fonts/STIXTwoText-*.otf "$repo_root/fonts/OFL.txt" \
   "$staging/animation-sources/fonts/"
 # derivations/: Makefile, the helper modules and test runner (*.py),
 # chapters/*.py and build/pdf/*.pdf (never build/tex or build/fig).

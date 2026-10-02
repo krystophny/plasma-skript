@@ -57,16 +57,17 @@ fi
 
 TYPST_FEATURES=bundle,html typst compile \
   --root "$repo_root" \
+  --font-path "$repo_root/fonts" --ignore-system-fonts \
   --format bundle \
   --pretty \
   "$repo_root/src/main.typ" \
   "$site_dir"
 
-# The print PDF sets its maths in Libertinus Math (fonts/, SIL OFL), which
-# Typst does not embed.
+# The script, the HTML diagrams and the print PDF are set in STIX Two Text and
+# STIX Two Math (fonts/, SIL OFL), which Typst does not embed.
 typst compile \
   --root "$repo_root" \
-  --font-path "$repo_root/fonts" \
+  --font-path "$repo_root/fonts" --ignore-system-fonts \
   "$repo_root/src/print.typ" \
   "$site_dir/plasma-physics.pdf"
 

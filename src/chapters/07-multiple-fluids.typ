@@ -71,7 +71,7 @@
     Its zeroth and first velocity moments are
 
     $ n_(s)=integral f_(s) dif^3 bold(v), quad
-      n_(s) bold(u)_(s)=integral bold(v) f_(s) dif^3 bold(v) .$
+      n_(s) bold(u)_(s)=integral bold(v) f_(s) dif^3 bold(v) . $
 
     Multiplication by $m_(s)$ or $q_(s)$ gives the species mass and current
     contributions.
@@ -82,19 +82,19 @@
     defined may one form
 
     $ rho=sum_s rho_(s), quad
-      bold(j)=sum_s q_(s)n_(s)bold(u)_(s) .$
+      bold(j)=sum_s q_(s)n_(s)bold(u)_(s) . $
 
     A mass-weighted bulk velocity is another derived quantity.
 
     #derivation-step[Separate quasi-neutrality from current]
     Quasi-neutrality constrains only the zeroth charge moment:
 
-    $ rho_q=sum_s q_(s)n_(s) approx 0 .$
+    $ rho_q=sum_s q_(s)n_(s) approx 0 . $
 
     It does not set the first moments equal. For hydrogen,
 
     $ rho_q approx e(n_(i)-n_(e)), quad
-      bold(j)=e n_(i) bold(u)_(i)-e n_(e) bold(u)_(e) .$
+      bold(j)=e n_(i) bold(u)_(i)-e n_(e) bold(u)_(e) . $
 
     The current can therefore remain finite even when the charge density is
     small.]
@@ -242,12 +242,12 @@
     Use
 
     $ pdv(f_(s),t)+div(f_(s)bold(v))
-        +div(f_(s)bold(a)_(s))=C_(s)[f] ,$
+        +div(f_(s)bold(a)_(s))=C_(s)[f] , $
 
     with
 
     $ bold(a)_(s)=q_(s)/m_(s)
-        (bold(E)+bold(v) times bold(B)) .$
+        (bold(E)+bold(v) times bold(B)) . $
 
     #derivation-step[Take the zeroth moment]
     Integrating over velocity gives $pdv(n_(s),t)$ from the time term and
@@ -260,27 +260,27 @@
     gives
 
     $ m_(s) integral v_i pdv((v_j f_(s)),x_j) dif^3 bold(v)
-        =pdv((m_(s) integral v_i v_j f_(s) dif^3 bold(v)),x_j) .$
+        =pdv((m_(s) integral v_i v_j f_(s) dif^3 bold(v)),x_j) . $
 
     Writing $bold(v)=bold(u)_(s)+bold(w)_(s)$ decomposes the raw tensor into
 
-    $ rho_(s)bold(u)_(s)bold(u)_(s)+bold(P)_(s) .$
+    $ rho_(s)bold(u)_(s)bold(u)_(s)+bold(P)_(s) . $
 
     #derivation-step[Evaluate the Lorentz and collision moments]
     Integration by parts in velocity gives
 
     $ m_(s) integral v_i pdv((a_(s,j)f_(s)),v_j) dif^3 bold(v)
-        =-m_(s) integral a_(s,i)f_(s) dif^3 bold(v) .$
+        =-m_(s) integral a_(s,i)f_(s) dif^3 bold(v) . $
 
     Moving this term to the right gives
 
     $ m_(s) integral bold(a)_(s)f_(s) dif^3 bold(v)
         =q_(s)n_(s)bold(E)
-        +q_(s)n_(s)(bold(u)_(s)times bold(B)) .$
+        +q_(s)n_(s)(bold(u)_(s)times bold(B)) . $
 
     The remaining collision moment is
 
-    $ bold(R)_(s)=m_(s) integral bold(v)C_(s)[f] dif^3 bold(v) .$
+    $ bold(R)_(s)=m_(s) integral bold(v)C_(s)[f] dif^3 bold(v) . $
 
     #derivation-step[Take the energy moment]
     Multiply by $(m_(s)v^2)/2$. After integration by parts, the force work is
@@ -296,7 +296,7 @@
     separates directed kinetic energy, internal energy, pressure work, and
     heat flux. The collision energy moment is
 
-    $ Q_(s)=(m_(s)/2) integral v^2 C_(s)[f] dif^3 bold(v) .$
+    $ Q_(s)=(m_(s)/2) integral v^2 C_(s)[f] dif^3 bold(v) . $
 
     No pressure equation has been assumed. Replacing $bold(P)_(s)$ by a scalar
     or $bold(q)_(h,s)$ by a constitutive law is a separate closure choice.]
@@ -431,7 +431,7 @@
     Start with
 
     $ q_(s)n_(s)(bold(E)_perp+bold(u)_(s,perp)times bold(B))
-        =grad_perp p_(s) .$
+        =grad_perp p_(s) . $
 
     #derivation-step[Eliminate the magnetic cross product]
     Cross the equation with $bold(B)$ from the right. The identity
@@ -442,14 +442,14 @@
 
     $ q_(s)n_(s)bold(E)times bold(B)
         -q_(s)n_(s)B^2 bold(u)_(s,perp)
-        =grad(p_(s))times bold(B) .$
+        =grad(p_(s))times bold(B) . $
 
     #derivation-step[Separate the two perpendicular drifts]
     Rearrange and use
     $grad(p) times bold(B)=-bold(B)times grad(p):$
 
     $ bold(u)_(s,perp)=(bold(E)times bold(B))/(B^2)
-        +(bold(B)times grad(p_(s)))/(q_(s)n_(s)B^2) .$
+        +(bold(B)times grad(p_(s)))/(q_(s)n_(s)B^2) . $
 
     The first term is the common electric drift because $q_(s)$ cancels from
     the electric force balance. The second is the charge-dependent
@@ -593,7 +593,7 @@
     For each species, the diamagnetic contribution obeys
 
     $ q_(s)n_(s)bold(u)_(*,s)
-        =(bold(B)times grad(p_(s)))/(B^2) .$
+        =(bold(B)times grad(p_(s)))/(B^2) . $
 
     The factors $q_(s)n_(s)$ cancel the denominator in the species velocity.
 
@@ -601,7 +601,7 @@
     Summing over electrons and ions gives
 
     $ bold(j)_*=(bold(B)times[
-          grad(p_(e))+grad(p_(i))])/(B^2) .$
+          grad(p_(e))+grad(p_(i))])/(B^2) . $
 
     The pressure-drift velocities are opposite for opposite charges, but their
     charge-weighted currents add.
@@ -610,7 +610,7 @@
     The common drift instead gives
 
     $ sum_s q_(s)n_(s)bold(u)_(E times B)
-        =rho_q bold(u)_(E times B) .$
+        =rho_q bold(u)_(E times B) . $
 
     It vanishes at leading order when $rho_q approx 0$. This cancellation is
     different from the diamagnetic sum because the electric drift is the same
@@ -791,7 +791,7 @@
 
     $ -bold(b)dot div(bold(P)_(s)), quad
       q_(s)n_(s)E_parallel, quad
-      R_(parallel,s)=bold(b)dot bold(R)_(s) .$
+      R_(parallel,s)=bold(b)dot bold(R)_(s) . $
 
     For scalar pressure, the first term becomes
     $-bold(b)dot grad(p_(s)).$
@@ -799,41 +799,41 @@
     #derivation-step[Derive the electron Boltzmann response]
     Set electron inertia and collisions to zero and use $q_(e)=-e$:
 
-    $ bold(b)dot grad(p_(e))=-e n_(e)E_parallel .$
+    $ bold(b)dot grad(p_(e))=-e n_(e)E_parallel . $
 
     Isothermal pressure gives
     $bold(b)dot grad(p_(e))=k_B T_(e)bold(b)dot grad(n_(e))$, so
 
-    $ E_parallel=-((k_B T_(e))/e) bold(b)dot grad(ln n_(e)) .$
+    $ E_parallel=-((k_B T_(e))/e) bold(b)dot grad(ln n_(e)) . $
 
     With $E_parallel=-bold(b)dot grad(phi)$,
 
-    $ bold(b)dot grad(ln n_(e)-(e phi)/(k_B T_(e)))=0 .$
+    $ bold(b)dot grad(ln n_(e)-(e phi)/(k_B T_(e)))=0 . $
 
     Along a connected field line,
 
-    $ n_(e)=n_(e,0)exp((e(phi-phi_0))/(k_B T_(e))) .$
+    $ n_(e)=n_(e,0)exp((e(phi-phi_0))/(k_B T_(e))) . $
 
     #derivation-step[Sum the species momentum equations]
     Write
 
-    $ bold(u)_(s)=bold(u)+bold(V)_(s) .$
+    $ bold(u)_(s)=bold(u)+bold(V)_(s) . $
 
     Then
 
     $ sum_s rho_(s)bold(u)_(s)bold(u)_(s)
-        =rho bold(u)bold(u)+sum_s rho_(s)bold(V)_(s)bold(V)_(s) ,$
+        =rho bold(u)bold(u)+sum_s rho_(s)bold(V)_(s)bold(V)_(s) , $
 
     because
 
     $ sum_s rho_(s)bold(V)_(s)
-        =sum_s rho_(s)bold(u)_(s)-rho bold(u)=bold(0) .$
+        =sum_s rho_(s)bold(u)_(s)-rho bold(u)=bold(0) . $
 
     The field forces become
 
     $ sum_s q_(s)n_(s)bold(E)=rho_q bold(E), quad
       sum_s q_(s)n_(s)(bold(u)_(s)times bold(B))
-        =bold(j)times bold(B) .$
+        =bold(j)times bold(B) . $
 
     These identities give the summed momentum equation. If interspecies
     collisions are internal, their momentum sources cancel in the sum.]

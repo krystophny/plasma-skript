@@ -113,7 +113,7 @@
     The linearized cold momentum equation is
 
     $ -i omega m_s bold(u)_(s,1)=q_s (
-      bold(E)_1+bold(u)_(s,1) times bold(B)_0) .$
+      bold(E)_1+bold(u)_(s,1) times bold(B)_0) . $
 
     With $bold(B)_0=B_0 bold(e)_z$, the transverse components form a coupled
     two-by-two system:
@@ -124,24 +124,24 @@
     and
 
     $ Omega_s u_(s,1,x)-i omega u_(s,1,y)
-      =(q_s/m_s) E_(1,y) .$
+      =(q_s/m_s) E_(1,y) . $
 
     The parallel component is independent:
 
-    $ -i omega u_(s,1,z)=(q_s/m_s) E_(1,z) .$
+    $ -i omega u_(s,1,z)=(q_s/m_s) E_(1,z) . $
 
     #derivation-step[Invert the transverse response]
     Inverting the transverse system gives
 
     $ u_(s,1,x)=((i q_s omega)/(m_s (omega^2-Omega_s^2)))
       E_(1,x)
-      -((q_s Omega_s)/(m_s (omega^2-Omega_s^2))) E_(1,y) ,$
+      -((q_s Omega_s)/(m_s (omega^2-Omega_s^2))) E_(1,y) , $
 
     and
 
     $ u_(s,1,y)=((q_s Omega_s)/(m_s (omega^2-Omega_s^2)))
       E_(1,x)
-      +((i q_s omega)/(m_s (omega^2-Omega_s^2))) E_(1,y) .$
+      +((i q_s omega)/(m_s (omega^2-Omega_s^2))) E_(1,y) . $
 
     Multiply by $q_s n_(s,0)$ and sum over species to obtain $bold(j)_1$.
     The transverse entries are coupled because the Lorentz force rotates the
@@ -151,7 +151,7 @@
     Insert the current into
 
     $ bold(epsilon)_(p) dot bold(E)_1
-      =bold(E)_1+(i/(omega epsilon_0)) bold(j)_1 .$
+      =bold(E)_1+(i/(omega epsilon_0)) bold(j)_1 . $
 
     Reading off the coefficients gives the cold dielectric tensor displayed
     above. Its off-diagonal entries encode the rotation of transverse motion.
@@ -164,13 +164,13 @@
     and
 
     $ bold(k) times bold(B)_1=-(omega bold(E)_1)/c^2
-      -i mu_0 bold(j)_1 .$
+      -i mu_0 bold(j)_1 . $
 
     Substitute the first relation into the second, eliminate $bold(j)_1$ by
     the dielectric definition with $mu_0 epsilon_0=1/c^2$, and use
 
     $ bold(k) times (bold(k) times bold(E)_1)
-      =bold(k)(bold(k) dot bold(E)_1)-k^2 bold(E)_1 .$
+      =bold(k)(bold(k) dot bold(E)_1)-k^2 bold(E)_1 . $
 
     A nonzero field amplitude requires the determinant of the resulting wave
     matrix to vanish.]
@@ -317,33 +317,33 @@
       epsilon_(perp)-N^2, -i epsilon_(times), 0;
       i epsilon_(times), epsilon_(perp)-N^2, 0;
       0, 0, epsilon_(parallel))
-      mat(E_x; E_y; E_z)=mat(0;0;0) .$
+      mat(E_x; E_y; E_z)=mat(0;0;0) . $
 
     The longitudinal factor gives $epsilon_(parallel)=0$. The transverse
     determinant is
 
-    $ (epsilon_(perp)-N^2)^2-epsilon_(times)^2=0 .$
+    $ (epsilon_(perp)-N^2)^2-epsilon_(times)^2=0 . $
 
     Thus the two transverse eigenvalues are
 
     $ N^2=epsilon_(perp)+epsilon_(times), quad
-      N^2=epsilon_(perp)-epsilon_(times) .$
+      N^2=epsilon_(perp)-epsilon_(times) . $
 
     #derivation-step[Express the circular branches]
     For an electron, the signed gyrofrequency is negative when $B_0$ points
     along positive $z$. Use its positive magnitude $omega_(c,e)$ and the
     circular basis
 
-    $ E_(1,y)=-i s E_(1,x) .$
+    $ E_(1,y)=-i s E_(1,x) . $
 
     The two indices become
 
     $ N_(s)^2=epsilon_(perp)-s epsilon_(times)
-      =1-omega_(p,e)^2/(omega(omega+s omega_(c,e))) .$
+      =1-omega_(p,e)^2/(omega(omega+s omega_(c,e))) . $
 
     Setting $N_(s)=0$ gives
 
-    $ omega^2+s omega_(c,e) omega-omega_(p,e)^2=0 .$
+    $ omega^2+s omega_(c,e) omega-omega_(p,e)^2=0 . $
 
     The positive root is the cutoff stated above. For $s=-1$, the denominator
     vanishes at the electron cyclotron frequency. The cold response is then
@@ -354,16 +354,16 @@
     A linearly polarized wave is the equal-amplitude sum of the two circular
     eigenmodes. After a distance $L$, their relative phase is
 
-    $ (k_+-k_-)L .$
+    $ (k_+-k_-)L . $
 
     The major axis rotates by half this phase:
 
-    $ theta_F=((k_+-k_-)L)/2 .$
+    $ theta_F=((k_+-k_-)L)/2 . $
 
     If the plasma varies slowly along the ray, use the local wave-number
     difference instead:
 
-    $ theta_F=(integral (k_+(z)-k_-(z)) dif z)/2 .$
+    $ theta_F=(integral (k_+(z)-k_-(z)) dif z)/2 . $
     ]
   )
 
@@ -525,12 +525,12 @@
       epsilon_(perp), -i epsilon_(times), 0;
       i epsilon_(times), epsilon_(perp)-N^2, 0;
       0, 0, epsilon_(parallel)-N^2)
-      mat(E_x;E_y;E_z)=mat(0;0;0) .$
+      mat(E_x;E_y;E_z)=mat(0;0;0) . $
 
     The $z$ equation is independent of the $x-y$ block. A nonzero $E_z$
     therefore requires
 
-    $ N^2=epsilon_(parallel) .$
+    $ N^2=epsilon_(parallel) . $
 
     This is the ordinary mode. Its electric field is parallel to
     $bold(B)_0$ but transverse to $bold(k)$, so the Lorentz force does not
@@ -539,11 +539,11 @@
     #derivation-step[Factor the extraordinary block]
     The determinant of the $x-y$ block is
 
-    $ epsilon_(perp)(epsilon_(perp)-N^2)-epsilon_(times)^2=0 .$
+    $ epsilon_(perp)(epsilon_(perp)-N^2)-epsilon_(times)^2=0 . $
 
     Solving for the index gives
 
-    $ N_X^2=(epsilon_(perp)^2-epsilon_(times)^2)/epsilon_(perp) .$
+    $ N_X^2=(epsilon_(perp)^2-epsilon_(times)^2)/epsilon_(perp) . $
 
     For one electron species, define
 
@@ -552,33 +552,33 @@
     and
 
     $ epsilon_(times)=-(omega_(c,e) omega_(p,e)^2)/
-      (omega (omega^2-omega_(c,e)^2)) .$
+      (omega (omega^2-omega_(c,e)^2)) . $
 
     #derivation-step[Expose the upper-hybrid denominator]
     Let $d=omega^2-omega_(c,e)^2$ and $p=omega_(p,e)^2$. Then
 
-    $ N_X^2=((d-p)^2-((omega_(c,e)^2 p^2)/omega^2))/(d(d-p)) .$
+    $ N_X^2=((d-p)^2-((omega_(c,e)^2 p^2)/omega^2))/(d(d-p)) . $
 
     Multiplying the two circular factors and simplifying yields
 
     $ N_X^2=1-
       (omega_(p,e)^2 (omega^2-omega_(p,e)^2)) /
-      (omega^2 (omega^2-omega_(p,e)^2-omega_(c,e)^2)) .$
+      (omega^2 (omega^2-omega_(p,e)^2-omega_(c,e)^2)) . $
 
     The denominator vanishes at
 
-    $ omega_"UH"^2=omega_(p,e)^2+omega_(c,e)^2 ,$
+    $ omega_"UH"^2=omega_(p,e)^2+omega_(c,e)^2 , $
 
     which is the upper-hybrid resonance.
 
     #derivation-step[Read the extraordinary polarization]
     The first row of the transverse block is
 
-    $ epsilon_(perp) E_x-i epsilon_(times) E_y=0 .$
+    $ epsilon_(perp) E_x-i epsilon_(times) E_y=0 . $
 
     Hence
 
-    $ E_x/E_y=(i epsilon_(times))/epsilon_(perp) ,$
+    $ E_x/E_y=(i epsilon_(times))/epsilon_(perp) , $
 
     which is generally elliptical rather than purely linear polarization.]
   )
@@ -708,7 +708,7 @@
     in
 
     $ bold(k)(bold(k) dot bold(E)_1)-k^2 bold(E)_1
-      +omega^2/c^2 bold(epsilon)_(p) dot bold(E)_1=bold(0) .$
+      +omega^2/c^2 bold(epsilon)_(p) dot bold(E)_1=bold(0) . $
 
     After division by $omega^2/c^2$, the geometric term contributes
 
@@ -726,36 +726,36 @@
     gives
 
     $ det(M)=(P-Z a^2)((S-Z b^2)(S-Z)-D^2)
-      -Z^2 a^2 b^2(S-Z) .$
+      -Z^2 a^2 b^2(S-Z) . $
 
     Collect terms as
 
-    $ A Z^2-B Z+C=0 ,$
+    $ A Z^2-B Z+C=0 , $
 
     where
 
     $ A=S a^2+P b^2, quad
       B=(S^2-D^2) a^2+P S(1+b^2), quad
-      C=P(S^2-D^2) .$
+      C=P(S^2-D^2) . $
 
     The two roots before specialization are
 
-    $ Z_(plus.minus)=(B plus.minus sqrt(B^2-4 A C))/(2 A) .$
+    $ Z_(plus.minus)=(B plus.minus sqrt(B^2-4 A C))/(2 A) . $
 
     #derivation-step[Specialize to one cold electron species]
     Insert
 
     $ S=1-X_(omega)/(1-Y_(omega)^2), quad
-      P=1-X_(omega) ,$
+      P=1-X_(omega) , $
 
     with $D$ of magnitude
 
-    $ (Y_(omega) X_(omega))/(1-Y_(omega)^2) .$
+    $ (Y_(omega) X_(omega))/(1-Y_(omega)^2) . $
 
     Since $a^2+b^2=1$, useful identities are
 
     $ S^2-D^2=((1-X_(omega))^2-Y_(omega)^2)/(1-Y_(omega)^2),
-      quad A=S a^2+P b^2 .$
+      quad A=S a^2+P b^2 . $
 
     Substitution into the quadratic formula, extraction of the common factor
     $1-X_(omega)$, and completion of the square in the angle-dependent term
@@ -777,12 +777,12 @@
     Assume a homogeneous, cold, collisionless, fixed-ion electron response
     with uniform $bold(B)_0$ and oblique propagation. Use the
     normalized parameters
-    #normalized-label[$Y=omega_(c,e)/omega_(p,e)=qty("0.30", "1")$],
+    #normalized-label[ $Y=omega_(c,e)/omega_(p,e)=qty("0.30", "1")$],
     #normalized-label[$W=omega/omega_(p,e)=qty("1.50", "1")$], and
     $theta=pi/4$ radians. Evaluate the two
     Appleton--Hartree refractive indices.
 
-    Numerical result: #normalized-label[$X_(omega)=qty("0.444", "1")$],
+    Numerical result: #normalized-label[ $X_(omega)=qty("0.444", "1")$],
     #normalized-label[$Y_(omega)=qty("0.200", "1")$], and the two roots are
     #normalized-label[$N_+=qty("0.778", "1")$] and
     #normalized-label[$N_-=qty("0.686", "1")$], where the signs follow the
@@ -887,12 +887,12 @@
     [#derivation-step[Remove the magnetic field]
     Set $Y=0$ in the circular response. Both eigenvalues become
 
-    $ N^2=1-1/W^2 ,$
+    $ N^2=1-1/W^2 , $
 
     so multiplying by $W^2$ and using $K=W N$ gives the cold
     unmagnetized electromagnetic branch
 
-    $ W^2=1+K^2 .$
+    $ W^2=1+K^2 . $
 
     The longitudinal branch remains $W=1$ in the cold fixed-ion limit, so its
     zero group velocity is recovered as well.
@@ -901,7 +901,7 @@
     As $W -> infinity$, every susceptibility term scales as $W^(-2)$ or
     faster away from a resonance. Therefore
 
-    $ N^2 -> 1, quad omega -> c k .$
+    $ N^2 -> 1, quad omega -> c k . $
 
     The plasma becomes transparent. A cutoff is found from $N^2=0$ and is a
     finite-frequency, zero-wave-number endpoint. At a resonance, a denominator

@@ -81,12 +81,12 @@
     [#derivation-step[Sum the mass balances]
     Start with
 
-    $ pdv(n_(s),t)+div(n_(s)bold(u)_(s))=0 .$
+    $ pdv(n_(s),t)+div(n_(s)bold(u)_(s))=0 . $
 
     Multiply by the constant mass $m_(s)$ and sum:
 
     $ sum_s m_(s)pdv(n_(s),t)
-        +sum_s m_(s)div(n_(s)bold(u)_(s))=0 .$
+        +sum_s m_(s)div(n_(s)bold(u)_(s))=0 . $
 
     With $rho=sum_s rho_(s)$ and
     $rho bold(u)=sum_s rho_(s)bold(u)_(s)$, this becomes the total mass
@@ -96,7 +96,7 @@
     Multiply the species equations by $q_(s)$ instead. The two terms become
 
     $ pdv(sum_s q_(s)n_(s),t)=pdv(rho_q,t), quad
-      div(sum_s q_(s)n_(s)bold(u)_(s))=div(bold(j)) .$
+      div(sum_s q_(s)n_(s)bold(u)_(s))=div(bold(j)) . $
 
     This gives charge conservation without using a quasi-neutral
     approximation.
@@ -105,13 +105,13 @@
     Add the conservative species momentum equations. Write
     $bold(u)_(s)=bold(u)+bold(V)_(s)$. Since
 
-    $ sum_s rho_(s)bold(V)_(s)=bold(0) ,$
+    $ sum_s rho_(s)bold(V)_(s)=bold(0) , $
 
     the flux decomposes as
 
     $ sum_s rho_(s)bold(u)_(s)bold(u)_(s)
         =rho bold(u)bold(u)
-        +sum_s rho_(s)bold(V)_(s)bold(V)_(s) .$
+        +sum_s rho_(s)bold(V)_(s)bold(V)_(s) . $
 
     The last dyadic is the relative-flow stress and remains part of the total
     pressure tensor.
@@ -121,7 +121,7 @@
 
     $ sum_s q_(s)n_(s)bold(E)=rho_q bold(E), quad
       sum_s q_(s)n_(s)(bold(u)_(s)times bold(B))
-        =bold(j)times bold(B) .$
+        =bold(j)times bold(B) . $
 
     Internal collision sources cancel only when their species sum is zero.
     These identities yield the displayed total momentum equation.]
@@ -293,12 +293,12 @@
         =-(grad(p_(e)))/(e n)+bold(R)_(e)/(e n)
         -(m_(e) (
           pdv(bold(u)_(e),t)
-          +bold(u)_(e) dot grad(bold(u)_(e))))/e .$
+          +bold(u)_(e) dot grad(bold(u)_(e))))/e . $
 
     #derivation-step[Expose the Hall term]
     Since
 
-    $ bold(u)-bold(u)_(e) approx bold(j)/(e n) ,$
+    $ bold(u)-bold(u)_(e) approx bold(j)/(e n) , $
 
     adding the difference between bulk and electron magnetic advection gives
 
@@ -307,7 +307,7 @@
         -(m_(e) (
           pdv(bold(u)_(e),t)
           +bold(u)_(e) dot grad(bold(u)_(e))))/e
-        +(bold(j)times bold(B))/(e n) .$
+        +(bold(j)times bold(B))/(e n) . $
 
     The displayed Hall contribution is the magnetic force expressed through
     the electron--bulk relative velocity.
@@ -318,27 +318,27 @@
     ordering choice. Model interspecies drag as
 
     $ bold(R)_(e)=m_(e)n nu_(e i)
-        (bold(u)_(i)-bold(u)_(e)) .$
+        (bold(u)_(i)-bold(u)_(e)) . $
 
     Since
     $bold(u)_(i)-bold(u)_(e)=bold(j)/(e n),$
 
     $ bold(R)_(e)/(e n)
-        =(m_(e)nu_(e i)bold(j))/(n e^2)=eta bold(j) .$
+        =(m_(e)nu_(e i)bold(j))/(n e^2)=eta bold(j) . $
 
     Thus
 
-    $ eta=(m_(e)nu_(e i))/(n e^2), quad sigma=1/eta .$
+    $ eta=(m_(e)nu_(e i))/(n e^2), quad sigma=1/eta . $
 
     #derivation-step[Retain electron inertia when needed]
     Write
 
-    $ bold(u)_(e) approx bold(u)-bold(j)/(e n) .$
+    $ bold(u)_(e) approx bold(u)-bold(j)/(e n) . $
 
     In the slowly varying-density and slow-bulk-inertia ordering, the
     current-dependent part of the electron inertia is
 
-    $ (m_(e)pdv(bold(j),t))/(e^2 n) .$
+    $ (m_(e)pdv(bold(j),t))/(e^2 n) . $
 
     If current advection or density variation is not small, replace this
     approximation by the full electron-inertia operator; the displayed
@@ -516,45 +516,45 @@
 
     into
 
-    $ pdv(rho,t)+div(rho bold(u))=0 .$
+    $ pdv(rho,t)+div(rho bold(u))=0 . $
 
     Since $rho_0$ is constant and products of perturbations are second order,
 
-    $ pdv(delta rho,t)+rho_0 div(delta bold(u))=0 .$
+    $ pdv(delta rho,t)+rho_0 div(delta bold(u))=0 . $
 
     #derivation-step[Linearize momentum]
     The equilibrium has $bold(u)_0=bold(0)$ and no pressure gradient. The
     inertial term becomes
 
     $ rho (pdv(bold(u),t)+bold(u) dot grad(bold(u)))
-        =rho_0 pdv(delta bold(u),t)+O(delta^2) .$
+        =rho_0 pdv(delta bold(u),t)+O(delta^2) . $
 
     The pressure force is $-grad(delta p)$. Expanding the magnetic force and
     using $curl(bold(B)_0)=bold(0)$ leaves
 
-    $ [curl(delta bold(B))times bold(B)_0]/mu_0 .$
+    $ [curl(delta bold(B))times bold(B)_0]/mu_0 . $
 
     #derivation-step[Linearize induction and magnetic solenoidality]
     Keeping one perturbation and one background field in ideal induction gives
 
-    $ pdv(delta bold(B),t)=curl(delta bold(u)times bold(B)_0) ,$
+    $ pdv(delta bold(B),t)=curl(delta bold(u)times bold(B)_0) , $
 
     while divergence-free magnetic fields give
 
-    $ div(delta bold(B))=0 .$
+    $ div(delta bold(B))=0 . $
 
     #derivation-step[Linearize the adiabatic closure]
     Expand $p rho^(-gamma)$ about the static equilibrium. The first-order
     invariant is proportional to
 
-    $ (delta p)/p_0-gamma ((delta rho)/rho_0) .$
+    $ (delta p)/p_0-gamma ((delta rho)/rho_0) . $
 
     Its material derivative reduces to a time derivative, so
     $pdv(delta p-c_(s)^2 delta rho,t)=0$. Initially isentropic perturbations
     therefore satisfy
 
     $ (delta p)/p_0=gamma ((delta rho)/rho_0), quad
-      delta p=((gamma p_0)/rho_0)delta rho=c_(s)^2delta rho .$
+      delta p=((gamma p_0)/rho_0)delta rho=c_(s)^2delta rho . $
 
     Every discarded product contains at least two perturbation factors.]
   )
@@ -713,35 +713,35 @@
     [#derivation-step[Insert resistivity into Faraday's law]
     Begin with
 
-    $ bold(E)+bold(u)times bold(B)=eta bold(j) ,$
+    $ bold(E)+bold(u)times bold(B)=eta bold(j) , $
 
     so
 
-    $ bold(E)=-bold(u)times bold(B)+eta bold(j) .$
+    $ bold(E)=-bold(u)times bold(B)+eta bold(j) . $
 
     Faraday's law becomes
 
     $ pdv(bold(B),t)=-curl(bold(E))
-        =curl(bold(u)times bold(B))-eta curl(bold(j)) .$
+        =curl(bold(u)times bold(B))-eta curl(bold(j)) . $
 
     #derivation-step[Convert the current term to magnetic diffusion]
     The reduced Ampere law is
 
-    $ bold(j)=(curl(bold(B)))/mu_0 .$
+    $ bold(j)=(curl(bold(B)))/mu_0 . $
 
     For uniform $eta$,
 
     $ -eta curl(bold(j))
-        =-(eta curl(curl(bold(B))))/mu_0 .$
+        =-(eta curl(curl(bold(B))))/mu_0 . $
 
     Use
 
-    $ curl(curl(bold(B)))=grad(div(bold(B)))-laplacian(bold(B)) .$
+    $ curl(curl(bold(B)))=grad(div(bold(B)))-laplacian(bold(B)) . $
 
     With $div(bold(B))=0$,
 
     $ -eta curl(bold(j))
-        =(eta laplacian(bold(B)))/mu_0 .$
+        =(eta laplacian(bold(B)))/mu_0 . $
 
     Define $D_(B)=eta/mu_0$ to obtain the displayed induction
     equation.
@@ -749,13 +749,13 @@
     #derivation-step[Prove frozen magnetic flux in the ideal limit]
     Let $S(t)$ be a surface whose boundary moves with $bold(u)$ and define
 
-    $ Psi_(B)=integral_(S(t)) bold(B) dot dif bold(S) .$
+    $ Psi_(B)=integral_(S(t)) bold(B) dot dif bold(S) . $
 
     The moving-surface transport theorem gives
 
     $ dv(Psi_(B),t)
         =integral_(S(t))[pdv(bold(B),t)-curl(bold(u)times bold(B))]
-          dot dif bold(S) .$
+          dot dif bold(S) . $
 
     Ideal induction sets the integrand to zero, so
     $dv(Psi_(B),t)=0$. Stokes' theorem gives the equivalent moving-loop
@@ -765,12 +765,12 @@
     The induction terms scale as
 
     $ |curl(bold(u)times bold(B))| approx (U B)/L, quad
-      |D_(B) laplacian(bold(B))| approx (D_(B)B)/(L^2) .$
+      |D_(B) laplacian(bold(B))| approx (D_(B)B)/(L^2) . $
 
     Their ratio is
 
     $ (U L)/D_(B)=R_(m)
-        =(L^2/D_(B))/(L/U)=tau_(D)/tau_(A) .$
+        =(L^2/D_(B))/(L/U)=tau_(D)/tau_(A) . $
 
     This magnetic Reynolds number compares advection with resistive
     diffusion.]
@@ -963,26 +963,26 @@
     Begin with the static momentum equation and reduced Ampere's law:
 
     $ bold(0)=-grad(p)+bold(j)times bold(B) $ \
-    $ bold(j)=(curl(bold(B)))/mu_0 .$
+    $ bold(j)=(curl(bold(B)))/mu_0 . $
 
     Therefore,
 
-    $ grad(p)=((curl(bold(B)))times bold(B))/mu_0 .$
+    $ grad(p)=((curl(bold(B)))times bold(B))/mu_0 . $
 
     Use the standard identity
 
     $ grad(B^2/2)=(bold(B)dot grad)bold(B)
-      +bold(B)times(curl(bold(B))) .$
+      +bold(B)times(curl(bold(B))) . $
 
     Since $bold(B)times curl(bold(B))=-curl(bold(B))times bold(B)$,
     rearrangement gives
 
     $ curl(bold(B))times bold(B)
-      =(bold(B)dot grad)bold(B)-grad(B^2/2) .$
+      =(bold(B)dot grad)bold(B)-grad(B^2/2) . $
 
     Substitution separates magnetic pressure from field-line tension:
 
-    $ grad(p+B^2/(2 mu_0))=((bold(B)dot grad)bold(B))/mu_0 .$
+    $ grad(p+B^2/(2 mu_0))=((bold(B)dot grad)bold(B))/mu_0 . $
 
     The gradient on the left describes compression of the field magnitude;
     the term on the right describes the tension of curved field lines.
@@ -990,36 +990,36 @@
     #derivation-step[Derive the pressure and current constraints]
     Dot the force balance with $bold(B)$. The right-hand side vanishes, so
 
-    $ bold(B)dot grad(p)=0 .$
+    $ bold(B)dot grad(p)=0 . $
 
     Dot it with $bold(j)$ instead. Again the right-hand side vanishes:
 
-    $ bold(j)dot grad(p)=0 .$
+    $ bold(j)dot grad(p)=0 . $
 
     Next cross the force balance from the left with $bold(B)$:
 
     $ bold(B)times grad(p)
-      =bold(B)times(bold(j)times bold(B)) .$
+      =bold(B)times(bold(j)times bold(B)) . $
 
     The triple-product identity gives
 
     $ bold(B)times(bold(j)times bold(B))
-      =B^2 bold(j)-bold(B)(bold(B)dot bold(j)) .$
+      =B^2 bold(j)-bold(B)(bold(B)dot bold(j)) . $
 
     Thus the current perpendicular to the field is
 
-    $ bold(j)_perp=(bold(B)times grad(p))/(B^2) .$
+    $ bold(j)_perp=(bold(B)times grad(p))/(B^2) . $
 
     Decompose the current as
 
-    $ bold(j)=j_(parallel) (bold(B)/B)+bold(j)_perp .$
+    $ bold(j)=j_(parallel) (bold(B)/B)+bold(j)_perp . $
 
     Because reduced Ampere's law and $div(bold(B))=0$ imply
     $div(bold(j))=0$, the parallel component obeys
 
     $ 0=div(bold(j))
       =div((j_(parallel) bold(B))/B)+div(bold(j)_perp)
-      =bold(B)dot grad(j_(parallel)/B)+div(bold(j)_perp) .$
+      =bold(B)dot grad(j_(parallel)/B)+div(bold(j)_perp) . $
 
     A boundary condition or a separate closure is needed to select the
     parallel-current solution along each field line.
@@ -1028,15 +1028,15 @@
     For a straight cylindrical field
     $bold(B)=B_(z)(r)bold(e)_(z)$, reduced Ampere's law gives
 
-    $ bold(j)=-1/mu_0 dv(B_z,r) bold(e)_theta .$
+    $ bold(j)=-1/mu_0 dv(B_z,r) bold(e)_theta . $
 
     The radial force balance becomes
 
-    $ dv(p,r)=-(B_z dv(B_z,r))/mu_0 ,$
+    $ dv(p,r)=-(B_z dv(B_z,r))/mu_0 , $
 
     so
 
-    $ dv(p+B_(z)^2/(2 mu_0),r)=0 .$
+    $ dv(p+B_(z)^2/(2 mu_0),r)=0 . $
 
     For a $theta$-pinch with a uniform axial field inside, volume current and
     magnetic tension can vanish in the interior. The pressure change is then
@@ -1047,15 +1047,15 @@
     $bold(B)=B_(theta)(r)bold(e)_(theta)$ and
     $bold(j)=j_(z)(r)bold(e)_(z)$. Cylindrical Ampere's law gives
 
-    $ j_(z)=1/(mu_0 r) dv(r B_(theta),r) .$
+    $ j_(z)=1/(mu_0 r) dv(r B_(theta),r) . $
 
     Since $bold(e)_z times bold(e)_theta=-bold(e)_r$, the radial balance is
 
-    $ dv(p,r)=-(B_(theta)/(mu_0 r))dv(r B_(theta),r) .$
+    $ dv(p,r)=-(B_(theta)/(mu_0 r))dv(r B_(theta),r) . $
 
     Expanding the derivative yields
 
-    $ dv(p+B_(theta)^2/(2 mu_0),r)+(B_(theta)^2)/(mu_0 r)=0 .$
+    $ dv(p+B_(theta)^2/(2 mu_0),r)+(B_(theta)^2)/(mu_0 r)=0 . $
 
     The final term is the inward magnetic tension from curved field lines.]
   )
