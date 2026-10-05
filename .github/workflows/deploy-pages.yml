@@ -29,6 +29,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - name: Install Typst for the derivation section references
+        run: |
+          mkdir -p ~/.local/tools
+          curl -fsSL "https://github.com/typst/typst/releases/download/v${TYPST_VERSION}/typst-x86_64-unknown-linux-musl.tar.xz" \
+            | tar -xJ --strip-components=1 -C ~/.local/tools typst-x86_64-unknown-linux-musl/typst
+          echo "$HOME/.local/tools" >> "$GITHUB_PATH"
       - uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
