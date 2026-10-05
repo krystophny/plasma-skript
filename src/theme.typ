@@ -324,8 +324,17 @@
   }
 }
 
+// One media register supplies Skript embeds and lecture-slide links.
+#let animation-hosts = json("/media/animations.json")
+#let animation-record(path) = {
+  let slug = path.split("/").last().replace(".mp4", "").replace("_", "-")
+  animation-hosts.animations.at(slug)
+}
+
 #let animation(path, alt-description, caption: none, poster: "") = context {
   let visible-caption = if caption == none { alt-description } else { caption }
+  let media = animation-record(path)
+  let watch-url = media.player_url
   if target() == "paged" {
     figure(
       alt: alt-description,
@@ -338,25 +347,24 @@
         fill: paper,
         stroke: 1pt + muted,
       )[
-        #emph[Animation available in the website build.] \
+        #link(watch-url, image("/media/posters/" + path.split("/").last().replace(".mp4", ".png"), width: 100%, alt: alt-description)) \
+        #link(watch-url)[Watch animation] \
         #visible-caption
       ]
     ]
   } else {
     html.figure(class: "animation-figure")[
-      #html.video(
-        class: "animation-video",
-        aria-label: alt-description,
-        controls: true,
-        loop: true,
-        muted: true,
-        playsinline: true,
-        preload: "metadata",
-        src: path,
-        poster: poster,
-        width: 960,
-      )[
-        #alt-description
+      #html.div(class: "animation-player")[
+        #html.video(
+          class: "animation-video", aria-label: alt-description,
+          controls: true, loop: true, muted: true, playsinline: true,
+          preload: "metadata", src: media.stream_url, poster: poster, width: 960,
+        )[#alt-description]
+        #html.div(class: "animation-controls", hidden: true)[
+          #html.elem("input", attrs: (type: "range", class: "animation-seek", min: "0", max: "100", step: "0.1", value: "0", aria-label: "Animation position"))
+          #html.elem("button", attrs: (type: "button", class: "animation-fullscreen", aria-label: "Full screen"))[]
+        ]
+        #html.p(class: "animation-status", role: "status")[]
       ]
       #html.figcaption[#visible-caption]
     ]

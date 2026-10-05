@@ -61,15 +61,17 @@ def check(derived, stated, unit=None, units=None):
 # website) and build/fig/<name>.pdf (slides).
 #
 # One figure, one source: the script includes the SVG with
-# `derived-plot("<name>", width: ...)` from src/figures.typ (a light card in
-# dark mode), the lecture slides include the PDF unchanged. Text is drawn as
+# `derived-plot("<name>", width: ...)` from src/figures.typ, with website dark
+# paint from the same geometry; lecture slides keep the light figure. Text is drawn as
 # paths in Computer Modern, so the SVG looks the same in every browser. The
 # relative text size follows from the figure size: a 10 pt label on a
 # 3.4 in wide figure stays readable when a slide scales it up to ~16 cm.
 # Plot in SI units (or say so in the axis label when normalized), encode each
 # curve by color *and* dash or marker, and label curves directly.
 
-BLUE, ORANGE, GRAY = "#0072B2", "#D55E00", "#555555"
+# Okabe-Ito blue and a darkened vermilion: also legible as small direct labels
+# on white (both exceed 4.5:1). Curves retain their dash/marker encodings.
+BLUE, ORANGE, GRAY = "#0072B2", "#B55000", "#555555"
 
 # CODATA 2018 SI values for numerical evaluation (lambdify) of the symbols above.
 SI_VALUES = {
@@ -178,7 +180,7 @@ def save(fig, name):
     out = Path(__file__).resolve().parent / "build" / "fig"
     out.mkdir(parents=True, exist_ok=True)
     # Transparent background: the page or slide supplies the paper; on the
-    # website the .quantitative-plot card keeps dark text readable in dark mode.
+    # website the build supplies a dark paint variant from the same geometry.
     # No date metadata, so unchanged plots give byte-identical files.
     fig.savefig(out / f"{name}.svg", transparent=True, metadata={"Date": None})
     fig.savefig(out / f"{name}.pdf", transparent=True,

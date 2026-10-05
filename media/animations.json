@@ -1,0 +1,144 @@
+{
+  "schema": "course-animation-hosting-v1",
+  "preferred_host": "native-nextcloud",
+  "animations": {
+    "collective-response": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/collective_response.mp4",
+      "poster": "media/posters/collective-response.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/collective-response.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/collective_response.mp4?v=961e181626a86ae0",
+      "mp4_sha256": "961e181626a86ae0b028830744821293913a01ea135cc124e42ddf85e050cc9c",
+      "appearance": "dark"
+    },
+    "debye-potential-reduction": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_potential_reduction.mp4",
+      "poster": "media/posters/debye-potential-reduction.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/debye-potential-reduction.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_potential_reduction.mp4?v=d11464343d13933a",
+      "mp4_sha256": "d11464343d13933ad65d9470951c67b288babe8a86db184bb49519e682394902",
+      "appearance": "dark"
+    },
+    "debye-shielding": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_shielding.mp4",
+      "poster": "media/posters/debye-shielding.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/debye-shielding.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_shielding.mp4?v=affdfe7a8c1ec474",
+      "mp4_sha256": "affdfe7a8c1ec474ce336c1209e144418a8f3c462f064a3b3bc04ec378b84f7f",
+      "appearance": "dark"
+    },
+    "diffusion-random-walk": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/diffusion_random_walk.mp4",
+      "poster": "media/posters/diffusion-random-walk.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/diffusion-random-walk.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/diffusion_random_walk.mp4?v=848f590ef927f67f",
+      "mp4_sha256": "848f590ef927f67fe4147e60163b1dc885497e0b71e1d2f60cdfef5f766b8184",
+      "appearance": "dark"
+    },
+    "exb-drift": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/exb_drift.mp4",
+      "poster": "media/posters/exb-drift.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/exb-drift.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/exb_drift.mp4?v=b3db9d9c78e98062",
+      "mp4_sha256": "b3db9d9c78e98062f1e20e56527368f29878fc4dd3790321f05d0a11c84fbe41",
+      "appearance": "dark"
+    },
+    "landau-resonance": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/landau_resonance.mp4",
+      "poster": "media/posters/landau-resonance.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/landau-resonance.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/landau_resonance.mp4?v=a0c0df308d37a384",
+      "mp4_sha256": "a0c0df308d37a38403513bd616d36221b4a2e70df4bb46e33cc166f3a0d81809",
+      "appearance": "dark"
+    },
+    "langmuir-probe": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/langmuir_probe.mp4",
+      "poster": "media/posters/langmuir-probe.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/langmuir-probe.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/langmuir_probe.mp4?v=702a4664c0550f27",
+      "mp4_sha256": "702a4664c0550f27d17419277129d180581e377845dbafcc746a8442b857f8a3",
+      "appearance": "dark"
+    },
+    "magnetized-polarization": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetized_polarization.mp4",
+      "poster": "media/posters/magnetized-polarization.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/magnetized-polarization.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetized_polarization.mp4?v=fd6849a79682be72",
+      "mp4_sha256": "fd6849a79682be7224c34c2524da4aab4041ea2667ef3d7ac020a8145ca82559",
+      "appearance": "dark"
+    },
+    "magnetosonic-waves": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetosonic_waves.mp4",
+      "poster": "media/posters/magnetosonic-waves.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/magnetosonic-waves.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetosonic_waves.mp4?v=35d6c5ba55439bb3",
+      "mp4_sha256": "35d6c5ba55439bb3b562078c1a78227cca9bde75b928a6786ba1995f86e0fe9e",
+      "appearance": "dark"
+    },
+    "moment-hierarchy": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/moment_hierarchy.mp4",
+      "poster": "media/posters/moment-hierarchy.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/moment-hierarchy.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/moment_hierarchy.mp4?v=9a6281a66c052cad",
+      "mp4_sha256": "9a6281a66c052cad7a6f19996a78a8398838859e37ea41a7a7cf2cd608383134",
+      "appearance": "dark"
+    },
+    "particles-to-moments": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/particles_to_moments.mp4",
+      "poster": "media/posters/particles-to-moments.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/particles-to-moments.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/particles_to_moments.mp4?v=c4905ca6041114a7",
+      "mp4_sha256": "c4905ca6041114a7f869df359d43c768aa02073e4a5e904d776561a23a4b4aa7",
+      "appearance": "dark"
+    },
+    "pendulum-ensemble": {
+      "supplementary_chapter": "chapters/05-kinetic-theory.html",
+      "supplementary_description": "A nonlinear pendulum ensemble compares weak and strong Kac collisions sequentially. Phase mixing filaments the position-momentum distribution; collisions redistribute energy between members while preserving total ensemble energy. The energy histogram is compared with a Gibbs distribution at the same mean energy. Angle, momentum, time and Hamiltonian are normalized, with unit [1]. This is a kinetic-relaxation illustration, not a plasma simulation.",
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/pendulum_ensemble.mp4",
+      "poster": "media/posters/pendulum-ensemble.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/pendulum-ensemble.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/pendulum_ensemble.mp4?v=631896a696991441",
+      "mp4_sha256": "631896a6969914410ef6b51535a78ae18328250b8cb1549e169f099309fe911f",
+      "appearance": "dark"
+    },
+    "phase-space-advection": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/phase_space_advection.mp4",
+      "poster": "media/posters/phase-space-advection.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/phase-space-advection.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/phase_space_advection.mp4?v=d1004fb0a62fc367",
+      "mp4_sha256": "d1004fb0a62fc36791933e4443ba44ce71717a61c8ee06f6766e506fbd43c9ea",
+      "appearance": "dark"
+    },
+    "plasma-oscillation": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/plasma_oscillation.mp4",
+      "poster": "media/posters/plasma-oscillation.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/plasma-oscillation.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/plasma_oscillation.mp4?v=61ea827a7678fff9",
+      "mp4_sha256": "61ea827a7678fff97cf75b3486b2e9f6a88b28b2e0058dd3f5c0f1d624a2ab0c",
+      "appearance": "dark"
+    },
+    "sheath-formation": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/sheath_formation.mp4",
+      "poster": "media/posters/sheath-formation.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/sheath-formation.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/sheath_formation.mp4?v=9ef31c6855bb356e",
+      "mp4_sha256": "9ef31c6855bb356e879713d73728c49c6c093bd2d45d81fb6355da7590e6625d",
+      "appearance": "dark"
+    },
+    "two-stream-instability": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/two_stream_instability.mp4",
+      "poster": "media/posters/two-stream-instability.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/two-stream-instability.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/two_stream_instability.mp4?v=88d2cdb7bd740b1d",
+      "mp4_sha256": "88d2cdb7bd740b1d27b98cdc058760dc0a1035cc1271ec5f92a6af499f549f49",
+      "appearance": "dark"
+    },
+    "wave-packet": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/wave_packet.mp4",
+      "poster": "media/posters/wave-packet.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/wave-packet.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/wave_packet.mp4?v=ed12a84dd3fe4715",
+      "mp4_sha256": "ed12a84dd3fe471574d11bc449a05f11c109cfd4dca626f57ac21966581f04fb",
+      "appearance": "dark"
+    }
+  }
+}

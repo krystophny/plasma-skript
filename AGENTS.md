@@ -12,7 +12,9 @@ Before changing files:
 - Use the rendered pages of PDFs in `resources/` when reviewing visual source
   material. Text extraction alone is insufficient for layout, notation, or
   handwritten content.
-- Treat `resources/content/` as the authority for chronological order.
+- Preserve the established chapter order and full reference scope. Use
+  `resources/content/` as historical evidence; the course plan owns live
+  selections. Reconcile multi-year archive evidence by script section.
 - Use `resources/books/` for physics reference only. These directories and the
   exam catalogue are private and must never enter a public artifact.
 
@@ -22,6 +24,8 @@ Before changing files:
 - Assume zero prior knowledge and infinite intelligence: name and define
   every symbol and term at first use; skip no steps, pad none.
 - Keep waves and plasma sheaths as separate top-level chapters.
+- Preserve broader guiding-center and linear/kinetic-response material even
+  when the live course proceeds more slowly or selects fewer topics.
 - Use SI (with ε₀ and μ₀) throughout. State this once, in the notation
   glossary of `src/main.typ`; do not write "SI" or "in SI units" at
   individual equations, notes, captions, or sections. Add a `#unit-ledger`
@@ -66,6 +70,10 @@ Before changing files:
   `resources/content/`.
 - Publish original teaching material under CC BY 4.0 and code, build scripts,
   Manim source, theme code, CSS, Nix expressions, and workflows under MIT.
+- Author original prose and figures; do not copy or cosmetically redraw
+  textbook material. Record third-party asset provenance and attribution.
+- Keep mixed legacy-video courses restricted. Follow the shared teaching
+  policy for weekly replacement; exclude legacy recordings from public builds.
 - Preserve third-party copyright and record contributions in
   `CONTRIBUTORS.md`.
 
@@ -83,3 +91,13 @@ Before changing files:
 If the specification is ambiguous or two authoritative sources conflict, stop
 at that decision and ask the project authors. Do not silently weaken a rule or
 invent exam wording.
+
+## Local workspace and links
+
+Work in `~/proj/plasma-skript`; faepmac1 is a secondary copy.
+Follow [the course plan](../../Nextcloud/lv/plasma/PLAN.md),
+[shared rules](../../Nextcloud/lv/AGENTS.md),
+[reconciliation evidence](SOURCE-RECONCILIATION.md), and
+[video delivery registry](../fusion-course-archive/config/delivery.json).
+Keep the current exam catalogue as the baseline, with changes until semester
+end and a final chapter cutoff. Preserve the full reference.

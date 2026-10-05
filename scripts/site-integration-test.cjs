@@ -39,13 +39,13 @@ const viewports = [
 const screenshotTargets = new Map([
   ["/chapters/01-introduction.html", "main figure:has(.model-figure-diagram)"],
   ["/chapters/02-debye-shielding.html", "main figure:has(svg), main figure:has(img[src^='data:image/svg+xml']), main figure:has(img[src$='.svg'])"],
-  ["/chapters/03-plasma-oscillations.html", "main video"],
+  ["/chapters/03-plasma-oscillations.html", "main video, main iframe.animation-embed"],
   ["/chapters/06-moments.html", 'main math[display="block"]'],
   [
     "/chapters/12-cold-magnetized-waves.html",
     'main > div[id^="frame-wrapper-"]',
   ],
-  ["/chapters/15-sheaths-probes.html", "main video"],
+  ["/chapters/15-sheaths-probes.html", "main video, main iframe.animation-embed"],
   [
     "/appendices/mathematical-toolkit.html",
     'main > div[id^="frame-wrapper-"]',
@@ -232,14 +232,27 @@ async function auditPage(page, pagePath, viewport) {
         const hasAlternativeDescription = Boolean(
           video.getAttribute("aria-label")?.trim(),
         );
+        const customControls = video.closest(".animation-player")?.querySelector(".animation-controls");
+        const hasControls = video.hasAttribute("controls") || (
+          customControls && !customControls.hidden &&
+          video.getAttribute("role") === "button" && video.tabIndex === 0 &&
+          [".animation-seek[aria-label]", ".animation-fullscreen[aria-label]"].every((selector) => customControls.querySelector(selector))
+        );
         return (
-          !video.hasAttribute("controls") ||
+          !hasControls ||
           !hasSource ||
           !hasFallback ||
           !hasCaption ||
           !hasAlternativeDescription
         );
       });
+
+      const invalidEmbeds = [...document.querySelectorAll("iframe.animation-embed")].filter((frame) => {
+        const figure = frame.closest("figure");
+        return !frame.title.trim() || !/^https:\/\/www\.youtube-nocookie\.com\/embed\/[A-Za-z0-9_-]{11}$/.test(frame.src) ||
+          !figure?.querySelector("figcaption") || !figure?.querySelector('a[href^="https://youtu.be/"], a[href^="https://www.youtube.com/watch?"]');
+      });
+      invalidVideos.push(...invalidEmbeds);
 
       const readingColumn = document.querySelector(
         ".site-main > h2, .site-main > h1",
@@ -351,7 +364,7 @@ async function auditPage(page, pagePath, viewport) {
         await figure.screenshot({ path: path.join(artifactDir, `${stem}.png`) });
         screenshotCount += 1;
         const video = figure.locator("video");
-        if (await video.count()) {
+        if (await video.count() && sameOrigin(await video.getAttribute("src"))) {
           // The simple preview server does not implement byte ranges.
           // Decode its complete response as a blob for deterministic seeking;
           // this verifies served media, not HTTP range-request support.
@@ -427,6 +440,10 @@ async function main() {
         reducedMotion: "reduce",
         viewport: { width: viewport.width, height: viewport.height },
       });
+      if (process.env.SITE_MEDIA_FIXTURE_PATH) {
+        await context.route(/^https:\/\/cloud\.tugraz\.at\/.*\/animations\/[^?]+\.mp4(?:\?|$)/,
+          (route) => route.fulfill({ path: process.env.SITE_MEDIA_FIXTURE_PATH, contentType: "video/mp4" }));
+      }
 
       for (const pagePath of pages) {
         const page = await context.newPage();
@@ -441,6 +458,7 @@ async function main() {
   }
 
   const summary = {
+    externalMediaTransportFixture: Boolean(process.env.SITE_MEDIA_FIXTURE_PATH),
     pages: pages.length,
     viewports: viewports.map(({ name, width, height }) => ({ name, width, height })),
     checks: pages.length * viewports.length,

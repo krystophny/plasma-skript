@@ -7,14 +7,16 @@ One new idea: electron inertia plus charge separation give an oscillation at
 Source `slides/03-plasma-oscillations.typ` (layout `slides/theme.typ`), built
 by `scripts/build-slides.sh` to `public/slides/03-plasma-oscillations.pdf`
 (5 pages, 3 numbered). LIVE mode (iPad on blank pages). SI throughout. Page
-rules: see `01-introduction.md`.
+rules: see `01-introduction.md`. The animation is a full-slide dark poster,
+without a title or play badge; its link opens the stable HTML player. The
+summary plot and writing pages stay light.
 
-## Sequence (script order: cold slab → ω_pe → collisions as damping caveat)
+## Sequence
 
 | p. | Section title (script) | Page | Content |
 |---|---|---|---|
 | 1 | — | title | Plasma Physics / Chapter 3 / Plasma oscillations / C. Albert / TU Graz WS 2026/27 / AI line |
-| 2 | 3.1 Electron plasma oscillations | animation | `plasma-oscillation` poster, linked MP4 |
+| 2 | 3.1 Electron plasma oscillations (route cue) | animation | dark `plasma-oscillation` poster, stable full-window HTML player |
 | — | | LIVE | two blank pages: plasma oscillation |
 | 3 | | summary | see below; plot `plasma_frequency` |
 

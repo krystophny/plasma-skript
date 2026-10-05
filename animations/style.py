@@ -3,7 +3,7 @@
 Every scene imports this module (Manim puts the scene file's directory on
 ``sys.path``), so palette, typography, stroke widths and margins stay identical
 across the script.  The palette is the Okabe-Ito color-vision-safe set on the
-pure white background of the script, the slides and the website.
+dark animation canvas used unchanged in the script, slides and website.
 Color is never the only encoding: scenes pair each color with a marker shape,
 line style or direct label.
 
@@ -24,24 +24,21 @@ from manim.mobject.text.text_mobject import register_font
 
 
 # --- palette -------------------------------------------------------------
-# Light theme matching the script palette in src/theme.typ (ink, muted) and the
-# Lilaq plot colours in src/figures.typ (plot-blue, plot-orange).
-BG = "#FFFFFF"          # pure white, as the script pages and slides
-INK = "#17202A"         # primary text, axes and key objects (theme.typ ink)
-MUTED = "#526175"       # secondary text, axis labels (theme.typ muted)
-FAINT = "#7D8895"       # reference curves, ticks, ghosts
-GRID = "#D3D9E0"        # light-grey frames, grid and guide lines
+# Animations always use this dark canvas, independent of the reading theme.
+BG = "#111418"
+INK = "#E4E6E9"
+MUTED = "#BAC2CC"
+FAINT = "#8F9AA8"
+GRID = "#536175"
 AXIS = INK              # axis lines
 
-# Okabe-Ito (2008) hues.  Blue, vermilion and green are exact; orange and
-# reddish purple are darkened (same hue) so that thin lines and labels keep at
-# least 3.5:1 contrast on white.  Sky blue and yellow are dropped: they vanish
-# on a white surface.
-BLUE = "#0072B2"        # = plot-blue
-VERMILION = "#D55E00"   # = plot-orange
+# Okabe-Ito (2008) hues with brighter blue/orange for dark-surface contrast.
+# Species still differ by marker shape and every curve has a non-color cue.
+BLUE = "#56B4E9"
+VERMILION = "#E69F00"
 GREEN = "#009E73"
-ORANGE = "#B07800"      # Okabe-Ito orange #E69F00, darkened
-PURPLE = "#B0588A"      # Okabe-Ito reddish purple #CC79A7, darkened
+ORANGE = "#F0E442"
+PURPLE = "#CC79A7"
 
 # Semantic roles shared by all scenes.
 ELECTRON = BLUE         # drawn as filled circles

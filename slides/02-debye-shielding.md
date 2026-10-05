@@ -9,15 +9,16 @@ Source `slides/02-debye-shielding.typ` (layout `slides/theme.typ`), built by
 `scripts/build-slides.sh` to `public/slides/02-debye-shielding.pdf` (13 pages,
 7 numbered). LIVE mode (iPad on blank pages). SI throughout, k_B T in eV on
 plots. Page rules: see `01-introduction.md`. The script chapter has one
-section (2.1 Debye shielding), so only page 2 carries a title; the finite
-source and the plasma parameter follow without titles.
+section (2.1 Debye shielding); page 2 is a full-slide dark animation without
+a title or play badge. Its section cue lives here. The finite source and the
+plasma parameter follow without titles; mathematical pages and plots stay light.
 
 ## Sequence (script order: point charge → finite source → N_D → map)
 
 | p. | Section title (script) | Page | Content |
 |---|---|---|---|
 | 1 | — | title | Plasma Physics / Chapter 2 / Debye shielding / C. Albert / TU Graz WS 2026/27 / AI line |
-| 2 | 2.1 Debye shielding | animation | `debye-shielding` poster, linked MP4 |
+| 2 | 2.1 Debye shielding (route cue) | animation | dark `debye-shielding` poster, stable full-window HTML player |
 | — | | LIVE | two blank pages: Debye derivation, point charge |
 | 3 | | summary | see below; plot `debye_potential` |
 | 4 | | plot pair | `debye_potential` \| `debye_sphere_potential` (the script's comparison) |

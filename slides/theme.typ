@@ -23,7 +23,7 @@
 #let muted = rgb("#526175")
 #let rule = rgb("#9AA5B1")
 #let plot-blue = rgb("#0072B2")
-#let plot-orange = rgb("#D55E00")
+#let plot-orange = rgb("#B55000")
 
 #let title-size = 26pt
 #let body-size = 18pt
@@ -48,10 +48,11 @@
 #let plot-path(name) = "/derivations/build/fig/" + name + ".svg"
 #let plot(name, columns: 6) = image(plot-path(name), width: cols(columns))
 #let poster-path(slug) = "/slides/build/media/" + slug + ".png"
-#let animation-url(name) = (
-  "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/"
-  + name + ".mp4"
-)
+#let animation-hosts = json("/media/animations.json")
+#let animation-url(name) = {
+  let media = animation-hosts.animations.at(name.replace("_", "-"))
+  media.player_url
+}
 
 // Script outline: chapter and section numbers and titles.
 #let script-outline = json("/slides/build/script-outline.json")
@@ -70,9 +71,7 @@
   text(size: title-size)[#info.number#h(0.6em)#info.title]
 }
 
-#let ai-line = [Transparenzhinweis: Mit Unterstützung von Claude- und
-  GPT-Modellen erstellt; Inhalt, Auswahl und fachliche Prüfung verantwortet
-  der Autor.]
+#let ai-line = [AI tools assisted drafting and layout; scientific review by Christopher Albert.]
 
 // Place `body` on the grid: columns c .. c+n-1, `y` below the content top.
 #let at(c, n, y: 0mm, body) = place(top + left, dx: col-x(c), dy: y,
@@ -83,21 +82,11 @@
     text(size: small-size, fill: muted, counter(page).display()))
 }
 
-// The play mark: a small muted triangle at a fixed place, bottom left in the
-// margin, linked to the animation like the poster itself.
-#let play-mark(url) = place(bottom + left, dx: margin, dy: -furniture-y,
-  link(url, polygon(fill: muted, (0mm, 0mm), (3.2mm, -1.6mm), (0mm, -3.2mm))))
-
 // ---------------------------------------------------------------- pages ---
 
 // One numbered page. With `section` (a script section label) the section
 // title sits at the top and the content starts at the title band.
-#let slide(section: none, link-to: none, body) = page(
-  foreground: {
-    page-number
-    if link-to != none { play-mark(link-to) }
-  },
-)[
+#let slide(section: none, body) = page(foreground: page-number)[
   #if section != none { place(top + left, section-heading(section)) }
   #let y0 = if section != none { title-band } else { 0mm }
   #place(top + left, dy: y0,
@@ -144,24 +133,23 @@
   body
 }
 
-// An animation poster on the media band, linked to the video; the play mark
-// sits at the same place on every linked page. The 16:9 poster spans all
-// twelve columns (257 mm x 144.6 mm), within the band's 150 mm height.
+// The whole dark slide links to a stable HTML player, never a download URL.
+// Contain the 16:9 scene on A4 landscape so axes and labels are never cropped.
+// Media pages have no title or play badge; route cues remain in the deck plan.
 #let animation-page(slug, name, section: none) = {
   let url = animation-url(name)
-  slide(section: section, link-to: url)[
-    #place(top + left, dy: if section == none { title-band } else { 0mm },
-      link(url, image(poster-path(slug), width: text-width)))
+  page(margin: 0mm, fill: rgb("#111418"), foreground: none)[
+    #link(url, image(poster-path(slug), width: 297mm, height: 210mm, fit: "contain"))
   ]
 }
 
-// A photo on the media band (same place on every photo page) with a small
-// credit line under its right edge. `key` labels the page for the credits.
-#let photo-page(file, credit, key, section: none) = slide(section: section)[
-  #let dy = if section == none { title-band } else { 0mm }
-  #place(top + left, dx: col-x(2), dy: dy, stack(spacing: 4.5mm,
-    image("/slides/photos/" + file, width: cols(10)),
-    align(right, block(width: cols(10), text(size: small-size, fill: muted, credit)))))
+// Full-slide hero photograph with a small legible attribution over the image.
+// Detailed source links remain on the final credits page and in credits.md.
+#let photo-page(file, credit, key, section: none) = page(margin: 0mm, foreground: {
+  place(bottom + right, dx: -4mm, dy: -3mm,
+    block(inset: 1.5mm, fill: black, text(size: 8pt, fill: white, credit)))
+})[
+  #image("/slides/photos/" + file, width: 297mm, height: 210mm, fit: "cover")
   #metadata(file) #label(key)
 ]
 
