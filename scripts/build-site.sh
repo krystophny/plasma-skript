@@ -75,6 +75,9 @@ typst compile \
 # derived plots and the posters just copied into the media directory.
 MEDIA_DIR="$media_dir" bash "$repo_root/scripts/build-slides.sh" "$site_dir/slides"
 
+# Link feedback to the current chapter/section without server credentials.
+python3 "$repo_root/scripts/add-feedback.py" "$site_dir"
+
 if [[ -e "$target_dir" || -L "$target_dir" ]]; then
   backup_dir="$(mktemp -d "${target_dir}.previous.XXXXXX")"
   previous_dir="$backup_dir/site"

@@ -15,6 +15,7 @@ out="${1:-$repo_root/slides/build/script-outline.json}"
 mkdir -p "$(dirname "$out")"
 
 typst eval --root "$repo_root" --font-path "$repo_root/fonts" --ignore-system-fonts \
+  --input outline-only=true \
   --in "$repo_root/src/print.typ" \
   '{
     let chapter = none

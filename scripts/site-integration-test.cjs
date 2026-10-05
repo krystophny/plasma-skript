@@ -38,7 +38,7 @@ const viewports = [
 
 const screenshotTargets = new Map([
   ["/chapters/01-introduction.html", "main figure:has(.model-figure-diagram)"],
-  ["/chapters/02-debye-shielding.html", "main figure:has(svg)"],
+  ["/chapters/02-debye-shielding.html", "main figure:has(svg), main figure:has(img[src^='data:image/svg+xml']), main figure:has(img[src$='.svg'])"],
   ["/chapters/03-plasma-oscillations.html", "main video"],
   ["/chapters/06-moments.html", 'main math[display="block"]'],
   [

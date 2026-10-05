@@ -170,6 +170,8 @@
 
           environment.etc."plasma-site-integration-test.cjs".source =
             ./scripts/site-integration-test.cjs;
+          environment.etc."plasma-feedback-test.cjs".source =
+            ./scripts/feedback-test.cjs;
 
           environment.systemPackages = [
             pkgs.chromium
@@ -192,6 +194,7 @@
           machine.wait_for_open_port(80)
           machine.succeed("mkdir -p /tmp/plasma-site-audit")
           try:
+              machine.succeed("node /etc/plasma-feedback-test.cjs")
               machine.succeed("plasma-site-integration-test")
           finally:
               machine.copy_from_machine("/tmp/plasma-site-audit", "site-audit")

@@ -33,15 +33,19 @@
 // The default `auto` keeps the natural si.figure size, so the 10 pt figure
 // text matches every other natural-size plot.
 #let derived-plot(name, width: auto) = context {
+  // Outline metadata is needed before the derivations produce their plots.
+  if sys.inputs.at("outline-only", default: "false") != "true" {
   let img = image("/derivations/build/fig/" + name + ".svg", width: width,
     alt: plot-alt(name))
   if target() == "paged" { align(center, img) }
   else { html.div(class: "quantitative-plot", img) }
+  }
 }
 // Two derived plots side by side, for a direct comparison on equal axes.
 // Each panel is drawn at its native width (si.figure size), so the text size
 // matches a single derived plot.
 #let derived-plot-pair(left, right, width: auto) = context {
+  if sys.inputs.at("outline-only", default: "false") != "true" {
   let img(name) = image("/derivations/build/fig/" + name + ".svg", width: width,
     alt: plot-alt(name))
   if target() == "paged" {
@@ -50,6 +54,7 @@
     html.div(style: "display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;",
       html.div(class: "quantitative-plot", img(left))
       + html.div(class: "quantitative-plot", img(right)))
+  }
   }
 }
 #let samples(lo, hi, n: 80) = range(n + 1).map(i => lo + (hi - lo) * i / n)

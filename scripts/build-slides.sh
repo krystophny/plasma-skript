@@ -21,7 +21,8 @@ out_dir="${1:-$repo_root/public/slides}"
 media_dir="${MEDIA_DIR:-$repo_root/.cache/animations}"
 build="$repo_root/slides/build"
 
-if ! compgen -G "$repo_root/derivations/build/fig/*.svg" >/dev/null; then
+plots=("$repo_root/derivations/build/fig/"*.svg)
+if [[ ! -f "${plots[0]}" ]]; then
   echo "no derived plots; run: make -C derivations fig" >&2
   exit 1
 fi

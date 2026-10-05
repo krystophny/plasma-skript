@@ -1,5 +1,10 @@
 # Plasma physics lecture script
 
+Every reading page has a **Report a problem** link. It opens a GitHub issue
+draft with the chapter, current section and public reading URL already filled
+in. Selected text can identify a passage. Readers sign in to GitHub, describe
+the problem and submit the issue; the script holds no posting credentials.
+
 This project is a web-first graduate plasma physics lecture script written in
 Typst. It follows the course sequence from plasma fundamentals through
 single-particle motion, kinetic and fluid models, waves, sheaths, and
