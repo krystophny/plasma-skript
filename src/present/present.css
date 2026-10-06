@@ -1,0 +1,359 @@
+/* Presentation mode: one page fills the viewport, no furniture while presenting.
+   Shared by the deck player (present/<stem>/index.html) and the launcher
+   (present/index.html). */
+
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("../fonts/STIXTwoText-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("../fonts/STIXTwoText-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --page-light: #ffffff;
+  --page-dark: #111418;
+  --ink: #17202a;
+  --muted: #526175;
+  --line: #d9dde3;
+  --accent: #0e6b78;
+  --laser: #ff2d2d;
+  --hud-bg: rgba(17, 20, 24, 0.82);
+  --hud-ink: #eef0f2;
+  --serif: "STIX Two Text", "Iowan Old Style", "Charter", Georgia, serif;
+  --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+/* ---------------------------------------------------------------- player */
+
+html.player,
+html.player body {
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: var(--page-light);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+/* The surround takes the colour of the current page, so the projector shows
+   one continuous surface instead of a framed rectangle. */
+html.player[data-bg="dark"],
+html.player[data-bg="dark"] body { background: var(--page-dark); }
+html.player[data-blank="black"] body { background: #000; }
+html.player[data-blank="white"] body { background: #fff; }
+
+.stage {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  touch-action: none;
+  cursor: default;
+}
+html.player.idle .stage { cursor: none; }
+
+.frame {
+  position: relative;
+  width: min(100vw, calc(100dvh * var(--aspect, 1.4142)));
+  height: min(100dvh, calc(100vw / var(--aspect, 1.4142)));
+}
+html[data-blank] .frame { visibility: hidden; }
+
+.page {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+.page.current { display: block; }
+.page > img,
+.page > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+.page.animation { background: var(--page-dark); }
+.page.animation > img.poster { transition: opacity 160ms linear; }
+.page.animation.started > img.poster { opacity: 0; }
+
+/* Brief centred play/pause acknowledgement on animation pages. */
+.flash {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 84px;
+  height: 84px;
+  margin: -42px 0 0 -42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  opacity: 0;
+  pointer-events: none;
+}
+.flash svg { width: 100%; height: 100%; fill: rgba(255, 255, 255, 0.92); }
+.flash.show { animation: flash 520ms ease-out; }
+@keyframes flash {
+  0% { opacity: 1; transform: scale(0.9); }
+  100% { opacity: 0; transform: scale(1.15); }
+}
+
+/* Laser pointer: follows Apple Pencil (always) or the mouse (L key). */
+.laser {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  border-radius: 50%;
+  background: var(--laser);
+  box-shadow: 0 0 10px 4px rgba(255, 45, 45, 0.55), 0 0 2px 1px #fff inset;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 260ms linear;
+  z-index: 20;
+}
+.laser.on { opacity: 1; transition: none; }
+
+/* HUD: hidden while presenting; appears on mouse movement or a tap in the
+   top band, and fades again. */
+.hud {
+  position: fixed;
+  left: 50%;
+  top: max(10px, env(safe-area-inset-top));
+  transform: translate(-50%, -8px);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--hud-bg);
+  color: var(--hud-ink);
+  font: 500 14px/1 var(--sans);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms linear, transform 180ms ease-out;
+  z-index: 30;
+}
+html.hud-on .hud {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+}
+.hud a,
+.hud button {
+  display: inline-grid;
+  place-items: center;
+  min-width: 40px;
+  height: 36px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.hud a:hover,
+.hud button:hover,
+.hud button[aria-pressed="true"] { background: rgba(255, 255, 255, 0.14); }
+.hud svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.hud .where {
+  padding: 0 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.hud .where b { font-weight: 600; }
+.hud .sep { width: 1px; height: 22px; background: rgba(255, 255, 255, 0.2); margin: 0 4px; }
+
+/* Thin progress line at the very bottom, visible only together with the HUD. */
+.progress {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 0;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity 180ms linear, width 120ms linear;
+  z-index: 30;
+}
+html.hud-on .progress { opacity: 0.9; }
+
+/* Overview grid. */
+.overview {
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  padding: max(64px, calc(env(safe-area-inset-top) + 56px)) 24px 32px;
+  background: rgba(17, 20, 24, 0.96);
+  display: none;
+  z-index: 25;
+}
+html.overview-on .overview { display: block; }
+.overview ol {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 1400px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 18px;
+}
+.overview li { margin: 0; }
+.overview a {
+  display: block;
+  color: #c9ced5;
+  font: 13px/1.2 var(--sans);
+  text-decoration: none;
+}
+.overview .thumb {
+  display: block;
+  aspect-ratio: var(--aspect, 1.4142);
+  background: #fff center / contain no-repeat;
+  border-radius: 4px;
+  outline: 2px solid transparent;
+  outline-offset: 3px;
+}
+.overview .thumb.dark { background-color: var(--page-dark); }
+.overview a[aria-current="page"] .thumb { outline-color: #4fb3c0; }
+.overview a:focus-visible .thumb,
+.overview a:hover .thumb { outline-color: rgba(255, 255, 255, 0.5); }
+.overview .num { display: block; margin-top: 6px; font-variant-numeric: tabular-nums; }
+
+/* Short help card (? key). */
+.help {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(560px, calc(100vw - 32px));
+  padding: 22px 26px;
+  border-radius: 14px;
+  background: var(--hud-bg);
+  color: var(--hud-ink);
+  font: 15px/1.5 var(--sans);
+  display: none;
+  z-index: 40;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+html.help-on .help { display: block; }
+.help h2 { margin: 0 0 10px; font: 600 16px/1.3 var(--sans); }
+.help dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 18px; margin: 0; }
+.help dt { font-weight: 600; white-space: nowrap; }
+.help dd { margin: 0; color: #c9ced5; }
+
+.status {
+  position: fixed;
+  left: 50%;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: var(--hud-bg);
+  color: var(--hud-ink);
+  font: 14px/1.3 var(--sans);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms linear;
+  z-index: 40;
+}
+.status.show { opacity: 1; }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* -------------------------------------------------------------- launcher */
+
+html.launcher {
+  background: #fbfaf7;
+  color: var(--ink);
+  font: 17px/1.5 var(--serif);
+  -webkit-text-size-adjust: 100%;
+}
+html.launcher body {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: max(40px, env(safe-area-inset-top)) 16px 56px;
+}
+.masthead { margin: 8px 0 32px; }
+.masthead .eyebrow {
+  margin: 0;
+  font: 600 13px/1.2 var(--sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.masthead h1 { margin: 6px 0 2px; font: 400 40px/1.1 var(--serif); }
+.masthead .byline { margin: 0; color: var(--muted); }
+.decks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 22px;
+}
+.decks a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--line), 0 1px 2px rgba(23, 32, 42, 0.06);
+  overflow: hidden;
+  transition: box-shadow 140ms ease, transform 140ms ease;
+}
+.decks a:hover,
+.decks a:focus-visible {
+  box-shadow: 0 0 0 1px var(--accent), 0 6px 18px rgba(23, 32, 42, 0.12);
+  transform: translateY(-1px);
+  outline: none;
+}
+.decks .cover {
+  display: block;
+  aspect-ratio: 297 / 210;
+  background: #fff center / cover no-repeat;
+  border-bottom: 1px solid var(--line);
+}
+.decks .meta { display: grid; gap: 2px; padding: 14px 16px 16px; }
+.decks .chapter { font: 600 12px/1.2 var(--sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.decks .title { font-size: 21px; line-height: 1.25; }
+.decks .count { font: 13px/1.2 var(--sans); color: var(--muted); }
+.decks .error { color: #a3530f; }
+.tip {
+  margin: 36px 0 0;
+  max-width: 44rem;
+  color: var(--muted);
+  font: 15px/1.55 var(--sans);
+}
+.tip b { color: var(--ink); font-weight: 600; }
+.tip a { color: var(--accent); margin-left: 4px; }

@@ -219,7 +219,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [kinetic-equilibrium]}
     evidence:
-      - {sympy: derivations/chapters/ch05_kinetic_theory.py, checks: [Fermi energy]}
+      - {sympy: derivations/chapters/ch06_kinetic_theory.py, checks: [Fermi energy]}
   - id: thomas-fermi
     name: Thomas-Fermi model
     label: "Thomas-Fermi"
@@ -341,7 +341,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [intro-debye-shielding, debye-finite-source, debye-collective-validity]}
     evidence:
-      - {sympy: derivations/chapters/ch02_debye_shielding.py, checks: [Debye length, Screened point charge, Matched finite-source Debye response]}
+      - {sympy: derivations/chapters/ch03_debye_shielding.py, checks: [Debye length, Screened point charge, Matched finite-source Debye response]}
   - id: vlasov
     name: Vlasov-Maxwell / Vlasov-Poisson
     label: "Vlasov"
@@ -357,7 +357,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [kinetic-derivatives, kinetic-boltzmann], kinetic: [N2.2, L4], research: [kin6d]}
     evidence:
-      - {sympy: derivations/chapters/ch05_kinetic_theory.py, checks: [Conservative and convective kinetic equation, Particle-number conservation]}
+      - {sympy: derivations/chapters/ch06_kinetic_theory.py, checks: [Conservative and convective kinetic equation, Particle-number conservation]}
   # --------------------------------------------------------- collisions
   - id: rutherford
     name: Binary Coulomb collisions
@@ -374,8 +374,8 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [kinetic-collisions, coulomb-collisions]}
     evidence:
-      - {sympy: derivations/chapters/ch09_collisions_conductivity.py, checks: [Rutherford deflection and the 90-degree impact parameter, Coulomb logarithm and plasma parameter]}
-      - {sympy: derivations/chapters/ch05_kinetic_theory.py, checks: [Ninety-degree impact parameter, Coulomb logarithm and deflection frequency]}
+      - {sympy: derivations/chapters/ch10_collisions_conductivity.py, checks: [Rutherford deflection and the 90-degree impact parameter, Coulomb logarithm and plasma parameter]}
+      - {sympy: derivations/chapters/ch06_kinetic_theory.py, checks: [Ninety-degree impact parameter, Coulomb logarithm and deflection frequency]}
   - id: lenard-balescu
     name: Lenard-Balescu equation
     label: "Lenard-\nBalescu"
@@ -444,7 +444,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [moments-closures], kinetic: [N2.5.1]}
     evidence:
-      - {sympy: derivations/chapters/ch06_moments.py, checks: [BGK collision moments]}
+      - {sympy: derivations/chapters/ch07_moments.py, checks: [BGK collision moments]}
   - id: thermal-equilibrium
     name: Thermal equilibrium (Maxwell-Boltzmann)
     label: "Maxwellian\nequilibrium"
@@ -460,7 +460,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [intro-speed-energy-temperature, kinetic-distribution, kinetic-equilibrium], fusion: [B2], kinetic: [N2.2, L5]}
     evidence:
-      - {sympy: derivations/chapters/ch05_kinetic_theory.py, checks: ["Maxwellian: units and moments", Boltzmann equilibrium in a potential]}
+      - {sympy: derivations/chapters/ch06_kinetic_theory.py, checks: ["Maxwellian: units and moments", Boltzmann equilibrium in a potential]}
   - id: linearized-landau
     name: Linearized Landau operator with momentum conservation
     label: "Linearized\nLandau"
@@ -488,7 +488,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [specific-resistivity, plasma-conductivity], fusion: [B8]}
     evidence:
-      - {sympy: derivations/chapters/ch09_collisions_conductivity.py, checks: [Spitzer resistivity, Conductivity tensor]}
+      - {sympy: derivations/chapters/ch10_collisions_conductivity.py, checks: [Spitzer resistivity, Conductivity tensor]}
   # --------------------------------------------------------- magnetized
   - id: full-orbit
     name: Full-orbit test particle
@@ -505,7 +505,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [motion-lorentz, motion-cyclotron-resonance], fusion: [B4], kinetic: [N1]}
     evidence:
-      - {sympy: derivations/chapters/ch04_single_particle_motion.py, checks: [Magnetic force does no work, Cyclotron motion, Gyroradius]}
+      - {sympy: derivations/chapters/ch05_single_particle_motion.py, checks: [Magnetic force does no work, Cyclotron motion, Gyroradius]}
   - id: guiding-center
     name: Guiding-center motion
     label: "Guiding\ncenter"
@@ -521,7 +521,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [motion-exb, motion-guiding-center, motion-nonuniform-fields, motion-polarization], fusion: [B4, B5], kinetic: [N1], research: [SIMPLE]}
     evidence:
-      - {sympy: derivations/chapters/ch04_single_particle_motion.py, checks: [Guiding-centre split, Magnetic moment of a gyro-orbit, Grad-B drift, Curvature force and drift, Polarization drift]}
+      - {sympy: derivations/chapters/ch05_single_particle_motion.py, checks: [Guiding-centre split, Magnetic moment of a gyro-orbit, Grad-B drift, Curvature force and drift, Polarization drift]}
   - id: drift-kinetic
     name: Drift-kinetic equation
     label: "Drift\nkinetics"
@@ -591,7 +591,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [moments-definitions, moments-continuity, moments-momentum, moments-energy], kinetic: [N2.4, L12]}
     evidence:
-      - {sympy: derivations/chapters/ch06_moments.py, checks: ["Density, flow and current", Heat flux as contraction]}
+      - {sympy: derivations/chapters/ch07_moments.py, checks: ["Density, flow and current", Heat flux as contraction]}
   - id: two-fluid
     name: Multiple-fluid model
     label: "Two-fluid\nmodel"
@@ -606,7 +606,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [moments-closures, multiple-definitions, multiple-equations, multiple-perpendicular-drifts, multiple-diamagnetic-current, multiple-parallel-balance]}
     evidence:
-      - {sympy: derivations/chapters/ch07_multiple_fluids.py, checks: [Conservative and material momentum forms, Species energy balance, Maxwell equations and charge continuity, Diamagnetic current]}
+      - {sympy: derivations/chapters/ch08_multiple_fluids.py, checks: [Conservative and material momentum forms, Species energy balance, Maxwell equations and charge continuity, Diamagnetic current]}
   - id: braginskii
     name: Braginskii two-fluid equations
     label: "Braginskii"
@@ -634,7 +634,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [mhd-definitions, mhd-ohms-law], fusion: [B6]}
     evidence:
-      - {sympy: derivations/chapters/ch08_mhd.py, checks: [Mass and charge continuity, Summed Lorentz force]}
+      - {sympy: derivations/chapters/ch09_mhd.py, checks: [Mass and charge continuity, Summed Lorentz force]}
   - id: ideal-mhd
     name: Ideal MHD
     label: "Ideal\nMHD"
@@ -650,7 +650,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [mhd-linearized, mhd-flux], fusion: [B4]}
     evidence:
-      - {sympy: derivations/chapters/ch08_mhd.py, checks: [Flux through a material surface element]}
+      - {sympy: derivations/chapters/ch09_mhd.py, checks: [Flux through a material surface element]}
   - id: diffusion
     name: Drift-diffusion and ambipolar diffusion
     label: "Diffusion,\nambipolar"
@@ -666,7 +666,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [random-walk-diffusion, weakly-ionized-diffusion, ambipolar-diffusion, cross-field-diffusion, fully-ionized-diffusion]}
     evidence:
-      - {sympy: derivations/chapters/ch10_diffusion.py, checks: ["Fick's law and the diffusion equation", Green function of the diffusion equation]}
+      - {sympy: derivations/chapters/ch11_diffusion.py, checks: ["Fick's law and the diffusion equation", Green function of the diffusion equation]}
   - id: sheath
     name: Sheath and presheath
     label: "Sheath\n(Bohm)"
@@ -682,7 +682,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [sheath-flux, bohm-criterion, floating-potential, langmuir-probe], fusion: [B8]}
     evidence:
-      - {sympy: derivations/chapters/ch15_sheaths_probes.py, checks: [Maxwellian half-space flux, Floating potential, Child-Langmuir current]}
+      - {sympy: derivations/chapters/ch16_sheaths_probes.py, checks: [Maxwellian half-space flux, Floating potential, Child-Langmuir current]}
   # -------------------------------------------------------------- waves
   - id: linear-vlasov
     name: Linear Vlasov response
@@ -698,7 +698,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [hot-isotropic-dispersion, hot-resonant-particles, hot-transverse-waves, two-stream-instability], kinetic: [N2.3.2, L10], research: [kin6d]}
     evidence:
-      - {sympy: derivations/chapters/ch14_hot_plasma_waves.py, checks: [Electrostatic dielectric function, Maxwellian dielectric and Z, Two-stream dispersion]}
+      - {sympy: derivations/chapters/ch15_hot_plasma_waves.py, checks: [Electrostatic dielectric function, Maxwellian dielectric and Z, Two-stream dispersion]}
   - id: landau-damping
     name: Landau damping
     label: "Landau\ndamping"
@@ -713,7 +713,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [landau-damping-growth], kinetic: [N2.3.4, L11]}
     evidence:
-      - {sympy: derivations/chapters/ch14_hot_plasma_waves.py, checks: [Imaginary part of Z, Landau damping rate, Spatial damping rate]}
+      - {sympy: derivations/chapters/ch15_hot_plasma_waves.py, checks: [Imaginary part of Z, Landau damping rate, Spatial damping rate]}
   - id: hot-magnetized-waves
     name: Hot magnetized waves
     label: "Cyclotron,\nBernstein waves"
@@ -728,7 +728,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [hot-magnetized-waves], fusion: [B8], kinetic: [N3]}
     evidence:
-      - {sympy: derivations/chapters/ch14_hot_plasma_waves.py, checks: [Gyro-orbit characteristics, Finite-Larmor-radius weights]}
+      - {sympy: derivations/chapters/ch15_hot_plasma_waves.py, checks: [Gyro-orbit characteristics, Finite-Larmor-radius weights]}
   - id: cold-plasma-waves
     name: Cold plasma waves
     label: "Cold plasma\nwaves"
@@ -744,8 +744,8 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [intro-plasma-oscillations, wave-linearization, plasma-oscillations, wave-dispersion, magnetized-dielectric, parallel-magnetized-waves, perpendicular-magnetized-waves, oblique-magnetized-waves, magnetized-limits, collisional-waves, ion-magnetized-waves], fusion: [B8], kinetic: [N2.3.1, L6]}
     evidence:
-      - {sympy: derivations/chapters/ch03_plasma_oscillations.py, checks: [Electron plasma oscillation]}
-      - {sympy: derivations/chapters/ch12_cold_magnetized_waves.py, checks: [Cold dielectric tensor, Appleton-Hartree roots]}
+      - {sympy: derivations/chapters/ch04_plasma_oscillations.py, checks: [Electron plasma oscillation]}
+      - {sympy: derivations/chapters/ch13_cold_magnetized_waves.py, checks: [Cold dielectric tensor, Appleton-Hartree roots]}
   - id: warm-fluid-waves
     name: Warm-fluid waves
     label: "Warm-fluid\nwaves"
@@ -761,7 +761,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [wave-kinetic-limits, dispersion-limits, warm-longitudinal-waves, warm-magnetosonic-waves, finite-temperature-ordering], kinetic: [N2.3.3]}
     evidence:
-      - {sympy: derivations/chapters/ch13_finite_temperature_waves.py, checks: [Warm Langmuir branch, Ion-acoustic root]}
+      - {sympy: derivations/chapters/ch14_finite_temperature_waves.py, checks: [Warm Langmuir branch, Ion-acoustic root]}
   - id: mhd-waves
     name: MHD waves
     label: "MHD\nwaves"
@@ -776,7 +776,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [mhd-linearized, warm-magnetosonic-waves]}
     evidence:
-      - {sympy: derivations/chapters/ch13_finite_temperature_waves.py, checks: [Shear Alfvén wave, Perpendicular magnetosonic wave]}
+      - {sympy: derivations/chapters/ch14_finite_temperature_waves.py, checks: [Shear Alfvén wave, Perpendicular magnetosonic wave]}
   # -------------------------------------------------------- equilibrium
   - id: mhd-equilibrium
     name: MHD equilibrium
@@ -792,7 +792,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [mhd-equilibrium], fusion: [B4, B6], research: [MEPHIT]}
     evidence:
-      - {sympy: derivations/chapters/ch08_mhd.py, checks: [Magnetic pressure and tension, Equilibrium geometry and currents]}
+      - {sympy: derivations/chapters/ch09_mhd.py, checks: [Magnetic pressure and tension, Equilibrium geometry and currents]}
   - id: mhd-stability
     name: Linear MHD stability
     label: "MHD\nstability"
@@ -999,7 +999,7 @@ edges:
     lost: screening during the encounter, many-body correlations
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch09_collisions_conductivity.py, checks: [Rutherford deflection and the 90-degree impact parameter, Large-angle collision rate]}
+      - {sympy: derivations/chapters/ch10_collisions_conductivity.py, checks: [Rutherford deflection and the 90-degree impact parameter, Large-angle collision rate]}
     coverage: {plasma: [kinetic-collisions, coulomb-collisions]}
   - from: rutherford
     to: landau
@@ -1080,7 +1080,7 @@ edges:
     lost: the order-one Spitzer-Härm factor, electron-electron collisions
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch09_collisions_conductivity.py, checks: [Momentum-transfer cross section for Coulomb scattering, Spitzer resistivity]}
+      - {sympy: derivations/chapters/ch10_collisions_conductivity.py, checks: [Momentum-transfer cross section for Coulomb scattering, Spitzer resistivity]}
     coverage: {plasma: [coulomb-collisions, specific-resistivity]}
   - from: thermal-equilibrium
     to: debye-hueckel
@@ -1090,7 +1090,7 @@ edges:
     lost: nonlinear screening near the test charge, correlations
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch02_debye_shielding.py, checks: [Debye length, Screened point charge]}
+      - {sympy: derivations/chapters/ch03_debye_shielding.py, checks: [Debye length, Screened point charge]}
     coverage: {plasma: [intro-debye-shielding, debye-collective-validity]}
   - from: thermal-equilibrium
     to: reactivity
@@ -1265,7 +1265,7 @@ edges:
     lost: gyrophase, cyclotron resonance, nonadiabatic $mu$ jumps
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch04_single_particle_motion.py, checks: [Guiding-centre split, Adiabatic balance for mu, Mirror force from the gyro-average, Grad-B drift, Curvature force and drift, Polarization drift]}
+      - {sympy: derivations/chapters/ch05_single_particle_motion.py, checks: [Guiding-centre split, Adiabatic balance for mu, Mirror force from the gyro-average, Grad-B drift, Curvature force and drift, Polarization drift]}
       - {literature: "R. G. Littlejohn, J. Plasma Phys. 29, 111 (1983)"}
     coverage: {plasma: [motion-exb, motion-guiding-center, motion-nonuniform-fields, motion-polarization], fusion: [B4, B5], kinetic: [N1], research: [SIMPLE, kin6d]}
   - from: guiding-center
@@ -1341,7 +1341,7 @@ edges:
     lost: nothing; the hierarchy is unclosed
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch06_moments.py, checks: [Continuity from the zeroth moment, Momentum equation from the first moment, Energy equation from the second moment]}
+      - {sympy: derivations/chapters/ch07_moments.py, checks: [Continuity from the zeroth moment, Momentum equation from the first moment, Energy equation from the second moment]}
     coverage: {plasma: [moments-continuity, moments-momentum, moments-energy], kinetic: [N2.4, L12]}
   - from: bgk
     to: moment-hierarchy
@@ -1350,7 +1350,7 @@ edges:
     lost: nothing
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch06_moments.py, checks: [BGK collision moments]}
+      - {sympy: derivations/chapters/ch07_moments.py, checks: [BGK collision moments]}
     coverage: {plasma: [moments-closures]}
   - from: moment-hierarchy
     to: two-fluid
@@ -1360,7 +1360,7 @@ edges:
     lost: kinetic effects (Landau damping), anisotropy, collisional transport
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch06_moments.py, checks: [Isotropic pressure, Internal energy and the adiabatic law, Polytropic closure]}
+      - {sympy: derivations/chapters/ch07_moments.py, checks: [Isotropic pressure, Internal energy and the adiabatic law, Polytropic closure]}
     coverage: {plasma: [moments-closures, multiple-equations], kinetic: [N2.4]}
   - from: moment-hierarchy
     to: braginskii
@@ -1385,7 +1385,7 @@ edges:
     lost: Hall physics, two-fluid waves, electron inertia
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch08_mhd.py, checks: [Mass and charge continuity, Summed Lorentz force, Generalized Ohm law, Drag and resistivity]}
+      - {sympy: derivations/chapters/ch09_mhd.py, checks: [Mass and charge continuity, Summed Lorentz force, Generalized Ohm law, Drag and resistivity]}
     coverage: {plasma: [multiple-parallel-balance, mhd-definitions, mhd-ohms-law]}
   - from: braginskii
     to: resistive-mhd
@@ -1402,7 +1402,7 @@ edges:
     lost: magnetic diffusion and reconnection
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch08_mhd.py, checks: [Resistive induction equation, Magnetic Reynolds number]}
+      - {sympy: derivations/chapters/ch09_mhd.py, checks: [Resistive induction equation, Magnetic Reynolds number]}
     coverage: {plasma: [mhd-flux]}
   - from: two-fluid
     to: diffusion
@@ -1412,7 +1412,7 @@ edges:
     lost: inertia, waves
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch10_diffusion.py, checks: [Mobility and diffusion, Ambipolar diffusion, Diffusion across a magnetic field, Classical cross-field diffusion]}
+      - {sympy: derivations/chapters/ch11_diffusion.py, checks: [Mobility and diffusion, Ambipolar diffusion, Diffusion across a magnetic field, Classical cross-field diffusion]}
     coverage: {plasma: [weakly-ionized-diffusion, ambipolar-diffusion, cross-field-diffusion, fully-ionized-diffusion]}
   - from: diffusion
     to: transport
@@ -1430,7 +1430,7 @@ edges:
     lost: kinetic ion distribution, magnetized and collisional sheaths
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch15_sheaths_probes.py, checks: [Boltzmann electrons, Normalized sheath equation, Sheath first integral (Sagdeev potential), Bohm criterion]}
+      - {sympy: derivations/chapters/ch16_sheaths_probes.py, checks: [Boltzmann electrons, Normalized sheath equation, Sheath first integral (Sagdeev potential), Bohm criterion]}
     coverage: {plasma: [sheath-flux, bohm-criterion, floating-potential, langmuir-probe]}
   # -------------------------------------------------------------- waves
   - from: vlasov
@@ -1441,7 +1441,7 @@ edges:
     lost: particle trapping and nonlinear saturation
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch14_hot_plasma_waves.py, checks: [Linear Vlasov response, Electrostatic dielectric function, Maxwellian dielectric and Z]}
+      - {sympy: derivations/chapters/ch15_hot_plasma_waves.py, checks: [Linear Vlasov response, Electrostatic dielectric function, Maxwellian dielectric and Z]}
       - {literature: "L. D. Landau, J. Phys. USSR 10, 25 (1946)"}
     coverage: {plasma: [hot-isotropic-dispersion, hot-transverse-waves], kinetic: [N2.3.2, L10], research: [kin6d]}
   - from: linear-vlasov
@@ -1452,7 +1452,7 @@ edges:
     lost: strongly damped roots
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch14_hot_plasma_waves.py, checks: [Resonant imaginary part, Weak-rate relation, Landau damping rate]}
+      - {sympy: derivations/chapters/ch15_hot_plasma_waves.py, checks: [Resonant imaginary part, Weak-rate relation, Landau damping rate]}
     coverage: {plasma: [hot-resonant-particles, landau-damping-growth], kinetic: [N2.3.4, L11], research: [kin6d]}
   - from: linear-vlasov
     to: warm-fluid-waves
@@ -1462,8 +1462,8 @@ edges:
     lost: Landau damping (exponentially small)
     status: limit-checked
     evidence:
-      - {sympy: derivations/chapters/ch14_hot_plasma_waves.py, checks: [Asymptotic Z, Kinetic Bohm-Gross root]}
-      - {sympy: derivations/chapters/ch11_introduction_waves.py, checks: [Kinetic susceptibility limits]}
+      - {sympy: derivations/chapters/ch15_hot_plasma_waves.py, checks: [Asymptotic Z, Kinetic Bohm-Gross root]}
+      - {sympy: derivations/chapters/ch12_introduction_waves.py, checks: [Kinetic susceptibility limits]}
     coverage: {plasma: [wave-kinetic-limits, hot-isotropic-dispersion], kinetic: [N2.3.3]}
   - from: linear-vlasov
     to: cold-plasma-waves
@@ -1473,7 +1473,7 @@ edges:
     lost: thermal dispersion and damping
     status: limit-checked
     evidence:
-      - {sympy: derivations/chapters/ch14_hot_plasma_waves.py, checks: [Cold limit, Cold transverse branch]}
+      - {sympy: derivations/chapters/ch15_hot_plasma_waves.py, checks: [Cold limit, Cold transverse branch]}
     coverage: {plasma: [hot-isotropic-dispersion, hot-transverse-waves]}
   - from: linear-vlasov
     to: hot-magnetized-waves
@@ -1483,7 +1483,7 @@ edges:
     lost: inhomogeneity, nonlinear wave-particle interaction
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch14_hot_plasma_waves.py, checks: [Gyro-orbit characteristics, Gyroangle harmonic response, Circular forcing, Finite-Larmor-radius weights]}
+      - {sympy: derivations/chapters/ch15_hot_plasma_waves.py, checks: [Gyro-orbit characteristics, Gyroangle harmonic response, Circular forcing, Finite-Larmor-radius weights]}
     coverage: {plasma: [hot-magnetized-waves], kinetic: [N3]}
   - from: two-fluid
     to: cold-plasma-waves
@@ -1493,8 +1493,8 @@ edges:
     lost: pressure, thermal dispersion
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch11_introduction_waves.py, checks: [Plane-wave replacement, Linearized continuity, Cold electromagnetic branch]}
-      - {sympy: derivations/chapters/ch12_cold_magnetized_waves.py, checks: [Cold magnetized velocity response, Cold dielectric tensor, Magnetized wave equation]}
+      - {sympy: derivations/chapters/ch12_introduction_waves.py, checks: [Plane-wave replacement, Linearized continuity, Cold electromagnetic branch]}
+      - {sympy: derivations/chapters/ch13_cold_magnetized_waves.py, checks: [Cold magnetized velocity response, Cold dielectric tensor, Magnetized wave equation]}
     coverage: {plasma: [intro-plasma-oscillations, wave-linearization, plasma-oscillations, wave-dispersion, magnetized-dielectric], kinetic: [N2.3.1, L5, L6]}
   - from: two-fluid
     to: warm-fluid-waves
@@ -1504,8 +1504,8 @@ edges:
     lost: Landau damping
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch11_introduction_waves.py, checks: [Warm-fluid dispersion, Ion-acoustic limit]}
-      - {sympy: derivations/chapters/ch13_finite_temperature_waves.py, checks: [Warm species response, Warm longitudinal susceptibility]}
+      - {sympy: derivations/chapters/ch12_introduction_waves.py, checks: [Warm-fluid dispersion, Ion-acoustic limit]}
+      - {sympy: derivations/chapters/ch14_finite_temperature_waves.py, checks: [Warm species response, Warm longitudinal susceptibility]}
     coverage: {plasma: [wave-kinetic-limits, warm-longitudinal-waves]}
   - from: warm-fluid-waves
     to: cold-plasma-waves
@@ -1515,7 +1515,7 @@ edges:
     lost: thermal corrections
     status: limit-checked
     evidence:
-      - {sympy: derivations/chapters/ch13_finite_temperature_waves.py, checks: [Cold limits]}
+      - {sympy: derivations/chapters/ch14_finite_temperature_waves.py, checks: [Cold limits]}
     coverage: {plasma: [finite-temperature-ordering]}
   - from: cold-plasma-waves
     to: mhd-waves
@@ -1525,7 +1525,7 @@ edges:
     lost: ion-cyclotron and whistler branches
     status: limit-checked
     evidence:
-      - {sympy: derivations/chapters/ch13_finite_temperature_waves.py, checks: [Low-frequency Alfvén limit]}
+      - {sympy: derivations/chapters/ch14_finite_temperature_waves.py, checks: [Low-frequency Alfvén limit]}
     coverage: {plasma: [ion-magnetized-waves]}
   - from: ideal-mhd
     to: mhd-waves
@@ -1535,8 +1535,8 @@ edges:
     lost: inhomogeneity (continuum damping), kinetic damping
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch08_mhd.py, checks: [Linearized ideal MHD]}
-      - {sympy: derivations/chapters/ch13_finite_temperature_waves.py, checks: [Shear Alfvén wave, Perpendicular magnetosonic wave]}
+      - {sympy: derivations/chapters/ch09_mhd.py, checks: [Linearized ideal MHD]}
+      - {sympy: derivations/chapters/ch14_finite_temperature_waves.py, checks: [Shear Alfvén wave, Perpendicular magnetosonic wave]}
     coverage: {plasma: [mhd-linearized, warm-magnetosonic-waves]}
   # -------------------------------------------------------- equilibrium
   - from: ideal-mhd
@@ -1547,7 +1547,7 @@ edges:
     lost: dynamics, flows
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch08_mhd.py, checks: [Magnetic pressure and tension, Theta- and z-pinch balance]}
+      - {sympy: derivations/chapters/ch09_mhd.py, checks: [Magnetic pressure and tension, Theta- and z-pinch balance]}
     coverage: {plasma: [mhd-equilibrium], fusion: [B4, B6]}
   - from: ideal-mhd
     to: mhd-stability

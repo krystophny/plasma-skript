@@ -636,7 +636,7 @@
     ),
   ))
 
-  #chapter-nav(previous: (href: "../chapters/15-sheaths-probes.html", title: [Plasma sheaths and Langmuir probes]))
+  #chapter-nav(previous: (href: "../chapters/16-sheaths-probes.html", title: [Plasma sheaths and Langmuir probes]))
 ]
 
 #appendix

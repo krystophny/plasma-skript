@@ -20,7 +20,7 @@ const base = process.env.SITE_BASE_URL || "http://127.0.0.1:8139/";
         await route.fulfill({ contentType: "text/html", body: "<h1>Review issue</h1>" });
       });
       const page = await context.newPage();
-      await page.goto(new URL("chapters/02-debye-shielding.html?private=do-not-share", base).href);
+      await page.goto(new URL("chapters/03-debye-shielding.html?private=do-not-share", base).href);
       const section = page.getByRole("heading", { name: /Finite charge distribution/ });
       await section.evaluate(h => h.scrollIntoView({ block: "start" }));
       const sectionID = await section.getAttribute("id");
@@ -36,14 +36,14 @@ const base = process.env.SITE_BASE_URL || "http://127.0.0.1:8139/";
       assert.equal(reports[0].pathname, "/krystophny/plasma-skript/issues/new");
       assert.match(reports[0].searchParams.get("title"), /Finite charge distribution/);
       const body = reports[0].searchParams.get("body");
-      assert.ok(body.includes(`https://krystophny.github.io/plasma-skript/chapters/02-debye-shielding.html#${sectionID}`));
+      assert.ok(body.includes(`https://krystophny.github.io/plasma-skript/chapters/03-debye-shielding.html#${sectionID}`));
       assert.ok(!body.includes("do-not-share"), "Private queries must not enter reports");
       assert.ok(!body.includes("127.0.0.1"), "Reports must use the public reading URL");
       assert.match(body, /Problem or suggestion/);
       await popup.close();
 
       // Newly generated section fragments must work when opened directly.
-      await page.goto(new URL(`chapters/02-debye-shielding.html#${sectionID}`, base).href);
+      await page.goto(new URL(`chapters/03-debye-shielding.html#${sectionID}`, base).href);
       await page.waitForFunction(id => Math.abs(document.getElementById(id).getBoundingClientRect().top) < 10, sectionID);
       await page.screenshot({ path: `/tmp/plasma-feedback-${width}.png` });
 

@@ -10,6 +10,32 @@
       "mp4_sha256": "961e181626a86ae0b028830744821293913a01ea135cc124e42ddf85e050cc9c",
       "appearance": "dark"
     },
+    "coulomb-encounter-headon": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_headon.mp4",
+      "poster": "media/posters/coulomb-encounter-headon.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/coulomb-encounter-headon.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_headon.mp4?v=7956c19fee2339fd",
+      "mp4_sha256": "7956c19fee2339fdb9c035ef5cb4c497180bea459219efe1b36cf75b1328c4e3",
+      "appearance": "dark"
+    },
+    "coulomb-encounter-hot": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_hot.mp4",
+      "poster": "media/posters/coulomb-encounter-hot.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/coulomb-encounter-hot.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_hot.mp4?v=5b478f94fc092a66",
+      "mp4_sha256": "5b478f94fc092a667c08529bd621ae3b670c5a7d472c7e260170dab5d660f2ab",
+      "appearance": "dark"
+    },
+    "coulomb-encounter-offaxis": {
+      "supplementary_chapter": "chapters/10-collisions-conductivity.html",
+      "supplementary_description": "Two electrons approach with impact parameter b = 2 reduced de Broglie wavelengths at Sommerfeld parameter eta = 3, the same encounter as the head-on case in Chapter 10 but off axis. Four panels on one logarithmic colour scale show the probability density of the relative coordinate in the plane of the encounter: a classical Wigner-sampled ensemble, the distinguishable (spin-unresolved) quantum packet, and the singlet and triplet states. The classical and distinguishable panels keep the region inside the head-on turning radius r0 = 2 eta reduced wavelengths nearly empty, and the outgoing density is tilted rather than symmetric about the collision axis; singlet and triplet add exchange fringes of opposite sign, and their average is the distinguishable panel. Positions k x and k z, with k the inverse reduced wavelength, and the time t v/z0 are normalized, with unit [1]. Data: kin6d partial-wave propagation; a visualization without pointwise error bounds.",
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_offaxis.mp4",
+      "poster": "media/posters/coulomb-encounter-offaxis.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/coulomb-encounter-offaxis.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_offaxis.mp4?v=defe247a379975d1",
+      "mp4_sha256": "defe247a379975d18b9527bce193d852f73144a495337fe3c69bd6a1549aa32a",
+      "appearance": "dark"
+    },
     "debye-potential-reduction": {
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_potential_reduction.mp4",
       "poster": "media/posters/debye-potential-reduction.png",
@@ -24,6 +50,14 @@
       "player_url": "https://krystophny.github.io/plasma-skript/animations/debye-shielding.html",
       "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_shielding.mp4?v=affdfe7a8c1ec474",
       "mp4_sha256": "affdfe7a8c1ec474ce336c1209e144418a8f3c462f064a3b3bc04ec378b84f7f",
+      "appearance": "dark"
+    },
+    "debye-shielding-particles": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_shielding_particles.mp4",
+      "poster": "media/posters/debye-shielding-particles.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/debye-shielding-particles.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_shielding_particles.mp4?v=42f618f91077bb19",
+      "mp4_sha256": "42f618f91077bb19c69e3c5181580195c248eef116ed428158ef23ee7697d1eb",
       "appearance": "dark"
     },
     "diffusion-random-walk": {
@@ -91,7 +125,7 @@
       "appearance": "dark"
     },
     "pendulum-ensemble": {
-      "supplementary_chapter": "chapters/05-kinetic-theory.html",
+      "supplementary_chapter": "chapters/06-kinetic-theory.html",
       "supplementary_description": "A nonlinear pendulum ensemble compares weak and strong Kac collisions sequentially. Phase mixing filaments the position-momentum distribution; collisions redistribute energy between members while preserving total ensemble energy. The energy histogram is compared with a Gibbs distribution at the same mean energy. Angle, momentum, time and Hamiltonian are normalized, with unit [1]. This is a kinetic-relaxation illustration, not a plasma simulation.",
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/pendulum_ensemble.mp4",
       "poster": "media/posters/pendulum-ensemble.png",
@@ -112,8 +146,8 @@
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/plasma_oscillation.mp4",
       "poster": "media/posters/plasma-oscillation.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/plasma-oscillation.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/plasma_oscillation.mp4?v=61ea827a7678fff9",
-      "mp4_sha256": "61ea827a7678fff97cf75b3486b2e9f6a88b28b2e0058dd3f5c0f1d624a2ab0c",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/plasma_oscillation.mp4?v=d64b075f7d85bcca",
+      "mp4_sha256": "d64b075f7d85bcca67e86517e8b97af21732ee4ca96d4b2e1c950071aac4ab00",
       "appearance": "dark"
     },
     "sheath-formation": {

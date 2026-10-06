@@ -51,6 +51,26 @@
       physicsPython = pkgs.python3.withPackages (ps: [ps.numpy]);
       # SymPy derivations write the data plots that the Typst sources include.
       derivationsPython = pkgs.python3.withPackages (ps: [ps.numpy ps.sympy ps.matplotlib ps.pytest]);
+      presenterPython = pkgs.python3.withPackages (ps: [ps.playwright]);
+      # Fixed-output downloads make presenter media available in the sandbox.
+      # Select precisely the animations used by the current single-source decks.
+      animationRegistry = (builtins.fromJSON (builtins.readFile ./media/animations.json)).animations;
+      deckSources = pkgs.lib.filterAttrs (name: kind:
+        kind == "regular" && builtins.match "[0-9].*\\.typ" name != null)
+        (builtins.readDir ./slides);
+      presentSlugs = pkgs.lib.unique (pkgs.lib.concatMap (name:
+        pkgs.lib.concatMap (line: let
+          match = builtins.match ''.*animation-page\("([^"]+)".*'' line;
+        in pkgs.lib.optional (match != null) (builtins.head match))
+        (pkgs.lib.splitString "\n" (builtins.readFile (./slides + "/${name}"))))
+        (builtins.attrNames deckSources));
+      presentMedia = pkgs.linkFarm "plasma-present-media" (map (slug: {
+        name = "${slug}.mp4";
+        path = pkgs.fetchurl {
+          url = animationRegistry.${slug}.stream_url;
+          sha256 = animationRegistry.${slug}.mp4_sha256;
+        };
+      }) presentSlugs);
       physicsCheckApp = pkgs.writeShellApplication {
         name = "plasma-check-physics";
         runtimeInputs = [physicsPython typst];
@@ -85,6 +105,7 @@
           export FONTCONFIG_FILE="${fontConfig}"
           site_dir="''${SITE_DIR:-$PWD/public}"
           export SITE_DIR="$site_dir"
+          export PRESENT_MEDIA_DIR="${presentMedia}"
           # Build the working tree when invoked from the project root, including
           # new chapter files that have not been added to Git yet.
           if [[ -f "$PWD/flake.nix" && -f "$PWD/src/main.typ" && -f "$PWD/scripts/build-site.sh" ]]; then
@@ -95,7 +116,7 @@
       };
       verifySpecApp = pkgs.writeShellApplication {
         name = "plasma-verify-spec";
-        runtimeInputs = [pkgs.bash pkgs.coreutils pkgs.findutils pkgs.perl pkgs.ripgrep];
+        runtimeInputs = [pkgs.bash pkgs.coreutils pkgs.findutils pkgs.perl pkgs.ripgrep pkgs.python3];
         text = ''
           site_dir="''${1:-''${SITE_DIR:-$PWD/public}}"
           exec bash "${self}/scripts/verify-spec.sh" "$site_dir"
@@ -180,12 +201,15 @@
             ./scripts/site-integration-test.cjs;
           environment.etc."plasma-feedback-test.cjs".source =
             ./scripts/feedback-test.cjs;
+          environment.etc."plasma-present-test.py".source = ./scripts/present-test.py;
 
           environment.systemPackages = [
             pkgs.chromium
             pkgs.nodejs
             playwrightCore
             siteIntegrationRunner
+            presenterPython
+            pkgs.poppler-utils
           ];
 
           environment.variables = {
@@ -205,6 +229,7 @@
           try:
               machine.succeed("node /etc/plasma-feedback-test.cjs")
               machine.succeed("plasma-site-integration-test")
+              machine.succeed("python /etc/plasma-present-test.py http://127.0.0.1/present/ --artifacts /tmp/plasma-site-audit/present")
           finally:
               machine.copy_from_machine("/tmp/plasma-site-audit", "site-audit")
         '';
@@ -267,6 +292,7 @@
           typst
         ];
         FONTCONFIG_FILE = fontConfig;
+        PRESENT_MEDIA_DIR = presentMedia;
 
         buildPhase = ''
           runHook preBuild
@@ -309,6 +335,7 @@
                 pkgs.findutils
                 pkgs.perl
                 pkgs.ripgrep
+                pkgs.python3
               ];
             } ''
               bash ${self}/scripts/verify-spec.sh ${self.packages.${system}.default}
