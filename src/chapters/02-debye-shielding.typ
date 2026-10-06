@@ -378,6 +378,47 @@
   drawn marker cloud must not be read as a self-consistent two-dimensional
   simulation of the right-hand profiles.
 
+  The next animation removes the prescription: the electrons move under their
+  own Coulomb forces. The test charge $Q = -4 pi kappa n_0 lambda_D^3 e$ has
+  the electrons' sign, so the linearized Boltzmann response and the screened
+  potential derived above predict an electron deficit
+  $-delta n_e\/(kappa n_0) = (lambda_D\/r) e^(-r\/lambda_D)$, valid where
+  $r >> kappa lambda_D$. Here $delta n_e = n_e - n_0$ and $kappa = 0.05$ is
+  dimensionless. Time is measured in units of $1\/omega_(p,e)$, with the
+  electron plasma frequency $omega_(p,e) = sqrt(n_0 e^2\/(epsilon_0 m_e))$
+  of Chapter 3 and the electron mass $m_e$.
+
+  #animation(
+    "../media/debye-shielding-particles.mp4",
+    "Left: blue electron markers in a thin slab around a fixed negative test charge, drawn as a white disc, over a uniform positive background in a periodic cube. The markers move thermally; no hole around the test charge is visible in any single frame. Right: the measured electron deficit in spherical shells around the charge, averaged over time and over eight independent runs, plotted as dots against distance. The dots start noisy and settle onto a solid Debye curve, well below a dashed unscreened 1/r curve; at the end, vertical bars show 95 percent intervals over the runs. Positions are normalized by the Debye length, time by the inverse plasma frequency, and the deficit by kappa n0, with unit [1].",
+    caption: [
+      Debye shielding from particle dynamics, computed with kin6d. A classical
+      electron one-component plasma (mobile electrons, uniform neutralizing
+      background in place of immobile ions) fills a periodic cube of edge
+      $4 lambda_D$ with $n_0 lambda_D^3 = 100$, that is $N_D approx 420$ and
+      6400 electrons, interacting by the unsoftened Coulomb force. A fixed
+      test charge of the electrons' sign sits at the centre. Left: one run,
+      electrons in the slab $abs(z) < lambda_D\/2$ around the charge; a
+      single snapshot shows no visible hole, because beyond
+      $r approx lambda_D\/2$ the deficit is only a few percent of $n_0$,
+      smaller than the counting fluctuations. Right:
+      the deficit $-delta n_e\/(kappa n_0)$ averaged over time up to
+      $omega_(p,e) t = 40$ and over eight independent runs. It follows the
+      linear Debye reference for the periodic cube (solid) and lies far below
+      the unscreened response $1\/r$ (dashed). Positions are $x\/lambda_D$,
+      $y\/lambda_D$, $r\/lambda_D$ and time $omega_(p,e) t$, all with unit
+      [1]. The bars are statistical 95~% intervals, not exact error bounds.
+    ],
+    poster: "../media/debye-shielding-particles.png",
+  )
+
+  The screening cloud of the derivation is therefore an average, not a
+  picture of individual electrons. The Boltzmann density describes the mean
+  occupation of a shell around
+  the charge, and with hundreds of electrons per Debye sphere this mean
+  emerges only after averaging over many configurations. The same
+  requirement, $N_D >> 1$, returns as the plasma parameter below.
+
   #interpretation(
     [Scope of the Debye length],
     [The Debye length is the distance over which this

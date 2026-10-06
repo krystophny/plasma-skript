@@ -135,8 +135,11 @@
     caption: [
       Cold electron plasma oscillation: the charge-separation field produces
       a restoring electron force. The animation uses $xi\/xi_0$ and
-      $tau=omega_(p,e) t$, both with unit [1]. The position scale $L_0$
-      satisfies $xi_0\/L_0=0.55$. The field scale is
+      $tau=omega_(p,e) t$, both with unit [1]. The trace $xi\/xi_0$ is a
+      numerical solution of the cold slab equation computed with kin6d,
+      enclosed by a certified error band thinner than the drawn line. The
+      position scale $L_0$ is a quarter of the slab half-width $a$, with
+      $xi_0\/a=0.1$, so $xi_0\/L_0=0.4$. The field scale is
       $E_0=e n_0 xi_0\/epsilon_0$; field and electron force are shown as
       $E\/E_0$ and $F_e\/(e E_0)$, respectively, both with unit [1].
     ],

@@ -363,7 +363,9 @@
   ))
 
   #unit-ledger[
-    The impact parameter $b_90$ is in #unit("m"). The Coulomb cutoff logarithm
+    The impact parameter $b_90$ and the reduced de Broglie wavelength
+    $ƛ$ are in #unit("m"); the Sommerfeld parameter $eta$ is dimensionless.
+    The Coulomb cutoff logarithm
     $ln Lambda_"cut"$ and plasma parameter $Lambda=n_"e"lambda_D^3$ are
     dimensionless, as is $ln Lambda$.
   ]
@@ -514,6 +516,83 @@
     quantum correction when classical impact parameters become too small. The
     Coulomb logarithm is therefore the logarithm of a controlled scale ratio.]
   )
+
+  The classical deflection $chi(b)$ assumes that the colliding particles
+  follow trajectories on the scale $b_90$. A quantum particle is localized
+  only to about its reduced de Broglie wavelength
+  $ƛ = planck\/(m_r v_"rel")$, where $planck$ is the reduced Planck constant.
+  For two unit charges, the ratio of the two lengths is the Sommerfeld
+  parameter
+
+  $ eta = b_90/ƛ = e^2/(4 pi epsilon_0 planck v_"rel") . $
+
+  For $eta >> 1$ the trajectory picture holds; for $eta << 1$ the
+  wavelength exceeds $b_90$ and the lower cutoff must be revised. The two
+  animations follow an encounter of two electrons, $m_r = m_"e"\/2$, in the
+  relative coordinate $bold(r) = bold(x)_1 - bold(x)_2$. A head-on classical
+  pair turns around at $r_0 = 2 b_90 = 2 eta ƛ$.
+
+  #animation(
+    "../media/coulomb-encounter-headon.mp4",
+    "Four square panels in a two-by-two grid show the same head-on encounter of two electrons at Sommerfeld parameter eta = 3, on one shared logarithmic colour scale, as the probability density of their relative position in the collision plane. Top left: a classical ensemble; top right: the quantum wave packet of distinguishable particles; bottom left: the singlet state; bottom right: the triplet state. Two packets approach the centre, stop outside a dashed circle of radius r0, the classical turning radius, and move back out. The classical and distinguishable panels keep the circle empty and look alike. The singlet and triplet panels add stripes of opposite phase while the packets overlap, and the triplet keeps a dark line through the centre. Positions k x and k z, with k the inverse reduced wavelength, and the time t v over z0 are normalized, with unit [1].",
+    caption: [
+      Head-on encounter of two electrons at $eta = 3$ (relative energy
+      #qty("0.76", "eV")), computed with kin6d. All four panels show the same
+      encounter on one logarithmic colour scale: the density of the relative
+      coordinate in the collision plane, with positions $k x$, $k z$ and
+      $k = 1\/ƛ$, at time $t v_"rel"\/z_0$, where $z_0 = 20 ƛ$ is the initial
+      separation (all with unit [1]). Top left: an ensemble of classical
+      trajectories with the initial positions and momenta of the quantum
+      packet (Wigner sampling). Top right: the quantum packet of
+      distinguishable particles. Bottom: the singlet (symmetric) and triplet
+      (antisymmetric) spatial states of identical electrons. Because the
+      electrons are identical, each panel also shows the exchanged
+      labelling $bold(r) -> -bold(r)$. The classical hole $r < r_0$ (dashed
+      circle) is reproduced by the distinguishable quantum panel. Exchange
+      adds interference fringes of opposite sign in singlet and triplet,
+      whose average is the distinguishable panel, and the triplet vanishes
+      on the plane $z = 0$.
+    ],
+    poster: "../media/coulomb-encounter-headon.png",
+  )
+
+  #animation(
+    "../media/coulomb-encounter-hot.mp4",
+    "The same two-by-two layout and colour scale for a head-on encounter of two electrons at eta = 0.03, typical of a 10 keV plasma. The classical ensemble keeps a very thin empty line through the centre and spreads faintly. The distinguishable quantum packet passes through the centre almost unchanged and separates again; no scattered wave is visible on the colour scale. Singlet and triplet show fine stripes only while the two packets overlap, then separate as smooth packets. Positions k x and k z and the time t v over z0 are normalized, with unit [1].",
+    caption: [
+      The same encounter at $eta = 0.03$, the relative speed of an electron
+      pair in a #qty("10", "keV") plasma (relative energy
+      #qty("7.6", "keV")), on the same axes, clock and colour scale. Now
+      $r_0 = 0.06 ƛ$ lies far inside the packet. The quantum packet passes
+      almost freely: the scattered wave is far below the colour scale. The
+      singlet and triplet fringes are the exchange symmetrization of two
+      overlapping packets; they appear even without interaction. The
+      classical ensemble still keeps a sharp, unresolved hole on the axis, a
+      trajectory feature that the quantum packet does not show.
+    ],
+    poster: "../media/coulomb-encounter-hot.png",
+  )
+
+  The statistics of the deflections stay Rutherford: the quantum Coulomb
+  cross section of distinguishable particles equals the classical
+  Rutherford formula at every $eta$ (identical electrons add an exchange
+  term, the Mott cross section). What changes for $eta << 1$ is the range of
+  impact parameters in which $chi(b)$ is meaningful, so the lower cutoff
+  moves from $b_90$ to $ƛ$, and $b_"min" approx max(b_90, ƛ)$. For an
+  electron--ion pair with $v_"rel" = sqrt(k_B T_"e"\/m_"e")$,
+  $n_"e" = qty("1e20", "m^-3")$ and $k_B T_"e" = qty("10", "keV")$:
+  $lambda_D = qty("7.4e-5", "m")$, $b_90 = qty("1.4e-13", "m")$,
+  $ƛ = qty("2.8e-12", "m")$ and $eta approx 0.05$. The classical logarithm
+  $ln(lambda_D\/b_90) = 20.1$ drops to $ln(lambda_D\/ƛ) = 17.1$, the
+  electron--ion value of the NRL Plasma Formulary @nrl2019. The exact
+  Coulomb phase shifts interpolate between both limits by subtracting
+  Bloch's correction @bloch1933,
+
+  $ ln(lambda_D/b_90) - [ln eta - op("Re") psi(1 + i eta)] , $
+
+  where $psi$ is the digamma function. The bracket vanishes for
+  $eta >> 1$ and tends to $ln eta + gamma$ for $eta << 1$, with Euler's
+  constant $gamma approx 0.577$, which gives $ln(lambda_D\/ƛ) - gamma$.
 
   #summary[
     Fully ionized collisions are dominated in number by small-angle encounters
