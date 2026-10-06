@@ -53,6 +53,10 @@ names=(
   "collective-response|collective_response"
   "particles-to-moments|particles_to_moments"
   "pendulum-ensemble|pendulum_ensemble"
+  "debye-shielding-particles|debye_shielding_particles"
+  "coulomb-encounter-headon|coulomb_encounter_headon"
+  "coulomb-encounter-offaxis|coulomb_encounter_offaxis"
+  "coulomb-encounter-hot|coulomb_encounter_hot"
 )
 
 staging="$(mktemp -d "${TMPDIR:-/tmp}/plasma-export.XXXXXX")"

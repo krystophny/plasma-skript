@@ -17,7 +17,7 @@ the bottom row adds it with opposite signs, and the average of singlet and
 triplet is the top-right panel.  The dashed circle is r = r0.
 Hot case (``CoulombEncounterHot``): eta = 0.03, the thermal relative speed of
 electrons in a 10 keV plasma (relative energy Ry/(2 eta^2) = 7.6 keV), sigma
-= 4/k, b = 0, six decades of colour: r0 = 0.06/k lies far below the
+= 3/k, b = 0, the same four decades of colour: r0 = 0.06/k lies far below the
 wavelength, so the quantum packet passes almost undeflected and sheds only a
 faint diffracted wave, while the classical ensemble keeps a sharp (unresolved)
 hole and rare large deflections; no r0 circle is drawn.
