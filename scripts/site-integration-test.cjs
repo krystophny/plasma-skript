@@ -202,7 +202,7 @@ async function auditPage(page, pagePath, viewport) {
       if (heading.number !== chapterIndex + 1) {
         recordFailure(`${pageLabel}: incorrect chapter number in ${heading.title}`);
       }
-      const navigation = await page.locator(".chapter-nav a").evaluateAll(
+      const navigation = await page.locator('.chapter-nav a[href$=".html"]').evaluateAll(
         (links) => links.map((link) => new URL(link.href).pathname),
       );
       const expected = [
@@ -211,6 +211,15 @@ async function auditPage(page, pagePath, viewport) {
       ];
       if (JSON.stringify(navigation) !== JSON.stringify(expected)) {
         recordFailure(`${pageLabel}: chapter navigation does not follow reading order`);
+      }
+      if (chapterIndex < 4) {
+        const deck = await page.locator('.chapter-nav a[href*="../present/"]').evaluateAll(
+          (links) => links.map((link) => new URL(link.href).pathname),
+        );
+        const expectedDeck = pagePath.replace("/chapters/", "/present/").replace(/\.html$/, "/");
+        if (JSON.stringify(deck) !== JSON.stringify([expectedDeck])) {
+          recordFailure(`${pageLabel}: lecture deck link does not match its chapter`);
+        }
       }
     }
     if (pagePath === "/index.html") {
