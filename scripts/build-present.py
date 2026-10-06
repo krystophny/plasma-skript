@@ -73,7 +73,8 @@ def copy_video(record, slug, dest, site):
         candidates.append(Path(os.environ["EXPORT_MEDIA_SOURCE"]) / filename)
     for path in candidates:
         if path.is_file() and sha(path) == expected:
-            shutil.copyfile(path, dest / filename)
+            if path.resolve() != (dest / filename).resolve():
+                shutil.copyfile(path, dest / filename)
             return dest / filename
     cache.mkdir(parents=True, exist_ok=True)
     temp = cache / (expected + ".part")

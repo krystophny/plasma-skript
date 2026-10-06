@@ -58,9 +58,21 @@ class ExportRevisionTest(unittest.TestCase):
                 self.assertEqual((fixture / "export/example_export.png").read_bytes(), poster)
                 self.assertEqual(publisher["requests"], 1)
 
+                # Rebuilding an existing presenter must reuse its verified
+                # stream even when source and destination are the same file.
+                present_media = fixture / "public/present/media"
+                present_media.mkdir(parents=True)
+                (present_media / "example_export.mp4").write_bytes(expected)
+                rebuild = command[:-1] + [str(present_media)]
+                result = subprocess.run(rebuild, capture_output=True, text=True)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual((present_media / "example_export.mp4").read_bytes(), expected)
+                self.assertEqual(publisher["requests"], 1)
+
                 # Remove the good revision and serve bytes that disagree with
                 # the independent registry. Nothing corrupt may be exported.
                 (fixture / "export/example_export.mp4").unlink()
+                (present_media / "example_export.mp4").unlink()
                 (fixture / ".cache/present-media" / (digest + ".mp4")).unlink()
                 publisher["body"] = b"corrupt replacement"
                 result = subprocess.run(command, capture_output=True, text=True)
