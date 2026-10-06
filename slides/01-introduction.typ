@@ -1,17 +1,7 @@
 #import "theme.typ": *
 #import "@preview/physica:0.9.8": dv
 #show: deck.with(chapter: 1)
-#slide(section: "intro-plasma-state", title: [Plasma state])[
-  #at(1, 6, y: 8mm, diagram(spacing: 22mm,
-    node((0,0), [ions $+Z e$]), edge("<->"), node((1,0), [electrons $-e$]),
-    edge((0,0),(0.5,1),"-|>"), edge((1,0),(0.5,1),"-|>"), node((0.5,1), [collective fields]),
-  ))
-  #at(7, 6, y: 18mm)[
-    #result-box($rho_q = sum_s q_s n_s$, [charge density])
-    #v(12mm) mobile charges \ collective response \ observation scale
-    #v(8mm) #text(fill: muted)[$q_s$ charge; $n_s$ density]
-  ]
-]
+#import "intro-drawings.typ": phase-cells, ladder
 #photo-page("sun_flare_sdo.jpg", [NASA/SDO, public domain], "photo-sun")
 #photo-page("aurora_iss.jpg", [NASA, public domain], "photo-aurora")
 #photo-page("carina_eso.jpg", [ESO, CC BY 4.0], "photo-carina")
@@ -45,6 +35,14 @@
   ))
   #at(1, 12, y: 46mm, plot("scale_ordering", columns: 12))
 ]
+#slide(section: "intro-scales", title: [Plasma phenomena])[
+  #let item(f, name) = align(center)[#text(size: result-size, f) #v(5mm) #text(fill: muted, name)]
+  #at(1, 12, y: 14mm, grid(columns: (1fr, 1fr, 1fr), row-gutter: 26mm,
+    item($lambda_D$, [screening]), item($omega_(p e)$, [oscillation]), item($N_D >> 1$, [collective interaction]),
+    item($bold(j), bold(q)$, [charge and heat transport]), item($q (bold(E) + bold(v) times bold(B))$, [electromagnetic response]),
+    item($h nu$, [radiation]),
+  ))
+]
 #slide(section: "intro-model-hierarchy", title: [Microscopic dynamics])[
   #at(1, 12, y: 8mm)[
     #result-box($dv(bold(r)_j,t)=bold(v)_j, quad m_j dv(bold(v)_j,t)=q_j (bold(E)+bold(v)_j times bold(B))$, [$N$ coupled trajectories])
@@ -56,39 +54,18 @@
     )
   ]
 ]
-#slide(section: "intro-model-hierarchy", title: [Phase space])[
-  #at(1, 6, y: 10mm, diagram(spacing: 24mm,
-    node((0,0), [$bold(x)$ \ position (3)]), node((1,0), [$bold(v)$ \ velocity (3)]),
-    edge((0,0),(0.5,1),"-|>"), edge((1,0),(0.5,1),"-|>"), node((0.5,1), [$bold(z)=(bold(x),bold(v))$]),
-  ))
-  #at(7, 6, y: 18mm)[
-    #result-box($f_s(bold(x),bold(v),t)$, [one-particle distribution])
-    #v(12mm) $f_s dif^3 x dif^3 v$ \ particle count [1]
-    #v(8mm) #text(fill: muted)[$f_s$: $"s"^3 "m"^(-6)$]
+#slide(section: "intro-model-hierarchy", title: [Distribution function])[
+  #at(1, 7, y: 0mm, phase-cells())
+  #at(8, 5, y: 20mm)[
+    #result-box($f_s (bold(x), bold(v), t) dif^3 x dif^3 v$, [particles of species $s$ in a phase-space cell])
+    #v(14mm) $n_s (bold(x), t) = integral f_s dif^3 v$
+    #v(10mm) #text(fill: muted)[$f_s$ in $"s"^3 "m"^(-6)$; $n_s$ number density]
   ]
-]
-#slide(section: "intro-model-hierarchy", title: [Coarse graining])[
-  #at(1, 12, y: 10mm, diagram(spacing: 24mm,
-    node((0,0), [particles]), edge("-|>"), node((1,0), [ensemble average]),
-    edge("-|>"), node((2,0), [finite cells]),
-  ))
-  #at(1, 12, y: 72mm, result-box($n_s(bold(x),t)=integral f_s dif^3 v$, [velocity integration → number density]))
 ]
 #animation-page("particles-to-moments", "particles_to_moments", loop: false)
 #slide(section: "intro-model-hierarchy", title: [Model ladder])[
-  #at(1, 12, y: 8mm, diagram(spacing: 17mm,
-    node((0,0), [particles]), edge("-|>"), node((1,0), [$f_s$]), edge("-|>"),
-    node((2,0), [moments]), edge("-|>"), node((3,0), [fluids]),
-  ))
-  #at(1, 6, y: 70mm)[$n_s = integral f_s dif^3 v$ \ $n_s bold(u)_s = integral bold(v) f_s dif^3 v$]
-  #at(7, 6, y: 70mm, result-box([two fluids → MHD], [scale ordering + closure]))
-]
-#slide(section: "intro-plasma-state", title: [Plasma phenomena])[
-  #at(1, 12, y: 12mm, grid(columns: (1fr, 1fr), column-gutter: gutter, row-gutter: 18mm,
-    [screening \ $lambda_D$], [oscillations \ $omega_(p e)$],
-    [charge and heat transport \ $bold(j), bold(q)$], [radiation \ free–free; bound–free; lines],
-    [electromagnetic response \ $q (bold(E)+bold(v) times bold(B))$], [collective interaction \ $N_D >> 1$],
-  ))
+  #at(1, 8, y: 0mm, ladder())
+  #at(9, 4, y: 52mm)[$n_s = integral f_s dif^3 v$ #v(10mm) $n_s bold(u)_s = integral bold(v) f_s dif^3 v$]
 ]
 #credits-page((
   ("photo-sun", [NASA/SDO, public domain], "svs.gsfc.nasa.gov/14589"),

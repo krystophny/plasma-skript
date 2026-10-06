@@ -27,6 +27,9 @@
 #let diagram = fletcher.diagram.with(node-stroke: 0.7pt + ink, node-inset: 8mm)
 
 #let title-size = 26pt
+// Chapter title on the title page and the formula inside a result box.
+#let display-size = 44pt
+#let result-size = 26pt
 #let body-size = 18pt
 #let small-size = 11pt
 
@@ -101,15 +104,16 @@
   #deck-chapter.update(chapter)
   #let info = chapter-info(chapter)
   #metadata((kind: "static", background: "light", title: "Title")) <present-page>
-  #at(1, 12, y: 38mm)[
-    #text(size: title-size)[Plasma Physics]
-    #v(10mm)
-    #text(size: title-size)[Chapter #chapter]
-    #v(10mm)
-    #text(size: title-size)[#info.title]
-    #v(10mm)
-    #text(size: title-size)[Christopher Albert]
+  // Course and chapter as a quiet eyebrow, the chapter title as the one
+  // large element, the author at the foot of the text area.
+  #at(1, 12, y: 52mm)[
+    #text(size: body-size, fill: muted)[Plasma Physics#h(0.9em)·#h(0.9em)Chapter #chapter]
+    #v(9mm)
+    #block(width: cols(10), text(size: display-size, info.title))
+    #v(7mm)
+    #line(length: cols(2), stroke: 1.2pt + plot-blue)
   ]
+  #place(bottom + left, dy: -2mm, text(size: body-size)[Christopher Albert])
 ]
 
 // Deck setup: page geometry, type, document metadata, and the title page.
@@ -125,6 +129,9 @@
   set text(font: ("STIX Two Text", "STIX Two Math"), size: body-size,
     fill: ink, lang: "en", top-edge: "cap-height", bottom-edge: "baseline")
   show math.equation: set text(font: "STIX Two Math")
+  // Slides read from a distance: fractions are always set in display style.
+  show math.frac: it => math.display(it)
+  show math.equation: set text(size: 1.12em)
   set par(leading: 0.62em, spacing: 0.62em)
   title-page(chapter)
   body
@@ -209,7 +216,7 @@
   #set math.equation(numbering: none)
   #show math.equation.where(block: true): set align(left)
   #show math.equation.where(block: true): set block(above: 0pt, below: 0pt)
-  #formula
+  #text(size: result-size, formula)
   #if name != none {
     v(4.5mm)
     text(fill: muted, name)
@@ -364,10 +371,9 @@
 // ---------------------------------------------------------------- credits ---
 
 // Credits: one row per photo with the number of its page, then a closing line.
+// Credits carry no section number: they belong to the deck, not a section.
 #let credits-page(entries, closing) = context {
-  let last-section = script-outline.sections.filter(s => s.number != none and
-    s.number.starts-with(str(deck-chapter.get()) + ".")).last().label
-  slide(section: last-section, title: [Source credits])[
+  slide(title: [Credits])[
   #at(1, 12, grid(
     columns: (cols(1), 1fr), column-gutter: gutter, row-gutter: 5mm,
     ..for (key, body, source) in entries {
@@ -380,3 +386,17 @@
   ))
   ]
 }
+
+// Data table without vertical rules: a rule above and below the body and
+// one under the header (booktabs). `header` and `rows` are arrays of content.
+#let data-table(header, rows, align: right) = table(
+  columns: header.len(),
+  align: align,
+  stroke: none,
+  inset: (x: 4.5mm, y: 2.6mm),
+  table.hline(stroke: 1pt + ink),
+  ..header.map(h => text(fill: muted, h)),
+  table.hline(stroke: 0.5pt + rule),
+  ..rows.flatten(),
+  table.hline(stroke: 1pt + ink),
+)
