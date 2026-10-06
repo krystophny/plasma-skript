@@ -137,6 +137,13 @@
     )
   })
 ]
+#slide(section: "thermal-ionization", title: [Saha in a tokamak divertor])[
+  #at(1, 12, y: -4mm, image("/derivations/build/fig/saha_cmod.svg", width: cols(12)))
+  #at(1, 12, y: 128mm, text(size: small-size, fill: muted)[
+    Excited deuterium levels in the detached Alcator C-Mod divertor, measured from Balmer lines, against Saha–Boltzmann
+    at the measured $k_B T_e$ and Stark $n_e$ (band: their uncertainty ranges). Data redrawn from D. Lumma, J. L. Terry,
+    B. Lipschultz, Phys. Plasmas 4, 2555 (1997), doi:10.1063/1.872234; bars: digitization only.])
+]
 #slide(section: "thermal-ionization", title: [Equilibrium validity])[
   #at(1, 12, y: 10mm, grid(columns: (1fr,1fr), column-gutter: gutter, row-gutter: 22mm,
     [Saha \ local thermodynamic equilibrium], [dilute radiation escape \ coronal / collisional-radiative balance],
