@@ -430,7 +430,7 @@
   $ln Lambda_"cut"$.
 
   The plasma parameter $Lambda$ also differs from the Debye-sphere particle
-  count used in Chapter 1: $N_D=(4 pi\/3) Lambda$. Both are dimensionless and
+  count used in Chapter 3: $N_D=(4 pi\/3) Lambda$. Both are dimensionless and
   express the many-particle screening condition. Keeping these definitions
   separate avoids introducing an unintended factor into a quoted rate.
 
