@@ -6,11 +6,11 @@ start (point charge, λ_D) closes lecture 1; the rest opens lecture 2 (course
 over λ_D, and the statistical picture needs many particles per Debye sphere.
 
 Source `slides/02-debye-shielding.typ` (layout `slides/theme.typ`), built by
-`scripts/build-slides.sh` to `public/slides/02-debye-shielding.pdf` (13 pages,
-7 numbered). LIVE mode (iPad on blank pages). SI throughout, k_B T in eV on
+`scripts/build-slides.sh` to `public/slides/02-debye-shielding.pdf` (14 pages,
+8 numbered). LIVE mode (iPad on blank pages). SI throughout, k_B T in eV on
 plots. Page rules: see `01-introduction.md`. The script chapter has one
-section (2.1 Debye shielding); page 2 is a full-slide dark animation without
-a title or play badge. Its section cue lives here. The finite source and the
+section (2.1 Debye shielding); pages 2 and 5 are full-slide dark animations
+without a title or play badge. Its section cue lives here. The finite source and the
 plasma parameter follow without titles; mathematical pages and plots stay light.
 
 ## Sequence (script order: point charge → finite source → N_D → map)
@@ -23,27 +23,24 @@ plasma parameter follow without titles; mathematical pages and plots stay light.
 | 3 | | summary | see below; plot `debye_potential` |
 | 4 | | plot pair | `debye_potential` \| `debye_sphere_potential` (the script's comparison) |
 | — | | LIVE | two blank pages: finite permeable source |
-| 5 | | illustration | Debye spheres, N_D ≈ 3 vs 300 (`slides/theme.typ: debye-sphere`) |
+| 5 | | animation | dark `debye-shielding-particles` poster (kin6d), stable HTML player |
+| 6 | | illustration | Debye spheres, N_D ≈ 3 vs 300 (`slides/theme.typ: debye-sphere`) |
 | — | | LIVE | two blank pages: Debye number, coupling |
-| 6 | | summary | see below; plot `debye_number` |
-| 7 | | plot | `nt_map` with λ_D ≪ L, N_D ≫ 1 (ω_pe τ ≫ 1 follows in chapter 3) |
+| 7 | | summary | see below; plot `debye_number` |
+| 8 | | plot | `nt_map` with λ_D ≪ L, N_D ≫ 1 (ω_pe τ ≫ 1 follows in chapter 3) |
 
-## Proposed: particle animation (kin6d), lecturer's choice
+## Particle animation (kin6d), page 5
 
 `debye-shielding-particles` (`animations/debye_shielding_particles.py`, kin6d
-case C4 data) shows 6400 electrons of a periodic OCP, Λ = nλ_D³ = 100, around
-a fixed repulsive charge Q, and the time- and ensemble-averaged deficit
-−δn_e/(κn₀) building up onto the periodic Debye curve, below the unscreened
-1/r. A single snapshot shows no visible hole; only the average does. The
-.typ deck is not changed yet; pick one option:
-
-- **A (proposed): add after p. 4, before the Debye-sphere page (5).** It
-  closes the point-charge route with evidence from the microscopic dynamics
-  and opens the Debye-number route: the screening cloud is a statistical
-  average over many particles per Debye sphere (Λ = 100 here).
-- **B: replace p. 2.** The particle film becomes the opening dynamics page.
-  It shows the end result rather than the mechanism, so the derivation
-  would start from a weaker picture than the current `debye-shielding`.
+case C4 data) shows 6400 electrons of a periodic OCP, nλ_D³ = 100
+(N_D ≈ 420), around a fixed repulsive charge Q, and the time- and
+ensemble-averaged deficit −δn_e/(κn₀) building up onto the periodic Debye
+curve, below the unscreened 1/r. A single snapshot shows no visible hole;
+only the average does. Placed after the finite-source route (option A,
+decided 2026-10-06): it closes the point-charge route with evidence from the
+microscopic dynamics and opens the Debye-number route, since the screening
+cloud is a statistical average over many particles per Debye sphere. The
+script shows it in §2.2 after `debye-shielding`.
 
 ## Summary pages
 
@@ -55,7 +52,7 @@ a fixed repulsive charge Q, and the time- and ensemble-averaged deficit
   Result: φ = Q e^{−r/λ_D}/(4πε₀r), λ_D = √(ε₀k_BT_e/(n₀e²)). Sources:
   script §2.1 Debye shielding, `ch02_debye_shielding.py` "Debye length", "Screened point
   charge".
-- **Plasma parameter (6).** Assumptions: uniform density n_e = n₀; Debye
+- **Plasma parameter (7).** Assumptions: uniform density n_e = n₀; Debye
   sphere r ≤ λ_D; mean spacing a, (4π/3)a³n₀ = 1. Derivation: count
   N_D = ∫₀^{λ_D} 4πr²n₀ dr → integrate N_D = (4π/3)n₀λ_D³; coupling
   Γ = e²/(4πε₀ a k_BT_e) → insert a, λ_D: Γ N_D^{2/3} = 1/3. Result:
@@ -75,11 +72,11 @@ a fixed repulsive charge Q, and the time- and ensemble-averaged deficit
   separate effect → Debye–Hückel with source inside, homogeneous outside,
   match at R → same e^{−r/λ_D} tail outside. Small-source condition
   3eQ/(8πε₀Rk_BT_e) ≪ 1.
-- **Debye number (after p. 5).** Boltzmann ansatz is statistical → needs
+- **Debye number (after p. 6).** Boltzmann ansatz is statistical → needs
   many particles in a Debye sphere → N_D = (4π/3)nλ_D³ ∝ T^{3/2}/n^{1/2} →
   mean spacing a = (3/(4πn))^{1/3} → Γ = potential/kinetic energy
   = a²/(3λ_D²) = N_D^{−2/3}/3 → weak coupling ⇔ N_D ≫ 1. Condition 2.
-- **Map (7)** is discussed, not derived: place the five example plasmas.
+- **Map (8)** is discussed, not derived: place the five example plasmas.
 
 ## Figures
 
@@ -91,6 +88,6 @@ a fixed repulsive charge Q, and the time- and ensemble-averaged deficit
 | `nt_map` | same | λ_D = L for 1 µm, 1 cm, 100 m; N_D = 1; five example plasmas (script `debye-regime-map`) |
 | Debye spheres | `slides/theme.typ: debye-sphere` | illustration in Typst: uniform random points (fixed seed), 2-D projection |
 | poster `debye-shielding` | `animations/debye_shielding.py` | copied from the current render by `build-slides.sh` |
-| poster `debye-shielding-particles` (proposed) | `animations/debye_shielding_particles.py` | kin6d data `animations/data/kin6d/debye-shielding-particles/` |
+| poster `debye-shielding-particles` | `animations/debye_shielding_particles.py` | kin6d data `animations/data/kin6d/debye-shielding-particles/` |
 
 Example-plasma parameter sources: `01-introduction.md`.

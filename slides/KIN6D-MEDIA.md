@@ -17,7 +17,7 @@ correction").
 |---|---|---|
 | `coulomb-encounter-headon` | `animations/coulomb_encounter.py: CoulombEncounterHeadOn` | η = 3, σ = r₀/2, b = 0 |
 | `coulomb-encounter-offaxis` | `CoulombEncounterOffAxis` | η = 3, σ = r₀/2, kb = 2 |
-| `coulomb-encounter-hot` | `CoulombEncounterHot` | η = 0.03 (10 keV electrons), σ = 4ƛ, b = 0 |
+| `coulomb-encounter-hot` | `CoulombEncounterHot` | η = 0.03 (10 keV electrons), σ = 3ƛ, b = 0 |
 
 All three: 2 × 2 grid of one encounter (same axes kx, kz [1], clock and
 log colour scale): classical Wigner ensemble | distinguishable (spin-
@@ -27,6 +27,10 @@ animation pages before the derivation.
 Route cue: η = 3 (cold electrons ~1 eV or ions) vs η = 0.03 (10 keV
 electrons): trajectory picture valid vs diffraction; statistics stay
 Rutherford, cutoff b₉₀ → ƛ (ln Λ 20.1 → 17.1 at n = 10²⁰ m⁻³).
+
+The script shows `coulomb-encounter-headon` and `coulomb-encounter-hot` in
+§9.3 after the interpretation "Screening makes the long-range interaction
+finite"; `coulomb-encounter-offaxis` has a player page only.
 
 Suggested order: headon (exchange fringes, classical hole r < r₀) →
 offaxis (same, with impact parameter) → hot (r₀ ≪ ƛ: almost undeflected

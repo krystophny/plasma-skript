@@ -37,6 +37,9 @@
   right-caption: [$R$~radius of the charged sphere])
 #blanks(2)
 
+// Particle evidence (kin6d): the screening cloud is an ensemble average.
+#animation-page("debye-shielding-particles", "debye_shielding_particles", section: "debye-finite-source")
+
 // 2.3 Plasma parameter: illustration, LIVE, summary, regime map.
 #slide(section: "debye-collective-validity")[
   #at(1, 6, align(center)[$N_D approx 3$])
