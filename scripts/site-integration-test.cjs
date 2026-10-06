@@ -28,6 +28,7 @@ const pages = [
   "/chapters/14-hot-plasma-waves.html",
   "/chapters/15-sheaths-probes.html",
   "/appendices/mathematical-toolkit.html",
+  "/map/index.html",
 ];
 
 const viewports = [
@@ -38,6 +39,7 @@ const viewports = [
 
 const screenshotTargets = new Map([
   ["/chapters/01-introduction.html", "main figure:has(.model-figure-diagram)"],
+  ["/map/index.html", "#model-map"],
   ["/chapters/02-debye-shielding.html", "main figure:has(svg), main figure:has(img[src^='data:image/svg+xml']), main figure:has(img[src$='.svg'])"],
   ["/chapters/03-plasma-oscillations.html", "main video, main iframe.animation-embed"],
   ["/chapters/06-moments.html", 'main math[display="block"]'],
