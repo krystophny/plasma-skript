@@ -60,6 +60,12 @@
   ]
   #at(7, 6, plot("maxwellian_drift", columns: 6))
 ]
+#slide(section: "thermal-saha", title: [Where the slots come from])[
+  #at(1, 6, y: 2mm, plot("slot_standing_wave", columns: 6))
+  #at(7, 6, y: 2mm, plot("slot_momentum_cutoff", columns: 6))
+  #at(1, 6, y: 112mm, align(center)[$M_s approx (g_s V)/lambda_s^3, quad lambda_s = h/p_s$ #v(4mm) #text(fill: muted)[one standing wave per de Broglie cell]])
+  #at(7, 6, y: 112mm, align(center)[$lambda_(e) = h/sqrt(2 m_e k_B T) quad -> quad lambda_("th",e) = h/sqrt(2 pi m_e k_B T)$ #v(4mm) #text(fill: muted)[sharp cutoff → Maxwellian weight: factor $sqrt(pi)$]])
+]
 #slide(section: "thermal-saha", title: [Thermal particle slots])[
   #at(1, 6, y: 10mm)[
     #result-box($M_s = (g_s V)/lambda_("th",s)^3$, [thermally available one-particle slots [1]])
@@ -111,7 +117,7 @@
     $2 ((2 pi m_e k_B)/h^2)^(3 slash 2) = 4.83 times 10^21 "m"^(-3) "K"^(-3 slash 2)$))
   #at(1, 12, y: 112mm, align(center, text(fill: muted)[hydrogen: $chi = 13.6 "eV"$, $chi / k_B = 1.58 times 10^5 "K"$]))
 ]
-#plot-page("saha_fraction", columns: 8, section: "thermal-ionization", title: [Ionization fraction],
+#plot-page("saha_fraction_deck", columns: 8, section: "thermal-ionization", title: [Ionization fraction],
   below: [$x = n_i/(n_i + n_n), quad n_e = n_i, quad x^2/(1 - x) = 1/n dot 2/lambda_("th",e)^3 e^(-chi slash k_B T)$])
 #plot-page("saha_factors", columns: 8, section: "thermal-ionization", title: [Entropy against energy],
   below: [half ionization where the free-electron states pay the energy penalty])
