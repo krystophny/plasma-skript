@@ -31,6 +31,10 @@ scenes=(
   "collective_response.py|CollectiveResponse|collective-response|17.0"
   "particles_to_moments.py|ParticlesToMoments|particles-to-moments|11.0"
   "pendulum_ensemble.py|PendulumEnsemble|pendulum-ensemble|7.0"
+  "debye_shielding_particles.py|DebyeShieldingParticles|debye-shielding-particles|16.5"
+  "coulomb_encounter.py|CoulombEncounterHeadOn|coulomb-encounter-headon|4.8"
+  "coulomb_encounter.py|CoulombEncounterOffAxis|coulomb-encounter-offaxis|5.2"
+  "coulomb_encounter.py|CoulombEncounterHot|coulomb-encounter-hot|4.6"
 )
 
 if [[ "${1:-}" == "--slugs" ]]; then
@@ -49,8 +53,16 @@ hash_files() {
   fi
 }
 
+# Data-driven scenes also depend on the loader and their exported data
+# (animations/data/kin6d/<slug>/).
 scene_stamp() {
-  hash_files "$repo_root/animations/$1" "$repo_root/animations/style.py" "$self"
+  local files=("$repo_root/animations/$1" "$repo_root/animations/style.py" "$self")
+  local data="$repo_root/animations/data/kin6d/$2"
+  if [[ -d "$data" ]]; then
+    files+=("$repo_root/animations/kin6d_data.py")
+    while IFS= read -r f; do files+=("$f"); done < <(find "$data" -type f | LC_ALL=C sort)
+  fi
+  hash_files "${files[@]}"
 }
 
 # Worker mode: render one scene (invoked through xargs below).
@@ -82,7 +94,7 @@ if [[ "${1:-}" == "--render-one" ]]; then
     -vf "scale=960:-1:flags=lanczos+accurate_rnd+full_chroma_int" "$work/$slug.png"
   mv -f "$work/$slug.mp4" "$media_dir/$slug.mp4"
   mv -f "$work/$slug.png" "$media_dir/$slug.png"
-  scene_stamp "$source" >"$media_dir/$slug.stamp"
+  scene_stamp "$source" "$slug" >"$media_dir/$slug.stamp"
   echo "rendered $slug"
   exit 0
 fi
@@ -94,7 +106,7 @@ media_dir="$(cd "$media_dir" && pwd)"
 todo=()
 for entry in "${scenes[@]}"; do
   IFS='|' read -r source _ slug _ <<<"$entry"
-  stamp="$(scene_stamp "$source")"
+  stamp="$(scene_stamp "$source" "$slug")"
   if [[ -f "$media_dir/$slug.mp4" && -f "$media_dir/$slug.png" \
     && "$(cat "$media_dir/$slug.stamp" 2>/dev/null)" == "$stamp" ]]; then
     continue

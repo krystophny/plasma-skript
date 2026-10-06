@@ -43,6 +43,14 @@ BLUE = "#0072B2"
 VERMILION = "#D55E00"
 PURPLE = "#CC79A7"
 
+# Sequential colormap for densities on the dark surface: matplotlib's
+# perceptually uniform "inferno" at 11 equidistant stops (dark low end next to
+# BG, bright high end), interpolated linearly in RGB by density_rgb().
+DENSITY_STOPS = [
+    "#000004", "#160B39", "#420A68", "#6A176E", "#932667", "#BC3754",
+    "#DD513A", "#F37819", "#FCA50A", "#F6D746", "#FCFFA4",
+]
+
 # Semantic roles shared by all scenes.
 ELECTRON = SKY          # drawn as filled circles
 ION = ORANGE            # drawn as triangles
@@ -90,6 +98,24 @@ DOT_RADIUS = 0.075
 
 EASE = rate_functions.ease_in_out_sine
 LINEAR = rate_functions.linear
+
+
+def density_rgb(level):
+    """Map normalized levels in [0, 1] (array) to uint8 RGB with DENSITY_STOPS.
+
+    Levels below 0 or not finite take the background colour BG.
+    """
+    import numpy as np
+
+    stops = np.array([[int(c[i:i + 2], 16) for i in (1, 3, 5)] for c in DENSITY_STOPS], float)
+    level = np.asarray(level, dtype=float)
+    below = ~np.isfinite(level) | (level < 0)
+    x = np.clip(np.nan_to_num(level, nan=0.0), 0.0, 1.0) * (len(stops) - 1)
+    i = np.minimum(x.astype(int), len(stops) - 2)
+    w = (x - i)[..., None]
+    rgb = (1 - w) * stops[i] + w * stops[i + 1]
+    rgb[below] = [int(BG[k:k + 2], 16) for k in (1, 3, 5)]
+    return np.round(rgb).astype(np.uint8)
 
 
 def label(text, color=MUTED, size=LABEL_SIZE, **kwargs):

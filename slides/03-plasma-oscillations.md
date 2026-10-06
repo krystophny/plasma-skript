@@ -43,6 +43,6 @@ rules: see `01-introduction.md`.
 | File | Source | Note |
 |---|---|---|
 | `plasma_frequency` | `derivations/chapters/ch03_plasma_oscillations.py` | f_pe(n_e) with the five example plasmas (script `plasma-frequency-scale`) |
-| poster `plasma-oscillation` | `animations/plasma_oscillation.py` | copied from the current render by `build-slides.sh` |
+| poster `plasma-oscillation` | `animations/plasma_oscillation.py` | copied from the current render by `build-slides.sh`; data-driven since the kin6d update: the slab motion and ξ/ξ₀ trace are the kin6d numerical trajectory (RK5 candidate with its certified band, half-width < 0.003, thinner than the line), data in `animations/data/kin6d/plasma-oscillation/`; display ratio ξ₀/a = 0.1 |
 
 Example-plasma parameter sources: `01-introduction.md`.

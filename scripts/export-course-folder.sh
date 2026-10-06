@@ -6,7 +6,8 @@
 # exactly four subfolders of <dest>; everything else is left untouched:
 #   slides/              the live lecture decks, public/slides/<stem>.pdf
 #   animations/          rendered MP4s plus one PNG still per scene
-#   animation-sources/   animations/*.py (scenes and the shared style.py) and
+#   animation-sources/   animations/*.py (scenes and the shared style.py),
+#                        data/ (kin6d exports with provenance) and
 #                        fonts/ (STIX Two Text, OFL)
 #   derivations/         Makefile, helper modules, chapters/*.py, build/pdf/*.pdf,
 #                        script-outline.json (the section names they cite)
@@ -94,6 +95,8 @@ for entry in "${names[@]}"; do
 done
 
 cp "$repo_root"/animations/*.py "$staging/animation-sources/"
+# Exported simulation data read by the data-driven scenes (kin6d_data.py).
+cp -R "$repo_root/animations/data" "$staging/animation-sources/"
 mkdir -p "$staging/animation-sources/fonts"
 cp "$repo_root"/fonts/STIXTwoText-*.otf "$repo_root/fonts/OFL.txt" \
   "$staging/animation-sources/fonts/"

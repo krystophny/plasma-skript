@@ -27,6 +27,23 @@ source and the plasma parameter follow without titles.
 | 6 | | summary | see below; plot `debye_number` |
 | 7 | | plot | `nt_map` with λ_D ≪ L, N_D ≫ 1 (ω_pe τ ≫ 1 follows in chapter 3) |
 
+## Proposed: particle animation (kin6d), lecturer's choice
+
+`debye-shielding-particles` (`animations/debye_shielding_particles.py`, kin6d
+case C4 data) shows 6400 electrons of a periodic OCP, Λ = nλ_D³ = 100, around
+a fixed repulsive charge Q, and the time- and ensemble-averaged deficit
+−δn_e/(κn₀) building up onto the periodic Debye curve, below the unscreened
+1/r. A single snapshot shows no visible hole; only the average does. The
+.typ deck is not changed yet; pick one option:
+
+- **A (proposed): add after p. 4, before the Debye-sphere page (5).** It
+  closes the point-charge route with evidence from the microscopic dynamics
+  and opens the Debye-number route: the screening cloud is a statistical
+  average over many particles per Debye sphere (Λ = 100 here).
+- **B: replace p. 2.** The particle film becomes the opening dynamics page.
+  It shows the end result rather than the mechanism, so the derivation
+  would start from a weaker picture than the current `debye-shielding`.
+
 ## Summary pages
 
 - **Debye shielding (3).** Assumptions: immobile ions n_i = n₀; Boltzmann
@@ -73,5 +90,6 @@ source and the plasma parameter follow without titles.
 | `nt_map` | same | λ_D = L for 1 µm, 1 cm, 100 m; N_D = 1; five example plasmas (script `debye-regime-map`) |
 | Debye spheres | `slides/theme.typ: debye-sphere` | illustration in Typst: uniform random points (fixed seed), 2-D projection |
 | poster `debye-shielding` | `animations/debye_shielding.py` | copied from the current render by `build-slides.sh` |
+| poster `debye-shielding-particles` (proposed) | `animations/debye_shielding_particles.py` | kin6d data `animations/data/kin6d/debye-shielding-particles/` |
 
 Example-plasma parameter sources: `01-introduction.md`.

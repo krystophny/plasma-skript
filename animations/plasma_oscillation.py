@@ -1,23 +1,28 @@
-"""Illustrative cold electron plasma oscillation.
+"""Cold electron plasma oscillation from the kin6d slab trajectory.
 
 The electrons are shown as a finite slab displaced against fixed ions. The
-animation uses the normalized displacement
-
-    xi / xi_0 = cos(t omega_p,e),
-
-where xi_0 is a reference displacement and t omega_p,e has unit [1]. It
-is a conceptual visualization of the restoring-field argument, not measured
-data and not a particle-in-cell calculation.
+displacement xi/xi_0, the slab edges and the normalized field and force are
+kin6d data (``slab_oscillation_demo --export``; animations/data/kin6d/
+plasma-oscillation/ with README.md and provenance.json): the cold planar slab
+model q'' = -q with q = xi/xi_0, tau = t omega_p,e [1], q(0) = 1, q'(0) = 0,
+integrated by a Cash-Karp RK5(4) candidate and enclosed by a continuous
+residual certificate.  The time trace draws the numerical trajectory with its
+certified band (residual radius plus chord margin, half-width below 0.003, so
+the band is thinner than the line); the analytical cos tau is an independent
+oracle in kin6d and is not drawn.  The ion and electron glyphs are display
+markers moving with the collective coordinate, not independent particles.
 
 For a displacement xi > 0 of the electron slab, a sheet of bare ions is
 exposed on the left and a sheet of excess electrons appears on the right, so
-the field between them points along +x: E = e n0 xi/epsilon_0 (SI). The electron force
--eE points back toward equilibrium. Positions use L0 with xi_0/L0 = 0.55.
+the field between them points along +x: E = e n0 xi/epsilon_0 (SI). The
+electron force -eE points back toward equilibrium. Positions use L0 = a/4,
+where a is the slab half-width, with the kin6d display ratio xi_0/a = 0.1.
 """
 
 from manim import *
 import numpy as np
 
+from kin6d_data import Export
 from style import (
     BG, E_FIELD, EASE, ELECTRON, FAINT, INK, ION, LINEAR, MUTED, CURVE_WIDTH,
     THIN_WIDTH, StyledScene, axes, axis_labels, math,
@@ -25,13 +30,22 @@ from style import (
 )
 
 
+DATA = Export("plasma-oscillation")
+TAU = DATA["tau"]
+HALF_WIDTH = 4.0    # slab half-width a in L0
+XI0 = DATA.parameters["display_ratio"] * HALF_WIDTH     # xi_0 / L0
+
+
 def slab_state(tau):
     """Return xi/xi0, E/(e n0 xi0/epsilon_0), F/(e² n0 xi0/epsilon_0)."""
-    return np.array([np.cos(tau), np.cos(tau), -np.cos(tau)])
+    field, force = DATA["field_force"]
+    return np.array([np.interp(tau, TAU, DATA["q"]), np.interp(tau, TAU, field),
+                     np.interp(tau, TAU, force)])
 
 
-XI0 = 0.55          # xi_0 / L0
-HALF_WIDTH = 4.0    # slab half-width in L0
+def left_edge_shift(tau):
+    """Displacement of the left slab edge in L0 (kin6d edge x/a + 1)."""
+    return (np.interp(tau, TAU, DATA["edges"][0]) + 1.0) * HALF_WIDTH
 ARROW_SCALE = 1.5   # Manim units per unit of E/E0 or F_e/(e E0)
 
 
@@ -68,7 +82,7 @@ class PlasmaOscillation(StyledScene):
         tracker = ValueTracker(0.0)
 
         def xi():
-            return XI0 * slab_state(tracker.get_value())[0]
+            return left_edge_shift(tracker.get_value())
 
         electrons = VGroup(*[Dot(p(x, y_el), radius=0.1, color=ELECTRON) for x in columns])
         for dot, x0 in zip(electrons, columns):
@@ -120,9 +134,22 @@ class PlasmaOscillation(StyledScene):
             .align_to(t_ax.x_axis.get_right(), RIGHT),
             math(r"\xi/\xi_0\ [1]", color=MUTED, size=MATH_SMALL).next_to(t_ax.y_axis, LEFT, buff=0.2),
         )
-        trace = always_redraw(lambda: t_ax.plot(
-            lambda t: slab_state(t)[0], x_range=[0, max(tracker.get_value(), 1e-3), 0.03],
-            color=ELECTRON, stroke_width=CURVE_WIDTH - 1))
+        def trace_points(values):
+            t = tracker.get_value()
+            n = max(2, int(np.searchsorted(TAU, t, side="right")))
+            taus = np.append(TAU[:n - 1], t)
+            vals = np.append(values[:n - 1], np.interp(t, TAU, values))
+            return [t_ax.c2p(a, b) for a, b in zip(taus, vals)]
+
+        def band():
+            upper = trace_points(DATA["q_upper"])
+            lower = trace_points(DATA["q_lower"])
+            return Polygon(*upper, *lower[::-1], stroke_width=0, fill_color=ELECTRON,
+                           fill_opacity=0.45)
+
+        trace = always_redraw(lambda: VMobject(color=ELECTRON, stroke_width=CURVE_WIDTH - 1)
+                              .set_points_as_corners(trace_points(DATA["q"])))
+        trace_band = always_redraw(band)
         trace_dot = always_redraw(lambda: Dot(
             t_ax.c2p(tracker.get_value(), slab_state(tracker.get_value())[0]),
             radius=0.07, color=ELECTRON))
@@ -132,6 +159,6 @@ class PlasmaOscillation(StyledScene):
         self.play(FadeIn(ions), FadeIn(electrons), FadeIn(e_lab), FadeIn(f_lab),
                   FadeIn(center_tick), FadeIn(sheets), FadeIn(e_arrow), FadeIn(f_arrow),
                   run_time=0.6, rate_func=EASE)
-        self.add(trace, trace_dot)
+        self.add(trace_band, trace, trace_dot)
         self.play(tracker.animate.set_value(4 * PI), run_time=8, rate_func=LINEAR)
         self.wait(1.2)
