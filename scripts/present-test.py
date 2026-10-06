@@ -111,6 +111,17 @@ def check(browser, base, artifacts):
             page.wait_for_function("document.querySelector('.page.current video') !== null")
             page.touchscreen.tap(590, 410)
             page.wait_for_function("document.querySelector('.page.current video')?.currentTime > 0.3")
+        # Exercise the actual web-manifest icon graph offline, including the
+        # installation icon that desktop page rendering does not request.
+        assert page.evaluate("""async () => {
+          const base = new URL('../', location.href);
+          const manifest = await (await fetch(new URL('manifest.webmanifest', base))).json();
+          for (const icon of manifest.icons) {
+            const response = await fetch(new URL(icon.src, base));
+            if (!response.ok || (await response.blob()).size === 0) return false;
+          }
+          return true;
+        }"""), 'PWA icons must remain available offline'
         if artifacts:
             artifacts.mkdir(parents=True, exist_ok=True)
             page.screenshot(path=str(artifacts / (deck["stem"] + "-offline.png")))

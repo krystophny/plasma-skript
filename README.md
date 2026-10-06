@@ -153,8 +153,8 @@ checksums in `media/animations.json`; CI downloads these exact streams when
 local renders are unavailable. Missing media abort the staged site build.
 
 Opening a deck online saves its complete content and shared UI assets with a
-service worker. Wait for the offline save to finish (the O key reports its
-status) before disconnecting. Reload and inline animation playback then work
+service worker. Use the “Keep available offline” button to see when the save
+finishes before disconnecting. Reload and inline animation playback then work
 offline. Manifests and UI files refresh online; SVG/PNG/MP4 content is cached
 by its mandatory `?v=<sha8>` URL. Cached MP4s support byte-range requests.
 Browser storage can be evicted, so reopen online before relying on an old copy.

@@ -11,7 +11,7 @@ from urllib.parse import parse_qs, urlsplit
 def check(site):
     root = site / "present"
     for name in ("index.html", "present.css", "present.js", "sw.js",
-                 "manifest.webmanifest", "icon.svg", "icon-180.png"):
+                 "manifest.webmanifest", "icon.svg", "icon-180.png", "icon-512.png"):
         assert (root / name).is_file(), f"Missing presenter asset: {name}"
     decks = json.loads((root / "decks.json").read_text())["decks"]
     assert decks, "No published lecture decks"

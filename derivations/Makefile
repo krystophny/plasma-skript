@@ -44,7 +44,7 @@ pdf: $(PDF)
 build/tex/%.tex: chapters/%.py si.py notebook.py $(OUTLINE)
 	PYTHONPATH=. $(PYTHON) $<
 
-build/fig/saha_cmod.svg: plot_saha_cmod.py data/saha-cmod/data.csv
+build/fig/saha_cmod.svg: plot_saha_cmod.py data/saha-cmod/data.csv $(wildcard ../scripts/prepare-media.py)
 	$(PYTHON) plot_saha_cmod.py
 
 build/pdf/%.pdf: build/tex/%.tex

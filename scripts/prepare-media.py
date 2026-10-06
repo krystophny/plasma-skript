@@ -32,7 +32,13 @@ def dark_svg(svg):
     def color(match):
         original = match.group(0).lower()
         return PALETTE.get(original, original)
-    return re.sub(r'#[0-9a-fA-F]{6}\b', color, svg)
+    svg = re.sub(r'#[0-9a-fA-F]{6}\b', color, svg)
+    # Matplotlib leaves black glyph paths with SVG's implicit default fill.
+    # Set that inherited paint on the dark root as well as explicit colors.
+    def default_fill(match):
+        tag = match.group(0)
+        return tag if re.search(r'\bfill\s*=', tag) else tag[:-1] + ' fill="#e4e6e9">'
+    return re.sub(r'<svg\b[^>]*>', default_fill, svg, count=1)
 
 
 def theme_graphics(content):
