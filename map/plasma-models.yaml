@@ -1,0 +1,1600 @@
+# Map of plasma models: the shared node and edge registry of the Plasma
+# Physics, Fusion Physics and Kinetic Theory courses and of the research
+# theory map. Schema and editing rules: map/README.md. Rendered by
+# src/map.typ into the interactive page map/index.html and the static
+# overview figure (chapter 1 of the script, slides/01-introduction.typ).
+schema: 1
+site: https://krystophny.github.io/plasma-skript/
+repository: https://github.com/krystophny/plasma-skript/blob/main/
+
+# Status ladder of a node or edge, weakest first. A status names what the
+# public evidence listed with the entry supports, nothing more.
+statuses:
+  - {id: stated, name: stated, text: written down with assumptions and a source}
+  - {id: algebra-checked, name: algebra-checked, text: every identity of the step verified symbolically (SymPy script listed as evidence)}
+  - {id: limit-checked, name: limit-checked, text: known special cases and limits reproduced symbolically}
+  - {id: defect-measured, name: defect-measured, text: the reduction error measured by a numerical companion experiment across its regime}
+  - {id: literature-intake, name: literature intake, text: a cited theorem with its hypotheses, preserved for reproduction; not yet reproduced here}
+  - {id: reproduced, name: reproduced, text: the cited proof replayed (checked algebra and complete written proof) and independently reviewed}
+  - {id: formally-proved, name: formally proved, text: a machine-checked theorem covering the mathematical content of the step}
+  - {id: open-problem, name: open problem, text: no rigorous justification is known; the step is formal}
+  - {id: erratum, name: erratum, text: a discrepancy with the cited source, recorded with the corrected statement}
+
+branches:
+  # color: graph stroke on a light page; dark: the same on a dark page.
+  # tag: [column, row] of the branch name in the graph.
+  - {id: quantum, name: Quantum many-body, color: "#A8558A", dark: "#E3A3CF", tag: [0.5, -0.8]}
+  - {id: classical, name: Classical many-body, color: "#0072B2", dark: "#7CC3F0", tag: [5.5, -0.8]}
+  - {id: collisions, name: Collisions and equilibrium, color: "#9A6B00", dark: "#E8BE5C", tag: [7.4, 7.2]}
+  - {id: magnetized, name: Magnetized orbits and kinetics, color: "#00876A", dark: "#5FD3B4", tag: [9.4, 0.15]}
+  - {id: fluid, name: Fluids and MHD, color: "#4F6475", dark: "#A9BCCB", tag: [3.2, 10.6]}
+  - {id: waves, name: Linear response and waves, color: "#C2510A", dark: "#F4A36B", tag: [0.7, 5.5]}
+  - {id: equilibrium, name: MHD equilibrium and stability, color: "#7B4F2C", dark: "#D9AE8A", tag: [6.2, 13.3]}
+  - {id: fusion, name: Fusion performance, color: "#5E4FA2", dark: "#B4A9E8", tag: [9.6, 12.4]}
+
+# Course references. plasma: section labels of this script (resolved to
+# number, title and link). fusion: blocks of the Fusion Physics plan.
+# kinetic: chapters (N) and dated lectures (L) of the Kinetic Theory course,
+# SS 2025. research: free text, never a link into a private repository.
+courses:
+  plasma: {name: Plasma Physics}
+  fusion:
+    name: Fusion Physics
+    units:
+      B1: Nuclear energy
+      B2: Reaction rates
+      B3: Power balance
+      B4: Magnetic confinement
+      B5: Toroidal geometry
+      B6: Tokamak physics
+      B7: Stellarator physics
+      B8: Heating and exhaust
+      B11: Integrated scaling
+  kinetic:
+    name: Kinetic Theory
+    units:
+      N1: Primer on particle and collective behaviour
+      N2.1: Plasma kinetic equation via Klimontovich
+      N2.2: Vlasov equation and its equilibrium solutions
+      N2.3.1: Cold plasma waves
+      N2.3.2: Thermal effects in electrostatic dispersion
+      N2.3.3: Warm Langmuir waves
+      N2.3.4: Landau damping
+      N2.4: From kinetic theory to fluid equations
+      N2.5.1: BGK collision model
+      N2.5.2: Fokker-Planck collisions
+      N3: Drift kinetics, gyrokinetics, Bernstein waves, Hamiltonian Vlasov
+      L2: Particles to plasma
+      L3: Klimontovich and the plasma kinetic equation
+      L4: Vlasov equation equilibrium solutions
+      L5: Local Maxwellian and linear plasma waves
+      L6: Cold plasma waves
+      L10: Thermal effects in electrostatic waves
+      L11: Landau damping
+      L12: From kinetic to fluid
+  research: {name: Research}
+
+# Nodes: models. pos = [column, row] of the shared layout, first principles
+# at row 0. label: short name for the graph, "\n" breaks the line.
+nodes:
+  # ------------------------------------------------------------ quantum
+  - id: qed
+    name: Quantum electrodynamics (boundary)
+    label: "QED\n(boundary)"
+    branch: quantum
+    pos: [1.5, 0]
+    summary: Relativistic quantum theory of electrons, nuclei and photons. It is the boundary of the map; pair creation, radiative corrections and strong-field cascades stay outside and enter only as provider data.
+    equations:
+      - 'cal(L) = overline(psi) (i hbar c gamma^mu D_(mu) - m c^2) psi - 1/(4 mu_0) F_(mu nu) F^(mu nu)'
+    state: Dirac and photon field operators
+    structure: Lorentz and gauge invariance; charge, energy and momentum conservation
+    solution: perturbative scattering amplitudes
+    status: stated
+  - id: schroedinger
+    name: Many-body Schrödinger / von Neumann equation
+    label: "Many-body\nSchrödinger"
+    branch: quantum
+    pos: [1.5, 1]
+    summary: Nonrelativistic electrons and nuclei interacting through the instantaneous Coulomb potential; the quantum parent of every model below it.
+    equations:
+      - 'i hbar pdv(Psi, t) = (sum_j -(hbar^2)/(2 m_(j)) laplacian_(j) + sum_(j<k) (q_(j) q_(k))/(4 pi epsilon_0 abs(vb(x)_(j) - vb(x)_(k)))) Psi'
+      - 'i hbar pdv(hat(rho), t) = [hat(H), hat(rho)]'
+    state: N-body wave function or density operator
+    structure: unitary evolution; energy, momentum and particle number conserved; exchange symmetry
+    solution: strong solutions in the Hilbert space of square-integrable antisymmetric functions
+    status: stated
+  - id: quantum-bbgky
+    name: Quantum BBGKY hierarchy
+    label: "Quantum\nBBGKY"
+    branch: quantum
+    pos: [0.5, 2]
+    summary: Equations for the reduced s-particle density matrices obtained by partial traces; exact and unclosed.
+    equations:
+      - 'i hbar pdv(rho_(1), t) = [h_(1), rho_(1)] + "Tr"_(2) [V_(12), rho_(12)]'
+      - 'rho_(12) = (1 plus.minus P_(12)) rho_(1) rho_(2) + g_(12)'
+    state: reduced density matrices $rho_(1), rho_(12), dots$
+    structure: exact; the two-particle cumulant $g_(12)$ carries correlations
+    solution: trace-class operators
+    status: stated
+  - id: hartree
+    name: Hartree / time-dependent Hartree-Fock
+    label: "Hartree,\nTDHF"
+    branch: quantum
+    pos: [0, 3]
+    summary: Mean-field quantum dynamics in which each orbital moves in the Hartree potential of all others, with exchange in the Fock term.
+    equations:
+      - 'i hbar pdv(phi_(k), t) = (-(hbar^2)/(2 m) laplacian + q V_"H" + V_"x") phi_(k)'
+      - 'V_"H"(vb(x)) = integral (q n(vb(x)^prime))/(4 pi epsilon_0 abs(vb(x) - vb(x)^prime)) dif^3 x^prime'
+    state: one-body density matrix or orbitals
+    structure: Hamiltonian; energy and particle number conserved
+    solution: strong solutions for finite-energy orbitals
+    status: stated
+  - id: negf
+    name: Nonequilibrium Green functions (G1-G2)
+    label: "NEGF\nG1-G2"
+    branch: quantum
+    pos: [1, 3]
+    summary: Kadanoff-Baym equations for the one-particle Green function; the G1-G2 scheme closes them with second-Born, GW or T-matrix self-energies.
+    equations:
+      - '(i hbar partial_(t_1) - h_(1)) G(1, 1^prime) = delta(1 - 1^prime) + integral Sigma(1, 2) G(2, 1^prime) dif 2'
+    state: one- and two-particle Green functions
+    structure: conserving approximations ($Phi$-derivable self-energies) keep particle number, momentum and energy
+    solution: time-stepped Green functions on the Keldysh contour
+    status: stated
+  - id: wigner
+    name: Wigner (quantum Vlasov) equation
+    label: "Wigner\nequation"
+    branch: quantum
+    pos: [0, 4.2]
+    summary: The one-body density matrix written as a phase-space quasi-distribution; with the Hartree potential it is the quantum counterpart of the Vlasov equation.
+    equations:
+      - 'W(vb(x), vb(p)) = 1/(2 pi hbar)^3 integral rho(vb(x) + vb(y)/2, vb(x) - vb(y)/2) e^(-i vb(p) dot vb(y) slash hbar) dif^3 y'
+      - 'pdv(W, t) + (vb(p) dot grad W)/m = grad V dot pdv(W, vb(p)) + O(hbar^2)'
+    state: Wigner function, real but not positive
+    structure: Moyal bracket; reduces to the Poisson bracket at order $hbar^0$
+    solution: square-integrable Wigner functions
+    status: stated
+  - id: quantum-lb
+    name: Quantum Lenard-Balescu / Uehling-Uhlenbeck
+    label: "Quantum\ncollisions"
+    branch: quantum
+    pos: [1, 4.2]
+    summary: Collision operator for weakly coupled quantum plasmas with dynamic screening by the quantum dielectric function and Pauli blocking.
+    equations:
+      - 'C[f] prop integral w (f^prime_(1) f^prime_(2) (1 - f_(1))(1 - f_(2)) - f_(1) f_(2) (1 - f^prime_(1))(1 - f^prime_(2)))'
+    state: one-body Wigner or momentum distribution
+    structure: conservation of number, momentum and energy; H-theorem with Fermi-Dirac equilibrium
+    solution: formal
+    status: stated
+  - id: coulomb-scattering-quantum
+    name: Quantum two-body Coulomb scattering
+    label: "Quantum\nscattering"
+    branch: quantum
+    pos: [2.2, 2]
+    summary: The relative motion of two charges as a Schrödinger scattering problem; the Sommerfeld parameter separates classical from quantum scattering.
+    equations:
+      - '(-(hbar^2)/(2 mu) laplacian + (q_(1) q_(2))/(4 pi epsilon_0 r)) psi = E psi'
+      - 'eta = (q_(1) q_(2))/(4 pi epsilon_0 hbar v)'
+    state: relative-motion wave function, partial-wave phase shifts
+    structure: the Rutherford cross section is exact at every $eta$
+    solution: Coulomb wave functions
+    status: stated
+  - id: quantum-coulomb-log
+    name: Quantum Coulomb logarithm
+    label: "Quantum\nCoulomb log"
+    branch: quantum
+    pos: [2.2, 3]
+    summary: The momentum-transfer cross section summed over partial waves fixes the small-impact-parameter cutoff of the Landau operator for all Sommerfeld parameters.
+    equations:
+      - 'ln Lambda = ln (b_"max"/b_(90)) + ln eta - "Re" psi(1 + i eta)'
+    state: Coulomb logarithm as a function of $eta$ and the screening length
+    structure: tends to the classical logarithm for $eta >> 1$
+    solution: closed form up to convention-dependent constants of order one
+    status: stated
+  - id: kelbg
+    name: Semiclassical pair potentials (Kelbg, Wigner-Kirkwood)
+    label: "Kelbg pair\npotential"
+    branch: quantum
+    pos: [2.2, 4.2]
+    summary: An effective classical pair potential from the two-particle Slater sum; it removes the Coulomb singularity at the thermal de Broglie wavelength.
+    equations:
+      - 'u_"K"(r) = (q_(1) q_(2))/(4 pi epsilon_0 r) (1 - e^(-r^2 slash lambda^2) + (sqrt(pi) r)/lambda (1 - "erf"(r/lambda)))'
+      - 'lambda = hbar/sqrt(2 mu k_B T)'
+    state: pair potential
+    structure: finite at $r = 0$; Coulomb tail
+    solution: closed form
+    status: stated
+  - id: ideal-fermi
+    name: Ideal Fermi gas
+    label: "Ideal Fermi\ngas"
+    branch: quantum
+    pos: [3.3, 2]
+    summary: Noninteracting electrons in thermal equilibrium; degeneracy sets in when the Fermi energy exceeds the temperature.
+    equations:
+      - 'f(epsilon) = 1/(e^((epsilon - mu) slash k_B T) + 1)'
+      - 'E_(F) = (hbar^2)/(2 m_(e)) (3 pi^2 n_(e))^(2 slash 3)'
+    state: occupation numbers
+    structure: maximizes entropy at fixed number and energy
+    solution: closed form
+    status: algebra-checked
+    coverage: {plasma: [kinetic-equilibrium]}
+    evidence:
+      - {sympy: derivations/chapters/ch05_kinetic_theory.py, checks: [Fermi energy]}
+  - id: thomas-fermi
+    name: Thomas-Fermi model
+    label: "Thomas-Fermi"
+    branch: quantum
+    pos: [3.3, 3]
+    summary: Local-density approximation of a degenerate electron gas in a self-consistent potential; gives screening and equations of state of dense matter.
+    equations:
+      - 'n(vb(x)) = 1/(3 pi^2) ((2 m_(e) (mu + e phi))/(hbar^2))^(3 slash 2)'
+      - 'k_"TF"^2 = (3 n_(0) e^2)/(2 epsilon_0 E_(F))'
+    state: electron density and potential
+    structure: variational (energy functional)
+    solution: weak solutions of the Thomas-Fermi equation
+    status: stated
+  - id: lindhard
+    name: Lindhard (RPA) dielectric function
+    label: "Lindhard /\nRPA"
+    branch: quantum
+    pos: [3.3, 4.2]
+    summary: Linear response of the Hartree dynamics around an ideal Fermi gas, the quantum dielectric function used for dynamic screening.
+    equations:
+      - 'epsilon(vb(k), omega) = 1 - (e^2)/(epsilon_0 k^2) chi_(0)(vb(k), omega)'
+      - 'chi_(0) = 2/V sum_(vb(p)) (f(vb(p)) - f(vb(p) + hbar vb(k)))/(hbar omega + epsilon_(vb(p)) - epsilon_(vb(p) + hbar vb(k)) + i 0^+)'
+    state: dielectric function
+    structure: causal (Kramers-Kronig); f-sum rule
+    solution: closed form for the ideal Fermi gas
+    status: stated
+  # ---------------------------------------------------------- classical
+  - id: maxwell-lorentz
+    name: Maxwell-Lorentz N-body system
+    label: "Maxwell-Lorentz\nN-body"
+    branch: classical
+    pos: [5.5, 0]
+    summary: All charged particles, relativistic, coupled to the electromagnetic field they generate. The most complete classical plasma model.
+    equations:
+      - 'dv(vb(p)_(i), t) = q_(i) (vb(E) + vb(v)_(i) times vb(B))(vb(x)_(i), t)'
+      - 'curl vb(B) = mu_0 vb(J) + 1/c^2 pdv(vb(E), t), quad vb(J) = sum_i q_(i) vb(v)_(i) delta(vb(x) - vb(x)_(i))'
+    state: particle positions and momenta; fields $vb(E), vb(B)$
+    structure: Lorentz invariance; energy and momentum of particles plus field conserved; self-force is a separate declared choice
+    solution: requires a regularized or declared self-interaction for point charges
+    status: stated
+    coverage: {plasma: [intro-model-hierarchy], kinetic: [L2]}
+  - id: darwin
+    name: Darwin N-body system
+    label: "Darwin\nN-body"
+    branch: classical
+    pos: [5.5, 1]
+    summary: Particle dynamics to order (v/c)^2 with magnetic interactions but without radiation.
+    equations:
+      - 'L_"D" = L_"ES" + sum_(i<j) (q_(i) q_(j))/(8 pi epsilon_0 c^2 r_(i j)) (vb(v)_(i) dot vb(v)_(j) + (vb(v)_(i) dot hat(vb(r))_(i j))(vb(v)_(j) dot hat(vb(r))_(i j)))'
+    state: particle positions and velocities
+    structure: Lagrangian; energy and momentum conserved; no radiation
+    solution: classical ODE solutions away from collisions
+    status: stated
+  - id: coulomb-nbody
+    name: Electrostatic (Coulomb) N-body system
+    label: "Coulomb\nN-body"
+    branch: classical
+    pos: [5.5, 2]
+    summary: Nonrelativistic point charges with instantaneous Coulomb forces and prescribed external fields.
+    equations:
+      - 'm_(i) dv(vb(v)_(i), t) = sum_(j != i) (q_(i) q_(j) (vb(x)_(i) - vb(x)_(j)))/(4 pi epsilon_0 abs(vb(x)_(i) - vb(x)_(j))^3) + q_(i) (vb(E)_"ext" + vb(v)_(i) times vb(B)_"ext")'
+    state: $6 N$ phase-space coordinates
+    structure: Hamiltonian; Liouville's theorem; energy, momentum, angular momentum conserved
+    solution: global classical solutions for almost every initial condition
+    status: stated
+  - id: klimontovich
+    name: Klimontovich equation
+    label: "Klimontovich"
+    branch: classical
+    pos: [5.5, 3]
+    summary: The exact phase-space density of point particles; it obeys a Vlasov-like equation with the microscopic fields.
+    equations:
+      - 'N_(s)(vb(x), vb(v), t) = sum_(i in s) delta(vb(x) - vb(x)_(i)(t)) delta(vb(v) - vb(v)_(i)(t))'
+      - 'pdv(N_(s), t) + vb(v) dot grad N_(s) + q_(s)/m_(s) (vb(E)^"m" + vb(v) times vb(B)^"m") dot pdv(N_(s), vb(v)) = 0'
+    state: empirical measure on phase space; microscopic fields
+    structure: exact rewriting of the N-body system
+    solution: measure-valued
+    status: stated
+    coverage: {kinetic: [N2.1, L3]}
+  - id: bbgky
+    name: BBGKY hierarchy
+    label: "BBGKY\nhierarchy"
+    branch: classical
+    pos: [5.5, 4]
+    summary: Marginals of the Liouville density; the equation for the s-particle distribution involves the (s+1)-particle distribution.
+    equations:
+      - 'pdv(f_(1), t) + vb(v)_(1) dot pdv(f_(1), vb(x)_(1)) = -integral vb(a)_(12) dot pdv(f_(12), vb(v)_(1)) dif z_(2)'
+      - 'f_(12) = f_(1) f_(2) + g_(12)'
+    state: reduced distributions $f_(1), f_(12), dots$
+    structure: exact and unclosed; correlations in the cumulants $g_(12), dots$
+    solution: classical or weak solutions of the Liouville equation
+    status: stated
+  - id: ybg
+    name: Equilibrium YBG equations and closures
+    label: "YBG, HNC\nclosures"
+    branch: classical
+    pos: [6.9, 4.2]
+    summary: Stationary canonical BBGKY for pair correlations, closed by Kirkwood superposition or the hypernetted-chain approximation; the reference for strongly coupled equilibria.
+    equations:
+      - 'k_B T grad_(1) g_(12) = -g_(12) grad_(1) phi_(12) - n integral g_(123) grad_(1) phi_(13) dif^3 x_(3)'
+      - 'h = c + n c * h, quad g = e^(-beta phi + h - c)'
+    state: pair distribution $g(r)$
+    structure: Ornstein-Zernike relation; thermodynamic consistency checks
+    solution: fixed points of the closure
+    status: stated
+    coverage: {research: [kin6d]}
+  - id: debye-hueckel
+    name: Debye-Hückel screening
+    label: "Debye\nscreening"
+    branch: classical
+    pos: [2.9, 7.25]
+    summary: Linearized Poisson-Boltzmann response of a weakly coupled plasma to a test charge.
+    equations:
+      - 'laplacian phi = phi/lambda_(D)^2 - rho_"ext"/epsilon_0'
+      - 'phi = Q/(4 pi epsilon_0 r) e^(-r slash lambda_(D))'
+    state: electrostatic potential
+    structure: linear, radially symmetric Green function
+    solution: closed form
+    status: algebra-checked
+    coverage: {plasma: [intro-debye-shielding, debye-finite-source, debye-collective-validity]}
+    evidence:
+      - {sympy: derivations/chapters/ch02_debye_shielding.py, checks: [Debye length, Screened point charge, Matched finite-source Debye response]}
+  - id: vlasov
+    name: Vlasov-Maxwell / Vlasov-Poisson
+    label: "Vlasov"
+    branch: classical
+    pos: [4.4, 5]
+    summary: Collisionless mean-field kinetic equation for each species in the self-consistent smooth fields.
+    equations:
+      - 'pdv(f_(s), t) + vb(v) dot grad f_(s) + q_(s)/m_(s) (vb(E) + vb(v) times vb(B)) dot pdv(f_(s), vb(v)) = 0'
+      - 'div vb(E) = 1/epsilon_0 sum_s q_(s) integral f_(s) dif^3 v'
+    state: distribution functions $f_(s)(vb(x), vb(v), t)$; fields
+    structure: Hamiltonian (Morrison-Marsden-Weinstein bracket); Casimirs $integral G(f) dif^6 z$; energy and momentum conserved
+    solution: classical solutions in 3D (Vlasov-Poisson); weak and renormalized solutions in general
+    status: algebra-checked
+    coverage: {plasma: [kinetic-derivatives, kinetic-boltzmann], kinetic: [N2.2, L4], research: [kin6d]}
+    evidence:
+      - {sympy: derivations/chapters/ch05_kinetic_theory.py, checks: [Conservative and convective kinetic equation, Particle-number conservation]}
+  # --------------------------------------------------------- collisions
+  - id: rutherford
+    name: Binary Coulomb collisions
+    label: "Binary\ncollisions"
+    branch: collisions
+    pos: [4.3, 3]
+    summary: Rutherford scattering of two charges, the 90-degree impact parameter and the classical Coulomb logarithm from cutoffs at $b_(90)$ and $lambda_(D)$.
+    equations:
+      - 'tan (chi/2) = b_(90)/b, quad b_(90) = (q_(1) q_(2))/(4 pi epsilon_0 mu v^2)'
+      - 'ln Lambda = ln (lambda_(D)/b_(90))'
+    state: impact parameter, relative speed
+    structure: energy and angular momentum of the pair conserved
+    solution: closed-form orbits
+    status: algebra-checked
+    coverage: {plasma: [kinetic-collisions, coulomb-collisions]}
+    evidence:
+      - {sympy: derivations/chapters/ch09_collisions_conductivity.py, checks: [Rutherford deflection and the 90-degree impact parameter, Coulomb logarithm and plasma parameter]}
+      - {sympy: derivations/chapters/ch05_kinetic_theory.py, checks: [Ninety-degree impact parameter, Coulomb logarithm and deflection frequency]}
+  - id: lenard-balescu
+    name: Lenard-Balescu equation
+    label: "Lenard-\nBalescu"
+    branch: collisions
+    pos: [5.6, 5]
+    summary: Collision operator of a weakly coupled plasma with dynamic screening by the plasma dielectric function; no cutoff is needed at large impact parameters.
+    equations:
+      - 'C[f] = partial_(vb(v)) dot integral bold(Q)(vb(v), vb(v)^prime) dot (partial_(vb(v)) - m/m^prime partial_(vb(v)^prime)) f f^prime dif^3 v^prime'
+      - 'bold(Q) prop integral (vb(k) vb(k))/(k^4 abs(epsilon(vb(k), vb(k) dot vb(v)))^2) delta(vb(k) dot (vb(v) - vb(v)^prime)) dif^3 k'
+    state: one-particle distributions
+    structure: conservation of number, momentum and energy; H-theorem
+    solution: formal; logarithmic divergence at small impact parameters
+    status: stated
+  - id: landau
+    name: Landau collision operator
+    label: "Landau\noperator"
+    branch: collisions
+    pos: [5.6, 6]
+    summary: Small-angle Coulomb collisions with the Coulomb logarithm as the only remnant of screening; the standard collision operator of fusion plasmas.
+    equations:
+      - 'C_(s s^prime) = (q_(s)^2 q_(s^prime)^2 ln Lambda)/(8 pi epsilon_0^2 m_(s)) partial_(vb(v)) dot integral bold(U)(vb(u)) dot ((f^prime_(s^prime) partial_(vb(v)) f_(s))/m_(s) - (f_(s) partial_(vb(v)^prime) f^prime_(s^prime))/m_(s^prime)) dif^3 v^prime'
+      - 'bold(U)(vb(u)) = (u^2 bold(I) - vb(u) vb(u))/u^3, quad vb(u) = vb(v) - vb(v)^prime'
+    state: one-particle distributions
+    structure: metriplectic (GENERIC) form; conservation of number, momentum and energy; H-theorem; Maxwellian null space
+    solution: H-solutions for the Coulomb case
+    status: stated
+    coverage: {kinetic: [N2.5.2], research: [kin6d, NEO-2]}
+  - id: boltzmann
+    name: Boltzmann collision operator
+    label: "Boltzmann\noperator"
+    branch: collisions
+    pos: [6.8, 5.4]
+    summary: Binary collisions with short-range forces under molecular chaos; in plasmas it describes collisions with neutrals.
+    equations:
+      - 'C[f] = integral.double (f^prime f^prime_(1) - f f_(1)) abs(vb(v) - vb(v)_(1)) sigma(Omega) dif Omega dif^3 v_(1)'
+    state: one-particle distributions
+    structure: conservation of number, momentum and energy; H-theorem
+    solution: renormalized solutions (DiPerna-Lions)
+    status: stated
+    coverage: {plasma: [kinetic-boltzmann, neutral-collisions]}
+  - id: fokker-planck
+    name: Rosenbluth Fokker-Planck operator
+    label: "Fokker-\nPlanck"
+    branch: collisions
+    pos: [5.6, 7]
+    summary: The Landau operator written as drag and diffusion in velocity space with the Rosenbluth potentials.
+    equations:
+      - 'C[f] = -partial_(vb(v)) dot (vb(A) f) + 1/2 partial_(vb(v)) partial_(vb(v)) : (bold(D) f)'
+      - 'H = integral (f^prime)/abs(vb(v) - vb(v)^prime) dif^3 v^prime, quad G = integral abs(vb(v) - vb(v)^prime) f^prime dif^3 v^prime'
+    state: one-particle distributions; Rosenbluth potentials $H, G$
+    structure: as the Landau operator
+    solution: as the Landau operator
+    status: stated
+    coverage: {kinetic: [N2.5.2], research: [kin6d]}
+  - id: bgk
+    name: BGK relaxation operator
+    label: "BGK\nmodel"
+    branch: collisions
+    pos: [6.9, 6.6]
+    summary: Relaxation toward the local Maxwellian with the same density, flow and temperature.
+    equations:
+      - 'C[f] = -nu (f - f_(M)[n, vb(u), T])'
+    state: one-particle distribution
+    structure: conserves number, momentum and energy; H-theorem
+    solution: classical solutions
+    status: algebra-checked
+    coverage: {plasma: [moments-closures], kinetic: [N2.5.1]}
+    evidence:
+      - {sympy: derivations/chapters/ch06_moments.py, checks: [BGK collision moments]}
+  - id: thermal-equilibrium
+    name: Thermal equilibrium (Maxwell-Boltzmann)
+    label: "Maxwellian\nequilibrium"
+    branch: collisions
+    pos: [3.6, 6.3]
+    summary: The null space of the collision operators; with a potential it is also a stationary solution of the Vlasov equation.
+    equations:
+      - 'f_(M) = n (m/(2 pi k_B T))^(3 slash 2) exp(-(m abs(vb(v) - vb(u))^2)/(2 k_B T))'
+      - 'n = n_(0) e^(-q phi slash k_B T)'
+    state: density, flow and temperature
+    structure: maximal entropy at fixed number, momentum and energy
+    solution: closed form
+    status: algebra-checked
+    coverage: {plasma: [intro-speed-energy-temperature, kinetic-distribution, kinetic-equilibrium], fusion: [B2], kinetic: [N2.2, L5]}
+    evidence:
+      - {sympy: derivations/chapters/ch05_kinetic_theory.py, checks: ["Maxwellian: units and moments", Boltzmann equilibrium in a potential]}
+  - id: linearized-landau
+    name: Linearized Landau operator with momentum conservation
+    label: "Linearized\nLandau"
+    branch: collisions
+    pos: [6.8, 8]
+    summary: The Landau operator linearized about a Maxwellian, keeping the field-particle part that restores momentum and energy conservation.
+    equations:
+      - 'f = f_(M) (1 + h), quad C^"lin"[h] = C[f_(M) h, f_(M)^prime] + C[f_(M), f_(M)^prime h^prime]'
+    state: perturbation $h$ of a Maxwellian
+    structure: self-adjoint and negative semidefinite in the entropy inner product; null space spanned by $1, vb(v), v^2$
+    solution: Legendre and Laguerre expansions
+    status: stated
+    coverage: {research: [NEO-2, kin6d]}
+  - id: spitzer
+    name: Spitzer conductivity
+    label: "Spitzer\nresistivity"
+    branch: collisions
+    pos: [7.8, 9]
+    summary: Parallel electrical resistivity of a fully ionized plasma.
+    equations:
+      - 'eta_(parallel) = (alpha_(e) m_(e) nu_(e i))/(n_(e) e^2), quad eta_(parallel) prop (Z ln Lambda)/T_(e)^(3 slash 2)'
+    state: resistivity as a function of $T_(e)$, $Z$ and $ln Lambda$
+    structure: positive dissipation (Onsager)
+    solution: closed form; $alpha_(e)$ from the Spitzer-Härm solution
+    status: algebra-checked
+    coverage: {plasma: [specific-resistivity, plasma-conductivity], fusion: [B8]}
+    evidence:
+      - {sympy: derivations/chapters/ch09_collisions_conductivity.py, checks: [Spitzer resistivity, Conductivity tensor]}
+  # --------------------------------------------------------- magnetized
+  - id: full-orbit
+    name: Full-orbit test particle
+    label: "Full\norbit"
+    branch: magnetized
+    pos: [9.4, 1]
+    summary: One charged particle in prescribed electric and magnetic fields.
+    equations:
+      - 'm dv(vb(v), t) = q (vb(E)(vb(x), t) + vb(v) times vb(B)(vb(x), t)), quad dv(vb(x), t) = vb(v)'
+      - 'omega_(c) = (abs(q) B)/m, quad rho = v_(perp)/omega_(c)'
+    state: position and velocity of one particle
+    structure: Hamiltonian; magnetic force does no work; energy conserved in static fields
+    solution: classical ODE solutions
+    status: algebra-checked
+    coverage: {plasma: [motion-lorentz, motion-cyclotron-resonance], fusion: [B4], kinetic: [N1]}
+    evidence:
+      - {sympy: derivations/chapters/ch04_single_particle_motion.py, checks: [Magnetic force does no work, Cyclotron motion, Gyroradius]}
+  - id: guiding-center
+    name: Guiding-center motion
+    label: "Guiding\ncenter"
+    branch: magnetized
+    pos: [9.4, 2.5]
+    summary: Gyro-averaged motion of the gyration center; the magnetic moment is an adiabatic invariant and drifts replace the gyration.
+    equations:
+      - 'vb(v)_(d) = (vb(E) times vb(B))/B^2 + mu/(q B) hat(vb(b)) times grad B + (m v_(parallel)^2)/(q B) hat(vb(b)) times bold(kappa)'
+      - 'mu = (m v_(perp)^2)/(2 B), quad m dv(v_(parallel), t) = q E_(parallel) - mu partial_(parallel) B'
+    state: guiding-center position, parallel velocity, magnetic moment
+    structure: noncanonical Hamiltonian (Littlejohn); $mu$ conserved to all orders asymptotically; phase-space volume $B^*_(parallel)$
+    solution: classical ODE solutions of the reduced equations
+    status: algebra-checked
+    coverage: {plasma: [motion-exb, motion-guiding-center, motion-nonuniform-fields, motion-polarization], fusion: [B4, B5], kinetic: [N1], research: [SIMPLE]}
+    evidence:
+      - {sympy: derivations/chapters/ch04_single_particle_motion.py, checks: [Guiding-centre split, Magnetic moment of a gyro-orbit, Grad-B drift, Curvature force and drift, Polarization drift]}
+  - id: drift-kinetic
+    name: Drift-kinetic equation
+    label: "Drift\nkinetics"
+    branch: magnetized
+    pos: [8.9, 6.2]
+    summary: Kinetic equation in guiding-center variables for distributions that vary slowly on the gyroradius scale.
+    equations:
+      - 'pdv(f, t) + (v_(parallel) hat(vb(b)) + vb(v)_(d)) dot grad f + dot(cal(E)) pdv(f, cal(E)) = C[f]'
+      - 'f = f(vb(X), cal(E), mu, t)'
+    state: gyro-averaged distribution in 5D phase space
+    structure: phase-space conservation with the guiding-center Jacobian; $mu$ invariant
+    solution: classical and weak solutions; boundary-layer structure at trapped-passing boundaries
+    status: stated
+    coverage: {kinetic: [N3], research: [NEO-2, kin6d]}
+  - id: gyrokinetic
+    name: Gyrokinetics
+    label: "Gyrokinetics"
+    branch: magnetized
+    pos: [10.3, 5]
+    summary: Kinetic theory of low-frequency fluctuations with perpendicular wavelengths down to the gyroradius; the standard model of microturbulence.
+    equations:
+      - 'pdv(F, t) + dot(vb(X)) dot grad F + dot(v)_(parallel) pdv(F, v_(parallel)) = C[F]'
+      - 'sum_s q_(s) n_(s)^"gy"[F_(s), phi] = 0'
+    state: gyrocenter distribution in 5D, gyroaveraged fields
+    structure: gyrokinetic field theory (variational); energy conserved
+    solution: formal; delta-f and full-f variants
+    status: stated
+    coverage: {kinetic: [N3], research: [kin6d]}
+  - id: gyrofluid
+    name: Gyrofluid and gyromoment models
+    label: "Gyrofluid,\ngyromoments"
+    branch: magnetized
+    pos: [10.6, 6.6]
+    summary: Moments of the gyrokinetic equation closed by Landau-fluid closures or a truncated Hermite-Laguerre hierarchy.
+    equations:
+      - 'tilde(q)_(parallel) = -chi_(1) n_(0) v_"th" i "sgn"(k_(parallel)) tilde(T)'
+    state: gyroaveraged density, flows, temperatures (and higher moments)
+    structure: approximate free-energy conservation
+    solution: formal
+    status: stated
+  - id: neoclassical
+    name: Neoclassical transport
+    label: "Neoclassical\ntransport"
+    branch: magnetized
+    pos: [8.9, 7.6]
+    summary: Collisional transport in toroidal geometry from the first-order drift-kinetic equation, including trapped particles and the bootstrap current.
+    equations:
+      - 'vec(Gamma, q, J_(parallel)) = -bold(L) dot vec(partial_(r) p, partial_(r) T, E_(parallel)), quad bold(L) = bold(L)^T'
+    state: flux-surface averaged fluxes and transport matrix
+    structure: Onsager symmetry; positive entropy production
+    solution: regime asymptotics (banana, plateau, Pfirsch-Schlüter) or numerical solution
+    status: stated
+    coverage: {fusion: [B6, B7, B11], research: [NEO-2]}
+  # -------------------------------------------------------------- fluid
+  - id: moment-hierarchy
+    name: Moment hierarchy
+    label: "Moment\nhierarchy"
+    branch: fluid
+    pos: [4.4, 7.4]
+    summary: Velocity moments of the kinetic equation; each moment equation contains the next moment.
+    equations:
+      - 'pdv(n_(s), t) + div (n_(s) vb(u)_(s)) = 0'
+      - 'm_(s) n_(s) (pdv(vb(u)_(s), t) + vb(u)_(s) dot grad vb(u)_(s)) = q_(s) n_(s) (vb(E) + vb(u)_(s) times vb(B)) - div bold(P)_(s) + vb(R)_(s)'
+    state: density, flow, pressure tensor, heat flux, ...
+    structure: exact conservation laws; unclosed
+    solution: as the kinetic equation
+    status: algebra-checked
+    coverage: {plasma: [moments-definitions, moments-continuity, moments-momentum, moments-energy], kinetic: [N2.4, L12]}
+    evidence:
+      - {sympy: derivations/chapters/ch06_moments.py, checks: ["Density, flow and current", Heat flux as contraction]}
+  - id: two-fluid
+    name: Multiple-fluid model
+    label: "Two-fluid\nmodel"
+    branch: fluid
+    pos: [3.5, 8.6]
+    summary: One fluid per species with a cold, isothermal or adiabatic closure, coupled through Maxwell's equations.
+    equations:
+      - 'p_(s) n_(s)^(-gamma) = "const", quad vb(q)_(s) = 0'
+    state: $n_(s), vb(u)_(s), p_(s)$ per species; fields
+    structure: energy conservation of fluids plus field
+    solution: classical solutions until shocks
+    status: algebra-checked
+    coverage: {plasma: [moments-closures, multiple-definitions, multiple-equations, multiple-perpendicular-drifts, multiple-diamagnetic-current, multiple-parallel-balance]}
+    evidence:
+      - {sympy: derivations/chapters/ch07_multiple_fluids.py, checks: [Conservative and material momentum forms, Species energy balance, Maxwell equations and charge continuity, Diamagnetic current]}
+  - id: braginskii
+    name: Braginskii two-fluid equations
+    label: "Braginskii"
+    branch: fluid
+    pos: [5.4, 8.6]
+    summary: Collisional two-fluid model with transport coefficients from the Chapman-Enskog solution of the linearized Landau operator.
+    equations:
+      - 'vb(q)_(e) = -kappa_(parallel e) grad_(parallel) T_(e) - kappa_(perp e) grad_(perp) T_(e) + dots, quad kappa_(parallel e) approx (3.16 n_(e) k_B T_(e) tau_(e))/m_(e)'
+    state: $n_(s), vb(u)_(s), T_(s)$; fluxes from closure
+    structure: positive entropy production; Onsager symmetry
+    solution: classical solutions
+    status: stated
+  - id: resistive-mhd
+    name: Resistive MHD
+    label: "Resistive\nMHD"
+    branch: fluid
+    pos: [4.4, 9.9]
+    summary: One conducting fluid with Ohm's law including resistivity.
+    equations:
+      - 'rho (pdv(vb(u), t) + vb(u) dot grad vb(u)) = vb(J) times vb(B) - grad p'
+      - 'pdv(vb(B), t) = curl (vb(u) times vb(B)) + eta/mu_0 laplacian vb(B)'
+    state: $rho, vb(u), p, vb(B)$
+    structure: total energy conserved with Ohmic dissipation; magnetic helicity decays
+    solution: classical solutions
+    status: algebra-checked
+    coverage: {plasma: [mhd-definitions, mhd-ohms-law], fusion: [B6]}
+    evidence:
+      - {sympy: derivations/chapters/ch08_mhd.py, checks: [Mass and charge continuity, Summed Lorentz force]}
+  - id: ideal-mhd
+    name: Ideal MHD
+    label: "Ideal\nMHD"
+    branch: fluid
+    pos: [4.4, 10.9]
+    summary: Perfectly conducting single fluid; field lines are frozen into the flow.
+    equations:
+      - 'vb(E) + vb(u) times vb(B) = 0, quad dv(Phi, t) = 0'
+      - 'pdv(vb(B), t) = curl (vb(u) times vb(B))'
+    state: $rho, vb(u), p, vb(B)$
+    structure: Hamiltonian (Morrison-Greene); frozen flux; magnetic and cross helicity
+    solution: classical solutions until shocks or singular current sheets
+    status: algebra-checked
+    coverage: {plasma: [mhd-linearized, mhd-flux], fusion: [B4]}
+    evidence:
+      - {sympy: derivations/chapters/ch08_mhd.py, checks: [Flux through a material surface element]}
+  - id: diffusion
+    name: Drift-diffusion and ambipolar diffusion
+    label: "Diffusion,\nambipolar"
+    branch: fluid
+    pos: [2.5, 9.9]
+    summary: Inertia-free species balance; fluxes are mobility drift plus diffusion, coupled by ambipolarity and reduced across the magnetic field.
+    equations:
+      - 'vb(Gamma)_(s) = plus.minus mu_(s) n_(s) vb(E) - D_(s) grad n_(s)'
+      - 'D_(a) = (mu_(i) D_(e) + mu_(e) D_(i))/(mu_(i) + mu_(e)), quad D_(perp) = D/(1 + omega_(c)^2 tau^2)'
+    state: densities
+    structure: parabolic; particle number conserved
+    solution: classical solutions
+    status: algebra-checked
+    coverage: {plasma: [random-walk-diffusion, weakly-ionized-diffusion, ambipolar-diffusion, cross-field-diffusion, fully-ionized-diffusion]}
+    evidence:
+      - {sympy: derivations/chapters/ch10_diffusion.py, checks: ["Fick's law and the diffusion equation", Green function of the diffusion equation]}
+  - id: sheath
+    name: Sheath and presheath
+    label: "Sheath\n(Bohm)"
+    branch: fluid
+    pos: [1.3, 10.9]
+    summary: Non-neutral boundary layer of a few Debye lengths between a plasma and a wall, matched to a quasineutral presheath.
+    equations:
+      - 'dv(phi, x, 2) = e/epsilon_0 (n_(e) - n_(i)), quad n_(e) = n_(0) e^(e phi slash k_B T_(e))'
+      - 'u_(i) >= c_(s) = sqrt((k_B T_(e))/m_(i))'
+    state: potential, ion flow and densities across the layer
+    structure: ion energy and flux conserved; Sagdeev first integral
+    solution: matched asymptotic solutions in $lambda_(D)/L$
+    status: algebra-checked
+    coverage: {plasma: [sheath-flux, bohm-criterion, floating-potential, langmuir-probe], fusion: [B8]}
+    evidence:
+      - {sympy: derivations/chapters/ch15_sheaths_probes.py, checks: [Maxwellian half-space flux, Floating potential, Child-Langmuir current]}
+  # -------------------------------------------------------------- waves
+  - id: linear-vlasov
+    name: Linear Vlasov response
+    label: "Linear Vlasov\nresponse"
+    branch: waves
+    pos: [2.2, 6.4]
+    summary: Small perturbations of a homogeneous kinetic equilibrium; the dielectric function follows from the Landau contour.
+    equations:
+      - 'epsilon(vb(k), omega) = 1 + sum_s (omega_(p s)^2)/k^2 integral (vb(k) dot partial_(vb(v)) hat(f)_(s))/(omega - vb(k) dot vb(v)) dif^3 v = 0'
+    state: dielectric function $epsilon(vb(k), omega)$
+    structure: causality (Landau contour); Kramers-Kronig relations
+    solution: roots of an analytic function (Landau roots)
+    status: algebra-checked
+    coverage: {plasma: [hot-isotropic-dispersion, hot-resonant-particles, hot-transverse-waves, two-stream-instability], kinetic: [N2.3.2, L10], research: [kin6d]}
+    evidence:
+      - {sympy: derivations/chapters/ch14_hot_plasma_waves.py, checks: [Electrostatic dielectric function, Maxwellian dielectric and Z, Two-stream dispersion]}
+  - id: landau-damping
+    name: Landau damping
+    label: "Landau\ndamping"
+    branch: waves
+    pos: [0.8, 6.6]
+    summary: Collisionless damping or growth of a wave by resonant particles, from the imaginary part of the dielectric function.
+    equations:
+      - 'gamma approx -sqrt(pi/8) omega_(p e)/(k lambda_(D))^3 exp(-1/(2 (k lambda_(D))^2) - 3/2)'
+    state: complex frequency of the weakly damped root
+    structure: energy exchange between wave and resonant particles
+    solution: asymptotic for $k lambda_(D) << 1$
+    status: algebra-checked
+    coverage: {plasma: [landau-damping-growth], kinetic: [N2.3.4, L11]}
+    evidence:
+      - {sympy: derivations/chapters/ch14_hot_plasma_waves.py, checks: [Imaginary part of Z, Landau damping rate, Spatial damping rate]}
+  - id: hot-magnetized-waves
+    name: Hot magnetized waves
+    label: "Cyclotron,\nBernstein waves"
+    branch: waves
+    pos: [0.4, 7.9]
+    summary: Kinetic response along unperturbed gyro-orbits; cyclotron harmonics, Bernstein waves and finite-Larmor-radius corrections.
+    equations:
+      - 'omega - n omega_(c s) - k_(parallel) v_(parallel) = 0, quad Lambda_(n)(b) = I_(n)(b) e^(-b), quad b = k_(perp)^2 rho_(s)^2'
+    state: hot dielectric tensor
+    structure: Hermitian and anti-Hermitian parts separate propagation and absorption
+    solution: Bessel-function series
+    status: algebra-checked
+    coverage: {plasma: [hot-magnetized-waves], fusion: [B8], kinetic: [N3]}
+    evidence:
+      - {sympy: derivations/chapters/ch14_hot_plasma_waves.py, checks: [Gyro-orbit characteristics, Finite-Larmor-radius weights]}
+  - id: cold-plasma-waves
+    name: Cold plasma waves
+    label: "Cold plasma\nwaves"
+    branch: waves
+    pos: [1.3, 9.3]
+    summary: Linear waves of a cold multiple-fluid plasma; plasma oscillations, the Stix dielectric tensor, cutoffs and resonances.
+    equations:
+      - 'omega^2 = omega_(p e)^2 + c^2 k^2'
+      - 'S = 1 - sum_s (omega_(p s)^2)/(omega^2 - omega_(c s)^2), quad A n^4 - B n^2 + C = 0'
+    state: cold dielectric tensor
+    structure: Hermitian tensor without damping
+    solution: algebraic dispersion relation
+    status: algebra-checked
+    coverage: {plasma: [intro-plasma-oscillations, wave-linearization, plasma-oscillations, wave-dispersion, magnetized-dielectric, parallel-magnetized-waves, perpendicular-magnetized-waves, oblique-magnetized-waves, magnetized-limits, collisional-waves, ion-magnetized-waves], fusion: [B8], kinetic: [N2.3.1, L6]}
+    evidence:
+      - {sympy: derivations/chapters/ch03_plasma_oscillations.py, checks: [Electron plasma oscillation]}
+      - {sympy: derivations/chapters/ch12_cold_magnetized_waves.py, checks: [Cold dielectric tensor, Appleton-Hartree roots]}
+  - id: warm-fluid-waves
+    name: Warm-fluid waves
+    label: "Warm-fluid\nwaves"
+    branch: waves
+    pos: [2.4, 8.1]
+    summary: Pressure-supported longitudinal waves; Bohm-Gross (Langmuir) waves and ion-acoustic waves.
+    equations:
+      - 'omega^2 = omega_(p e)^2 + 3 k^2 (k_B T_(e))/m_(e)'
+      - 'omega = k sqrt((k_B T_(e) + gamma_(i) k_B T_(i))/m_(i))'
+    state: warm dielectric response
+    structure: no resonant damping
+    solution: algebraic dispersion relation
+    status: algebra-checked
+    coverage: {plasma: [wave-kinetic-limits, dispersion-limits, warm-longitudinal-waves, warm-magnetosonic-waves, finite-temperature-ordering], kinetic: [N2.3.3]}
+    evidence:
+      - {sympy: derivations/chapters/ch13_finite_temperature_waves.py, checks: [Warm Langmuir branch, Ion-acoustic root]}
+  - id: mhd-waves
+    name: MHD waves
+    label: "MHD\nwaves"
+    branch: waves
+    pos: [2.8, 11.6]
+    summary: Shear Alfvén and fast and slow magnetosonic waves of a uniform ideal-MHD equilibrium.
+    equations:
+      - 'omega = k_(parallel) v_(A), quad v_(A) = B/sqrt(mu_0 rho)'
+    state: dispersion relations of the three MHD branches
+    structure: Hermitian (self-adjoint) linear operator
+    solution: algebraic dispersion relation
+    status: algebra-checked
+    coverage: {plasma: [mhd-linearized, warm-magnetosonic-waves]}
+    evidence:
+      - {sympy: derivations/chapters/ch13_finite_temperature_waves.py, checks: [Shear Alfvén wave, Perpendicular magnetosonic wave]}
+  # -------------------------------------------------------- equilibrium
+  - id: mhd-equilibrium
+    name: MHD equilibrium
+    label: "MHD\nequilibrium"
+    branch: equilibrium
+    pos: [6.0, 11.4]
+    summary: Static force balance between the pressure gradient and the Lorentz force.
+    equations:
+      - 'vb(J) times vb(B) = grad p, quad curl vb(B) = mu_0 vb(J), quad div vb(B) = 0'
+    state: $p, vb(B)$
+    structure: $vb(B) dot grad p = 0$ and $vb(J) dot grad p = 0$; flux surfaces where they exist
+    solution: classical solutions with symmetry; weak solutions with current sheets in 3D
+    status: algebra-checked
+    coverage: {plasma: [mhd-equilibrium], fusion: [B4, B6], research: [MEPHIT]}
+    evidence:
+      - {sympy: derivations/chapters/ch08_mhd.py, checks: [Magnetic pressure and tension, Equilibrium geometry and currents]}
+  - id: mhd-stability
+    name: Linear MHD stability
+    label: "MHD\nstability"
+    branch: equilibrium
+    pos: [5.0, 12.4]
+    summary: Normal modes of an ideal-MHD equilibrium and the energy principle for the potential energy of a displacement.
+    equations:
+      - '-omega^2 rho vb(xi) = bold(F)[vb(xi)], quad delta W[vb(xi)] = -1/2 integral vb(xi) dot bold(F)[vb(xi)] dif^3 x'
+    state: displacement $vb(xi)$
+    structure: self-adjoint force operator; stable if and only if $delta W >= 0$
+    solution: spectral theory of the force operator
+    status: stated
+    coverage: {fusion: [B6]}
+  - id: grad-shafranov
+    name: Grad-Shafranov equilibrium (tokamak)
+    label: "Tokamak\nequilibrium"
+    branch: equilibrium
+    pos: [6.6, 12.6]
+    summary: Axisymmetric MHD equilibrium described by the poloidal flux function.
+    equations:
+      - 'Delta^* psi = -mu_0 R^2 dv(p, psi) - F dv(F, psi), quad Delta^* = R^2 div (1/R^2 grad)'
+    state: poloidal flux $psi(R, Z)$, profiles $p(psi), F(psi)$
+    structure: elliptic free-boundary problem; nested flux surfaces
+    solution: weak solutions of a nonlinear elliptic equation
+    status: stated
+    coverage: {fusion: [B5, B6]}
+  - id: stellarator
+    name: Three-dimensional equilibrium (stellarator)
+    label: "Stellarator\nequilibrium"
+    branch: equilibrium
+    pos: [7.9, 12.6]
+    summary: MHD equilibrium without continuous symmetry; rotational transform from the coil geometry; islands and chaotic field lines possible.
+    equations:
+      - 'vb(B) = grad psi times grad theta + iota(psi) grad phi times grad psi'
+    state: magnetic field, rotational transform $iota$
+    structure: nested surfaces not guaranteed; quasisymmetry and omnigeneity as design targets
+    solution: weak solutions; existence of smooth nested equilibria open in general
+    status: stated
+    coverage: {fusion: [B7]}
+  # ------------------------------------------------------------- fusion
+  - id: reactivity
+    name: Fusion reactivity
+    label: "Fusion\nreactivity"
+    branch: fusion
+    pos: [2.6, 5.3]
+    summary: Maxwellian-averaged fusion rate; Coulomb-barrier tunnelling and the Gamow peak.
+    equations:
+      - 'sigma(E) = S(E)/E e^(-sqrt(E_(G) slash E))'
+      - 'chevron.l sigma v chevron.r = sqrt(8/(pi mu)) (k_B T)^(-3 slash 2) integral_0^oo sigma(E) E e^(-E slash k_B T) dif E'
+    state: reactivity $chevron.l sigma v chevron.r (T)$
+    structure: the nuclear S-factor is external data
+    solution: saddle-point (Gamow peak) asymptotics or quadrature
+    status: stated
+    coverage: {fusion: [B1, B2]}
+  - id: transport
+    name: Integrated transport
+    label: "Transport\n(1.5D)"
+    branch: fusion
+    pos: [9.4, 10.2]
+    summary: Flux-surface averaged particle and energy balance on a slowly evolving equilibrium, with neoclassical and turbulent fluxes as closures.
+    equations:
+      - 'partial_(t) n + 1/V^prime partial_(rho) (V^prime Gamma) = S_(n), quad Gamma = Gamma^"neo" + Gamma^"turb"'
+    state: radial profiles $n_(s)(rho), T_(s)(rho)$
+    structure: conservation in flux coordinates; scale separation between profiles and fluctuations
+    solution: parabolic PDE in one radial coordinate
+    status: stated
+    coverage: {fusion: [B3, B11], research: [kin6d]}
+  - id: power-balance
+    name: Power balance and Lawson criterion
+    label: "0D power\nbalance"
+    branch: fusion
+    pos: [10.5, 11.6]
+    summary: Zero-dimensional energy balance of alpha heating, external heating and losses with energy confinement time $tau_(E)$.
+    equations:
+      - '(n^2 chevron.l sigma v chevron.r E_(alpha))/4 >= (3 n k_B T)/tau_(E), quad Q = P_"fus"/P_"heat"'
+    state: $n, T, tau_(E)$
+    structure: ignition and breakeven thresholds
+    solution: algebraic
+    status: stated
+    coverage: {fusion: [B3, B11]}
+
+# Edges: reductions from a parent model to a reduced model. The id is
+# "<from>--<to>". small: Typst math of the small parameters and ordering.
+edges:
+  # ----------------------------------------------------------- boundary
+  - from: qed
+    to: maxwell-lorentz
+    method: classical limit
+    small: 'hbar omega/(m_(e) c^2) << 1, quad hbar/(p L) << 1'
+    assumptions: [no pair creation, photon fields with large occupation numbers]
+    lost: pair creation, quantized radiation, radiative corrections; the point-charge self-force must be declared separately
+    status: stated
+  - from: qed
+    to: schroedinger
+    method: nonrelativistic electrostatic limit
+    small: 'v/c << 1, quad k_B T << m_(e) c^2'
+    assumptions: [instantaneous Coulomb interaction, spin as a label, no photons]
+    lost: magnetic and retarded interactions, radiation, relativistic kinematics
+    status: stated
+  # ---------------------------------------------------------- classical
+  - from: maxwell-lorentz
+    to: darwin
+    method: asymptotic ordering
+    small: '(v/c)^2 << 1'
+    assumptions: [fields determined by instantaneous particle positions and velocities]
+    lost: radiation and retardation beyond second order
+    status: stated
+    evidence: [{literature: "C. G. Darwin, Philos. Mag. 39, 537 (1920)"}]
+  - from: darwin
+    to: coulomb-nbody
+    method: electrostatic limit
+    small: 'v/c -> 0'
+    assumptions: [magnetic field external and prescribed]
+    lost: magnetic interaction between particles
+    status: stated
+  - from: maxwell-lorentz
+    to: full-orbit
+    method: prescribed fields
+    small: 'abs(delta vb(E)_"self")/abs(vb(E)) << 1'
+    assumptions: [the particle does not modify the fields it moves in]
+    lost: collective response and self-consistency
+    status: stated
+    coverage: {plasma: [intro-model-hierarchy, motion-lorentz], kinetic: [N1]}
+  - from: maxwell-lorentz
+    to: vlasov
+    method: coarse graining (mean field)
+    small: '1/(n lambda_(D)^3) << 1'
+    assumptions: [smooth self-consistent fields replace the microscopic fields, collisions neglected or added as an operator]
+    lost: discreteness of the particles, collisions, fluctuation spectra
+    status: stated
+    coverage: {plasma: [intro-model-hierarchy, kinetic-boltzmann]}
+  - from: coulomb-nbody
+    to: klimontovich
+    method: exact rewriting
+    assumptions: [point particles]
+    lost: nothing
+    status: stated
+    coverage: {kinetic: [N2.1, L3]}
+  - from: klimontovich
+    to: bbgky
+    method: ensemble average
+    assumptions: [ensemble of initial conditions with a smooth Liouville density]
+    lost: nothing; the hierarchy is unclosed
+    status: stated
+  - from: klimontovich
+    to: vlasov
+    method: mean field
+    small: '1/(n lambda_(D)^3) << 1'
+    assumptions: [ensemble average, correlations of field and density fluctuations neglected]
+    lost: collisions and fluctuation spectra
+    status: stated
+    coverage: {kinetic: [N2.1, N2.2, L3, L4]}
+  - from: bbgky
+    to: vlasov
+    method: mean field
+    small: '1/N -> 0 "at fixed" N q^2'
+    assumptions: [molecular chaos at the initial time, smooth or regularized interaction]
+    lost: collisions and all correlations
+    status: literature-intake
+    evidence:
+      - {literature: "W. Braun and K. Hepp, Commun. Math. Phys. 56, 101 (1977)"}
+      - {literature: "R. L. Dobrushin, Funct. Anal. Appl. 13, 115 (1979)"}
+      - {literature: "D. Lazarovici and P. Pickl, Arch. Ration. Mech. Anal. 225, 1201 (2017)"}
+    coverage: {research: [kin6d]}
+  - from: bbgky
+    to: lenard-balescu
+    method: weak-coupling expansion
+    small: '1/Lambda << 1, quad tau_"corr"/tau_"coll" << 1'
+    assumptions: [pair cumulant only, Bogoliubov time-scale separation, homogeneous plasma, Markov limit]
+    lost: three-body correlations, memory, strong coupling
+    status: open-problem
+    evidence:
+      - {literature: "A. Lenard, Ann. Phys. 10, 390 (1960); R. Balescu, Phys. Fluids 3, 52 (1960)"}
+    coverage: {research: [kin6d]}
+  - from: bbgky
+    to: boltzmann
+    method: Boltzmann-Grad limit
+    small: 'N d^2 = "const", quad d -> 0'
+    assumptions: [short-range forces, molecular chaos]
+    lost: long-range and collective interactions
+    status: literature-intake
+    evidence:
+      - {literature: "O. E. Lanford, Lecture Notes in Physics 38, 1 (1975), short times only"}
+  - from: bbgky
+    to: ybg
+    method: equilibrium closure
+    assumptions: [thermal equilibrium, closure such as Kirkwood superposition or HNC]
+    lost: dynamics; exactness through the closure
+    status: stated
+    coverage: {research: [kin6d]}
+  - from: ybg
+    to: debye-hueckel
+    method: linearization
+    small: 'Gamma = (e^2)/(4 pi epsilon_0 a k_B T) << 1'
+    assumptions: [weak coupling, linearized Poisson-Boltzmann closure]
+    lost: strong-coupling correlations
+    status: stated
+  # --------------------------------------------------------- collisions
+  - from: coulomb-nbody
+    to: rutherford
+    method: two-body reduction
+    small: 'b << lambda_(D)'
+    assumptions: [isolated binary encounters, center-of-mass separation]
+    lost: screening during the encounter, many-body correlations
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch09_collisions_conductivity.py, checks: [Rutherford deflection and the 90-degree impact parameter, Large-angle collision rate]}
+    coverage: {plasma: [kinetic-collisions, coulomb-collisions]}
+  - from: rutherford
+    to: landau
+    method: small-angle sum of binary collisions
+    small: '1/(ln Lambda) << 1'
+    assumptions: [cumulative small-angle deflections dominate, cutoffs at $b_(90)$ and $lambda_(D)$]
+    lost: large-angle collisions, dynamic screening
+    status: stated
+    evidence: [{literature: "L. D. Landau, Phys. Z. Sowjetunion 10, 154 (1936)"}]
+  - from: lenard-balescu
+    to: landau
+    method: static screening cutoff
+    small: '1/(ln Lambda) << 1'
+    assumptions: [dielectric function replaced by Debye screening at large impact parameters]
+    lost: dynamic screening, terms of relative order $1/(ln Lambda)$
+    status: stated
+    coverage: {research: [kin6d]}
+  - from: boltzmann
+    to: landau
+    method: grazing-collision limit
+    small: 'chi -> 0'
+    assumptions: [cross section concentrated on small deflection angles]
+    lost: large-angle scattering
+    status: literature-intake
+    evidence: [{literature: "R. Alexandre and C. Villani, Ann. Inst. H. Poincaré Anal. Non Linéaire 21, 61 (2004)"}]
+  - from: landau
+    to: fokker-planck
+    method: exact rewriting (Rosenbluth potentials)
+    assumptions: [Coulomb interaction]
+    lost: nothing; the explicit pair symmetry of the Landau form becomes implicit
+    status: stated
+    evidence: [{literature: "M. N. Rosenbluth, W. M. MacDonald and D. L. Judd, Phys. Rev. 107, 1 (1957)"}]
+    coverage: {kinetic: [N2.5.2], research: [kin6d]}
+  - from: landau
+    to: thermal-equilibrium
+    method: H-theorem
+    small: 't >> 1/nu'
+    assumptions: [spatially homogeneous relaxation]
+    lost: all departures from the Maxwellian
+    status: stated
+    coverage: {kinetic: [N2.2]}
+  - from: boltzmann
+    to: thermal-equilibrium
+    method: H-theorem
+    small: 't >> 1/nu'
+    assumptions: ["collision invariants number, momentum and energy"]
+    lost: all departures from the Maxwellian
+    status: stated
+    coverage: {plasma: [kinetic-equilibrium]}
+  - from: boltzmann
+    to: bgk
+    method: relaxation model
+    assumptions: [single relaxation rate, "conservation of number, momentum and energy imposed"]
+    lost: velocity dependence of the collision rate, correct transport coefficients
+    status: stated
+    coverage: {plasma: [moments-closures], kinetic: [N2.5.1]}
+  - from: fokker-planck
+    to: linearized-landau
+    method: linearization
+    small: 'abs(f - f_(M))/f_(M) << 1'
+    assumptions: [background Maxwellian, field-particle part retained for momentum and energy conservation]
+    lost: nonlinear collisions of the perturbation with itself
+    status: stated
+    coverage: {research: [NEO-2, kin6d]}
+  - from: linearized-landau
+    to: spitzer
+    method: Chapman-Enskog solution
+    small: 'lambda_"mfp"/L << 1, quad e E lambda_"mfp" << k_B T_(e)'
+    assumptions: [weak electric field, steady state, electron-ion and electron-electron collisions]
+    lost: runaway electrons, magnetization
+    status: stated
+    evidence: [{literature: "L. Spitzer and R. Härm, Phys. Rev. 89, 977 (1953)"}]
+  - from: rutherford
+    to: spitzer
+    method: momentum-transfer estimate
+    small: 'm_(e)/m_(i) << 1'
+    assumptions: [electrons scatter off ions at rest, collision rate at the thermal speed]
+    lost: the order-one Spitzer-Härm factor, electron-electron collisions
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch09_collisions_conductivity.py, checks: [Momentum-transfer cross section for Coulomb scattering, Spitzer resistivity]}
+    coverage: {plasma: [coulomb-collisions, specific-resistivity]}
+  - from: thermal-equilibrium
+    to: debye-hueckel
+    method: linearized Poisson-Boltzmann
+    small: 'abs(e phi)/(k_B T_(e)) << 1'
+    assumptions: [Boltzmann electrons, immobile ions, many particles in a Debye sphere]
+    lost: nonlinear screening near the test charge, correlations
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch02_debye_shielding.py, checks: [Debye length, Screened point charge]}
+    coverage: {plasma: [intro-debye-shielding, debye-collective-validity]}
+  - from: thermal-equilibrium
+    to: reactivity
+    method: Maxwellian average (saddle point)
+    small: 'k_B T << E_(G)'
+    assumptions: [Maxwellian reactants, reaction rate independent of the plasma environment]
+    lost: non-Maxwellian tails, screening enhancement
+    status: stated
+    evidence: [{literature: "H.-S. Bosch and G. M. Hale, Nucl. Fusion 32, 611 (1992)"}]
+    coverage: {fusion: [B2]}
+  # ------------------------------------------------------------ quantum
+  - from: schroedinger
+    to: quantum-bbgky
+    method: partial traces
+    assumptions: [identical particles, finite trace]
+    lost: nothing; the hierarchy is unclosed
+    status: stated
+  - from: quantum-bbgky
+    to: hartree
+    method: mean field
+    small: '1/N -> 0 "with" N q^2 "fixed"'
+    assumptions: [factorized initial state, exchange kept in TDHF]
+    lost: correlations
+    status: literature-intake
+    evidence:
+      - {literature: "L. Erdős and H.-T. Yau, Adv. Theor. Math. Phys. 5, 1169 (2001)"}
+      - {literature: "I. Rodnianski and B. Schlein, Commun. Math. Phys. 291, 31 (2009)"}
+      - {literature: "P. Pickl, Lett. Math. Phys. 97, 151 (2011)"}
+  - from: quantum-bbgky
+    to: negf
+    method: Green-function closure
+    assumptions: [conserving self-energy approximation, generalized Kadanoff-Baym ansatz in G1-G2]
+    lost: higher-order correlations beyond the chosen self-energy
+    status: stated
+  - from: quantum-bbgky
+    to: quantum-lb
+    method: weak-coupling expansion
+    small: '1/Lambda << 1'
+    assumptions: [pair cumulant only, RPA screening, Markov limit]
+    lost: strong coupling, bound states, memory
+    status: stated
+  - from: hartree
+    to: wigner
+    method: Wigner transform
+    assumptions: [one-body density matrix of the mean-field dynamics]
+    lost: nothing beyond the mean-field approximation
+    status: stated
+  - from: wigner
+    to: vlasov
+    method: semiclassical limit (Moyal expansion)
+    small: 'hbar/(p L) << 1'
+    assumptions: [smooth potential, phase-space scales large against the de Broglie wavelength]
+    lost: interference, tunnelling, degeneracy corrections of order $hbar^2$
+    status: literature-intake
+    evidence: [{literature: "P.-L. Lions and T. Paul, Rev. Mat. Iberoam. 9, 553 (1993)"}]
+    coverage: {research: [kin6d]}
+  - from: quantum-lb
+    to: lenard-balescu
+    method: classical limit
+    small: 'hbar k/(m v) << 1, quad n lambda_"dB"^3 << 1'
+    assumptions: [nondegenerate plasma]
+    lost: Pauli blocking, diffraction at small impact parameters
+    status: stated
+  - from: hartree
+    to: lindhard
+    method: linearization
+    small: 'abs(delta rho)/rho_(0) << 1'
+    assumptions: [homogeneous ideal Fermi background, random-phase approximation]
+    lost: exchange-correlation corrections (local-field factor)
+    status: stated
+    evidence: [{literature: "J. Lindhard, K. Dan. Vidensk. Selsk. Mat. Fys. Medd. 28, no. 8 (1954)"}]
+  - from: lindhard
+    to: linear-vlasov
+    method: classical limit
+    small: 'hbar k/(m v_"th") << 1, quad n lambda_"dB"^3 << 1'
+    assumptions: [nondegenerate electrons]
+    lost: quantum recoil and degeneracy
+    status: stated
+  - from: lindhard
+    to: debye-hueckel
+    method: static long-wavelength limit
+    small: 'omega -> 0, quad k lambda_(D) << 1'
+    assumptions: [nondegenerate limit; Thomas-Fermi screening in the degenerate limit]
+    lost: dynamic response
+    status: stated
+  - from: schroedinger
+    to: coulomb-scattering-quantum
+    method: two-body reduction
+    small: 'b << lambda_(D)'
+    assumptions: [isolated pair, center-of-mass separation]
+    lost: screening and many-body effects
+    status: stated
+  - from: coulomb-scattering-quantum
+    to: quantum-coulomb-log
+    method: partial-wave sum
+    small: '1/(ln Lambda) << 1'
+    assumptions: [screening cutoff at $lambda_(D)$, momentum-transfer cross section]
+    lost: bound states and resonances
+    status: stated
+    evidence:
+      - {literature: "F. Bloch, Ann. Phys. (Leipzig) 408, 285 (1933)"}
+      - {literature: "D. O. Gericke, M. S. Murillo and M. Schlanges, Phys. Rev. E 65, 036418 (2002)"}
+      - {literature: "L. S. Brown, D. L. Preston and R. L. Singleton, Phys. Rep. 410, 237 (2005)"}
+    coverage: {research: [kin6d]}
+  - from: coulomb-scattering-quantum
+    to: rutherford
+    method: classical limit
+    small: 'eta >> 1'
+    assumptions: [classical orbits]
+    lost: diffraction for $eta lt.tilde 1$
+    status: stated
+  - from: quantum-coulomb-log
+    to: landau
+    method: cutoff matching
+    small: '1/(ln Lambda) << 1'
+    assumptions: [the quantum logarithm replaces the classical $b_(90)$ cutoff]
+    lost: nothing within leading logarithmic accuracy
+    status: stated
+    coverage: {research: [NEO-2, kin6d]}
+  - from: coulomb-scattering-quantum
+    to: kelbg
+    method: Slater sum to first order in the coupling
+    small: 'abs(q_(1) q_(2))/(4 pi epsilon_0 lambda k_B T) << 1'
+    assumptions: [weak coupling, thermal pair density matrix]
+    lost: bound states, higher-order quantum corrections
+    status: stated
+  - from: kelbg
+    to: ybg
+    method: effective classical potential
+    small: 'lambda/a << 1'
+    assumptions: [quantum effects only in the pair potential]
+    lost: exchange beyond the pair level
+    status: stated
+  - from: coulomb-scattering-quantum
+    to: reactivity
+    method: barrier penetration (Gamow factor)
+    small: 'E << E_(G)'
+    assumptions: [Coulomb barrier with an external nuclear S-factor]
+    lost: nuclear structure (external data)
+    status: stated
+    evidence: [{literature: "G. Gamow, Z. Phys. 51, 204 (1928)"}]
+    coverage: {fusion: [B2]}
+  - from: schroedinger
+    to: ideal-fermi
+    method: noninteracting equilibrium
+    small: '(e^2 n^(1 slash 3))/(4 pi epsilon_0 E_(F)) << 1'
+    assumptions: [grand-canonical equilibrium, interactions neglected]
+    lost: correlations and bound states
+    status: stated
+    coverage: {plasma: [kinetic-equilibrium]}
+  - from: ideal-fermi
+    to: thomas-fermi
+    method: local-density approximation
+    small: 'lambda_"dB"/L << 1'
+    assumptions: [self-consistent electrostatic potential, slowly varying density]
+    lost: exchange, correlation, shell structure
+    status: stated
+  - from: ideal-fermi
+    to: thermal-equilibrium
+    method: nondegenerate limit
+    small: 'n lambda_"dB"^3 << 1'
+    assumptions: [fugacity small]
+    lost: Pauli blocking
+    status: stated
+    coverage: {plasma: [kinetic-equilibrium]}
+  # --------------------------------------------------------- magnetized
+  - from: full-orbit
+    to: guiding-center
+    method: gyroaveraging (Lie-transform perturbation theory)
+    small: 'epsilon = rho/L << 1, quad omega/omega_(c) << 1'
+    assumptions: [fields slowly varying on the gyroradius and gyroperiod, drift ordering $E/B lt.tilde v_"th"$]
+    lost: gyrophase, cyclotron resonance, nonadiabatic $mu$ jumps
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch04_single_particle_motion.py, checks: [Guiding-centre split, Adiabatic balance for mu, Mirror force from the gyro-average, Grad-B drift, Curvature force and drift, Polarization drift]}
+      - {literature: "R. G. Littlejohn, J. Plasma Phys. 29, 111 (1983)"}
+    coverage: {plasma: [motion-exb, motion-guiding-center, motion-nonuniform-fields, motion-polarization], fusion: [B4, B5], kinetic: [N1], research: [SIMPLE, kin6d]}
+  - from: guiding-center
+    to: drift-kinetic
+    method: Liouville equation in guiding-center coordinates
+    small: 'rho_(*) = rho/L << 1'
+    assumptions: [characteristics are guiding-center orbits, distribution independent of gyrophase]
+    lost: gyrophase dependence
+    status: stated
+    coverage: {kinetic: [N3], research: [NEO-2, kin6d]}
+  - from: vlasov
+    to: drift-kinetic
+    method: drift-kinetic ordering (recursive expansion)
+    small: 'rho_(*) << 1, quad omega/omega_(c) << 1'
+    assumptions: [strong magnetic field, slow variation on the gyroradius]
+    lost: gyroradius-scale structure, cyclotron-frequency dynamics
+    status: stated
+    evidence: [{literature: "R. D. Hazeltine, Plasma Phys. 15, 77 (1973)"}]
+  - from: linearized-landau
+    to: drift-kinetic
+    method: gyroaveraged collision operator
+    small: 'rho_(*) << 1'
+    assumptions: [collision operator evaluated at the guiding center, Legendre and Laguerre representation]
+    lost: classical (gyroradius) collisional transport
+    status: stated
+    coverage: {research: [NEO-2, kin6d]}
+  - from: guiding-center
+    to: gyrokinetic
+    method: Lie-transform perturbation theory with fluctuating fields
+    small: 'omega/omega_(c) tilde rho_(*), quad k_(perp) rho tilde 1, quad e tilde(phi)/(k_B T) tilde rho_(*)'
+    assumptions: [gyrokinetic ordering, small-amplitude fluctuations]
+    lost: fast magnetosonic and cyclotron waves
+    status: stated
+    evidence: [{literature: "A. J. Brizard and T. S. Hahm, Rev. Mod. Phys. 79, 421 (2007)"}]
+    coverage: {kinetic: [N3], research: [kin6d]}
+  - from: gyrokinetic
+    to: gyrofluid
+    method: moment closure (Landau-fluid)
+    assumptions: [closure reproduces the linear kinetic response]
+    lost: nonlinear phase mixing and trapping
+    status: stated
+    evidence: [{literature: "G. W. Hammett and F. W. Perkins, Phys. Rev. Lett. 64, 3019 (1990)"}]
+  - from: drift-kinetic
+    to: neoclassical
+    method: first-order drift-kinetic equation and flux-surface averaging
+    small: 'rho_(*) << 1, quad delta f/f_(M) tilde rho_(*)'
+    assumptions: [nested flux surfaces, local Maxwellian at zeroth order, collisionality regime]
+    lost: turbulence, finite-orbit-width effects
+    status: stated
+    evidence: [{literature: "F. L. Hinton and R. D. Hazeltine, Rev. Mod. Phys. 48, 239 (1976)"}]
+    coverage: {kinetic: [N3], research: [NEO-2]}
+  - from: neoclassical
+    to: transport
+    method: flux closure
+    small: 'tau_"coll"/tau_"transport" << 1'
+    assumptions: [profiles evolve slowly]
+    lost: time dependence within a collision time
+    status: stated
+    coverage: {fusion: [B11]}
+  - from: gyrokinetic
+    to: transport
+    method: scale separation (flux-tube averages)
+    small: 'rho_(*) << 1'
+    assumptions: [turbulence saturates locally on the profile scale]
+    lost: nonlocal turbulence spreading
+    status: stated
+    coverage: {fusion: [B11]}
+  # -------------------------------------------------------------- fluid
+  - from: vlasov
+    to: moment-hierarchy
+    method: velocity moments
+    assumptions: ["collision operator kept as moments $vb(R)_(s)$ and $Q_(s)$"]
+    lost: nothing; the hierarchy is unclosed
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch06_moments.py, checks: [Continuity from the zeroth moment, Momentum equation from the first moment, Energy equation from the second moment]}
+    coverage: {plasma: [moments-continuity, moments-momentum, moments-energy], kinetic: [N2.4, L12]}
+  - from: bgk
+    to: moment-hierarchy
+    method: velocity moments of the collision operator
+    assumptions: [BGK operator]
+    lost: nothing
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch06_moments.py, checks: [BGK collision moments]}
+    coverage: {plasma: [moments-closures]}
+  - from: moment-hierarchy
+    to: two-fluid
+    method: moment closure (cold, isothermal, adiabatic)
+    small: 'abs(vb(q))/(p v_"th") << 1'
+    assumptions: [isotropic pressure, heat flux neglected, polytropic law]
+    lost: kinetic effects (Landau damping), anisotropy, collisional transport
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch06_moments.py, checks: [Isotropic pressure, Internal energy and the adiabatic law, Polytropic closure]}
+    coverage: {plasma: [moments-closures, multiple-equations], kinetic: [N2.4]}
+  - from: moment-hierarchy
+    to: braginskii
+    method: Chapman-Enskog expansion
+    small: 'lambda_"mfp"/L << 1, quad rho/L << 1'
+    assumptions: [collision-dominated plasma, Landau collisions]
+    lost: kinetic effects at long mean free path
+    status: stated
+    evidence: [{literature: "S. I. Braginskii, Rev. Plasma Phys. 1, 205 (1965)"}]
+  - from: linearized-landau
+    to: braginskii
+    method: transport coefficients from the linearized operator
+    small: 'lambda_"mfp"/L << 1'
+    assumptions: [first-order Chapman-Enskog correction]
+    lost: higher Chapman-Enskog orders
+    status: stated
+  - from: two-fluid
+    to: resistive-mhd
+    method: one-fluid variables and generalized Ohm's law
+    small: 'm_(e)/m_(i) << 1, quad omega/omega_(c i) << 1, quad rho_(i)/L << 1'
+    assumptions: [quasineutrality, Hall and electron-pressure terms neglected]
+    lost: Hall physics, two-fluid waves, electron inertia
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch08_mhd.py, checks: [Mass and charge continuity, Summed Lorentz force, Generalized Ohm law, Drag and resistivity]}
+    coverage: {plasma: [multiple-parallel-balance, mhd-definitions, mhd-ohms-law]}
+  - from: braginskii
+    to: resistive-mhd
+    method: one-fluid reduction with collisional closure
+    small: 'm_(e)/m_(i) << 1'
+    assumptions: [resistivity and viscosity from Braginskii coefficients]
+    lost: two-fluid effects
+    status: stated
+  - from: resistive-mhd
+    to: ideal-mhd
+    method: infinite conductivity
+    small: '1/R_(m) = eta/(mu_0 u L) << 1'
+    assumptions: [no reconnection layers]
+    lost: magnetic diffusion and reconnection
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch08_mhd.py, checks: [Resistive induction equation, Magnetic Reynolds number]}
+    coverage: {plasma: [mhd-flux]}
+  - from: two-fluid
+    to: diffusion
+    method: inertia-free (drift-diffusion) limit
+    small: 'omega/nu << 1'
+    assumptions: [collision-dominated momentum balance, ambipolar flux]
+    lost: inertia, waves
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch10_diffusion.py, checks: [Mobility and diffusion, Ambipolar diffusion, Diffusion across a magnetic field, Classical cross-field diffusion]}
+    coverage: {plasma: [weakly-ionized-diffusion, ambipolar-diffusion, cross-field-diffusion, fully-ionized-diffusion]}
+  - from: diffusion
+    to: transport
+    method: classical diffusion as a closure
+    small: 'rho/L << 1'
+    assumptions: [classical collisional fluxes]
+    lost: neoclassical and turbulent enhancement
+    status: stated
+    coverage: {fusion: [B3]}
+  - from: two-fluid
+    to: sheath
+    method: matched asymptotics (boundary layer)
+    small: 'lambda_(D)/L << 1'
+    assumptions: [Boltzmann electrons, cold collisionless ions, planar geometry]
+    lost: kinetic ion distribution, magnetized and collisional sheaths
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch15_sheaths_probes.py, checks: [Boltzmann electrons, Normalized sheath equation, Sheath first integral (Sagdeev potential), Bohm criterion]}
+    coverage: {plasma: [sheath-flux, bohm-criterion, floating-potential, langmuir-probe]}
+  # -------------------------------------------------------------- waves
+  - from: vlasov
+    to: linear-vlasov
+    method: linearization (Landau contour)
+    small: 'abs(delta f)/f_(0) << 1'
+    assumptions: [homogeneous unmagnetized equilibrium, initial-value problem continued analytically]
+    lost: particle trapping and nonlinear saturation
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch14_hot_plasma_waves.py, checks: [Linear Vlasov response, Electrostatic dielectric function, Maxwellian dielectric and Z]}
+      - {literature: "L. D. Landau, J. Phys. USSR 10, 25 (1946)"}
+    coverage: {plasma: [hot-isotropic-dispersion, hot-transverse-waves], kinetic: [N2.3.2, L10], research: [kin6d]}
+  - from: linear-vlasov
+    to: landau-damping
+    method: weak-damping expansion (Plemelj)
+    small: 'abs(gamma)/omega << 1, quad k lambda_(D) << 1'
+    assumptions: [Maxwellian equilibrium]
+    lost: strongly damped roots
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch14_hot_plasma_waves.py, checks: [Resonant imaginary part, Weak-rate relation, Landau damping rate]}
+    coverage: {plasma: [hot-resonant-particles, landau-damping-growth], kinetic: [N2.3.4, L11], research: [kin6d]}
+  - from: linear-vlasov
+    to: warm-fluid-waves
+    method: large-phase-velocity asymptotics
+    small: 'v_"th"/(omega slash k) << 1'
+    assumptions: [asymptotic expansion of the plasma dispersion function]
+    lost: Landau damping (exponentially small)
+    status: limit-checked
+    evidence:
+      - {sympy: derivations/chapters/ch14_hot_plasma_waves.py, checks: [Asymptotic Z, Kinetic Bohm-Gross root]}
+      - {sympy: derivations/chapters/ch11_introduction_waves.py, checks: [Kinetic susceptibility limits]}
+    coverage: {plasma: [wave-kinetic-limits, hot-isotropic-dispersion], kinetic: [N2.3.3]}
+  - from: linear-vlasov
+    to: cold-plasma-waves
+    method: cold limit
+    small: 'k v_"th"/omega -> 0'
+    assumptions: [no resonant particles]
+    lost: thermal dispersion and damping
+    status: limit-checked
+    evidence:
+      - {sympy: derivations/chapters/ch14_hot_plasma_waves.py, checks: [Cold limit, Cold transverse branch]}
+    coverage: {plasma: [hot-isotropic-dispersion, hot-transverse-waves]}
+  - from: linear-vlasov
+    to: hot-magnetized-waves
+    method: integration along unperturbed gyro-orbits
+    small: 'abs(delta f)/f_(0) << 1'
+    assumptions: [uniform magnetized Maxwellian equilibrium]
+    lost: inhomogeneity, nonlinear wave-particle interaction
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch14_hot_plasma_waves.py, checks: [Gyro-orbit characteristics, Gyroangle harmonic response, Circular forcing, Finite-Larmor-radius weights]}
+    coverage: {plasma: [hot-magnetized-waves], kinetic: [N3]}
+  - from: two-fluid
+    to: cold-plasma-waves
+    method: linearization with cold closure
+    small: 'abs(delta n)/n_(0) << 1, quad k_B T -> 0'
+    assumptions: [homogeneous equilibrium, plane waves]
+    lost: pressure, thermal dispersion
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch11_introduction_waves.py, checks: [Plane-wave replacement, Linearized continuity, Cold electromagnetic branch]}
+      - {sympy: derivations/chapters/ch12_cold_magnetized_waves.py, checks: [Cold magnetized velocity response, Cold dielectric tensor, Magnetized wave equation]}
+    coverage: {plasma: [intro-plasma-oscillations, wave-linearization, plasma-oscillations, wave-dispersion, magnetized-dielectric], kinetic: [N2.3.1, L5, L6]}
+  - from: two-fluid
+    to: warm-fluid-waves
+    method: linearization with adiabatic closure
+    small: 'abs(delta n)/n_(0) << 1'
+    assumptions: [adiabatic index $gamma_(e) = 3$ for one-dimensional compression]
+    lost: Landau damping
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch11_introduction_waves.py, checks: [Warm-fluid dispersion, Ion-acoustic limit]}
+      - {sympy: derivations/chapters/ch13_finite_temperature_waves.py, checks: [Warm species response, Warm longitudinal susceptibility]}
+    coverage: {plasma: [wave-kinetic-limits, warm-longitudinal-waves]}
+  - from: warm-fluid-waves
+    to: cold-plasma-waves
+    method: cold limit
+    small: 'k_B T -> 0'
+    assumptions: [fixed density and field]
+    lost: thermal corrections
+    status: limit-checked
+    evidence:
+      - {sympy: derivations/chapters/ch13_finite_temperature_waves.py, checks: [Cold limits]}
+    coverage: {plasma: [finite-temperature-ordering]}
+  - from: cold-plasma-waves
+    to: mhd-waves
+    method: low-frequency limit
+    small: 'omega/omega_(c i) << 1'
+    assumptions: [two-species cold plasma]
+    lost: ion-cyclotron and whistler branches
+    status: limit-checked
+    evidence:
+      - {sympy: derivations/chapters/ch13_finite_temperature_waves.py, checks: [Low-frequency Alfvén limit]}
+    coverage: {plasma: [ion-magnetized-waves]}
+  - from: ideal-mhd
+    to: mhd-waves
+    method: linearization
+    small: 'abs(delta vb(B))/B_(0) << 1'
+    assumptions: [uniform equilibrium, plane waves]
+    lost: inhomogeneity (continuum damping), kinetic damping
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch08_mhd.py, checks: [Linearized ideal MHD]}
+      - {sympy: derivations/chapters/ch13_finite_temperature_waves.py, checks: [Shear Alfvén wave, Perpendicular magnetosonic wave]}
+    coverage: {plasma: [mhd-linearized, warm-magnetosonic-waves]}
+  # -------------------------------------------------------- equilibrium
+  - from: ideal-mhd
+    to: mhd-equilibrium
+    method: static limit
+    small: 'u -> 0, quad partial_(t) -> 0'
+    assumptions: [no flow]
+    lost: dynamics, flows
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch08_mhd.py, checks: [Magnetic pressure and tension, Theta- and z-pinch balance]}
+    coverage: {plasma: [mhd-equilibrium], fusion: [B4, B6]}
+  - from: ideal-mhd
+    to: mhd-stability
+    method: linearization about an equilibrium (energy principle)
+    small: 'abs(vb(xi))/L << 1'
+    assumptions: [static equilibrium, ideal perturbations]
+    lost: resistive and kinetic modes, nonlinear evolution
+    status: stated
+    evidence: [{literature: "I. B. Bernstein, E. A. Frieman, M. D. Kruskal and R. M. Kulsrud, Proc. R. Soc. A 244, 17 (1958)"}]
+    coverage: {fusion: [B6]}
+  - from: mhd-equilibrium
+    to: grad-shafranov
+    method: axisymmetry
+    small: 'partial_(phi) = 0'
+    assumptions: [toroidal symmetry, no flow]
+    lost: three-dimensional fields (ripple, perturbations)
+    status: stated
+    evidence: [{literature: "V. D. Shafranov, Sov. Phys. JETP 6, 545 (1958)"}]
+    coverage: {fusion: [B6]}
+  - from: mhd-equilibrium
+    to: stellarator
+    method: three-dimensional equilibrium with assumed flux surfaces
+    assumptions: [nested flux surfaces assumed, as in variational equilibrium codes]
+    lost: islands and stochastic regions unless resolved
+    status: open-problem
+    coverage: {fusion: [B7]}
+  - from: mhd-equilibrium
+    to: transport
+    method: flux-surface geometry
+    small: 'tau_"A"/tau_"transport" << 1'
+    assumptions: [equilibrium evolves through a sequence of force-balanced states]
+    lost: fast MHD dynamics
+    status: stated
+    coverage: {fusion: [B11]}
+  # ------------------------------------------------------------- fusion
+  - from: reactivity
+    to: power-balance
+    method: volume-averaged power balance
+    assumptions: [uniform plasma, alpha particles thermalize in the plasma]
+    lost: profiles, alpha transport
+    status: stated
+    evidence: [{literature: "J. D. Lawson, Proc. Phys. Soc. B 70, 6 (1957)"}]
+    coverage: {fusion: [B3]}
+  - from: transport
+    to: power-balance
+    method: volume integral (energy confinement time)
+    assumptions: [losses summarized by $tau_(E)$]
+    lost: radial structure
+    status: stated
+    coverage: {fusion: [B3, B11]}
