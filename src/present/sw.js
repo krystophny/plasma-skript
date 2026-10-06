@@ -69,7 +69,9 @@ async function networkFirst(request) {
 self.addEventListener("fetch", (e) => {
   const url = new URL(e.request.url);
   if (e.request.method !== "GET" || url.origin !== location.origin) return;
-  if (!url.pathname.startsWith(new URL("./", self.registration.scope).pathname)) return;
+  const scope = new URL("./", self.registration.scope);
+  const fonts = new URL("../fonts/", scope).pathname;
+  if (!url.pathname.startsWith(scope.pathname) && !url.pathname.startsWith(fonts)) return;
   e.respondWith(fresh(url) ? networkFirst(e.request) : cacheFirst(e.request));
 });
 

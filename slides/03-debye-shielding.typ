@@ -48,8 +48,7 @@
   ]
   #at(7, 6, plot("debye_sphere_potential", columns: 6))
 ]
-#plot-pair("debye_potential", "debye_sphere_potential", section: "debye-finite-source", title: [Finite charge source],
-  right-caption: [$R$ source radius; $Q$ fixed charge])
+#animation-page("debye-potential-reduction", "debye_potential_reduction", section: "debye-finite-source")
 #slide(section: "debye-finite-source", title: [Finite source response])[
   #at(1, 6, y: 8mm)[
     $rho_Q = (3 Q)/(4 pi R^3)$

@@ -18,3 +18,10 @@ Content revisions:
 - 2026-10-06: Christopher Albert supplied the entropy, reservoir, and
   slot-counting ionization route and the LOOK/THINK deck direction. Original
   teaching text, diagrams, and computed plots were implemented with AI assistance.
+
+- 2026-10-06: Christopher Albert supplied the styled Alcator C-Mod comparison
+  and digitized data. The Saha–Boltzmann generator, provenance, independent
+  checks and script caption were integrated with AI assistance. Data source:
+  Lumma, Terry and Lipschultz, Physics of Plasmas 4, 2555 (1997),
+  doi:10.1063/1.872234; no source artwork is reproduced. The HTML presenter
+  export, offline repair and browser verification also used AI assistance.

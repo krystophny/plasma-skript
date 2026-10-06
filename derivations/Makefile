@@ -38,11 +38,14 @@ test: $(OUTLINE)
 	$(PYTHON) -m pytest -q test_chapters.py
 
 tex: $(TEX)
-fig: $(TEX)
+fig: $(TEX) build/fig/saha_cmod.svg
 pdf: $(PDF)
 
 build/tex/%.tex: chapters/%.py si.py notebook.py $(OUTLINE)
 	PYTHONPATH=. $(PYTHON) $<
+
+build/fig/saha_cmod.svg: plot_saha_cmod.py data/saha-cmod/data.csv
+	$(PYTHON) plot_saha_cmod.py
 
 build/pdf/%.pdf: build/tex/%.tex
 	latexmk -pdf -quiet -interaction=nonstopmode -outdir=build/pdf $< >/dev/null

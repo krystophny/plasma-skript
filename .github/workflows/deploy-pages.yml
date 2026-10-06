@@ -85,6 +85,12 @@ jobs:
           typst --version
           uv run bash scripts/build-site.sh
 
+      - name: Test presenter touch, H.264 and offline playback
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y poppler-utils
+          uv run python scripts/present-test.py _site
+
       - name: Check figure annotations
         run: typst query --root . scripts/check-figures.typ '<physics-check>' >/dev/null
 

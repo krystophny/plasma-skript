@@ -208,6 +208,9 @@ if [[ ! -d "$site_dir" ]]; then
   fail "built site directory is missing: $site_dir"
 else
   require_file "$site_dir/index.html"
+  if ! python3 "$repo_root/scripts/check-present.py" "$site_dir"; then
+    fail "presenter artifact contract failed"
+  fi
   require_file "$site_dir/styles.css"
   for chapter in \
     01-introduction \

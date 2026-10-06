@@ -356,6 +356,13 @@
   function deckUrls() {
     const base = new URL("./", location.href);
     const urls = [new URL("manifest.json", base).href, location.href.split("#")[0]];
+    for (const asset of ["index.html", "decks.json", "present.js", "present.css",
+      "manifest.webmanifest", "icon.svg", "icon-180.png"]) {
+      urls.push(new URL("../" + asset, base).href);
+    }
+    for (const font of ["Regular", "Bold"]) {
+      urls.push(new URL(`../../fonts/STIXTwoText-${font}.otf`, base).href);
+    }
     for (const p of deck.pages) {
       urls.push(new URL(p.src, base).href);
       if (p.poster) urls.push(new URL(p.poster, base).href);

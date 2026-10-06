@@ -14,6 +14,36 @@ import pytest
 
 import notebook
 
+
+def test_saha_cmod_independent_nrl():
+    """NRL's rounded cgs coefficient is independent of the SI implementation."""
+    import math
+    import plot_saha_cmod as model
+
+    def nrl_rhs(temperature):
+        return 6.0e27 * temperature**1.5 * math.exp(-13.6 / temperature)
+
+    temperature = model.half_ionization_temperature(1e20, model.saha_ground_rhs)
+    assert abs(nrl_rhs(temperature) / 5e19 - 1) < 0.01
+    assert abs(temperature * 11604.51812 - 8687) < 10
+    # With the lecture's g_0=1 convention the reciprocal level population
+    # has half the p=1 population (g_1=2); test the actual plotted function.
+    ground = model.saha_level_population(1, temperature, 5e19, 5e19) / 2
+    assert abs(ground / 5e19 - 1) < 0.01
+
+
+def test_saha_cmod_measured_populations():
+    """Digitized experimental populations constrain the high-level prediction."""
+    import numpy as np
+    import plot_saha_cmod as model
+
+    _, levels, measured, _, row = model.load_data()
+    predicted = model.saha_level_population(
+        levels, float(row['kBT_e_eV']), float(row['n_e_m-3']), float(row['n_i_m-3']))
+    ratios = measured[levels >= 5] / predicted[levels >= 5]
+    assert len(ratios) == 6
+    assert np.all((ratios >= 1.0) & (ratios <= 1.5)), ratios
+
 CHAPTERS = sorted((Path(__file__).parent / "chapters").glob("ch*.py"))
 LINE_REFERENCE = re.compile(r'\.typ:\d|"\d*:\d+(?:-\d+)?"')
 

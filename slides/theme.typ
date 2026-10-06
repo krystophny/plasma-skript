@@ -18,6 +18,7 @@
 // slides/build/script-outline.json before compiling the decks, and copies the
 // animation posters to slides/build/media/.
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
+#import "../src/theme.typ": plain-text
 
 #let ink = rgb("#17202A")
 #let muted = rgb("#526175")
@@ -88,12 +89,24 @@
     text(size: small-size, fill: muted, counter(page).display()))
 }
 
+// Positioned metadata binds each presenter entry to its actual paged location.
+#let present-page(kind: "static", background: "light", title: "Title",
+  section: none, slug: none, video: none, loop: false) = context {
+  let cue = if section == none { "" } else {
+    let info = section-info(section)
+    info.number + " " + info.title + ": "
+  }
+  [#metadata((kind: kind, background: background, title: plain-text(title),
+    alt: cue + plain-text(title), page: counter(page).get().first(),
+    chapter: deck-chapter.get(), slug: slug, video: video, loop: loop)) <present-page>]
+}
+
 // ---------------------------------------------------------------- pages ---
 
 // One numbered page. With `section` (a script section label) the section
 // title sits at the top and the content starts at the title band.
 #let slide(section: none, title: [Credits], body) = page(foreground: page-number)[
-  #metadata((kind: "static", background: "light", title: title)) <present-page>
+  #present-page(title: title, section: section)
   #place(top + left, if section != none { section-heading(section, title: title) } else { text(size: title-size, title) })
   #let y0 = title-band
   #place(top + left, dy: y0,
@@ -103,7 +116,7 @@
 #let title-page(chapter) = page(foreground: none)[
   #deck-chapter.update(chapter)
   #let info = chapter-info(chapter)
-  #metadata((kind: "static", background: "light", title: "Title")) <present-page>
+  #present-page(title: info.title)
   // Course and chapter as a quiet eyebrow, the chapter title as the one
   // large element, the author at the foot of the text area.
   #at(1, 12, y: 52mm)[
@@ -143,9 +156,9 @@
 #let animation-page(slug, name, section: none, loop: true) = {
   let url = animation-url(name)
   page(margin: 0mm, fill: rgb("#111418"), foreground: none)[
-    #metadata((kind: "animation", slug: slug,
+    #present-page(kind: "animation", slug: slug,
       video: animation-hosts.animations.at(slug).stream_url,
-      loop: loop, background: "dark", title: slug)) <present-page>
+      loop: loop, background: "dark", title: slug, section: section)
     #link(url, image(poster-path(slug), width: 297mm, height: 210mm, fit: "contain",
       alt: "Static poster of " + slug.replace("-", " ") + "; linked animation shows the time evolution."))
   ]
@@ -157,7 +170,7 @@
   place(bottom + right, dx: -4mm, dy: -3mm,
     block(inset: 1.5mm, fill: black, text(size: 8pt, fill: white, credit)))
 })[
-  #metadata((kind: "static", background: "dark", title: file)) <present-page>
+  #present-page(background: "dark", title: file.replace("_", " ").replace(".jpg", ""), section: section)
   #image("/slides/photos/" + file, width: 297mm, height: 210mm, fit: "cover", alt: file.replace("_", " ").replace(".jpg", ""))
   #metadata(file) #label(key)
 ]
@@ -390,7 +403,7 @@
 // Data table without vertical rules: a rule above and below the body and
 // one under the header (booktabs). `header` and `rows` are arrays of content.
 #let data-table(header, rows, align: right) = table(
-  columns: header.len(),
+  columns: (auto,) * header.len(),
   align: align,
   stroke: none,
   inset: (x: 4.5mm, y: 2.6mm),

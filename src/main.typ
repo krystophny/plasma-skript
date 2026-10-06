@@ -152,6 +152,7 @@
       #html.div(class: "hero-actions")[
         #link("chapters/01-introduction.html")[Start reading]
         #link("#contents")[Contents]
+        #link("present/")[Lecture decks]
       ]
     ]
 

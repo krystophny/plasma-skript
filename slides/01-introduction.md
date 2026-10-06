@@ -3,6 +3,9 @@
 LOOK deck; THINK work takes place on blank Goodnotes notebook pages.
 No writing pages in the deck. One idea per page.
 
+Online deck: [present/01-introduction/](https://krystophny.github.io/plasma-skript/present/01-introduction/).
+The site build exports the same pages as SVG and PDF, with inline animations and offline caching.
+
 ## Page sequence
 
 | Page | Title | Kind | Script section label | Lecturer cue |

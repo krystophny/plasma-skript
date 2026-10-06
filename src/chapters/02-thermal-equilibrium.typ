@@ -408,6 +408,25 @@
   a much smaller relative threshold shift. The familiar $T tilde.op qty("1e4","K")$
   captures the order of magnitude at intermediate densities. It is neither a
   universal half-ionization temperature nor a definition of plasma.
+  A dense, detached divertor provides a test of equilibrium among highly
+  excited levels. In the Alcator C-Mod tokamak, the measured populations of
+  excited deuterium atoms agree with Saha–Boltzmann predictions within a
+  factor of 1.5 for principal quantum number $p >= 5$, at
+  $k_B T_e=qty("1.2", "eV") approx qty("1.4e4", "K")$ and
+  $n_e=n_i=qty("8.8e20", "m^-3")$ @lumma1997recombination.
+  Here $p$ labels the bound level (dimensionless), and $n_("D")(p)$ is its
+  neutral-deuterium population density in #unit("m^-3"). This partial
+  equilibrium of excited levels does not imply Saha balance of ground-state
+  atoms throughout the divertor.
+  #figure(derived-plot("saha_cmod", width: 100%),
+    alt: "Excited-deuterium densities in the detached Alcator C-Mod divertor rise from levels p=5 to 10; measured points lie 1.0 to 1.5 times above the Saha curve. The p=3 point is context. Bars show digitization uncertainty and the band spans measured electron temperature and density ranges.",
+    caption: [Saha–Boltzmann populations compared with redrawn data from
+      Lumma, Terry, and Lipschultz, _Physics of Plasmas_ *4*, 2555 (1997),
+      #link("https://doi.org/10.1063/1.872234")[doi:10.1063/1.872234], Fig. 7b.
+      Bars show digitization uncertainty only (±0.04 dex), not experimental
+      confidence intervals. The band spans the measured
+      $k_B T_e=qty("0.8", "eV")$–#qty("1.5", "eV") and ±20% $n_e$ ranges,
+      with quasineutrality $n_i=n_e$.])
   #interpretation([Validity limits], [
     Saha requires local thermodynamic equilibrium and the appropriate reverse
     reactions. In dilute plasmas where radiative escape dominates recombination,

@@ -124,14 +124,55 @@ To serve an existing build on localhost without rebuilding, use
 rebuild separately with `nix run .#build-site`.
 
 The site build also compiles the live lecture decks `slides/<stem>.typ` (A4
-landscape, for annotation during class) to `public/slides/<stem>.pdf` through
+landscape) to `public/slides/<stem>.pdf` through
 `scripts/build-slides.sh`. The decks take section numbers and titles from the
 script and reuse its derived plots. `scripts/export-course-folder.sh <dest>`
-copies the deck PDFs, animations, and derivations into a course folder.
+copies the deck PDFs, Skript PDF, animations, and derivations into a course folder.
 
 The repository includes a GitHub Pages workflow that builds the same bundle
-with Nix and deploys pushes to `main`. Enable GitHub Pages with GitHub Actions
+with Typst and uv and deploys pushes to `main`; Nix checks run separately.
+Enable GitHub Pages with GitHub Actions
 as its publishing source in the repository settings.
+
+## HTML presentation mode
+
+Open [Lecture decks](https://krystophny.github.io/plasma-skript/present/) on
+the iPad or a desktop. Each deck lives at `present/<stem>/`, alongside its
+downloadable `slides/<stem>.pdf`. LOOK uses the complete deck; THINK uses a
+separate Goodnotes notebook. There are no blank writing pages in the deck.
+The presenter supports touch navigation, keyboard navigation, inline video,
+overview and a Pencil laser. Its existing layout is shared by all chapters.
+
+`scripts/build-present.py` compiles SVG pages from the same `slides/*.typ`
+sources as the PDFs. It checks one `<present-page>` entry per physical page
+and agreement with the PDF count, then writes `decks.json` and each deck's
+`manifest.json`. The manifest includes chapter/title, PDF link, aspect ratio,
+page alternatives, backgrounds, animation loop flags, and hashed SVG, poster
+and video URLs. Videos are copied to `present/media/` and must match the
+checksums in `media/animations.json`; CI downloads these exact streams when
+local renders are unavailable. Missing media abort the staged site build.
+
+Opening a deck online saves its complete content and shared UI assets with a
+service worker. Wait for the offline save to finish (the O key reports its
+status) before disconnecting. Reload and inline animation playback then work
+offline. Manifests and UI files refresh online; SVG/PNG/MP4 content is cached
+by its mandatory `?v=<sha8>` URL. Cached MP4s support byte-range requests.
+Browser storage can be evicted, so reopen online before relying on an old copy.
+
+Run `uv run python scripts/present-test.py public` to serve and test the real
+bundle, or supply a live `https://.../present/` URL. The test uses
+`/usr/bin/google-chrome-stable` for H.264 and `pdfinfo` for independent page
+counts; touch, keys, every animation, offline reload and console errors are
+checked. `CHROMIUM_EXECUTABLE_PATH` selects another codec-capable browser.
+`verify-spec` also checks manifests, hashes and same-origin media without a browser.
+
+After committing, `scripts/publish.sh` builds, checks, exports to
+`~/Nextcloud/lv/plasma/2026`, and pushes `main` to `origin` and `github`.
+It never creates a commit. The export maintains `slides/`, `skript/`,
+`animations/`, `animation-sources/`, and `derivations/`; the Skript PDF is
+`skript/plasma-physics.pdf`. Install the opt-in export hook with
+`install -m755 scripts/hooks/pre-push .git/hooks/pre-push`. Direct main pushes
+then export a current built bundle and reject stale source fingerprints.
 
 ## Licensing
 

@@ -3,6 +3,9 @@
 LOOK deck; THINK derivations take place in the separate Goodnotes notebook.
 No blank or titled writing pages. Stable script labels resolve through the outline.
 
+Online deck: [present/02-thermal-equilibrium/](https://krystophny.github.io/plasma-skript/present/02-thermal-equilibrium/).
+The site build exports the same pages as SVG and PDF, with inline animations and offline caching.
+
 ## Page sequence
 
 | Page | Title | Kind | Script section label | Lecturer cue |
