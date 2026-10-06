@@ -398,6 +398,19 @@
   async function start() {
     const res = await fetch("manifest.json", { cache: "no-cache" });
     deck = await res.json();
+    if ("serviceWorker" in navigator) {
+      try {
+        await navigator.serviceWorker.register("../sw.js", { scope: "../" });
+        await navigator.serviceWorker.ready;
+        // Keep the initial MP4 request and subsequent footer/range reads on
+        // the same transport. Claiming a page during playback can interrupt
+        // Chrome's demuxer when it switches from HTTP to cached responses.
+        if (!navigator.serviceWorker.controller) {
+          await new Promise((resolve) => navigator.serviceWorker.addEventListener(
+            "controllerchange", resolve, { once: true }));
+        }
+      } catch { /* The online deck still works if registration is unavailable. */ }
+    }
     root.style.setProperty("--aspect", String(deck.aspect || 297 / 210));
     document.title = `${deck.course} ${deck.chapter} · ${deck.title}`;
     pages = deck.pages.map(buildPage);
@@ -412,10 +425,7 @@
     if (pdf && deck.pdf) pdf.href = deck.pdf;
     go(pageFromHash() ?? 0, { replace: true });
     keepAwake();
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("../sw.js", { scope: "../" })
-        .then(() => makeOffline(true)).catch(() => {});
-    }
+    if (navigator.serviceWorker?.controller) makeOffline(true).catch(() => {});
   }
 
   start().catch((err) => {

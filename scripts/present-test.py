@@ -57,8 +57,11 @@ def check(browser, base, artifacts):
         """)
         page = context.new_page()
         errors = []
+        media_responses = []
         page.on("pageerror", lambda error: errors.append(str(error)))
         page.on("console", lambda message: errors.append(message.text) if message.type == "error" else None)
+        page.on("response", lambda response: media_responses.append(response)
+                if response.request.resource_type == "media" else None)
         url = urljoin(base, deck["stem"] + "/")
         manifest = context.request.get(urljoin(url, "manifest.json")).json()
         pdf = context.request.get(urljoin(url, manifest["pdf"]))
@@ -96,6 +99,9 @@ def check(browser, base, artifacts):
                 assert not page.evaluate("Boolean(document.fullscreenElement)")
         page.wait_for_function("window.cacheResult !== null", timeout=180000)
         assert page.evaluate("window.cacheResult.failed") == 0
+        if animations:
+            assert media_responses and all(response.from_service_worker for response in media_responses), \
+                "First-visit MP4 range reads must not switch transports during playback"
         page.keyboard.press("Home")
         context.set_offline(True)
         page.reload()
