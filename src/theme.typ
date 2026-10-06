@@ -92,6 +92,16 @@
   if found.len() > 0 and found.first().has("label") { str(found.first().label) }
 }
 
+// An unnumbered subsection inside a section; it adds no outline entry and
+// does not count as a section of the section contract.
+#let subsection-title(body) = context {
+  if target() == "paged" {
+    heading(level: 3, numbering: none, outlined: false, body)
+  } else {
+    html.h3(body)
+  }
+}
+
 #let page-title(number: none, body) = context {
   let title = if number == none { body } else { [#number. #body] }
   chapter-number.update(number)

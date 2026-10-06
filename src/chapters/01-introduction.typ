@@ -1,6 +1,7 @@
 #import "../theme.typ": *
 #import "../figures.typ": model-hierarchy, intro-enclosed-charge, intro-heating-drift, intro-speed-distribution, intro-thermal-speed, intro-scale-ordering
 #import "@preview/physica:0.9.8": grad, div, curl, laplacian, pdv, dv, vb
+#import "../map.typ": model-map-figure, map-data, map-link
 
 #let chapter = [
   #page-title(number: 1)[Introduction] <introduction>
@@ -414,6 +415,25 @@
   )
 
   #model-hierarchy
+
+  #subsection-title[Map of plasma models] <intro-model-map>
+
+  These four descriptions are a small part of a larger landscape. The map
+  below places #map-data.nodes.len() plasma models between the first
+  principles at the top, the classical Maxwell--Lorentz many-body system and
+  the many-electron Schrödinger equation, and the fluid, wave and equilibrium
+  models at the bottom; each arrow is a reduction with its own small
+  parameters and assumptions.
+
+  This course follows the highlighted route. From the quantum branch it
+  takes only thermal equilibrium (Saha ionization, the Fermi energy). It
+  reaches the Vlasov equation by coarse graining instead of deriving it from
+  the many-body dynamics, and it leaves the many-body hierarchy, the
+  collision operators and drift kinetics to the Kinetic Theory course. The
+  #map-link[interactive map] shows the equations, assumptions and
+  verification status of every model and reduction.
+
+  #model-map-figure()
 
   #interpretation(
     [Equilibrium is a model statement],

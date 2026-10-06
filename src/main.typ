@@ -24,6 +24,7 @@
 #import "chapters/16-sheaths-probes.typ": chapter as sheaths
 #import "appendices/mathematical-toolkit.typ": appendix as mathematical-toolkit
 #import "appendices/cgs-translation.typ": appendix as cgs-translation
+#import "map.typ": model-map-page
 
 #let chapters = (
   (
@@ -192,6 +193,13 @@
         Gaussian CGS forms used in much of the older plasma literature.
       ]
       #link("appendices/cgs-translation.html")[Open the CGS translation →]
+      #html.h2[Map of plasma models]
+      #html.p[
+        An interactive map of the models of plasma physics and the
+        reductions that connect them, shared with the Fusion Physics and
+        Kinetic Theory courses.
+      ]
+      #link("map/index.html")[Open the map →]
     ]
 
     #html.section(class: "content-sections", id: "glossary")[
@@ -398,7 +406,16 @@
   #page-shell(stylesheet: "../styles.css")[#cgs-translation]
 ]
 
+#document("map/index.html", title: [Map of plasma models])[
+  #page-shell(stylesheet: "../styles.css")[
+    #html.link(rel: "stylesheet", href: "map.css")
+    #model-map-page()
+  ]
+]
+
 #asset("styles.css", read("styles.css"))
+#asset("map/map.css", read("map.css"))
+#asset("map/map.js", read("map.js"))
 #for name in ("STIXTwoMath-Regular", "STIXTwoText-Regular",
     "STIXTwoText-Italic", "STIXTwoText-Bold", "STIXTwoText-BoldItalic") {
   asset("fonts/" + name + ".otf",

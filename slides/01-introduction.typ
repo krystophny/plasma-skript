@@ -2,6 +2,7 @@
 #import "@preview/physica:0.9.8": dv
 #show: deck.with(chapter: 1)
 #import "intro-drawings.typ": phase-cells, ladder
+#import "/src/map.typ": model-map-diagram, map-data
 #photo-page("sun_flare_sdo.jpg", [NASA/SDO, public domain], "photo-sun")
 #photo-page("aurora_iss.jpg", [NASA, public domain], "photo-aurora")
 #photo-page("carina_eso.jpg", [ESO, CC BY 4.0], "photo-carina")
@@ -66,6 +67,13 @@
 #slide(section: "intro-model-hierarchy", title: [Model ladder])[
   #at(1, 8, y: 0mm, ladder())
   #at(9, 4, y: 52mm)[$n_s = integral f_s dif^3 v$ #v(10mm) $n_s bold(u)_s = integral bold(v) f_s dif^3 v$]
+]
+// Full-slide map of plasma models (script: intro-model-map), course route
+// highlighted; the whole figure links to the interactive map.
+#page(foreground: page-number)[
+  #present-page(title: [Map of plasma models], section: "intro-model-hierarchy")
+  #place(center + horizon, link(map-data.site + "map/index.html?course=plasma",
+    model-map-diagram()))
 ]
 #credits-page((
   ("photo-sun", [NASA/SDO, public domain], "svs.gsfc.nasa.gov/14589"),

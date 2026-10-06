@@ -28,8 +28,9 @@ The site build exports the same pages as SVG and PDF, with inline animations and
 | 16 | Coarse graining | static | intro-model-hierarchy | Ensemble average and finite cells. |
 | 17 | Particles to moments | animation | intro-model-hierarchy | Information loss. |
 | 18 | Model ladder | static | intro-model-hierarchy | Closure and scale ordering. |
-| 19 | Plasma phenomena | static | intro-plasma-state | Transport and radiation. |
-| 20 | Source credits | static | introduction | Provenance and disclosure. |
+| 19 | Map of plasma models | figure | intro-model-hierarchy | Full-slide map, course route highlighted; the figure links to the interactive map (`map/index.html?course=plasma`). Point to the two first principles, the route of this course and what it leaves to Kinetic Theory (BBGKY, collision operators), Fusion Physics (drift kinetics, transport) and research (most of the quantum branch); click one arrow, e.g. two-fluid → resistive MHD. |
+| 20 | Plasma phenomena | static | intro-plasma-state | Transport and radiation. |
+| 21 | Source credits | static | introduction | Provenance and disclosure. |
 
 ## Evidence and assets
 
@@ -37,3 +38,5 @@ The site build exports the same pages as SVG and PDF, with inline animations and
 All diagrams and plots are original; plots share the Skript derivation source.
 Animations use media/animations.json and retain their PDF posters.
 Photo provenance, where applicable, is in photos/credits.md.
+The map of plasma models is the chapter-1 script figure, drawn by
+`src/map.typ` from `map/plasma-models.yaml`.
