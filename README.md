@@ -173,6 +173,9 @@ It never creates a commit. The export maintains `slides/`, `skript/`,
 `skript/plasma-physics.pdf`. Install the opt-in export hook with
 `install -m755 scripts/hooks/pre-push .git/hooks/pre-push`. Direct main pushes
 then export a current built bundle and reject stale source fingerprints.
+Animation exports follow the registry and verify every MP4 checksum; stale
+local renders cannot overwrite a newer registered stream. Missing revisions
+are downloaded and verified before any student folder is synchronized.
 
 ## Licensing
 

@@ -40,6 +40,8 @@ jobs:
         run: uv run pytest -q
       - name: Check animation models against physics oracles
         run: uv run python scripts/check-physics.py
+      - name: Check animation export revision integrity
+        run: python3 scripts/animation-export-test.py
 
   site:
     runs-on: ubuntu-latest

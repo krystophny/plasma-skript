@@ -35,31 +35,6 @@ dest="$1"
 site_dir="${SITE_DIR:-$repo_root/public}"
 media_cache="${MEDIA_DIR:-$repo_root/.cache/animations}"
 
-# site media slug | exported file name (without extension)
-names=(
-  "exb-drift|exb_drift"
-  "plasma-oscillation|plasma_oscillation"
-  "debye-shielding|debye_shielding"
-  "debye-potential-reduction|debye_potential_reduction"
-  "phase-space-advection|phase_space_advection"
-  "moment-hierarchy|moment_hierarchy"
-  "diffusion-random-walk|diffusion_random_walk"
-  "wave-packet|wave_packet"
-  "magnetized-polarization|magnetized_polarization"
-  "magnetosonic-waves|magnetosonic_waves"
-  "landau-resonance|landau_resonance"
-  "two-stream-instability|two_stream_instability"
-  "sheath-formation|sheath_formation"
-  "langmuir-probe|langmuir_probe"
-  "collective-response|collective_response"
-  "particles-to-moments|particles_to_moments"
-  "pendulum-ensemble|pendulum_ensemble"
-  "debye-shielding-particles|debye_shielding_particles"
-  "coulomb-encounter-headon|coulomb_encounter_headon"
-  "coulomb-encounter-offaxis|coulomb_encounter_offaxis"
-  "coulomb-encounter-hot|coulomb_encounter_hot"
-)
-
 staging="$(mktemp -d "${TMPDIR:-/tmp}/plasma-export.XXXXXX")"
 trap 'rm -rf -- "$staging"' EXIT
 mkdir -p "$staging/slides" "$staging/skript" "$staging/animations" "$staging/animation-sources" "$staging/derivations"
@@ -73,34 +48,8 @@ cp "$site_dir/plasma-physics.pdf" "$staging/skript/"
 # Keep the exact stream revisions alongside the replaceable MP4s.
 cp "$site_dir/media/animations.json" "$staging/animations/animations.json"
 
-find_media() {
-  local file
-  for dir in "$site_dir/media" "$media_cache"; do
-    file="$dir/$1"
-    if [[ -f "$file" ]]; then
-      printf '%s\n' "$file"
-      return 0
-    fi
-  done
-  return 1
-}
-
-for entry in "${names[@]}"; do
-  IFS='|' read -r slug name <<<"$entry"
-  if ! video="$(find_media "$slug.mp4")"; then
-    echo "missing $slug.mp4; build the site first (nix run .#build-site)" >&2
-    exit 1
-  fi
-  cp "$video" "$staging/animations/$name.mp4"
-  if still="$(find_media "$slug.png")"; then
-    cp "$still" "$staging/animations/$name.png"
-  else
-    duration="$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$video")"
-    at="$(awk -v d="$duration" 'BEGIN { printf "%.2f", 0.7 * d }')"
-    ffmpeg -loglevel error -y -ss "$at" -i "$video" -frames:v 1 \
-      -vf "scale=960:-1:flags=lanczos+accurate_rnd+full_chroma_int" "$staging/animations/$name.png"
-  fi
-done
+MEDIA_DIR="$media_cache" EXPORT_MEDIA_SOURCE="$dest/animations" \
+  python3 "$repo_root/scripts/export-animation-media.py" "$site_dir" "$staging/animations"
 
 cp "$repo_root"/animations/*.py "$staging/animation-sources/"
 # Exported simulation data read by the data-driven scenes (kin6d_data.py).

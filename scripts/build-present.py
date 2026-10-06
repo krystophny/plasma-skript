@@ -64,10 +64,13 @@ def copy_video(record, slug, dest, site):
     expected = record["mp4_sha256"]
     cache = ROOT / ".cache/present-media"
     candidates = [site / "media" / (slug + ".mp4"),
+                  site / "present/media" / filename,
                   Path(os.environ.get("PRESENT_MEDIA_DIR", ROOT / ".cache/animations")) / (slug + ".mp4"),
                   Path(os.environ.get("MEDIA_DIR", ROOT / ".cache/animations")) / (slug + ".mp4"),
                   ROOT / ".cache/animations" / (slug + ".mp4"),
                   cache / (expected + ".mp4")]
+    if os.environ.get("EXPORT_MEDIA_SOURCE"):
+        candidates.append(Path(os.environ["EXPORT_MEDIA_SOURCE"]) / filename)
     for path in candidates:
         if path.is_file() and sha(path) == expected:
             shutil.copyfile(path, dest / filename)

@@ -15,6 +15,7 @@ nix run .#build-site
 nix run .#verify-spec -- public
 nix flake check
 uv run pytest -q
+python3 scripts/animation-export-test.py
 uv run python scripts/present-test.py public
 uv run bash scripts/export-course-folder.sh "${COURSE_DIR:-$HOME/Nextcloud/lv/plasma/2026}"
 # The hook rechecks export on direct pushes. This release already exported it.
