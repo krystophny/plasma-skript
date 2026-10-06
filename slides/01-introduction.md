@@ -6,7 +6,7 @@ Format"). One new idea: a plasma is identified by its collective response, and
 the model must match the scales of the observation.
 
 Source `slides/01-introduction.typ` (layout `slides/theme.typ`), built by
-`scripts/build-slides.sh` to `public/slides/01-introduction.pdf` (23 pages, 16
+`scripts/build-slides.sh` to `public/slides/01-introduction.pdf` (24 pages, 17
 numbered; blank writing pages carry no number and do not count). Photo story
 + LIVE mode (iPad on blank pages). SI throughout, k_B T in eV on plots.
 
@@ -41,7 +41,8 @@ light; website plots additionally have dark paint from the same geometry.
 | 13 | | summary | scale ordering over the full-width plot `scale_ordering` |
 | 14 | 1.4 From microscopic particles to a model (route cue) | animation | dark `particles-to-moments` poster, stable full-window player: particles → f(x,v) → n(x), u(x) |
 | 15 | | model ladder | N particles →⟨·⟩→ f(x,v,t) →∫v^k f d³v→ moments → fluids →Σ_s→ magnetohydrodynamics |
-| 16 | — | credits | photo credits with the page numbers of the photos |
+| 16 | (cue: §1.4 subsection Map of plasma models) | figure | full-slide map of plasma models, course route highlighted; the whole figure links to the interactive map (`map/index.html?course=plasma`) |
+| 17 | — | credits | photo credits with the page numbers of the photos |
 
 ## Summary pages
 
@@ -85,6 +86,13 @@ light; website plots additionally have dark paint from the same geometry.
   simplification.
 - **Particles → moments (14)** and **ladder (15)** are discussed, not
   derived. Preview chapters 4–8.
+- **Map (16).** The ladder is one route through a larger map: point to the
+  two first principles at the top (Maxwell–Lorentz N-body, many-body
+  Schrödinger), the highlighted route of this course, and what it skips (the
+  BBGKY hierarchy and collision operators: Kinetic Theory; drift kinetics and
+  transport: Fusion Physics; the quantum branch: research). Open the linked
+  interactive map and click one arrow (e.g. two-fluid → resistive MHD) to show
+  its small parameters and its SymPy check.
 
 ## Figures
 
@@ -94,6 +102,7 @@ light; website plots additionally have dark paint from the same geometry.
 | `enclosed_charge`, `maxwellian_heating`, `maxwellian_drift`, `maxwell_speed`, `thermal_speed`, `scale_ordering` | `derivations/chapters/ch01_introduction.py` | the script's figures; B and L of `scale_ordering` are sourced in `FIELD_AND_SIZE` |
 | posters `collective-response`, `particles-to-moments` | `animations/collective_response.py`, `particles_to_moments.py` | copied from the current render by `build-slides.sh` |
 | model ladder | `slides/theme.typ: model-ladder` | Fletcher; the script's `model-hierarchy` figure is a different, web-sized diagram |
+| map of plasma models | `src/map.typ: model-map-diagram` from `map/plasma-models.yaml` | the script's chapter-1 figure, unchanged; sized for the 257 mm × 170 mm text area |
 | `slides/photos/*.jpg` | see `slides/photos/credits.md` | public domain or CC BY 4.0 |
 
 Derived plots are the script's figures, one source for both: the

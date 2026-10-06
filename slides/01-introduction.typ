@@ -2,6 +2,7 @@
 // cues: 01-introduction.md. Photo credits: photos/credits.md.
 // Build: scripts/build-slides.sh.
 #import "theme.typ": *
+#import "/src/map.typ": model-map-diagram, map-data
 
 #show: deck.with(chapter: 1)
 
@@ -93,11 +94,18 @@
   plot-name: "scale_ordering",
 )
 
-// 1.4 From microscopic particles to a model: animation and model ladder.
+// 1.4 From microscopic particles to a model: animation, model ladder and the
+// map of plasma models.
 #animation-page("particles-to-moments", "particles_to_moments",
   section: "intro-model-hierarchy")
 #slide[
   #align(center, model-ladder())
+]
+// Map of plasma models (script: intro-model-map); the whole figure links to
+// the interactive map with the course route highlighted.
+#slide[
+  #place(center + horizon, link(map-data.site + "map/index.html?course=plasma",
+    model-map-diagram()))
 ]
 
 #credits-page(
