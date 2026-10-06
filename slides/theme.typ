@@ -24,6 +24,7 @@
 #let rule = rgb("#9AA5B1")
 #let plot-blue = rgb("#0072B2")
 #let plot-orange = rgb("#B55000")
+#let diagram = fletcher.diagram.with(node-stroke: 0.7pt + ink, node-inset: 8mm)
 
 #let title-size = 26pt
 #let body-size = 18pt
@@ -46,7 +47,8 @@
 // labels equal the body size. `plot-size` is the natural size divided out.
 #let plot-scale = 1.8
 #let plot-path(name) = "/derivations/build/fig/" + name + ".svg"
-#let plot(name, columns: 6) = image(plot-path(name), width: cols(columns))
+#let plot(name, columns: 6) = image(plot-path(name), width: cols(columns),
+  alt: "Computed " + name.replace("_", " ") + " plot; axes show quantities and units.")
 #let poster-path(slug) = "/slides/build/media/" + slug + ".png"
 #let animation-hosts = json("/media/animations.json")
 #let animation-url(name) = {
@@ -66,12 +68,13 @@
   assert(found.len() == 1, message: "no script section <" + label + ">")
   found.first()
 }
-#let section-heading(label) = {
+#let section-heading(label, title: none) = {
   let info = section-info(label)
-  text(size: title-size)[#info.number#h(0.6em)#info.title]
+  text(size: title-size)[#text(fill: muted, info.number)#h(0.6em)#if title == none { info.title } else { title }]
 }
 
 #let ai-line = [AI tools assisted drafting and layout; scientific review by Christopher Albert.]
+#let deck-chapter = state("deck-chapter", none)
 
 // Place `body` on the grid: columns c .. c+n-1, `y` below the content top.
 #let at(c, n, y: 0mm, body) = place(top + left, dx: col-x(c), dy: y,
@@ -86,33 +89,27 @@
 
 // One numbered page. With `section` (a script section label) the section
 // title sits at the top and the content starts at the title band.
-#let slide(section: none, body) = page(foreground: page-number)[
-  #if section != none { place(top + left, section-heading(section)) }
-  #let y0 = if section != none { title-band } else { 0mm }
+#let slide(section: none, title: [Credits], body) = page(foreground: page-number)[
+  #metadata((kind: "static", background: "light", title: title)) <present-page>
+  #place(top + left, if section != none { section-heading(section, title: title) } else { text(size: title-size, title) })
+  #let y0 = title-band
   #place(top + left, dy: y0,
     block(width: text-width, height: text-height - y0, body))
 ]
 
-// A blank writing page: no number, and it does not advance the page count.
-#let blank() = page(foreground: none)[#counter(page).update(n => n - 1)]
-#let blanks(n) = range(n).map(_ => blank()).join()
-
 #let title-page(chapter) = page(foreground: none)[
+  #deck-chapter.update(chapter)
   #let info = chapter-info(chapter)
-  #at(1, 9, y: 42mm)[
-    #text(fill: muted)[Plasma Physics]
-    #v(1.0em)
-    #text(fill: muted)[Chapter #chapter]
-    #v(1.6em)
+  #metadata((kind: "static", background: "light", title: "Title")) <present-page>
+  #at(1, 12, y: 38mm)[
+    #text(size: title-size)[Plasma Physics]
+    #v(10mm)
+    #text(size: title-size)[Chapter #chapter]
+    #v(10mm)
     #text(size: title-size)[#info.title]
+    #v(10mm)
+    #text(size: title-size)[Christopher Albert]
   ]
-  #at(1, 9, y: 112mm)[
-    Christopher Albert
-    #v(0.5em)
-    #text(fill: muted)[TU Graz#h(1.2em)WS 2026/27]
-  ]
-  #place(bottom + left,
-    block(width: cols(8), text(size: small-size, fill: muted, ai-line)))
 ]
 
 // Deck setup: page geometry, type, document metadata, and the title page.
@@ -136,10 +133,14 @@
 // The whole dark slide links to a stable HTML player, never a download URL.
 // Contain the 16:9 scene on A4 landscape so axes and labels are never cropped.
 // Media pages have no title or play badge; route cues remain in the deck plan.
-#let animation-page(slug, name, section: none) = {
+#let animation-page(slug, name, section: none, loop: true) = {
   let url = animation-url(name)
   page(margin: 0mm, fill: rgb("#111418"), foreground: none)[
-    #link(url, image(poster-path(slug), width: 297mm, height: 210mm, fit: "contain"))
+    #metadata((kind: "animation", slug: slug,
+      video: animation-hosts.animations.at(slug).stream_url,
+      loop: loop, background: "dark", title: slug)) <present-page>
+    #link(url, image(poster-path(slug), width: 297mm, height: 210mm, fit: "contain",
+      alt: "Static poster of " + slug.replace("-", " ") + "; linked animation shows the time evolution."))
   ]
 }
 
@@ -149,13 +150,14 @@
   place(bottom + right, dx: -4mm, dy: -3mm,
     block(inset: 1.5mm, fill: black, text(size: 8pt, fill: white, credit)))
 })[
-  #image("/slides/photos/" + file, width: 297mm, height: 210mm, fit: "cover")
+  #metadata((kind: "static", background: "dark", title: file)) <present-page>
+  #image("/slides/photos/" + file, width: 297mm, height: 210mm, fit: "cover", alt: file.replace("_", " ").replace(".jpg", ""))
   #metadata(file) #label(key)
 ]
 
 // One derived plot spanning `columns` grid columns, centred on the grid, with
 // an optional line of formulas underneath.
-#let plot-page(name, columns: 8, section: none, below: none) = slide(section: section)[
+#let plot-page(name, columns: 8, section: none, title: none, below: none) = slide(section: section, title: if title == none { name.replace("_", " ") } else { title })[
   #let start = 1 + int((12 - columns) / 2)
   #at(start, columns)[
     #plot(name, columns: columns)
@@ -168,8 +170,8 @@
 
 // Two derived plots side by side, six columns each, with optional muted
 // lines naming the symbols of each plot.
-#let plot-pair(left, right, section: none, left-caption: none,
-  right-caption: none) = slide(section: section)[
+#let plot-pair(left, right, section: none, title: [Comparison], left-caption: none,
+  right-caption: none) = slide(section: section, title: title)[
   #for (start, name, caption) in ((1, left, left-caption), (7, right, right-caption)) {
     at(start, 6)[
       #plot(name)
@@ -181,9 +183,6 @@
   }
 ]
 
-// A section start without a picture: the title over an empty writing area.
-#let section-page(section) = slide(section: section)[]
-
 // --------------------------------------------------------------- summary ---
 
 // Block labels have the body size; small capitals set them apart.
@@ -191,7 +190,7 @@
 // Step label of a derivation chain: "Gauss ⇒".
 #let step(body) = [#body#h(0.3em)#sym.arrow.r.double]
 #let label-gap = 5mm
-#let row-gap = 7mm
+#let row-gap = 3mm
 
 // Rows of (label, formula): labels right-aligned in a column of width `lw`,
 // formulas left-aligned from the common axis lw + label-gap. Each row is one
@@ -228,7 +227,7 @@
 // under the assumptions); `caption` names the plot's own symbols.
 #let summary(assumptions: (), symbols: none, derivation: (), result: none,
   result-name: none, plot-name: none, caption: none, below-result: none,
-  section: none) = slide(section: section)[
+  section: none, title: [Derivation summary]) = slide(section: section, title: title)[
   #context {
     let lw = label-width(assumptions, derivation)
     at(1, 6)[
@@ -237,7 +236,7 @@
         v(6mm, weak: true)
         text(fill: muted, symbols)
       }
-      #v(15mm, weak: true)
+      #v(5mm, weak: true)
       #labelled[Derivation][#rows(derivation, lw)]
     ]
   }
@@ -365,15 +364,19 @@
 // ---------------------------------------------------------------- credits ---
 
 // Credits: one row per photo with the number of its page, then a closing line.
-#let credits-page(entries, closing) = slide[
+#let credits-page(entries, closing) = context {
+  let last-section = script-outline.sections.filter(s => s.number != none and
+    s.number.starts-with(str(deck-chapter.get()) + ".")).last().label
+  slide(section: last-section, title: [Source credits])[
   #at(1, 12, grid(
-    columns: (cols(1), 1fr), column-gutter: gutter, row-gutter: 10mm,
+    columns: (cols(1), 1fr), column-gutter: gutter, row-gutter: 5mm,
     ..for (key, body, source) in entries {
       (
         align(right, text(fill: muted, context counter(page).at(label(key)).first())),
         [#body#v(4mm, weak: true)#text(fill: muted, source)],
       )
     },
-    [], block(above: 4mm, closing),
+    [], block(above: 4mm)[#closing#v(4mm)#text(size: small-size, fill: muted, ai-line)],
   ))
-]
+  ]
+}

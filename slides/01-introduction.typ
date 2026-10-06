@@ -1,119 +1,98 @@
-// Plasma Physics live deck, script chapter 1. Level-2 plan and lecturer
-// cues: 01-introduction.md. Photo credits: photos/credits.md.
-// Build: scripts/build-slides.sh.
 #import "theme.typ": *
-
+#import "@preview/physica:0.9.8": dv
 #show: deck.with(chapter: 1)
-
-// 1.1 Plasma as a collective state. Photo story, then collective response
-// (animation, LIVE, summary) and the empty n-T plane (LIVE).
-#photo-page("sun_flare_sdo.jpg", [NASA/SDO, public domain], "photo-sun",
-  section: "intro-plasma-state")
-#photo-page("aurora_iss.jpg", [NASA, ISS Expedition 23, public domain], "photo-aurora")
+#slide(section: "intro-plasma-state", title: [Plasma state])[
+  #at(1, 6, y: 8mm, diagram(spacing: 22mm,
+    node((0,0), [ions $+Z e$]), edge("<->"), node((1,0), [electrons $-e$]),
+    edge((0,0),(0.5,1),"-|>"), edge((1,0),(0.5,1),"-|>"), node((0.5,1), [collective fields]),
+  ))
+  #at(7, 6, y: 18mm)[
+    #result-box($rho_q = sum_s q_s n_s$, [charge density])
+    #v(12mm) mobile charges \ collective response \ observation scale
+    #v(8mm) #text(fill: muted)[$q_s$ charge; $n_s$ density]
+  ]
+]
+#photo-page("sun_flare_sdo.jpg", [NASA/SDO, public domain], "photo-sun")
+#photo-page("aurora_iss.jpg", [NASA, public domain], "photo-aurora")
 #photo-page("carina_eso.jpg", [ESO, CC BY 4.0], "photo-carina")
 #photo-page("hall_thruster_jpl.jpg", [NASA/JPL-Caltech, public domain], "photo-thruster")
-
-#animation-page("collective-response", "collective_response")
-#blanks(2)
-#summary(
-  assumptions: (
-    ([species $s$], $rho_q = sum_s q_s n_s$),
-    ([electrons, ions], $q_e = -e, quad q_i = Z_i e$),
-    ([screened charge $Q$], $phi = display(Q/(4 pi epsilon_0 r)) e^(-r slash lambda_D)$),
-  ),
-  symbols: [$rho_q$~charge density, $q_s$~charge, $n_s$~density,
-    $e$~elementary charge, $Z_i$~ion charge state, $phi$~potential,
-    $r$~distance,
-    $lambda_D$~Debye length (chapter~2)],
-  derivation: (
-    ([insert charges], $rho_q = e (sum_i Z_i n_i - n_e)$),
-    (step[Gauss], $Q_"enc" = -4 pi epsilon_0 r^2 display((dif phi)/(dif r))$),
-    ([], $Q_"enc" = Q (1 + r slash lambda_D) e^(-r slash lambda_D)$),
-    (step[$r >> lambda_D$], $Q_"enc" -> 0, quad rho_q approx 0$),
-  ),
-  result: $n_e approx sum_i Z_i n_i$,
-  result-name: [quasineutrality],
-  plot-name: "enclosed_charge",
-  caption: [$Q_"enc"$~net charge inside radius $r$],
-)
-#plot-page("nt_plane", columns: 10)
-#blanks(2)
-
-// 1.2 Speed, energy, and temperature: heating widens, acceleration shifts
-// the Maxwellian; LIVE; summary; thermal speeds in eV and K.
-#plot-pair("maxwellian_heating", "maxwellian_drift",
-  section: "intro-speed-energy-temperature")
-#blanks(2)
-#summary(
-  assumptions: (
-    ([kinetic energy], $epsilon_("kin",s) = m_s v^2 slash 2$),
-    ([thermal energy], $epsilon_("th",s) = k_B T_s$),
-    ([Maxwellian], $f prop exp(-(v_x - u_s)^2 slash v_"th"^2)$),
-    ([temperatures], $T_e != T_i$),
-  ),
-  symbols: [$m_s$~mass, $v$~speed, $v_x$~velocity component, $u_s$~drift,
-    $T_s$~temperature, $k_B$~Boltzmann constant, $f$~distribution function],
-  derivation: (
-    ([convention], $m_s v_"th"^2 slash 2 = k_B T_s$),
-    (step[variance], $chevron.l (v_x - u_s)^2 chevron.r = k_B T_s slash m_s$),
-    (step[speeds], $v_"peak" = v_"th"$),
-    ([], $chevron.l v chevron.r = display(2/sqrt(pi)) thin v_"th"$),
-    ([], $v_"rms" = sqrt(3 slash 2) thin v_"th"$),
-  ),
-  result: $v_("th",s) = sqrt(display((2 k_B T_s)/m_s))$,
-  result-name: [$v_"th"$~thermal speed],
-  plot-name: "maxwell_speed",
-  caption: [$F$~speed distribution, $chevron.l v chevron.r$~mean speed],
-)
-#plot-page("thermal_speed", columns: 8,
-  below: [$k_B T = 1 "eV" quad <-> quad T approx 1.16 dot 10^4 "K"$])
-
-// 1.3 Characteristic scales and ordering: LIVE from the titled page, then
-// the summary over the full-width plot.
-#section-page("intro-scales")
-#blanks(1)
-#summary-wide(
-  assumptions: (
-    ([density], $n_e$),
-    ([temperature], $k_B T_e$),
-    ([magnetic field], $B$),
-    ([system size], $L$),
-  ),
-  derivation: (
-    ([Debye length], $lambda_D = sqrt(epsilon_0 k_B T_e slash (n_e e^2))$),
-    ([plasma frequency], $omega_(p e) = sqrt(n_e e^2 slash (epsilon_0 m_e))$),
-    ([cyclotron frequency], $omega_(c e) = e B slash m_e$),
-    ([gyroradius], $rho_e = v_("th",e) slash omega_(c e)$),
-    ([mean free path], $lambda_"mfp" = chevron.l v chevron.r slash nu_(e i)$),
-  ),
-  result: $ ell &<< L quad &&"average" \ ell &gt.tilde L quad &&"resolve" $,
-  result-name: none,
-  notes: [$ell$~any length scale],
-  derivation-notes: [$nu_(e i)$~electron–ion collision rate],
-  plot-name: "scale_ordering",
-)
-
-// 1.4 From microscopic particles to a model: animation and model ladder.
-#animation-page("particles-to-moments", "particles_to_moments",
-  section: "intro-model-hierarchy")
-#slide[
-  #align(center, model-ladder())
+#animation-page("collective-response", "collective_response", loop: false)
+#slide(section: "intro-plasma-state", title: [Quasineutrality])[
+  #at(1, 6, y: 8mm)[
+    $rho_q = e (sum_i Z_i n_i - n_e)$
+    #v(12mm) #result-box($n_e approx sum_i Z_i n_i$, [$L >> lambda_D$])
+    #v(10mm) #text(fill: muted)[$L$ observation length \ $lambda_D$ screening length (chapter 3)]
+  ]
+  #at(7, 6, plot("enclosed_charge", columns: 6))
 ]
-
-#credits-page(
-  (
-    ("photo-sun",
-      [NASA/SDO (Scientific Visualization Studio), X5.8 flare, 11 May 2024, public domain.],
-      "svs.gsfc.nasa.gov/14589"),
-    ("photo-aurora",
-      [NASA, ISS Expedition 23, aurora australis, 29 May 2010, public domain.],
-      "commons.wikimedia.org/wiki/File:Aurora_Australis_From_ISS.JPG"),
-    ("photo-carina",
-      [ESO, Carina Nebula (eso0905a), CC BY 4.0 (creativecommons.org/licenses/by/4.0).],
-      "eso.org/public/images/eso0905a"),
-    ("photo-thruster",
-      [NASA/JPL-Caltech, 6 kW xenon Hall thruster, 2007, public domain.],
-      "commons.wikimedia.org/wiki/File:Xenon_hall_thruster.jpg"),
-  ),
-  [Plots, diagrams and animations: Christopher Albert, CC BY 4.0.],
-)
+#plot-page("nt_plane", columns: 10, section: "intro-plasma-state", title: [Example plasmas])
+#plot-pair("maxwellian_heating", "maxwellian_drift", section: "intro-speed-energy-temperature", title: [Thermal motion])
+#slide(section: "intro-speed-energy-temperature", title: [Thermal speed])[
+  #at(1, 6, y: 8mm)[
+    #result-box($v_("th",s) = sqrt((2 k_B T_s)/m_s)$, [thermal-speed convention])
+    #v(10mm) $chevron.l (v_x-u_s)^2 chevron.r = (k_B T_s)/m_s$
+    #v(8mm) $v_"peak" = v_("th",s), quad v_"rms" = sqrt(3/2) v_("th",s)$
+    #v(10mm) #text(fill: muted)[$m_s$ mass; $u_s$ mean flow \ $T_s$ temperature]
+  ]
+  #at(7, 6, plot("maxwell_speed", columns: 6))
+]
+#plot-page("thermal_speed", columns: 8, section: "intro-speed-energy-temperature", title: [Temperature scales],
+  below: [$k_B T = 1 "eV" quad <-> quad T approx 11605 "K"$])
+#slide(section: "intro-scales", title: [Characteristic scales])[
+  #at(1, 12, grid(columns: (1fr, 1fr), column-gutter: gutter, row-gutter: 8mm,
+    [$lambda_D = sqrt((epsilon_0 k_B T_e)/(n_e e^2))$], [$omega_(p e) = sqrt((n_e e^2)/(epsilon_0 m_e))$],
+    [$rho_e = v_("th",e)/omega_(c e)$], [$lambda_"mfp" = chevron.l v chevron.r / nu_(e i)$],
+  ))
+  #at(1, 12, y: 46mm, plot("scale_ordering", columns: 12))
+]
+#slide(section: "intro-model-hierarchy", title: [Microscopic dynamics])[
+  #at(1, 12, y: 8mm)[
+    #result-box($dv(bold(r)_j,t)=bold(v)_j, quad m_j dv(bold(v)_j,t)=q_j (bold(E)+bold(v)_j times bold(B))$, [$N$ coupled trajectories])
+    #v(12mm) #grid(columns: (1fr, 1fr), column-gutter: gutter,
+      [$N tilde.op 10^20$ \ $tilde.op N^2$ pair interactions], [self-consistent $bold(E), bold(B)$ \ Maxwell field equations])
+    #v(18mm) #diagram(spacing: 38mm,
+      node((0,0), [particle trajectories]), edge("-|>"), node((1,0), [$rho_q, bold(j)$]),
+      edge("-|>"), node((2,0), [$bold(E),bold(B)$]), edge((2,0),(0,0),"-|>", bend: -45deg),
+    )
+  ]
+]
+#slide(section: "intro-model-hierarchy", title: [Phase space])[
+  #at(1, 6, y: 10mm, diagram(spacing: 24mm,
+    node((0,0), [$bold(x)$ \ position (3)]), node((1,0), [$bold(v)$ \ velocity (3)]),
+    edge((0,0),(0.5,1),"-|>"), edge((1,0),(0.5,1),"-|>"), node((0.5,1), [$bold(z)=(bold(x),bold(v))$]),
+  ))
+  #at(7, 6, y: 18mm)[
+    #result-box($f_s(bold(x),bold(v),t)$, [one-particle distribution])
+    #v(12mm) $f_s dif^3 x dif^3 v$ \ particle count [1]
+    #v(8mm) #text(fill: muted)[$f_s$: $"s"^3 "m"^(-6)$]
+  ]
+]
+#slide(section: "intro-model-hierarchy", title: [Coarse graining])[
+  #at(1, 12, y: 10mm, diagram(spacing: 24mm,
+    node((0,0), [particles]), edge("-|>"), node((1,0), [ensemble average]),
+    edge("-|>"), node((2,0), [finite cells]),
+  ))
+  #at(1, 12, y: 72mm, result-box($n_s(bold(x),t)=integral f_s dif^3 v$, [velocity integration → number density]))
+]
+#animation-page("particles-to-moments", "particles_to_moments", loop: false)
+#slide(section: "intro-model-hierarchy", title: [Model ladder])[
+  #at(1, 12, y: 8mm, diagram(spacing: 17mm,
+    node((0,0), [particles]), edge("-|>"), node((1,0), [$f_s$]), edge("-|>"),
+    node((2,0), [moments]), edge("-|>"), node((3,0), [fluids]),
+  ))
+  #at(1, 6, y: 70mm)[$n_s = integral f_s dif^3 v$ \ $n_s bold(u)_s = integral bold(v) f_s dif^3 v$]
+  #at(7, 6, y: 70mm, result-box([two fluids → MHD], [scale ordering + closure]))
+]
+#slide(section: "intro-plasma-state", title: [Plasma phenomena])[
+  #at(1, 12, y: 12mm, grid(columns: (1fr, 1fr), column-gutter: gutter, row-gutter: 18mm,
+    [screening \ $lambda_D$], [oscillations \ $omega_(p e)$],
+    [charge and heat transport \ $bold(j), bold(q)$], [radiation \ free–free; bound–free; lines],
+    [electromagnetic response \ $q (bold(E)+bold(v) times bold(B))$], [collective interaction \ $N_D >> 1$],
+  ))
+]
+#credits-page((
+  ("photo-sun", [NASA/SDO, public domain], "svs.gsfc.nasa.gov/14589"),
+  ("photo-aurora", [NASA, ISS Expedition 23, public domain], "commons.wikimedia.org/wiki/File:Aurora_Australis_From_ISS.JPG"),
+  ("photo-carina", [ESO, CC BY 4.0], "eso.org/public/images/eso0905a"),
+  ("photo-thruster", [NASA/JPL-Caltech, public domain], "commons.wikimedia.org/wiki/File:Xenon_hall_thruster.jpg"),
+), [Original plots, diagrams, animations: Christopher Albert, CC BY 4.0.])
