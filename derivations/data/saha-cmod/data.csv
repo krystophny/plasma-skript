@@ -1,0 +1,8 @@
+source_key,species,upper_level_n,n_unit,kBT_e_eV,u_kBT_e_eV,kBT_joint_min_eV,kBT_joint_max_eV,n_e_m-3,u_n_e_relative,n_i_m-3,u_n_i_relative,population_m-3,population_err_low_m-3,population_err_high_m-3,digitization_u_log10_dex,digitized_y_px,digitized_x_px,axis_x_n2_px,axis_x_n12_px,axis_y_1e16_px,axis_y_1e15_px,source_figure,author_population_error_bars
+lumma1997recombination,D0,3,dimensionless,1.2,0.5,0.8,1.5,8.8e20,0.20,8.8e20,0.20,7.03e15,6.18564e+14,6.78242e+14,0.04,1452,780,617,2244,1415,1657,Fig. 7b; ΔL=0.033 m,not reported
+lumma1997recombination,D0,5,dimensionless,1.2,0.5,0.8,1.5,8.8e20,0.20,8.8e20,0.20,7.73e15,6.80156e+14,7.45776e+14,0.04,1442,1105,617,2244,1415,1657,Fig. 7b; ΔL=0.033 m,not reported
+lumma1997recombination,D0,6,dimensionless,1.2,0.5,0.8,1.5,8.8e20,0.20,8.8e20,0.20,1.069e16,9.40604e+14,1.03135e+15,0.04,1408,1268,617,2244,1415,1657,Fig. 7b; ΔL=0.033 m,not reported
+lumma1997recombination,D0,7,dimensionless,1.2,0.5,0.8,1.5,8.8e20,0.20,8.8e20,0.20,1.506e16,1.32512e+15,1.45296e+15,0.04,1372,1430,617,2244,1415,1657,Fig. 7b; ΔL=0.033 m,not reported
+lumma1997recombination,D0,8,dimensionless,1.2,0.5,0.8,1.5,8.8e20,0.20,8.8e20,0.20,2.081e16,1.83105e+15,2.00771e+15,0.04,1338,1593,617,2244,1415,1657,Fig. 7b; ΔL=0.033 m,not reported
+lumma1997recombination,D0,9,dimensionless,1.2,0.5,0.8,1.5,8.8e20,0.20,8.8e20,0.20,2.665e16,2.34491e+15,2.57114e+15,0.04,1312,1756,617,2244,1415,1657,Fig. 7b; ΔL=0.033 m,not reported
+lumma1997recombination,D0,10,dimensionless,1.2,0.5,0.8,1.5,8.8e20,0.20,8.8e20,0.20,2.848e16,2.50593e+15,2.7477e+15,0.04,1305,1919,617,2244,1415,1657,Fig. 7b; ΔL=0.033 m,not reported

@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Opt in: install -m755 scripts/hooks/pre-push .git/hooks/pre-push
+# Export exactly the built revision before publishing; never rebuild implicitly.
+set -euo pipefail
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+[[ "${COURSE_EXPORT_DONE:-0}" == 1 ]] && exit 0
+publish_main=0
+while read -r local_ref local_sha remote_ref remote_sha; do
+  if [[ "$remote_ref" == refs/heads/main && "$local_sha" != 0000000000000000000000000000000000000000 ]]; then
+    if [[ "$local_sha" != "$(git rev-parse HEAD)" ]]; then
+      echo "Export requires the checked-out main revision; use scripts/publish.sh" >&2
+      exit 1
+    fi
+    publish_main=1
+  fi
+done
+[[ "$publish_main" == 0 ]] && exit 0
+if ! git diff --quiet HEAD -- .; then
+  echo "Commit tracked changes before exporting the revision being pushed" >&2
+  exit 1
+fi
+if [[ ! -f public/present/build-revision.json ]] || ! python3 - <<'PY'
+import json, runpy
+from pathlib import Path
+record = json.loads(Path('public/present/build-revision.json').read_text())
+digest = runpy.run_path('scripts/build-present.py')['source_digest']()
+assert record['source_sha256'] == digest, 'Sources changed; rebuild before pushing'
+PY
+then
+  echo "No current presenter build; run scripts/publish.sh" >&2
+  exit 1
+fi
+uv run bash scripts/export-course-folder.sh "${COURSE_DIR:-$HOME/Nextcloud/lv/plasma/2026}"

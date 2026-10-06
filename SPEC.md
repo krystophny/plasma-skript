@@ -144,24 +144,25 @@ Source roles are deliberately separated.
 The chapter sequence, with the requested split of the opening material, is:
 
 1. Introduction: plasma examples, characteristic scales, and model hierarchy
-2. Debye shielding
-3. Plasma oscillations
-4. Single-particle motion
-5. Kinetic theory of plasmas
-6. Moments of the Boltzmann equation
-7. Multiple-fluid theory
-8. Single-fluid theory and magnetohydrodynamics
-9. Collisions and plasma conductivity
-10. Plasma diffusion
-11. Introduction to waves in plasmas
-12. Waves in cold magnetized plasmas
-13. Collisions, ions, and finite-temperature effects on magnetized waves
-14. Waves in hot plasmas
-15. Plasma sheaths and Langmuir probes
+2. Temperature, entropy, and thermal ionization
+3. Debye shielding
+4. Plasma oscillations
+5. Single-particle motion
+6. Kinetic theory of plasmas
+7. Moments of the Boltzmann equation
+8. Multiple-fluid theory
+9. Single-fluid theory and magnetohydrodynamics
+10. Collisions and plasma conductivity
+11. Plasma diffusion
+12. Introduction to waves in plasmas
+13. Waves in cold magnetized plasmas
+14. Collisions, ions, and finite-temperature effects on magnetized waves
+15. Waves in hot plasmas
+16. Plasma sheaths and Langmuir probes
 
-The opening material is split into three chapters at the author's request:
-an introduction with examples and a scale/model overview, followed by dedicated
-shielding and oscillation chapters. The introduction keeps the physical ideas
+The opening material occupies four chapters at the author's request:
+an introduction with examples and a scale/model overview, followed by thermal
+equilibrium, shielding, and oscillation chapters. The introduction keeps the physical ideas
 and temperature conventions, with section links to quantitative treatments.
 Screening and coupling criteria belong in the shielding chapter; plasma-frequency
 relations belong in the oscillation chapter; orbit and combined numerical scale
@@ -813,3 +814,48 @@ the print PDF and white derivation/summary slides. Hero photos cover the whole
 slide with small readable provenance at the bottom. Animation posters fill a
 dark slide without cropping their 16:9 scene or adding a play badge; mathematical
 pages stay white. Media-slide section cues live in the chapter plans.
+
+## HTML presentation mode (2026-10-06)
+
+The live LOOK deck and its PDF have a single source, `slides/<stem>.typ`.
+THINK uses a separate Goodnotes notebook; the decks contain no blank writing
+pages. Preserve the lecturer's UI in `src/present/` and its navigation and
+appearance; fix verified bugs locally rather than redesigning it.
+
+Publish the launcher at `present/` and chapter decks at `present/<stem>/`.
+The build copies the shared UI, icons and web manifest, exports one `pNN.svg`
+per PDF page, and asserts one `<present-page>` metadata entry per physical
+page. `decks.json` contains `decks: [{stem, chapter, title, pages, cover}]`.
+The cover is `<stem>/p01.svg?v=<sha8>`. Each deck's `manifest.json` contains
+`stem`, `chapter`, `title`, `course: "Plasma Physics"`,
+`author: "Christopher Albert"`, `aspect: 297/210`,
+`pdf: "../../slides/<stem>.pdf"`, and `pages`.
+Each page has `src`, `kind: static|animation`, `background: light|dark`, and
+a short `alt`. Animation pages additionally have `video`, `poster`, and
+boolean `loop`. Use the existing animation alternative description. Static
+pages use their section cue and title. Missing media or inconsistent counts
+abort the build and leave the previous complete site intact.
+
+Presenter SVG, PNG and MP4 URLs carry mandatory content hashes in `?v=`.
+Unlike reading-page streams, presenter MP4s are same-origin copies under
+`present/media/`, verified against the animation registry checksums. This
+allows inline Safari playback, service-worker caching, and byte-range replies.
+The Nix build supplies fixed-output media downloads; CI never renders videos.
+Fonts remain in `fonts/` and are explicitly included in the offline cache.
+
+Opening a deck online caches every page and animation plus the UI assets;
+after the save completes the deck can reload and play offline. HTML,
+manifests and UI files refresh online, while media is cached by its content
+URL. Cache eviction remains a browser policy; saving a deck reports failed
+files. The behavioral browser test serves the actual bundle with Range
+support, compares counts with Poppler's independent PDF reader, exercises
+touch and keys, plays every animation with an H.264-capable browser, and
+reloads and plays with the context offline. Run it locally and in Pages CI;
+the NixOS integration check uses the same test. The cheap artifact contract
+check belongs to `verify-spec`.
+
+Release with `scripts/publish.sh`: build, verify, test, export the public
+2026 course folder, and push both remotes. The export includes the Skript PDF
+at `skript/plasma-physics.pdf`. The opt-in `scripts/hooks/pre-push` export hook
+requires a current build source fingerprint. These actions require explicit
+publication authorization; the release script does not create commits.

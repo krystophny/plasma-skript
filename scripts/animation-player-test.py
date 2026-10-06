@@ -19,7 +19,7 @@ def audit(browser, base, media, artifacts, device=None):
     errors, downloads = [], []
     page.on('pageerror', lambda error: errors.append(str(error)))
     page.on('download', lambda item: downloads.append(item.suggested_filename))
-    page.goto(base + '/chapters/03-plasma-oscillations.html')
+    page.goto(base + '/chapters/04-plasma-oscillations.html')
     video = page.locator('video[src*="plasma_oscillation.mp4"]')
     player = video.locator('..')
     controls = player.locator('.animation-controls')
@@ -79,7 +79,7 @@ def audit(browser, base, media, artifacts, device=None):
     video.click(); page.wait_for_function('document.querySelector("video").currentTime > 0.3')
     video.click(); assert video.evaluate('(v) => v.paused')
     assert not page.evaluate('Boolean(document.fullscreenElement)')
-    page.goto(base + '/chapters/02-debye-shielding.html')
+    page.goto(base + '/chapters/03-debye-shielding.html')
     plot = page.locator('picture.themed-plot').first
     for theme in ('light', 'dark'):
         page.emulate_media(color_scheme=theme)

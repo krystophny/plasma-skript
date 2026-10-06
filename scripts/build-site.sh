@@ -94,6 +94,8 @@ MEDIA_DIR="$media_dir" bash "$repo_root/scripts/build-slides.sh" "$site_dir/slid
 # Link feedback to the current chapter/section without server credentials.
 python3 "$repo_root/scripts/prepare-media.py" "$site_dir"
 python3 "$repo_root/scripts/add-feedback.py" "$site_dir"
+# Copy the presenter last so reading-page enhancements never alter its UI.
+python3 "$repo_root/scripts/build-present.py" "$site_dir"
 
 if [[ -e "$target_dir" || -L "$target_dir" ]]; then
   backup_dir="$(mktemp -d "${target_dir}.previous.XXXXXX")"

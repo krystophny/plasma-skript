@@ -8,6 +8,7 @@ quadrature, rather than matching source strings or stored expected arrays.
 import ast
 import math
 from pathlib import Path
+import runpy
 import unittest
 
 import numpy as np
@@ -17,10 +18,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def model(filename):
-    """Execute only module-level numerical functions and literal constants."""
+    """Execute numerical functions and their globals without importing Manim."""
     path = ROOT / "animations" / filename
     tree = ast.parse(path.read_text(), filename=str(path))
     namespace = {"np": np, "math": math, "PI": np.pi, "TAU": 2 * np.pi}
+    if any(isinstance(node, ast.ImportFrom) and node.module == "kin6d_data" for node in tree.body):
+        namespace["Export"] = runpy.run_path(str(ROOT / "animations/kin6d_data.py"))["Export"]
+    numerical_names = set(namespace)
     nodes = []
     for node in tree.body:
         if isinstance(node, ast.FunctionDef):
@@ -29,8 +33,11 @@ def model(filename):
             try:
                 ast.literal_eval(node.value)
             except (ValueError, TypeError):
-                continue
+                referenced = {n.id for n in ast.walk(node.value) if isinstance(n, ast.Name)}
+                if not referenced <= numerical_names:
+                    continue
             nodes.append(node)
+            numerical_names.update(t.id for t in node.targets if isinstance(t, ast.Name))
     exec(compile(ast.Module(body=nodes, type_ignores=[]), str(path), "exec"), namespace)
     return namespace
 
@@ -119,14 +126,20 @@ class MotionPhysics(unittest.TestCase):
             np.testing.assert_allclose(acceleration, force, atol=1e-7)
 
     def test_slab_field_and_force_signs(self):
-        state = model("plasma_oscillation.py")["slab_state"]
+        scene = model("plasma_oscillation.py")
+        state = scene["slab_state"]
+        data, times = scene["DATA"], scene["TAU"]
+        # The scene interpolates float32 samples. Its error is bounded by the
+        # certified trajectory radius plus the cosine chord error, h²/8.
+        tolerance = data.parameters["residual_radius"] + np.max(np.diff(times))**2 / 8 + 2e-6
         for tau in (0.0, 0.7, np.pi/2, 2.0, np.pi):
             xi, field, force = state(tau)
             self.assertAlmostEqual(field, xi)  # Gauss's law (SI): E=e n xi/epsilon_0.
             self.assertAlmostEqual(force, -field)  # Electron q=-e.
-            h = 1e-4
-            acceleration = (state(tau+h)[0]-2*xi+state(tau-h)[0])/h**2
-            self.assertAlmostEqual(acceleration, force, delta=3e-8)
+            self.assertAlmostEqual(xi, math.cos(tau), delta=tolerance)
+        oracle = np.cos(times)
+        self.assertTrue(np.all(data["q_lower"] - 2e-7 <= oracle))
+        self.assertTrue(np.all(oracle <= data["q_upper"] + 2e-7))
 
     def test_sheath_energy_and_flux(self):
         m = model("sheath_formation.py")

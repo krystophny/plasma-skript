@@ -1,14 +1,14 @@
-# kin6d media — cues for decks without a plan yet
+# kin6d media cues
 
 Data-driven animations whose scientific source is kin6d (data and provenance
 in `animations/data/kin6d/<slug>/`). Cues for chapters that already have a
-deck live in their `<stem>.md` (`02-debye-shielding.md`,
-`03-plasma-oscillations.md`). This note holds the cue for chapter 9 until
-`09-collisions-conductivity.md` exists; move it there then.
+deck live in their `<stem>.md` (`03-debye-shielding.md`,
+`04-plasma-oscillations.md`). This note holds the cue for chapter 10 until
+`10-collisions-conductivity.md` exists; move it there then.
 
-## Chapter 9 — collisions and conductivity
+## Chapter 10: collisions and conductivity
 
-Section: script §9.3 "Fully ionized plasmas: Coulomb collisions"
+Section: script §10.3 "Fully ionized plasmas: Coulomb collisions"
 (`coulomb-collisions`), at the lower cutoff of the Coulomb logarithm
 (`ln(lambda_D/b_90) = ln Lambda_cut`, "strong deflection or a quantum
 correction").
@@ -29,7 +29,7 @@ electrons): trajectory picture valid vs diffraction; statistics stay
 Rutherford, cutoff b₉₀ → ƛ (ln Λ 20.1 → 17.1 at n = 10²⁰ m⁻³).
 
 The script shows `coulomb-encounter-headon` and `coulomb-encounter-hot` in
-§9.3 after the interpretation "Screening makes the long-range interaction
+§10.3 after the interpretation "Screening makes the long-range interaction
 finite"; `coulomb-encounter-offaxis` has a player page only.
 
 Suggested order: headon (exchange fringes, classical hole r < r₀) →

@@ -385,6 +385,12 @@
       #if next != none {
         link(next.href)[#next.title →]
       }
+      #let decks = ("01-introduction", "02-thermal-equilibrium",
+        "03-debye-shielding", "04-plasma-oscillations")
+      #let chapter = chapter-number.get()
+      #if chapter != none and chapter >= 1 and chapter <= decks.len() {
+        link("../present/" + decks.at(chapter - 1) + "/")[Lecture deck]
+      }
     ]
   }
 }

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en" class="launcher">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Plasma">
+<meta name="theme-color" content="#111418">
+<title>Plasma Physics · Lecture decks</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="stylesheet" href="present.css">
+</head>
+<body>
+<header class="masthead">
+  <p class="eyebrow">Lecture decks</p>
+  <h1>Plasma Physics</h1>
+  <p class="byline">Christopher Albert</p>
+</header>
+<main>
+  <ol class="decks" aria-label="Decks"></ol>
+  <p class="tip">On the iPad: open in Safari, <b>Share → Add to Home Screen</b>, and start
+    from the icon for a full-screen deck that also works offline. Swipe or tap
+    the right/left part of a page to move on or back; tap the middle of an
+    animation to play it; the Pencil is a laser pointer.
+    <a href="../">Lecture script</a></p>
+</main>
+<script>
+"use strict";
+(async () => {
+  const list = document.querySelector(".decks");
+  try {
+    const res = await fetch("decks.json", { cache: "no-cache" });
+    const { decks } = await res.json();
+    list.innerHTML = decks.map((d) => `
+      <li><a href="${d.stem}/">
+        <span class="cover" style="background-image:url('${d.cover}')"></span>
+        <span class="meta"><span class="chapter">Chapter ${d.chapter}</span>
+        <span class="title">${d.title}</span>
+        <span class="count">${d.pages} pages</span></span>
+      </a></li>`).join("");
+  } catch (err) {
+    list.innerHTML = `<li class="error">The deck list could not be loaded (${err.message}).</li>`;
+  }
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+})();
+</script>
+</body>
+</html>

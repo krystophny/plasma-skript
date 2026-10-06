@@ -4,6 +4,9 @@ version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = ["sympy>=1.13", "pytest>=8", "numpy>=1.26", "matplotlib>=3.8"]
 
+[dependency-groups]
+dev = ["playwright>=1.50"]
+
 [tool.pytest.ini_options]
 testpaths = ["derivations"]
 python_files = ["test_chapters.py"]

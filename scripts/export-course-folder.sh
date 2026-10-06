@@ -3,8 +3,9 @@
 #
 # Usage: scripts/export-course-folder.sh <dest>
 # Run after a site build (nix run .#build-site).  Writes and synchronises
-# exactly four subfolders of <dest>; everything else is left untouched:
+# exactly five subfolders of <dest>; everything else is left untouched:
 #   slides/              the live lecture decks, public/slides/<stem>.pdf
+#   skript/              public/plasma-physics.pdf
 #   animations/          rendered MP4s plus one PNG still per scene
 #   animation-sources/   animations/*.py (scenes and the shared style.py),
 #                        data/ (kin6d exports with provenance) and
@@ -61,13 +62,14 @@ names=(
 
 staging="$(mktemp -d "${TMPDIR:-/tmp}/plasma-export.XXXXXX")"
 trap 'rm -rf -- "$staging"' EXIT
-mkdir -p "$staging/slides" "$staging/animations" "$staging/animation-sources" "$staging/derivations"
+mkdir -p "$staging/slides" "$staging/skript" "$staging/animations" "$staging/animation-sources" "$staging/derivations"
 
 if ! compgen -G "$site_dir/slides/*.pdf" >/dev/null; then
   echo "missing $site_dir/slides/*.pdf; build the site first (nix run .#build-site)" >&2
   exit 1
 fi
 cp "$site_dir"/slides/*.pdf "$staging/slides/"
+cp "$site_dir/plasma-physics.pdf" "$staging/skript/"
 # Keep the exact stream revisions alongside the replaceable MP4s.
 cp "$site_dir/media/animations.json" "$staging/animations/animations.json"
 
@@ -112,12 +114,13 @@ deriv="$repo_root/derivations"
 cp "$deriv/Makefile" "$deriv"/*.py "$staging/derivations/"
 mkdir -p "$staging/derivations/chapters"
 cp "$deriv"/chapters/*.py "$staging/derivations/chapters/"
+cp -R "$deriv/data" "$staging/derivations/data"
 bash "$repo_root/scripts/script-outline.sh" "$staging/derivations/script-outline.json"
-if [[ -f "$deriv/Makefile" ]] && ! compgen -G "$deriv/build/pdf/*.pdf" >/dev/null; then
+if [[ -f "$deriv/Makefile" ]]; then
   if command -v latexmk >/dev/null 2>&1; then
     make -C "$deriv" pdf
   else
-    echo "warning: no derivation PDFs and no latexmk; exporting without PDFs" >&2
+    echo "warning: no latexmk; derivation PDFs could not be refreshed" >&2
   fi
 fi
 if compgen -G "$deriv/build/pdf/*.pdf" >/dev/null; then
@@ -126,8 +129,8 @@ if compgen -G "$deriv/build/pdf/*.pdf" >/dev/null; then
 fi
 
 mkdir -p "$dest"
-for sub in slides animations animation-sources derivations; do
+for sub in slides skript animations animation-sources derivations; do
   mkdir -p "$dest/$sub"
   rsync -r --checksum --delete "$staging/$sub/" "$dest/$sub/"
 done
-echo "Exported slides, animations, animation-sources and derivations to $dest"
+echo "Exported slides, Skript PDF, animations, animation-sources and derivations to $dest"

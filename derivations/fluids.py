@@ -1,7 +1,7 @@
 """Shared helpers for the fluid chapters 6-10.
 
 Fields of (t, x, y, z), vector calculus on component lists, and the explicit
-test distribution of Chapter 6 with its velocity integrator. Plain functions
+test distribution of Chapter 7 with its velocity integrator. Plain functions
 without display: the chapter scripts show what they compute.
 """
 
@@ -123,7 +123,7 @@ def first_order(expr, eps):
     return sp.expand(sp.diff(expr, eps).subs(eps, 0))
 
 
-# --- Test distribution of Chapter 6 ------------------------------------------
+# --- Test distribution of Chapter 7 ------------------------------------------
 # A drifting anisotropic Gaussian with a Hermite skew (kappa, gives a heat
 # flux) and a shear term (lambda, gives P_xy). All parameters are fields of
 # (t, x, y, z); s_i = (v_i - u_i)/sigma_i is the random velocity in widths.
@@ -225,7 +225,7 @@ def moments():
 # raw energy flux F_i can be checked there.
 P = [[field(f"P_{a}{b}") for b in "xyz"] for a in "xyz"]
 q = vec("q")
-eps, W = field("epsilon_s"), field("W_s")
+eps, W = field("epsilon_s"), field("E_kin_s")
 F_W = vec("F")
 EPS_DEF = (P[0][0] + P[1][1] + P[2][2]) / 2       # epsilon_s = tr(P_s)/2
 W_DEF = moment(m_s * dot(v, v) / 2)               # energy density W_s
