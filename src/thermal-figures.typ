@@ -1,5 +1,9 @@
 #import "@preview/cetz:0.5.2": canvas, draw
+#import "figures.typ": derived-plot
 #import "theme.typ": qty
+
+#let slot-standing-wave() = derived-plot("slot_standing_wave", width: 100%)
+#let slot-momentum-cutoff() = derived-plot("slot_momentum_cutoff", width: 100%)
 
 #let thermal-table() = context {
   if sys.inputs.at("outline-only", default: "false") != "true" {

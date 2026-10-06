@@ -1,7 +1,7 @@
 #import "../theme.typ": *
 #import "@preview/physica:0.9.8": pdv, dv
 #import "../figures.typ": derived-plot
-#import "../thermal-figures.typ": microstates, thermal-table
+#import "../thermal-figures.typ": microstates, thermal-table, slot-standing-wave, slot-momentum-cutoff
 
 #let chapter = [
   #page-title(number: 2)[Temperature, entropy, and thermal ionization] <thermal-equilibrium>
@@ -225,7 +225,11 @@
   #unit-ledger[
     Planck's constant $h$ is in #unit("J.s"); thermal de Broglie wavelength
     $lambda_("th",s)$ is in #unit("m"). Ionization energy $chi$ is in
-    #unit("J") or #unit("eV"). Slots $M_s$ and degeneracies $g_s$ are dimensionless counts.
+    #unit("J") or #unit("eV"). Box side $L$ and volume $V$ are in
+    #unit("m") and #unit("m^3"). Momenta $p_s$ and $p_("th",s)$ are in
+    #unit("kg.m/s"). Sharp-cutoff wavelength $lambda_s$ is in #unit("m");
+    density $n_s$ is in #unit("m^-3"). Counts $M_s$,
+    $N_s$, and $g_s$ have unit [1].
   ]
   #assumption([Dilute equilibrium mixture], [
     Neutral atoms n, singly ionized ions i, and free electrons e share one
@@ -235,14 +239,49 @@
     $n_s lambda_("th",s)^3/g_s << 1$. Interactions do not shift the isolated
     atom's binding energy. Only one ionization stage is retained.
   ])
-  A slot is a thermally weighted one-particle state. Its effective count need
-  not be an integer because kinetic energies receive different Boltzmann
-  weights. For particle mass $m_s$, the thermal de Broglie wavelength is
+  First estimate the number of one-particle patterns in a box. A wave reflects
+  from the walls and forms a standing mode. In one direction its wavelength
+  $lambda_s=h/p_s$ fits an integer number of half-waves across side $L$.
+  Independent directions give about one distinguishable pattern per spatial
+  cell of volume $lambda_s^3$. For momentum scale $p_s$, the sharp-cutoff
+  estimate is
+  $ lambda_s=h/p_s, quad M_s approx g_s V/lambda_s^3,
+    quad M_s/N_s approx g_s/(n_s lambda_s^3) . $ <thermal-mode-estimate>
+  Geometry and boundary conditions change only order-one factors in this
+  estimate. The internal degeneracy $g_s$ counts states with the same energy;
+  $N_s=n_s V$ is the number of particles of species $s$.
+  #figure(slot-standing-wave(),
+    alt: "A standing wave is drawn between two box walls. Its normalized amplitude vanishes at both walls; a double arrow marks one wavelength lambda_s inside box side L.",
+    caption: [A one-dimensional section of a box mode; independent standing-wave choices in the other two directions give the volume estimate $V/lambda_s^3$. The plotted amplitude is normalized and labelled [1]; $L$ and $lambda_s$ are lengths in #unit("m").])
+
+  Let $bold(p)$ be a particle's momentum vector and $p=abs(bold(p))$ its
+  magnitude. Thermal particles do not stop at a sharp momentum boundary.
+  Momentum states carry a Maxwell--Boltzmann weight
+  $exp(-bold(p)^2/(2m_s k_B T))$. The
+  characteristic thermal momentum is $p_("th",s)=sqrt(2m_s k_B T)$, so the
+  one-wavelength estimate would use $lambda_s=h/p_("th",s)$.
+  #figure(slot-momentum-cutoff(),
+    alt: "Relative weight per momentum state versus momentum magnitude divided by thermal momentum. The dashed sharp cutoff stays level below p_th and drops to zero above it; the solid Maxwellian weight decays smoothly as exp of minus p squared over p_th squared and has a tail beyond p_th.",
+    caption: [The cutoff counts all states below $p_("th",s)$ equally. The Maxwellian assigns weight $exp(-(p/p_("th",s))^2)$ per state, with a tail beyond the marked thermal momentum. Both plotted axes are normalized and labelled [1].])
+
+  The exact effective slot count averages over these weights. Each quantum
+  state occupies phase-space volume $h^3$:
+  $ integral exp(-bold(p)^2/(2m_s k_B T)) dif^3 p
+      = (2 pi m_s k_B T)^(3/2) . $ <thermal-momentum-volume>
+  Thus the Gaussian integral replaces the sharp momentum boundary by
   $ lambda_("th",s)=h/sqrt(2 pi m_s k_B T)
-    = h/(sqrt(pi) m_s v_("th",s)) . $ <thermal-wavelength>
-  Degeneracy $g_s$ counts internal quantum states with the same energy. Each
-  translational state has $g_s$ internal alternatives, giving
-  $ M_s=(g_s V)/lambda_("th",s)^3 . $ <thermal-slots>
+    = h/(sqrt(pi) m_s v_("th",s))
+    = lambda_s/sqrt(pi) . $ <thermal-wavelength>
+  The wavelength changes by the order-one factor $sqrt(pi)$; the corresponding
+  momentum-space volume changes by $pi^(3/2)$. The thermal slot count and its
+  count per particle are
+  $ M_s=(g_s V)/lambda_("th",s)^3,
+    quad M_s/N_s=g_s/(n_s lambda_("th",s)^3) . $ <thermal-slots>
+  Exact-to-sharp-cutoff slot-volume ratio:
+  $ M_s(T)/(g_s V/lambda_s^3)=pi^(3/2) . $ <thermal-slot-volume-correction>
+  The full Gaussian momentum integral is the precise replacement for the
+  de Broglie-cell estimate; the estimate captures the scale of the available
+  translational states.
   #details([Derivation: thermally weighted slots], [
     A quantum state occupies phase-space volume $h^3$. With momentum $bold(p)$,
     $ M_s=(g_s V)/h^3 integral exp(-bold(p)^2/(2 m_s k_B T)) dif^3 p . $
@@ -269,14 +308,25 @@
   increases entropy; if $R<1$, recombination does. At the composition maximum,
   $R=1$. Since electron mass is small compared with atom or ion mass,
   $m_n approx m_i$ and $lambda_("th",n) approx lambda_("th",i)$.
-  The heavy-particle translational factors cancel. Electron spin gives $g_e=2$:
+  The wavelength and internal-state part of the neutral--ion factor cancels:
+  $ (lambda_("th",n)/lambda_("th",i))^3 (g_i/g_n) approx 1 . $
+  <thermal-translational-cancellation>
+  The remaining $n_n/n_i$ is a composition factor, not part of that
+  cancellation. This uses the lecture approximation $g_i=g_n=1$. Electron
+  spin gives $g_e=2$:
   $ R approx n_n/(n_i n_e) (2 g_i)/(g_n lambda_("th",e)^3)
     exp(-chi/(k_B T)) . $ <thermal-heavy-cancellation>
   #governing-law([Saha composition balance], [
     Setting $R=1$ gives
-    $ (n_i n_e)/n_n = underbrace(2/lambda_("th",e)^3, "free-electron states")
+    $ (n_i n_e)/n_n
+      = underbrace(g_e/lambda_("th",e)^3, "free-electron states")
       underbrace(g_i/g_n, "internal states")
-      underbrace(exp(-chi/(k_B T)), "energy penalty") . $ <thermal-saha-equation>
+      underbrace(exp(-chi/(k_B T)), "energy penalty") . $
+      <thermal-saha-equation>
+    With $g_i=g_n=1$ and $g_e=2$, substituting the thermal wavelength gives
+    $ (n_i n_e)/n_n
+      = 2 (2 pi m_e k_B T/h^2)^(3/2) exp(-chi/(k_B T)) . $
+      <thermal-saha-electron-mass>
   ])
   The left side and electron-state factor have unit #unit("m^-3"). The other
   factors are dimensionless. Internal quantum states add order-one factors;
@@ -296,12 +346,12 @@
       answer: [Indistinguishability gives the factorial ratio $N_s!/(N_s+1)!=1/(N_s+1)$.],
     ),
     (
-      question: [Which assumptions cancel the neutral and ion wavelengths?],
-      answer: [A shared temperature and approximately equal masses give equal wavelengths to the retained accuracy.],
+      question: [What does the sharp-cutoff slot estimate count?],
+      answer: [About $g_s V/lambda_s^3$ standing-wave patterns, one per de Broglie spatial cell up to geometric factors.],
     ),
     (
-      question: [If $R>1$, which direction increases entropy?],
-      answer: [Ionization increases multiplicity and hence $S=k_B ln W$.],
+      question: [How does $lambda_s=h/p_("th",s)$ compare with $lambda_("th",s)$?],
+      answer: [$lambda_s=sqrt(pi) lambda_("th",s)$; the Gaussian momentum integral gives the exact thermal wavelength.],
     ),
     (
       question: [Can this Saha model describe ionization by a nonthermal beam?],

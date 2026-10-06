@@ -229,6 +229,10 @@
           wavelength is $lambda_("th",s)=h/sqrt(2 pi m_s k_B T)$ in #unit("m"),
           with Planck's constant $h$ in #unit("J.s"). For electrons,
           $lambda_("th",e)=h/(sqrt(pi) m_e v_("th",e))$.
+          Thermal momentum $p_("th",s)=sqrt(2 m_s k_B T)$ is in #unit("kg.m/s").
+          A sharp momentum cutoff $p_s$ is in #unit("kg.m/s"); its estimate
+          $lambda_s=h/p_s$ is in #unit("m") and is distinct from
+          $lambda_("th",s)$, which uses the Maxwellian-weighted momentum states.
           Normalized wave frequency uses $hat(omega)$, reserving $W$ for multiplicity.
         ]
         #html.dt[Gyrofrequency]
