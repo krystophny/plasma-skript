@@ -32,6 +32,23 @@ if (($# != 1)); then
   exit 2
 fi
 dest="$1"
+
+# Refuse to export from a stale checkout: the export deletes files that the
+# checkout no longer produces, so an old checkout would remove newer
+# animations from the shared course folder.  Override with ALLOW_STALE_EXPORT=1.
+if [[ "${ALLOW_STALE_EXPORT:-0}" != 1 ]]; then
+  upstream="$(git -C "$repo_root" rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>/dev/null || true)"
+  if [[ -n "$upstream" ]]; then
+    git -C "$repo_root" fetch --quiet "${upstream%%/*}" || {
+      echo "export: cannot fetch $upstream; refusing to export (set ALLOW_STALE_EXPORT=1 to override)" >&2
+      exit 1
+    }
+    if ! git -C "$repo_root" merge-base --is-ancestor "$upstream" HEAD; then
+      echo "export: checkout is behind $upstream; pull first (set ALLOW_STALE_EXPORT=1 to override)" >&2
+      exit 1
+    fi
+  fi
+fi
 site_dir="${SITE_DIR:-$repo_root/public}"
 media_cache="${MEDIA_DIR:-$repo_root/.cache/animations}"
 
