@@ -231,7 +231,14 @@ else
     require_file "$site_dir/chapters/$chapter.html"
   done
   require_file "$site_dir/appendices/mathematical-toolkit.html"
-  for slug in $(bash "$repo_root/scripts/render-animations.sh" --slugs); do
+  # External builds publish the registry, not every candidate render scene.
+  # Local hosting still requires the complete renderer output catalogue.
+  if [[ -f "$site_dir/media/hosting-mode" ]] && [[ "$(cat "$site_dir/media/hosting-mode")" == external ]]; then
+    media_slugs="$(python3 -c 'import json,sys; print("\n".join(json.load(open(sys.argv[1]))["animations"]))' "$site_dir/media/animations.json")"
+  else
+    media_slugs="$(bash "$repo_root/scripts/render-animations.sh" --slugs)"
+  fi
+  for slug in $media_slugs; do
     require_file "$site_dir/media/$slug.png"
     if [[ ! -f "$site_dir/media/hosting-mode" ]] || [[ "$(cat "$site_dir/media/hosting-mode")" != external ]]; then
       require_file "$site_dir/media/$slug.mp4"

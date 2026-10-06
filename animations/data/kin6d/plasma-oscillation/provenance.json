@@ -1,0 +1,35 @@
+{
+  "schema": "kin6d-animation-export-v1",
+  "application": "slab_oscillation_demo",
+  "command_line": "/Users/ert/code/kin6d/build/slab_oscillation_demo --snapshot --export /Users/ert/Teaching/plasma/Skript-kin6d/animations/data/kin6d",
+  "config_path": "",
+  "config_literal": "(no configuration file; all defaults)",
+  "config_resolved": "&SLAB_OSCILLATION\n STEPS=128        ,\n FRAMES=193        ,\n PERIODS=  2.0000000000000000     ,\n REQUESTED_RADIUS=  1.0000000000000000E-002,\n /\n",
+  "kin6d_git_commit_build": "9acda09fb9482f83472fde7bd421f660ce4f5fa4",
+  "kin6d_git_tree_build": "clean",
+  "kin6d_git_commit_runtime": "9acda09fb9482f83472fde7bd421f660ce4f5fa4",
+  "kin6d_git_tree_runtime": "clean",
+  "kin6d_build_type": "Release",
+  "compiler_version": "GCC version 16.1.0",
+  "fortnum_revision": "10e66f6d9f50452d3313769e874f282193b33a9f",
+  "fortsym_revision": "a6142712af998b727c245fb6cfbb3745b296ec24",
+  "notes": {
+    "model": "cold planar electron slab, fixed ions, tau = omega_pe t, q = xi/xi0, q'' = -q, q(0) = 1, p(0) = 0",
+    "solver": "FortNum Cash-Karp RK5(4), fixed mesh (candidate)",
+    "band": "q_lower/q_upper: global Hermite/Bernstein residual radius (certified-continuous) plus candidate chord margin",
+    "oracle": "q_analytical = cos tau, independent overlay"},
+  "parameters": {
+    "steps": {"value": 1.2800000000000000E+002, "units": "1", "description": "RK steps"},
+    "periods": {"value": 2.0000000000000000E+000, "units": "1", "description": "duration in plasma periods"},
+    "display_ratio": {"value": 1.0000000000000001E-001, "units": "1", "description": "xi0/a, display only"},
+    "residual_radius": {"value": 3.3026728151848108E-004, "units": "xi0", "description": "global certified residual radius of q and p"}},
+  "arrays": {
+    "tau": {"file": "tau.f32", "dtype": "float32", "endianness": "little", "order": "F", "shape": [193], "units": "1/omega_pe", "description": "omega_pe t per frame"},
+    "q": {"file": "q.f32", "dtype": "float32", "endianness": "little", "order": "F", "shape": [193], "units": "xi0", "description": "candidate displacement xi/xi0"},
+    "p": {"file": "p.f32", "dtype": "float32", "endianness": "little", "order": "F", "shape": [193], "units": "xi0 omega_pe", "description": "candidate velocity"},
+    "q_analytical": {"file": "q_analytical.f32", "dtype": "float32", "endianness": "little", "order": "F", "shape": [193], "units": "xi0", "description": "cos tau"},
+    "q_lower": {"file": "q_lower.f32", "dtype": "float32", "endianness": "little", "order": "F", "shape": [193], "units": "xi0", "description": "connected band lower"},
+    "q_upper": {"file": "q_upper.f32", "dtype": "float32", "endianness": "little", "order": "F", "shape": [193], "units": "xi0", "description": "connected band upper"},
+    "edges": {"file": "edges.f32", "dtype": "float32", "endianness": "little", "order": "F", "shape": [6, 193], "units": "a", "description": "x/a of left, right edge and enclosures left lo/hi, right lo/hi"},
+    "field_force": {"file": "field_force.f32", "dtype": "float32", "endianness": "little", "order": "F", "shape": [2, 193], "units": "E0, F0", "description": "E/E0 and F/F0 inside the slab (candidate)"}}
+}

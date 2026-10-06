@@ -28,3 +28,9 @@ The site build exports the same pages as SVG and PDF, with inline animations and
 All diagrams and plots are original; plots share the Skript derivation source.
 Animations use media/animations.json and retain their PDF posters.
 Photo provenance, where applicable, is in photos/credits.md.
+
+The incoming kin6d source for `animations/plasma_oscillation.py` reads
+`animations/data/kin6d/plasma-oscillation/`: an RK5 slab trajectory and its
+certified band (half-width below 0.003), displayed with $\xi_0/a=0.1$ [1].
+Published streams remain the exact revisions in `media/animations.json`
+until a reviewed render updates that registry and the corresponding poster.
