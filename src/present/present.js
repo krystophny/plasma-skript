@@ -357,7 +357,7 @@
     const base = new URL("./", location.href);
     const urls = [new URL("manifest.json", base).href, location.href.split("#")[0]];
     for (const asset of ["index.html", "decks.json", "present.js", "present.css",
-      "manifest.webmanifest", "icon.svg", "icon-180.png"]) {
+      "manifest.webmanifest", "icon.svg", "icon-180.png", "icon-512.png"]) {
       urls.push(new URL("../" + asset, base).href);
     }
     for (const font of ["Regular", "Bold"]) {
