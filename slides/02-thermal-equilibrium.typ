@@ -64,7 +64,7 @@
   #at(1, 6, y: 2mm, plot("slot_standing_wave", columns: 6))
   #at(7, 6, y: 2mm, plot("slot_momentum_cutoff", columns: 6))
   #at(1, 6, y: 112mm, align(center)[$M_s approx (g_s V)/lambda_s^3, quad lambda_s = h/p_s$ #v(4mm) #text(fill: muted)[one standing wave per de Broglie cell]])
-  #at(7, 6, y: 112mm, align(center)[$lambda_(e) = h/sqrt(2 m_e k_B T) quad -> quad lambda_("th",e) = h/sqrt(2 pi m_e k_B T)$ #v(4mm) #text(fill: muted)[sharp cutoff → Maxwellian weight: factor $sqrt(pi)$]])
+  #at(6, 7, y: 112mm, align(center)[$lambda_e approx h/sqrt(2 m_e k_B T)$ #h(0.6em) $-->$ #h(0.6em) $lambda_("th",e) = h/sqrt(2 pi m_e k_B T)$ #v(4mm) #text(fill: muted)[sharp cutoff → Maxwellian weight: factor $sqrt(pi)$]])
 ]
 #slide(section: "thermal-saha", title: [Thermal particle slots])[
   #at(1, 6, y: 10mm)[
