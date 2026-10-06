@@ -53,6 +53,24 @@
     $lambda_D = underbrace(v_("th",e), "thermal speed") dot underbrace(1/(sqrt(2) omega_(p e)), "response time")$)))
   #at(1, 12, y: 124mm, align(center, text(fill: muted)[screening length = distance a thermal electron moves in one plasma response time (chapter 3)]))
 ]
+#slide(section: "intro-plasma-oscillations", title: [Fusion plasma in numbers])[
+  #at(1, 12, y: 0mm, align(center, text(fill: muted)[$n = 10^20 "m"^(-3)$, #h(0.4em) $k_B T_e = k_B T_i = 10 "keV"$, #h(0.4em) $B = 5.3 "T"$, #h(0.4em) deuterium (ITER-like)]))
+  #at(2, 10, y: 16mm, {
+    set text(size: 20pt)
+    data-table(
+      ([quantity], [electrons], [ions]),
+      (
+        ([plasma frequency $omega_p$], [$5.6 times 10^11 "s"^(-1)$], [$9.3 times 10^9 "s"^(-1)$]),
+        ([gyrofrequency $omega_c$], [$9.3 times 10^11 "s"^(-1)$], [$2.5 times 10^8 "s"^(-1)$]),
+        ([thermal speed $v_"th"$], [$5.9 times 10^7 "m/s"$], [$9.8 times 10^5 "m/s"$]),
+        ([gyroradius $rho$], [$64 thin mu"m"$], [$3.9 "mm"$]),
+        ([Debye length $lambda_D$], table.cell(colspan: 2, align: center)[$74 thin mu"m"$]),
+        ([plasma parameter $N_D$], table.cell(colspan: 2, align: center)[$1.7 times 10^8$]),
+      ),
+      align: (left, right, right),
+    )
+  })
+]
 #slide(section: "intro-plasma-oscillations", title: [Model validity])[
   #let item(f, name) = align(center)[#text(size: result-size, f) #v(5mm) #text(fill: muted, name)]
   #at(1, 12, y: 14mm, grid(columns: (1fr, 1fr, 1fr), row-gutter: 26mm,

@@ -157,4 +157,24 @@
     [high density \ pressure ionization], [ideal slots \ $n_s lambda_("th",s)^3/g_s << 1$],
   ))
 ]
+#slide(section: "thermal-ionization", title: [Quantum degenerate plasma])[
+  #at(1, 4, y: 6mm)[
+    #result-box($(n_e lambda_("th",e)^3)/2 gt.tilde 1$, [slots full: Pauli exclusion, Fermi statistics])
+    #v(10mm) $(n_e lambda_("th",e)^3)/2 << 1$ #h(0.5em) classical plasma
+    #v(8mm) #text(fill: muted)[same slot count as in the Saha equation]
+  ]
+  #at(5, 8, y: 6mm, {
+    set text(size: 16pt)
+    data-table(
+      ([plasma], [$n_e$ [m#super[−3]]], [$T$], [$n_e lambda_("th",e)^3 slash 2$]),
+      (
+        ([tokamak core], [$10^20$], [10 keV], [$2 times 10^(-14)$]),
+        ([compressed ICF fuel], [$2 times 10^32$], [200 eV], [$10$]),
+        ([electrons in copper], [$8.5 times 10^28$], [300 K], [$3 times 10^3$]),
+        ([white dwarf], [$10^36$], [$10^7$ K], [$7 times 10^3$]),
+      ),
+      align: (left, right, right, right),
+    )
+  })
+]
 #credits-page((), [Physics: Reif (1965); Saha (1920), DOI 10.1080/14786441008636148. \ Constants: NIST CODATA 2022. \ Original diagrams and computed plots: Christopher Albert, CC BY 4.0.])

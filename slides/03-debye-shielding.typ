@@ -81,4 +81,14 @@
 ]
 #plot-page("nt_map", columns: 10, section: "debye-collective-validity", title: [Plasma regime map],
   below: [$lambda_D << L, quad N_D >> 1$])
+#slide(section: "debye-collective-validity", title: [Ideal plasma])[
+  #let item(f, name) = align(center)[#text(size: result-size, f) #v(5mm) #text(fill: muted, name)]
+  #at(1, 12, y: 14mm, grid(columns: (1fr, 1fr, 1fr), row-gutter: 26mm,
+    item($lambda_D << L$, [quasineutral in bulk]), item($N_D >> 1$, [collective, smooth fields]),
+    item($Gamma << 1$, [weak coupling]),
+    item($n_e lambda_("th",e)^3 << 1$, [classical statistics (chapter 2)]),
+    item($omega_(p e) tau >> 1$, [collective faster than collisions]),
+    item($T gt.tilde 10^4 "K"$, [mostly ionized (Saha)]),
+  ))
+]
 #credits-page((), [Original figures and animation: Christopher Albert, CC BY 4.0. \ Physics: Chen (2016); Bittencourt (2004).])
