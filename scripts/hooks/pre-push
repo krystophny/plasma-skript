@@ -16,6 +16,10 @@ while read -r local_ref local_sha remote_ref remote_sha; do
   fi
 done
 [[ "$publish_main" == 0 ]] && exit 0
+if ! git diff --quiet HEAD -- .; then
+  echo "Commit tracked changes before exporting the revision being pushed" >&2
+  exit 1
+fi
 if [[ ! -f public/present/build-revision.json ]] || ! python3 - <<'PY'
 import json, runpy
 from pathlib import Path
