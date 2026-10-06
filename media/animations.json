@@ -27,8 +27,8 @@
       "appearance": "dark"
     },
     "coulomb-encounter-offaxis": {
-      "supplementary_chapter": "chapters/09-collisions-conductivity.html",
-      "supplementary_description": "Two electrons approach with impact parameter b = 2 reduced de Broglie wavelengths at Sommerfeld parameter eta = 3, the same encounter as the head-on case in Chapter 9 but off axis. Four panels on one logarithmic colour scale show the probability density of the relative coordinate in the plane of the encounter: a classical Wigner-sampled ensemble, the distinguishable (spin-unresolved) quantum packet, and the singlet and triplet states. The classical and distinguishable panels keep the region inside the head-on turning radius r0 = 2 eta reduced wavelengths nearly empty, and the outgoing density is tilted rather than symmetric about the collision axis; singlet and triplet add exchange fringes of opposite sign, and their average is the distinguishable panel. Positions k x and k z, with k the inverse reduced wavelength, and the time t v/z0 are normalized, with unit [1]. Data: kin6d partial-wave propagation; a visualization without pointwise error bounds.",
+      "supplementary_chapter": "chapters/10-collisions-conductivity.html",
+      "supplementary_description": "Two electrons approach with impact parameter b = 2 reduced de Broglie wavelengths at Sommerfeld parameter eta = 3, the same encounter as the head-on case in Chapter 10 but off axis. Four panels on one logarithmic colour scale show the probability density of the relative coordinate in the plane of the encounter: a classical Wigner-sampled ensemble, the distinguishable (spin-unresolved) quantum packet, and the singlet and triplet states. The classical and distinguishable panels keep the region inside the head-on turning radius r0 = 2 eta reduced wavelengths nearly empty, and the outgoing density is tilted rather than symmetric about the collision axis; singlet and triplet add exchange fringes of opposite sign, and their average is the distinguishable panel. Positions k x and k z, with k the inverse reduced wavelength, and the time t v/z0 are normalized, with unit [1]. Data: kin6d partial-wave propagation; a visualization without pointwise error bounds.",
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_offaxis.mp4",
       "poster": "media/posters/coulomb-encounter-offaxis.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/coulomb-encounter-offaxis.html",
@@ -125,7 +125,7 @@
       "appearance": "dark"
     },
     "pendulum-ensemble": {
-      "supplementary_chapter": "chapters/05-kinetic-theory.html",
+      "supplementary_chapter": "chapters/06-kinetic-theory.html",
       "supplementary_description": "A nonlinear pendulum ensemble compares weak and strong Kac collisions sequentially. Phase mixing filaments the position-momentum distribution; collisions redistribute energy between members while preserving total ensemble energy. The energy histogram is compared with a Gibbs distribution at the same mean energy. Angle, momentum, time and Hamiltonian are normalized, with unit [1]. This is a kinetic-relaxation illustration, not a plasma simulation.",
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/pendulum_ensemble.mp4",
       "poster": "media/posters/pendulum-ensemble.png",
