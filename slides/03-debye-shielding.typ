@@ -39,6 +39,7 @@
   ]
   #at(7, 6, plot("debye_potential", columns: 6))
 ]
+#animation-page("debye-shielding-particles", "debye_shielding_particles", section: "intro-debye-shielding", loop: false)
 #slide(section: "intro-debye-shielding", title: [Charge separation scale])[
   #at(1, 6, y: 10mm)[
     $Q = (4 pi)/3 R^3 n_0 e$
@@ -61,7 +62,6 @@
     #v(8mm) #plot("debye_sphere_potential", columns: 6)
   ]
 ]
-#animation-page("debye-shielding-particles", "debye_shielding_particles", section: "debye-finite-source", loop: false)
 #slide(section: "debye-collective-validity", title: [Debye sphere count])[
   #at(1, 6, align(center)[$N_D approx 3$ [1]])
   #at(7, 6, align(center)[$N_D approx 300$ [1]])
