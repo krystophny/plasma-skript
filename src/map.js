@@ -241,11 +241,11 @@
 
   // Start with the whole map when its labels stay legible; on a narrow
   // screen start at a legible scale around the selection or the top.
-  const MIN_SCALE = 0.55;
   const start = () => {
     fit();
     const r = stage.getBoundingClientRect();
-    if (r.width / view.w >= MIN_SCALE) return;
+    const minScale = r.width < 600 ? 0.6 : 0.45;
+    if (r.width / view.w >= minScale) return;
     const item = items.get(selected);
     let [cx, cy] = [px(nodeOf.get("maxwell-lorentz").pos)[0], null];
     if (item) {
@@ -253,7 +253,7 @@
       cx = ends.reduce((a, p) => a + px(p)[0], 0) / ends.length;
       cy = ends.reduce((a, p) => a + px(p)[1], 0) / ends.length;
     }
-    const w = r.width / MIN_SCALE, h = r.height / MIN_SCALE;
+    const w = r.width / minScale, h = r.height / minScale;
     view = { x: cx - w / 2, y: cy === null ? bounds.y : cy - h / 2, w, h };
     apply();
   };

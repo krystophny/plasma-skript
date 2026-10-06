@@ -68,7 +68,7 @@ public status.
 `coverage` maps a course to the parts that teach the node or take the edge:
 
 - `plasma`: section labels of this script (`kinetic-boltzmann`), shown as
-  "§5.4 The Boltzmann and Vlasov equations" with a link;
+  "§N.M The Boltzmann and Vlasov equations" with a link;
 - `fusion`: blocks of the Fusion Physics plan (`B2`), named in
   `courses.fusion.units`;
 - `kinetic`: chapters (`N2.2`) and dated lectures (`L4`) of the Kinetic

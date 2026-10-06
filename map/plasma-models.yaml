@@ -220,6 +220,21 @@ nodes:
     coverage: {plasma: [kinetic-equilibrium]}
     evidence:
       - {sympy: derivations/chapters/ch06_kinetic_theory.py, checks: [Fermi energy]}
+  - id: saha
+    name: Saha ionization equilibrium
+    label: "Saha\nionization"
+    branch: quantum
+    pos: [3.3, 1]
+    summary: Thermal equilibrium between atoms, ions and free electrons; the ionization fraction follows from bound-state energies and the counting of free-electron states.
+    equations:
+      - '(n_(e) n_(i+1))/n_(i) = 2 g_(i+1)/g_(i) ((2 pi m_(e) k_B T)/(h^2))^(3 slash 2) e^(-E_(i) slash k_B T)'
+    state: densities of the ionization stages
+    structure: detailed balance; maximal entropy at fixed number and energy
+    solution: algebraic
+    status: algebra-checked
+    coverage: {plasma: [thermal-saha, thermal-ionization]}
+    evidence:
+      - {sympy: derivations/chapters/ch02_thermal_equilibrium.py, checks: [Slots and one ionization, Ionization fraction and threshold]}
   - id: thomas-fermi
     name: Thomas-Fermi model
     label: "Thomas-Fermi"
@@ -458,8 +473,9 @@ nodes:
     structure: maximal entropy at fixed number, momentum and energy
     solution: closed form
     status: algebra-checked
-    coverage: {plasma: [intro-speed-energy-temperature, kinetic-distribution, kinetic-equilibrium], fusion: [B2], kinetic: [N2.2, L5]}
+    coverage: {plasma: [intro-speed-energy-temperature, thermal-microstates, thermal-temperature, thermal-boltzmann, kinetic-distribution, kinetic-equilibrium], fusion: [B2], kinetic: [N2.2, L5]}
     evidence:
+      - {sympy: derivations/chapters/ch02_thermal_equilibrium.py, checks: [Counted entropy, Entropy slope and exchange, Reservoir and Maxwellian]}
       - {sympy: derivations/chapters/ch06_kinetic_theory.py, checks: ["Maxwellian: units and moments", Boltzmann equilibrium in a potential]}
   - id: linearized-landau
     name: Linearized Landau operator with momentum conservation
@@ -1241,6 +1257,16 @@ edges:
     lost: correlations and bound states
     status: stated
     coverage: {plasma: [kinetic-equilibrium]}
+  - from: schroedinger
+    to: saha
+    method: ideal-gas chemical equilibrium with bound states
+    small: 'n lambda_"dB"^3 << 1, quad (e^2)/(4 pi epsilon_0 lambda_(D) k_B T) << 1'
+    assumptions: [nondegenerate ideal gases of atoms, ions and electrons, isolated-atom energy levels, thermal equilibrium]
+    lost: continuum lowering, pressure ionization, nonequilibrium (radiative and collisional) balance
+    status: algebra-checked
+    evidence:
+      - {sympy: derivations/chapters/ch02_thermal_equilibrium.py, checks: [Slots and one ionization, Ionization fraction and threshold]}
+    coverage: {plasma: [thermal-saha, thermal-ionization]}
   - from: ideal-fermi
     to: thomas-fermi
     method: local-density approximation

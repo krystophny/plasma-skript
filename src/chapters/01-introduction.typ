@@ -425,13 +425,13 @@
   models at the bottom; each arrow is a reduction with its own small
   parameters and assumptions.
 
-  This course follows the highlighted route. It reaches the Vlasov equation
-  by coarse graining instead of deriving it from the many-body dynamics, and
-  it leaves the many-body hierarchy, the collision operators and drift
-  kinetics to the Kinetic Theory course and the quantum branch to research.
-  The #map-link[interactive map] shows the
-  equations, assumptions and verification status of every model and
-  reduction.
+  This course follows the highlighted route. From the quantum branch it
+  takes only thermal equilibrium (Saha ionization, the Fermi energy). It
+  reaches the Vlasov equation by coarse graining instead of deriving it from
+  the many-body dynamics, and it leaves the many-body hierarchy, the
+  collision operators and drift kinetics to the Kinetic Theory course. The
+  #map-link[interactive map] shows the equations, assumptions and
+  verification status of every model and reduction.
 
   #model-map-figure()
 
