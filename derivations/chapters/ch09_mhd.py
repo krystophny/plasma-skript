@@ -1,4 +1,4 @@
-# Chapter 8 · Magnetohydrodynamics (src/chapters/08-mhd.typ)
+# Chapter 9 · Magnetohydrodynamics (src/chapters/09-mhd.typ)
 #
 # One-fluid sums, the generalized Ohm law, linearized ideal MHD, resistive
 # induction and flux freezing, and magnetostatic equilibria (pressure balance).
@@ -367,4 +367,4 @@ has_unit(2 * mu0 * p0_ / B0_**2, u.meter / u.meter, {mu0: u.henry / u.meter})
 
 # %%
 if __name__ == "__main__":
-    report(__file__, "Chapter 8 · Magnetohydrodynamics")
+    report(__file__, "Chapter 9 · Magnetohydrodynamics")

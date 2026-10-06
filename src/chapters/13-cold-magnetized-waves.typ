@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title(number: 12)[Waves in cold magnetized plasmas] <cold-magnetized-waves>
+  #page-title(number: 13)[Waves in cold magnetized plasmas] <cold-magnetized-waves>
 
   #lead[
     A static magnetic field turns the isotropic plasma response into a tensor.
@@ -270,7 +270,7 @@
 
   #unit-ledger[
     The refractive index $N=k c\/omega$, normalized frequency is
-    $W=omega\/omega_(p,e)$, and magnetization is
+    $hat(omega)=omega\/omega_(p,e)$, and magnetization is
     $Y=omega_(c,e)\/omega_(p,e)$; all three are dimensionless. The dimensional
     $k$ is in #unit("m^-1"), $omega$ and $omega_(c,e)$ are in
     #unit("s^-1"), and phase or group velocities are in #unit("m/s").
@@ -491,7 +491,7 @@
 
   #unit-ledger[
     The angle $theta$ is dimensionless and measured in radians. The refractive
-    index $N=k c\/omega$, $W=omega\/omega_(p,e)$, and
+    index $N=k c\/omega$, $hat(omega)=omega\/omega_(p,e)$, and
     $Y=omega_(c,e)\/omega_(p,e)$ are dimensionless. Dimensional $k$ is in
     #unit("m^-1"), $omega$ in #unit("s^-1"), and wavelengths in #unit("m").
   ]
@@ -714,8 +714,8 @@
   Here $S$, $D$, and $P$ are dimensionless dielectric abbreviations; $D$
   is not a diffusion coefficient and $P$ is not pressure. The parameters
   $X_(omega)$ and $Y_(omega)$ use the wave frequency as their reference,
-  whereas the earlier $W$ and $Y$ use the plasma frequency. Their relations
-  are $X_(omega)=1\/W^2$ and $Y_(omega)=Y\/W$.
+  whereas the earlier $hat(omega)$ and $Y$ use the plasma frequency. Their relations
+  are $X_(omega)=1\/hat(omega)^2$ and $Y_(omega)=Y\/hat(omega)$.
 
   The two roots give possible wave numbers at a specified frequency and
   angle. For each root, the matrix also determines the relative electric-field
@@ -802,7 +802,7 @@
     with uniform $bold(B)_0$ and oblique propagation. Use the
     normalized parameters
     #normalized-label[ $Y=omega_(c,e)\/omega_(p,e)=qty("0.30", "1")$],
-    #normalized-label[$W=omega\/omega_(p,e)=qty("1.50", "1")$], and
+    #normalized-label[$hat(omega)=omega\/omega_(p,e)=qty("1.50", "1")$], and
     $theta=pi\/4$ radians. Evaluate the two
     Appleton--Hartree refractive indices.
 
@@ -863,9 +863,9 @@
   ))
 
   #unit-ledger[
-    The normalized frequency $W=omega\/omega_(p,e)$ and magnetization
+    The normalized frequency $hat(omega)=omega\/omega_(p,e)$ and magnetization
     $Y=omega_(c,e)\/omega_(p,e)$ are dimensionless. Define the normalized wave
-    number $K=k c\/omega_(p,e)=W N$. The refractive index $N$
+    number $K=k c\/omega_(p,e)=hat(omega) N$. The refractive index $N$
     and angle $theta$ are dimensionless; dimensional $k$ is in
     #unit("m^-1"), $omega$ in #unit("s^-1"), and wavelengths in
     #unit("m").
@@ -897,15 +897,15 @@
     [Normalized landmarks],
     [For $Y=omega_(c,e)\/omega_(p,e)$, the parallel circular cutoffs are
 
-    $ W_"cut,s"=(sqrt(Y^2+4)-s Y)/2 . $
+    $ hat(omega)_"cut,s"=(sqrt(Y^2+4)-s Y)/2 . $
 
     The perpendicular extraordinary resonance is
-    $W_"UH"=sqrt(1+Y^2)$, while the ordinary cutoff is $W=1$.
+    $hat(omega)_"UH"=sqrt(1+Y^2)$, while the ordinary cutoff is $hat(omega)=1$.
     When $Y -> 0$, both circular modes merge into the unmagnetized transverse
-    branch $W^2=1+K^2$ from the previous chapter, where $K=W N$.
+    branch $hat(omega)^2=1+K^2$ from the previous chapter, where $K=hat(omega) N$.
     At frequencies much larger than both plasma and cyclotron frequencies,
     the propagating electromagnetic branches approach $N -> 1$, or
-    equivalently $W approx K$.]
+    equivalently $hat(omega) approx K$.]
   )
 
   #details(
@@ -913,18 +913,18 @@
     [#derivation-step[Remove the magnetic field]
     Set $Y=0$ in the circular response. Both eigenvalues become
 
-    $ N^2=1-1/W^2 , $
+    $ N^2=1-1/hat(omega)^2 , $
 
-    so multiplying by $W^2$ and using $K=W N$ gives the cold
+    so multiplying by $hat(omega)^2$ and using $K=hat(omega) N$ gives the cold
     unmagnetized electromagnetic branch
 
-    $ W^2=1+K^2 . $
+    $ hat(omega)^2=1+K^2 . $
 
-    The longitudinal branch remains $W=1$ in the cold fixed-ion limit, so its
+    The longitudinal branch remains $hat(omega)=1$ in the cold fixed-ion limit, so its
     zero group velocity is recovered as well.
 
     #derivation-step[Check high-frequency, cutoff, and resonance limits]
-    As $W -> infinity$, every susceptibility term scales as $W^(-2)$ or
+    As $hat(omega) -> infinity$, every susceptibility term scales as $hat(omega)^(-2)$ or
     faster away from a resonance. Therefore
 
     $ N^2 -> 1, quad omega -> c k . $
@@ -963,18 +963,18 @@
     #normalized-label[$Y=omega_(c,e)\/omega_(p,e)=qty("0.30", "1")$].
     Determine the normalized circular cutoffs and upper-hybrid resonance,
     then classify the ordinary and extraordinary modes at
-    #normalized-label[$W=qty("0.90", "1")$],
-    #normalized-label[$W=qty("1.10", "1")$], and
-    #normalized-label[$W=qty("1.30", "1")$].
+    #normalized-label[$hat(omega)=qty("0.90", "1")$],
+    #normalized-label[$hat(omega)=qty("1.10", "1")$], and
+    #normalized-label[$hat(omega)=qty("1.30", "1")$].
 
-    Numerical result: #normalized-label[$W_"cut,+"=qty("0.861", "1")$],
-    #normalized-label[$W_"cut,-"=qty("1.161", "1")$], and
-    #normalized-label[$W_"UH"=qty("1.044", "1")$]. At
-    #normalized-label[$W=qty("0.90", "1")$], ordinary is evanescent and
+    Numerical result: #normalized-label[$hat(omega)_"cut,+"=qty("0.861", "1")$],
+    #normalized-label[$hat(omega)_"cut,-"=qty("1.161", "1")$], and
+    #normalized-label[$hat(omega)_"UH"=qty("1.044", "1")$]. At
+    #normalized-label[$hat(omega)=qty("0.90", "1")$], ordinary is evanescent and
     extraordinary propagates with #normalized-label[$N_X=qty("0.403", "1")$];
-    at #normalized-label[$W=qty("1.10", "1")$], ordinary propagates with
+    at #normalized-label[$hat(omega)=qty("1.10", "1")$], ordinary propagates with
     #normalized-label[$N_O=qty("0.417", "1")$] and extraordinary is
-    evanescent; at #normalized-label[$W=qty("1.30", "1")$], both propagate
+    evanescent; at #normalized-label[$hat(omega)=qty("1.30", "1")$], both propagate
     with #normalized-label[$N_O=qty("0.639", "1")$] and
     #normalized-label[$N_X=qty("0.565", "1")$].
   ]
@@ -1015,7 +1015,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "11-introduction-waves.html", title: [Introduction to waves]),
-    next: (href: "13-finite-temperature-waves.html", title: [Finite-temperature waves]),
+    previous: (href: "12-introduction-waves.html", title: [Introduction to waves]),
+    next: (href: "14-finite-temperature-waves.html", title: [Finite-temperature waves]),
   )
 ]

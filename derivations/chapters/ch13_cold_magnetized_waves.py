@@ -1,8 +1,8 @@
-# Chapter 12 · Cold magnetized waves (src/chapters/12-cold-magnetized-waves.typ)
+# Chapter 13 · Cold magnetized waves (src/chapters/13-cold-magnetized-waves.typ)
 #
 # Cold dielectric tensor, parallel (circular) and perpendicular (O, X) modes,
 # the oblique Appleton-Hartree roots and the normalized landmarks.
-# `python ch12_cold_magnetized_waves.py` prints every step; `# %%` cells run one by one.
+# `python ch13_cold_magnetized_waves.py` prints every step; `# %%` cells run one by one.
 
 # %% Setup
 import numpy as np
@@ -22,7 +22,7 @@ Ex, Ey, Ez = sp.symbols("E_x E_y E_z")
 E = sp.Matrix([Ex, Ey, Ez])
 S, D, P = sp.symbols(r"\epsilon_\perp \epsilon_\times \epsilon_\parallel")  # tensor entries
 s = sp.Symbol("s")  # circular label s = +1 or -1
-W, Y, K = sp.symbols("W Y K", positive=True)  # omega/omega_pe, omega_ce/omega_pe, kc/omega_pe
+W, Y, K = sp.symbols("omega_hat Y K", positive=True)  # omega/omega_pe, omega_ce/omega_pe, kc/omega_pe
 I = sp.I
 M_sym = sp.MatrixSymbol("M", 3, 3)  # name of the displayed wave matrix
 
@@ -492,7 +492,7 @@ label(ax, 2.95, Y_PLOT * 0.62, "whistler, $s=-1$", ORANGE, ha="right", va="top")
 label(ax, 2.55, 2.3, "vacuum", GRAY, va="top")
 ax.set(xlim=(0, 3), ylim=(0, 3), xticks=[0, 1, 2, 3], yticks=[0, Y_PLOT, *cutoffs, 2, 3],
        yticklabels=["0", f"{Y_PLOT:.1f}", f"{cutoffs[0]:.3f}", f"{cutoffs[1]:.3f}", "2", "3"],
-       xlabel=r"$K=kc/\omega_{pe}$ [1]", ylabel=r"$W=\omega/\omega_{pe}$ [1]")
+       xlabel=r"$K=kc/\omega_{pe}$ [1]", ylabel='$\\hat{\\omega}=\\omega/\\omega_{pe}$ [1]')
 save(fig, "magnetized-parallel-dispersion")
 
 
@@ -501,7 +501,7 @@ def perpendicular_panel(ax):
     ax.axhspan(-4, 0, color="#eeeeee", lw=0, zorder=0)
     ax.axhline(0, color="#333333", lw=0.6)
     ax.set(xlim=(0.6, 1.8), ylim=(-4, 3), yticks=[-4, -2, 0, 2], xticks=[0.6, 1, 1.4, 1.8],
-           xlabel=r"$W=\omega/\omega_{pe}$ [1]", ylabel=r"$N^2=(kc/\omega)^2$ [1]")
+           xlabel='$\\hat{\\omega}=\\omega/\\omega_{pe}$ [1]', ylabel=r"$N^2=(kc/\omega)^2$ [1]")
 
 
 # %% Plot: perpendicular ordinary mode N_O^2(W)
@@ -511,7 +511,7 @@ perpendicular_panel(ax)
 W_grid = np.linspace(0.6, 1.8, 600)
 ax.plot(W_grid, N_O2_plot(W_grid), color=ORANGE, ls="--")
 ax.plot([1], [0], "o", color=ORANGE, ms=4, zorder=3)
-label(ax, 1.04, -0.25, "cutoff $W=1$", ORANGE, va="top")
+label(ax, 1.04, -0.25, 'cutoff $\\hat{\\omega}=1$', ORANGE, va="top")
 label(ax, 1.75, N_O2_plot(1.75) + 0.15, "O mode", ORANGE, ha="right")
 label(ax, 0.63, 1.6, "propagating", GRAY)
 label(ax, 0.63, -3.6, "evanescent", GRAY)
@@ -526,7 +526,7 @@ for lo, hi in ((0.6, W_UH - 1e-4), (W_UH + 1e-4, 1.8)):  # split at the resonanc
     W_grid = np.linspace(lo, hi, 600)
     ax.plot(W_grid, N_X2_plot(W_grid), color=BLUE)
 ax.plot(cutoffs, [0, 0], "o", color=BLUE, ms=4, zorder=3)
-label(ax, W_UH + 0.05, 2.85, f"upper\nhybrid\n$W={W_UH:.3f}$", GRAY, va="top")
+label(ax, W_UH + 0.05, 2.85, f"upper\nhybrid\n$\\hat{{\\omega}}={W_UH:.3f}$", GRAY, va="top")
 label(ax, 1.75, N_X2_plot(1.75) + 0.15, "X mode", BLUE, ha="right")
 ax.set_xticks([0.6, cutoffs[0], cutoffs[1], 1.8],
               ["0.6", f"{cutoffs[0]:.3f}", f"{cutoffs[1]:.3f}", "1.8"])
@@ -534,4 +534,4 @@ save(fig, "perpendicular-x-mode")
 
 # %%
 if __name__ == "__main__":
-    report(__file__, "Chapter 12 · Cold magnetized waves")
+    report(__file__, "Chapter 13 · Cold magnetized waves")

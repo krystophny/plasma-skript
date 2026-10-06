@@ -1,4 +1,4 @@
-# Chapter 9 · Collisions and conductivity (src/chapters/09-collisions-conductivity.typ)
+# Chapter 10 · Collisions and conductivity (src/chapters/10-collisions-conductivity.typ)
 #
 # Mean free path, Rutherford scattering and the Coulomb logarithm, Spitzer
 # resistivity, and the magnetized conductivity tensor, with two plots.
@@ -99,7 +99,7 @@ close_to(evaluate(lam_en, 1 / (n * sigma), gas, u.meter), 2.5e-2)
 section("Rutherford deflection and the 90-degree impact parameter", script="coulomb-collisions")
 q_a, q_b, m_r = sp.symbols("q_a q_b m_r", positive=True)
 w = sp.Symbol("w", positive=True)                 # inverse radius 1/r
-theta0, chi, w_max = sp.symbols("theta_0 chi w_max", positive=True)
+theta0, chi, w_max = sp.symbols("theta_0 theta_sc w_max", positive=True)
 note("Strong-deflection impact parameter: Coulomb energy at", b90, "equals the kinetic energy scale")
 b90_def = show(sp.Eq(b90, q_a * q_b / (4 * sp.pi * eps0 * m_r * v**2))).rhs
 has_unit(b90_def, u.meter, {q_a: u.coulomb, q_b: u.coulomb, m_r: u.kilogram})
@@ -117,7 +117,7 @@ show(sp.Eq(theta0, orbit))
 note("Deflection", sp.Eq(chi, 2 * theta0 - sp.pi), ":")
 deflection = 2 * orbit - sp.pi
 agrees(sp.simplify(sp.tan(deflection / 2)), b90 / b, lhs=sp.tan(chi / 2))
-agrees(sp.simplify(deflection.subs(b, b90)), sp.pi / 2, lhs=sp.Function("chi")(b90))
+agrees(sp.simplify(deflection.subs(b, b90)), sp.pi / 2, lhs=sp.Function("theta_sc")(b90))
 small = sp.Symbol("epsilon", positive=True)
 note("Weak deflection,", sp.Eq(b90, small * b), ", to first order in", small)
 agrees(sp.series(deflection.subs(b90, small * b), small, 0, 2).removeO(), 2 * small, lhs=chi)
@@ -361,4 +361,4 @@ for name, entry, color, style, ylabel, (lx, ly, ha), title in panels:
 
 # %%
 if __name__ == "__main__":
-    report(__file__, "Chapter 9 · Collisions and conductivity")
+    report(__file__, "Chapter 10 · Collisions and conductivity")

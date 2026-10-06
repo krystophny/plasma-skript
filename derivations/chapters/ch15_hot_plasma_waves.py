@@ -1,4 +1,4 @@
-# Chapter 14 · Waves in hot plasmas (src/chapters/14-hot-plasma-waves.typ)
+# Chapter 15 · Waves in hot plasmas (src/chapters/15-hot-plasma-waves.typ)
 #
 # Linear Vlasov response, the Maxwellian dielectric function with Z(zeta),
 # Landau damping, transverse kinetic waves, the anisotropy and two-stream
@@ -130,7 +130,7 @@ assert abs(exact - float(Z_asymptotic.subs(zeta, 8))) <= 2e-5 * abs(exact)  # at
 
 # %% Kinetic Bohm-Gross root
 section("Kinetic Bohm-Gross root", script="hot-isotropic-dispersion")
-W_sq, small = sp.symbols("W varepsilon", positive=True)  # W = omega^2, small = bookkeeping
+W_sq, small = sp.symbols("omega_squared varepsilon", positive=True)  # W = omega^2, small = bookkeeping
 note("Insert the asymptotic", sp.re(sp.Function("Z")(zeta)), "into", eps_L)
 eps_asymptotic = show(sp.Eq(eps_L, 1 + sp.expand(1 + zeta * Z_asymptotic) / (k**2 * lambda_D_sq))).rhs
 eps_omega = sp.expand(eps_asymptotic.subs(zeta, sp.sqrt(W_sq) / (k * v_te_value)))
@@ -504,7 +504,7 @@ section("Circular forcing", script="hot-magnetized-waves")
 E_x = sp.Symbol("E_x")
 v_x, v_y = v_perp * sp.cos(th), -v_perp * sp.sin(th)
 for sigma in (1, -1):
-    E_y = -I * sigma * E_x  # circular basis of chapter 12
+    E_y = -I * sigma * E_x  # circular basis of chapter 13
     note("Circular field", sp.Eq(sp.Symbol("E_y"), E_y))
     agrees(sp.expand((E_x * v_x + E_y * v_y).rewrite(sp.exp)), sp.expand(E_x * v_perp * sp.exp(I * sigma * th)), lhs=sp.Symbol("E") * sp.Symbol("v"))
 note("so circular forcing selects the single harmonic", sp.Eq(n_h, sp.Symbol("sigma")))
@@ -593,4 +593,4 @@ save(fig, "two-stream-growth")
 
 # %%
 if __name__ == "__main__":
-    report(__file__, "Chapter 14 · Waves in hot plasmas")
+    report(__file__, "Chapter 15 · Waves in hot plasmas")

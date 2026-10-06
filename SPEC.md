@@ -144,24 +144,25 @@ Source roles are deliberately separated.
 The chapter sequence, with the requested split of the opening material, is:
 
 1. Introduction: plasma examples, characteristic scales, and model hierarchy
-2. Debye shielding
-3. Plasma oscillations
-4. Single-particle motion
-5. Kinetic theory of plasmas
-6. Moments of the Boltzmann equation
-7. Multiple-fluid theory
-8. Single-fluid theory and magnetohydrodynamics
-9. Collisions and plasma conductivity
-10. Plasma diffusion
-11. Introduction to waves in plasmas
-12. Waves in cold magnetized plasmas
-13. Collisions, ions, and finite-temperature effects on magnetized waves
-14. Waves in hot plasmas
-15. Plasma sheaths and Langmuir probes
+2. Temperature, entropy, and thermal ionization
+3. Debye shielding
+4. Plasma oscillations
+5. Single-particle motion
+6. Kinetic theory of plasmas
+7. Moments of the Boltzmann equation
+8. Multiple-fluid theory
+9. Single-fluid theory and magnetohydrodynamics
+10. Collisions and plasma conductivity
+11. Plasma diffusion
+12. Introduction to waves in plasmas
+13. Waves in cold magnetized plasmas
+14. Collisions, ions, and finite-temperature effects on magnetized waves
+15. Waves in hot plasmas
+16. Plasma sheaths and Langmuir probes
 
-The opening material is split into three chapters at the author's request:
-an introduction with examples and a scale/model overview, followed by dedicated
-shielding and oscillation chapters. The introduction keeps the physical ideas
+The opening material occupies four chapters at the author's request:
+an introduction with examples and a scale/model overview, followed by thermal
+equilibrium, shielding, and oscillation chapters. The introduction keeps the physical ideas
 and temperature conventions, with section links to quantitative treatments.
 Screening and coupling criteria belong in the shielding chapter; plasma-frequency
 relations belong in the oscillation chapter; orbit and combined numerical scale

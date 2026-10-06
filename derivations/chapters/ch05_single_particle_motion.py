@@ -1,4 +1,4 @@
-# Chapter 4 · Single-particle motion (src/chapters/04-single-particle-motion.typ)
+# Chapter 5 · Single-particle motion (src/chapters/05-single-particle-motion.typ)
 #
 # Gyration, magnetic moment and its adiabatic invariance, the drifts (E x B,
 # grad-B, curvature, polarization), magnetic mirrors and cyclotron resonance.
@@ -13,7 +13,7 @@ from kinetics import rounding_rtol
 from notebook import PROTON_MASS, agrees, close_to, evaluate, note, report, section, show
 from si import check, eps0, k_B
 
-m, B, t, v_perp, T_s, mu = sp.symbols("m B t v_perp T_s mu", positive=True)
+m, B, t, v_perp, T_s, mu = sp.symbols("m B t v_perp T_s mu_mag", positive=True)
 q, Omega, delta = sp.symbols("q Omega delta", real=True)
 e, m_e, m_p = sp.symbols("e m_e m_p", positive=True)  # filled from CODATA by evaluate()
 SI_UNITS = {m: u.kilogram, B: u.tesla, t: u.second, v_perp: u.meter / u.second,
@@ -377,4 +377,4 @@ close_to(omega_res_i, 9.58e5, rtol=rounding_rtol("9.58e5"))
 
 # %%
 if __name__ == "__main__":
-    report(__file__, "Chapter 4 · Single-particle motion")
+    report(__file__, "Chapter 5 · Single-particle motion")

@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title(number: 11)[Introduction to waves in plasmas] <introduction-waves>
+  #page-title(number: 12)[Introduction to waves in plasmas] <introduction-waves>
 
   #lead[
     A plasma wave is a collective perturbation whose restoring force and
@@ -801,7 +801,7 @@
   ))
   #unit-ledger[
     The normalized axes use $K=k c\/omega_(p,e)$ and
-    $W=omega\/omega_(p,e)$, both dimensionless. The reconstructed wave number
+    $hat(omega)=omega\/omega_(p,e)$, both dimensionless. The reconstructed wave number
     is in #unit("m^-1"), frequency in #unit("s^-1"), and velocities in
     #unit("m/s"). For warm electrostatic checks, $K_D=k lambda_D$ is also
     dimensionless.
@@ -815,12 +815,12 @@
   )
   #definition(
     [Dimensionless dispersion coordinates],
-    [Use $K=k c\/omega_(p,e)$ and $W=omega\/omega_(p,e)$ for the cold
-    electromagnetic branch. Then $W^2=1+K^2$,
-    $v_"phi"\/c=W\/K$, and $v_"g"\/c=K\/W$.
-    The cutoff is the intercept $W=1$ at $K=0$. The tangent slope
-    $dv(W,K, style: "horizontal")$ gives $v_"g"\/c$; the slope of the line from the origin to a
-    point on the branch gives $v_"phi"\/c=W\/K$. These are different
+    [Use $K=k c\/omega_(p,e)$ and $hat(omega)=omega\/omega_(p,e)$ for the cold
+    electromagnetic branch. Then $hat(omega)^2=1+K^2$,
+    $v_"phi"\/c=hat(omega)\/K$, and $v_"g"\/c=K\/hat(omega)$.
+    The cutoff is the intercept $hat(omega)=1$ at $K=0$. The tangent slope
+    $dv(hat(omega),K, style: "horizontal")$ gives $v_"g"\/c$; the slope of the line from the origin to a
+    point on the branch gives $v_"phi"\/c=hat(omega)\/K$. These are different
     geometric measurements of the same curve.]
   )
   #details(
@@ -828,11 +828,11 @@
     [#derivation-step[Long-wavelength limit]
     Start from the normalized transverse relation
 
-    $ W^2=1+K^2 . $
+    $ hat(omega)^2=1+K^2 . $
 
-    As $K -> 0$, $W -> 1$. Hence
+    As $K -> 0$, $hat(omega) -> 1$. Hence
 
-    $ omega -> omega_(p,e), quad v_"g"/c=K/W -> 0 . $
+    $ omega -> omega_(p,e), quad v_"g"/c=K/hat(omega) -> 0 . $
 
     The phase velocity formally diverges because a nearly spatially uniform
     oscillation has a finite frequency while its wave number tends to zero.
@@ -840,11 +840,11 @@
     #derivation-step[Short-wavelength and vacuum limits]
     As $K -> infinity$,
 
-    $ W=sqrt(1+K^2) -> K . $
+    $ hat(omega)=sqrt(1+K^2) -> K . $
 
     Therefore
 
-    $ v_"phi"/c=W/K -> 1, quad v_"g"/c=K/W -> 1 . $
+    $ v_"phi"/c=hat(omega)/K -> 1, quad v_"g"/c=K/hat(omega) -> 1 . $
 
     The plasma becomes transparent and the branch approaches the vacuum line.
     The same result follows dimensionally when the density tends to zero,
@@ -895,15 +895,15 @@
     before using it for a prediction.]
   )
   #summary[
-    Normalize first, then read the branch: $W^2=1+K^2$ has a cutoff at
-    $W=1$, approaches the vacuum line at large $K$, and becomes evanescent
+    Normalize first, then read the branch: $hat(omega)^2=1+K^2$ has a cutoff at
+    $hat(omega)=1$, approaches the vacuum line at large $K$, and becomes evanescent
     below the cutoff. Limiting cases expose missing factors, incorrect
     polarizations, and unjustified model extrapolations.
   ]
   #knowledge-check((
     (
       question: [What does the intercept of the cold electromagnetic branch represent?],
-      answer: [The intercept $W=1$ at $K=0$ is the plasma cutoff
+      answer: [The intercept $hat(omega)=1$ at $K=0$ is the plasma cutoff
       $omega=omega_(p,e)$. Frequencies below it have an imaginary bulk wave
       number in this model.]
     ),
@@ -927,7 +927,7 @@
     ),
   ))
   #chapter-nav(
-    previous: (href: "10-diffusion.html", title: [Diffusion]),
-    next: (href: "12-cold-magnetized-waves.html", title: [Cold magnetized waves]),
+    previous: (href: "11-diffusion.html", title: [Diffusion]),
+    next: (href: "13-cold-magnetized-waves.html", title: [Cold magnetized waves]),
   )
 ]

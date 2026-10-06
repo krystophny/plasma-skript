@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title(number: 13)[Collisions, ions, and finite-temperature effects on magnetized waves] <finite-temperature-waves>
+  #page-title(number: 14)[Collisions, ions, and finite-temperature effects on magnetized waves] <finite-temperature-waves>
 
   #lead[
     The cold magnetized response is an organizing limit. Collisions make the response complex, ion inertia opens
@@ -1097,7 +1097,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "12-cold-magnetized-waves.html", title: [Cold magnetized waves]),
-    next: (href: "14-hot-plasma-waves.html", title: [Hot plasma waves]),
+    previous: (href: "13-cold-magnetized-waves.html", title: [Cold magnetized waves]),
+    next: (href: "15-hot-plasma-waves.html", title: [Hot plasma waves]),
   )
 ]

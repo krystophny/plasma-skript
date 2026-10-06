@@ -152,9 +152,10 @@ nix run .#build-lilaq-pdf
 
 The main source is [`src/main.typ`](src/main.typ). Add chapters under
 `src/chapters/`. The opening sequence is Introduction (examples, characteristic
-scales, and model overview), Debye shielding, and Plasma oscillations.
-Single-particle motion starts Chapter 4; waves occupy Chapters 11–14, and
-sheaths and probes remain a separate Chapter 15. Add
+scales, and model overview), Temperature, entropy, and thermal ionization,
+Debye shielding, and Plasma oscillations.
+Single-particle motion starts Chapter 5; waves occupy Chapters 12–15, and
+sheaths and probes remain a separate Chapter 16. Add
 supplemental material under `src/appendices/`, and animations
 under `animations/`. Bibliographic entries live in
 [`src/sources.bib`](src/sources.bib) and are cited with Typst's native `@key`

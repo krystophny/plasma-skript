@@ -31,20 +31,21 @@ done
 # section is still missing one of its required teaching anchors.
 chapter_sources=(
   01-introduction
-  02-debye-shielding
-  03-plasma-oscillations
-  04-single-particle-motion
-  05-kinetic-theory
-  06-moments
-  07-multiple-fluids
-  08-mhd
-  09-collisions-conductivity
-  10-diffusion
-  11-introduction-waves
-  12-cold-magnetized-waves
-  13-finite-temperature-waves
-  14-hot-plasma-waves
-  15-sheaths-probes
+  02-thermal-equilibrium
+  03-debye-shielding
+  04-plasma-oscillations
+  05-single-particle-motion
+  06-kinetic-theory
+  07-moments
+  08-multiple-fluids
+  09-mhd
+  10-collisions-conductivity
+  11-diffusion
+  12-introduction-waves
+  13-cold-magnetized-waves
+  14-finite-temperature-waves
+  15-hot-plasma-waves
+  16-sheaths-probes
 )
 
 count_matches() {
@@ -210,20 +211,20 @@ else
   require_file "$site_dir/styles.css"
   for chapter in \
     01-introduction \
-    02-debye-shielding \
-    03-plasma-oscillations \
-    04-single-particle-motion \
-    05-kinetic-theory \
-    06-moments \
-    07-multiple-fluids \
-    08-mhd \
-    09-collisions-conductivity \
-    10-diffusion \
-    11-introduction-waves \
-    12-cold-magnetized-waves \
-    13-finite-temperature-waves \
-    14-hot-plasma-waves \
-    15-sheaths-probes; do
+    03-debye-shielding \
+    04-plasma-oscillations \
+    05-single-particle-motion \
+    06-kinetic-theory \
+    07-moments \
+    08-multiple-fluids \
+    09-mhd \
+    10-collisions-conductivity \
+    11-diffusion \
+    12-introduction-waves \
+    13-cold-magnetized-waves \
+    14-finite-temperature-waves \
+    15-hot-plasma-waves \
+    16-sheaths-probes; do
     require_file "$site_dir/chapters/$chapter.html"
   done
   require_file "$site_dir/appendices/mathematical-toolkit.html"

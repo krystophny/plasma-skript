@@ -3,7 +3,7 @@
 #import "../figures.typ": debye-potential-comparison, debye-regime-map, debye-screened-point
 
 #let chapter = [
-  #page-title(number: 2)[Debye shielding] <debye-shielding>
+  #page-title(number: 3)[Debye shielding] <debye-shielding>
 
   #lead[
     Mobile charges rearrange around a localized disturbance. The equilibrium
@@ -513,7 +513,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "01-introduction.html", title: [Introduction]),
-    next: (href: "03-plasma-oscillations.html", title: [Plasma oscillations]),
+    previous: (href: "02-thermal-equilibrium.html", title: [Temperature, entropy, and thermal ionization]),
+    next: (href: "04-plasma-oscillations.html", title: [Plasma oscillations]),
   )
 ]

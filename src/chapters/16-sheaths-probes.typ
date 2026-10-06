@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title(number: 15)[Plasma sheaths and Langmuir probes] <plasma-sheaths>
+  #page-title(number: 16)[Plasma sheaths and Langmuir probes] <plasma-sheaths>
 
   #lead[
     Electrons and ions arrive at a material surface with different thermal speeds, so the surface charges
@@ -851,7 +851,7 @@
     ),
   ))
   #chapter-nav(
-    previous: (href: "14-hot-plasma-waves.html", title: [Hot plasma waves]),
+    previous: (href: "15-hot-plasma-waves.html", title: [Hot plasma waves]),
     next: (href: "../appendices/mathematical-toolkit.html", title: [Mathematical toolkit]),
   )
 ]

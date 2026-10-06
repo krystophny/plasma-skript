@@ -1,4 +1,4 @@
-# Chapter 5 · Kinetic theory (src/chapters/05-kinetic-theory.typ)
+# Chapter 6 · Kinetic theory (src/chapters/06-kinetic-theory.typ)
 #
 # Mean free path and Coulomb collisions, the Maxwellian and its moments, the
 # kinetic (Vlasov) equation, Boltzmann equilibrium and the Fermi energy.
@@ -326,4 +326,4 @@ check(k_B * T / E_F, k_B * T / E_F, unit=u.joule / u.joule, units=quantum_units)
 
 # %%
 if __name__ == "__main__":
-    report(__file__, "Chapter 5 · Kinetic theory")
+    report(__file__, "Chapter 6 · Kinetic theory")

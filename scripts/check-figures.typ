@@ -23,5 +23,5 @@
 #near(integrate(m.bump, -8, 8), calc.sqrt(calc.pi))
 
 // The Debye-sphere potentials are plotted from the SymPy derivation
-// (derivations/chapters/ch02_debye_shielding.py), whose tests check them.
+// (derivations/chapters/ch03_debye_shielding.py), whose tests check them.
 #metadata("passed") <physics-check>

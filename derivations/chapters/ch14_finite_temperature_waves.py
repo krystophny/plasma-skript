@@ -1,8 +1,8 @@
-# Chapter 13 · Finite-temperature waves (src/chapters/13-finite-temperature-waves.typ)
+# Chapter 14 · Finite-temperature waves (src/chapters/14-finite-temperature-waves.typ)
 #
 # Collisions as a complex mass, ion dynamics in the cold tensor (Alfvén, whistler,
 # ion cyclotron), warm-fluid pressure (Langmuir, ion acoustic, upper hybrid) and
-# the MHD waves. `python ch13_finite_temperature_waves.py` prints every step.
+# the MHD waves. `python ch14_finite_temperature_waves.py` prints every step.
 
 # %% Setup
 import numpy as np
@@ -222,7 +222,7 @@ si.check(phase, alfven, unit=u.meter / u.second, units=UNITS)
 
 # %% Normalized ion-cyclotron and whistler branches
 section("Normalized ion-cyclotron and whistler branches", script="ion-magnetized-waves")
-K, W = sp.symbols("K W", positive=True)  # K = k v_A/omega_ci, W = omega/omega_ci
+K, W = sp.symbols('K omega_hat', positive=True)  # K = k v_A/omega_ci, W = omega/omega_ci
 note("For", sp.Lt(w, wce), "and", sp.Lt(v_A, c), ": keep the leading term in", 1 / wce,
      "; normalize", sp.Eq(K, k * v_A / wci), ",", sp.Eq(W, w / wci))
 W_branch = {}
@@ -489,10 +489,10 @@ ax.plot(K_grid, rh(K_grid), color=BLUE)
 ax.plot(K_grid, lh(K_grid), color=ORANGE, ls="--")
 label(ax, 1.0, rh(1.0), "RH (whistler)", BLUE, ha="right")
 label(ax, 2.38, lh(2.38) - 0.25, "LH (ion cyclotron)", ORANGE, ha="right", va="top")
-label(ax, 1.95, 1.65, r"$\mathrm{Alfv\acute{e}n}$ $W=K$", GRAY, va="top")
+label(ax, 1.95, 1.65, '$\\mathrm{Alfv\\acute{e}n}$ $\\hat{\\omega}=K$', GRAY, va="top")
 label(ax, 2.38, 1.03, "resonance $\\omega=\\omega_{ci}$", GRAY, ha="right")
 ax.set(xlim=(0, 2.4), ylim=(0, 3), xticks=[0, 1, 2], yticks=[0, 1, 2, 3],
-       xlabel=r"$K=kv_A/\omega_{ci}$ [1]", ylabel=r"$W=\omega/\omega_{ci}$ [1]")
+       xlabel=r"$K=kv_A/\omega_{ci}$ [1]", ylabel='$\\hat{\\omega}=\\omega/\\omega_{ci}$ [1]')
 save(fig, "ion-wave-branches")
 
 # %% Plot: both roots of the two-species quadratic, one panel each
@@ -531,4 +531,4 @@ save(fig, "ion-acoustic-branch")
 
 # %%
 if __name__ == "__main__":
-    report(__file__, "Chapter 13 · Finite-temperature waves")
+    report(__file__, "Chapter 14 · Finite-temperature waves")

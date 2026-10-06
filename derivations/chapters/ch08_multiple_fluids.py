@@ -1,4 +1,4 @@
-# Chapter 7 · Multiple-fluid theory (src/chapters/07-multiple-fluids.typ)
+# Chapter 8 · Multiple-fluid theory (src/chapters/08-multiple-fluids.typ)
 #
 # Species moments and their sums, the perpendicular drifts, the parallel
 # balance with the Boltzmann relation, and the one-fluid momentum equation.
@@ -101,7 +101,7 @@ has_unit(ms * ns * us**2 / Ls, u.newton / u.meter**3)
 section("Species energy balance", script="multiple-equations")
 MOMENTS = moment_values()
 T_W, K, C = sp.symbols("T_W K C")             # energy moment, kinetic operator, collisions
-note("On the test distribution of Chapter 6, the energy density")
+note("On the test distribution of Chapter 7, the energy density")
 show(sp.Eq(W, W_DEF))
 agrees_with(integrate(W_DEF), m_s * n * dot(U, U) / 2 + eps, MOMENTS, lhs=W)
 note("Weight the kinetic equation", sp.Eq(K, C), "with", m_s * dot(v, v) / 2, "and integrate")
@@ -371,4 +371,4 @@ close_to(density / 1.0e16, 2.72)
 
 # %%
 if __name__ == "__main__":
-    report(__file__, "Chapter 7 · Multiple-fluid theory")
+    report(__file__, "Chapter 8 · Multiple-fluid theory")

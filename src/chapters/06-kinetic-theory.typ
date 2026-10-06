@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title(number: 5)[Kinetic theory of plasmas] <kinetic-theory>
+  #page-title(number: 6)[Kinetic theory of plasmas] <kinetic-theory>
 
   #lead[
     Single-particle theory follows individual orbits. Kinetic theory instead
@@ -155,7 +155,7 @@
     omitted when the de Broglie wavelength is much smaller than $b_90$. The
     precise cutoffs depend on the collision operator and velocity average.
     This is the cutoff-logarithm convention, denoted $ln Lambda_"cut"$ in
-    Chapter 9; that chapter separately defines the plasma parameter
+    Chapter 10; that chapter separately defines the plasma parameter
     $Lambda=n_e lambda_D^3$ for its cited approximate collision rate.
   ]
 
@@ -1023,7 +1023,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "04-single-particle-motion.html", title: [Single-particle motion]),
-    next: (href: "06-moments.html", title: [Moments]),
+    previous: (href: "05-single-particle-motion.html", title: [Single-particle motion]),
+    next: (href: "07-moments.html", title: [Moments]),
   )
 ]

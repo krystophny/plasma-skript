@@ -1,4 +1,4 @@
-# Chapter 3 · Plasma oscillations (src/chapters/03-plasma-oscillations.typ)
+# Chapter 4 · Plasma oscillations (src/chapters/04-plasma-oscillations.typ)
 #
 # Charge-separation field of a displaced electron slab, the electron plasma
 # oscillation, species plasma frequencies and the link to the Debye length.
@@ -115,12 +115,51 @@ for name, (n_example, _) in EXAMPLE_PLASMAS.items():
     ax.annotate(name, (n_example, f_pe(n_example)), textcoords="offset points",
                 xytext=(-6, 3) if above else (5, -3), ha="right" if above else "left",
                 va="bottom" if above else "top")
-ax.set(xscale="log", yscale="log", xlim=(1e6, 1e32), ylim=(1e3, 1e15),
+ax.plot(1e29, f_pe(1e29), "s", ms=4, color=BLUE)
+ax.annotate("metal electrons", (1e29, f_pe(1e29)), xytext=(-5, 8),
+            textcoords="offset points", ha="right", color=BLUE)
+ax.set(xscale="log", yscale="log", xlim=(1e6, 1e32), ylim=(1e3, 1e17),
        xlabel=r"$n_e\ [\mathrm{m^{-3}}]$", ylabel=r"$f_{pe}\ [\mathrm{Hz}]$")
 log_ticks(ax.xaxis, 6, 30, 8)
 log_ticks(ax.yaxis, 3, 15, 3)
 save(fig, "plasma_frequency")
 
+# %% Independent numerical frequency/time estimates
+import json
+from pathlib import Path
+
+omega_numeric = sp.lambdify(n0, omega_pe_expr.subs(SI_VALUES), "numpy")
+frequency_examples = []
+for name, density_example in [("metal", 1e29), ("fusion", 1e20)]:
+    w = float(omega_numeric(density_example))
+    frequency_examples.append(dict(name=name, n=density_example, omega=w,
+                                   f=w/(2*np.pi), inverse=1/w, period=2*np.pi/w))
+Path("build").mkdir(exist_ok=True)
+Path("build/plasma-frequency.json").write_text(json.dumps(frequency_examples, indent=2))
+
+# %% Cold unmagnetized transverse waves (reference wave chapter)
+section("Electromagnetic cutoff", script="intro-plasma-oscillations")
+k, omega = sp.symbols("k omega", positive=True)
+dispersion = omega_pe**2 + c**2*k**2
+assert sp.diff(dispersion, k) == 2*c**2*k
+assert dispersion.subs(k, 0) == omega_pe**2
+
+
+def plot_cold_em_dispersion():
+    """Cutoff and vacuum line; both axes have explicitly normalized unit [1]."""
+    q = np.linspace(0, 4, 300)
+    fig, ax = figure(slide_width(6), 2.5)
+    ax.plot(q, np.sqrt(1+q*q), color=BLUE, label="plasma")
+    ax.plot(q, q, color="0.4", ls="--", label="vacuum")
+    ax.axhline(1, color="0.65", ls=":")
+    ax.set(xlabel=r"$ck/\omega_{pe}$ [1]", ylabel=r"$\omega/\omega_{pe}$ [1]",
+           xlim=(0,4), ylim=(0,4.5))
+    ax.legend(loc="upper left")
+    save(fig, "cold_em_dispersion")
+
+
+plot_cold_em_dispersion()
+
 # %%
 if __name__ == "__main__":
-    report(__file__, "Chapter 3 · Plasma oscillations")
+    report(__file__, "Chapter 4 · Plasma oscillations")

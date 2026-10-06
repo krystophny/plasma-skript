@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title(number: 10)[Plasma diffusion] <plasma-diffusion>
+  #page-title(number: 11)[Plasma diffusion] <plasma-diffusion>
 
   #lead[
     Diffusion is the macroscopic signature of many small changes in particle
@@ -235,7 +235,7 @@
     The mobility $mu_s$ has units of velocity divided by electric field,
     #unit("m^2/V/s"), and $D_s$ is in #unit("m^2/s"). This electric-field
     mobility includes charge, unlike the force-based mobility introduced in
-    Chapter 9.
+    Chapter 10.
   ]
 
   #assumption(
@@ -805,7 +805,7 @@
   )
 
   The coefficient here describes particle transport. It is different from
-  the magnetic diffusivity $D_(B)$ of Chapter 8, which describes resistive
+  the magnetic diffusivity $D_(B)$ of Chapter 9, which describes resistive
   smoothing of the magnetic field. In $D_perp^(B)$ above, the superscript
   labels the Bohm estimate. The identical diffusion units do not make these
   coefficients interchangeable.
@@ -940,11 +940,11 @@
 
   #chapter-nav(
     previous: (
-      href: "09-collisions-conductivity.html",
+      href: "10-collisions-conductivity.html",
       title: [Collisions and conductivity],
     ),
     next: (
-      href: "11-introduction-waves.html",
+      href: "12-introduction-waves.html",
       title: [Introduction to waves],
     ),
   )

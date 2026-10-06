@@ -4,12 +4,12 @@
 #import "@preview/unify:0.8.1": unit
 
 #let chapter = [
-  #page-title(number: 6)[Moments of the Boltzmann equation] <moments>
+  #page-title(number: 7)[Moments of the Boltzmann equation] <moments>
 
   #lead[
     Many plasma problems concern density, flow, or energy transport rather
     than the full velocity distribution. Velocity moments turn the kinetic
-    equation from Chapter 5 into evolution equations for these fluid fields.
+    equation from Chapter 6 into evolution equations for these fluid fields.
     The reduction remains incomplete: the transport equation for one moment
     usually introduces a higher moment, so a finite model needs a closure.
   ]
@@ -253,7 +253,7 @@
   )
 
   Start from the conservative kinetic equation for the species. As in
-  Chapter 5, the streaming divergence acts on position and the acceleration
+  Chapter 6, the streaming divergence acts on position and the acceleration
   divergence acts on velocity:
 
   $ pdv(f_s,t) + div(f_s bold(v))
@@ -650,9 +650,9 @@
 
   Define the kinetic-energy density and its bulk and internal parts:
 
-  $ W_s = (m_s/2) integral_(RR^3) abs(bold(v))^2 f_s dif^3 bold(v), quad
+  $ E_("kin",s) = (m_s/2) integral_(RR^3) abs(bold(v))^2 f_s dif^3 bold(v), quad
     epsilon_s = (sum_i (P_s)_(i i))/2, quad
-    W_s = (rho_s abs(bold(u)_s)^2)/2 + epsilon_s $ \
+    E_("kin",s) = (rho_s abs(bold(u)_s)^2)/2 + epsilon_s $ \
   <moments-energy-density>
 
   Randomly moving particles also carry kinetic energy relative to the flow.
@@ -669,7 +669,7 @@
   <moments-energy-collision>
 
   Weight the kinetic equation by $m_s abs(bold(v))^2\/2$. The time term is
-  $pdv(W_s,t, style: "horizontal")$. The spatial term is the divergence of the raw energy flux
+  $pdv(E_("kin",s),t, style: "horizontal")$. The spatial term is the divergence of the raw energy flux
 
   $ bold(F)_s = (m_s/2) integral_(RR^3)
     abs(bold(v))^2 bold(v) f_s dif^3 bold(v) $ <moments-energy-flux>
@@ -684,18 +684,18 @@
   For Lorentz acceleration, $bold(v) dot (bold(v) times bold(B))=0$, so the
   force moment is electric work only. The conservative energy equation is
 
-  $ pdv(W_s,t) + div(bold(F)_s)
+  $ pdv(E_("kin",s),t) + div(bold(F)_s)
     = q_s n_s bold(u)_s dot bold(E) + Q_s $ \
   <moments-energy-equation-raw>
 
   Decompose the energy flux with $bold(v)=bold(u)_s+bold(w)_s$:
 
-  $ bold(F)_s = W_s bold(u)_s + bold(P)_s dot bold(u)_s + bold(q)_s $ \
+  $ bold(F)_s = E_("kin",s) bold(u)_s + bold(P)_s dot bold(u)_s + bold(q)_s $ \
   <moments-energy-flux-split>
 
   Thus the total kinetic-energy equation is
 
-  $ pdv(W_s,t) + div(W_s bold(u)_s + bold(P)_s dot bold(u)_s + bold(q)_s)
+  $ pdv(E_("kin",s),t) + div(E_("kin",s) bold(u)_s + bold(P)_s dot bold(u)_s + bold(q)_s)
     = q_s n_s bold(u)_s dot bold(E) + Q_s $ \
   <moments-energy-equation>
 
@@ -729,7 +729,7 @@
     [Derivation: energy density and energy flux decomposition],
     [#derivation-step[Weight the kinetic equation by particle energy]
     Multiply the kinetic equation by $m_s v^2\/2$ and integrate. The time
-    derivative gives $pdv(W_s,t, style: "horizontal")$. The spatial streaming term gives
+    derivative gives $pdv(E_("kin",s),t, style: "horizontal")$. The spatial streaming term gives
 
     $ div((m_s/2) integral v^2 bold(v) f_s dif^3 bold(v)) . $
 
@@ -768,7 +768,7 @@
     $bold(w)_s$ vanish by the definition of the local mean. The total energy
     flux is
 
-    $ bold(F)_s=W_s bold(u)_s+bold(P)_s dot bold(u)_s+bold(q)_s . $
+    $ bold(F)_s=E_("kin",s) bold(u)_s+bold(P)_s dot bold(u)_s+bold(q)_s . $
 
     #derivation-step[Check the pressure divergence]
     In Cartesian components,
@@ -833,11 +833,11 @@
     three-dimensional kinetic-energy definitions used above.
 
     Target: report the internal energy density $epsilon_i$, bulk kinetic-energy
-    density, and total kinetic-energy density $W_i$.
+    density, and total kinetic-energy density $E_("kin",i)$.
 
     Numerical result: $epsilon_i=qty("0.0240", "J/m^3")$,
-    $W_("bulk",i)=qty("0.0836", "J/m^3")$, and
-    $W_i=qty("0.108", "J/m^3")$.
+    $E_("bulk",i)=qty("0.0836", "J/m^3")$, and
+    $E_("kin",i)=qty("0.108", "J/m^3")$.
   ]
 
   #interpretation(
@@ -1107,7 +1107,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "05-kinetic-theory.html", title: [Kinetic theory]),
-    next: (href: "07-multiple-fluids.html", title: [Multiple fluids]),
+    previous: (href: "06-kinetic-theory.html", title: [Kinetic theory]),
+    next: (href: "08-multiple-fluids.html", title: [Multiple fluids]),
   )
 ]

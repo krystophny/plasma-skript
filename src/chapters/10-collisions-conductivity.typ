@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title(number: 9)[Collisions and plasma conductivity] <collisions-conductivity>
+  #page-title(number: 10)[Collisions and plasma conductivity] <collisions-conductivity>
 
   #lead[
     Gradients and external forces drive net transport; collisions set how
@@ -67,15 +67,15 @@
   gradient produces a diffusive particle flux, schematically
   $bold(G)_"diff"=-D grad(n)$, while an external force produces a
   drift velocity, schematically
-  $bold(u)_"mob"=mu bold(F)$. For an electric force, the charge-weighted
+  $bold(u)_"mob"=mu_("mob") bold(F)$. For an electric force, the charge-weighted
   drift contributes to the current $bold(j)=sum_s q_(s)n_(s)bold(u)_(s)$.
   These are macroscopic summaries; the microscopic coefficient still depends
   on the collision operator and the ordering of scales.
 
   Here $D$ is a particle diffusivity in #unit("m^2/s"), and $bold(G)_"diff"$
-  is particle flux in #unit("m^-2 s^-1"). The coefficient $mu$ in this
+  is particle flux in #unit("m^-2 s^-1"). The coefficient $mu_("mob")$ in this
   force-based definition is mobility, with units #unit("s/kg"); it is not
-  the magnetic moment of Chapter 4. An electric-field mobility instead
+  the magnetic moment of Chapter 5. An electric-field mobility instead
   relates velocity directly to the electric field and includes the charge
   factor from the force.
 
@@ -227,12 +227,12 @@
 
   The momentum-transfer cross section is the angle-weighted quantity:
 
-  $ sigma_"mt" (v)=integral (1-cos chi) (dif sigma)/(dif Omega) dif Omega $
+  $ sigma_"mt" (v)=integral (1-cos theta_("sc")) (dif sigma)/(dif Omega) dif Omega $
 
-  Here $chi$ is the deflection angle and $dif Omega$ is a solid-angle element;
+  Here $theta_("sc")$ is the deflection angle and $dif Omega$ is a solid-angle element;
   neither angle carries a dimensional unit. The differential cross section
   $dif sigma\/(dif Omega)$ gives scattering area per unit solid angle.
-  The factor $1-cos chi$ weights each direction by its loss of forward
+  The factor $1-cos theta_("sc")$ weights each direction by its loss of forward
   momentum. A scattering process dominated by small deflections can therefore
   have a large total cross section but a small momentum-transfer cross section.
 
@@ -320,7 +320,7 @@
     (
       question: [Why is a momentum-transfer cross section more useful than a total cross section for conductivity?],
       answer: [Conductivity responds to directed momentum loss. The factor
-      $1-cos chi$ weights each event by its momentum change, so small-angle
+      $1-cos theta_("sc")$ weights each event by its momentum change, so small-angle
       scattering is not counted as a full reversal.]
     ),
     (
@@ -403,7 +403,7 @@
   #definition(
     [Coulomb logarithm and electron--ion rate],
     [For impact parameters $b$ much larger than $b_90$, the deflection is
-    small, $chi(b) approx 2 b_90\/b$. The screened upper cutoff is
+    small, $theta_("sc")(b) approx 2 b_90\/b$. The screened upper cutoff is
     $b_"max" approx lambda_D$. The broad-impact-parameter measure is recorded
     by $Lambda_"cut"=lambda_D\/b_90$ and its logarithm
     $ln Lambda_"cut"$. Separately, define $Lambda=n_"e"lambda_D^3$.
@@ -437,14 +437,14 @@
     [#derivation-step[Accumulate deflection over impact parameters]
     For $b >> b_90$, Rutherford scattering gives
 
-    $ chi(b) approx (2 b_90)/b . $
+    $ theta_("sc")(b) approx (2 b_90)/b . $
 
     During $dif t$, the number of target ions in the annulus from $b$ to
     $b+dif b$ scales as
 
     $ n_"i"v_"rel" 2 pi b dif b dif t . $
 
-    The squared transverse kick scales as $v_"rel"^2 chi(b)^2$. Hence the
+    The squared transverse kick scales as $v_"rel"^2 theta_("sc")(b)^2$. Hence the
     accumulated squared deflection has the scale
 
     $ dv(⟨Delta v_perp^2⟩,t) ∝ n_"i"v_"rel"^3 b_90^2
@@ -954,7 +954,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "08-mhd.html", title: [Single-fluid MHD]),
-    next: (href: "10-diffusion.html", title: [Diffusion]),
+    previous: (href: "09-mhd.html", title: [Single-fluid MHD]),
+    next: (href: "11-diffusion.html", title: [Diffusion]),
   )
 ]

@@ -3,7 +3,7 @@
 #import "@preview/physica:0.9.8": grad, pdv, dv
 
 #let chapter = [
-  #page-title(number: 4)[Single-particle motion] <single-particle-motion>
+  #page-title(number: 5)[Single-particle motion] <single-particle-motion>
 
   #lead[
     The single-particle model prescribes electromagnetic fields and follows
@@ -389,10 +389,10 @@
 
   For perpendicular gyromotion, define the magnetic moment
 
-  $ mu = (m v_perp^2)/(2 B) $ <motion-magnetic-moment>
+  $ mu_("mag") = (m v_perp^2)/(2 B) $ <motion-magnetic-moment>
 
   #equation-note[
-    $mu$ is an energy divided by magnetic field, in #unit("J/T"). It is an
+    $mu_("mag")$ is an energy divided by magnetic field, in #unit("J/T"). It is an
     adiabatic invariant under the stated slow-variation ordering: it remains
     approximately constant as the particle samples a slowly changing field.
     Here “adiabatic” refers to the separation of orbit and field-variation
@@ -416,18 +416,18 @@
 
     The magnetic dipole moment is current times area:
 
-    $ mu=I_"gyro" S
+    $ mu_("mag")=I_"gyro" S
       =(abs(q) omega_c rho^2)/2
       =(m v_perp^2)/(2 B) . $
 
-    Here $mu$ is the positive scalar magnitude; the gyration produces a
+    Here $mu_("mag")$ is the positive scalar magnitude; the gyration produces a
     diamagnetic vector dipole.
 
     #derivation-step[Use the averaged mirror force]
     Let $s$ measure distance along a field line. The averaged mirror force is
 
-    $ F_parallel=-mu pdv(B,s), quad
-      m dv(v_parallel,t)=-mu pdv(B,s) . $
+    $ F_parallel=-mu_("mag") pdv(B,s), quad
+      m dv(v_parallel,t)=-mu_("mag") pdv(B,s) . $
 
     Since $dv(s,t, style: "horizontal")=v_parallel$, the particle samples the field according to
 
@@ -436,26 +436,26 @@
     Therefore the parallel kinetic energy changes as
 
     $ dv((m v_parallel^2)/2,t)
-      =-mu v_parallel pdv(B,s) . $
+      =-mu_("mag") v_parallel pdv(B,s) . $
 
     #derivation-step[Show adiabatic conservation]
     The magnetic part changes according to
 
-    $ dv(mu B,t)=B dv(mu,t)+mu v_parallel pdv(B,s) . $
+    $ dv(mu_("mag") B,t)=B dv(mu_("mag"),t)+mu_("mag") v_parallel pdv(B,s) . $
 
     Adding the two balances gives
 
-    $ dv((m v_parallel^2)/2+mu B,t)=B dv(mu,t) . $
+    $ dv((m v_parallel^2)/2+mu_("mag") B,t)=B dv(mu_("mag"),t) . $
 
     In this static, leading-order guiding-center approximation, the total
-    guiding-center energy is conserved, so $dv(mu,t, style: "horizontal") approx 0$. The ordering
+    guiding-center energy is conserved, so $dv(mu_("mag"),t, style: "horizontal") approx 0$. The ordering
     requires the field to vary little over one gyroperiod and one gyroradius.]
   )
 
   This static mirror argument transfers energy between parallel and
-  perpendicular motion. In a slowly time-varying magnetic field, $mu$ can
+  perpendicular motion. In a slowly time-varying magnetic field, $mu_("mag")$ can
   remain invariant while an induced electric field supplies energy: the
-  increase of $mu B$ is then betatron acceleration, and total kinetic energy
+  increase of $mu_("mag") B$ is then betatron acceleration, and total kinetic energy
   need not be conserved.
 
   #rechenbeispiel[
@@ -463,7 +463,7 @@
     $q_i=e=qty("1.602e-19", "C")$. Use an initial field
     $B_0=qty("0.0100", "T")$, a final field $B_1=qty("0.0400", "T")$, and
     $v_(perp,0)=qty("1.00e5", "m/s")$. Assume that the field changes
-    adiabatically, $mu$ is conserved, and there is no electrostatic energy
+    adiabatically, $mu_("mag")$ is conserved, and there is no electrostatic energy
     exchange.
 
     Target: report $v_(perp,1)$, $rho_0$, and $rho_1$.
@@ -477,13 +477,13 @@
     [The particle position contains a rapidly rotating vector $bold(rho)$ and
     a slowly evolving center $bold(R)$. Guiding-center theory does not erase
     the physics of the fast orbit. It replaces its detailed phase by averaged
-    quantities such as $mu$, parallel momentum, and drift velocities.]
+    quantities such as $mu_("mag")$, parallel momentum, and drift velocities.]
   )
 
   #summary[
     Guiding-center theory requires small orbit size and slow field variation.
     The decomposition $bold(r)=bold(R)+bold(rho)$ separates gyromotion from
-    center motion, and $mu=m v_perp^2\/(2B)$ is conserved approximately in the
+    center motion, and $mu_("mag")=m v_perp^2\/(2B)$ is conserved approximately in the
     adiabatic regime.
   ]
 
@@ -504,8 +504,8 @@
       answer: [The fast gyrophase dependence of $bold(rho)$ is averaged, while the guiding-center position and slow invariants are retained.],
     ),
     (
-      question: [What happens to $mu$ if $B$ increases adiabatically while it remains invariant?],
-      answer: [The perpendicular kinetic energy $m v_perp^2\/2 = mu B$ increases in proportion to $B$, so $v_perp$ increases as $sqrt(B)$.],
+      question: [What happens to $mu_("mag")$ if $B$ increases adiabatically while it remains invariant?],
+      answer: [The perpendicular kinetic energy $m v_perp^2\/2 = mu_("mag") B$ increases in proportion to $B$, so $v_perp$ increases as $sqrt(B)$.],
     ),
     (
       question: [Give one process that can break magnetic-moment conservation.],
@@ -529,21 +529,21 @@
 
   #assumption(
     [Adiabatic guiding-center force],
-    [Use the same $rho\/L_B << 1$ ordering and neglect rapid changes of $mu$.
+    [Use the same $rho\/L_B << 1$ ordering and neglect rapid changes of $mu_("mag")$.
     The magnetic-moment force is the effective guiding-center force]
   )
 
-  $ bold(F)_mu = -mu grad(B) $ <motion-mu-force>
+  $ bold(F)_mu = -mu_("mag") grad(B) $ <motion-mu-force>
 
   #equation-note[
-    $bold(F)_mu$ is in #unit("N") when $mu$ is in #unit("J/T") and
+    $bold(F)_mu$ is in #unit("N") when $mu_("mag")$ is in #unit("J/T") and
     $grad(B)$ in #unit("T/m").
   ]
 
   Because the field varies little across an orbit, the local perpendicular
   part of this force can be inserted into the homogeneous-force drift:
 
-  $ bold(v)_(grad B) = (bold(F)_mu times bold(B))/(q B^2) = (mu (bold(B) times grad(B)))/(q B^2) $ <motion-gradb-drift>
+  $ bold(v)_(grad B) = (bold(F)_mu times bold(B))/(q B^2) = (mu_("mag") (bold(B) times grad(B)))/(q B^2) $ <motion-gradb-drift>
 
   #equation-note[
     The drift is perpendicular to both $bold(B)$ and the field
@@ -578,7 +578,7 @@
     [#derivation-step[Identify the magnetic-moment force]
     The guiding-center force from the adiabatic magnetic moment is
 
-    $ bold(F)_mu=-mu grad(B) . $
+    $ bold(F)_mu=-mu_("mag") grad(B) . $
 
     #derivation-step[Apply the general force-drift formula]
     A perpendicular homogeneous force drifts at
@@ -591,7 +591,7 @@
 
     The grad-$B$ drift is therefore
 
-    $ bold(v)_(grad B)=(mu (bold(B) times grad(B)))/(q B^2) . $
+    $ bold(v)_(grad B)=(mu_("mag") (bold(B) times grad(B)))/(q B^2) . $
 
     Reversing $q$ while holding $bold(B)$ fixed checks the direction of the
     drift.]
@@ -599,8 +599,8 @@
 
   #interpretation(
     [Magnetic mirrors],
-    [If a particle moves into a region of increasing $B$ while $mu$ is
-    approximately conserved, its perpendicular energy $mu B$ increases. With
+    [If a particle moves into a region of increasing $B$ while $mu_("mag")$ is
+    approximately conserved, its perpendicular energy $mu_("mag") B$ increases. With
     nearly constant total kinetic energy, parallel energy decreases. The
     parallel velocity can reach zero, after which the particle reverses and is
     reflected without a collision. The pitch angle determines whether the
@@ -611,7 +611,7 @@
   Let $s$ measure distance along a field line. The magnetic-moment force has a
   parallel component
 
-  $ m dv(v_parallel,t) = F_parallel = -mu pdv(B,s) $ <motion-mirror-force>
+  $ m dv(v_parallel,t) = F_parallel = -mu_("mag") pdv(B,s) $ <motion-mirror-force>
 
   #equation-note[
     The derivative $pdv(B,s, style: "horizontal")$ is taken along the field-line coordinate $s$.
@@ -622,9 +622,9 @@
   In a static magnetic field with no electrostatic potential, the effective
   parallel energy is
 
-  $ K = (m v_parallel^2)/2 + mu B(s) = "const." $ <motion-mirror-energy>
+  $ K = (m v_parallel^2)/2 + mu_("mag") B(s) = "const." $ <motion-mirror-energy>
 
-  In this one-dimensional description, $mu B(s)$ acts as a potential for
+  In this one-dimensional description, $mu_("mag") B(s)$ acts as a potential for
   parallel motion, although it is physically the perpendicular kinetic
   energy. A particle reflects when this term grows to equal $K$, leaving
   no parallel kinetic energy. Particles with too little perpendicular
@@ -642,15 +642,15 @@
 
     $ dv((m v_parallel^2)/2,t)
       =m v_parallel dv(v_parallel,t)
-      =-mu v_parallel pdv(B,s) . $
+      =-mu_("mag") v_parallel pdv(B,s) . $
 
-    If $dv(mu,t, style: "horizontal")=0$, the magnetic energy changes as
+    If $dv(mu_("mag"),t, style: "horizontal")=0$, the magnetic energy changes as
 
-    $ dv(mu B,t)=mu v_parallel pdv(B,s) . $
+    $ dv(mu_("mag") B,t)=mu_("mag") v_parallel pdv(B,s) . $
 
     The two terms cancel, proving conservation of
 
-    $ K=(m v_parallel^2)/2+mu B . $
+    $ K=(m v_parallel^2)/2+mu_("mag") B . $
 
     #derivation-step[Find the mirror point]
     At the initial point, use
@@ -659,10 +659,10 @@
       v_(parallel,0)=v_0 cos alpha_0 . $
 
     At the mirror point $B_m$, $v_parallel$ is zero. Conservation of $K$
-    and $mu$ gives
+    and $mu_("mag")$ gives
 
-    $ mu B_m=(m v_0^2)/2, quad
-      mu B_0=(m v_0^2 sin^2 alpha_0)/2 . $
+    $ mu_("mag") B_m=(m v_0^2)/2, quad
+      mu_("mag") B_0=(m v_0^2 sin^2 alpha_0)/2 . $
 
     Hence
 
@@ -694,14 +694,14 @@
     curvature drift. The first is species independent; the latter two reverse
     direction with charge sign. A mirror reflection is not itself a transverse
     drift: it is parallel slowing and reversal caused by the effective
-    potential $mu B$.]
+    potential $mu_("mag") B$.]
   )
 
   #summary[
     Gradients and curvature create effective guiding-center forces. The force
-    drift turns $-mu grad(B)$ into grad- $B$ drift, while parallel inertia in a
+    drift turns $-mu_("mag") grad(B)$ into grad- $B$ drift, while parallel inertia in a
     curved field produces curvature drift. Magnetic mirrors follow from
-    conserving $mu$ while the field strength changes.
+    conserving $mu_("mag")$ while the field strength changes.
   ]
 
   #exam-prompts(
@@ -721,7 +721,7 @@
     ),
     (
       question: [What energy conversion occurs as a mirrored particle approaches stronger $B$?],
-      answer: [Perpendicular energy $mu B$ increases while parallel kinetic energy decreases if total energy is conserved.],
+      answer: [Perpendicular energy $mu_("mag") B$ increases while parallel kinetic energy decreases if total energy is conserved.],
     ),
     (
       question: [What is the common geometric direction of grad- $B$ drift?],
@@ -1070,7 +1070,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "03-plasma-oscillations.html", title: [Plasma oscillations]),
-    next: (href: "05-kinetic-theory.html", title: [Kinetic theory]),
+    previous: (href: "04-plasma-oscillations.html", title: [Plasma oscillations]),
+    next: (href: "06-kinetic-theory.html", title: [Kinetic theory]),
   )
 ]

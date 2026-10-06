@@ -459,6 +459,6 @@
   ))
 
   #chapter-nav(
-    next: (href: "02-debye-shielding.html", title: [Debye shielding]),
+    next: (href: "02-thermal-equilibrium.html", title: [Temperature, entropy, and thermal ionization]),
   )
 ]

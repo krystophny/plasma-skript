@@ -4,10 +4,10 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title(number: 8)[Single-fluid theory and magnetohydrodynamics] <single-fluid-mhd>
+  #page-title(number: 9)[Single-fluid theory and magnetohydrodynamics] <single-fluid-mhd>
 
   #lead[
-    Chapter 7 combined species equations into total-fluid balances. To obtain
+    Chapter 8 combined species equations into total-fluid balances. To obtain
     magnetohydrodynamics (MHD), we also need an equation for the electric
     field and assumptions that close pressure and heat transport. The resulting
     model evolves the bulk flow together with the magnetic field. Its ideal
@@ -572,7 +572,7 @@
       Common $E times B$ advection as a visual bridge to ideal MHD. The
       reference length $L_0$ and time $t_0$ give the gyroradius ratio $r_L\/L_0=0.65$,
       $Omega t_0=2$, and $v_D t_0\/L_0=0.55$, all with unit [1], as in
-      Chapter 4. The animation is a deterministic illustration; it does not show
+      Chapter 5. The animation is a deterministic illustration; it does not show
       the linearized MHD perturbation equations or measured data.
     ],
     poster: "../media/exb-drift.png",
@@ -1148,7 +1148,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "07-multiple-fluids.html", title: [Multiple fluids]),
-    next: (href: "09-collisions-conductivity.html", title: [Collisions and conductivity]),
+    previous: (href: "08-multiple-fluids.html", title: [Multiple fluids]),
+    next: (href: "10-collisions-conductivity.html", title: [Collisions and conductivity]),
   )
 ]

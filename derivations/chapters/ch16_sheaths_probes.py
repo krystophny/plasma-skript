@@ -1,8 +1,8 @@
-# Chapter 15 · Sheaths and probes (src/chapters/15-sheaths-probes.typ)
+# Chapter 16 · Sheaths and probes (src/chapters/16-sheaths-probes.typ)
 #
 # Maxwellian wall fluxes, the Bohm sheath (Poisson equation, first integral,
 # Bohm criterion), Child-Langmuir sheaths, the floating potential and the
-# Langmuir probe characteristic. `python ch15_sheaths_probes.py` prints every step.
+# Langmuir probe characteristic. `python ch16_sheaths_probes.py` prints every step.
 
 # %% Setup
 import mpmath as mp
@@ -191,7 +191,7 @@ assert sp.simplify(sp.diff(first_integral, s).subs(V_s.diff(s, 2), C / sp.sqrt(V
 show(sp.Eq(first_integral, 0))
 slope = sp.sqrt(4 * C * sp.sqrt(V))
 agrees(slope / V ** sp.Rational(1, 4), 2 * sp.sqrt(C), lhs=V_s.diff(s) / V_s ** sp.Rational(1, 4))
-W = sp.Symbol("W", positive=True)
+W = sp.Symbol("U", positive=True)
 separated = sp.integrate(W ** sp.Rational(-1, 4), (W, 0, V))
 agrees(separated, sp.Rational(4, 3) * V ** sp.Rational(3, 4),
        lhs=sp.Integral(W ** sp.Rational(-1, 4), (W, 0, V)))
@@ -389,4 +389,4 @@ save(fig, "probe-iv-characteristic")
 
 # %%
 if __name__ == "__main__":
-    report(__file__, "Chapter 15 · Sheaths and probes")
+    report(__file__, "Chapter 16 · Sheaths and probes")

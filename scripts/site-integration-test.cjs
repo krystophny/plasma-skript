@@ -13,20 +13,21 @@ const { chromium } = require(
 const pages = [
   "/index.html",
   "/chapters/01-introduction.html",
-  "/chapters/02-debye-shielding.html",
-  "/chapters/03-plasma-oscillations.html",
-  "/chapters/04-single-particle-motion.html",
-  "/chapters/05-kinetic-theory.html",
-  "/chapters/06-moments.html",
-  "/chapters/07-multiple-fluids.html",
-  "/chapters/08-mhd.html",
-  "/chapters/09-collisions-conductivity.html",
-  "/chapters/10-diffusion.html",
-  "/chapters/11-introduction-waves.html",
-  "/chapters/12-cold-magnetized-waves.html",
-  "/chapters/13-finite-temperature-waves.html",
-  "/chapters/14-hot-plasma-waves.html",
-  "/chapters/15-sheaths-probes.html",
+  "/chapters/02-thermal-equilibrium.html",
+  "/chapters/03-debye-shielding.html",
+  "/chapters/04-plasma-oscillations.html",
+  "/chapters/05-single-particle-motion.html",
+  "/chapters/06-kinetic-theory.html",
+  "/chapters/07-moments.html",
+  "/chapters/08-multiple-fluids.html",
+  "/chapters/09-mhd.html",
+  "/chapters/10-collisions-conductivity.html",
+  "/chapters/11-diffusion.html",
+  "/chapters/12-introduction-waves.html",
+  "/chapters/13-cold-magnetized-waves.html",
+  "/chapters/14-finite-temperature-waves.html",
+  "/chapters/15-hot-plasma-waves.html",
+  "/chapters/16-sheaths-probes.html",
   "/appendices/mathematical-toolkit.html",
 ];
 
@@ -38,14 +39,15 @@ const viewports = [
 
 const screenshotTargets = new Map([
   ["/chapters/01-introduction.html", "main figure:has(.model-figure-diagram)"],
-  ["/chapters/02-debye-shielding.html", "main figure:has(svg), main figure:has(img[src^='data:image/svg+xml']), main figure:has(img[src$='.svg'])"],
-  ["/chapters/03-plasma-oscillations.html", "main video, main iframe.animation-embed"],
-  ["/chapters/06-moments.html", 'main math[display="block"]'],
+  ["/chapters/02-thermal-equilibrium.html", "main figure:has(img), main figure:has(svg)"],
+  ["/chapters/03-debye-shielding.html", "main figure:has(svg), main figure:has(img[src^='data:image/svg+xml']), main figure:has(img[src$='.svg'])"],
+  ["/chapters/04-plasma-oscillations.html", "main video, main iframe.animation-embed"],
+  ["/chapters/07-moments.html", 'main math[display="block"]'],
   [
-    "/chapters/12-cold-magnetized-waves.html",
+    "/chapters/13-cold-magnetized-waves.html",
     'main > div[id^="frame-wrapper-"]',
   ],
-  ["/chapters/15-sheaths-probes.html", "main video, main iframe.animation-embed"],
+  ["/chapters/16-sheaths-probes.html", "main video, main iframe.animation-embed"],
   [
     "/appendices/mathematical-toolkit.html",
     'main > div[id^="frame-wrapper-"]',
@@ -142,6 +144,21 @@ async function auditPage(page, pagePath, viewport) {
     );
     await page.waitForTimeout(100);
 
+    if (pagePath === "/chapters/02-thermal-equilibrium.html") {
+      const sections = await page.locator("main h2").allTextContents();
+      if (sections.length !== 5 || !sections.some((text) => /Saha equation/.test(text))) {
+        recordFailure(`${pageLabel}: thermal chapter lacks its five teaching sections`);
+      }
+      const checks = await page.locator(".knowledge-check > ol > li").count();
+      if (checks !== 20) {
+        recordFailure(`${pageLabel}: thermal chapter must expose twenty knowledge-check questions`);
+      }
+      const content = await page.locator("main").innerText();
+      if (!/3226/.test(content) || !/26230/.test(content)) {
+        recordFailure(`${pageLabel}: computed half-ionization table is missing`);
+      }
+    }
+
     if (pagePath === "/chapters/01-introduction.html") {
       const diagramCounts = await page.evaluate(() => {
         const visibleDiagrams = () => [...document.querySelectorAll(".model-figure svg")]
@@ -170,7 +187,7 @@ async function auditPage(page, pagePath, viewport) {
     }
 
     // The reading order is observable behavior: headings and navigation must
-    // agree with the fifteen-chapter course sequence, including the new split.
+    // agree with the sixteen-chapter course sequence, including thermal equilibrium.
     const chapterPages = pages.filter((path) => path.startsWith("/chapters/"));
     const chapterIndex = chapterPages.indexOf(pagePath);
     if (chapterIndex >= 0) {

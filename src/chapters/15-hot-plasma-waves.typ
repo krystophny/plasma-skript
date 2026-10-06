@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title(number: 14)[Waves in hot plasmas] <hot-plasma-waves>
+  #page-title(number: 15)[Waves in hot plasmas] <hot-plasma-waves>
 
   #lead[
     A fluid closure retains only a few velocity moments. A hot plasma wave
@@ -1213,7 +1213,7 @@
     For parallel propagation, the transverse electric field decomposes into
     circular polarizations. The $n=+1$ and $n=-1$ terms are selected by the
     corresponding sense of gyromotion, while $n=0$ describes parallel motion.
-    In chapter 12's circular basis $E_y=-i sigma E_x$ with $sigma=plus.minus 1$,
+    In chapter 13's circular basis $E_y=-i sigma E_x$ with $sigma=plus.minus 1$,
     $bold(E)_perp dot bold(v)_perp=E_x v_perp exp(i sigma theta)$.
     Thus that circular forcing selects $n=sigma$; for electrons the
     positive-frequency cyclotron pole has $n=-1$ because $Omega_e<0$.
@@ -1307,7 +1307,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "13-finite-temperature-waves.html", title: [Finite-temperature effects]),
-    next: (href: "15-sheaths-probes.html", title: [Sheaths and probes]),
+    previous: (href: "14-finite-temperature-waves.html", title: [Finite-temperature effects]),
+    next: (href: "16-sheaths-probes.html", title: [Sheaths and probes]),
   )
 ]

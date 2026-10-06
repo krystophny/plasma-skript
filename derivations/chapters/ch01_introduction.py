@@ -66,7 +66,7 @@ from si import eps0
 Q, r, lam_D = sp.symbols("Q r lambda_D", positive=True)
 Q_enc = sp.Symbol("Q_enc")
 SCREEN_UNITS = {Q: u.coulomb, r: u.meter, lam_D: u.meter}
-note("Debye-screened potential of a point charge", Q, "(derived in chapter 2)")
+note("Debye-screened potential of a point charge", Q, "(derived in chapter 3)")
 phi_D = show(sp.Eq(sp.Symbol("phi"), Q * sp.exp(-r / lam_D) / (4 * sp.pi * eps0 * r)))
 note("Gauss's law gives the net charge inside radius", r)
 enclosed = sp.simplify(-4 * sp.pi * eps0 * r**2 * sp.diff(phi_D.rhs, r))
@@ -142,7 +142,7 @@ omega_ce_expr = e * B0 / m_e
 v_th_e = v_th_solved.subs({T_s: T_e, m_s: m_e})
 rho_e_expr = v_th_e / omega_ce_expr
 v_mean_e = v_mean.subs(v_th, v_th_e)
-note("Electron-ion collision rate (Inan and Golkowski 2011, as in chapter 9)")
+note("Electron-ion collision rate (Inan and Golkowski 2011, as in chapter 10)")
 nu_ei_expr = (sp.sqrt(2) * omega_pe_expr**4 / (64 * sp.pi * n0)
               * (k_B * T_e / m_e) ** sp.Rational(-3, 2) * lnL)
 mfp_expr = v_mean_e / nu_ei_expr
@@ -151,7 +151,7 @@ for name, expr, unit in [("lambda_D", lambda_D_expr, u.meter), ("rho_e", rho_e_e
                          ("omega_ce", omega_ce_expr, u.second**-1), ("nu_ei", nu_ei_expr, u.second**-1)]:
     show(sp.Eq(sp.Symbol(name), expr))
     check(expr, expr, unit=unit, units=SCALE_UNITS)
-note("Chapter 9 example", sp.Eq(n0, 1e16 / u.meter**3, evaluate=False), "at 10 eV,",
+note("Chapter 10 example", sp.Eq(n0, 1e16 / u.meter**3, evaluate=False), "at 10 eV,",
      sp.Eq(lnL, sp.log(n0 * lambda_D_expr**3)))
 example = {n0: 1.0e16 / u.meter**3, T_e: 1.602e-18 * u.joule / u.boltzmann_constant}
 debye_example = evaluate(sp.Symbol("lambda_D"), lambda_D_expr, example, u.meter)

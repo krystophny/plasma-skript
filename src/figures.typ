@@ -454,7 +454,7 @@
     node((0, 0), [Gradient \ $grad n, grad T$]),
     node((1, 0), [Applied force \ $q bold(E)$]),
     node((0, 1), [Diffusion \ $bold(Gamma)=-D grad n$]),
-    node((1, 1), [Mobility $bold(u)=mu bold(E)$ \ conductivity $sigma$]),
+    node((1, 1), [Mobility $bold(u)=mu_("mob") bold(E)$ \ conductivity $sigma$]),
     edge((0, 0), (0, 1), [randomize], "->", label-side: left),
     edge((1, 0), (1, 1), [drag], "->", label-side: right),
   ))
@@ -612,13 +612,13 @@
   }
 }
 
-// Plot: wave-dispersion cell in derivations/chapters/ch11_introduction_waves.py.
+// Plot: wave-dispersion cell in derivations/chapters/ch12_introduction_waves.py.
 #let wave-dispersion = figure(
-  alt: "A normalized dispersion plot of frequency over electron plasma frequency against wave number times c over plasma frequency. The cold electromagnetic branch starts at the cutoff W=1 for K=0 and approaches the dotted vacuum line W=K; the cold electrostatic branch is the horizontal line W=1.",
+  alt: "A normalized dispersion plot of frequency over electron plasma frequency against wave number times c over plasma frequency. The cold electromagnetic branch starts at the cutoff hat(omega)=1 for K=0 and approaches the dotted vacuum line hat(omega)=K; the cold electrostatic branch is the horizontal line hat(omega)=1.",
   caption: [
     Cold, unmagnetized, fixed-ion branches. The electromagnetic branch
-    $W^2=1+K^2$ has its cutoff at $W=1$ and approaches the vacuum line
-    $W=K$; the electrostatic oscillation $W=1$ has zero group velocity.
+    $hat(omega)^2=1+K^2$ has its cutoff at $hat(omega)=1$ and approaches the vacuum line
+    $hat(omega)=K$; the electrostatic oscillation $hat(omega)=1$ has zero group velocity.
   ],
 )[#derived-plot("wave-dispersion", width: 9.5cm)]
 
@@ -747,15 +747,15 @@
   }
 }
 
-// Plot: magnetized-parallel-dispersion cell in derivations/chapters/ch12_cold_magnetized_waves.py.
+// Plot: magnetized-parallel-dispersion cell in derivations/chapters/ch13_cold_magnetized_waves.py.
 #let magnetized-parallel-dispersion = figure(
-  alt: "Cold parallel dispersion, normalized frequency W against K=kc/omega_pe at Y=0.3. The s=+1 branch starts at the cutoff W=0.861, the s=-1 branch at W=1.161; both approach the dotted vacuum line W=K. Below the electron cyclotron resonance W=0.3 the s=-1 whistler branch rises from zero and flattens toward the resonance.",
+  alt: "Cold parallel dispersion, normalized frequency hat(omega) against K=kc/omega_pe at Y=0.3. The s=+1 branch starts at the cutoff hat(omega)=0.861, the s=-1 branch at hat(omega)=1.161; both approach the dotted vacuum line hat(omega)=K. Below the electron cyclotron resonance hat(omega)=0.3 the s=-1 whistler branch rises from zero and flattens toward the resonance.",
   caption: [
     Cold fixed-ion parallel propagation at
     #normalized-label[$Y=omega_(c,e)\/omega_(p,e)=0.3$], from
-    $N_s^2=1-1/(W(W+s Y))$ with $K=W N_s$. The two circular modes have
+    $N_s^2=1-1/(hat(omega)(hat(omega)+s Y))$ with $K=hat(omega) N_s$. The two circular modes have
     different cutoffs $W_"cut,s"=(sqrt(Y^2+4)-s Y)/2$ (dots); only $s=-1$
-    has the cyclotron resonance $W=Y$, below which it propagates as the
+    has the cyclotron resonance $hat(omega)=Y$, below which it propagates as the
     whistler.
   ],
 )[#derived-plot("magnetized-parallel-dispersion", width: 9.5cm)]
@@ -829,9 +829,9 @@
   }
 }
 
-// Plots: perpendicular-o-mode and perpendicular-x-mode in derivations/chapters/ch12_cold_magnetized_waves.py.
+// Plots: perpendicular-o-mode and perpendicular-x-mode in derivations/chapters/ch13_cold_magnetized_waves.py.
 #let magnetized-cutoff-map = figure(
-  alt: "Two panels on identical axes, perpendicular propagation at Y=0.3: squared refractive index N^2 against W=omega/omega_pe. Left, the ordinary mode (dashed). Right, the extraordinary mode (solid). The ordinary mode crosses zero at its cutoff W=1. The extraordinary mode crosses zero at W=0.861, diverges at the upper-hybrid resonance W=1.044, returns from minus infinity and crosses zero again at W=1.161. The shaded region N^2<0 is evanescent.",
+  alt: "Two panels on identical axes, perpendicular propagation at Y=0.3: squared refractive index N^2 against hat(omega)=omega/omega_pe. Left, the ordinary mode (dashed). Right, the extraordinary mode (solid). The ordinary mode crosses zero at its cutoff hat(omega)=1. The extraordinary mode crosses zero at hat(omega)=0.861, diverges at the upper-hybrid resonance hat(omega)=1.044, returns from minus infinity and crosses zero again at hat(omega)=1.161. The shaded region N^2<0 is evanescent.",
   caption: [
     Perpendicular cold modes, ordinary (left) and extraordinary (right), at
     #normalized-label[$Y=omega_(c,e)\/omega_(p,e)=0.3$], the values of the
@@ -904,19 +904,19 @@
   }
 }
 
-// Plot: ion-wave-branches cell in derivations/chapters/ch13_finite_temperature_waves.py.
+// Plot: ion-wave-branches cell in derivations/chapters/ch14_finite_temperature_waves.py.
 #let ion-wave-branches = figure(
-  alt: "Normalized cold two-fluid parallel dispersion, W=omega/omega_ci against K=k v_A/omega_ci. Both circular branches start along the dotted Alfvén line W=K. The RH whistler branch bends above it; the LH branch bends below and approaches the ion cyclotron resonance W=1.",
+  alt: "Normalized cold two-fluid parallel dispersion, hat(omega)=omega/omega_ci against K=k v_A/omega_ci. Both circular branches start along the dotted Alfvén line hat(omega)=K. The RH whistler branch bends above it; the LH branch bends below and approaches the ion cyclotron resonance hat(omega)=1.",
   caption: [
     Cold parallel two-fluid branches for $omega << omega_(c,e)$ and
-    $v_A << c$, with $K=k v_A\/omega_(c,i)$ and $W=omega\/omega_(c,i)$:
+    $v_A << c$, with $K=k v_A\/omega_(c,i)$ and $hat(omega)=omega\/omega_(c,i)$:
     $W_"RH"=(K^2+sqrt(K^4+4 K^2))/2$ and
     $W_"LH"=(sqrt(K^4+4 K^2)-K^2)/2$. Both start as Alfvén waves; LH
     stops at the ion cyclotron resonance, RH continues as the whistler.
   ],
 )[#derived-plot("ion-wave-branches", width: 9.5cm)]
 
-// Plots: warm-langmuir-branch and ion-acoustic-branch in derivations/chapters/ch13_finite_temperature_waves.py.
+// Plots: warm-langmuir-branch and ion-acoustic-branch in derivations/chapters/ch14_finite_temperature_waves.py.
 #let warm-longitudinal-modes = figure(
   alt: "Two panels, both roots of the two-species warm-fluid longitudinal dispersion relation against K=k lambda_De. Left, the electron plasma wave in units of omega_pe: it starts at 1 and approaches the dotted thermal line omega=k c_se. Right, the ion-acoustic branch in units of omega_pi: it rises along the dotted line omega=k c_s and levels off at the ion plasma frequency, marked by a horizontal line.",
   caption: [
@@ -1059,7 +1059,7 @@
   }
 }
 
-// Plots: hot-isotropic-dispersion and hot-isotropic-damping in derivations/chapters/ch14_hot_plasma_waves.py.
+// Plots: hot-isotropic-dispersion and hot-isotropic-damping in derivations/chapters/ch15_hot_plasma_waves.py.
 #let hot-isotropic-dispersion = figure(
   alt: "Two side-by-side panels against a=k lambda_De from 0.12 to 0.6. Left: real frequency of the exact Maxwellian Langmuir root and the Bohm-Gross asymptote; they agree for small a and separate beyond about 0.25. Right: damping rate of the exact root and the weak-damping asymptote; both are negligible below a of about 0.2, the asymptote overestimates near 0.3 and saturates, while the exact rate keeps growing.",
   caption: [
@@ -1107,7 +1107,7 @@
 
 }
 
-// Plot: two-stream-growth cell in derivations/chapters/ch14_hot_plasma_waves.py.
+// Plot: two-stream-growth cell in derivations/chapters/ch15_hot_plasma_waves.py.
 #let two-stream-growth = figure(
   alt: "Two-stream growth rate gamma/omega_p against K=|k v_0|/omega_p. The rate rises from zero, peaks at 1/(2 sqrt 2) for K=sqrt(3/8) (marked), and falls to zero at the band edge K=1; larger K is stable.",
   caption: [
@@ -1239,7 +1239,7 @@
   }
 }
 
-// Plots: sheath-potential and sheath-densities in derivations/chapters/ch15_sheaths_probes.py.
+// Plots: sheath-potential and sheath-densities in derivations/chapters/ch16_sheaths_probes.py.
 #let sheath-profile = figure(
   alt: "Self-consistent planar sheath against distance from the wall in Debye lengths, two panels. Left: the normalized potential drop eta falls from the hydrogen floating value 2.84 at the wall toward zero in the plasma. Right: the ion density stays above the electron density everywhere; both rise toward n_0 away from the wall, the electrons from about 0.06 and the ions from about 0.39.",
   caption: [
@@ -1253,7 +1253,7 @@
   ],
 )[#derived-plot-pair("sheath-potential", "sheath-densities")]
 
-// Plot: probe-iv-characteristic cell in derivations/chapters/ch15_sheaths_probes.py.
+// Plot: probe-iv-characteristic cell in derivations/chapters/ch16_sheaths_probes.py.
 #let probe-iv-characteristic = figure(
   alt: "Normalized planar Langmuir-probe current against bias u. A small positive ion-saturation plateau at strongly negative bias, a zero crossing at the floating value u_f=-2.84 (marked), an exponential electron-retardation rise in magnitude, and a flat electron-saturation level -1 above the plasma potential u=0.",
   caption: [

@@ -1,4 +1,4 @@
-# Chapter 10 · Diffusion (src/chapters/10-diffusion.typ)
+# Chapter 11 · Diffusion (src/chapters/11-diffusion.typ)
 #
 # Random walk and Fick's law, the Green function, mobility and the Einstein
 # relation, ambipolar and magnetized diffusion, classical versus Bohm, with plots.
@@ -432,4 +432,4 @@ save(fig, "ambipolar-balance")
 
 # %%
 if __name__ == "__main__":
-    report(__file__, "Chapter 10 · Diffusion")
+    report(__file__, "Chapter 11 · Diffusion")

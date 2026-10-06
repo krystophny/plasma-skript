@@ -1,7 +1,7 @@
-# Chapter 11 · Introduction to waves (src/chapters/11-introduction-waves.typ)
+# Chapter 12 · Introduction to waves (src/chapters/12-introduction-waves.typ)
 #
 # Plane-wave linearization, the Langmuir and electromagnetic branches of a cold
-# plasma, warm-fluid and kinetic corrections. `python ch11_introduction_waves.py`
+# plasma, warm-fluid and kinetic corrections. `python ch12_introduction_waves.py`
 # prints every step; `# %%` cells run one by one in VS Code, PyCharm or Spyder.
 
 # %% Setup
@@ -153,7 +153,7 @@ agrees(sp.simplify(phase * group), c**2, lhs=v_phi * v_g)
 
 # %% Worked example: electromagnetic branch
 section("Worked example: electromagnetic branch", script="wave-dispersion")
-K, W = sp.symbols("K W", positive=True)
+K, W = sp.symbols('K omega_hat', positive=True)
 note("Drive at", sp.Eq(W, 2), "with", rounded(sp.Eq(w_pe, 5.64e9 / u.second)))
 K_value = number(sp.sqrt(W**2 - 1), {W: 2})
 show(sp.Eq(K, sp.Float(K_value, 4)))
@@ -309,13 +309,13 @@ ax.plot(K_grid, transverse_W(K_grid), color=BLUE)
 ax.plot(K_grid, np.ones_like(K_grid), color=ORANGE, ls="--")
 ax.plot([0], [1], "o", color=BLUE, ms=4, clip_on=False, zorder=3)
 label(ax, 0.08, 1.04, "cutoff", BLUE, va="bottom")
-label(ax, 1.55, 2.05, "electromagnetic\n$W^2=1+K^2$", BLUE, ha="right")
-label(ax, 2.95, 1.05, "electrostatic $W=1$", ORANGE, ha="right")
-label(ax, 2.6, 2.4, "vacuum $W=K$", GRAY, ha="left", va="top")
+label(ax, 1.55, 2.05, 'electromagnetic\n$\\hat{\\omega}^2=1+K^2$', BLUE, ha="right")
+label(ax, 2.95, 1.05, 'electrostatic $\\hat{\\omega}=1$', ORANGE, ha="right")
+label(ax, 2.6, 2.4, 'vacuum $\\hat{\\omega}=K$', GRAY, ha="left", va="top")
 ax.set(xlim=(0, 3), ylim=(0, 3.2), xticks=[0, 1, 2, 3], yticks=[0, 1, 2, 3],
-       xlabel=r"$K=kc/\omega_{pe}$ [1]", ylabel=r"$W=\omega/\omega_{pe}$ [1]")
+       xlabel=r"$K=kc/\omega_{pe}$ [1]", ylabel='$\\hat{\\omega}=\\omega/\\omega_{pe}$ [1]')
 save(fig, "wave-dispersion")
 
 # %%
 if __name__ == "__main__":
-    report(__file__, "Chapter 11 · Introduction to waves")
+    report(__file__, "Chapter 12 · Introduction to waves")

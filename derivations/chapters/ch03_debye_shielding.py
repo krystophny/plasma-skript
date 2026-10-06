@@ -1,4 +1,4 @@
-# Chapter 2 · Debye shielding (src/chapters/02-debye-shielding.typ)
+# Chapter 3 · Debye shielding (src/chapters/03-debye-shielding.typ)
 #
 # Charge-separation scale, Debye length, screened point charge, finite
 # spherical source (bare and screened), Debye number and the n-T regime map.
@@ -257,7 +257,7 @@ def numeric(expr, *args):
 
 
 def nt_axes():
-    fig, ax = figure(slide_width(10), 3.0)
+    fig, ax = figure(slide_width(10), 2.7)
     ax.set(xscale="log", yscale="log", xlim=(1e6, 1e32), ylim=(1e-2, 1e5),
            xlabel=r"$n_e\ [\mathrm{m^{-3}}]$", ylabel=r"$k_B T_e\ [\mathrm{eV}]$")
     log_ticks(ax.xaxis, 6, 32, 4)
@@ -277,7 +277,11 @@ def label_along(ax, x0, text, f, color):
                 rotation=angle, rotation_mode="anchor", color=color, ha="center", va="bottom")
 
 
-fig, _ = nt_axes()
+fig, ax = nt_axes()
+for name, (n_example, T_example) in EXAMPLE_PLASMAS.items():
+    ax.plot(n_example, T_example, "o", ms=5, color=BLUE)
+    ax.annotate(name, (n_example, T_example), xytext=(5, 0),
+                textcoords="offset points", va="center")
 save(fig, "nt_plane")
 
 T_of_L = numeric(T_line_L, n0, L)
@@ -325,4 +329,4 @@ save(fig, "debye_number")
 
 # %%
 if __name__ == "__main__":
-    report(__file__, "Chapter 2 · Debye shielding")
+    report(__file__, "Chapter 3 · Debye shielding")

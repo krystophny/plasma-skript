@@ -1,9 +1,10 @@
 #import "../theme.typ": *
 #import "@preview/physica:0.9.8": grad, div, curl, laplacian, pdv, dv, vb
 #import "../figures.typ": plasma-frequency-scale
+#import "../opening-diagrams.typ": electron-slab
 
 #let chapter = [
-  #page-title(number: 3)[Plasma oscillations] <plasma-oscillations>
+  #page-title(number: 4)[Plasma oscillations] <plasma-oscillations>
 
   #lead[
     Debye shielding describes an equilibrium rearrangement of charge.
@@ -42,6 +43,11 @@
 
   A displacement creates two oppositely charged boundary sheets. The sheet
   charge magnitude is $e n_0 abs(xi)$, so the electric field between them is
+
+  #figure(electron-slab(),
+    alt: "Electrons shifted to the right leave positive charge at the left boundary and negative charge at the right; the electric field points right and the electron force points left.",
+    caption: [The charge signs and arrow directions show the restoring force.
+      This schematic shows geometry, not a numerical length scale.])
 
   $ bold(E) = (e n_0 xi)/epsilon_0 bold(e)_x $ <plasma-oscillation-field>
 
@@ -187,7 +193,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "02-debye-shielding.html", title: [Debye shielding]),
-    next: (href: "04-single-particle-motion.html", title: [Single-particle motion]),
+    previous: (href: "03-debye-shielding.html", title: [Debye shielding]),
+    next: (href: "05-single-particle-motion.html", title: [Single-particle motion]),
   )
 ]

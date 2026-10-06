@@ -4,7 +4,7 @@
 #import "@preview/unify:0.8.1": qty, unit
 
 #let chapter = [
-  #page-title(number: 7)[Multiple-fluid theory of plasmas] <multiple-fluids>
+  #page-title(number: 8)[Multiple-fluid theory of plasmas] <multiple-fluids>
 
   #lead[
     A plasma can contain several interpenetrating fluids at the same position.
@@ -205,11 +205,11 @@
     $grad(p_(s))$ only for an isotropic pressure tensor.
   ]
 
-  As in Chapter 6, $bold(w)_(s)=bold(v)-bold(u)_(s)$ is the random velocity
+  As in Chapter 7, $bold(w)_(s)=bold(v)-bold(u)_(s)$ is the random velocity
   relative to the species flow. Define the total species kinetic-energy
   density and heat-flux vector by
 
-  $ W_(s) = (rho_(s) bold(u)_(s)^2)/2 + epsilon_(s), quad
+  $ E_("kin",s) = (rho_(s) bold(u)_(s)^2)/2 + epsilon_(s), quad
     epsilon_(s) = (m_(s) integral bold(w)_(s)^2 f_(s) dif^3 bold(v))/2 $
     <multiple-energy-definitions>
 
@@ -217,12 +217,12 @@
     f_(s) dif^3 bold(v))/2 $ <multiple-heat-flux>
 
   The subscript $h$ labels heat flux, distinguishing this vector from particle
-  charge $q_(s)$. The energy $W_(s)$ contains bulk and random kinetic energy;
+  charge $q_(s)$. The energy $E_("kin",s)$ contains bulk and random kinetic energy;
   electromagnetic field energy is separate.
 
   The corresponding energy balance is
 
-  $ pdv(W_(s), t) + div(W_(s) bold(u)_(s) + bold(P)_(s) dot bold(u)_(s)
+  $ pdv(E_("kin",s), t) + div(E_("kin",s) bold(u)_(s) + bold(P)_(s) dot bold(u)_(s)
       + bold(q)_(h,s))
     = q_(s)n_(s) bold(u)_(s) dot bold(E) + Q_(s) $
     <multiple-energy>
@@ -878,7 +878,7 @@
     response and, in an isothermal collisionless limit, the Boltzmann density.
     Summing species equations defines one-fluid mass and momentum variables,
     but the relative-flow stress and current remain explicit until a further
-    closure, such as the MHD ordering of Chapter 8, is made.
+    closure, such as the MHD ordering of Chapter 9, is made.
   ]
 
   #knowledge-check((
@@ -915,7 +915,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "06-moments.html", title: [Moments]),
-    next: (href: "08-mhd.html", title: [Single-fluid MHD]),
+    previous: (href: "07-moments.html", title: [Moments]),
+    next: (href: "09-mhd.html", title: [Single-fluid MHD]),
   )
 ]

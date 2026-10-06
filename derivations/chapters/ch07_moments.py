@@ -1,4 +1,4 @@
-# Chapter 6 · Velocity moments (src/chapters/06-moments.typ)
+# Chapter 7 · Velocity moments (src/chapters/07-moments.typ)
 #
 # The moment equations are checked on an explicit test distribution (fluids.py):
 # velocity integrals of the kinetic equation are done term by term, so the
@@ -370,4 +370,4 @@ agrees((pressure_ratio / (n1_ / n0_)).subs(compression), 4, lhs=T1 / T0)
 
 # %%
 if __name__ == "__main__":
-    report(__file__, "Chapter 6 · Velocity moments")
+    report(__file__, "Chapter 7 · Velocity moments")
