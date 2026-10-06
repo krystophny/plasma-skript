@@ -17,7 +17,7 @@ from manim import *
 import numpy as np
 
 from style import (
-    ACCENT, EASE, ELECTRON, FAINT, GREEN, INK, MUTED, ORANGE, PURPLE, BLUE,
+    ACCENT, EASE, ELECTRON, FAINT, GREEN, INK, MUTED, ORANGE, PURPLE, SKY,
     SMALL_SIZE, StyledScene, label, math,
     MATH_SIZE, MATH_SMALL,
 )
@@ -25,7 +25,7 @@ from style import (
 
 ROWS = [
     # name, unit, equation, color, divergence term in the next equation
-    ("density", r"[\mathrm{m^{-3}}]", r"n=\int f\,d^3v", BLUE, r"\nabla\!\cdot(n\mathbf{u})"),
+    ("density", r"[\mathrm{m^{-3}}]", r"n=\int f\,d^3v", SKY, r"\nabla\!\cdot(n\mathbf{u})"),
     ("flow", r"[\mathrm{m\,s^{-1}}]", r"\mathbf{u}=\frac{1}{n}\int \mathbf{v}\,f\,d^3v", GREEN,
      r"\nabla\!\cdot\mathbf{P}"),
     ("pressure", r"[\mathrm{J\,m^{-3}}]", r"P_{ij}=m\int w_i w_j\,f\,d^3v", ORANGE,

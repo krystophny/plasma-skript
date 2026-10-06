@@ -17,7 +17,7 @@ from manim import *
 import numpy as np
 
 from style import (
-    PURPLE, CURVE_WIDTH, E_FIELD, EASE, FAINT, LINEAR, MUTED, BLUE,
+    ACCENT, CURVE_WIDTH, E_FIELD, EASE, FAINT, LINEAR, MUTED, SKY,
     THIN_WIDTH, StyledScene, axes, axis_labels, math,
     MATH_SIZE,
 )
@@ -66,7 +66,7 @@ class WavePacketPropagation(StyledScene):
 
         def group_marker():
             x = group_speed * tracker.get_value()
-            return DashedLine(ax.c2p(x, -1.2), ax.c2p(x, 1.2), color=BLUE,
+            return DashedLine(ax.c2p(x, -1.2), ax.c2p(x, 1.2), color=SKY,
                               stroke_width=THIN_WIDTH, dash_length=0.12)
 
         def phase_marker():
@@ -74,8 +74,8 @@ class WavePacketPropagation(StyledScene):
             x = phase_speed * tau
             crest = ax.c2p(x, packet_field(x, tau))
             return VGroup(
-                Line(ax.c2p(x, -1.2), ax.c2p(x, 1.2), color=PURPLE, stroke_width=THIN_WIDTH),
-                Dot(crest, radius=0.09, color=PURPLE),
+                Line(ax.c2p(x, -1.2), ax.c2p(x, 1.2), color=ACCENT, stroke_width=THIN_WIDTH),
+                Dot(crest, radius=0.09, color=ACCENT),
             )
 
         g_mark = always_redraw(group_marker)
@@ -83,12 +83,12 @@ class WavePacketPropagation(StyledScene):
 
         # Stationary key: line style plus color identifies each marker.
         key_g = VGroup(
-            DashedLine(ORIGIN, RIGHT * 0.6, color=BLUE, stroke_width=THIN_WIDTH, dash_length=0.1),
-            math(r"v_g", color=BLUE, size=MATH_SIZE),
+            DashedLine(ORIGIN, RIGHT * 0.6, color=SKY, stroke_width=THIN_WIDTH, dash_length=0.1),
+            math(r"v_g", color=SKY, size=MATH_SIZE),
         ).arrange(RIGHT, buff=0.2)
         key_p = VGroup(
-            Line(ORIGIN, RIGHT * 0.6, color=PURPLE, stroke_width=THIN_WIDTH),
-            math(r"v_\varphi", color=PURPLE, size=MATH_SIZE),
+            Line(ORIGIN, RIGHT * 0.6, color=ACCENT, stroke_width=THIN_WIDTH),
+            math(r"v_\varphi", color=ACCENT, size=MATH_SIZE),
         ).arrange(RIGHT, buff=0.2)
         key = VGroup(key_g, key_p).arrange(DOWN, aligned_edge=LEFT, buff=0.18)
         key.to_corner(UR, buff=0.55)

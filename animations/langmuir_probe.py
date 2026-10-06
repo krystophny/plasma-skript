@@ -64,7 +64,7 @@ class LangmuirProbe(StyledScene):
                                                       stroke_color=POTENTIAL, stroke_width=1.6)
                                      .move_to(center), num_dashes=40)
         probe = RoundedRectangle(width=0.36, height=2.3, corner_radius=0.16, stroke_width=0,
-                                 fill_color="#A3ABB4", fill_opacity=1).move_to(center)
+                                 fill_color=MUTED, fill_opacity=1).move_to(center)
         probe_lab = label("probe", color=MUTED, size=SMALL_SIZE).next_to(sheath, UP, buff=0.2)
         sheath_lab = label("sheath", color=POTENTIAL, size=SMALL_SIZE).next_to(sheath, DOWN, buff=0.2)
 
