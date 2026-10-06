@@ -64,6 +64,8 @@ if ! compgen -G "$site_dir/slides/*.pdf" >/dev/null; then
   exit 1
 fi
 cp "$site_dir"/slides/*.pdf "$staging/slides/"
+# Keep the exact stream revisions alongside the replaceable MP4s.
+cp "$site_dir/media/animations.json" "$staging/animations/animations.json"
 
 find_media() {
   local file

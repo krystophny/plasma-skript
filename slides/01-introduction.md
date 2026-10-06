@@ -15,7 +15,11 @@ first page of each script section only; no other titles. Summary pages:
 Assumptions (formulas with short plain labels), Derivation (chain of the key
 equations, one- or two-word step labels), Result (thin-ruled box) above its
 plot. Every symbol is named in words at its first use in the deck (muted
-line). No prose sentences.
+line). No prose sentences. Media pages are full-slide exceptions: dark animation
+posters have no title or play badge and link to stable HTML player pages;
+hero photos cover the slide with a tiny legible credit at the bottom. Section
+cues on those pages are given by this plan. Mathematical pages and plots remain
+light; website plots additionally have dark paint from the same geometry.
 
 ## Sequence
 
@@ -23,7 +27,7 @@ line). No prose sentences.
 |---|---|---|---|
 | 1 | — | title | Plasma Physics / Chapter 1 / Introduction / C. Albert / TU Graz WS 2026/27 / AI line |
 | 2–5 | 1.1 Plasma as a collective state (p. 2) | photo story | flare (SDO), aurora (ISS), Carina H II region (ESO), Hall thruster (JPL) |
-| 6 | | animation | `collective-response` poster, linked MP4: neutral gas vs plasma |
+| 6 | | animation | dark `collective-response` poster, stable full-window player: neutral gas vs plasma |
 | — | | LIVE | two blank pages |
 | 7 | | summary | quasineutrality; plot `enclosed_charge` |
 | 8 | | plot | empty n–T plane `nt_plane` |
@@ -35,7 +39,7 @@ line). No prose sentences.
 | 12 | 1.3 Characteristic scales and ordering | titled writing page | LIVE starts here |
 | — | | LIVE | one blank page |
 | 13 | | summary | scale ordering over the full-width plot `scale_ordering` |
-| 14 | 1.4 From microscopic particles to a model | animation | `particles-to-moments` poster, linked MP4: particles → f(x,v) → n(x), u(x) |
+| 14 | 1.4 From microscopic particles to a model (route cue) | animation | dark `particles-to-moments` poster, stable full-window player: particles → f(x,v) → n(x), u(x) |
 | 15 | | model ladder | N particles →⟨·⟩→ f(x,v,t) →∫v^k f d³v→ moments → fluids →Σ_s→ magnetohydrodynamics |
 | 16 | — | credits | photo credits with the page numbers of the photos |
 

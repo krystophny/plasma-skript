@@ -227,34 +227,12 @@ else
     require_file "$site_dir/chapters/$chapter.html"
   done
   require_file "$site_dir/appendices/mathematical-toolkit.html"
-  require_file "$site_dir/media/exb-drift.mp4"
-  require_file "$site_dir/media/exb-drift.png"
-  require_file "$site_dir/media/plasma-oscillation.mp4"
-  require_file "$site_dir/media/plasma-oscillation.png"
-  require_file "$site_dir/media/debye-shielding.mp4"
-  require_file "$site_dir/media/debye-shielding.png"
-  require_file "$site_dir/media/debye-potential-reduction.mp4"
-  require_file "$site_dir/media/debye-potential-reduction.png"
-  require_file "$site_dir/media/phase-space-advection.mp4"
-  require_file "$site_dir/media/phase-space-advection.png"
-  require_file "$site_dir/media/moment-hierarchy.mp4"
-  require_file "$site_dir/media/moment-hierarchy.png"
-  require_file "$site_dir/media/diffusion-random-walk.mp4"
-  require_file "$site_dir/media/diffusion-random-walk.png"
-  require_file "$site_dir/media/wave-packet.mp4"
-  require_file "$site_dir/media/wave-packet.png"
-  require_file "$site_dir/media/magnetized-polarization.mp4"
-  require_file "$site_dir/media/magnetized-polarization.png"
-  require_file "$site_dir/media/magnetosonic-waves.mp4"
-  require_file "$site_dir/media/magnetosonic-waves.png"
-  require_file "$site_dir/media/landau-resonance.mp4"
-  require_file "$site_dir/media/landau-resonance.png"
-  require_file "$site_dir/media/two-stream-instability.mp4"
-  require_file "$site_dir/media/two-stream-instability.png"
-  require_file "$site_dir/media/sheath-formation.mp4"
-  require_file "$site_dir/media/sheath-formation.png"
-  require_file "$site_dir/media/langmuir-probe.mp4"
-  require_file "$site_dir/media/langmuir-probe.png"
+  for slug in $(bash "$repo_root/scripts/render-animations.sh" --slugs); do
+    require_file "$site_dir/media/$slug.png"
+    if [[ ! -f "$site_dir/media/hosting-mode" ]] || [[ "$(cat "$site_dir/media/hosting-mode")" != external ]]; then
+      require_file "$site_dir/media/$slug.mp4"
+    fi
+  done
 
   private_artifact="$(find -L "$site_dir" -type f \
     \( -path '*/solutions/*' \
@@ -308,9 +286,14 @@ else
         $body =~ s{\s+}{}g;
         die "video has no text fallback\n" unless length $body;
       }
+      while ($html =~ m{<iframe\b([^>]*)>(.*?)</iframe>}sig) {
+        my ($attrs, $body) = ($1, $2);
+        die "animation iframe has no title\n" unless $attrs =~ m{\btitle\s*=\s*"[^"]+"}i;
+        die "animation iframe has no HTTPS YouTube embed source\n" unless $attrs =~ m{\bsrc\s*=\s*"https://www\.youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}"}i;
+      }
       while ($html =~ m{<figure\b[^>]*>(.*?)</figure>}sig) {
         my $figure = $1;
-        next unless $figure =~ m{<video\b}i;
+        next unless $figure =~ m{<(?:video|iframe)\b}i;
         die "video figure has no figcaption\n"
           unless $figure =~ m{<figcaption\b[^>]*>.*?</figcaption>}is;
       }

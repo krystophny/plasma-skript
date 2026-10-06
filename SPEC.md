@@ -79,8 +79,9 @@ HTML-specific components have an equivalent paged fallback.
   excluded from every public build and GitHub Pages artifact.
 - GitHub Pages is a supported deployment target. The workflow publishes only
   the generated static site bundle from the default branch.
-- The chronological order comes from the rendered course-material PDFs in
-  `resources/content/`.
+- Preserve the established reference order; the rendered course PDFs in
+  `resources/content/` are historical evidence. The course plan owns the live
+  selection and multi-year evidence can improve explanations.
 - The script must include waves and plasma sheaths, even though the current exam
   catalogue ends with single-fluid MHD.
 - Waves and sheaths must remain separate top-level chapter boundaries. The
@@ -113,14 +114,29 @@ HTML-specific components have an equivalent paged fallback.
 
 ## 2. Source roles and chronology
 
+The 2026-10-05 course decision preserves this complete reference, including
+guiding-center and linear/kinetic-response material. Live teaching can cover
+a smaller selection at greater mathematical depth. Neither live pacing nor
+the boundary with the adjacent kinetic course requires removal of reference
+content. The teaching-tree plan, `lv/plasma/PLAN.md`, owns live selections and
+examination policy and the final chapter cutoff; this specification owns the full authoring contract.
+
+Use lecturer explanations, original notes and the strongest evidence across
+all generations. The local archive at `../fusion-course-archive` contains processed evidence,
+distillations, retained raw recordings and edited drafts. Reconcile that
+evidence section by section; availability does not establish incorporation.
+Record accepted improvements against stable script section IDs. Preserve
+the current chapter order unless a scientific dependency or explicit lecturer
+decision justifies a change.
+
 Source roles are deliberately separated.
 
 | Source | Use | Authority |
 | --- | --- | --- |
-| `resources/content/Chapter 1-5.pdf` | Visual order and emphasis for chapters 1 through 5 | Primary for chronology; private, never publish |
-| `resources/content/Chapter 6.pdf` | Visual single-fluid MHD sequence | Primary for chronology; private, never publish |
-| `resources/content/Chapter 7.pdf` | Visual collisions and plasma conductivity sequence | Primary for chronology; private, never publish |
-| `resources/content/Chapter 8.pdf` | Visual plasma diffusion sequence | Primary for chronology; private, never publish |
+| `resources/content/Chapter 1-5.pdf` | Established order and emphasis for chapters 1 through 5 | Historical evidence; private, never publish |
+| `resources/content/Chapter 6.pdf` | Visual single-fluid MHD sequence | Historical evidence; private, never publish |
+| `resources/content/Chapter 7.pdf` | Visual collisions and plasma conductivity sequence | Historical evidence; private, never publish |
+| `resources/content/Chapter 8.pdf` | Visual plasma diffusion sequence | Historical evidence; private, never publish |
 | `resources/content/Plasma Physics Exam.pdf` | Topic coverage and expected graduate-level depth | Assessment signal only; private, never publish |
 | `resources/books/` | Physics reference and derivation cross-checks | Reference only; private, never publish |
 | `resources/typst/` | Typst and package API reference | Implementation reference |
@@ -153,10 +169,11 @@ estimates belong in single-particle motion. Distribution formulas, microscopic
 field equations, and quantum-degeneracy criteria belong in kinetic theory;
 moment equations and closures belong in the moments chapter.
 This supersedes the former combined
-introduction. Subsequent topics retain the content-PDF order. The final five positions
-follow the corresponding wave and sheath chapters in the reference material
-until a later slide sequence is supplied. A conflict between the slide order
-and the books must be resolved in favor of the slide order.
+introduction. Subsequent topics preserve the established content-PDF order.
+The wave/sheath structure remains a complete reference. Recent slides and
+books do not independently dictate future live coverage. Resolve conflicting
+scientific sources through lecturer review; do not copy a book's organization
+or wording merely to fill an undeveloped live topic.
 
 The chronological course map is followed by a supplemental mathematical
 toolkit. It is not a sixteenth physics chapter: it collects the energy-weighted
@@ -363,7 +380,9 @@ Every animation must provide all of the following:
 - a short text description of the sequence of states or the key observation,
 - a static poster or equivalent still graphic for any paged output and for
   media that cannot play video,
-- browser controls, no required audio, and no information conveyed only by
+- accessible playback controls (native without JavaScript, click/keyboard
+  play-pause and a labelled bottom seek bar/fullscreen icon with JavaScript),
+  no required audio, and no information conveyed only by
   motion.
 
 The animation component must use the description in the HTML fallback content
@@ -424,7 +443,8 @@ The authoring environment is defined by `flake.nix`:
   development and release checks; the shell scripts remain implementation
   details used by the package and CI.
 - `build-site` must render into a staging directory and publish it only after
-  all animation, website, and PDF outputs succeed, preserving the previous
+  all required poster, website, slide and PDF outputs succeed (plus rendered
+  videos in local hosting mode), preserving the previous
   complete bundle if a build fails.
 - `public-host` serves the existing site by default. It warns when local source
   timestamps are newer than the built index, without rebuilding automatically.
@@ -662,6 +682,20 @@ material and software-like source code.
 
 ### 11.1 License scope
 
+The full script and original assets are prepared for a CC BY 4.0 edition.
+Mixed legacy/new video courses remain access-restricted during replacement;
+legacy videos and textbook scans never enter that open edition by default.
+The already public script remains public. Follow `lv/AGENTS.md`, "FuEL
+delivery", for weekly replacement and separate upload/release gates.
+
+Write explanations independently, with citations for physics references.
+Do not reproduce textbook prose, screenshots, distinctive figure layouts or
+illustrations. Generate/draw figures from our own physical models and cited
+data, or use assets with recorded public-domain/CC BY provenance. Cosmetic
+redrawing is not an originality check. Record each external asset's author,
+source, exact license, modifications and attribution. Build checks and license
+declarations do not alone certify originality or asset clearance.
+
 - Original lecture prose, authored equations as presented, diagrams, plots,
   rendered animations, posters, captions, alternative descriptions, and other
   teaching material: `CC BY 4.0 International`.
@@ -731,3 +765,47 @@ owned by another rights holder.
 - [Creative Commons Attribution 4.0 International deed](https://creativecommons.org/licenses/by/4.0/)
 - [Creative Commons Attribution 4.0 International legal code](https://creativecommons.org/licenses/by/4.0/legalcode.en)
 - [Creative Commons FAQ on international licenses](https://creativecommons.org/faq/)
+
+## Animation hosting (2026-10-05)
+
+`media/animations.json` owns stable HTML player URLs, versioned Nextcloud MP4
+streams, checksums and posters. Native HTML video
+is the maintained animation player. The website, lecture slides and print PDF
+use the same register; PDF links open `animations/<slug>.html`, not the MP4's
+attachment/download endpoint. Public player pages are stable across revisions.
+The Nextcloud MP4 filename stays stable; a checksum query changes with each
+revision to avoid stale media caches. Short animations are hosted on Nextcloud;
+their YouTube uploads are removed at Chris's request. YouTube is for lecture
+videos; replacing one requires a new ID and an updated playlist entry.
+
+Animations always have a dark canvas and are never theme-inverted. On the
+website, tapping the video toggles play/pause and keeps it inline. There is no
+central play badge or separate row of large buttons. A slim bottom seek bar and
+small fullscreen icon appear on interaction, then fade after 650 ms. Keyboard
+focus keeps these controls accessible; arrow keys seek and Home rewinds.
+Fullscreen requires the explicit icon or F key and preserves playback state.
+The standalone player fills the browser window and tries silent
+playback except with reduced-motion preference. Safari may require a separate
+tap to start playback or enter native full screen, and native browser chrome
+cannot be removed by the course. Caption, explanation, alt text
+and ordinary controls without JavaScript remain available.
+When a native full-screen request is unavailable, open a dark full-window
+viewport with the same small icon to exit. Do not add a central play overlay or
+let the bottom controls linger over the animation.
+Do not add a secondary player/download/YouTube link row below animations. PDF
+and slide stills retain their player links; the website uses inline playback.
+
+Default site builds copy posters and build the HTML players without rendering
+or uploading MP4s through GitHub Actions. Render locally, run
+`python3 scripts/refresh-animation-media.py`, build, inspect, and export with
+`scripts/export-course-folder.sh`. Publish the small site/registry update after
+checking the replacement. The export refreshes the Nextcloud files; public
+GitHub Pages changes still require the repository's explicit publishing step.
+
+Plots follow the website's light/dark preference. `scripts/prepare-media.py`
+changes only SVG paint using a documented palette; geometry, tick positions,
+line dashes, data and marker shapes stay unchanged. Light figures are reused in
+the print PDF and white derivation/summary slides. Hero photos cover the whole
+slide with small readable provenance at the bottom. Animation posters fill a
+dark slide without cropping their 16:9 scene or adding a play badge; mathematical
+pages stay white. Media-slide section cues live in the chapter plans.

@@ -3,9 +3,7 @@
 Every scene imports this module (Manim puts the scene file's directory on
 ``sys.path``), so palette, typography, stroke widths and margins stay identical
 across the script.  The palette is the Okabe-Ito color-vision-safe set on the
-dark video surface of the website players (``--video-surface`` in styles.css)
-and of the slides, whose animation pages are dark.  Plots and print figures
-of the script stay light; only the animations use this dark surface.
+dark animation canvas used unchanged in the script, slides and website.
 Color is never the only encoding: scenes pair each color with a marker shape,
 line style or direct label.
 
@@ -26,22 +24,29 @@ from manim.mobject.text.text_mobject import register_font
 
 
 # --- palette -------------------------------------------------------------
-# Dark video surface (website --video-surface, dark animation slide pages).
-BG = "#0F1318"          # website --video-surface
-INK = "#ECE9E2"         # primary text and key objects
-MUTED = "#A3ABB4"       # secondary text, axis labels
-FAINT = "#68717C"       # reference curves, ticks, ghosts
-GRID = "#38404A"        # frames, grid and guide lines
-AXIS = FAINT            # axis lines; GRID is too faint for thin axes
+# Animations always use this dark canvas, independent of the reading theme.
+BG = "#111418"
+INK = "#E4E6E9"
+MUTED = "#BAC2CC"
+FAINT = "#8F9AA8"
+GRID = "#536175"
+AXIS = INK              # axis lines
 
-# Okabe-Ito (2008) hues, kept exact so the set stays color-vision safe.
-ORANGE = "#E69F00"
-SKY = "#56B4E9"
+# Okabe-Ito (2008) hues with brighter blue/orange for dark-surface contrast.
+# Species still differ by marker shape and every curve has a non-color cue.
+BLUE = "#56B4E9"
+VERMILION = "#E69F00"
 GREEN = "#009E73"
-YELLOW = "#F0E442"
-BLUE = "#0072B2"
-VERMILION = "#D55E00"
+ORANGE = "#F0E442"
 PURPLE = "#CC79A7"
+
+# Semantic roles shared by all scenes.
+ELECTRON = BLUE         # drawn as filled circles
+ION = VERMILION         # drawn as triangles
+E_FIELD = ORANGE
+B_FIELD = PURPLE
+POTENTIAL = GREEN
+ACCENT = VERMILION      # resonance, highlighted reference value
 
 # Sequential colormap for densities on the dark surface: matplotlib's
 # perceptually uniform "inferno" at 11 equidistant stops (dark low end next to
@@ -50,14 +55,6 @@ DENSITY_STOPS = [
     "#000004", "#160B39", "#420A68", "#6A176E", "#932667", "#BC3754",
     "#DD513A", "#F37819", "#FCA50A", "#F6D746", "#FCFFA4",
 ]
-
-# Semantic roles shared by all scenes.
-ELECTRON = SKY          # drawn as filled circles
-ION = ORANGE            # drawn as triangles
-E_FIELD = YELLOW
-B_FIELD = PURPLE
-POTENTIAL = GREEN
-ACCENT = VERMILION      # resonance, highlighted reference value
 
 # --- typography ----------------------------------------------------------
 # STIX Two Text and STIX Two Math, the typefaces of the script, the plots and
@@ -100,24 +97,6 @@ EASE = rate_functions.ease_in_out_sine
 LINEAR = rate_functions.linear
 
 
-def density_rgb(level):
-    """Map normalized levels in [0, 1] (array) to uint8 RGB with DENSITY_STOPS.
-
-    Levels below 0 or not finite take the background colour BG.
-    """
-    import numpy as np
-
-    stops = np.array([[int(c[i:i + 2], 16) for i in (1, 3, 5)] for c in DENSITY_STOPS], float)
-    level = np.asarray(level, dtype=float)
-    below = ~np.isfinite(level) | (level < 0)
-    x = np.clip(np.nan_to_num(level, nan=0.0), 0.0, 1.0) * (len(stops) - 1)
-    i = np.minimum(x.astype(int), len(stops) - 2)
-    w = (x - i)[..., None]
-    rgb = (1 - w) * stops[i] + w * stops[i + 1]
-    rgb[below] = [int(BG[k:k + 2], 16) for k in (1, 3, 5)]
-    return np.round(rgb).astype(np.uint8)
-
-
 def label(text, color=MUTED, size=LABEL_SIZE, **kwargs):
     """Prose label in STIX Two Text."""
     return Text(text, color=color, font_size=size, **kwargs)
@@ -129,7 +108,7 @@ def math(tex, color=INK, size=MATH_SIZE, **kwargs):
 
 
 def axes(x_range, y_range, x_length, y_length, ticks=True, **kwargs):
-    """Quiet axes: thin grey lines, short ticks, no arrow tips."""
+    """Quiet axes: thin ink lines, short ticks, no arrow tips."""
     axis_config = {
         "color": AXIS,
         "stroke_width": AXIS_WIDTH,
@@ -217,3 +196,20 @@ def _font_files():
 
 def _name(mob):
     return getattr(mob, "text", None) or getattr(mob, "tex_string", None) or repr(mob)
+
+def density_rgb(level):
+    """Map normalized levels in [0, 1] (array) to uint8 RGB with DENSITY_STOPS.
+
+    Levels below 0 or not finite take the background colour BG.
+    """
+    import numpy as np
+
+    stops = np.array([[int(c[i:i + 2], 16) for i in (1, 3, 5)] for c in DENSITY_STOPS], float)
+    level = np.asarray(level, dtype=float)
+    below = ~np.isfinite(level) | (level < 0)
+    x = np.clip(np.nan_to_num(level, nan=0.0), 0.0, 1.0) * (len(stops) - 1)
+    i = np.minimum(x.astype(int), len(stops) - 2)
+    w = (x - i)[..., None]
+    rgb = (1 - w) * stops[i] + w * stops[i + 1]
+    rgb[below] = [int(BG[k:k + 2], 16) for k in (1, 3, 5)]
+    return np.round(rgb).astype(np.uint8)

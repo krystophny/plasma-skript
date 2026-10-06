@@ -45,7 +45,7 @@ class ExBDrift(StyledScene):
                     Dot(radius=0.025, color=B_FIELD),
                 ).move_to(ax.c2p(x, y))
                 b_marks.add(mark)
-        b_marks.set_opacity(0.55)
+        b_marks.set_opacity(0.85)
         b_label = math(r"\mathbf{B}\ \odot", color=B_FIELD, size=MATH_SIZE)
         b_label.next_to(ax.c2p(2.5, 1.0), UP, buff=0.18)
 

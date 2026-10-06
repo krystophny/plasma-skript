@@ -70,6 +70,14 @@
           exec node ${self}/scripts/site-integration-test.cjs "$@"
         '';
       };
+      # Offline VM layout checks need transport bytes, not external DNS. The
+      # actual Manim models/renders and live host are checked separately.
+      testMediaFixture = pkgs.runCommand "plasma-media-transport-fixture.mp4" {
+        nativeBuildInputs = [pkgs.ffmpeg];
+      } ''
+        ffmpeg -loglevel error -f lavfi -i color=c=0x111418:s=960x540:r=15 \
+          -t 2 -an -c:v libx264 -pix_fmt yuv420p -movflags +faststart -f mp4 "$out"
+      '';
       buildSiteApp = pkgs.writeShellApplication {
         name = "plasma-build-site";
         runtimeInputs = [pkgs.bash pkgs.ffmpeg pkgs.gnumake manim derivationsPython typst];
@@ -145,7 +153,7 @@
               set -- "''${PORT:-4444}"
             fi
 
-            exec python3 -m http.server \
+            exec python3 ${./scripts/serve-site.py} \
               --bind ${bind} \
               --directory "$site_dir" \
               "$@"
@@ -170,6 +178,8 @@
 
           environment.etc."plasma-site-integration-test.cjs".source =
             ./scripts/site-integration-test.cjs;
+          environment.etc."plasma-feedback-test.cjs".source =
+            ./scripts/feedback-test.cjs;
 
           environment.systemPackages = [
             pkgs.chromium
@@ -183,6 +193,7 @@
             PLAYWRIGHT_CORE_PATH = "${playwrightCore}";
             SITE_AUDIT_ARTIFACT_DIR = "/tmp/plasma-site-audit";
             SITE_BASE_URL = "http://127.0.0.1";
+            SITE_MEDIA_FIXTURE_PATH = "${testMediaFixture}";
           };
         };
 
@@ -192,6 +203,7 @@
           machine.wait_for_open_port(80)
           machine.succeed("mkdir -p /tmp/plasma-site-audit")
           try:
+              machine.succeed("node /etc/plasma-feedback-test.cjs")
               machine.succeed("plasma-site-integration-test")
           finally:
               machine.copy_from_machine("/tmp/plasma-site-audit", "site-audit")
@@ -281,6 +293,13 @@
               touch "$out"
             '';
           site = self.packages.${system}.default;
+
+          preview-transport = pkgs.runCommand "plasma-preview-transport-check" {
+            nativeBuildInputs = [pkgs.python3];
+          } ''
+            python ${self}/scripts/preview-server-test.py
+            touch "$out"
+          '';
 
           spec =
             pkgs.runCommand "plasma-spec-check" {

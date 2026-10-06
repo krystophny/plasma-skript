@@ -18,7 +18,9 @@ __pycache__/
 derivations/build/
 
 # Manim scratch output from local renders
-/media/
+/media/*
+!/media/animations.json
+!/media/posters/
 
 # Generated inputs of the lecture decks (scripts/build-slides.sh).
 slides/build/

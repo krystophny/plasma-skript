@@ -33,30 +33,35 @@
 // The default `auto` keeps the natural si.figure size, so the 10 pt figure
 // text matches every other natural-size plot.
 #let derived-plot(name, width: auto) = context {
-  let img = image("/derivations/build/fig/" + name + ".svg", width: width,
-    alt: plot-alt(name))
-  if target() == "paged" { align(center, img) }
-  else { html.div(class: "quantitative-plot", img) }
+  // The outline is needed before these derivations can generate their figures.
+  if sys.inputs.at("outline-only", default: "false") != "true" {
+    let img = image("/derivations/build/fig/" + name + ".svg", width: width,
+      alt: plot-alt(name))
+    if target() == "paged" { align(center, img) }
+    else { html.div(class: "quantitative-plot", img) }
+  }
 }
 // Two derived plots side by side, for a direct comparison on equal axes.
 // Each panel is drawn at its native width (si.figure size), so the text size
 // matches a single derived plot.
 #let derived-plot-pair(left, right, width: auto) = context {
-  let img(name) = image("/derivations/build/fig/" + name + ".svg", width: width,
-    alt: plot-alt(name))
-  if target() == "paged" {
-    align(center, grid(columns: 2, column-gutter: 0.8cm, img(left), img(right)))
-  } else {
-    html.div(style: "display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;",
-      html.div(class: "quantitative-plot", img(left))
-      + html.div(class: "quantitative-plot", img(right)))
+  if sys.inputs.at("outline-only", default: "false") != "true" {
+    let img(name) = image("/derivations/build/fig/" + name + ".svg", width: width,
+      alt: plot-alt(name))
+    if target() == "paged" {
+      align(center, grid(columns: 2, column-gutter: 0.8cm, img(left), img(right)))
+    } else {
+      html.div(style: "display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;",
+        html.div(class: "quantitative-plot", img(left))
+        + html.div(class: "quantitative-plot", img(right)))
+  }
   }
 }
 #let samples(lo, hi, n: 80) = range(n + 1).map(i => lo + (hi - lo) * i / n)
 // Okabe–Ito blue and vermilion plus a neutral gray. Every curve also carries
 // a distinct dash pattern and a direct label, so color is never the only cue.
 #let plot-blue = rgb("#0072B2")
-#let plot-orange = rgb("#D55E00")
+#let plot-orange = rgb("#B55000")
 #let plot-gray = rgb("#555555")
 #let plot-stroke = 1.1pt
 // A smooth analytic curve: no markers; `dash` gives the redundant encoding.
@@ -71,7 +76,7 @@
   align: align, pad(0.3em, text(size: 0.9em, fill: color.darken(15%), body)))
 
 // CeTZ and Fletcher drawings need an explicit frame in HTML export; the
-// plot surface keeps their dark ink legible in both site color schemes.
+// site build supplies theme-aware paint without changing the drawing geometry.
 #let graphic(body) = context {
   if target() == "paged" { body }
   else { html.div(class: "quantitative-plot", html.frame(body)) }

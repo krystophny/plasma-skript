@@ -25,7 +25,7 @@ from manim import *
 import numpy as np
 
 from style import (
-    ACCENT, B_FIELD, CURVE_WIDTH, EASE, GRID, INK, LINEAR, MUTED, ORANGE,
+    ACCENT, B_FIELD, CURVE_WIDTH, EASE, GRID, INK, LINEAR, MUTED, BLUE,
     THIN_WIDTH, StyledScene, label, math,
     MATH_SIZE, MATH_SMALL,
 )
@@ -103,7 +103,7 @@ class MagnetosonicWaves(StyledScene):
                     group.add(Line([sx(X_MIN), y + dy, 0], [sx(X_MAX), y + dy, 0],
                                    color=B_FIELD, stroke_width=1.2, stroke_opacity=0.45))
                 xs = cols + longitudinal_displacement(cols, tau, "sound")
-                group.add(*[Dot([sx(x), y + dy, 0], radius=0.055, color=ORANGE)
+                group.add(*[Dot([sx(x), y + dy, 0], radius=0.055, color=BLUE)
                             for x in xs for dy in (-0.18, 0.0, 0.18)])
             elif mode == "shear":
                 # Field lines bend along y, no compression.

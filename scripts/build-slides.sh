@@ -21,7 +21,8 @@ out_dir="${1:-$repo_root/public/slides}"
 media_dir="${MEDIA_DIR:-$repo_root/.cache/animations}"
 build="$repo_root/slides/build"
 
-if ! compgen -G "$repo_root/derivations/build/fig/*.svg" >/dev/null; then
+plots=("$repo_root/derivations/build/fig/"*.svg)
+if [[ ! -f "${plots[0]}" ]]; then
   echo "no derived plots; run: make -C derivations fig" >&2
   exit 1
 fi
@@ -34,14 +35,14 @@ bash "$repo_root/scripts/script-outline.sh" "$build/script-outline.json"
 rm -f "$build"/media/*.png
 while IFS= read -r slug; do
   found=""
-  for dir in "$media_dir" "$repo_root/public/media"; do
+  for dir in "$media_dir" "$repo_root/media/posters" "$repo_root/public/media"; do
     if [[ -f "$dir/$slug.png" ]]; then
       found="$dir/$slug.png"
       break
     fi
   done
   if [[ -z "$found" ]]; then
-    echo "missing animation poster $slug.png in $media_dir or public/media" >&2
+    echo "missing animation poster $slug.png in $media_dir, media/posters or public/media" >&2
     exit 1
   fi
   cp "$found" "$build/media/$slug.png"
