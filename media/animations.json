@@ -36,14 +36,6 @@
       "mp4_sha256": "defe247a379975d18b9527bce193d852f73144a495337fe3c69bd6a1549aa32a",
       "appearance": "dark"
     },
-    "debye-potential-reduction": {
-      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_potential_reduction.mp4",
-      "poster": "media/posters/debye-potential-reduction.png",
-      "player_url": "https://krystophny.github.io/plasma-skript/animations/debye-potential-reduction.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_potential_reduction.mp4?v=d11464343d13933a",
-      "mp4_sha256": "d11464343d13933ad65d9470951c67b288babe8a86db184bb49519e682394902",
-      "appearance": "dark"
-    },
     "debye-shielding": {
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_shielding.mp4",
       "poster": "media/posters/debye-shielding.png",

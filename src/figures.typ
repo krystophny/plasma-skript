@@ -236,19 +236,18 @@
   ],
 )[#derived-plot("debye_potential")]
 
-#let debye-potential-comparison = figure(
-  alt: "Two radial plots on identical axes, each comparing a dashed bare potential with a solid Debye-screened potential. Left: a point charge, where both curves diverge at the origin. Right: a permeable, uniformly charged sphere of radius half a Debye length, where the bare potential is quadratic and finite inside the sphere and the screened potential is lower everywhere. Outside the sources both screened curves decay to nearly zero within about three Debye lengths.",
+#let charge-separation-energy = figure(
+  alt: "Electron potential energy around a sphere from which all electrons have been removed, in units of the thermal energy, against r over the Debye length. Inside the sphere of radius root three Debye lengths the curve is an inverted parabola starting at 1.5; at the boundary it touches a dotted horizontal line at one thermal energy, marked by a dot; outside it falls as 1 over r. There is no screening: the surrounding plasma is held rigid.",
   caption: [
-    Point charge (left) and permeable, uniformly charged sphere of radius
-    $R = lambda_D\/2$ (right), each bare (dashed) and Debye-screened (solid),
-    from the expressions derived above. Same axes: radius in units of
-    $lambda_D$, potential in units of $Q\/(4 pi epsilon_0 lambda_D)$. The
-    finite source removes the central singularity; outside $R$ both screened
-    curves carry the same exponential suppression of the Coulomb tail. The
-    linear model assumes $abs(e phi) << k_B T_e$ throughout, which this
-    normalization does not impose by itself.
+    Rigid charge-separation estimate: all electrons removed from a sphere of
+    radius $R = sqrt(3) lambda_D$ in a plasma of density $n_0$, no plasma
+    response. The energy $e phi$ needed to move an electron from radius $r$
+    to infinity follows from Gauss's law: quadratic inside, Coulomb $1\/r$
+    outside. The last electron at $r = R$ costs $k_B T_e$ (dot), so
+    thermal motion sustains separated regions up to this size. Radius in
+    units of $lambda_D$, energy in units of $k_B T_e$.
   ],
-)[#derived-plot-pair("debye_potential", "debye_sphere_potential")]
+)[#derived-plot("charge_separation_energy")]
 
 #let debye-regime-map = figure(
   alt: "Log-log plane of electron density from 10 to the 6 to 10 to the 32 per cubic metre and electron temperature from 0.01 eV to 100 keV. Three dashed lines of slope one mark Debye lengths of 100 m, 0.01 m and 1 micrometre. A solid line of slope one third marks N_D equal to one; the shaded region below it, at high density and low temperature, has N_D below one. Five example plasmas, ionosphere, H II region, solar corona, Hall thruster and tokamak core, all lie far above that line.",

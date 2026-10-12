@@ -47,20 +47,7 @@
     #v(12mm) $e phi(R) approx k_B T_e$
     #v(12mm) #result-box($R approx sqrt(3) lambda_D$, [thermal energy balance])
   ]
-  #at(7, 6, plot("debye_sphere_potential", columns: 6))
-]
-#animation-page("debye-potential-reduction", "debye_potential_reduction", section: "debye-finite-source")
-#slide(section: "debye-finite-source", title: [Finite source response])[
-  #at(1, 6, y: 8mm)[
-    $rho_Q = (3 Q)/(4 pi R^3)$
-    #v(10mm) $laplacian phi-phi/lambda_D^2=-rho_Q/epsilon_0$ \ $r<R$
-    #v(10mm) $laplacian phi-phi/lambda_D^2=0$ \ $r>R$
-    #v(10mm) $phi(R^-)=phi(R^+)$ \ $dv(phi,r)|_(R^-)=dv(phi,r)|_(R^+)$
-  ]
-  #at(7, 6)[
-    #result-box($phi_"out" prop exp(-r/lambda_D)/r$, [same screened tail])
-    #v(8mm) #plot("debye_sphere_potential", columns: 6)
-  ]
+  #at(7, 6, plot("charge_separation_energy", columns: 6))
 ]
 #slide(section: "debye-collective-validity", title: [Debye sphere count])[
   #at(1, 6, align(center)[$N_D approx 3$ [1]])

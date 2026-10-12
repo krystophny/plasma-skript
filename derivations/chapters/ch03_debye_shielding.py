@@ -1,7 +1,7 @@
 # Chapter 3 · Debye shielding (src/chapters/03-debye-shielding.typ)
 #
-# Charge-separation scale, Debye length, screened point charge, finite
-# spherical source (bare and screened), Debye number and the n-T regime map.
+# Charge-separation scale, Debye length, screened point charge, Debye number
+# and the n-T regime map.
 
 # %% Setup
 import sympy as sp
@@ -10,14 +10,14 @@ from sympy.physics import units as u
 from notebook import agrees, note, report, section, show
 from si import check, e, eps0, k_B
 
-n0, T_e, Q, r, R, N, kappa, s = sp.symbols("n_0 T_e Q r R N kappa s", positive=True)
+n0, T_e, Q, r, R, N, s = sp.symbols("n_0 T_e Q r R N s", positive=True)
 lambda_D, a, L = sp.symbols("lambda_D a L", positive=True)
 phi_0 = sp.Symbol("phi", positive=True)  # local potential value, for the Boltzmann factor
 phi = sp.Function("phi")(r)
-n_e, n_i, rho_q, rho_Q, E, W = sp.symbols("n_e n_i rho_q rho_Q E W")
-E_in_sym, E_out_sym, phi_inner, phi_outer = sp.symbols("E_in E_out phi_in phi_out")
+n_e, n_i, rho_q, E, W = sp.symbols("n_e n_i rho_q E W")
+phi_inner = sp.Symbol("phi_in")
 SI_UNITS = {n0: u.meter**-3, T_e: u.kelvin, Q: u.coulomb, r: u.meter, R: u.meter,
-            N: u.meter**-3, kappa: u.meter**-1, lambda_D: u.meter, a: u.meter,
+            N: u.meter**-3, lambda_D: u.meter, a: u.meter,
             L: u.meter, phi_0: u.volt, rho_q: u.coulomb / u.meter**3}
 
 
@@ -48,6 +48,11 @@ check(R_scale, R_scale, unit=u.meter, units=SI_UNITS)
 note("With", sp.Eq(N, n0), "and", sp.Eq(lambda_D, sp.sqrt(eps0 * k_B * T_e / (n0 * e**2))))
 agrees(R_scale.subs(N, n0) / sp.sqrt(eps0 * k_B * T_e / (n0 * e**2)), sp.sqrt(3),
        lhs=R / lambda_D)
+note("Inside the sphere, integrate the linear field inward from the boundary")
+inside_sep = show(sp.Eq(phi_inner, phi_R + sp.Integral(E_r.subs(r, s), (s, r, R))))
+phi_sep_in = agrees(sp.factor(inside_sep.rhs.doit()), N * e * (3 * R**2 - r**2) / (6 * eps0), lhs=phi_inner)
+check(phi_sep_in, phi_sep_in, unit=u.volt, units=SI_UNITS)
+phi_sep_out = Q_r.subs(r, R) / (4 * sp.pi * eps0 * r)
 
 # %% Debye length
 section("Debye length", script="intro-debye-shielding")
@@ -89,78 +94,8 @@ assert sp.simplify(laplacian(screened).doit() - screened / lambda_D**2) == 0
 bare = sp.limit(screened * r, r, 0) / r  # r << lambda_D
 check(bare, Q / (4 * sp.pi * eps0 * r), unit=u.volt, units=SI_UNITS)
 
-# %% Bare potential of a uniform sphere
-section("Bare potential of a uniform sphere", script="debye-finite-source")
-note("Total charge", Q, "spread uniformly over a sphere of radius", R)
-rho_Q_expr = agrees(Q / (sp.Rational(4, 3) * sp.pi * R**3), 3 * Q / (4 * sp.pi * R**3),
-                    lhs=rho_Q)
-check(rho_Q_expr, rho_Q_expr, unit=u.coulomb / u.meter**3, units=SI_UNITS)
-inner = show(sp.Eq(sp.Function("Q")(r), sp.Integral(4 * sp.pi * s**2 * rho_Q_expr, (s, 0, r))))
-Q_in = agrees(inner.rhs.doit(), Q * r**3 / R**3, lhs=inner.lhs)
-note("Gauss's law inside and outside")
-E_in = agrees(Q_in / (4 * sp.pi * eps0 * r**2), Q * r / (4 * sp.pi * eps0 * R**3), lhs=E_in_sym)
-E_out = show(sp.Eq(E_out_sym, Q / (4 * sp.pi * eps0 * r**2))).rhs
-outside = show(sp.Eq(phi_outer, sp.Integral(E_out.subs(r, s), (s, r, sp.oo))))
-phi_out = agrees(outside.rhs.doit(), Q / (4 * sp.pi * eps0 * r), lhs=phi_outer)
-check(phi_out, phi_out, unit=u.volt, units=SI_UNITS)
-inside = show(sp.Eq(phi_inner, phi_out.subs(r, R) + sp.Integral(E_in.subs(r, s), (s, r, R))))
-phi_in = agrees(sp.factor(inside.rhs.doit()), Q / (8 * sp.pi * eps0 * R) * (3 - r**2 / R**2), lhs=phi_inner)
-check(phi_in, phi_in, unit=u.volt, units=SI_UNITS)
-note("Poisson inside:")
-agrees(sp.simplify(laplacian(phi_in).doit()), -rho_Q_expr / eps0, lhs=laplacian(phi), eq="debye-poisson")
-note("Potential and field are continuous at", sp.Eq(r, R))
-assert sp.simplify(phi_in.subs(r, R) - phi_out.subs(r, R)) == 0
-assert sp.simplify((phi_in.diff(r) - phi_out.diff(r)).subs(r, R)) == 0
-
-# %% Small-source condition
-section("Small-source condition", script="debye-finite-source")
-note("The bare potential peaks at the centre")
-phi_centre = show(sp.Eq(sp.Function("phi")(0), phi_in.subs(r, 0))).rhs
-small_source = agrees(e * phi_centre / (k_B * T_e), 3 * e * Q / (8 * sp.pi * eps0 * R * k_B * T_e), lhs=e * sp.Function("phi")(0) / (k_B * T_e))
-check(small_source, small_source, unit=u.meter / u.meter, units=SI_UNITS)
-
-# %% Matched finite-source response
-section("Matched finite-source Debye response", script="debye-finite-source")
-A, B, phi_p = sp.symbols("A B phi_p")
-x = sp.Symbol("x", positive=True)
-note("Inside the source, with", sp.Eq(kappa, 1 / lambda_D))
-screened_source = show(sp.Eq(laplacian(phi) - kappa**2 * phi, -rho_Q / eps0))
-note("A constant particular solution")
-phi_p_expr = sp.solve(screened_source.subs(phi, phi_p).doit().subs(rho_Q, rho_Q_expr), phi_p)[0]
-agrees(phi_p_expr, 3 * Q / (4 * sp.pi * eps0 * kappa**2 * R**3), lhs=phi_p)
-check(phi_p_expr, phi_p_expr, unit=u.volt, units=SI_UNITS)
-note("Regular inside, decaying outside")
-trial_in = show(sp.Eq(phi_inner, phi_p + A * sp.sinh(kappa * r) / r)).rhs
-trial_out = show(sp.Eq(phi_outer, B * sp.exp(-kappa * r) / r)).rhs
-
-
-def screened_operator(f):
-    return laplacian(f).doit() - kappa**2 * f
-
-
-assert sp.simplify(screened_operator(trial_in.subs(phi_p, phi_p_expr)) + rho_Q_expr / eps0) == 0
-assert sp.simplify(screened_operator(trial_out)) == 0
-note("Match potential and slope at", sp.Eq(r, R))
-matching = [show(sp.Eq(trial_in.subs(r, R), trial_out.subs(r, R))),
-            show(sp.Eq(trial_in.diff(r).subs(r, R), trial_out.diff(r).subs(r, R)))]
-solution = sp.solve(matching, [A, B], dict=True)[0]
-note("Solve and write", sp.Eq(x, kappa * R))
-
-
-def in_x(expr):
-    return sp.simplify(expr.rewrite(sp.exp).subs(kappa, x / R))
-
-
-A_match = agrees(in_x(solution[A]), -(R * phi_p * (x + 1) * sp.exp(-x)) / x, lhs=A)
-B_match = agrees(in_x(solution[B]),
-                 (R * phi_p) / (2 * x) * (sp.exp(x) * (x - 1) + (x + 1) * sp.exp(-x)), lhs=B)
-B_full = B_match.subs({phi_p: phi_p_expr, x: kappa * R})
-check(B_full, B_full, unit=u.volt * u.meter, units=SI_UNITS)
-note("Point-source limit", sp.Eq(R, 0, evaluate=False), "recovers the screened Coulomb coefficient")
-agrees(sp.limit(B_full, R, 0), Q / (4 * sp.pi * eps0), lhs=B)
-
 # %% Debye number and coupling
-section("Debye number and coupling", script="debye-finite-source")
+section("Debye number and coupling", script="debye-collective-validity")
 N_D, Gamma = sp.symbols("N_D Gamma", positive=True)
 note("Electrons in a Debye sphere")
 count = show(sp.Eq(N_D, sp.Integral(4 * sp.pi * s**2 * n0, (s, 0, lambda_D))))
@@ -180,7 +115,7 @@ link = show(sp.Eq(Gamma * N_D ** sp.Rational(2, 3),
 assert link.rhs.free_symbols == set(), link
 
 # %% Regime lines in the n-T plane
-section("Regime lines in the n-T plane", script="debye-finite-source")
+section("Regime lines in the n-T plane", script="debye-collective-validity")
 T_eV = k_B * T_e / e
 
 
@@ -204,9 +139,9 @@ from si import BLUE, EXAMPLE_PLASMAS, GRAY, ORANGE, SI_VALUES, figure, label, lo
 
 # Widths fit the slide grid (si.slide_width): one panel of the pair or a
 # summary plot spans 6 columns, the n-T map 10.
-PANEL = (slide_width(6), 2.4)  # one panel of a side-by-side pair (debye_potential | debye_sphere_potential)
-# r in units of lambda_D (kappa = 1), phi in units of Q/(4 pi eps0 lambda_D).
-NORMALIZED = {Q: 1, eps0: 1 / (4 * sp.pi), lambda_D: 1, kappa: 1}
+PANEL = (slide_width(6), 2.4)  # one 6-column slide panel
+# r in units of lambda_D, phi in units of Q/(4 pi eps0 lambda_D).
+NORMALIZED = {Q: 1, eps0: 1 / (4 * sp.pi), lambda_D: 1}
 
 
 def potential_axes(ax):
@@ -227,26 +162,30 @@ label(ax, 2.5, 0.05, "screened", BLUE)
 potential_axes(ax)
 save(fig, "debye_potential")
 
-# %% Plot: uniform sphere of radius R = lambda_D/2, bare and screened
-R_plot = sp.Rational(1, 2)
-sphere = {**NORMALIZED, R: R_plot}
-phi_p_plot = phi_p_expr.subs(sphere)
-A_plot = A_match.subs({phi_p: phi_p_plot, x: R_plot, R: R_plot})
-B_plot = B_match.subs({phi_p: phi_p_plot, x: R_plot, R: R_plot})
-bare_sphere = sp.Piecewise((phi_in.subs(sphere), r <= R_plot), (phi_out.subs(sphere), True))
-screened_sphere = sp.Piecewise((trial_in.subs({phi_p: phi_p_plot, A: A_plot, kappa: 1}), r <= R_plot),
-                               (trial_out.subs({B: B_plot, kappa: 1}), True))
-bare_sphere_curve = sp.lambdify(r, bare_sphere, "numpy")
-screened_sphere_curve = sp.lambdify(r, screened_sphere, "numpy")
+# %% Plot: electron energy around a charge-separated sphere of radius sqrt(3) lambda_D
+# Rigid model: electrons removed from r < R, no plasma response. eV units of k_B T_e.
+SEPARATED = {N: n0, R: sp.sqrt(3) * lambda_D}
+thermal = k_B * T_e
+energy_in = sp.simplify((e * phi_sep_in / thermal).subs(SEPARATED).subs(lambda_D, lambda_D_expr).subs(r, r * lambda_D_expr))
+energy_out = sp.simplify((e * phi_sep_out / thermal).subs(SEPARATED).subs(lambda_D, lambda_D_expr).subs(r, r * lambda_D_expr))
+agrees(energy_in, (9 - r**2) / 6, lhs=e * phi_inner / thermal)
+agrees(energy_out, sp.sqrt(3) / r, lhs=e * phi_inner / thermal)
+R_sep = float(sp.sqrt(3))
+separated = np.linspace(1e-6, 5, 500)
+energy_curve = np.where(separated <= R_sep, sp.lambdify(r, energy_in, "numpy")(separated),
+                        sp.lambdify(r, energy_out, "numpy")(separated))
 fig, ax = figure(*PANEL)
-ax.plot(radius, bare_sphere_curve(radius), color=ORANGE, ls="--")
-ax.plot(radius, screened_sphere_curve(radius), color=BLUE)
-ax.axvline(float(R_plot), color="0.8", lw=0.6, zorder=0)
-ax.text(float(R_plot) + 0.08, 3.15, r"$R$", ha="left", va="top", color="0.4")
-label(ax, 1.3, bare_sphere_curve(1.3) + 0.08, "bare", ORANGE)
-label(ax, 2.5, 0.05, "screened", BLUE)
-potential_axes(ax)
-save(fig, "debye_sphere_potential")
+ax.axhline(1, color=GRAY, lw=0.8, ls=":")
+ax.axvline(R_sep, color="0.8", lw=0.6, zorder=0)
+ax.plot(separated, energy_curve, color=BLUE)
+ax.plot([R_sep], [1], "o", color=BLUE, ms=4)
+ax.text(R_sep + 0.08, 1.62, r"$R=\sqrt{3}\,\lambda_D$", ha="left", va="top", color="0.4")
+label(ax, 3.6, 1.04, r"$k_B T_e$", GRAY)
+label(ax, 0.1, 0.78, r"$\propto 3R^2-r^2$", BLUE)
+label(ax, 2.6, 0.72, r"$\propto 1/r$", BLUE)
+ax.set(xlim=(0, 5), ylim=(0, 1.65), xticks=[0, 1, 2, 3, 4, 5],
+       xlabel=r"$r/\lambda_D$", ylabel=r"$e\varphi/(k_B T_e)$")
+save(fig, "charge_separation_energy")
 
 # %% Plots: n-T plane and regime map
 

@@ -46,7 +46,7 @@
     title: [Debye shielding],
     slug: "03-debye-shielding",
     status: "drafted",
-    summary: [Boltzmann response, the Debye length, screened potentials, and finite spherical sources.],
+    summary: [Boltzmann response, the Debye length, screened potentials, and the plasma parameter.],
   ),
   (
     number: 4,

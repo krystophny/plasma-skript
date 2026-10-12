@@ -43,65 +43,6 @@ def model(filename):
 
 
 class DebyePhysics(unittest.TestCase):
-    def setUp(self):
-        self.sphere = model("debye_potential.py")
-
-    def test_bare_sphere_gauss_law_and_matching(self):
-        potential = self.sphere["_uniform_sphere_potential"]
-        radius = 0.5
-        h = 1e-5
-        for r in (0.12, 0.3, 0.8, 1.6):
-            field = -(potential(r + h) - potential(r - h)) / (2 * h)
-            enclosed = min((r / radius) ** 3, 1.0)
-            self.assertAlmostEqual(float(field * r * r), enclosed, places=7)
-        self.assertAlmostEqual(float(potential(0)), 3 / (2 * radius))
-        self.assertAlmostEqual(float(potential(radius)), 1 / radius)
-
-    def test_screened_sphere_yukawa_convolution(self):
-        # Independently sum screened point-source kernels over the source
-        # volume, including the angular integral, instead of using matching
-        # coefficients from the implementation.
-        p = self.sphere["_screened_sphere_potential"]
-        nodes, weights = np.polynomial.legendre.leggauss(240)
-        radius = 0.5
-        s = radius * (nodes + 1) / 2
-        radial_weight = weights * radius / 2
-        rho = 3 / (4 * np.pi * radius**3)
-        for r in (0.0, 0.17, 0.37, 0.7, 1.4, 3.0):
-            distance = np.sqrt(r*r + s[:, None]**2 - 2*r*s[:, None]*nodes)
-            kernel = np.exp(-distance) / distance
-            expected = 2*np.pi*rho*np.sum(radial_weight*s*s*(kernel @ weights))
-            self.assertAlmostEqual(float(p(r)), float(expected), delta=2e-4)
-
-    def test_screened_poisson_and_boundary(self):
-        p = self.sphere["_screened_sphere_potential"]
-        radius = 0.5
-        h = 2e-4
-        for r in (0.08, 0.3, 0.8, 2.0):
-            d1 = (p(r+h)-p(r-h))/(2*h)
-            d2 = (p(r+h)-2*p(r)+p(r-h))/h**2
-            residual = d2 + 2*d1/r - p(r)
-            expected = -3/radius**3 if r < radius else 0
-            self.assertAlmostEqual(float(residual), expected, delta=2e-5)
-        left = (p(radius)-p(radius-h))/h
-        right = (p(radius+h)-p(radius))/h
-        self.assertAlmostEqual(float(left), float(right), delta=0.003)
-        r = np.linspace(0, 4, 101)
-        self.assertTrue(np.all(p(r) > 0))
-        self.assertTrue(np.all(p(r) < self.sphere["_uniform_sphere_potential"](r)))
-
-    def test_permeable_source_has_interior_electrons(self):
-        # Same marker parameters as the scene; the check is geometric and
-        # does not interpret illustrative marker density as a field solver.
-        initial = self.sphere["_scattered_annulus_positions"](
-            64, seed=20260917, inner_radius=0, outer_radius=1.48,
-            minimum_separation=0.13,
-        )
-        final = self.sphere["_screening_targets"](initial)
-        self.assertTrue(np.any(np.linalg.norm(initial, axis=1) < 0.5))
-        self.assertTrue(np.any(np.linalg.norm(final, axis=1) < 0.5))
-        self.assertTrue(np.all(np.linalg.norm(final, axis=1) < np.linalg.norm(initial, axis=1)))
-
     def test_periodic_poisson_sign(self):
         m = model("debye_shielding.py")
         x = np.linspace(0, 2*np.pi, 128, endpoint=False)

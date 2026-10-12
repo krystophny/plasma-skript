@@ -16,14 +16,13 @@ The site build exports the same pages as SVG and PDF, with inline animations and
 | 4 | Linear response | static | intro-debye-shielding | Weak potential expansion. |
 | 5 | Screened Poisson equation | static | intro-debye-shielding | Close the field-response loop. |
 | 6 | Yukawa potential | static | intro-debye-shielding | Boundary condition at infinity. |
-| 7 | Charge separation scale | static | intro-debye-shielding | Thermal energy versus electrostatic cost. |
-| 8 | Finite charge source | static | debye-finite-source | Geometry versus screening. |
-| 9 | Finite source response | static | debye-finite-source | Match potential and radial field. |
-| 10 | Debye shielding from particles | animation | debye-finite-source | Screening cloud is an average; no hole in one snapshot. |
-| 11 | Debye sphere count | static | debye-collective-validity | Few versus many. |
-| 12 | Weak coupling | static | debye-collective-validity | Nearest-neighbor energy. |
-| 13 | Plasma regime map | static | debye-collective-validity | Both orderings are required. |
-| 14 | Source credits | static | debye-shielding | Original figures. |
+| 7 | Debye shielding from particles | animation | intro-debye-shielding | Screening cloud is an average; no hole in one snapshot. |
+| 8 | Charge separation scale | static | intro-debye-shielding | Rigid model: last electron out costs k_B T_e. |
+| 9 | Debye sphere count | static | debye-collective-validity | Few versus many. |
+| 10 | Weak coupling | static | debye-collective-validity | Nearest-neighbor energy. |
+| 11 | Plasma regime map | static | debye-collective-validity | Both orderings are required. |
+| 12 | Ideal plasma | static | debye-collective-validity | All conditions together. |
+| 13 | Source credits | static | debye-shielding | Original figures. |
 
 ## Evidence and assets
 
@@ -40,8 +39,9 @@ a periodic one-component plasma, with $n\lambda_D^3=100$ ($N_D\approx 420$),
 around a fixed repulsive charge. The normalized deficit
 $-\delta n_e/(\kappa n_0)$ [1] approaches the periodic Debye response after
 time and ensemble averaging; one snapshot does not reveal the screening
-cloud. Decided 2026-10-06: page 10, after the finite-source response and
-before the Debye sphere count. It closes the point-charge route with evidence
-from the microscopic dynamics and opens the Debye-number route. It plays once,
+cloud. Page 7, after the Yukawa potential. It closes the point-charge route
+with evidence from the microscopic dynamics and opens the Debye-number route.
+The finite screened source was removed on 2026-10-12; the charge-separation
+sphere is the rigid 2025 estimate and has no screening. It plays once,
 because the average converges to its final state. The script shows it in
 §3.2 after `debye-shielding`.

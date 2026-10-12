@@ -203,7 +203,7 @@ planning anchors, not mandatory subsection names:
 - Introduction: examples of plasmas, quasi-neutrality, speed, energy,
   temperature, characteristic lengths and times, and model hierarchy.
 - Debye shielding: equilibrium electron response, screened Poisson equation,
-  the Debye length, and finite-source screening.
+  the Debye length, and the screened point charge.
 - Plasma oscillations: electron displacement, the restoring electric field,
   and the cold electron plasma frequency.
 - Single-particle motion: uniform-field gyration, `E × B` drift, nonuniform

@@ -17,7 +17,6 @@ scenes=(
   "exb_drift.py|ExBDrift|exb-drift|3.5"
   "plasma_oscillation.py|PlasmaOscillation|plasma-oscillation|5.3"
   "debye_shielding.py|DebyeShielding|debye-shielding|9.0"
-  "debye_potential.py|DebyePotentialReduction|debye-potential-reduction|8.5"
   "phase_space_advection.py|PhaseSpaceAdvection|phase-space-advection|4.0"
   "moment_hierarchy.py|MomentHierarchy|moment-hierarchy|6.0"
   "diffusion_random_walk.py|DiffusionRandomWalk|diffusion-random-walk|8.5"

@@ -354,9 +354,9 @@ nodes:
     structure: linear, radially symmetric Green function
     solution: closed form
     status: algebra-checked
-    coverage: {plasma: [intro-debye-shielding, debye-finite-source, debye-collective-validity]}
+    coverage: {plasma: [intro-debye-shielding, debye-collective-validity]}
     evidence:
-      - {sympy: derivations/chapters/ch03_debye_shielding.py, checks: [Debye length, Screened point charge, Matched finite-source Debye response]}
+      - {sympy: derivations/chapters/ch03_debye_shielding.py, checks: [Debye length, Screened point charge]}
   - id: vlasov
     name: Vlasov-Maxwell / Vlasov-Poisson
     label: "Vlasov"
