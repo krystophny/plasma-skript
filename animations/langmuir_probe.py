@@ -33,7 +33,7 @@ class LangmuirProbe(StyledScene):
 
     def build(self):
         ax = axes([-6, 2.5, 1], [-1.1, 0.25, 0.5], 7.2, 5.0).move_to([-2.75, -0.1, 0])
-        xlab = math(r"e(\phi_p-\phi_{pl})/k_BT_e\ [1]", color=MUTED, size=MATH_SMALL)
+        xlab = math(r"e(\Phi_p-\Phi_{pl})/k_BT_e\ [1]", color=MUTED, size=MATH_SMALL)
         xlab.next_to(ax.c2p(2.5, -1.1), DOWN, buff=0.15).align_to(ax.c2p(2.5, 0), RIGHT)
         ylab = math(r"I_p/(e\,\Gamma_{e0}A)\ [1]", color=MUTED, size=MATH_SMALL)
         ylab.next_to(ax.y_axis.get_top(), UP, buff=0.15)
@@ -46,9 +46,9 @@ class LangmuirProbe(StyledScene):
         e_sat = label("electron saturation", color=ELECTRON, size=SMALL_SIZE)
         e_sat.next_to(ax.c2p(0.15, -0.942), DOWN + RIGHT, buff=0.2)
         knee = Dot(ax.c2p(0, -0.942), radius=0.06, color=MUTED)
-        knee_lab = math(r"\phi_p=\phi_{pl}", color=MUTED, size=MATH_SMALL).next_to(knee, LEFT, buff=0.18)
+        knee_lab = math(r"\Phi_p=\Phi_{pl}", color=MUTED, size=MATH_SMALL).next_to(knee, LEFT, buff=0.18)
         f_dot = Dot(ax.c2p(U_FLOAT, 0), radius=0.07, color=MUTED)
-        f_lab = math(r"\phi_f", color=MUTED, size=MATH_SMALL).next_to(f_dot, DOWN + LEFT, buff=0.08)
+        f_lab = math(r"\Phi_f", color=MUTED, size=MATH_SMALL).next_to(f_dot, DOWN + LEFT, buff=0.08)
 
         u = ValueTracker(-5.5)
         point = always_redraw(lambda: Dot(ax.c2p(u.get_value(), probe_current(u.get_value())),

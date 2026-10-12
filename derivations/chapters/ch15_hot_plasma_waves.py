@@ -17,7 +17,7 @@ from waves import number, rounded
 
 e, m_e, eps0, k_B, c = sp.symbols("e m_e epsilon_0 k_B c", positive=True)
 I = sp.I
-n0, T_e, k, v, omega, q, m, phi, E1 = sp.symbols("n_0 T_e k v omega q m phi_1 E_1", positive=True)
+n0, T_e, k, v, omega, q, m, phi, E1 = sp.symbols("n_0 T_e k v omega q m Phi_1 E_1", positive=True)
 v_te, lambda_D, w_pe, gamma, v_g = sp.symbols("v_te lambda_D omega_pe gamma v_g", positive=True)
 zeta, x, a = sp.symbols("zeta x a", positive=True)  # a = k lambda_D
 Z = sp.Symbol("Z")  # value Z(zeta) of the plasma dispersion function

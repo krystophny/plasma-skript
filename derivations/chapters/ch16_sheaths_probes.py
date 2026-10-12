@@ -20,7 +20,7 @@ n_s, n0, T_s, T_e, m_s = sp.symbols("n_s n_0 T_s T_e m_s", positive=True)
 vx, vy, vz, v = sp.symbols("v_x v_y v_z v", real=True)
 eta, M, xi, lambda_D = sp.symbols("eta M xi lambda_D", positive=True)
 V, s, d_w, C, Gamma_i, V_w = sp.symbols("V s d C Gamma_i V_w", positive=True)
-phi, phi_w, phi_p, phi_pl = sp.symbols("phi phi_w phi_p phi_pl", real=True)
+phi, phi_w, phi_p, phi_pl = sp.symbols("Phi Phi_w Phi_p Phi_pl", real=True)
 A, Gamma_e0 = sp.symbols("A Gamma_e0", positive=True)
 Gamma_s0 = sp.Symbol("Gamma_s0")
 
@@ -104,7 +104,7 @@ agrees(boltzmann.subs(phi, -k_B * T_e * eta / e), n0 * N_E, lhs=sp.Symbol("n_e")
 section("Cold ion density in the sheath", script="bohm-criterion")
 u_s, u_i = sp.symbols("u_s u_i", positive=True)
 x = sp.Symbol("x")
-u_x, phi_x = sp.Function("u_i")(x), sp.Function("phi")(x)
+u_x, phi_x = sp.Function("u_i")(x), sp.Function("Phi")(x)
 momentum = show(sp.Eq(m_i * u_x * u_x.diff(x) + e * phi_x.diff(x), 0))
 assert sp.simplify(sp.diff(m_i * u_x**2 / 2 + e * phi_x, x) - momentum.lhs) == 0
 note("is a total derivative: energy conservation from the edge, where", sp.Eq(phi, 0, evaluate=False))
@@ -246,7 +246,7 @@ agrees(sp.simplify(transmitted.subs(V_b, -phi_w) / unretarded), sp.exp(e * phi_w
 # %% Floating potential
 section("Floating potential", script="floating-potential")
 J = show(sp.Eq(sp.Symbol("J"), e * Gamma_i - e * Gamma_e0 * sp.exp(e * phi_w / (k_B * T_e)))).rhs
-phi_f = sp.Symbol("phi_f")
+phi_f = sp.Symbol("Phi_f")
 floating = sp.expand_log(sp.solve(sp.Eq(J, 0), phi_w)[0], force=True)
 agrees(floating, k_B * T_e / e * sp.log(Gamma_i / Gamma_e0), lhs=phi_f)
 si.check(floating, k_B * T_e / e * sp.log(Gamma_i / Gamma_e0), unit=u.volt, units=UNITS)
@@ -357,7 +357,7 @@ ax.plot(x_grid, eta_grid, color=BLUE)
 ax.axhline(eta_w, color=GRAY, lw=0.8, ls=":")
 label(ax, 11.8, eta_w - 0.08, f"wall $\\eta_w={eta_w:.2f}$", GRAY, ha="right", va="top")
 ax.set(xlim=(0, 12), ylim=(0, 3), xticks=[0, 4, 8, 12], yticks=[0, 1, 2, 3], xlabel=r"$x/\lambda_D$ from the wall [1]",
-       ylabel=r"$\eta=-e\phi/k_BT_e$ [1]")
+       ylabel=r"$\eta=-e\Phi/k_BT_e$ [1]")
 save(fig, "sheath-potential")
 
 fig, ax = figure(*PANEL)
@@ -384,7 +384,7 @@ label(ax, -7.9, level + 0.03, "ion saturation", BLUE)
 label(ax, 1.9, -0.88, "electron\nsaturation", BLUE, ha="right")
 label(ax, 0.1, -0.45, "plasma\npotential", GRAY)
 ax.set(xlim=(-8, 2), ylim=(-1.1, 0.25), yticks=[-1, -0.5, 0],
-       xlabel=r"$u=e(\phi_p-\phi_{pl})/k_BT_e$ [1]", ylabel=r"$I/(eA\Gamma_{e0})$ [1]")
+       xlabel=r"$u=e(\Phi_p-\Phi_{pl})/k_BT_e$ [1]", ylabel=r"$I/(eA\Gamma_{e0})$ [1]")
 save(fig, "probe-iv-characteristic")
 
 # %%

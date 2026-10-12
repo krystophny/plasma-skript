@@ -1070,7 +1070,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "04-plasma-oscillations.html", title: [Plasma oscillations]),
+    previous: (href: "04-debye-shielding.html", title: [Debye shielding]),
     next: (href: "06-kinetic-theory.html", title: [Kinetic theory]),
   )
 ]

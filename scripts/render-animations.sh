@@ -31,6 +31,7 @@ scenes=(
   "particles_to_moments.py|ParticlesToMoments|particles-to-moments|11.0"
   "pendulum_ensemble.py|PendulumEnsemble|pendulum-ensemble|7.0"
   "debye_shielding_particles.py|DebyeShieldingParticles|debye-shielding-particles|16.5"
+  "em_wave_plasma.py|EmWavePlasmaReflection|em-wave-plasma-reflection|17.5"
   "coulomb_encounter.py|CoulombEncounterHeadOn|coulomb-encounter-headon|4.8"
   "coulomb_encounter.py|CoulombEncounterOffAxis|coulomb-encounter-offaxis|5.2"
   "coulomb_encounter.py|CoulombEncounterHot|coulomb-encounter-hot|4.6"

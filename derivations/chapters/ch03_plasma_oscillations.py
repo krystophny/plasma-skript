@@ -1,7 +1,7 @@
-# Chapter 4 · Plasma oscillations (src/chapters/04-plasma-oscillations.typ)
+# Chapter 3 · Plasma oscillations (src/chapters/03-plasma-oscillations.typ)
 #
 # Charge-separation field of a displaced electron slab, the electron plasma
-# oscillation, species plasma frequencies and the link to the Debye length.
+# oscillation, species plasma frequencies and the inertial length.
 
 # %% Setup
 import sympy as sp
@@ -69,25 +69,18 @@ frequency = show(sp.Eq(f_ps, omega_ps / (2 * sp.pi)))
 check(frequency.rhs.subs(omega_ps, omega_ps_expr), frequency.rhs.subs(omega_ps, omega_ps_expr),
       unit=u.hertz, units=SI_UNITS)
 
-# %% Plasma frequency and Debye length
-section("Plasma frequency and Debye length", script="intro-plasma-oscillations")
-definitions = {lambda_D: sp.sqrt(eps0 * k_B * T_e / (n0 * e**2)),
-               omega_pe: omega_pe_expr, v_th: sp.sqrt(2 * k_B * T_e / m_e)}
-for symbol, expr in definitions.items():
-    show(sp.Eq(symbol, expr))
-ratio = show(sp.Eq(v_th / (omega_pe * lambda_D),
-                   sp.simplify((v_th / (omega_pe * lambda_D)).subs(definitions))))
-assert ratio.rhs == sp.sqrt(2)
-lambda_D_rel = sp.solve(ratio, lambda_D)[0]
-agrees(lambda_D_rel, v_th / (sp.sqrt(2) * omega_pe), lhs=lambda_D)
-check(definitions[lambda_D], lambda_D_rel.subs(definitions), unit=u.meter, units=SI_UNITS)
-omega_pe_rel = sp.solve(ratio, omega_pe)[0]
-agrees(omega_pe_rel, v_th / (sp.sqrt(2) * lambda_D), lhs=omega_pe)
-check(omega_pe_expr, omega_pe_rel.subs(definitions), unit=1 / u.second, units=SI_UNITS)
-v_th_alt = sp.sqrt(k_B * T_e / m_e)
-note("With", sp.Eq(v_th, v_th_alt), "instead, the factor", sp.sqrt(2), "drops out")
-ratio_alt = show(sp.Eq(ratio.lhs, sp.simplify(ratio.lhs.subs({**definitions, v_th: v_th_alt}))))
-agrees(sp.solve(ratio_alt, lambda_D)[0], v_th / omega_pe, lhs=lambda_D)
+# %% Mobile ions: effective mass
+section("Species plasma frequency", script="intro-plasma-oscillations")
+Z, m_i, n_e = sp.symbols("Z m_i n_e", positive=True)
+xi_e, xi_i = sp.Function("xi_e")(t), sp.Function("xi_i")(t)
+note("Field from the relative shift; ions of charge", Z * e, "and density", n_e / Z)
+field = n_e * e * (xi_e - xi_i) / eps0
+relative = sp.simplify((-e * field / m_e) - (Z * e * field / m_i))
+omega_sq = sp.simplify(-relative / (xi_e - xi_i))
+agrees(omega_sq, n_e * e**2 / eps0 * (1 / m_e + Z / m_i), lhs=sp.Symbol("omega_p")**2,
+       eq="intro-plasma-frequency-ions")
+omega_pi_sq = (n_e / Z) * (Z * e)**2 / (eps0 * m_i)
+assert sp.simplify(omega_sq - (n_e * e**2 / (eps0 * m_e) + omega_pi_sq)) == 0
 
 # %% Inertial length
 section("Inertial length", script="intro-plasma-oscillations")

@@ -9,7 +9,7 @@
     Ionization costs energy, yet a hydrogen gas can become substantially ionized
     far below the temperature corresponding to the binding energy of one atom.
     Counting accessible states explains this balance. It also derives the
-    Boltzmann electron response used in the next chapter. The statistical
+    Boltzmann electron response used for Debye shielding in Chapter 4. The statistical
     framework follows @reif1965; thermal ionization follows @saha1920.
   ]
 
@@ -464,6 +464,6 @@
 
   #chapter-nav(
     previous: (href: "01-introduction.html", title: [Introduction]),
-    next: (href: "03-debye-shielding.html", title: [Debye shielding]),
+    next: (href: "03-plasma-oscillations.html", title: [Plasma oscillations]),
   )
 ]

@@ -242,7 +242,7 @@ nodes:
     pos: [3.3, 3]
     summary: Local-density approximation of a degenerate electron gas in a self-consistent potential; gives screening and equations of state of dense matter.
     equations:
-      - 'n(vb(x)) = 1/(3 pi^2) ((2 m_(e) (mu + e phi))/(hbar^2))^(3 slash 2)'
+      - 'n(vb(x)) = 1/(3 pi^2) ((2 m_(e) (mu + e Phi))/(hbar^2))^(3 slash 2)'
       - 'k_"TF"^2 = (3 n_(0) e^2)/(2 epsilon_0 E_(F))'
     state: electron density and potential
     structure: variational (energy functional)
@@ -348,15 +348,15 @@ nodes:
     pos: [2.9, 7.25]
     summary: Linearized Poisson-Boltzmann response of a weakly coupled plasma to a test charge.
     equations:
-      - 'laplacian phi = phi/lambda_(D)^2 - rho_"ext"/epsilon_0'
-      - 'phi = Q/(4 pi epsilon_0 r) e^(-r slash lambda_(D))'
+      - 'laplacian Phi = Phi/lambda_(D)^2 - rho_"ext"/epsilon_0'
+      - 'Phi = Q/(4 pi epsilon_0 r) e^(-r slash lambda_(D))'
     state: electrostatic potential
     structure: linear, radially symmetric Green function
     solution: closed form
     status: algebra-checked
     coverage: {plasma: [intro-debye-shielding, debye-collective-validity]}
     evidence:
-      - {sympy: derivations/chapters/ch03_debye_shielding.py, checks: [Debye length, Screened point charge]}
+      - {sympy: derivations/chapters/ch04_debye_shielding.py, checks: [Debye length, Screened point charge]}
   - id: vlasov
     name: Vlasov-Maxwell / Vlasov-Poisson
     label: "Vlasov"
@@ -468,7 +468,7 @@ nodes:
     summary: The null space of the collision operators; with a potential it is also a stationary solution of the Vlasov equation.
     equations:
       - 'f_(M) = n (m/(2 pi k_B T))^(3 slash 2) exp(-(m abs(vb(v) - vb(u))^2)/(2 k_B T))'
-      - 'n = n_(0) e^(-q phi slash k_B T)'
+      - 'n = n_(0) e^(-q Phi slash k_B T)'
     state: density, flow and temperature
     structure: maximal entropy at fixed number, momentum and energy
     solution: closed form
@@ -560,7 +560,7 @@ nodes:
     summary: Kinetic theory of low-frequency fluctuations with perpendicular wavelengths down to the gyroradius; the standard model of microturbulence.
     equations:
       - 'pdv(F, t) + dot(vb(X)) dot grad F + dot(v)_(parallel) pdv(F, v_(parallel)) = C[F]'
-      - 'sum_s q_(s) n_(s)^"gy"[F_(s), phi] = 0'
+      - 'sum_s q_(s) n_(s)^"gy"[F_(s), Phi] = 0'
     state: gyrocenter distribution in 5D, gyroaveraged fields
     structure: gyrokinetic field theory (variational); energy conserved
     solution: formal; delta-f and full-f variants
@@ -690,7 +690,7 @@ nodes:
     pos: [1.3, 10.9]
     summary: Non-neutral boundary layer of a few Debye lengths between a plasma and a wall, matched to a quasineutral presheath.
     equations:
-      - 'dv(phi, x, 2) = e/epsilon_0 (n_(e) - n_(i)), quad n_(e) = n_(0) e^(e phi slash k_B T_(e))'
+      - 'dv(Phi, x, 2) = e/epsilon_0 (n_(e) - n_(i)), quad n_(e) = n_(0) e^(e Phi slash k_B T_(e))'
       - 'u_(i) >= c_(s) = sqrt((k_B T_(e))/m_(i))'
     state: potential, ion flow and densities across the layer
     structure: ion energy and flux conserved; Sagdeev first integral
@@ -760,7 +760,7 @@ nodes:
     status: algebra-checked
     coverage: {plasma: [intro-plasma-oscillations, wave-linearization, plasma-oscillations, wave-dispersion, magnetized-dielectric, parallel-magnetized-waves, perpendicular-magnetized-waves, oblique-magnetized-waves, magnetized-limits, collisional-waves, ion-magnetized-waves], fusion: [B8], kinetic: [N2.3.1, L6]}
     evidence:
-      - {sympy: derivations/chapters/ch04_plasma_oscillations.py, checks: [Electron plasma oscillation]}
+      - {sympy: derivations/chapters/ch03_plasma_oscillations.py, checks: [Electron plasma oscillation]}
       - {sympy: derivations/chapters/ch13_cold_magnetized_waves.py, checks: [Cold dielectric tensor, Appleton-Hartree roots]}
   - id: warm-fluid-waves
     name: Warm-fluid waves
@@ -1101,12 +1101,12 @@ edges:
   - from: thermal-equilibrium
     to: debye-hueckel
     method: linearized Poisson-Boltzmann
-    small: 'abs(e phi)/(k_B T_(e)) << 1'
+    small: 'abs(e Phi)/(k_B T_(e)) << 1'
     assumptions: [Boltzmann electrons, immobile ions, many particles in a Debye sphere]
     lost: nonlinear screening near the test charge, correlations
     status: algebra-checked
     evidence:
-      - {sympy: derivations/chapters/ch03_debye_shielding.py, checks: [Debye length, Screened point charge]}
+      - {sympy: derivations/chapters/ch04_debye_shielding.py, checks: [Debye length, Screened point charge]}
     coverage: {plasma: [intro-debye-shielding, debye-collective-validity]}
   - from: thermal-equilibrium
     to: reactivity
@@ -1321,7 +1321,7 @@ edges:
   - from: guiding-center
     to: gyrokinetic
     method: Lie-transform perturbation theory with fluctuating fields
-    small: 'omega/omega_(c) tilde rho_(*), quad k_(perp) rho tilde 1, quad e tilde(phi)/(k_B T) tilde rho_(*)'
+    small: 'omega/omega_(c) tilde rho_(*), quad k_(perp) rho tilde 1, quad e tilde(Phi)/(k_B T) tilde rho_(*)'
     assumptions: [gyrokinetic ordering, small-amplitude fluctuations]
     lost: fast magnetosonic and cyclotron waves
     status: stated

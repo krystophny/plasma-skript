@@ -313,15 +313,15 @@
     must refer to the same physical problem.
   ]
 
+  A displaced electron population overshoots equilibrium because electrons
+  have inertia. The charge separation supplies a restoring force.
+  #chapter-link("intro-plasma-oscillations")[Plasma oscillations]
+  derives this motion and its natural response time.
+
   Screening describes how mobile charges rearrange around an electric
   disturbance. Far enough from a localized source, its influence is reduced.
   #chapter-link("intro-debye-shielding")[Debye shielding]
   derives the screening length and the assumptions behind bulk quasineutrality.
-
-  A displaced electron population can also overshoot equilibrium because
-  electrons have inertia. The charge separation then supplies a restoring
-  force. #chapter-link("intro-plasma-oscillations")[Plasma oscillations]
-  derives this motion and its natural response time.
 
   In a magnetic field, individual particles turn around field lines. Their
   orbit size and period determine whether this motion must be followed or

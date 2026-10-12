@@ -32,8 +32,8 @@ done
 chapter_sources=(
   01-introduction
   02-thermal-equilibrium
-  03-debye-shielding
-  04-plasma-oscillations
+  03-plasma-oscillations
+  04-debye-shielding
   05-single-particle-motion
   06-kinetic-theory
   07-moments
@@ -214,8 +214,8 @@ else
   require_file "$site_dir/styles.css"
   for chapter in \
     01-introduction \
-    03-debye-shielding \
-    04-plasma-oscillations \
+    03-plasma-oscillations \
+    04-debye-shielding \
     05-single-particle-motion \
     06-kinetic-theory \
     07-moments \

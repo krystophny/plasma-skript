@@ -256,7 +256,7 @@ section("Electron Boltzmann relation", script="multiple-parallel-balance")
 s_ = sp.Symbol("s", real=True)                     # arc length along b
 T_e = sp.Symbol("T_e", positive=True)
 n_s = sp.Function("n_e", positive=True)(s_)
-phi = sp.Function("phi", real=True)(s_)
+phi = sp.Function("Phi", real=True)(s_)
 E_s = field("E_parallel", s_)
 note("Inertialess, collisionless electrons along the field line")
 electron = show(sp.Eq(0, -Partial(n_s * k_B * T_e, s_) - e * n_s * E_s))
@@ -267,7 +267,7 @@ note("Insert the potential and integrate along the field line")
 show(sp.Eq(E_s, -Partial(phi, s_)))
 ode = show(sp.Eq(sp.Derivative(n_s, s_), sp.solve(sp.Eq(-sp.Derivative(phi, s_), E_solved),
                                                   sp.Derivative(n_s, s_))[0]))
-phi0, n_e0 = sp.symbols("phi_0 n_e0", real=True)
+phi0, n_e0 = sp.symbols("Phi_0 n_e0", real=True)
 solution = show(sp.dsolve(ode, n_s))
 constant = sp.solve(sp.Eq(solution.rhs.subs(phi, phi0), n_e0), sp.Symbol("C1"), dict=True)[0]
 profile = solution.rhs.subs(constant)
@@ -357,7 +357,7 @@ agrees_with(d1["total"][0],
 
 # %% Example: Boltzmann density
 section("Example: Boltzmann density ratio", script="multiple-parallel-balance")
-phi1, n_e = sp.symbols("phi_1 n_e")
+phi1, n_e = sp.symbols("Phi_1 n_e")
 probe = {phi1: 3.00 * u.volt, phi0: 0 * u.volt, T_e: 3.00 * u.elementary_charge * u.volt / u.boltzmann_constant,
          n_e0: 1.0e16 / u.meter**3}
 note("Input", sp.Eq(phi1 - phi0, 3.00 * u.volt), ",", sp.Eq(k_B * T_e, 3.00 * u.electronvolt),

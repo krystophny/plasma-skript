@@ -145,8 +145,8 @@ The chapter sequence, with the requested split of the opening material, is:
 
 1. Introduction: plasma examples, characteristic scales, and model hierarchy
 2. Temperature, entropy, and thermal ionization
-3. Debye shielding
-4. Plasma oscillations
+3. Plasma oscillations
+4. Debye shielding
 5. Single-particle motion
 6. Kinetic theory of plasmas
 7. Moments of the Boltzmann equation
@@ -162,7 +162,7 @@ The chapter sequence, with the requested split of the opening material, is:
 
 The opening material occupies four chapters at the author's request:
 an introduction with examples and a scale/model overview, followed by thermal
-equilibrium, shielding, and oscillation chapters. The introduction keeps the physical ideas
+equilibrium, oscillation, and shielding chapters. The introduction keeps the physical ideas
 and temperature conventions, with section links to quantitative treatments.
 Screening and coupling criteria belong in the shielding chapter; plasma-frequency
 relations belong in the oscillation chapter; orbit and combined numerical scale
@@ -202,10 +202,10 @@ planning anchors, not mandatory subsection names:
 
 - Introduction: examples of plasmas, quasi-neutrality, speed, energy,
   temperature, characteristic lengths and times, and model hierarchy.
-- Debye shielding: equilibrium electron response, screened Poisson equation,
-  the Debye length, and the screened point charge.
 - Plasma oscillations: electron displacement, the restoring electric field,
   and the cold electron plasma frequency.
+- Debye shielding: equilibrium electron response, screened Poisson equation,
+  the Debye length, and the screened point charge.
 - Single-particle motion: uniform-field gyration, `E × B` drift, nonuniform
   magnetic fields, gradient and curvature drifts, magnetic moment and mirrors,
   polarization drift, and cyclotron resonance.
@@ -236,8 +236,8 @@ copied prompts:
 | Area | The script must enable students to |
 | --- | --- |
 | Introduction | identify collective behavior, distinguish thermal and bulk motion, explain the role of observation scales, and navigate the model hierarchy |
-| Debye shielding | derive the screening length and assess collective and quasineutral orderings |
 | Plasma oscillations | derive the cold restoring response and relate its frequency to thermal and screening scales |
+| Debye shielding | derive the screening length and assess collective and quasineutral orderings |
 | Single-particle motion | derive gyration and homogeneous-force drifts, use guiding-center assumptions, explain magnetic moments and mirrors, and classify common drifts |
 | Kinetic theory | interpret a distribution function, reason in phase space, relate mean free path to collisions, and distinguish convective and conservative kinetic equations |
 | Moments and closure | obtain fluid variables from a distribution, derive continuity and the structure of higher moment equations, interpret pressure tensors, and explain closure choices |

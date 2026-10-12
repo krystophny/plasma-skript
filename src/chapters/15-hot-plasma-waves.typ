@@ -137,7 +137,7 @@
     #derivation-step[Close the electrostatic response with Poisson's equation]
     For an electrostatic wave, set
 
-    $ bold(E)_1=-i bold(k) phi_1 . $
+    $ bold(E)_1=-i bold(k) Phi_1 . $
 
     The perturbed charge density is
 
@@ -145,7 +145,7 @@
 
     Inserting the distribution response gives
 
-    $ rho_1=-sum_s (q_s^2 phi_1)/m_s
+    $ rho_1=-sum_s (q_s^2 Phi_1)/m_s
       integral (bold(k) dot pdv(f_(s,0),bold(v)))/
       (omega-bold(k) dot bold(v)) dif^3 bold(v) . $
 
@@ -153,7 +153,7 @@
 
     $ div(bold(E)_1)=rho_1/epsilon_0 . $
 
-    After the Fourier substitution, $k^2 phi_1=rho_1\/epsilon_0$. A nonzero
+    After the Fourier substitution, $k^2 Phi_1=rho_1\/epsilon_0$. A nonzero
     potential therefore requires the displayed condition $epsilon_L=0$.
 
     #derivation-step[Evaluate an isotropic Maxwellian]

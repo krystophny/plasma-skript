@@ -2,8 +2,8 @@
 
 Data-driven animations whose scientific source is kin6d (data and provenance
 in `animations/data/kin6d/<slug>/`). Cues for chapters that already have a
-deck live in their `<stem>.md` (`03-debye-shielding.md`,
-`04-plasma-oscillations.md`). This note holds the cue for chapter 10 until
+deck live in their `<stem>.md` (`04-debye-shielding.md`,
+`03-plasma-oscillations.md`). This note holds the cue for chapter 10 until
 `10-collisions-conductivity.md` exists; move it there then.
 
 ## Chapter 10: collisions and conductivity

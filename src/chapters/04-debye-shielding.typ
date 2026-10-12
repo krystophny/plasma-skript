@@ -3,13 +3,16 @@
 #import "../figures.typ": charge-separation-energy, debye-regime-map, debye-screened-point
 
 #let chapter = [
-  #page-title(number: 3)[Debye shielding] <debye-shielding>
+  #page-title(number: 4)[Debye shielding] <debye-shielding>
 
   #lead[
-    Mobile charges rearrange around a localized disturbance. The equilibrium
-    electron response defines the Debye length and explains the reduction of
-    the potential around a localized charge. The treatment follows
-    @chen2016 @bittencourt2004.
+    The previous chapter displaced a rigid electron slab and found the
+    plasma frequency. A second rigid model, an electron-free sphere, estimates
+    how large a charge-separated region thermal electrons can sustain. Letting
+    the electrons respond with the Boltzmann factor of Chapter 2 then gives
+    Debye shielding: the equilibrium response defines the Debye length and
+    explains the reduction of the potential around a localized charge. The
+    treatment follows @chen2016 @bittencourt2004.
   ]
 
   #section-title[Debye shielding] <intro-debye-shielding>
@@ -35,15 +38,19 @@
   uniformly charged spherical region of radius $R$, with charge magnitude
   $e$ per particle. Gauss's law gives the boundary potential scale
 
-  $ phi(R) = (N e R^2)/(3 epsilon_0),
-    quad abs(e phi(R)) approx k_B T_e
+  $ Phi(R) = (N e R^2)/(3 epsilon_0),
+    quad abs(e Phi(R)) approx k_B T_e
     => R approx sqrt((3 epsilon_0 k_B T_e)/(N e^2)) $ <debye-charge-separation-scale>
 
   #equation-note[
     $N$ is a number density in #unit("m^-3"), $R$ is in #unit("m"),
-    and $phi$ is in #unit("V"). The numerical factor depends on the assumed
+    and $Phi$ is in #unit("V"). The numerical factor depends on the assumed
     charge profile; the robust result is the scaling
-    $R$ proportional to $sqrt(epsilon_0 k_B T_e\/(N e^2))$.
+    $R$ proportional to $sqrt(epsilon_0 k_B T_e\/(N e^2))$. For $N=n_0$ this
+    is of order the Debye length $lambda_D$. An electron at the thermal speed
+    $v_("th,e")$ crosses $lambda_D$ in a time $lambda_D\/v_("th,e")$, which
+    the relation to the plasma frequency below shows to be of order $1\/omega_(p,e)$:
+    charge separation on this scale is undone on the plasma-oscillation time.
   ]
 
   #details(
@@ -65,10 +72,10 @@
     Measured relative to infinity, the potential at the boundary of the
     uniformly charged sphere is
 
-    $ phi(R)=Q(R)/(4 pi epsilon_0 R)=(N e R^2)/(3 epsilon_0) . $
+    $ Phi(R)=Q(R)/(4 pi epsilon_0 R)=(N e R^2)/(3 epsilon_0) . $
 
     A thermal particle can cross or substantially rearrange the region when
-    $abs(e phi(R))$ is comparable to $k_B T_e$. Solving that balance gives the
+    $abs(e Phi(R))$ is comparable to $k_B T_e$. Solving that balance gives the
     displayed estimate. If $N=n_0$, then
 
     $ R approx sqrt(3) lambda_D . $
@@ -82,24 +89,24 @@
     [Linearized Boltzmann response],
     [Take a uniform, stationary ion background with $n_i = n_0$, mobile
     electrons at temperature $T_e$, no magnetic force in the equilibrium
-    response, and a weak potential satisfying $abs(e phi) << k_B T_e$. The
+    response, and a weak potential satisfying $abs(e Phi) << k_B T_e$. The
     ions are treated as fixed on the electron response time.]
   )
 
   The electron equilibrium density follows from the electrostatic potential
-  energy $-e phi$:
+  energy $-e Phi$:
 
-  $ n_e = n_0 exp((e phi) / (k_B T_e)) approx n_0 (1 + (e phi) / (k_B T_e)) $ <debye-boltzmann-response>
+  $ n_e = n_0 exp((e Phi) / (k_B T_e)) approx n_0 (1 + (e Phi) / (k_B T_e)) $ <debye-boltzmann-response>
 
   #equation-note[
-    $n_e$ and $n_0$ are in #unit("m^-3"), and $e phi$ and $k_B T_e$
+    $n_e$ and $n_0$ are in #unit("m^-3"), and $e Phi$ and $k_B T_e$
     are energies in #unit("J"). The approximation is dimensionless and requires
-    $abs(e phi)\/(k_B T_e) << 1$.
+    $abs(e Phi)\/(k_B T_e) << 1$.
   ]
 
   The net charge density is therefore
 
-  $ rho_q = e n_i - e n_e approx - (e^2 n_0)/(k_B T_e) phi $ <debye-charge-response>
+  $ rho_q = e n_i - e n_e approx - (e^2 n_0)/(k_B T_e) Phi $ <debye-charge-response>
 
   #equation-note[
     The sign expresses the restoring response of electrons to a
@@ -108,7 +115,7 @@
 
   Poisson's equation is
 
-  $ laplacian phi = -rho_q/epsilon_0 $ <debye-poisson>
+  $ laplacian Phi = -rho_q/epsilon_0 $ <debye-poisson>
 
   #equation-note[
     This equation defines the electrostatic field convention used
@@ -117,28 +124,43 @@
 
   Substitution gives the screened equation
 
-  $ laplacian phi - phi / lambda_D^2 = 0, quad lambda_D = sqrt((epsilon_0 k_B T_e) / (n_0 e^2)) $ <debye-screened-equation>
+  $ laplacian Phi - Phi / lambda_D^2 = 0, quad lambda_D = sqrt((epsilon_0 k_B T_e) / (n_0 e^2)) $ <debye-screened-equation>
 
   #equation-note[
     $lambda_D$ is in #unit("m"). The equation is valid outside the
     localized source and within the linearized, static response model.
   ]
 
+  The Debye length also connects to the
+  #chapter-link("intro-plasma-oscillations")[electron plasma frequency]
+  $omega_(p,e) = sqrt(n_0 e^2\/(epsilon_0 m_e))$. With the electron thermal
+  speed $v_("th,e") = sqrt(2 k_B T_e\/m_e)$, in #unit("m/s"),
+
+  $ lambda_D = v_("th,e")/(sqrt(2) omega_(p,e)),
+    quad omega_(p,e) = v_("th,e")/(sqrt(2) lambda_D) $ <debye-plasma-frequency-relation>
+
+  #equation-note[
+    A thermal electron crosses the screening length in about one inverse
+    plasma frequency. The factor $sqrt(2)$ follows from the convention
+    $v_("th,e")=sqrt(2 k_B T_e\/m_e)$. If a source defines thermal speed as
+    $sqrt(k_B T_e\/m_e)$, the same relation is written without that factor.
+  ]
+
   #details(
     [Derivation: from particle response to shielding],
     [#derivation-step[Linearize the electron response]
-    For a positive test potential, the electron potential energy is $-e phi$.
+    For a positive test potential, the electron potential energy is $-e Phi$.
     The equilibrium Boltzmann factor is therefore
 
-    $ exp((-(-e phi))/(k_B T_e))=exp((e phi)/(k_B T_e)) . $
+    $ exp((-(-e Phi))/(k_B T_e))=exp((e Phi)/(k_B T_e)) . $
 
-    When $abs(e phi)\/(k_B T_e) << 1$, expand it to first order:
+    When $abs(e Phi)\/(k_B T_e) << 1$, expand it to first order:
 
-    $ n_e approx n_0 (1+(e phi)/(k_B T_e)) . $
+    $ n_e approx n_0 (1+(e Phi)/(k_B T_e)) . $
 
     With immobile ions, the charge density becomes
 
-    $ rho_q=e n_0-e n_e approx -(e^2 n_0 phi)/(k_B T_e) . $
+    $ rho_q=e n_0-e n_e approx -(e^2 n_0 Phi)/(k_B T_e) . $
 
     #derivation-step[Insert the response into Poisson's equation]
     Define the Debye coefficient by
@@ -147,11 +169,11 @@
 
     Inserting the charge response into the Poisson equation gives
 
-    $ laplacian phi-phi/lambda_D^2=0 . $
+    $ laplacian Phi-Phi/lambda_D^2=0 . $
 
     In spherical symmetry, the decaying source solution has the form
 
-    $ phi(r) "proportional to" exp(-r/lambda_D)/r . $
+    $ Phi(r) "proportional to" exp(-r/lambda_D)/r . $
 
     The exponential factor is the shielding; $1\/r$ is the unscreened geometric
     spreading of a point source.]
@@ -197,7 +219,7 @@
   $r >> kappa lambda_D$. Here $delta n_e = n_e - n_0$ and $kappa = 0.05$ is
   dimensionless. Time is measured in units of $1\/omega_(p,e)$, with the
   electron plasma frequency $omega_(p,e) = sqrt(n_0 e^2\/(epsilon_0 m_e))$
-  of Chapter 4 and the electron mass $m_e$.
+  of Chapter 3 and the electron mass $m_e$.
 
   #animation(
     "../media/debye-shielding-particles.mp4",
@@ -249,6 +271,7 @@
     (
       [(d) A spherical region of complete charge separation has a potential $Phi(r) = (N q_e / epsilon_0) r^2$ at its boundary. What size can such a region roughly have in a thermal plasma of temperature $T$ (potential energy = thermal energy)?],
       [(e) Describe and give an overview of the derivation for Debye shielding.],
+      [(i) Estimate the plasma frequency $omega_p$ from thermal velocity $v_t$ and Debye length $lambda_D$.],
     ),
     [Plasma Physics Exam.pdf, p. 1],
   )
@@ -256,11 +279,11 @@
   #knowledge-check((
     (
       question: [Why does a positive electrostatic potential increase the equilibrium electron density in the Boltzmann response?],
-      answer: [An electron has charge $-e$, so its potential energy is $-e phi$. A positive $phi$ lowers that energy and produces the factor $exp(e phi\/(k_B T_e))$.],
+      answer: [An electron has charge $-e$, so its potential energy is $-e Phi$. A positive $Phi$ lowers that energy and produces the factor $exp(e Phi\/(k_B T_e))$.],
     ),
     (
       question: [Which approximation turns the exponential Boltzmann response into a linear screening equation?],
-      answer: [The weak-potential ordering $abs(e phi) << k_B T_e$ permits a first-order expansion of the exponential.],
+      answer: [The weak-potential ordering $abs(e Phi) << k_B T_e$ permits a first-order expansion of the exponential.],
     ),
     (
       question: [What happens to the screened potential at distances much larger than $lambda_D$ in this model?],
@@ -354,7 +377,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "02-thermal-equilibrium.html", title: [Temperature, entropy, and thermal ionization]),
-    next: (href: "04-plasma-oscillations.html", title: [Plasma oscillations]),
+    previous: (href: "03-plasma-oscillations.html", title: [Plasma oscillations]),
+    next: (href: "05-single-particle-motion.html", title: [Single-particle motion]),
   )
 ]

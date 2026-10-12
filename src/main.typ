@@ -8,8 +8,8 @@
 #show math.equation: set text(font: "STIX Two Math")
 #import "chapters/01-introduction.typ": chapter as introduction
 #import "chapters/02-thermal-equilibrium.typ": chapter as thermal-equilibrium
-#import "chapters/03-debye-shielding.typ": chapter as debye-shielding
-#import "chapters/04-plasma-oscillations.typ": chapter as plasma-oscillations
+#import "chapters/03-plasma-oscillations.typ": chapter as plasma-oscillations
+#import "chapters/04-debye-shielding.typ": chapter as debye-shielding
 #import "chapters/05-single-particle-motion.typ": chapter as motion
 #import "chapters/06-kinetic-theory.typ": chapter as kinetic
 #import "chapters/07-moments.typ": chapter as moments
@@ -43,17 +43,17 @@
   ),
   (
     number: 3,
-    title: [Debye shielding],
-    slug: "03-debye-shielding",
+    title: [Plasma oscillations],
+    slug: "03-plasma-oscillations",
     status: "drafted",
-    summary: [Boltzmann response, the Debye length, screened potentials, and the plasma parameter.],
+    summary: [Electron displacement, the restoring electric field, and the cold plasma frequency.],
   ),
   (
     number: 4,
-    title: [Plasma oscillations],
-    slug: "04-plasma-oscillations",
+    title: [Debye shielding],
+    slug: "04-debye-shielding",
     status: "drafted",
-    summary: [Electron displacement, the restoring electric field, and the cold plasma frequency.],
+    summary: [Boltzmann response, the Debye length, screened potentials, and the plasma parameter.],
   ),
   (
     number: 5,
@@ -212,7 +212,7 @@
           $epsilon_0$ and permeability $mu_0$. For a charge $q$, the Lorentz force is
           $bold(F)=q (bold(E) + bold(v) times bold(B))$, and electrostatic
           Poisson's equation for charge density $rho_q$ is
-          $laplacian(phi) = -rho_q/epsilon_0$. The symbol $rho$ without the
+          $laplacian(Phi) = -rho_q/epsilon_0$. The symbol $rho$ without the
           subscript denotes mass density. Gaussian CGS equivalents are listed
           only in the #link("appendices/cgs-translation.html")[CGS translation appendix].
         ]
@@ -342,12 +342,12 @@
   #page-shell(stylesheet: "../styles.css")[#thermal-equilibrium]
 ]
 
-#document("chapters/03-debye-shielding.html", title: [Debye shielding])[
-  #page-shell(stylesheet: "../styles.css")[#debye-shielding]
+#document("chapters/03-plasma-oscillations.html", title: [Plasma oscillations])[
+  #page-shell(stylesheet: "../styles.css")[#plasma-oscillations]
 ]
 
-#document("chapters/04-plasma-oscillations.html", title: [Plasma oscillations])[
-  #page-shell(stylesheet: "../styles.css")[#plasma-oscillations]
+#document("chapters/04-debye-shielding.html", title: [Debye shielding])[
+  #page-shell(stylesheet: "../styles.css")[#debye-shielding]
 ]
 
 #document("chapters/05-single-particle-motion.html", title: [Single-particle motion])[

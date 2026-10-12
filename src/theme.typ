@@ -395,8 +395,9 @@
       #if next != none {
         link(next.href)[#next.title →]
       }
+      // Deck stems follow slides/*.typ, indexed by chapter number.
       #let decks = ("01-introduction", "02-thermal-equilibrium",
-        "03-debye-shielding", "04-plasma-oscillations")
+        "03-plasma-oscillations", "04-debye-shielding")
       #let chapter = chapter-number.get()
       #if chapter != none and chapter >= 1 and chapter <= decks.len() {
         link("../present/" + decks.at(chapter - 1) + "/")[Lecture deck]

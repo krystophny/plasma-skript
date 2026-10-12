@@ -67,7 +67,7 @@ Q, r, lam_D = sp.symbols("Q r lambda_D", positive=True)
 Q_enc = sp.Symbol("Q_enc")
 SCREEN_UNITS = {Q: u.coulomb, r: u.meter, lam_D: u.meter}
 note("Debye-screened potential of a point charge", Q, "(derived in chapter 3)")
-phi_D = show(sp.Eq(sp.Symbol("phi"), Q * sp.exp(-r / lam_D) / (4 * sp.pi * eps0 * r)))
+phi_D = show(sp.Eq(sp.Symbol("Phi"), Q * sp.exp(-r / lam_D) / (4 * sp.pi * eps0 * r)))
 note("Gauss's law gives the net charge inside radius", r)
 enclosed = sp.simplify(-4 * sp.pi * eps0 * r**2 * sp.diff(phi_D.rhs, r))
 enclosed_stated = Q * (1 + r / lam_D) * sp.exp(-r / lam_D)

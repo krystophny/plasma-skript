@@ -241,7 +241,7 @@
   caption: [
     Rigid charge-separation estimate: all electrons removed from a sphere of
     radius $R = sqrt(3) lambda_D$ in a plasma of density $n_0$, no plasma
-    response. The energy $e phi$ needed to move an electron from radius $r$
+    response. The energy $e Phi$ needed to move an electron from radius $r$
     to infinity follows from Gauss's law: quadratic inside, Coulomb $1\/r$
     outside. The last electron at $r = R$ costs $k_B T_e$ (dot), so
     thermal motion sustains separated regions up to this size. Radius in
@@ -1204,7 +1204,7 @@
         node((0, 2), [Sheath \
           width approximately a few $lambda_D$]),
         node((0, 3), [Material wall \
-          $phi_"wall"<phi_"pl"$]),
+          $Phi_"wall"<Phi_"pl"$]),
         edge((0, 0), (0, 1), [ion acceleration], "->"),
         edge((0, 1), (0, 2), [Bohm entry], "->"),
         edge((0, 2), (0, 3), [particle collection], "->"),
@@ -1246,7 +1246,7 @@
     $eta''=M/sqrt(M^2+2 eta)-exp(-eta)$ for ions entering at the Bohm speed
     ($M=1$), integrated from a hydrogen wall at the floating potential
     $eta_w=-ln sqrt(2 pi m_e\/m_i)=2.84$, with
-    $eta=-e phi\/(k_B T_e)$ and $x$ measured from the wall. Boltzmann
+    $eta=-e Phi\/(k_B T_e)$ and $x$ measured from the wall. Boltzmann
     electrons $n_e\/n_0=exp(-eta)$ are depleted faster than the cold ions
     $n_i/n_0=M/sqrt(M^2+2 eta)$, so the sheath carries positive space charge.
   ],
@@ -1258,7 +1258,7 @@
   caption: [
     Idealized planar probe, ion current positive:
     $I/(e Gamma_(e,0) A)=Gamma_i/Gamma_(e,0)-exp(u)$ for $u<=0$ and
-    electron saturation for $u>0$, with $u=(e(phi_p-phi_"pl"))/(k_B T_e)$.
+    electron saturation for $u>0$, with $u=(e(Phi_p-Phi_"pl"))/(k_B T_e)$.
     For hydrogen $Gamma_i/Gamma_(e,0)=sqrt((2 pi m_e)/m_i)=0.0585$, so the
     current vanishes at $u_f=-2.84$. The exponential retardation branch
     carries the temperature diagnostic; real saturation depends on geometry.

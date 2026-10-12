@@ -5,8 +5,8 @@ variables.  A localized positive test charge is balanced by a broad fixed
 background; the electron density evolves according to overdamped
 drift-diffusion coupled to Poisson's equation::
 
-    ∂nₑ/∂τ = −∂ₓ Γₑ,   Γₑ = −∂ₓ nₑ + nₑ ∂ₓ φ,
-    ∂ₓ² φ = nₑ − 1 − ρ_ext.
+    ∂nₑ/∂τ = −∂ₓ Γₑ,   Γₑ = −∂ₓ nₑ + nₑ ∂ₓ Φ,
+    ∂ₓ² Φ = nₑ − 1 − ρ_ext.
 
 Here x/λ_D [1] and t/τ_D [1] are the displayed reference-scaled
 coordinates.  The density and potential profiles on the right are the
@@ -245,7 +245,7 @@ class DebyeShielding(StyledScene):
             .align_to(dens_ax, RIGHT),
         )
         pot_labels = VGroup(
-            math(r"\phi/\phi_0\ [1]", color=POTENTIAL, size=MATH_SMALL).next_to(pot_ax, UP, buff=0.1)
+            math(r"\Phi/\Phi_0\ [1]", color=POTENTIAL, size=MATH_SMALL).next_to(pot_ax, UP, buff=0.1)
             .align_to(pot_ax, LEFT),
             math(r"x/\lambda_D\ [1]", color=MUTED, size=MATH_SMALL).next_to(pot_ax, DOWN, buff=0.12)
             .align_to(pot_ax, RIGHT),

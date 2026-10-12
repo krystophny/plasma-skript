@@ -4,22 +4,24 @@
 #import "../opening-diagrams.typ": electron-slab
 
 #let chapter = [
-  #page-title(number: 4)[Plasma oscillations] <plasma-oscillations>
+  #page-title(number: 3)[Plasma oscillations] <plasma-oscillations>
 
   #lead[
-    Debye shielding describes an equilibrium rearrangement of charge.
-    Electron inertia also allows a displaced population to overshoot
-    equilibrium and oscillate. The cold slab model isolates this dynamic
-    response and supplies the plasma-frequency scale used throughout the
-    course, following @chen2016 @bittencourt2004.
+    A plasma is neutral on average, but its electrons are light and mobile.
+    If a slab of electrons is shifted rigidly against the ions, the separated
+    charge pulls it back, and electron inertia carries it past equilibrium
+    into an oscillation. This cold slab model is the first rigid
+    charge-separation model of the course and supplies the plasma-frequency
+    scale used throughout, following @chen2016 @bittencourt2004.
   ]
 
   #section-title[Electron plasma oscillations] <intro-plasma-oscillations>
 
   #lead[
-    Shielding is a static response. What happens when electrons are displaced
-    faster than they can rearrange thermally? The restoring electric field then
-    produces an electron plasma oscillation.
+    What happens when all electrons in a region are displaced together,
+    faster than thermal motion can rearrange them? Gauss's law gives the
+    restoring electric field, and that field produces an electron plasma
+    oscillation.
   ]
 
   #objectives((
@@ -89,27 +91,26 @@
     in hertz.
   ]
 
-  #plasma-frequency-scale
+  If the ions move as well, the electron and ion slabs oscillate against each
+  other. Ions of charge $Z e$ and density $n_i = n_e\/Z$ shift by $xi_i$, the
+  electrons by $xi_e$, and the field depends on the relative shift
+  $xi = xi_e - xi_i$. Both species feel it, so the frequencies add:
 
-  The electron Debye length $lambda_D$, in #unit("m"), is also related to the distance an electron at the thermal
-  speed travels during an inverse plasma frequency:
-
-  $ lambda_D = v_("th,e")/(sqrt(2) omega_(p,e)),
-    quad omega_(p,e) = v_("th,e")/(sqrt(2) lambda_D) $ <intro-plasma-frequency-debye-relation>
+  $ omega_p^2 = omega_(p,e)^2 + omega_(p,i)^2 = (n_e e^2)/(epsilon_0 m_"eff"),
+    quad 1/m_"eff" = 1/m_e + Z/m_i $ <intro-plasma-frequency-ions>
 
   #equation-note[
-    The factor $sqrt(2)$ follows from the convention
-    $v_("th,e")=sqrt(2 k_B T_e\/m_e)$. If a source defines thermal speed as
-    $sqrt(k_B T_e\/m_e)$, the same relation is written without that factor.
+    $m_"eff"$ is in #unit("kg"). Since $m_i >> m_e$, $m_"eff" approx m_e$:
+    the ion correction to $omega_p^2$ is of relative size $Z m_e\/m_i$.
   ]
+
+  #plasma-frequency-scale
 
   The species inertial length $d_s=c\/omega_(p,s)$ compares a light-transit
   time with the plasma-response time. Here $c$ is in
   #unit("m/s") and $d_s$ is in #unit("m"). This electromagnetic scale
   differs from the thermal screening length derived in
   #chapter-link("intro-debye-shielding")[Debye shielding].
-  Here $v_("th,e")=sqrt(2 k_B T_e\/m_e)$ is the electron thermal-speed
-  convention, in #unit("m/s"); $T_e$ is in kelvin.
 
   #details(
     [Derivation: the displacement oscillator],
@@ -170,7 +171,6 @@
 
   #exam-prompts(
     (
-      [(i) Estimate the plasma frequency $omega_p$ from thermal velocity $v_t$ and Debye length $lambda_D$.],
       [(f) Describe and derive electron plasma oscillations.],
     ),
     [Plasma Physics Exam.pdf, p. 1],
@@ -196,7 +196,7 @@
   ))
 
   #chapter-nav(
-    previous: (href: "03-debye-shielding.html", title: [Debye shielding]),
-    next: (href: "05-single-particle-motion.html", title: [Single-particle motion]),
+    previous: (href: "02-thermal-equilibrium.html", title: [Temperature, entropy, and thermal ionization]),
+    next: (href: "04-debye-shielding.html", title: [Debye shielding]),
   )
 ]

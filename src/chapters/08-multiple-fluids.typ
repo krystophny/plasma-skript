@@ -755,15 +755,15 @@
   With $p_(e)=n_(e) k_B T_(e)$ and uniform $T_(e)$, this becomes
 
   $ E_parallel = -((k_B T_(e))/e) bold(b) dot grad(ln n_(e)),
-    quad E_parallel=-bold(b) dot grad(phi) $
+    quad E_parallel=-bold(b) dot grad(Phi) $
     <multiple-boltzmann-field>
 
   and integration along a field line gives the electron Boltzmann relation
 
-  $ n_(e) = n_(e,0) exp((e (phi-phi_0))/(k_B T_(e))) $
+  $ n_(e) = n_(e,0) exp((e (Phi-Phi_0))/(k_B T_(e))) $
     <multiple-boltzmann-response>
 
-  Here $n_(e,0)$ is the density at a reference point with potential $phi_0$
+  Here $n_(e,0)$ is the density at a reference point with potential $Phi_0$
   on the same field line. Parallel balance fixes the density variation along
   that line; it does not set a common reference density for all field lines.
 
@@ -815,13 +815,13 @@
 
     $ E_parallel=-((k_B T_(e))/e) bold(b)dot grad(ln n_(e)) . $
 
-    With $E_parallel=-bold(b)dot grad(phi)$,
+    With $E_parallel=-bold(b)dot grad(Phi)$,
 
-    $ bold(b)dot grad(ln n_(e)-(e phi)/(k_B T_(e)))=0 . $
+    $ bold(b)dot grad(ln n_(e)-(e Phi)/(k_B T_(e)))=0 . $
 
     Along a connected field line,
 
-    $ n_(e)=n_(e,0)exp((e(phi-phi_0))/(k_B T_(e))) . $
+    $ n_(e)=n_(e,0)exp((e(Phi-Phi_0))/(k_B T_(e))) . $
 
     #derivation-step[Sum the species momentum equations]
     Write
@@ -852,7 +852,7 @@
     Context: an isothermal electron population has reference density
     $n_(e,0)=qty("1.0e16", "m^-3")$, thermal energy
     $k_B T_(e)=qty("4.806e-19", "J")=qty("3.00", "eV")$, and a parallel
-    potential increase $phi-phi_0=qty("3.00", "V")$. Use
+    potential increase $Phi-Phi_0=qty("3.00", "V")$. Use
     $e=qty("1.602e-19", "C")$.
 
     Assumptions: connected field line, negligible parallel electron inertia
@@ -895,7 +895,7 @@
       isothermal pressure, electrostatic parallel balance, and a connected
       field line lead to
 
-      $ n_(e)/n_(e,0)=exp((e(phi-phi_0))/(k_B T_(e))) . $
+      $ n_(e)/n_(e,0)=exp((e(Phi-Phi_0))/(k_B T_(e))) . $
       ]
     ),
     (

@@ -42,7 +42,7 @@
   #unit-ledger[
     The directed particle flux $Gamma_s$ is in #unit("m^-2 s^-1"), so a
     current density $J_s=q_s Gamma_s$ is in #unit("A/m^2"). Ratios such as
-    $Gamma_e\/Gamma_i$ and $e phi\/(k_B T_e)$ are dimensionless.
+    $Gamma_e\/Gamma_i$ and $e Phi\/(k_B T_e)$ are dimensionless.
   ]
 
   #assumption(
@@ -207,10 +207,10 @@
 
   #unit-ledger[
     The coordinate $x$ and Debye length $lambda_D$ are in #unit("m"),
-    potential $phi$ is in #unit("V"), electric field is in #unit("V/m"),
+    potential $Phi$ is in #unit("V"), electric field is in #unit("V/m"),
     and densities are in #unit("m^-3"). Ion speed and the
     cold-ion sound speed are in #unit("m/s"). The normalized coordinate
-    $xi=x\/lambda_D$, potential barrier $eta=-e phi\/(k_B T_e)$, and Mach
+    $xi=x\/lambda_D$, potential barrier $eta=-e Phi\/(k_B T_e)$, and Mach
     number $M=u_s\/c_s$ are dimensionless. The electron Debye length is
     $lambda_D^2=epsilon_0 k_B T_e\/(n_0 e^2)$, with $epsilon_0$ in
     #unit("F/m").
@@ -219,7 +219,7 @@
   #assumption(
     [Steady planar collisionless sheath],
     [Let the wall be at $x=0$ and the plasma occupy $x>0$, with
-    $phi(infinity)=0$ and a negative wall potential. Use cold ions with
+    $Phi(infinity)=0$ and a negative wall potential. Use cold ions with
     charge $+e$, Boltzmann electrons with temperature $T_e$, no magnetic
     field, no collisions inside the sheath, and a steady ion flux. The
     sheath edge is an asymptotic matching region. The limit $x -> infinity$ represents the
@@ -230,15 +230,15 @@
   #definition(
     [Normalized sheath variables],
     [Define the positive electron barrier and distance from the wall by
-    $eta(x)=-e phi(x)\/(k_B T_e) >= 0$ and
+    $eta(x)=-e Phi(x)\/(k_B T_e) >= 0$ and
     $xi=x\/lambda_D$. The electron density is
     $n_e\/n_0=exp(-eta)$. Let $u_s$ and $n_s$ be the ion speed and density
     at the sheath edge, define
     $c_s=sqrt(k_B T_e\/m_i)$ and $M=u_s\/c_s$, and take $eta=0$ at the
     matching edge, with $n_s=n_0$. Throughout this sheath model $u_i>0$ is
     the inward ion speed: the signed velocity is $v_(i,x)=-u_i$ because $x$
-    increases away from the wall. The barrier $-e phi$ is positive electron
-    potential energy, although $phi$ itself is negative. Here the subscript
+    increases away from the wall. The barrier $-e Phi$ is positive electron
+    potential energy, although $Phi$ itself is negative. Here the subscript
     $s$ on $u_s$ and $n_s$ means “sheath edge,” not a species index.]
   )
 
@@ -249,7 +249,7 @@
     $ n_i/n_s=M/(M^2+2 eta)^(1/2) . $
 
     Poisson's equation, written with
-    $bold(E)=-grad(phi)$ and
+    $bold(E)=-grad(Phi)$ and
 
     $ div(bold(E))=e(n_i-n_e)/epsilon_0 , $
 
@@ -272,13 +272,13 @@
     For a species in a static electrostatic potential, the stationary
     Maxwell--Boltzmann response is
 
-    $ n_(s)(phi)=n_(s,infinity)
-      exp(-(q_s phi)/(k_B T_s)) . $
+    $ n_(s)(Phi)=n_(s,infinity)
+      exp(-(q_s Phi)/(k_B T_s)) . $
 
-    For electrons $q_e=-e$ and with $phi(infinity)=0$ as the plasma
+    For electrons $q_e=-e$ and with $Phi(infinity)=0$ as the plasma
     reference,
 
-    $ n_e=n_0 exp((e phi)/(k_B T_e))=n_0 exp(-eta) . $
+    $ n_e=n_0 exp((e Phi)/(k_B T_e))=n_0 exp(-eta) . $
 
     #derivation-step[Use ion continuity and energy]
     For cold steady ions,
@@ -287,18 +287,18 @@
 
     The ion momentum equation is
 
-    $ m_i u_i dv(u_i,x)=-e dv(phi,x) . $
+    $ m_i u_i dv(u_i,x)=-e dv(Phi,x) . $
 
     Since $u_i dv(u_i,x, style: "horizontal")=dv(u_i^2\/2,x, style: "horizontal")$, direct integration gives the
     conserved energy:
 
-    $ dv((m_i u_i^2)/2+e phi,x)=0 . $
+    $ dv((m_i u_i^2)/2+e Phi,x)=0 . $
 
     At the edge, where $eta=0$,
 
-    $ (m_i u_i^2)/2+e phi=(m_i u_s^2)/2 . $
+    $ (m_i u_i^2)/2+e Phi=(m_i u_s^2)/2 . $
 
-    Since $e phi=-k_B T_e eta$,
+    Since $e Phi=-k_B T_e eta$,
 
     $ u_i^2=u_s^2+(2 k_B T_e eta)/m_i
       =c_s^2 (M^2+2 eta) . $
@@ -312,11 +312,11 @@
 
     $ div(bold(E))=rho_q/epsilon_0=(e(n_i-n_e))/epsilon_0 . $
 
-    In one dimension, $E_x=-dv(phi,x, style: "horizontal")$, so
+    In one dimension, $E_x=-dv(Phi,x, style: "horizontal")$, so
 
-    $ -dv(phi,x,2)=(e(n_i-n_e))/epsilon_0 . $
+    $ -dv(Phi,x,2)=(e(n_i-n_e))/epsilon_0 . $
 
-    Set $phi=-(k_B T_e\/e) eta$ and $x=lambda_D xi$. The left side becomes
+    Set $Phi=-(k_B T_e\/e) eta$ and $x=lambda_D xi$. The left side becomes
 
     $ ((k_B T_e)/(e lambda_D^2)) dv(eta,xi,2) . $
 
@@ -348,7 +348,7 @@
     [Derivation: electron-free planar edge and Child--Langmuir scaling],
     [#derivation-step[Relate ion speed and density to the potential drop]
     Near a sufficiently negative wall, take the electron density to be
-    negligible and write $V=-phi>0$ for the potential drop from the plasma
+    negligible and write $V=-Phi>0$ for the potential drop from the plasma
     reference. Let $x$ increase from the wall toward the sheath edge, and let
     the electron-free layer have thickness $d$.
 
@@ -364,7 +364,7 @@
     $ n_i=Gamma_i sqrt(m_i/(2 e V)) . $
 
     #derivation-step[Reduce Poisson's equation]
-    For $phi=-V$, Poisson's equation is
+    For $Phi=-V$, Poisson's equation is
 
     $ dv(V,x,2)=(e n_i)/epsilon_0=C V^(-1/2) , $
 
@@ -458,7 +458,7 @@
       question: [Why is the electron density Boltzmann-suppressed in a negative sheath?],
       answer: [For electrons $q_e=-e$, the equilibrium factor is
 
-      $ exp(-(q_e phi)/(k_B T_e))=exp((e phi)/(k_B T_e)) . $
+      $ exp(-(q_e Phi)/(k_B T_e))=exp((e Phi)/(k_B T_e)) . $
 
       A negative potential makes this factor smaller than one, so electrons are repelled.]
     ),
@@ -493,11 +493,11 @@
   ))
 
   #unit-ledger[
-    The floating potential $phi_f$ is in #unit("V") relative to the
+    The floating potential $Phi_f$ is in #unit("V") relative to the
     sheath-edge plasma potential, and $k_B T_e\/e$ is the corresponding potential scale.
     Fluxes are in #unit("m^-2 s^-1"), current densities in
     #unit("A/m^2"), and probe area is in #unit("m^2"). The normalized wall bias
-    $u_f=e phi_f\/(k_B T_e)$ and all flux ratios are dimensionless.
+    $u_f=e Phi_f\/(k_B T_e)$ and all flux ratios are dimensionless.
   ]
 
   #assumption(
@@ -513,10 +513,10 @@
 
   #definition(
     [Floating potential],
-    [The floating potential $phi_f$ is the surface potential for which
-    $J(phi_f)=0$. For a negative surface bias, the electron flux is
+    [The floating potential $Phi_f$ is the surface potential for which
+    $J(Phi_f)=0$. For a negative surface bias, the electron flux is
     the unretarded Maxwellian flux multiplied by the Boltzmann transmission factor:
-    $Gamma_(e)(phi_f)=Gamma_(e,0) exp(e phi_f\/(k_B T_e))$.
+    $Gamma_(e)(Phi_f)=Gamma_(e,0) exp(e Phi_f\/(k_B T_e))$.
     The ion flux is set primarily by the presheath and sheath-edge entry
     condition, so in the simplest model $Gamma_i=n_0 c_s$.]
   )
@@ -524,30 +524,30 @@
   #governing-law(
     [Zero-current balance],
     [Set
-    $0=J_f=e Gamma_i-e Gamma_(e,0) exp(e phi_f\/(k_B T_e))$.
+    $0=J_f=e Gamma_i-e Gamma_(e,0) exp(e Phi_f\/(k_B T_e))$.
     Solving gives
-    $phi_f=(k_B T_e\/e) ln(Gamma_i\/Gamma_(e,0))$.
+    $Phi_f=(k_B T_e\/e) ln(Gamma_i\/Gamma_(e,0))$.
     With $Gamma_i=n_0 sqrt(k_B T_e\/m_i)$ and
     $Gamma_(e,0)=n_0 sqrt(k_B T_e\/(2 pi m_e))$,
-    $phi_f=(k_B T_e\/(2e)) ln(2 pi m_e\/m_i)$.
+    $Phi_f=(k_B T_e\/(2e)) ln(2 pi m_e\/m_i)$.
     For hydrogen this ideal cold-ion value is approximately
-    $phi_f approx -2.84 k_B T_e\/e$.]
+    $Phi_f approx -2.84 k_B T_e\/e$.]
   )
 
   #details(
     [Derivation: electron transmission and the floating logarithm],
     [#derivation-step[Compute the transmitted electron flux]
-    Let the sheath-edge potential be zero and the wall potential be $phi_w<0$.
-    An electron has potential energy $q_e phi=-e phi$. It reaches the wall
-    only if its normal kinetic energy exceeds the barrier $e abs(phi_w)$.
+    Let the sheath-edge potential be zero and the wall potential be $Phi_w<0$.
+    An electron has potential energy $q_e Phi=-e Phi$. It reaches the wall
+    only if its normal kinetic energy exceeds the barrier $e abs(Phi_w)$.
     Integrating the Maxwellian over the transmitted velocities multiplies the
     unretarded flux by a Boltzmann factor:
 
-    $ Gamma_(e)(phi_w)=Gamma_(e,0)
-      exp(-(e abs(phi_w))/(k_B T_e))
-      =Gamma_(e,0) exp((e phi_w)/(k_B T_e)) . $
+    $ Gamma_(e)(Phi_w)=Gamma_(e,0)
+      exp(-(e abs(Phi_w))/(k_B T_e))
+      =Gamma_(e,0) exp((e Phi_w)/(k_B T_e)) . $
 
-    The final equality uses $phi_w<0$.
+    The final equality uses $Phi_w<0$.
 
     #derivation-step[Write the net current]
     Take ion current into the wall as positive and electron charge transport
@@ -557,16 +557,16 @@
 
     Thus
 
-    $ J(phi_w)=e Gamma_i-e Gamma_(e,0)
-      exp((e phi_w)/(k_B T_e)) . $
+    $ J(Phi_w)=e Gamma_i-e Gamma_(e,0)
+      exp((e Phi_w)/(k_B T_e)) . $
 
-    A floating surface has no external current, so $J(phi_f)=0$ and
+    A floating surface has no external current, so $J(Phi_f)=0$ and
 
-    $ Gamma_(e,0) exp((e phi_f)/(k_B T_e))=Gamma_i . $
+    $ Gamma_(e,0) exp((e Phi_f)/(k_B T_e))=Gamma_i . $
 
     Taking the logarithm gives
 
-    $ phi_f=((k_B T_e)/e)ln(Gamma_i/Gamma_(e,0)) . $
+    $ Phi_f=((k_B T_e)/e)ln(Gamma_i/Gamma_(e,0)) . $
 
     #derivation-step[Insert the ideal edge fluxes]
     The cold-ion Bohm flux and the unretarded thermal electron flux are
@@ -576,7 +576,7 @@
 
     Their ratio is $sqrt(2 pi m_e\/m_i)$. Therefore
 
-    $ phi_f=((k_B T_e)/(2e))ln((2 pi m_e)/m_i) . $
+    $ Phi_f=((k_B T_e)/(2e))ln((2 pi m_e)/m_i) . $
 
     For hydrogen, $2 pi m_e\/m_i approx 0.00342$, whose logarithm is
     approximately $-5.68$. The ideal cold-ion floating potential is thus
@@ -598,8 +598,8 @@
     $lambda_D approx qty("1.29e-4", "m")$,
     $Gamma_(e,0) approx qty("2.90e21", "m^-2 s^-1")$,
     $Gamma_i approx qty("1.70e20", "m^-2 s^-1")$,
-    #normalized-label[$e phi_f\/(k_B T_e) approx qty("-2.84", "1")$],
-    $phi_f approx qty("-8.52", "V")$, and
+    #normalized-label[$e Phi_f\/(k_B T_e) approx qty("-2.84", "1")$],
+    $Phi_f approx qty("-8.52", "V")$, and
     $e Gamma_i A approx qty("2.72", "mA")$.
   ]
   #interpretation(
@@ -613,10 +613,10 @@
   #summary[
     For a negative absorbing wall, electron collection is exponentially
     reduced:
-    $Gamma_e=Gamma_(e,0) exp(e phi_w\/(k_B T_e))$.
+    $Gamma_e=Gamma_(e,0) exp(e Phi_w\/(k_B T_e))$.
     The ideal cold-ion floating condition is
 
-    $ phi_f=((k_B T_e)/e)ln(Gamma_i/Gamma_(e,0))
+    $ Phi_f=((k_B T_e)/e)ln(Gamma_i/Gamma_(e,0))
       approx -(2.84 k_B T_e)/e $
 
     for hydrogen. The coefficient is a model
@@ -625,7 +625,7 @@
   #knowledge-check((
     (
       question: [Why does the electron current contain an exponential wall-potential factor?],
-      answer: [A negative wall imposes a kinetic-energy barrier on electrons. Integrating the Maxwellian tail above that barrier multiplies the unretarded flux by $exp(e phi_w\/(k_B T_e))$.]
+      answer: [A negative wall imposes a kinetic-energy barrier on electrons. Integrating the Maxwellian tail above that barrier multiplies the unretarded flux by $exp(e Phi_w\/(k_B T_e))$.]
     ),
     (
       question: [What current sign convention is used for a floating surface?],
@@ -633,7 +633,7 @@
     ),
     (
       question: [Why does the floating potential scale with electron temperature?],
-      answer: [The electron barrier is measured by the dimensionless ratio $e phi_f\/(k_B T_e)$. A hotter electron population requires a larger potential-energy barrier, so the potential drop scales with $k_B T_e\/e$.]
+      answer: [The electron barrier is measured by the dimensionless ratio $e Phi_f\/(k_B T_e)$. A hotter electron population requires a larger potential-energy barrier, so the potential drop scales with $k_B T_e\/e$.]
     ),
     (
       question: [Why should the coefficient $-2.84$ not be transferred unchanged to every experiment?],
@@ -656,13 +656,13 @@
     [infer density from the electron saturation scale and list major corrections],
   ))
   #unit-ledger[
-    Probe bias $phi_p-phi_"pl"$ is in #unit("V"), current $I_p$ is in
+    Probe bias $Phi_p-Phi_"pl"$ is in #unit("V"), current $I_p$ is in
     #unit("A") (often reported in #unit("mA")), and collection area $A$ is in
-    #unit("m^2"). The normalized bias $u=e (phi_p-phi_"pl")\/(k_B T_e)$
+    #unit("m^2"). The normalized bias $u=e (Phi_p-Phi_"pl")\/(k_B T_e)$
     and normalized current
     $I_p\/(e Gamma_(e,0) A)$ are dimensionless. When temperature is quoted
     in electron-volts, $k_B T_e$ is an energy and
-    $e phi\/(k_B T_e)$ is evaluated with the same energy unit.
+    $e Phi\/(k_B T_e)$ is evaluated with the same energy unit.
   ]
   #assumption(
     [Ideal planar probe characteristic],
@@ -678,10 +678,10 @@
   )
   #definition(
     [Probe bias and current regions],
-    [Let $phi_p$ be the probe potential and $phi_"pl"$ the plasma potential.
+    [Let $Phi_p$ be the probe potential and $Phi_"pl"$ the plasma potential.
     Define
 
-    $ u=(e (phi_p-phi_"pl"))/(k_B T_e) . $
+    $ u=(e (Phi_p-Phi_"pl"))/(k_B T_e) . $
 
     With conventional current into
     the probe,
@@ -703,7 +703,7 @@
     $ln(abs(I_e)\/I_(e,0))=u$.
     Its slope is therefore
 
-    $ dv(ln(abs(I_e)/I_(e,0)),phi_p)=e/(k_B T_e) . $
+    $ dv(ln(abs(I_e)/I_(e,0)),Phi_p)=e/(k_B T_e) . $
 
     Obtain $I_e$ by subtracting the estimated ion contribution
     $I_i=e A Gamma_i$ from the measured signed current: $I_e=I_p-I_i$.
@@ -719,28 +719,28 @@
     [#derivation-step[Linearize the retarding electron current]
     The negative-bias electron flux is
 
-    $ Gamma_(e)(phi_p)=Gamma_(e,0)
-      exp((e (phi_p-phi_"pl"))/(k_B T_e)) . $
+    $ Gamma_(e)(Phi_p)=Gamma_(e,0)
+      exp((e (Phi_p-Phi_"pl"))/(k_B T_e)) . $
 
     With $I_e=-e A Gamma_e$, its magnitude is
 
     $ abs(I_e)=e A Gamma_(e,0)
-      exp((e (phi_p-phi_"pl"))/(k_B T_e)) . $
+      exp((e (Phi_p-Phi_"pl"))/(k_B T_e)) . $
 
     Divide by the fixed reference $I_(e,0)=e A Gamma_(e,0)$ and take
     the natural logarithm to obtain a straight line:
 
     $ ln(abs(I_e)/I_(e,0))
-      =(e (phi_p-phi_"pl"))/(k_B T_e) . $
+      =(e (Phi_p-Phi_"pl"))/(k_B T_e) . $
 
     #derivation-step[Read temperature from the semilog slope]
     Differentiate with respect to probe potential:
 
-    $ dv(ln(abs(I_e)/I_(e,0)),phi_p)=e/(k_B T_e) . $
+    $ dv(ln(abs(I_e)/I_(e,0)),Phi_p)=e/(k_B T_e) . $
 
     Inverting the slope gives
 
-    $ k_B T_e=e (dv(ln(abs(I_e)/I_(e,0)),phi_p))^(-1) . $
+    $ k_B T_e=e (dv(ln(abs(I_e)/I_(e,0)),Phi_p))^(-1) . $
 
     If the voltage unit is volts and the energy unit is electron-volts, the
     numerical value of $k_B T_e$ in eV is the inverse slope in
@@ -776,7 +776,7 @@
       transit is played in units of $lambda_D\/sqrt(k_B T_e\/m_e)$ and the
       ion transit in units of $lambda_D\/c_s$, so their playback speeds are
       not comparable.
-      Physically the electron barrier is $-e phi>0$:
+      Physically the electron barrier is $-e Phi>0$:
       reflection requires normal kinetic energy below this barrier, while
       sufficiently energetic electrons reach the wall. The equations above
       use distance increasing away from the wall and positive inward ion speed.
@@ -802,7 +802,7 @@
     A planar probe has area $A=qty("1.0e-5", "m^2")$. In its electron-retarding
     region, a fit gives
 
-    $ dv(ln(abs(I_e)/I_(e,0)),phi_p)=qty("0.40", "V^-1") . $
+    $ dv(ln(abs(I_e)/I_(e,0)),Phi_p)=qty("0.40", "V^-1") . $
 
     The extrapolated zero-bias electron saturation current magnitude is
     $abs(I_(e,0))=qty("4.0", "mA")$. Use the ideal planar model and determine
@@ -822,12 +822,12 @@
   #summary[
     A Langmuir probe sweeps
 
-    $ u=(e (phi_p-phi_"pl"))/(k_B T_e) $
+    $ u=(e (Phi_p-Phi_"pl"))/(k_B T_e) $
 
     through ion saturation, electron
     retardation, and electron saturation. On the ideal retarding branch,
 
-    $ dv(ln(abs(I_e)/I_(e,0)),phi_p)=e/(k_B T_e) ; $
+    $ dv(ln(abs(I_e)/I_(e,0)),Phi_p)=e/(k_B T_e) ; $
 
     the extrapolated saturation
     scale then gives density after the collection area and model are fixed.

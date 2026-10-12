@@ -1,8 +1,8 @@
 #import "theme.typ": *
 #import "chapters/01-introduction.typ": chapter as introduction
 #import "chapters/02-thermal-equilibrium.typ": chapter as thermal-equilibrium
-#import "chapters/03-debye-shielding.typ": chapter as debye-shielding
-#import "chapters/04-plasma-oscillations.typ": chapter as plasma-oscillations
+#import "chapters/03-plasma-oscillations.typ": chapter as plasma-oscillations
+#import "chapters/04-debye-shielding.typ": chapter as debye-shielding
 #import "chapters/05-single-particle-motion.typ": chapter as motion
 #import "chapters/06-kinetic-theory.typ": chapter as kinetic
 #import "chapters/07-moments.typ": chapter as moments
@@ -52,9 +52,9 @@
 #pagebreak()
 #thermal-equilibrium
 #pagebreak()
-#debye-shielding
-#pagebreak()
 #plasma-oscillations
+#pagebreak()
+#debye-shielding
 #pagebreak()
 #motion
 #pagebreak()

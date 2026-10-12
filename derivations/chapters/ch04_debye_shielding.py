@@ -1,4 +1,4 @@
-# Chapter 3 · Debye shielding (src/chapters/03-debye-shielding.typ)
+# Chapter 4 · Debye shielding (src/chapters/04-debye-shielding.typ)
 #
 # Charge-separation scale, Debye length, screened point charge, Debye number
 # and the n-T regime map.
@@ -8,14 +8,14 @@ import sympy as sp
 from sympy.physics import units as u
 
 from notebook import agrees, note, report, section, show
-from si import check, e, eps0, k_B
+from si import check, e, eps0, k_B, m_e
 
 n0, T_e, Q, r, R, N, s = sp.symbols("n_0 T_e Q r R N s", positive=True)
 lambda_D, a, L = sp.symbols("lambda_D a L", positive=True)
-phi_0 = sp.Symbol("phi", positive=True)  # local potential value, for the Boltzmann factor
-phi = sp.Function("phi")(r)
+phi_0 = sp.Symbol("Phi", positive=True)  # local potential value, for the Boltzmann factor
+phi = sp.Function("Phi")(r)
 n_e, n_i, rho_q, E, W = sp.symbols("n_e n_i rho_q E W")
-phi_inner = sp.Symbol("phi_in")
+phi_inner = sp.Symbol("Phi_in")
 SI_UNITS = {n0: u.meter**-3, T_e: u.kelvin, Q: u.coulomb, r: u.meter, R: u.meter,
             N: u.meter**-3, lambda_D: u.meter, a: u.meter,
             L: u.meter, phi_0: u.volt, rho_q: u.coulomb / u.meter**3}
@@ -37,7 +37,7 @@ E_r = sp.solve(gauss, E)[0]
 agrees(E_r, N * e * r / (3 * eps0), lhs=E)
 check(E_r, N * e * r / (3 * eps0), unit=u.volt / u.meter, units=SI_UNITS)
 note("Boundary potential against infinity; outside, the field is Coulomb")
-boundary = show(sp.Eq(sp.Function("phi")(R),
+boundary = show(sp.Eq(sp.Function("Phi")(R),
                       sp.Integral(Q_r.subs(r, R) / (4 * sp.pi * eps0 * s**2), (s, R, sp.oo))))
 phi_R = agrees(boundary.rhs.doit(), N * e * R**2 / (3 * eps0), lhs=boundary.lhs)
 check(phi_R, phi_R, unit=u.volt, units=SI_UNITS)
@@ -77,6 +77,27 @@ lambda_D_sq = show(sp.Eq(lambda_D**2, sp.simplify(phi / screened_eq.rhs))).rhs
 lambda_D_expr = agrees(sp.sqrt(lambda_D_sq), sp.sqrt(eps0 * k_B * T_e / (n0 * e**2)),
                        lhs=lambda_D, eq="debye-screened-equation")
 check(lambda_D_expr, lambda_D_expr, unit=u.meter, units=SI_UNITS)
+
+# %% Plasma frequency and Debye length
+section("Plasma frequency and Debye length", script="intro-debye-shielding")
+omega_pe, v_th = sp.symbols("omega_pe v_th", positive=True)
+omega_pe_expr = sp.sqrt(n0 * e**2 / (eps0 * m_e))
+definitions = {lambda_D: lambda_D_expr, omega_pe: omega_pe_expr, v_th: sp.sqrt(2 * k_B * T_e / m_e)}
+for symbol, expr in definitions.items():
+    show(sp.Eq(symbol, expr))
+ratio = show(sp.Eq(v_th / (omega_pe * lambda_D),
+                   sp.simplify((v_th / (omega_pe * lambda_D)).subs(definitions))))
+assert ratio.rhs == sp.sqrt(2)
+lambda_D_rel = sp.solve(ratio, lambda_D)[0]
+agrees(lambda_D_rel, v_th / (sp.sqrt(2) * omega_pe), lhs=lambda_D, eq="debye-plasma-frequency-relation")
+check(lambda_D_expr, lambda_D_rel.subs(definitions), unit=u.meter, units=SI_UNITS)
+omega_pe_rel = sp.solve(ratio, omega_pe)[0]
+agrees(omega_pe_rel, v_th / (sp.sqrt(2) * lambda_D), lhs=omega_pe)
+check(omega_pe_expr, omega_pe_rel.subs(definitions), unit=1 / u.second, units=SI_UNITS)
+v_th_alt = sp.sqrt(k_B * T_e / m_e)
+note("With", sp.Eq(v_th, v_th_alt), "instead, the factor", sp.sqrt(2), "drops out")
+ratio_alt = show(sp.Eq(ratio.lhs, sp.simplify(ratio.lhs.subs({**definitions, v_th: v_th_alt}))))
+agrees(sp.solve(ratio_alt, lambda_D)[0], v_th / omega_pe, lhs=lambda_D)
 
 # %% Screened point charge
 section("Screened point charge", script="intro-debye-shielding")
@@ -132,6 +153,16 @@ T_line_1 = agrees(temperature_in_volt(N_D_expr.subs(lambda_D, lambda_D_expr) - 1
                   e / eps0 * (3 / (4 * sp.pi)) ** sp.Rational(2, 3) * n0 ** sp.Rational(1, 3), lhs=T_eV)
 check(T_line_1, T_line_1, unit=u.volt, units=SI_UNITS)
 
+# %% Degeneracy line in the n-T plane
+section("Degeneracy line in the n-T plane", script="debye-collective-validity")
+h_P, lambda_th = sp.symbols("h lambda_th", positive=True)
+note("Thermal wavelength (chapter 2) and two spin states per electron state")
+thermal_wavelength = show(sp.Eq(lambda_th, h_P / sp.sqrt(2 * sp.pi * m_e * k_B * T_e)))
+degenerate = show(sp.Eq(n0 * thermal_wavelength.rhs**3, 2))
+T_line_deg = agrees(sp.simplify(k_B * sp.solve(degenerate, T_e)[0] / e),
+                    h_P**2 / (2 * sp.pi * m_e * e) * (n0 / 2) ** sp.Rational(2, 3), lhs=T_eV)
+check(T_line_deg, T_line_deg, unit=u.volt, units={**SI_UNITS, h_P: u.joule * u.second})
+
 # %% Plots: shared setup
 import numpy as np
 
@@ -146,7 +177,7 @@ NORMALIZED = {Q: 1, eps0: 1 / (4 * sp.pi), lambda_D: 1}
 
 def potential_axes(ax):
     ax.set(xlim=(0, 4), ylim=(0, 3.2), xticks=[0, 1, 2, 3, 4],
-           xlabel=r"$r/\lambda_D$", ylabel=r"$4\pi\varepsilon_0\lambda_D\,\varphi/Q$")
+           xlabel=r"$r/\lambda_D$", ylabel=r"$4\pi\varepsilon_0\lambda_D\,\Phi/Q$")
 
 
 radius = np.linspace(1e-6, 4, 400)
@@ -184,7 +215,7 @@ label(ax, 3.6, 1.04, r"$k_B T_e$", GRAY)
 label(ax, 0.1, 0.78, r"$\propto 3R^2-r^2$", BLUE)
 label(ax, 2.6, 0.72, r"$\propto 1/r$", BLUE)
 ax.set(xlim=(0, 5), ylim=(0, 1.65), xticks=[0, 1, 2, 3, 4, 5],
-       xlabel=r"$r/\lambda_D$", ylabel=r"$e\varphi/(k_B T_e)$")
+       xlabel=r"$r/\lambda_D$", ylabel=r"$e\Phi/(k_B T_e)$")
 save(fig, "charge_separation_energy")
 
 # %% Plots: n-T plane and regime map
@@ -205,15 +236,16 @@ def nt_axes():
     return fig, ax
 
 
-def label_along(ax, x0, text, f, color):
+def label_along(ax, x0, text, f, color, side=1):
     """Label the curve T = f(n) at n = x0, rotated along it and just above it."""
     ax.figure.canvas.draw()
     p0 = ax.transData.transform((x0, f(x0)))
     p1 = ax.transData.transform((10 * x0, f(10 * x0)))
     angle = np.degrees(np.arctan2(p1[1] - p0[1], p1[0] - p0[0]))
-    offset = 5 * np.array([-np.sin(np.radians(angle)), np.cos(np.radians(angle))])
+    offset = side * 7 * np.array([-np.sin(np.radians(angle)), np.cos(np.radians(angle))])
     ax.annotate(text, (x0, f(x0)), xytext=offset, textcoords="offset points",
-                rotation=angle, rotation_mode="anchor", color=color, ha="center", va="bottom")
+                rotation=angle, rotation_mode="anchor", color=color, ha="center",
+                va="bottom" if side > 0 else "top")
 
 
 fig, ax = nt_axes()
@@ -227,19 +259,48 @@ T_of_L = numeric(T_line_L, n0, L)
 T_of_N1 = numeric(T_line_1, n0)
 density = np.logspace(6, 32, 300)
 fig, ax = nt_axes()
-for size, text, at in [(1e-6, r"$\lambda_D = 1\,\mu\mathrm{m}$", 3e22),
+for size, text, at in [(1e-6, r"$\lambda_D = 1\,\mu\mathrm{m}$", 1e20),
                        (1e-2, r"$\lambda_D = 1\,\mathrm{cm}$", 3e14),
-                       (1e2, r"$\lambda_D = 100\,\mathrm{m}$", 5e7)]:
+                       (1e2, r"$\lambda_D = 100\,\mathrm{m}$", 1.5e7)]:
     ax.plot(density, T_of_L(density, size), color=GRAY, ls="--", lw=0.9)
-    label_along(ax, at, text, lambda n, size=size: T_of_L(n, size), GRAY)
+    label_along(ax, at, text, lambda n, size=size: T_of_L(n, size), GRAY,
+                side=-1 if size > 1 else 1)
 ax.plot(density, T_of_N1(density), color=ORANGE)
 ax.fill_between(density, 1e-3, T_of_N1(density), color=ORANGE, alpha=0.10, lw=0)
-label_along(ax, 3e29, r"$N_D = 1$", T_of_N1, ORANGE)
-ax.text(3e27, 2e-2, r"$N_D < 1$", color=ORANGE, va="bottom")
-for name, (n_example, T_example) in EXAMPLE_PLASMAS.items():
+label_along(ax, 1e28, r"$N_D = 1$", T_of_N1, ORANGE)
+ax.text(2e20, 1.2e-2, r"$N_D < 1$", color=ORANGE, va="bottom")
+T_of_deg = sp.lambdify(n0, T_line_deg.subs({**SI_VALUES, h_P: 6.62607015e-34}), "numpy")
+ax.plot(density, T_of_deg(density), color="#1c1f23", ls="-.", lw=0.9)
+label_along(ax, 3e26, r"$n_e \lambda_{\mathrm{th},e}^3 = 2$", T_of_deg, "#1c1f23")
+ax.text(6e31, 1e-1, "quantum\ndegenerate", color="#1c1f23", va="bottom", ha="right")
+# Dense examples (n_e [m^-3], k_B T_e [eV], label side): copper conduction
+# electrons at room temperature (Kittel, Introduction to Solid State Physics,
+# free-electron table); solar core from the standard solar model (central
+# T = 15.7 MK, n_e ~ 6e31 m^-3); ICF hot spot at ignition (rho ~ 100 g/cm^3
+# DT, T ~ 5 keV). Order of magnitude only.
+DENSE_PLASMAS = {
+    "metal electrons": (8.5e28, 2.5e-2, "above"),
+    "solar core": (6e31, 1.35e3, "left"),
+    "ICF hot spot": (2e31, 5e3, "left"),
+}
+# Label placement keeps every name clear of the lambda_D and regime lines.
+MAP_LABELS = {  # name: (text, dx, dy, ha, va)
+    "ionosphere": ("ionosphere", 5, 0, "left", "center"),
+    "H II region": ("H II\nregion", -5, 0, "right", "center"),
+    "solar corona": ("solar corona", 5, 0, "left", "center"),
+    "Hall thruster": ("Hall\nthruster", -5, 0, "right", "top"),
+    "tokamak core": ("tokamak core", 0, 5, "center", "bottom"),
+    "metal electrons": ("metals", 5, 0, "left", "center"),
+    "solar core": ("solar core", -5, 0, "right", "center"),
+    "ICF hot spot": ("ICF hot spot", -5, 0, "right", "center"),
+}
+points = {**{k: v for k, v in EXAMPLE_PLASMAS.items()},
+          **{k: v[:2] for k, v in DENSE_PLASMAS.items()}}
+for name, (n_example, T_example) in points.items():
+    text, dx, dy, ha, va = MAP_LABELS[name]
     ax.plot(n_example, T_example, "o", ms=5, color=BLUE)
-    ax.annotate(name, (n_example, T_example), xytext=(5, 0), textcoords="offset points",
-                va="center", color="#1c1f23")
+    ax.annotate(text, (n_example, T_example), xytext=(dx, dy), textcoords="offset points",
+                ha=ha, va=va, color="#1c1f23", linespacing=0.95)
 save(fig, "nt_map")
 
 # %% Plot: Debye number against density at three temperatures

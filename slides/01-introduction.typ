@@ -12,7 +12,7 @@
   #at(1, 6, y: 8mm)[
     $rho_q = e (sum_i Z_i n_i - n_e)$
     #v(12mm) #result-box($n_e approx sum_i Z_i n_i$, [$L >> lambda_D$])
-    #v(10mm) #text(fill: muted)[$L$ observation length \ $lambda_D$ screening length (chapter 3)]
+    #v(10mm) #text(fill: muted)[$L$ observation length \ $lambda_D$ screening length (chapter 4)]
   ]
   #at(7, 6, plot("enclosed_charge", columns: 6))
 ]

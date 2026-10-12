@@ -342,5 +342,51 @@ class ParticlesToMomentsPhysics(unittest.TestCase):
             self.assertLess(abs(u_est[k] - u_exact), 4*np.std(v[index == k])/np.sqrt(count))
 
 
+class EmWavePlasmaPhysics(unittest.TestCase):
+    """kin6d E_y and electron data of the plasma-edge wave scene."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("em_wave_plasma.py")
+
+    def test_sheets_obey_transverse_newton_law(self):
+        # Nonrelativistic cold electron (a_0 <= 0.01): d^2y/dt^2 = -E_y in
+        # units of c/omega_pe, 1/omega_pe and m c omega_pe/e (SI q = -e). In
+        # the steady late window the omega components obey omega^2 Y = E0 E.
+        m = self.m
+        data, x0 = m["DATA"], m["X0"]
+        inside = (x0 > 0.2) & (x0 < 3.0)
+        for run, omega in m["RUNS"].items():
+            times = data["t_" + run]
+            t = times[times >= data.parameters["window_start_" + run]]
+            basis = np.column_stack([np.cos(omega*t), np.sin(omega*t), np.ones_like(t), t])
+            y = np.array([m["transverse"](run, tau) for tau in t])[:, inside]
+            e = np.array([np.interp(x0[inside], m["X"], m["field"](run, tau)) for tau in t])
+            y_fit = np.linalg.lstsq(basis, y, rcond=None)[0][:2]
+            e_fit = np.linalg.lstsq(basis, e, rcond=None)[0][:2]
+            lhs, rhs = omega**2*y_fit, m["AMPLITUDE"]*e_fit
+            self.assertLess(np.linalg.norm(lhs - rhs) / np.linalg.norm(rhs), 0.01, run)
+
+    def test_steady_envelope_is_cold_plasma_fresnel(self):
+        # Independent linear theory: N^2 = 1 - omega_pe^2/omega^2,
+        # R = (1 - N)/(1 + N), T = 2/(1 + N); E_y = e^{ikx} + R e^{-ikx} (x < 0),
+        # T e^{i omega N x/c} (x > 0).
+        m = self.m
+        data, x = m["DATA"], m["X"]
+        for run, omega in m["RUNS"].items():
+            n = np.sqrt(complex(1 - 1/omega**2))
+            r, t = (1 - n)/(1 + n), 2/(1 + n)
+            theory = np.where(x < 0, np.abs(1 + r*np.exp(-2j*omega*x)),
+                              np.abs(t*np.exp(1j*omega*n*np.maximum(x, 0))))
+            np.testing.assert_allclose(data["envelope_" + run], theory, atol=2e-6)
+            end = data.parameters["window_end_" + run]
+            frames = data["t_" + run]
+            last = frames[(frames > end - 2*np.pi/omega) & (frames <= end)]
+            peak = np.max(np.abs([m["field"](run, tau) for tau in last]), axis=0)
+            if omega < 1:
+                self.assertAlmostEqual(abs(r), 1.0, places=12)
+            self.assertLess(np.max(np.abs(peak - theory)), 0.02, run)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

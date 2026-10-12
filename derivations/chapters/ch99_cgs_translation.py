@@ -18,7 +18,7 @@ Ex, Ey, Ez, Bx, By, Bz, vx, vy, vz, jx, jy, jz = sp.symbols(
     "E_x E_y E_z B_x B_y B_z v_x v_y v_z j_x j_y j_z", real=True)
 # Field derivatives as plain symbols; curl and time derivative stand for one component.
 lap_phi, div_E, div_B, curl_B, curl_E, dE_dt, dB_dt = sp.symbols(
-    r"{\nabla^2\phi} {\nabla\cdot\mathbf{E}} {\nabla\cdot\mathbf{B}}"
+    r"{\nabla^2\Phi} {\nabla\cdot\mathbf{E}} {\nabla\cdot\mathbf{B}}"
     r" {(\nabla\times\mathbf{B})_x} {(\nabla\times\mathbf{E})_x}"
     r" {\partial_t{E_x}} {\partial_t{B_x}}", real=True)
 E_vec, B_vec, v_vec, j_vec = (sp.Matrix(t) for t in ([Ex, Ey, Ez], [Bx, By, Bz], [vx, vy, vz], [jx, jy, jz]))
@@ -151,8 +151,8 @@ show(sp.Eq(e / statC, sp.Float(float(E_SI * q_G), 5)))
 section("Potential unit", script="cgs-translation")
 note("Equal energy: 1 C times 1 V is", sp.Integer(10) ** 7 * erg, ", the charge is", 10 * C_SI, "statC")
 phi_G = (1 / ERG) / (10 * C_SI)
-show(sp.Eq(sp.Symbol("phi_G") / statV, phi_G))
-show(sp.Eq(sp.Symbol("phi_G") / statV, sp.Float(float(phi_G), 5)))
+show(sp.Eq(sp.Symbol("Phi_G") / statV, phi_G))
+show(sp.Eq(sp.Symbol("Phi_G") / statV, sp.Float(float(phi_G), 5)))
 assert abs(float(phi_G) * 299.8 - 1) < 1e-4
 
 section("Debye number", script="cgs-translation")

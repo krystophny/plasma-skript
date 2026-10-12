@@ -1,6 +1,6 @@
 """Prescribed planar sheath: wall X=0, edge X=5, X=x/lambda_D.
 
-B=-e phi/(kB Te)=a(5-X)^2 inside the edge, zero outside; a=0.12.
+B=-e Phi/(kB Te)=a(5-X)^2 inside the edge, zero outside; a=0.12.
 Boltzmann electrons and cold ions with edge Mach number M=1.5 give
 ne/n0=exp(-B), ni/n0=M/sqrt(M²+2B). These share one prescribed
 potential; Poisson's equation is NOT solved self-consistently.
@@ -49,7 +49,7 @@ class SheathFormation(StyledScene):
 
         pot = axes([0, x_max, 1], [0, 3.2, 1], 10.4, 2.1).move_to([0.45, 1.45, 0])
         dens = axes([0, x_max, 1], [0, 1.2, 0.5], 10.4, 1.7).move_to([0.45, -1.8, 0])
-        pot_ylab = math(r"-e\phi/k_BT_e\ [1]", color=POTENTIAL, size=MATH_SMALL)
+        pot_ylab = math(r"-e\Phi/k_BT_e\ [1]", color=POTENTIAL, size=MATH_SMALL)
         pot_ylab.next_to(pot.y_axis.get_top(), UP, buff=0.12).shift(RIGHT * 0.9)
         dens_ylab = math(r"n/n_0\ [1]", color=MUTED, size=MATH_SMALL)
         dens_ylab.next_to(dens.y_axis.get_top(), UP, buff=0.12).shift(RIGHT * 0.8)

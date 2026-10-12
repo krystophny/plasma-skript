@@ -14,16 +14,16 @@
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_headon.mp4",
       "poster": "media/posters/coulomb-encounter-headon.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/coulomb-encounter-headon.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_headon.mp4?v=7956c19fee2339fd",
-      "mp4_sha256": "7956c19fee2339fdb9c035ef5cb4c497180bea459219efe1b36cf75b1328c4e3",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_headon.mp4?v=8f2e29e267c05f0f",
+      "mp4_sha256": "8f2e29e267c05f0fd02e8c4686130182b5cb96221b2306a58d50ea302012f7ac",
       "appearance": "dark"
     },
     "coulomb-encounter-hot": {
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_hot.mp4",
       "poster": "media/posters/coulomb-encounter-hot.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/coulomb-encounter-hot.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_hot.mp4?v=5b478f94fc092a66",
-      "mp4_sha256": "5b478f94fc092a667c08529bd621ae3b670c5a7d472c7e260170dab5d660f2ab",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_hot.mp4?v=b294558d38f0a55d",
+      "mp4_sha256": "b294558d38f0a55d639e77c4edc2fcd17d58e8089de093ae2ef9fcc7d2a5d7e1",
       "appearance": "dark"
     },
     "coulomb-encounter-offaxis": {
@@ -32,24 +32,24 @@
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_offaxis.mp4",
       "poster": "media/posters/coulomb-encounter-offaxis.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/coulomb-encounter-offaxis.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_offaxis.mp4?v=defe247a379975d1",
-      "mp4_sha256": "defe247a379975d18b9527bce193d852f73144a495337fe3c69bd6a1549aa32a",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_offaxis.mp4?v=5b44fa48bd1afda2",
+      "mp4_sha256": "5b44fa48bd1afda2ec8d31f918be4351315bcd4a727cd426055f09caef415579",
       "appearance": "dark"
     },
     "debye-shielding": {
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_shielding.mp4",
       "poster": "media/posters/debye-shielding.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/debye-shielding.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_shielding.mp4?v=affdfe7a8c1ec474",
-      "mp4_sha256": "affdfe7a8c1ec474ce336c1209e144418a8f3c462f064a3b3bc04ec378b84f7f",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_shielding.mp4?v=e2fc34311f66af43",
+      "mp4_sha256": "e2fc34311f66af431372d3b9f3a39a91378a4a9cc255d89c06851342b9308449",
       "appearance": "dark"
     },
     "debye-shielding-particles": {
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_shielding_particles.mp4",
       "poster": "media/posters/debye-shielding-particles.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/debye-shielding-particles.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_shielding_particles.mp4?v=42f618f91077bb19",
-      "mp4_sha256": "42f618f91077bb19c69e3c5181580195c248eef116ed428158ef23ee7697d1eb",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_shielding_particles.mp4?v=a9bcdbf661c78d7c",
+      "mp4_sha256": "a9bcdbf661c78d7ce7c755f6cb1e05361b11e14b5af04c2a6de20d61987a3ffc",
       "appearance": "dark"
     },
     "diffusion-random-walk": {
@@ -58,6 +58,14 @@
       "player_url": "https://krystophny.github.io/plasma-skript/animations/diffusion-random-walk.html",
       "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/diffusion_random_walk.mp4?v=848f590ef927f67f",
       "mp4_sha256": "848f590ef927f67fe4147e60163b1dc885497e0b71e1d2f60cdfef5f766b8184",
+      "appearance": "dark"
+    },
+    "em-wave-plasma-reflection": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/em_wave_plasma_reflection.mp4",
+      "poster": "media/posters/em-wave-plasma-reflection.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/em-wave-plasma-reflection.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/em_wave_plasma_reflection.mp4?v=8a0ca64f6155aa7b",
+      "mp4_sha256": "8a0ca64f6155aa7b3410246c19c117860e00865136ca07b1b710b3e85c1db66a",
       "appearance": "dark"
     },
     "exb-drift": {
@@ -80,8 +88,8 @@
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/langmuir_probe.mp4",
       "poster": "media/posters/langmuir-probe.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/langmuir-probe.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/langmuir_probe.mp4?v=702a4664c0550f27",
-      "mp4_sha256": "702a4664c0550f27d17419277129d180581e377845dbafcc746a8442b857f8a3",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/langmuir_probe.mp4?v=9d2e174bfada97f5",
+      "mp4_sha256": "9d2e174bfada97f59391ba5eff689d366c700dbe8f9b4a36dcec7bd3554225b7",
       "appearance": "dark"
     },
     "magnetized-polarization": {
@@ -138,16 +146,16 @@
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/plasma_oscillation.mp4",
       "poster": "media/posters/plasma-oscillation.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/plasma-oscillation.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/plasma_oscillation.mp4?v=d64b075f7d85bcca",
-      "mp4_sha256": "d64b075f7d85bcca67e86517e8b97af21732ee4ca96d4b2e1c950071aac4ab00",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/plasma_oscillation.mp4?v=db7a936d55e399e7",
+      "mp4_sha256": "db7a936d55e399e747b80d3f681b06021e486632b1a0e6d7a817161212cd0172",
       "appearance": "dark"
     },
     "sheath-formation": {
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/sheath_formation.mp4",
       "poster": "media/posters/sheath-formation.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/sheath-formation.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/sheath_formation.mp4?v=9ef31c6855bb356e",
-      "mp4_sha256": "9ef31c6855bb356e879713d73728c49c6c093bd2d45d81fb6355da7590e6625d",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/sheath_formation.mp4?v=576e6c317fe98f4d",
+      "mp4_sha256": "576e6c317fe98f4d08615297613383967cd8e51f7c82c08e3f666a5f63ebe07c",
       "appearance": "dark"
     },
     "two-stream-instability": {
