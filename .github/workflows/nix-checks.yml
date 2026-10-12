@@ -1,7 +1,7 @@
 name: Nix flake checks
 
-# Slow checks kept off the deploy path: the Nix site build, the physics and
-# SPEC checks inside the Nix sandbox and the NixOS VM site-integration test.
+# Slow checks kept off the deploy path: the Nix site build and the physics and
+# SPEC checks inside the Nix sandbox.
 
 on:
   workflow_dispatch:

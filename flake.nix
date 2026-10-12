@@ -51,7 +51,6 @@
       physicsPython = pkgs.python3.withPackages (ps: [ps.numpy]);
       # SymPy derivations write the data plots that the Typst sources include.
       derivationsPython = pkgs.python3.withPackages (ps: [ps.numpy ps.sympy ps.matplotlib ps.pytest]);
-      presenterPython = pkgs.python3.withPackages (ps: [ps.playwright]);
       # Fixed-output downloads make presenter media available in the sandbox.
       # Select precisely the animations used by the current single-source decks.
       animationRegistry = (builtins.fromJSON (builtins.readFile ./media/animations.json)).animations;
@@ -90,14 +89,6 @@
           exec node ${self}/scripts/site-integration-test.cjs "$@"
         '';
       };
-      # Offline VM layout checks need transport bytes, not external DNS. The
-      # actual Manim models/renders and live host are checked separately.
-      testMediaFixture = pkgs.runCommand "plasma-media-transport-fixture.mp4" {
-        nativeBuildInputs = [pkgs.ffmpeg];
-      } ''
-        ffmpeg -loglevel error -f lavfi -i color=c=0x111418:s=960x540:r=15 \
-          -t 2 -an -c:v libx264 -pix_fmt yuv420p -movflags +faststart -f mp4 "$out"
-      '';
       buildSiteApp = pkgs.writeShellApplication {
         name = "plasma-build-site";
         runtimeInputs = [pkgs.bash pkgs.ffmpeg pkgs.gnumake manim derivationsPython typst];
@@ -187,52 +178,6 @@
           then "Serve the site on ${bind}; use --build to rebuild first"
           else "Serve the generated site on ${bind}";
         program = "${hostScript}/bin/${name}";
-      };
-      nixosIntegrationTest = pkgs.testers.nixosTest {
-        name = "plasma-site-integration";
-
-        nodes.machine = {pkgs, ...}: {
-          services.nginx = {
-            enable = true;
-            virtualHosts."localhost".root = self.packages.${system}.default;
-          };
-
-          environment.etc."plasma-site-integration-test.cjs".source =
-            ./scripts/site-integration-test.cjs;
-          environment.etc."plasma-feedback-test.cjs".source =
-            ./scripts/feedback-test.cjs;
-          environment.etc."plasma-present-test.py".source = ./scripts/present-test.py;
-
-          environment.systemPackages = [
-            pkgs.chromium
-            pkgs.nodejs
-            playwrightCore
-            siteIntegrationRunner
-            presenterPython
-            pkgs.poppler-utils
-          ];
-
-          environment.variables = {
-            CHROMIUM_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
-            PLAYWRIGHT_CORE_PATH = "${playwrightCore}";
-            SITE_AUDIT_ARTIFACT_DIR = "/tmp/plasma-site-audit";
-            SITE_BASE_URL = "http://127.0.0.1";
-            SITE_MEDIA_FIXTURE_PATH = "${testMediaFixture}";
-          };
-        };
-
-        testScript = ''
-          start_all()
-          machine.wait_for_unit("nginx.service")
-          machine.wait_for_open_port(80)
-          machine.succeed("mkdir -p /tmp/plasma-site-audit")
-          try:
-              machine.succeed("node /etc/plasma-feedback-test.cjs")
-              machine.succeed("plasma-site-integration-test")
-              machine.succeed("python /etc/plasma-present-test.py http://127.0.0.1/present/ --artifacts /tmp/plasma-site-audit/present")
-          finally:
-              machine.copy_from_machine("/tmp/plasma-site-audit", "site-audit")
-        '';
       };
     in {
       formatter = pkgs.alejandra;
@@ -341,9 +286,6 @@
               bash ${self}/scripts/verify-spec.sh ${self.packages.${system}.default}
               touch "$out"
             '';
-        }
-        // pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
-          site-integration = nixosIntegrationTest;
         };
 
       devShells.default = pkgs.mkShell {

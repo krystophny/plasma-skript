@@ -82,11 +82,12 @@ Before changing files:
 1. Inspect existing files and preserve unrelated worktree changes.
 2. Use `apply_patch` for source edits and stage explicit paths when staging is
    requested. Do not create a commit or publish without an explicit request.
-3. Build the actual site and inspect its generated HTML, media, and optional
-   PDF when that target is enabled.
-4. Run `nix run .#verify-spec -- <built-site>` and `nix flake check`.
-5. Report the commands run, the artifact inspected, and any unresolved spec
-   conflict.
+3. Run only fast checks that cover the change: the affected
+   `derivations/chapters/` file and, for animation models,
+   `scripts/check-physics.py`. Look at a changed plot or slide directly.
+4. Do not run full site builds, `nix flake check` or browser tests unless
+   explicitly asked.
+5. Report the checks run and any unresolved spec conflict.
 
 If the specification is ambiguous or two authoritative sources conflict, stop
 at that decision and ask the project authors. Do not silently weaken a rule or

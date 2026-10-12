@@ -70,14 +70,6 @@ New source files must be visible to the Git-backed flake (tracked or marked
 intent-to-add) before running these commands. The checkout-level verifier additionally
 checks the Git ignore rules for author-only material.
 
-On Linux, the flake check also runs a NixOS VM browser integration test. To
-keep its screenshots for visual review, build that check directly:
-
-```sh
-nix build .#checks.x86_64-linux.site-integration
-find -L result/site-audit -maxdepth 1 -type f -print
-```
-
 The same browser audit can run against a locally hosted bundle with
 `SITE_BASE_URL=http://127.0.0.1:8000 nix run .#check-site`. On macOS, also
 set `CHROMIUM_EXECUTABLE_PATH` to the installed Chrome executable. Set
@@ -93,8 +85,6 @@ the playback audit checks the inline seek controls separately.
 Screenshots are evidence for human inspection, not a physics correctness test.
 
 The test audits the complete site at mobile, tablet, and wide CSS viewports.
-The NixOS VM check is Linux-only because the packaged Chromium browser is
-Linux-only; macOS development can run it through a Linux builder or CI.
 
 Serve the existing site from the project root:
 
@@ -256,9 +246,7 @@ explicit and preserves playback state; the standalone page fills the browser
 window. Website plots select light/dark SVG paint without changing their data;
 slides and print retain light plots. Photos fill the slide with small credits.
 `scripts/animation-player-test.py` checks actual rendered MP4 playback, controls,
-theme switching and no-JavaScript fallback in Chromium or WebKit. The Nix VM
-layout audit uses a local transport fixture so it does not depend on external
-DNS; this does not verify the public video host or replace the model/render checks.
+theme switching and no-JavaScript fallback in Chromium or WebKit.
 The maintained public edition is
 [the Plasma Skript](https://krystophny.github.io/plasma-skript/). Pushes to
 `main` deploy it through GitHub Pages after the site and derivation checks pass.

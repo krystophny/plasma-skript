@@ -10,4 +10,4 @@
       is requested.
 - [ ] I read `AGENTS.md` and `SPEC.md` and checked the applicable content and
       accessibility requirements.
-- [ ] I ran `nix flake check` and inspected the generated public artifact.
+- [ ] I ran the fast checks covering the change and looked at changed plots or slides.
