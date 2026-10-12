@@ -112,6 +112,34 @@
   differs from the thermal screening length derived in
   #chapter-link("intro-debye-shielding")[Debye shielding].
 
+  The inertial length also decides how an electromagnetic wave meets a
+  plasma. A transverse wave of angular frequency $omega$ in a cold,
+  unmagnetized plasma obeys $omega^2 = omega_(p,e)^2 + c^2 k^2$, with
+  wavenumber $k$ in #unit("m^-1"), derived in
+  #chapter-link("wave-dispersion")[electromagnetic dispersion]. Below
+  $omega_(p,e)$ the electrons follow the field and screen it within the skin
+  depth $c\/sqrt(omega_(p,e)^2 - omega^2)$, which tends to $d_e$ for
+  $omega << omega_(p,e)$; the wave is reflected. Above $omega_(p,e)$ the
+  electron bulk can no longer follow, and the wave is transmitted with a
+  longer wavelength than in vacuum.
+
+  #animation(
+    "../media/em-wave-plasma-reflection.mp4",
+    "Left: electron sheets near the edge of a plasma, their transverse displacement magnified thirty times. Right: the transverse electric field E_y over E_0 across vacuum and plasma, with the plasma edge marked. First run at omega = 0.5 omega_pe: the incident and reflected waves form a standing pattern in vacuum and the field decays inside the plasma; the electrons near the edge oscillate together. Second run at omega = 2 omega_pe: the wave enters the plasma with a longer wavelength and only a weak reflection. At the end of each run the linear-theory envelope fades in. Positions are normalized by c over omega_pe and time by the inverse plasma frequency, with unit [1].",
+    caption: [
+      An electromagnetic wave at a plasma edge, computed with kin6d: a
+      one-dimensional Maxwell--Lorentz run with cold electron macroparticles,
+      fixed ions and absorbing boundaries. At $omega = 0.5 omega_(p,e)$ the
+      measured reflection is $abs(R) = 0.9996$ and the skin depth
+      $1.155 c\/omega_(p,e)$; at $omega = 2 omega_(p,e)$ the reflection is
+      $R = 0.072$ and the transmitted wavelength $3.628 c\/omega_(p,e)$, each
+      within $0.1$~% of linear theory. Positions are $x omega_(p,e)\/c$ and
+      time $omega_(p,e) t$, with unit [1]; the electron displacement is
+      magnified for visibility.
+    ],
+    poster: "../media/em-wave-plasma-reflection.png",
+  )
+
   #details(
     [Derivation: the displacement oscillator],
     [#derivation-step[Create the charge-separation field]
