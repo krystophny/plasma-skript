@@ -11,7 +11,10 @@
   const stage = document.getElementById("map-stage");
   const panel = document.getElementById("map-panel");
   const NS = "http://www.w3.org/2000/svg";
-  const DX = 150, DY = 80, W = 136, H = 50, PAD = 40;
+  // Grid and box sizes in the proportions of the static figure (src/map.typ:
+  // 23 mm x 14 mm grid, boxes at least 17 mm wide, wider for long labels).
+  const DX = 150, DY = 91, W = 111, H = 50, PAD = 40;
+  const widthOf = (n) => Math.max(W, 7.4 * Math.max(...n.label.split("\n").map((l) => l.length)) + 16);
 
   const svgEl = (name, attrs = {}, parent = null) => {
     const el = document.createElementNS(NS, name);
@@ -23,8 +26,9 @@
   const nodeOf = new Map(data.nodes.map((n) => [n.id, n]));
 
   // ------------------------------------------------------------ drawing
-  const xs = data.nodes.map((n) => px(n.pos)[0]);
-  const ys = data.nodes.map((n) => px(n.pos)[1]).concat(data.branches.map((b) => px(b.tag)[1]));
+  const xs = data.nodes.map((n) => px(n.pos)[0]).concat(data.edges.flatMap((e) => (e.via || []).map((v) => px(v)[0])));
+  const ys = data.nodes.map((n) => px(n.pos)[1]).concat(data.branches.map((b) => px(b.tag)[1]),
+    data.edges.flatMap((e) => (e.via || []).map((v) => px(v)[1])));
   const bounds = {
     x: Math.min(...xs) - W / 2 - PAD, y: Math.min(...ys) - H / 2 - PAD,
     w: Math.max(...xs) - Math.min(...xs) + W + 2 * PAD,
@@ -51,9 +55,9 @@
   }
 
   // Point where the segment from the box center toward (tx, ty) leaves the box.
-  const exit = (cx, cy, tx, ty) => {
+  const exit = (cx, cy, tx, ty, w = W) => {
     const dx = tx - cx, dy = ty - cy;
-    const s = Math.min(Math.abs((W / 2 + 3) / (dx || 1e-9)), Math.abs((H / 2 + 3) / (dy || 1e-9)));
+    const s = Math.min(Math.abs((w / 2 + 3) / (dx || 1e-9)), Math.abs((H / 2 + 3) / (dy || 1e-9)));
     return [cx + dx * s, cy + dy * s];
   };
 
@@ -65,11 +69,14 @@
     g.dataset.target = id;
   };
   for (const e of data.edges) {
-    const [ax, ay] = px(nodeOf.get(e.from).pos);
-    const [bx, by] = px(nodeOf.get(e.to).pos);
-    const [x1, y1] = exit(ax, ay, bx, by);
-    const [x2, y2] = exit(bx, by, ax, ay);
-    const d = `M${x1.toFixed(1)},${y1.toFixed(1)} L${x2.toFixed(1)},${y2.toFixed(1)}`;
+    // A polyline through the optional waypoints `via`; the ends leave the
+    // boxes toward the neighbouring point.
+    const a = nodeOf.get(e.from), b = nodeOf.get(e.to);
+    const pts = [px(a.pos), ...(e.via || []).map(px), px(b.pos)];
+    const k = pts.length - 1;
+    pts[0] = exit(pts[0][0], pts[0][1], pts[1][0], pts[1][1], widthOf(a));
+    pts[k] = exit(pts[k][0], pts[k][1], pts[k - 1][0], pts[k - 1][1], widthOf(b));
+    const d = pts.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
     const g = svgEl("g", { class: "map-edge status-" + e.status }, edgeLayer);
     svgEl("path", { d, class: "map-edge-hit" }, g);
     svgEl("path", { d, class: "map-edge-line", "marker-end": "url(#map-arrow-base)" }, g);
@@ -80,7 +87,8 @@
     const [x, y] = px(n.pos);
     const g = svgEl("g", { class: "map-node map-branch-" + n.branch,
       transform: `translate(${x},${y})` }, nodeLayer);
-    svgEl("rect", { x: -W / 2, y: -H / 2, width: W, height: H, rx: 5 }, g);
+    const w = widthOf(n);
+    svgEl("rect", { x: -w / 2, y: -H / 2, width: w, height: H, rx: 5 }, g);
     const lines = n.label.split("\n");
     const t = svgEl("text", { "text-anchor": "middle" }, g);
     lines.forEach((line, i) => {

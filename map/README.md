@@ -20,8 +20,8 @@ stops the build.
 ## Schema
 
 Top level: `schema` (version), `site` and `repository` (base URLs for
-absolute map links and for evidence links), `statuses`, `branches`,
-`courses`, `nodes`, `edges`.
+absolute map links and for evidence links), `statuses`, `kin6d-states`,
+`branches`, `courses`, `nodes`, `edges`.
 
 Node:
 
@@ -30,18 +30,21 @@ Node:
 | `id` | stable identifier, lowercase with hyphens; never renamed once used |
 | `name`, `label` | full name; short graph label, `\n` breaks the line |
 | `branch` | one of `branches` (colour and region of the graph) |
-| `pos` | `[column, row]` in the shared layout; row 0 holds the first principles, rows grow toward reduced models |
+| `pos` | `[column, row]` in the shared layout (quarter steps); row 0 holds the first principles, rows grow toward reduced models; keep boxes apart and arrows clear of other boxes (use `via` where a straight arrow would cross one) |
 | `summary` | one or two sentences |
 | `equations` | list of Typst math strings |
 | `state`, `structure`, `solution` | state variables; invariants and structure; notion of solution |
 | `status` | one of `statuses` for the equations shown |
 | `coverage` | optional, see below |
 | `evidence` | optional, see below |
+| `kin6d` | optional, see below |
 
 Edge: `from`, `to` (node ids; the edge id is `<from>--<to>`), `method`,
 `small` (Typst math: small parameters and ordering; omitted for exact steps),
 `assumptions` (list), `lost` (what the reduction drops), `status`,
-`coverage`, `evidence`.
+`coverage`, `evidence`, optional `kin6d`, and optional `via`: a list of
+`[column, row]` waypoints that route the arrow around boxes in the figure
+and on the interactive page.
 
 Text fields are Typst markup, so `$...$` is inline math. Equations are Typst
 math with the `physica` operators `pdv`, `dv`, `grad`, `div`, `curl`,
@@ -62,6 +65,17 @@ rigorous justification even when its formal derivation is standard.
 Research results that are not public (for example a defect measured by a
 private code) stay in `coverage.research` as text and do not raise the
 public status.
+
+### kin6d state
+
+`kin6d: {state, note, ref}` records how far the research code kin6d
+implements a model or reduction: `state` is one of `kin6d-states`
+(`implemented`, `partial`, `planned`), `note` names the case and the
+evidence label kin6d itself gives it (certified, reference comparison,
+candidate, ...), and `ref` names the kin6d document as plain text. kin6d
+is private: `ref` is never a link, and the state never raises the public
+`status`. The static figure marks the state with a filled, half-filled or
+open circle; the interactive page shows the note.
 
 ### Coverage
 

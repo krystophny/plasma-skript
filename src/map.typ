@@ -11,6 +11,7 @@
 #let branch-of = map-data.branches.map(b => (b.id, b)).to-dict()
 #let node-of = map-data.nodes.map(n => (n.id, n)).to-dict()
 #let course-ids = map-data.courses.keys()
+#let kin6d-ids = map-data.at("kin6d-states").map(s => s.id)
 
 // Referential integrity: every edge joins known nodes, every status and
 // branch is declared, and every SymPy check named as evidence is a section
@@ -23,6 +24,12 @@
   assert(e.from in node-of and e.to in node-of,
     message: "map: edge joins unknown node: " + edge-id(e))
   assert(e.status in status-ids, message: "map: unknown status of " + edge-id(e))
+}
+#for item in map-data.nodes + map-data.edges {
+  if "kin6d" in item {
+    assert(item.kin6d.state in kin6d-ids,
+      message: "map: unknown kin6d state of " + item.at("id", default: item.at("from", default: "") + "--" + item.at("to", default: "")))
+  }
 }
 #for item in map-data.nodes + map-data.edges {
   for (course, refs) in item.at("coverage", default: (:)) {
@@ -51,52 +58,103 @@
 }
 
 // ------------------------------------------------------- static figure
-// Layout grid of the figure, sized for the 257 mm x 170 mm text area of an
-// A4-landscape slide; the script shows the same figure scaled to its width.
-#let map-dx = 22mm
-#let map-dy = 11.6mm
-#let map-node-width = 20.5mm
+// Layout grid of the figure (mm per unit of `pos`), sized so that the map
+// fills an A4-landscape slide at a 9 pt label size; the slide and the
+// script scale the figure to the space they have. Nodes are at least
+// `map-node-width` wide and grow with a longer label line.
+#let map-dx = 23mm
+#let map-dy = 14mm
+#let map-node-width = 17mm
+#let map-inset = 2.4pt
 #let checked = ("algebra-checked", "limit-checked", "defect-measured",
   "reproduced", "formally-proved")
+// kin6d state marks: filled, half-filled and open circle.
+#let kin6d-mark = (implemented: "●", partial: "◐", planned: "○")
+#let mark-glyph(state) = text(font: "STIX Two Math", size: 6.5pt,
+  fill: rgb("#17202B"), kin6d-mark.at(state))
 
-#let model-map-diagram(course: "plasma") = {
+// One-line legend under the figure: line styles, the course route and the
+// kin6d marks.
+#let map-legend() = {
+  set text(size: 9pt, fill: rgb("#3A4654"))
+  let sample(dash) = box(baseline: -0.3em,
+    line(length: 7mm, stroke: (paint: rgb("#17202B"), thickness: 0.8pt, dash: dash)))
+  let route-box = box(baseline: 0.15em, width: 6mm, height: 0.9em, radius: 1pt,
+    stroke: 0.9pt + rgb("#0072B2"), fill: rgb("#0072B2").lighten(86%))
+  [#sample(none) checked symbolically #h(5mm) #sample("dashed") stated #h(5mm)
+    #route-box route of this course #h(5mm)
+    kin6d: #mark-glyph("implemented") implemented #h(2mm) #mark-glyph("partial") partial
+    #h(2mm) #mark-glyph("planned") planned]
+}
+
+#let model-map-diagram(course: "plasma") = context {
   let on = route(course)
   let at(p) = (p.at(0) * map-dx, -p.at(1) * map-dy)
-  set text(font: "STIX Two Text", size: 8.4pt, fill: rgb("#17202B"))
+  set text(font: "STIX Two Text", size: 9pt, fill: rgb("#17202B"))
+  let width-of(label) = calc.max(map-node-width / 1mm,
+    calc.max(..label.split("\n").map(l => measure(text(font: "STIX Two Text", size: 9pt, l)).width / 1mm)) + 2 * map-inset / 1mm + 0.9) * 1mm
   diagram(
-    node-inset: 2.4pt,
+    node-inset: map-inset,
     node-corner-radius: 2pt,
     spacing: 0pt,
+    // Branch names; a name longer than 40 mm breaks into two balanced lines
+    // so that it fits between the boxes.
     ..map-data.branches.map(b => node(at(b.tag),
-      text(size: 9pt, fill: rgb(b.color), smallcaps(b.name)),
-      stroke: none, fill: none, inset: 0pt)),
+      block(width: {
+        let w = measure(text(size: 9.5pt, smallcaps(b.name))).width / 1mm + 0.5
+        (if w > 40 { w / 2 + 5 } else { w }) * 1mm
+      },
+        align(center, par(justify: false, leading: 0.35em, text(size: 9.5pt, fill: rgb(b.color), smallcaps(b.name))))),
+      // A card-coloured ground hides an edge that has to pass under a name.
+      stroke: none, fill: rgb("#fefefd"), inset: 0.8pt)),
+    // The legend line, centred one row below the lowest box.
+    {
+      let xs = map-data.nodes.map(n => n.pos.at(0))
+      let ymax = calc.max(..map-data.nodes.map(n => n.pos.at(1)))
+      node(at(((calc.min(..xs) + calc.max(..xs)) / 2, ymax + 0.95)), map-legend(),
+        stroke: none, fill: none, inset: 0pt)
+    },
     ..map-data.nodes.map(n => {
       let color = rgb(branch-of.at(n.branch).color)
       let lit = n.id in on.nodes
+      let mark = if "kin6d" in n {
+        place(top + right, dx: map-inset + 0.6mm, dy: -map-inset - 1.1mm, mark-glyph(n.kin6d.state))
+      }
       node(at(n.pos),
-        text(fill: if lit { rgb("#17202B") } else { luma(52%) },
+        [#mark#text(fill: if lit { rgb("#17202B") } else { luma(45%) },
           weight: if lit { "medium" } else { "regular" },
-          n.label.split("\n").join(linebreak())),
+          n.label.split("\n").join(linebreak()))],
         name: label("map-" + n.id),
-        width: map-node-width,
-        stroke: if lit { 0.9pt + color } else { 0.5pt + luma(78%) },
+        width: width-of(n.label),
+        stroke: if lit { 0.9pt + color } else { 0.55pt + color.lighten(45%) },
         fill: if lit { color.lighten(86%) } else { rgb("#fffffe") },
       )
     }),
     ..map-data.edges.map(e => {
       let lit = edge-id(e) in on.edges
       let dash = if e.status in checked { none } else { "dashed" }
-      edge(label("map-" + e.from), label("map-" + e.to), "-|>",
-        stroke: (paint: if lit { rgb("#17202B") } else { luma(72%) },
-          thickness: if lit { 0.8pt } else { 0.45pt }, dash: dash))
+      // Optional waypoints `via` route an edge around the boxes between
+      // its ends.
+      edge(label("map-" + e.from), ..e.at("via", default: ()).map(at),
+        label("map-" + e.to), "-|>", corner-radius: 4pt,
+        stroke: (paint: if lit { rgb("#17202B") } else { luma(66%) },
+          thickness: if lit { 0.8pt } else { 0.5pt }, dash: dash))
     }),
   )
+}
+
+// The map scaled to fit a box of the given size (aspect ratio kept).
+#let model-map-fit(width, height, course: "plasma") = context {
+  let fig = model-map-diagram(course: course)
+  let s = measure(fig)
+  let k = calc.min(width / s.width, height / s.height)
+  scale(k * 100%, reflow: true, fig)
 }
 
 // Script figure (chapter 1). The SVG keeps its own light card in both site
 // themes: its ink and fills avoid the colours that the build recolours for
 // dark mode (scripts/prepare-media.py), so the route stays legible.
-#let map-alt = "A layered graph of about sixty plasma models. Quantum many-body models are on the left, classical many-body and kinetic models in the middle, magnetized orbit and kinetic models on the right, and fluid, MHD, wave and equilibrium models at the bottom. Arrows point from a parent model to a reduced model. The route of this course is highlighted: particles and fields lead to single-particle orbits and guiding-center drifts, to the Vlasov equation, to moments, multiple-fluid theory and MHD, to collisions and resistivity, and to waves, Landau damping and sheaths. Most other models are greyed out."
+#let map-alt = "A layered graph of about sixty-five plasma models. Quantum many-body models are on the left, classical many-body and kinetic models in the middle, magnetized orbit and kinetic models on the right, radiation, reaction and neutral-particle models on the right, and fluid, MHD, wave and equilibrium models at the bottom. Small circles mark the state of the research code kin6d. Arrows point from a parent model to a reduced model. The route of this course is highlighted: particles and fields lead to single-particle orbits and guiding-center drifts, to the Vlasov equation, to moments, multiple-fluid theory and MHD, to collisions and resistivity, and to waves, Landau damping and sheaths. Other models are drawn as lighter, unfilled boxes."
 
 // Link to the interactive map with a course route highlighted: relative on
 // the site, absolute in the print PDF and on slides.
@@ -110,13 +168,15 @@
     Map of plasma models, from first principles at the top to reduced
     models at the bottom. Highlighted boxes and arrows form the route of
     this course; solid arrows are reductions whose algebra is checked in the
-    SymPy derivations of the script, dashed arrows are stated only.
+    SymPy derivations of the script, dashed arrows are stated only. Small
+    circles mark the state of the research code kin6d: filled implemented,
+    half filled partially implemented, open planned.
     #map-link[Open the interactive map] for the equations, assumptions
     and evidence of every model and reduction.
   ]
   if target() == "paged" {
     figure(alt: map-alt, caption: caption,
-      layout(size => scale(size.width / 265mm * 100%, reflow: true, model-map-diagram())))
+      layout(size => model-map-fit(size.width, 10 * size.width)))
   } else {
     html.figure(class: "concept-figure model-map-figure")[
       // Scale the SVG (inline em size from Typst) to the column width.
@@ -176,6 +236,12 @@
 }
 
 #let field(term, body) = html.div(class: "map-field")[#html.dt(term)#html.dd(body)]
+// kin6d state of a node or edge: state, note and the kin6d document named
+// as plain text (private repository, no link).
+#let kin6d-field(item) = if "kin6d" in item {
+  let k = item.kin6d
+  field[kin6d][#html.strong(k.state): #show-text(k.note) (#raw(k.ref))]
+}
 #let anchor(id, body) = html.a(href: "#" + id, body)
 
 #let node-entry(n) = {
@@ -195,6 +261,7 @@
       #field[Solution concept][#show-text(n.solution)]
       #field[Courses][#coverage-list(n)]
       #field[Evidence][#evidence-list(n)]
+      #kin6d-field(n)
       #field[Reduced from][#edge-links(ins, "from")]
       #field[Reduces to][#edge-links(outs, "to")]
     ]
@@ -213,6 +280,7 @@
       #field[Lost][#show-text(e.lost)]
       #field[Courses][#coverage-list(e)]
       #field[Evidence][#evidence-list(e)]
+      #kin6d-field(e)
       #field[Models][#anchor("node-" + a.id, a.name) → #anchor("node-" + b.id, b.name)]
     ]
   ]
@@ -228,6 +296,7 @@
     branch: n.branch, pos: n.pos, status: n.status,
     courses: course-ids.filter(c => covers(n, c)))),
   edges: map-data.edges.map(e => (id: edge-id(e), from: e.from, to: e.to,
+    via: e.at("via", default: ()),
     status: e.status, courses: course-ids.filter(c => covers(e, c)))),
 ))
 
@@ -292,6 +361,10 @@
       #html.div(class: "map-legend-group")[
         #html.h2[Status of a model or reduction]
         #html.ol(class: "map-ladder", map-data.statuses.map(s => html.li[#status-sample(s.id)#html.strong(s.name): #s.text]).join())
+      ]
+      #html.div(class: "map-legend-group")[
+        #html.h2[State in the research code kin6d]
+        #html.ul(map-data.at("kin6d-states").map(s => html.li[#kin6d-mark.at(s.id) #html.strong(s.name): #s.text]).join())
       ]
     ]
   ]
