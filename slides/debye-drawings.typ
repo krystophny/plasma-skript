@@ -2,7 +2,7 @@
 #import "@preview/cetz:0.5.2": canvas, draw
 #import "theme.typ": ink, muted, rule, plot-blue, plot-orange
 
-// Rigid charge-separation sphere: all electrons removed from r < R, ions
+// Rigid charge-separation sphere: all electrons removed from r < r_0, ions
 // (orange +) remain; outside, the plasma stays neutral (+ and - pairs). The
 // last electron at the surface is moved out to infinity.
 #let sphere-picture() = canvas(length: 13mm, {
@@ -26,7 +26,7 @@
     content((x, y), text(fill: plot-orange, size: 15pt)[$+$])
   }
   line((0, 0), (R * 0.71, -R * 0.71), stroke: 0.7pt + ink)
-  content((R * 0.5, -R * 0.24), [$R$])
+  content((R * 0.5, -R * 0.24), [$r_0$])
   // the last electron leaves
   circle((R * 0.71, R * 0.71), radius: 0.13, fill: plot-blue, stroke: none)
   line((R * 0.71 + 0.2, R * 0.71 + 0.2), (R * 0.71 + 1.3, R * 0.71 + 1.3),

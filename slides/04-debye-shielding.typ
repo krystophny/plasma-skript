@@ -5,11 +5,11 @@
 #slide(section: "intro-debye-shielding", title: [Charge separation])[
   #at(1, 6, y: 4mm, sphere-picture())
   #at(7, 6, y: 6mm)[
-    $Q = (4 pi)/3 R^3 n_0 e$
-    #v(8mm) $e Phi(R) = (e Q)/(4 pi epsilon_0 R) = (n_0 e^2 R^2)/(3 epsilon_0)$
-    #v(8mm) $e Phi(R) approx k_B T_e$
+    $Q = (4 pi)/3 r_0^3 n_0 e$
+    #v(8mm) $e Phi(r_0) = (e Q)/(4 pi epsilon_0 r_0) = (n_0 e^2 r_0^2)/(3 epsilon_0)$
+    #v(8mm) $e Phi(r_0) approx k_B T_e$
   ]
-  #at(7, 5, y: 82mm, result-box(align(center, $R approx sqrt(3) lambda_D$), [largest separated region]))
+  #at(7, 5, y: 82mm, result-box(align(center, $r_0 approx sqrt(3) lambda_D$), [largest separated region]))
 ]
 #animation-page("debye-shielding-particles", "debye_shielding_particles", section: "intro-debye-shielding", loop: false)
 #slide(section: "intro-debye-shielding", title: [Debye shielding])[
@@ -25,7 +25,7 @@
 #slide(section: "intro-debye-shielding", title: [Charge separation and screening])[
   #at(1, 6, y: 0mm, align(center)[
     #text(fill: muted)[rigid: electrons removed] \
-    #v(2mm) $e Phi(R) approx k_B T_e quad => quad R approx sqrt(3) lambda_D$])
+    #v(2mm) $e Phi(r_0) approx k_B T_e quad => quad r_0 approx sqrt(3) lambda_D$])
   #at(7, 6, y: 0mm, align(center)[
     #text(fill: muted)[response: mobile electrons] \
     #v(2mm) $Phi = Q/(4 pi epsilon_0 r) e^(-r\/lambda_D)$])
