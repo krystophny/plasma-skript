@@ -34,27 +34,38 @@
   content((cx + 0.5, cy + 1.2), anchor: "south", text(fill: plot-orange)[$f thin Delta x thin Delta v$])
 })
 
-// Vertical model ladder as a grid: boxes, labelled arrows, and what each
-// level keeps in the right column.
-#let ladder() = {
-  let box-w = 62mm
-  let level(body) = box(width: box-w, height: 15mm, stroke: 0.6pt + ink, radius: 1.5mm,
-    align(center + horizon, body))
-  let step(label) = box(width: box-w, height: 13mm, {
-    place(center + horizon, line(start: (0mm, -5mm), end: (0mm, 5mm), stroke: 0.7pt + ink))
-    place(center + bottom, dy: -1mm, polygon(fill: ink, (-1.6mm, -3.2mm), (1.6mm, -3.2mm), (0mm, 0mm)))
-    place(left + horizon, dx: box-w / 2 + 5mm, text(fill: muted, label))
-  })
-  let keeps(body) = align(left + horizon, text(fill: muted, body))
-  grid(columns: (box-w, 14mm, auto), row-gutter: 0mm,
-    level[$N$ particles], [], keeps[$6 N tilde.op 10^21$ numbers],
-    step($chevron.l dot chevron.r$), [], [],
-    level[$f_s (bold(x), bold(v), t)$], [], keeps[one function of 6 variables],
-    step($integral bold(v)^k f_s dif^3 v$), [], [],
-    level[moments], [], keeps[$n_s, bold(u)_s, p_s$ in 3D],
-    step[closure], [], [],
-    level[two fluids], [], keeps[electrons and ions],
-    step($sum_s$), [], [],
-    level[MHD], [], keeps[one conducting fluid],
+// The simple model hierarchy: four levels from particles to MHD. Each arrow
+// names the averaging step and, below it, what that step loses.
+#let hierarchy() = canvas(length: 1mm, {
+  import draw: *
+  let box-w = 64
+  let box-h = 20
+  let step = 42
+  let x-text = 78
+  let levels = (
+    ([Particles], [$N$-body], [$bold(x)_j (t), bold(v)_j (t), quad j = 1, dots, N tilde.op 10^20$]),
+    ([Kinetic], [distribution function], [$f_s (bold(x), bold(v), t)$ in 6D phase space]),
+    ([Fluid], [moments], [$n_s, bold(u)_s, p_s$ in 3D, one fluid per species]),
+    ([MHD], [one conducting fluid], [$rho, bold(u), p, bold(B)$ in 3D]),
   )
-}
+  let steps = (
+    ([average over many particles per phase-space cell], [individual orbits; correlations survive only as collisions $C[f_s]$]),
+    ([velocity moments $integral bold(v)^k f_s dif^3 v$], [velocity-space structure and resonances; a closure is needed]),
+    ([sum over species, $L >> rho_i$, $omega << omega_(c i)$], [charge separation, Hall term, electron inertia]),
+  )
+  for (k, (name, kind, state)) in levels.enumerate() {
+    let y = -k * step
+    rect((0, y), (box-w, y - box-h), radius: 1.5, stroke: 0.7pt + ink, fill: white)
+    content((box-w / 2, y - box-h / 2), align(center)[#text(weight: "medium", name) \ #text(fill: muted, kind)])
+    content((x-text, y - box-h / 2), anchor: "west", state)
+  }
+  for (k, (op, lost)) in steps.enumerate() {
+    let y0 = -k * step - box-h
+    let y1 = y0 - (step - box-h)
+    line((box-w / 2, y0 - 1), (box-w / 2, y1 - 0.6), mark: (end: "stealth"),
+      stroke: 0.9pt + ink, fill: ink)
+    content((box-w / 2 + 7, (y0 + y1) / 2 + 4.6), anchor: "west", op)
+    content((box-w / 2 + 7, (y0 + y1) / 2 - 4.6), anchor: "west",
+      text(fill: plot-orange)[lost: #lost])
+  }
+})
