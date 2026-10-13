@@ -14,6 +14,7 @@ import re
 import shutil
 import subprocess
 from urllib.parse import urlsplit
+import xml.etree.ElementTree as ET
 from urllib.request import urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -92,6 +93,23 @@ def copy_video(record, slug, dest, site):
         temp.unlink(missing_ok=True)
 
 
+BARE_AMP = re.compile(r"&(?!(?:[A-Za-z][A-Za-z0-9]*|#[0-9]+|#x[0-9A-Fa-f]+);)")
+
+
+def repair_svg(path):
+    # Typst 0.15.1 writes link URLs such as ?id=107&t=3 with a bare "&"
+    # (typst#8672, fixed on main by typst#8510); browsers then reject the page
+    # as malformed XML and show a broken image.
+    text = path.read_text()
+    fixed = BARE_AMP.sub("&amp;", text)
+    if fixed != text:
+        path.write_text(fixed)
+    try:
+        ET.parse(path)
+    except ET.ParseError as error:
+        raise ValueError(f"Malformed SVG page {path}: {error}") from error
+
+
 def write_json(path, value):
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n")
 
@@ -126,6 +144,8 @@ def build(site):
         metadata = json.loads(raw)
         count = pdf_pages(site / "slides" / (stem + ".pdf"))
         svgs = sorted(folder.glob("p*.svg"))
+        for svg in svgs:
+            repair_svg(svg)
         if len(metadata) != count or len(svgs) != count:
             raise ValueError(f"{stem}: PDF={count}, SVG={len(svgs)}, metadata={len(metadata)}")
         if [p["page"] for p in metadata] != list(range(1, count + 1)):

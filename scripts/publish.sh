@@ -11,10 +11,18 @@ if [[ -n "$(git status --porcelain --untracked-files=no)" ]]; then
   echo "Commit tracked changes before publishing so the export matches main" >&2
   exit 1
 fi
-nix run .#build-site
-nix run .#verify-spec -- public
-nix flake check
-uv run pytest -q
+# Same fast toolchain as the Pages workflow; `nix flake check` runs in the
+# separate Nix workflow and stays available locally.
+uv run bash scripts/build-site.sh
+bash scripts/verify-spec.sh public
+# SymPy derivations rerun only when their inputs changed since the last pass.
+derivations_key="$(git ls-files -s derivations src scripts/script-outline.sh pyproject.toml uv.lock | sha256sum | cut -c1-16)"
+derivations_stamp=".cache/derivations-passed-$derivations_key"
+if [[ ! -f "$derivations_stamp" ]]; then
+  uv run pytest -q
+  mkdir -p .cache && touch "$derivations_stamp"
+fi
+uv run python scripts/check-physics.py
 python3 scripts/animation-export-test.py
 uv run python scripts/present-test.py public
 uv run bash scripts/export-course-folder.sh "${COURSE_DIR:-$HOME/Nextcloud/lv/plasma/2026}"

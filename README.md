@@ -120,7 +120,8 @@ script and reuse its derived plots. `scripts/export-course-folder.sh <dest>`
 copies the deck PDFs, Skript PDF, animations, and derivations into a course folder.
 
 The repository includes a GitHub Pages workflow that builds the same bundle
-with Typst and uv and deploys pushes to `main`; Nix checks run separately.
+with the Typst release binary and uv and deploys pushes to `main`; derivation
+plots and SymPy results are cached by input hash, and Nix checks run separately.
 Enable GitHub Pages with GitHub Actions
 as its publishing source in the repository settings.
 
@@ -156,7 +157,8 @@ counts; touch, keys, every animation, offline reload and console errors are
 checked. `CHROMIUM_EXECUTABLE_PATH` selects another codec-capable browser.
 `verify-spec` also checks manifests, hashes and same-origin media without a browser.
 
-After committing, `scripts/publish.sh` builds, checks, exports to
+After committing, `scripts/publish.sh` builds and checks with the same Typst/uv
+toolchain as the workflow (no Nix; SymPy reruns only for changed inputs), exports to
 `~/Nextcloud/lv/plasma/2026`, and pushes `main` to `origin` and `github`.
 It never creates a commit. The export maintains `slides/`, `skript/`,
 `animations/`, `animation-sources/`, and `derivations/`; the Skript PDF is
