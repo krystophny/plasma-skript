@@ -18,14 +18,38 @@
       fontConfig = pkgs.makeFontsConf {
         fontDirectories = [newComputerModern];
       };
-      typst = pkgs.typst.withPackages (ps: [
+      # Typst main: 0.15.1 writes bare "&" in SVG link URLs (typst#8672, fixed by
+      # typst#8510 after the release). Return to pkgs.typst once a release has it.
+      typstRev = "d7dfb34ae79689ed78857ab38a3f6a24a1747770";
+      typstMain = pkgs.typst.overrideAttrs (old: rec {
+        version = "0.15.1-main-${builtins.substring 0 8 typstRev}";
+        src = pkgs.fetchFromGitHub {
+          owner = "typst";
+          repo = "typst";
+          rev = typstRev;
+          hash = "sha256-yFCLs4rpw+A0Cec2PaIKKA+yRBrjeOgEhpYmYqmbGic=";
+        };
+        cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+          inherit src;
+          name = "typst-${version}";
+          hash = "sha256-Rdc6t7apGgcvSQe3EkkYEhzHYvBiSBTIyHJ0oi2Edzc=";
+        };
+        postPatch = ''
+          export TYPST_COMMIT_SHA="${builtins.substring 0 8 typstRev}"
+        '';
+        doCheck = false;
+        doInstallCheck = false;
+        meta = old.meta // {changelog = "https://github.com/typst/typst/commit/${typstRev}";};
+      });
+      typstWrapper = pkgs.callPackage "${nixpkgs}/pkgs/by-name/ty/typst/wrapper.nix" {typst = typstMain;};
+      typst = typstWrapper {packages = ps: [
         ps.physica_0_9_8
         ps.cetz_0_5_2
         ps.fletcher_0_5_8
         ps.lilaq_0_6_0
         ps.frame-it_2_0_0
         ps.unify_0_8_1
-      ]);
+      ];};
       playwrightCore = pkgs.playwright-driver;
       # Manim with its own TeX: the MathTex template in animations/style.py
       # loads STIX Two (the Type 1 stix2 package) through latex and dvisvgm.
