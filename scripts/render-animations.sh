@@ -35,6 +35,7 @@ scenes=(
   "coulomb_encounter.py|CoulombEncounterHeadOn|coulomb-encounter-headon|4.8"
   "coulomb_encounter.py|CoulombEncounterOffAxis|coulomb-encounter-offaxis|5.2"
   "coulomb_encounter.py|CoulombEncounterHot|coulomb-encounter-hot|4.6"
+  "thermal_charge_fluctuations.py|ThermalChargeFluctuations|thermal-charge-fluctuations|9.0"
 )
 
 if [[ "${1:-}" == "--slugs" ]]; then

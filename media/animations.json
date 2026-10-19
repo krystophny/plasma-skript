@@ -158,6 +158,14 @@
       "mp4_sha256": "576e6c317fe98f4d08615297613383967cd8e51f7c82c08e3f666a5f63ebe07c",
       "appearance": "dark"
     },
+    "thermal-charge-fluctuations": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/thermal_charge_fluctuations.mp4",
+      "poster": "media/posters/thermal-charge-fluctuations.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/thermal-charge-fluctuations.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/thermal_charge_fluctuations.mp4?v=01668e3a8698f0bd",
+      "mp4_sha256": "01668e3a8698f0bdf2b1d31fe023b268b330699f57b05d707b3a23a7120f81f0",
+      "appearance": "dark"
+    },
     "two-stream-instability": {
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/two_stream_instability.mp4",
       "poster": "media/posters/two-stream-instability.png",

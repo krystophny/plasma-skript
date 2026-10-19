@@ -388,5 +388,57 @@ class EmWavePlasmaPhysics(unittest.TestCase):
             self.assertLess(np.max(np.abs(peak - theory)), 0.02, run)
 
 
+class ThermalFluctuationPhysics(unittest.TestCase):
+    """Smoothed net charge density of the kin6d thermal-fluctuation scene."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("thermal_charge_fluctuations.py")
+
+    def test_lattice_is_neutral_and_vacancy_is_positive(self):
+        # Simple-cubic lattice with spacing a < sigma: the Gaussian-smoothed
+        # density equals n_0 up to exp(-2 pi^2 sigma^2/a^2) (Poisson
+        # summation), so rho = 0. Removing the electron at the origin leaves
+        # rho/(e n_0) = +1/(n_0 (2 pi sigma^2)^(3/2)) there (deficit: positive)
+        # and a Gaussian of plane integral 1/(n_0 sqrt(2 pi) sigma).
+        m = self.m
+        box, cells, sigma = 6.0, 20, m["SIGMA"]
+        a = box / cells
+        axis = -box / 2 + a * np.arange(cells)
+        lattice = np.array(np.meshgrid(axis, axis, axis, indexing="ij")).reshape(3, -1)
+        n0 = cells ** 3 / box ** 3
+        grid = 2 * cells
+        np.testing.assert_allclose(m["charge_density"](lattice, box, sigma, n0, grid), 0,
+                                   atol=1e-10)
+        vacancy = lattice[:, np.any(lattice != 0, axis=0)]
+        # Cell centres at +-box/(2 grid) straddle the origin; evaluate with the
+        # lattice shifted so that a grid centre sits on the vacancy.
+        shift = np.array([[box / (2 * grid)], [box / (2 * grid)], [0.0]])
+        rho = m["charge_density"](vacancy + shift, box, sigma, n0, grid)
+        peak = 1 / (n0 * (2 * np.pi * sigma ** 2) ** 1.5)
+        self.assertAlmostEqual(rho[grid // 2, grid // 2] / peak, 1.0, places=8)
+        # Plane integral of the missing Gaussian: 1/(n_0 sqrt(2 pi) sigma).
+        self.assertAlmostEqual(np.mean(rho) * box ** 2 * n0 * np.sqrt(2 * np.pi) * sigma,
+                               1.0, places=6)    # kernel cut at |z| < 6 sigma
+
+    def test_fluctuations_follow_debye_hueckel(self):
+        # Independent theory: <(rho/(e n_0))^2> = sum_k exp(-k^2 sigma^2) S(k)/(n_0 L^3)
+        # with S = k^2/(k^2 + 1) (Debye-Hueckel) over the box modes. The kin6d
+        # data must match it and exclude the uncorrelated ideal gas (S = 1),
+        # which is 19% larger at sigma = 0.4 lambda_D.
+        m = self.m
+        data = runpy.run_path(str(ROOT / "animations/kin6d_data.py"))["Export"](
+            "thermal-charge-fluctuations")
+        pos, box = data["positions"], data.parameters["box"]
+        n0 = data.parameters["electrons"] / box ** 3
+        sigma = m["SIGMA"]
+        variance = np.mean([np.var(m["charge_density"](pos[:, :, f], box, sigma, n0, 60))
+                            for f in range(pos.shape[2])])
+        debye = m["debye_hueckel_variance"](box, sigma, n0)
+        ideal = m["debye_hueckel_variance"](box, sigma, n0, lambda k2: np.ones_like(k2))
+        self.assertLess(abs(variance / debye - 1), 0.08)
+        self.assertLess(variance / ideal, 0.9)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -42,6 +42,20 @@ All diagrams and plots are original; plots share the Skript derivation source.
 Animations use media/animations.json and retain their PDF posters.
 Photo provenance, where applicable, is in photos/credits.md.
 
+## Thermal fluctuation animation
+
+The kin6d `thermal-charge-fluctuations` scene
+(`animations/thermal_charge_fluctuations.py`) reads
+`animations/data/kin6d/thermal-charge-fluctuations/`: 6480 electrons in a
+periodic one-component plasma of edge $6\lambda_D$, $n\lambda_D^3=30$, in
+equilibrium and without a test charge. The colour field is the net charge
+density $\rho/(e n_0)$ [1] in the plane $z=0$, from the same electrons
+smoothed with a Gaussian of width $\sigma=0.4\lambda_D$: red where electrons
+are missing ($\rho>0$), blue where they crowd ($\rho<0$). The dots are the
+electrons of the slab $|z|<0.4\lambda_D$; a bar shows $\lambda_D$. Patches
+of size $\sim\lambda_D$ and amplitude $\sim 0.1\,e n_0$ appear and dissolve
+within a few $1/\omega_p$. Page 3, after the rigid-sphere estimate. It loops.
+
 ## Particle animation
 
 The kin6d `debye-shielding-particles` scene reads case C4 data from
