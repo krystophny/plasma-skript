@@ -27,7 +27,7 @@ def laplacian(f):
 
 
 # %% Charge-separation scale
-section("Charge-separation scale", script="intro-debye-shielding")
+section("Charge-separation scale", script="debye-collective-validity")
 note("Electrons removed from a sphere leave the charge density", N * e)
 enclosed = show(sp.Eq(sp.Function("Q")(r), sp.Integral(4 * sp.pi * s**2 * N * e, (s, 0, r))))
 Q_r = agrees(enclosed.rhs.doit(), sp.Rational(4, 3) * sp.pi * N * e * r**3, lhs=enclosed.lhs)
@@ -127,9 +127,9 @@ note("Electrons in a Debye sphere")
 count = show(sp.Eq(N_D, sp.Integral(4 * sp.pi * s**2 * n0, (s, 0, lambda_D))))
 N_D_expr = agrees(count.rhs.doit(), sp.Rational(4, 3) * sp.pi * n0 * lambda_D**3, lhs=N_D)
 check(N_D_expr, N_D_expr, unit=u.meter / u.meter, units=SI_UNITS)
-note("Mean spacing: one particle per sphere of radius", a)
-spacing = show(sp.Eq(sp.Rational(4, 3) * sp.pi * a**3 * n0, 1))
-a_expr = agrees(sp.solve(spacing, a)[0], (3 / (4 * sp.pi * n0)) ** sp.Rational(1, 3), lhs=a)
+note("Mean spacing: one particle per cube of edge", a)
+spacing = show(sp.Eq(a**3 * n0, 1))
+a_expr = agrees(sp.solve(spacing, a)[0], n0 ** sp.Rational(-1, 3), lhs=a)
 check(a_expr, a_expr, unit=u.meter, units=SI_UNITS)
 note("Coupling: Coulomb energy at that spacing over thermal energy")
 coupling = show(sp.Eq(Gamma, e**2 / (4 * sp.pi * eps0 * a * k_B * T_e))).rhs
@@ -139,6 +139,7 @@ link = show(sp.Eq(Gamma * N_D ** sp.Rational(2, 3),
                   sp.simplify((coupling.subs(a, a_expr)
                                * N_D_expr.subs(lambda_D, lambda_D_expr) ** sp.Rational(2, 3)))))
 assert link.rhs.free_symbols == set(), link
+agrees(link.rhs, (36 * sp.pi) ** sp.Rational(-1, 3), lhs=Gamma * N_D ** sp.Rational(2, 3))
 
 # %% Regime lines in the n-T plane
 section("Regime lines in the n-T plane", script="debye-collective-validity")

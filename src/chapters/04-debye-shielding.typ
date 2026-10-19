@@ -15,22 +15,23 @@
     treatment follows @chen2016 @bittencourt2004.
   ]
 
-  #section-title[Debye shielding] <intro-debye-shielding>
+  #section-title[Plasma parameter] <debye-collective-validity>
 
   #lead[
-    A test charge disturbs the surrounding plasma. How far does its
-    electrostatic influence extend once mobile electrons rearrange? In the
-    weak-potential, equilibrium limit, the answer is the Debye length.
+    How large a region can thermal motion charge up, and does a single
+    neighbour matter there? Comparing electrostatic with thermal energy, first
+    for an emptied sphere and then for one neighbour, gives the Debye length
+    and the coupling parameter that decide whether a plasma is ideal.
   ]
 
   #objectives((
-    [state the equilibrium and ordering assumptions behind Debye shielding],
-    [connect the Boltzmann response to the screened Poisson equation],
-    [interpret the Debye length as a collective response scale],
+    [estimate the largest charge-separated region from the thermal energy],
+    [relate the coupling parameter $Gamma_s$ to the Debye number],
+    [decide from $N_D$, $Gamma_s$ and $lambda_D\/L$ whether a collective, quasineutral description applies],
   ))
 
   #unit-ledger[
-    The screening length $lambda_D$ is in #unit("m").
+    The Debye length $lambda_D$ and the mean spacing $a$ are in #unit("m").
   ]
 
   A first estimate of the size of a charge-separated region can be obtained
@@ -87,25 +88,95 @@
 
   Thermal motion opens such regions continually, without any external charge:
   wherever electrons happen to crowd or thin out, a net charge appears and is
-  undone again. The estimate fixes their largest size, and the number of
-  particles inside that size decides how the plasma behaves. If the sphere of
-  radius $R$ holds about one particle, $lambda_D tilde a$ with mean spacing
-  $a = n_0^(-1\/3)$, then a single neighbour already carries an energy of order
-  $k_B T_e$: encounters are strong and the particles are correlated. If it
-  holds many, $lambda_D >> a$, the energy $k_B T_e$ is shared among many
-  charges and each neighbour contributes only
+  undone again. The estimate fixes their largest size,
+  $R approx sqrt(3) lambda_D$ with the Debye length
+  $lambda_D = sqrt(epsilon_0 k_B T_e\/(n_0 e^2))$, and the number of
+  particles inside that size decides how the plasma behaves. If the sphere
+  holds about one particle, $lambda_D tilde a$ with mean spacing
+  $a = n_0^(-1\/3)$, then a single neighbour already carries an energy of
+  order $k_B T_e$: encounters are strong and the particles are correlated. If
+  it holds many, $lambda_D >> a$, the energy $k_B T_e$ is shared among many
+  charges, and each neighbour contributes only the fraction
 
-  $ (e^2 \/ (4 pi epsilon_0 a))/(k_B T_e) = a^2/(4 pi lambda_D^2) << 1 . $ <debye-coupling-estimate>
+  $ Gamma_s = (q_s^2) / (4 pi epsilon_0 a_s k_B T_s), quad
+    Gamma_e = a^2/(4 pi lambda_D^2) << 1 . $ <debye-coupling-estimate>
 
   #equation-note[
-    Both sides are dimensionless. The left side compares the Coulomb energy of
-    a neighbour at distance $a$, in #unit("J"), with the thermal energy. In this
-    weakly coupled case each electron moves nearly freely and feels the smooth
-    field of many charges; this justifies the ideal-gas pressure
-    $p_e = n_e k_B T_e$ and the mean potential $Phi$ used below. The
-    #chapter-link("debye-collective-validity")[plasma parameter] section
-    states the condition in terms of the Debye number.
+    Dimensionless. The coupling parameter $Gamma_s$ compares the Coulomb energy
+    of two particles of species $s$, charge $q_s$, at the mean spacing
+    $a_s = n_s^(-1\/3)$ with their thermal energy $k_B T_s$. With $Gamma_s << 1$
+    each particle moves nearly freely and feels the smooth field of many
+    charges. This weak coupling defines the ideal plasma used in this script:
+    it justifies the ideal-gas pressure $p_s = n_s k_B T_s$ and a mean
+    potential $Phi$.
   ]
+
+  The same condition counts particles: the Debye number, the number of
+  electrons within a sphere of radius $lambda_D$, must be large,
+
+  $ N_D = (4 pi)/(3) n_e lambda_D^3 >> 1 $ <intro-debye-number>
+
+  #equation-note[
+    Dimensionless. $N_D$ counts electrons inside a Debye sphere. The symbol
+    $>> 1$ states an ordering assumption.
+  ]
+
+  Compare the Debye length with the system or gradient length $L$ in
+  #unit("m"). The dimensionless ratio $lambda_D\/L << 1$ supports bulk
+  quasineutrality away from boundaries; it does not establish a collisional
+  fluid closure. Collision scales are treated in
+  #chapter-link("kinetic-collisions")[Collisions in gases and plasmas].
+
+  #debye-regime-map
+
+  #summary[
+    Thermal energy can separate charge only over about a Debye length. The
+    coupling parameter $Gamma_s$ compares the Coulomb energy of neighbours at
+    the mean spacing with $k_B T_s$; an ideal plasma has $Gamma_s << 1$. The
+    Debye number $N_D = (4 pi\/3) n_e lambda_D^3$ states the same condition,
+    since $Gamma_e N_D^(2\/3) = (36 pi)^(-1\/3) approx 0.21$ independent of
+    $n_e$ and $T_e$. Bulk quasineutrality additionally requires
+    $lambda_D\/L << 1$ for the system or gradient length $L$.
+  ]
+
+  #knowledge-check((
+    (
+      question: [How does $N_D$ scale with the electron density $n_e$ at fixed $T_e$, and with $T_e$ at fixed $n_e$? Which corner of the density--temperature plane violates $N_D >> 1$?],
+      answer: [Since $lambda_D$ is proportional to $sqrt(T_e\/n_e)$, $N_D$ is proportional to $n_e lambda_D^3$ and hence to $T_e^(3\/2) n_e^(-1\/2)$. Dense, cold plasmas reach $N_D approx 1$, the shaded high-density, low-temperature region of the regime map.],
+    ),
+    (
+      question: [Show that $Gamma_e N_D^(2\/3)$ contains neither $n_e$ nor $T_e$, using $a_e = n_e^(-1\/3)$ and $lambda_D^2 = epsilon_0 k_B T_e\/(n_e e^2)$.],
+      answer: [
+
+      $ Gamma_e = e^2/(4 pi epsilon_0 k_B T_e) n_e^(1/3)
+        quad "and" quad
+        N_D^(2/3) = ((4 pi)/3)^(2/3) n_e^(2/3) (epsilon_0 k_B T_e)/(n_e e^2) . $
+
+      In the product, $e^2$, $epsilon_0$ and $k_B T_e$ cancel, and the density factors combine to $n_e\/n_e$, leaving the pure number $(36 pi)^(-1\/3) approx 0.21$. A large $N_D$ therefore implies $Gamma_e << 1$, and conversely.],
+    ),
+    (
+      question: [A plasma has $N_D >> 1$ and $Gamma_e << 1$, but its size $L$ is comparable to $lambda_D$. Which condition fails, and which modeling assumption must be dropped?],
+      answer: [The ordering $lambda_D\/L << 1$ fails. Screening layers then span the whole system, and bulk quasineutrality cannot be assumed. The collective field remains smooth because $N_D >> 1$ still holds.],
+    ),
+    (
+      question: [The line $lambda_D = L$ in the density--temperature plane is $k_B T_e = e^2 n_e L^2\/epsilon_0$. On which side is the bulk quasineutral, and how does the line move when $L$ doubles?],
+      answer: [Quasineutral bulk requires $lambda_D < L$, which is $k_B T_e < e^2 n_e L^2\/epsilon_0$, the side of higher density at given temperature. Doubling $L$ multiplies the temperature on the line by four at each density, so the quasineutral region grows.],
+    ),
+  ))
+
+  #section-title[Debye shielding] <intro-debye-shielding>
+
+  #lead[
+    A test charge disturbs the surrounding plasma. How far does its
+    electrostatic influence extend once mobile electrons rearrange? In the
+    weak-potential, equilibrium limit, the answer is the Debye length.
+  ]
+
+  #objectives((
+    [state the equilibrium and ordering assumptions behind Debye shielding],
+    [connect the Boltzmann response to the screened Poisson equation],
+    [interpret the Debye length as a collective response scale],
+  ))
 
   #assumption(
     [Linearized Boltzmann response],
@@ -316,88 +387,6 @@
       answer: [A potential comparable to or larger than $k_B T_e\/e$, a time-dependent kinetic response, or a boundary within the shielding region violates the stated assumptions.],
     ),
   ))
-
-  #section-title[Plasma parameter] <debye-collective-validity>
-
-  #objectives((
-    [compute the Debye number from the electron density and the Debye length],
-    [relate the coupling parameter $Gamma_s$ to the Debye number],
-    [decide from $N_D$, $Gamma_s$ and $lambda_D\/L$ whether a collective, quasineutral description applies],
-  ))
-
-  The Debye number counts electrons within a sphere of radius $lambda_D$.
-  A smooth collective description requires this number to be large:
-
-  $ N_D = (4 pi)/(3) n_e lambda_D^3 >> 1 $ <intro-debye-number>
-
-  #equation-note[
-    Dimensionless. $N_D$ counts electrons inside a Debye sphere. The symbol
-    $>> 1$ states an ordering assumption.
-  ]
-
-  #definition(
-    [Ideal-plasma convention used here],
-    [For the purposes of this script, an ideal plasma is weakly coupled and
-    sufficiently populated that collective fields can be treated smoothly.
-    A useful weak-coupling parameter is
-
-    $ Gamma_s = (q_s^2) / (4 pi epsilon_0 a_s k_B T_s) , $
-
-    where $a_s = (3\/(4 pi n_s))^(1\/3)$ is the mean-spacing scale. The
-    classical collective ordering also requires many particles in a Debye
-    sphere and, when quasineutral fluid behavior is invoked, a system scale
-    $L$ much larger than $lambda_D$.]
-  )
-
-  #equation-note[
-    $a_s$ is in #unit("m"), $q_s^2\/(4 pi epsilon_0 a_s k_B T_s)$ is
-    dimensionless, and the weak-coupling condition is $Gamma_s << 1$.
-  ]
-
-  Compare the screening length with the system or gradient length $L$ in
-  #unit("m"). The dimensionless ratio $lambda_D\/L << 1$ supports bulk
-  quasineutrality away from boundaries; it does not establish a collisional
-  fluid closure. Collision scales are treated in
-  #chapter-link("kinetic-collisions")[Collisions in gases and plasmas].
-
-  #debye-regime-map
-
-  #summary[
-    The Debye number $N_D = (4 pi\/3) n_e lambda_D^3$ counts the electrons in a
-    sphere of radius $lambda_D$, and a smooth collective field requires
-    $N_D >> 1$. The coupling parameter $Gamma_s$ compares the Coulomb energy of
-    two particles of species $s$ at the mean spacing $a_s$ with their thermal
-    energy $k_B T_s$, and an ideal plasma has $Gamma_s << 1$. For electrons,
-    $Gamma_e N_D^(2\/3) = 1\/3$, independent of $n_e$ and $T_e$, so weak coupling and
-    a large Debye number are one condition. Bulk quasineutrality additionally
-    requires $lambda_D\/L << 1$ for the system or gradient length $L$.
-  ]
-
-  #knowledge-check((
-    (
-      question: [How does $N_D$ scale with the electron density $n_e$ at fixed $T_e$, and with $T_e$ at fixed $n_e$? Which corner of the density--temperature plane violates $N_D >> 1$?],
-      answer: [Since $lambda_D$ is proportional to $sqrt(T_e\/n_e)$, $N_D$ is proportional to $n_e lambda_D^3$ and hence to $T_e^(3\/2) n_e^(-1\/2)$. Dense, cold plasmas reach $N_D approx 1$, the shaded high-density, low-temperature region of the regime map.],
-    ),
-    (
-      question: [Show that $Gamma_e N_D^(2\/3)$ contains neither $n_e$ nor $T_e$, using $a_e = (3\/(4 pi n_e))^(1\/3)$ and $lambda_D^2 = epsilon_0 k_B T_e\/(n_e e^2)$.],
-      answer: [
-
-      $ Gamma_e = e^2/(4 pi epsilon_0 k_B T_e) ((4 pi n_e)/3)^(1/3)
-        quad "and" quad
-        N_D^(2/3) = ((4 pi n_e)/3)^(2/3) (epsilon_0 k_B T_e)/(n_e e^2) . $
-
-      In the product, $e^2$, $epsilon_0$ and $k_B T_e$ cancel, and the density factors combine to $n_e\/n_e$, leaving a pure number. A large $N_D$ therefore implies $Gamma_e << 1$, and conversely.],
-    ),
-    (
-      question: [A plasma has $N_D >> 1$ and $Gamma_e << 1$, but its size $L$ is comparable to $lambda_D$. Which condition fails, and which modeling assumption must be dropped?],
-      answer: [The ordering $lambda_D\/L << 1$ fails. Screening layers then span the whole system, and bulk quasineutrality cannot be assumed. The collective field remains smooth because $N_D >> 1$ still holds.],
-    ),
-    (
-      question: [The line $lambda_D = L$ in the density--temperature plane is $k_B T_e = e^2 n_e L^2\/epsilon_0$. On which side is the bulk quasineutral, and how does the line move when $L$ doubles?],
-      answer: [Quasineutral bulk requires $lambda_D < L$, which is $k_B T_e < e^2 n_e L^2\/epsilon_0$, the side of higher density at given temperature. Doubling $L$ multiplies the temperature on the line by four at each density, so the quasineutral region grows.],
-    ),
-  ))
-
   #chapter-nav(
     previous: (href: "03-plasma-oscillations.html", title: [Plasma oscillations]),
     next: (href: "05-single-particle-motion.html", title: [Single-particle motion]),
