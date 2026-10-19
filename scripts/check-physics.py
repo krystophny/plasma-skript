@@ -388,5 +388,77 @@ class EmWavePlasmaPhysics(unittest.TestCase):
             self.assertLess(np.max(np.abs(peak - theory)), 0.02, run)
 
 
+class CouplingTestParticlePhysics(unittest.TestCase):
+    """Frozen one-component plasma: x in a, t in a/v_th, E in k_B T."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("coupling_test_particle.py")
+        cls.charges, cls.radius = cls.m["frozen_charges"]()
+        cls.runs = {g: cls.m["trajectories"](g) for g in cls.m["GAMMAS"]}
+
+    def test_neutral_density_and_gauss_background(self):
+        m, charges, radius = self.m, self.charges, self.radius
+        self.assertAlmostEqual(4*np.pi/3*radius**3, len(charges), places=9)
+        # Uniform sphere of charge N alone: Gauss gives |a| = (Gamma/2) N (r/R)^3/r^2.
+        x = np.array([[1.3, -2.0, 0.4], [0.0, 3.1, -1.7]])
+        acc = m["acceleration"](x, np.empty((0, 3)), 0.7)
+        r = np.linalg.norm(x, axis=1)
+        gauss = -0.35*len(charges)*(r/radius)**3/r**3
+        np.testing.assert_allclose(acc, gauss[:, None]*x, rtol=1e-12)
+
+    def test_force_is_minus_half_gradient_of_energy(self):
+        m = self.m
+        x = np.array([[-3.5, 0.1, 0.0], [0.37, -1.21, 0.0], [2.2, 1.9, 0.3]])
+        h = 1e-5
+        grad = np.zeros_like(x)
+        for k in range(3):
+            e = np.zeros(3); e[k] = h
+            grad[:, k] = (m["potential_energy"](x + e, self.charges, self.radius, 1.0)
+                          - m["potential_energy"](x - e, self.charges, self.radius, 1.0))/(2*h)
+        np.testing.assert_allclose(m["acceleration"](x, self.charges, 1.0), -grad/2,
+                                   rtol=1e-6, atol=1e-8)
+
+    def test_energy_conserved_and_paths_planar(self):
+        m = self.m
+        for gamma, (t, x, v, _) in self.runs.items():
+            e = np.array([m["energy"](x[k], v[k], self.charges, self.radius, gamma)
+                          for k in range(len(t))])
+            self.assertLess(np.max(np.abs(e - e[0])), 1e-6, gamma)
+            self.assertLess(np.max(np.abs(x[..., 2])), 1e-9, gamma)
+            self.assertLess(np.max(np.linalg.norm(x, axis=2)), self.radius - 2.0, gamma)
+
+    def test_launch_points_in_potential_valleys(self):
+        m = self.m
+        x0 = self.runs[1.0][1][0]
+        self.assertLessEqual(np.max(m["potential_energy"](x0, self.charges, self.radius, 1.0)), 0.0)
+        distance = np.linalg.norm(x0[:, None] - self.charges[None], axis=2)
+        self.assertGreaterEqual(distance.min(), 0.5)
+
+    def test_weak_limit_matches_straight_line_impulse(self):
+        # First-order (impulse) approximation, independent direct Coulomb sum
+        # along the unperturbed line; its error is O(Gamma).
+        m, gamma = self.m, 1e-4
+        _, _, v, _ = m["trajectories"](gamma)
+        ts = np.linspace(0.0, m["T_END"], 7001)
+        for j, y0 in enumerate(m["LAUNCH_Y"]):
+            p = np.column_stack([m["LAUNCH_X"] + ts, np.full_like(ts, y0), np.zeros_like(ts)])
+            acc = np.zeros_like(p)
+            for c in np.array_split(self.charges, 8):
+                d = p[:, None, :] - c[None]
+                acc += np.sum(d/np.sum(d*d, axis=2)[..., None]**1.5, axis=1)
+            acc = 0.5*gamma*(acc - 4*np.pi/3*p)
+            dv = np.trapezoid(acc, ts, axis=0)
+            error = np.linalg.norm(v[-1, j] - [1, 0, 0] - dv)/np.linalg.norm(dv)
+            self.assertLess(error, 0.02, y0)
+
+    def test_strong_coupling_deflects_much_more(self):
+        m = self.m
+        angles = {g: m["deflection_angles"](v) for g, (_, _, v, _) in self.runs.items()}
+        self.assertGreater(angles[1.0].mean(), 1.0)
+        self.assertLess(angles[0.01].mean(), 0.1)
+        self.assertGreater(angles[1.0].mean(), 10*angles[0.01].mean())
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
