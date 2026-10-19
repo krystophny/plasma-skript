@@ -139,6 +139,13 @@
     $lambda_D\/L << 1$ for the system or gradient length $L$.
   ]
 
+  #exam-prompts(
+    (
+      [(d) A spherical region of complete charge separation has a potential $Phi(r) = (N q_e / epsilon_0) r^2$ at its boundary. What size can such a region roughly have in a thermal plasma of temperature $T$ (potential energy = thermal energy)?],
+    ),
+    [Plasma Physics Exam.pdf, p. 1],
+  )
+
   #knowledge-check((
     (
       question: [How does $N_D$ scale with the electron density $n_e$ at fixed $T_e$, and with $T_e$ at fixed $n_e$? Which corner of the density--temperature plane violates $N_D >> 1$?],
@@ -362,7 +369,6 @@
 
   #exam-prompts(
     (
-      [(d) A spherical region of complete charge separation has a potential $Phi(r) = (N q_e / epsilon_0) r^2$ at its boundary. What size can such a region roughly have in a thermal plasma of temperature $T$ (potential energy = thermal energy)?],
       [(e) Describe and give an overview of the derivation for Debye shielding.],
       [(i) Estimate the plasma frequency $omega_p$ from thermal velocity $v_t$ and Debye length $lambda_D$.],
     ),
