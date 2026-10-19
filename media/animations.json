@@ -37,8 +37,6 @@
       "appearance": "dark"
     },
     "coupling-test-particle": {
-      "supplementary_chapter": "chapters/04-debye-shielding.html",
-      "supplementary_description": "Four test electrons start 0.2 mean spacings apart at the thermal speed v_th = sqrt(2 k_B T/m_e) through the same frozen electrons with a uniform positive neutralizing background (no screening response), in two panels that differ only in the coupling parameter Gamma, the Coulomb energy of neighbours at the mean spacing a = n^(-1/3) divided by k_B T. At Gamma = 1 single neighbours deflect the electrons by about a radian, they rattle in cages and separate; at Gamma = 0.01 the paths stay nearly straight and parallel. Exact Coulomb forces in three dimensions; the frozen configuration is mirror-symmetric about the drawing plane, so the paths stay in it, and the electrons within one spacing of that plane are drawn. Lengths in a and the time t v_th/a are normalized, with unit [1].",
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coupling_test_particle.mp4",
       "poster": "media/posters/coupling-test-particle.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/coupling-test-particle.html",

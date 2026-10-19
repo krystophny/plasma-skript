@@ -90,8 +90,24 @@
   wherever electrons happen to crowd or thin out, a net charge appears and is
   undone again. The estimate fixes their largest size,
   $R approx sqrt(3) lambda_D$ with the Debye length
-  $lambda_D = sqrt(epsilon_0 k_B T_e\/(n_0 e^2))$, and the number of
-  particles inside that size decides how the plasma behaves. If the sphere
+  $lambda_D = sqrt(epsilon_0 k_B T_e\/(n_0 e^2))$.
+
+  #animation(
+    "../media/thermal-charge-fluctuations.mp4",
+    "Colour map of the net charge density in one plane of a periodic cube of electrons in thermal equilibrium, without any test charge: red where electrons are missing, blue where they crowd, dark background where the plasma is neutral. Light dots are the electrons of a thin slab around the plane. Red and blue patches about one Debye length across, of about a tenth of the background charge density, appear and dissolve within a few inverse plasma frequencies. A bar shows the Debye length; a clock shows the normalized time. The charge density is normalized by e n0 and time by the inverse plasma frequency, with unit [1].",
+    caption: [
+      Thermal charge fluctuations, computed with kin6d. 6480 electrons of a
+      classical one-component plasma in a periodic cube of edge
+      $6 lambda_D$ with $n_0 lambda_D^3 = 30$, unsoftened Coulomb force, no
+      test charge. Colour: net charge density $rho\/(e n_0)$ [1] in the
+      plane $z = 0$, smoothed with a Gaussian of width $0.4 lambda_D$; red
+      marks an electron deficit, blue an excess. Dots: electrons with
+      $abs(z) < 0.4 lambda_D$. Time is $omega_(p,e) t$ [1].
+    ],
+    poster: "../media/thermal-charge-fluctuations.png",
+  )
+
+  The number of particles inside that size decides how the plasma behaves. If the sphere
   holds about one particle, $lambda_D tilde a$ with mean spacing
   $a = n_0^(-1\/3)$, then a single neighbour already carries an energy of
   order $k_B T_e$: encounters are strong and the particles are correlated. If
@@ -110,6 +126,22 @@
     it justifies the ideal-gas pressure $p_s = n_s k_B T_s$ and a mean
     potential $Phi$.
   ]
+
+  #animation(
+    "../media/coupling-test-particle.mp4",
+    "Two panels with the same frozen electrons on a uniform positive background and the same four test electrons, launched side by side at the thermal speed from the left. Left, coupling parameter Gamma = 1: single neighbours deflect the test electrons by about a radian, the paths kink, rattle in cages and separate. Right, Gamma = 0.01: the paths stay nearly straight and parallel. A bar shows the mean spacing a; a clock shows the normalized time. Lengths are normalized by a and time by a over the thermal speed, with unit [1].",
+    caption: [
+      Strong and weak coupling. Test electrons cross frozen electrons on a
+      uniform neutralizing background, at $Gamma_e = 1$ (left) and
+      $Gamma_e = 0.01$ (right); configuration, launch points and clock are
+      identical. The frozen charges do not move and do not screen. Exact
+      three-dimensional Coulomb forces; the paths stay in the drawn plane by
+      mirror symmetry of the frozen configuration. Lengths are in units of
+      $a$ and time is $t v_("th,e")\/a$ with
+      $v_("th,e") = sqrt(2 k_B T_e\/m_e)$, all with unit [1].
+    ],
+    poster: "../media/coupling-test-particle.png",
+  )
 
   The same condition counts particles: the Debye number, the number of
   electrons within a sphere of radius $lambda_D$, must be large,

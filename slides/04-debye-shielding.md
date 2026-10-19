@@ -9,8 +9,8 @@ The site build exports the same pages as SVG and PDF, with inline animations and
 ## Page sequence
 
 Delivery: title, whiteboard rigid sphere, charge-separation page, thermal
-fluctuation animation, whiteboard coupling (neighbour energy versus k_B T),
-coupling page, Debye number, regime map, ideal plasma, point-charge
+fluctuation animation, coupling animation, whiteboard coupling (neighbour
+energy versus k_B T), coupling page, Debye number, regime map, ideal plasma, point-charge
 animation, whiteboard Boltzmann derivation,
 derivation overview, comparison page. The board plan is
 `~/Nextcloud/lv/lecturer/plasma/board/04-debye-shielding.typ`.
@@ -20,14 +20,15 @@ derivation overview, comparison page. The board plan is
 | 1 | Title | static | debye-shielding | Screening opener. |
 | 2 | Charge separation | static | debye-collective-validity | Before the animation: electron-free sphere, last electron out, R of order lambda_D (2025 pp. 21-22). |
 | 3 | Thermal charge fluctuations | animation | debye-collective-validity | After the rigid sphere: no test charge; thermal motion alone opens red/blue regions of size lambda_D (kin6d). |
-| 4 | Weak and strong coupling | static | debye-collective-validity | After the whiteboard coupling: one particle versus many in the sphere; Gamma from the neighbour energy. |
-| 5 | Debye number | static | debye-collective-validity | Rewrite weak coupling as N_D >> 1 (2025 pp. 39-40). |
-| 6 | Plasma regime map | static | debye-collective-validity | Typical lambda_D and plasmas; N_D = 1 line. |
-| 7 | Ideal plasma | static | debye-collective-validity | Exam question (g): N_D >> 1 and lambda_D << L (2025 pp. 41, 43). |
-| 8 | Debye shielding from particles | animation | intro-debye-shielding | After the whiteboard physics; the cloud is an average, no hole in one snapshot. |
-| 9 | Debye shielding | static | intro-debye-shielding | Read after the whiteboard derivation (2025 pp. 31-37): force balance, Poisson, linearize, a(r)/r, Debye-Hückel potential. |
-| 10 | Charge separation and screening | static | intro-debye-shielding | Rigid sphere next to the point-charge response (2025 p. 38), Debye length. |
-| 11 | Debye length and plasma frequency | static | intro-debye-shielding | Knowing v_th and omega_pe gives lambda_D (2025 p. 22); fusion example 10 keV, 1e20 m^-3. |
+| 4 | Coupling test particles | animation | debye-collective-validity | Same frozen electrons at Gamma = 1 and 0.01: single neighbours deflect by a radian versus nearly straight paths. |
+| 5 | Weak and strong coupling | static | debye-collective-validity | After the whiteboard coupling: one particle versus many in the sphere; Gamma from the neighbour energy. |
+| 6 | Debye number | static | debye-collective-validity | Rewrite weak coupling as N_D >> 1 (2025 pp. 39-40). |
+| 7 | Plasma regime map | static | debye-collective-validity | Typical lambda_D and plasmas; N_D = 1 line. |
+| 8 | Ideal plasma | static | debye-collective-validity | Exam question (g): N_D >> 1 and lambda_D << L (2025 pp. 41, 43). |
+| 9 | Debye shielding from particles | animation | intro-debye-shielding | After the whiteboard physics; the cloud is an average, no hole in one snapshot. |
+| 10 | Debye shielding | static | intro-debye-shielding | Read after the whiteboard derivation (2025 pp. 31-37): force balance, Poisson, linearize, a(r)/r, Debye-Hückel potential. |
+| 11 | Charge separation and screening | static | intro-debye-shielding | Rigid sphere next to the point-charge response (2025 p. 38), Debye length. |
+| 12 | Debye length and plasma frequency | static | intro-debye-shielding | Knowing v_th and omega_pe gives lambda_D (2025 p. 22); fusion example 10 keV, 1e20 m^-3. |
 
 Rebuilt from scratch on 2026-10-13. The 2025 fluid preliminaries (pp. 25-30:
 conservation laws, Euler and Lagrange derivatives) are saved for the moments
@@ -55,6 +56,16 @@ are missing ($\rho>0$), blue where they crowd ($\rho<0$). The dots are the
 electrons of the slab $|z|<0.4\lambda_D$; a bar shows $\lambda_D$. Patches
 of size $\sim\lambda_D$ and amplitude $\sim 0.1\,e n_0$ appear and dissolve
 within a few $1/\omega_p$. Page 3, after the rigid-sphere estimate. It loops.
+The script shows it in §4.1.
+
+## Coupling animation
+
+The `coupling-test-particle` scene (`animations/coupling_test_particle.py`)
+sends four test electrons at the thermal speed through the same frozen
+electrons on a uniform positive background, side by side at $\Gamma=1$ and
+$\Gamma=0.01$. Lengths are in units of the mean spacing $a$ [1], time is
+$t v_{th}/a$ [1]. Page 4, before the whiteboard coupling. The script shows it
+in §4.1.
 
 ## Particle animation
 
@@ -64,5 +75,5 @@ a periodic one-component plasma, with $n\lambda_D^3=100$ ($N_D\approx 420$),
 around a fixed repulsive charge. The normalized deficit
 $-\delta n_e/(\kappa n_0)$ [1] approaches the periodic Debye response after
 time and ensemble averaging; one snapshot does not reveal the screening
-cloud. Page 8, after the plasma-parameter pages. It plays once, because
+cloud. Page 9, after the plasma-parameter pages. It plays once, because
 the average converges to its final state. The script shows it in §4.1.
