@@ -11,6 +11,8 @@
   ]
   #at(7, 5, y: 82mm, result-box(align(center, $r_0 approx sqrt(3) lambda_D$), [largest separated region]))
 ]
+#animation-page("thermal-charge-fluctuations", "thermal_charge_fluctuations", section: "debye-collective-validity")
+#animation-page("coupling-test-particle", "coupling_test_particle", section: "debye-collective-validity")
 #slide(section: "debye-collective-validity", title: [Weak and strong coupling])[
   #at(1, 6, align(center)[$lambda_D tilde a$: strong])
   #at(7, 6, align(center)[$lambda_D >> a$: weak])
