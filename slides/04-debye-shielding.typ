@@ -11,6 +11,13 @@
   ]
   #at(7, 5, y: 82mm, result-box(align(center, $r_0 approx sqrt(3) lambda_D$), [largest separated region]))
 ]
+#slide(section: "intro-debye-shielding", title: [Weak and strong coupling])[
+  #at(1, 6, align(center)[$lambda_D tilde a$: strong])
+  #at(7, 6, align(center)[$lambda_D >> a$: weak])
+  #at(1, 6, y: 14mm, debye-sphere(1, 11, 3.4mm, exact: true))
+  #at(7, 6, y: 14mm, debye-sphere(30, 5, 2.2mm))
+  #at(3, 8, y: 132mm, align(center, $Gamma = (e^2 \/ (4 pi epsilon_0 a))/(k_B T_e) = a^2/(4 pi lambda_D^2), quad a = n_0^(-1\/3)$))
+]
 #animation-page("debye-shielding-particles", "debye_shielding_particles", section: "intro-debye-shielding", loop: false)
 #slide(section: "intro-debye-shielding", title: [Debye shielding])[
   #let row(label, f) = ([#text(fill: muted, label)], f)

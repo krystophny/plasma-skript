@@ -85,6 +85,28 @@
 
   #charge-separation-energy
 
+  Thermal motion opens such regions continually, without any external charge:
+  wherever electrons happen to crowd or thin out, a net charge appears and is
+  undone again. The estimate fixes their largest size, and the number of
+  particles inside that size decides how the plasma behaves. If the sphere of
+  radius $R$ holds about one particle, $lambda_D tilde a$ with mean spacing
+  $a = n_0^(-1\/3)$, then a single neighbour already carries an energy of order
+  $k_B T_e$: encounters are strong and the particles are correlated. If it
+  holds many, $lambda_D >> a$, the energy $k_B T_e$ is shared among many
+  charges and each neighbour contributes only
+
+  $ (e^2 \/ (4 pi epsilon_0 a))/(k_B T_e) = a^2/(4 pi lambda_D^2) << 1 . $ <debye-coupling-estimate>
+
+  #equation-note[
+    Both sides are dimensionless. The left side compares the Coulomb energy of
+    a neighbour at distance $a$, in #unit("J"), with the thermal energy. In this
+    weakly coupled case each electron moves nearly freely and feels the smooth
+    field of many charges; this justifies the ideal-gas pressure
+    $p_e = n_e k_B T_e$ and the mean potential $Phi$ used below. The
+    #chapter-link("debye-collective-validity")[plasma parameter] section
+    states the condition in terms of the Debye number.
+  ]
+
   #assumption(
     [Linearized Boltzmann response],
     [Take a uniform, stationary ion background with $n_i = n_0$, mobile

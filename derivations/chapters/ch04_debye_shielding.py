@@ -53,6 +53,11 @@ inside_sep = show(sp.Eq(phi_inner, phi_R + sp.Integral(E_r.subs(r, s), (s, r, R)
 phi_sep_in = agrees(sp.factor(inside_sep.rhs.doit()), N * e * (3 * R**2 - r**2) / (6 * eps0), lhs=phi_inner)
 check(phi_sep_in, phi_sep_in, unit=u.volt, units=SI_UNITS)
 phi_sep_out = Q_r.subs(r, R) / (4 * sp.pi * eps0 * r)
+note("Neighbour energy at the mean spacing", sp.Eq(a, n0**sp.Rational(-1, 3)), "against the thermal energy")
+coupling = (e**2 / (4 * sp.pi * eps0 * a) / (k_B * T_e)).subs(a, n0**sp.Rational(-1, 3))
+agrees(sp.simplify(coupling - (a**2 / (4 * sp.pi * lambda_D**2)).subs(
+    {a: n0**sp.Rational(-1, 3), lambda_D: sp.sqrt(eps0 * k_B * T_e / (n0 * e**2))})), 0,
+    lhs=sp.Symbol("Gamma") - a**2 / (4 * sp.pi * lambda_D**2), eq="debye-coupling-estimate")
 
 # %% Debye length
 section("Debye length", script="intro-debye-shielding")
