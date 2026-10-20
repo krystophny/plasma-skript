@@ -12,14 +12,14 @@
   #at(7, 5, y: 82mm, result-box(align(center, $r_0 approx sqrt(3) lambda_D$), [largest separated region]))
 ]
 #animation-page("thermal-charge-fluctuations", "thermal_charge_fluctuations", section: "debye-collective-validity")
-#animation-page("coupling-test-particle", "coupling_test_particle", section: "debye-collective-validity")
+#animation-page("coupling-regions", "coupling_regions", section: "debye-collective-validity", loop: false)
 #slide(section: "debye-collective-validity", title: [Weak and strong coupling])[
-  #at(1, 6, align(center, coupling-heading(0, [strong])))
-  #at(7, 6, align(center, coupling-heading(1, [weak])))
-  #at(1, 6, y: 13mm, coupling-still(0, cols(6)))
-  #at(7, 6, y: 13mm, coupling-still(1, cols(6)))
-  #at(1, 2, y: 112mm, coupling-bar(cols(6)))
-  #at(3, 8, y: 116mm, align(center, $Gamma_e = (e^2 \/ (4 pi epsilon_0 a))/(k_B T_e) = a^2/(4 pi lambda_D^2), quad a = n_0^(-1\/3)$))
+  #at(1, 6, align(center, coupling-heading(0)))
+  #at(7, 6, align(center, coupling-heading(1)))
+  #at(1, 6, y: 11mm, align(center, coupling-still(0, cols(5))))
+  #at(7, 6, y: 11mm, align(center, coupling-still(1, cols(5))))
+  #at(1, 3, y: 118mm, pad(left: (cols(6) - cols(5)) / 2, coupling-bar(cols(5))))
+  #at(3, 8, y: 120mm, align(center, $Gamma_e = (e^2 \/ (4 pi epsilon_0 a))/(k_B T_e) = a^2/(4 pi lambda_D^2), quad a = n_0^(-1\/3)$))
 ]
 #slide(section: "debye-collective-validity", title: [Debye number])[
   #at(2, 10, y: 14mm, align(center, $Gamma_e N_D^(2\/3) = (36 pi)^(-1\/3) approx 0.21$))
@@ -55,6 +55,7 @@
   #at(7, 6, y: 24mm, align(center, plot("debye_potential", columns: 5)))
   #at(1, 12, y: 122mm, align(center, text(size: result-size, $lambda_D = sqrt((epsilon_0 k_B T_e)/(n_0 e^2))$)))
 ]
+#animation-page("coupling-test-particle", "coupling_test_particle", section: "intro-debye-shielding")
 #slide(section: "intro-debye-shielding", title: [Debye length and plasma frequency])[
   #at(3, 8, y: 14mm, result-box(align(center, $lambda_D = v_("th",e)/(sqrt(2) thin omega_(p e))$), [$v_("th",e) = sqrt(2 k_B T_e\/m_e)$]))
   #at(1, 12, y: 84mm, align(center)[

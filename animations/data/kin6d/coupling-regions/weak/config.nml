@@ -1,0 +1,13 @@
+! Lecture animation coupling-regions (weak panel): same density n_0 as the
+! other panel, temperature set through Lambda = n lambda_D^3 = (lambda_D/a)^3.
+! Periodic cube of edge 18 a = 6.0 lambda_D, N = 5832, no impurity (kappa = 0).
+! 12/omega_p of Hamiltonian sampling at 0.1/omega_p (120 frames), 2 members.
+&ocp_shielding
+ label='coupling-regions-weak',
+ debye_volumes=27.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+ impurities=0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+ average_times=12.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+ members=2, 0, 0, 0, 0, 0,
+ box=6.0,
+ sample_interval=0.1
+/

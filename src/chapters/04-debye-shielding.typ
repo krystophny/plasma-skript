@@ -128,23 +128,25 @@
   ]
 
   #animation(
-    "../media/coupling-test-particle.mp4",
-    "Two panels with the same frozen electrons on a uniform positive background and the same test electron, launched at the thermal speed from the left. A circle of radius lambda_D moves with the test electron; frozen electrons inside it are blue, the others grey. Left, coupling parameter Gamma_e = 0.08, lambda_D about a: about three electrons lie inside the circle, and single neighbours deflect the test electron by about two radians. Right, Gamma_e = 0.009, lambda_D about 3a: about thirty electrons lie inside the circle, and the path stays nearly straight. A bar shows the mean spacing a; a clock shows the normalized time. Lengths are normalized by a and time by a over the thermal speed, with unit [1].",
+    "../media/coupling-regions.mp4",
+    "Two panels at the same electron density and different temperature, each a colour map of the net charge density in one plane of a periodic cube of electrons in thermal equilibrium: red where electrons are missing, blue where they crowd. Light dots are the electrons of a thin slab around the plane. Left, low temperature T0, coupling parameter Gamma_e = 0.08 and Debye length a: small red and blue regions with one or a few electrons each. Right, temperature 9 T0, Gamma_e = 0.009 and Debye length 3a: regions several spacings across with many electrons each. The electrons move, then the picture freezes, and one electron of each panel runs through the frozen charges at its thermal speed: it is deflected strongly on the left and moves nearly straight on the right before it leaves the panel. A bar shows the mean spacing a; a clock shows the normalized time. Time is normalized by the inverse plasma frequency, with unit [1].",
     caption: [
-      Strong and weak coupling. A test electron crosses frozen electrons on a
-      uniform neutralizing background, at $Gamma_e = 0.08$, $lambda_D approx a$
-      (left) and $Gamma_e = 0.009$, $lambda_D approx 3 a$ (right), with
-      $lambda_D \/ a = (4 pi Gamma_e)^(-1\/2)$; configuration, launch point
-      and clock are identical. The circle of radius $lambda_D$ moves with the test electron;
-      the drawn electrons (the slab $0 < z < a$) inside it are blue, about
-      $pi lambda_D^2 \/ a^2$ of them: few at strong, many at weak coupling.
-      The frozen charges do not move and do not screen. Exact
-      three-dimensional Coulomb forces; the paths stay in the drawn plane by
-      mirror symmetry of the frozen configuration. Lengths are in units of
-      $a$ and time is $t v_("th,e")\/a$ with
-      $v_("th,e") = sqrt(2 k_B T_e\/m_e)$, all with unit [1].
+      Weak and strong coupling at equal density, computed with kin6d. 5832
+      electrons of a classical one-component plasma in a periodic cube of
+      edge $18 a$, unsoftened Coulomb force, no test charge, at $T_e = T_0$
+      ($Gamma_e = 0.08$, $lambda_D = a$, left) and $T_e = 9 T_0$
+      ($Gamma_e = 0.009$, $lambda_D = 3 a$, right), with
+      $lambda_D \/ a = (4 pi Gamma_e)^(-1\/2)$. Colour: net charge density
+      in the plane $z = 0$, smoothed with a Gaussian of width
+      $lambda_D \/ 2$, red for an electron deficit, blue for an excess;
+      each panel is scaled to its own fluctuation level, about five times
+      larger at strong coupling. Dots: electrons with $abs(z) < a\/2$. After
+      $omega_(p,e) t = 12$ the electrons are frozen and one of them is
+      launched at $v_("th,e") = sqrt(2 k_B T_e\/m_e)$ through the frozen
+      charges and the background; its three-dimensional path is drawn in
+      projection. Time is $omega_(p,e) t$ [1].
     ],
-    poster: "../media/coupling-test-particle.png",
+    poster: "../media/coupling-regions.png",
   )
 
   The same condition counts particles: the Debye number, the number of
@@ -324,6 +326,26 @@
   rearrange until the Coulomb tail is cut off beyond $lambda_D$. An extended
   source much smaller than $lambda_D$ is screened like a point charge of the
   same total charge.
+
+  #animation(
+    "../media/coupling-test-particle.mp4",
+    "Two panels with the same frozen electrons on a uniform positive background and the same test electron, launched at the thermal speed from the left. A circle of radius lambda_D moves with the test electron; frozen electrons inside it are blue, the others grey. Left, coupling parameter Gamma_e = 0.08, lambda_D about a: about three electrons lie inside the circle, and single neighbours deflect the test electron by about two radians. Right, Gamma_e = 0.009, lambda_D about 3a: about thirty electrons lie inside the circle, and the path stays nearly straight. A bar shows the mean spacing a; a clock shows the normalized time. Lengths are normalized by a and time by a over the thermal speed, with unit [1].",
+    caption: [
+      Strong and weak coupling with the Debye circle. A test electron crosses frozen electrons on a
+      uniform neutralizing background, at $Gamma_e = 0.08$, $lambda_D approx a$
+      (left) and $Gamma_e = 0.009$, $lambda_D approx 3 a$ (right), with
+      $lambda_D \/ a = (4 pi Gamma_e)^(-1\/2)$; configuration, launch point
+      and clock are identical. The circle of radius $lambda_D$ moves with the test electron;
+      the drawn electrons (the slab $0 < z < a$) inside it are blue, about
+      $pi lambda_D^2 \/ a^2$ of them: few at strong, many at weak coupling.
+      The frozen charges do not move and do not screen. Exact
+      three-dimensional Coulomb forces; the paths stay in the drawn plane by
+      mirror symmetry of the frozen configuration. Lengths are in units of
+      $a$ and time is $t v_("th,e")\/a$ with
+      $v_("th,e") = sqrt(2 k_B T_e\/m_e)$, all with unit [1].
+    ],
+    poster: "../media/coupling-test-particle.png",
+  )
 
   #animation(
     "../media/debye-shielding.mp4",

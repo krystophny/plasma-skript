@@ -25,6 +25,14 @@ def model(filename):
     namespace = {"np": np, "math": math, "PI": np.pi, "TAU": 2 * np.pi}
     if any(isinstance(node, ast.ImportFrom) and node.module == "kin6d_data" for node in tree.body):
         namespace["Export"] = runpy.run_path(str(ROOT / "animations/kin6d_data.py"))["Export"]
+    for node in tree.body:
+        # Numerical names imported from another scene module.
+        if isinstance(node, ast.ImportFrom) and node.module and \
+                (ROOT / "animations" / (node.module + ".py")).is_file() and \
+                node.module not in ("style", "kin6d_data"):
+            source = model(node.module + ".py")
+            namespace.update({a.asname or a.name: source[a.name] for a in node.names
+                              if a.name in source})
     numerical_names = set(namespace)
     nodes = []
     for node in tree.body:
@@ -532,12 +540,115 @@ class CouplingTestParticlePhysics(unittest.TestCase):
             expected = np.pi*m["debye_radius"](gamma)**2
             self.assertLess(abs(np.mean(counts) - expected), 0.35*expected + 1.5, gamma)
 
+
+
+class CouplingRegionsPhysics(unittest.TestCase):
+    """kin6d runs at equal density and two temperatures; test electron in a, 1/omega_p."""
+
+    NEAREST = 5     # candidates closest to the mid-line integrated per panel
+
+    @classmethod
+    def setUpClass(cls):
+        m = cls.m = model("coupling_regions.py")
+        cls.runs = [m["load_run"](slug, lam) for slug, lam in m["RUNS"]]
+        cls.flights = []
+        for p, (pos, _) in enumerate(cls.runs):
+            points, lam = pos[:, :, -1], m["RUNS"][p][1]
+            cand = m["launch_candidates"](points)
+            cand = cand[np.argsort(np.abs(points[1, cand]))][:cls.NEAREST]
+            cls.flights.append({int(j): m["test_trajectory"](points, j, lam) for j in cand})
+
+    def test_equal_density_and_temperature_ratio(self):
+        # Gamma_e = a^2/(4 pi lambda_D^2) and lambda_D^2 = k_B T/(m omega_p^2):
+        # same N in the same cube of edge 18 a, T_weak/T_strong = 9.
+        m = self.m
+        (strong, _), (weak, _) = self.runs
+        self.assertEqual(strong.shape[1], weak.shape[1])
+        self.assertAlmostEqual(strong.shape[1]/m["BOX"]**3, 1.0, places=12)
+        for _, lam in m["RUNS"]:
+            self.assertAlmostEqual(m["debye_length"](m["coupling"](lam)), lam, places=12)
+        lams = [lam for _, lam in m["RUNS"]]
+        self.assertAlmostEqual((lams[1]/lams[0])**2, 9.0)
+        # Kinetic temperature of the data: <v_i^2> = k_B T/m = lambda_D^2 omega_p^2.
+        for (pos, t), lam in zip(self.runs, lams):
+            dx = np.diff(pos, axis=2)
+            dx -= m["BOX"]*np.round(dx/m["BOX"])
+            v2 = np.mean((dx/np.diff(t))**2)
+            self.assertLess(abs(v2/lam**2 - 1), 0.03, lam)
+
+    def test_fluctuations_follow_debye_hueckel(self):
+        # Independent theory (thermal-fluctuation scene): variance of the
+        # smoothed charge density for S = k^2/(k^2 + 1) in lambda_D units; the
+        # uncorrelated ideal gas (S = 1) is excluded at both temperatures.
+        m = self.m
+        th = model("thermal_charge_fluctuations.py")
+        for (pos, _), (_, lam) in zip(self.runs, m["RUNS"]):
+            fields = m["run_fields"](pos[:, :, ::4], lam, 90)
+            variance = np.mean(fields.var(axis=(0, 1)))
+            box, n0, sigma = m["BOX"]/lam, lam**3, m["SIGMA_DEBYE"]
+            debye = th["debye_hueckel_variance"](box, sigma, n0)
+            ideal = th["debye_hueckel_variance"](box, sigma, n0, lambda k2: np.ones_like(k2))
+            self.assertLess(abs(variance/debye - 1), 0.1, lam)
+            self.assertLess(variance/ideal, 0.85, lam)
+
+    def test_force_is_minus_gradient_and_energy_conserved(self):
+        m = self.m
+        j, (t, x, v, charges) = next(iter(self.flights[0].items()))
+        h = 1e-5
+        x0 = x[len(x)//2]
+        grad = np.array([(m["test_energy"](x0 + h*e, np.zeros(3), charges)
+                          - m["test_energy"](x0 - h*e, np.zeros(3), charges))/(2*h)
+                         for e in np.eye(3)])
+        np.testing.assert_allclose(m["test_acceleration"](x0, charges), -grad, rtol=1e-5,
+                                   atol=1e-8)
+        self.assertAlmostEqual(4*np.pi/3*m["background_radius"](charges)**3, len(charges))
+        for flights in self.flights:
+            for t, x, v, charges in flights.values():
+                e = [m["test_energy"](x[k], v[k], charges) for k in (0, len(t)//2, len(t) - 1)]
+                self.assertLess(np.max(np.abs(np.array(e) - e[0])), 1e-6)
+
+    def test_launch_choice_and_thermal_speed(self):
+        # LAUNCH: the candidate closest to y = 0 whose drawn path stays within
+        # |z| < Z_LIMIT (strong: also inside the window for the whole flight).
+        m = self.m
+        for p, flights in enumerate(self.flights):
+            points = self.runs[p][0][:, :, -1]
+            chosen = None
+            for j in sorted(flights, key=lambda j: abs(points[1, j])):
+                t, x, v, _ = flights[j]
+                n = m["drawn_samples"](x)
+                ok = np.max(np.abs(x[:n, 2])) < m["Z_LIMIT"]
+                if p == 0:
+                    ok = ok and m["drawn_samples"](x, m["WINDOW_MARGIN"]) == len(t) \
+                        and t[-1] >= m["T_TEST"] - 1e-9
+                if ok:
+                    chosen = j
+                    break
+            self.assertEqual(chosen, m["LAUNCH"][p])
+            v0 = flights[chosen][2][0]
+            self.assertAlmostEqual(np.linalg.norm(v0), np.sqrt(2)*m["RUNS"][p][1])
+
+    def test_strong_coupling_deflects_much_more(self):
+        m = self.m
+        median = []
+        for flights in self.flights:
+            angles = [m["deflection"](v, m["drawn_samples"](x)) for _, x, v, _ in flights.values()]
+            median.append(np.median(angles))
+        self.assertGreater(median[0], 0.5)
+        self.assertLess(median[1], 0.3)
+        self.assertGreater(median[0], 3*median[1])
+
     def test_slide_still_matches_animation(self):
-        stored = json.loads((ROOT/"slides/coupling-still.json").read_text())
-        fresh = self.m["still_data"]()
-        self.assertEqual(stored["panels"], json.loads(json.dumps(fresh["panels"])))
-        np.testing.assert_allclose(stored["points"], fresh["points"], atol=1e-9)
-        self.assertEqual(stored["centre"], list(fresh["centre"]))
+        stored = json.loads((ROOT/"slides/coupling-regions.json").read_text())
+        record, images = self.m["still_data"]()
+        self.assertEqual(stored, json.loads(json.dumps(record)))
+        try:
+            from PIL import Image
+        except ImportError:
+            self.skipTest("Pillow not available")
+        for p, image in enumerate(images):
+            saved = np.asarray(Image.open(ROOT/f"slides/coupling-regions-{p}.png").convert("RGB"))
+            np.testing.assert_array_equal(saved, image)
 
 
 if __name__ == "__main__":

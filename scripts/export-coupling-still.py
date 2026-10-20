@@ -1,23 +1,34 @@
 #!/usr/bin/env python3
-"""Write the launch frame of the coupling animation for the coupling slide.
+"""Write the frozen frame of the coupling-regions animation for the coupling slide.
 
-The slide still (slides/coupling-still.json) and the coupling-test-particle
-animation share frozen electrons, launch point, Debye radii and the inside
-flags; scripts/check-physics.py fails when the file is stale.
+slides/coupling-regions.json holds the drawn electrons, temperatures, Gamma_e,
+lambda_D/a and colour limits of both panels; slides/coupling-regions-<p>.png
+the net charge density on the white slide background with the animation's
+colour map and limits.  scripts/check-physics.py fails when they are stale.
 """
 import json
 from pathlib import Path
 import runpy
 
+import numpy as np
+from PIL import Image
+
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "slides/coupling-still.json"
+OUT = ROOT / "slides/coupling-regions.json"
+
+
+def image_path(p):
+    return ROOT / f"slides/coupling-regions-{p}.png"
 
 
 def still():
     model = runpy.run_path(str(ROOT / "scripts/check-physics.py"))["model"]
-    return model("coupling_test_particle.py")["still_data"]()
+    return model("coupling_regions.py")["still_data"]()
 
 
 if __name__ == "__main__":
-    OUT.write_text(json.dumps(still(), separators=(",", ":")) + "\n")
-    print("Wrote", OUT.relative_to(ROOT))
+    record, images = still()
+    OUT.write_text(json.dumps(record, separators=(",", ":")) + "\n")
+    for p, image in enumerate(images):
+        Image.fromarray(np.ascontiguousarray(image)).save(image_path(p), optimize=True)
+    print("Wrote", OUT.relative_to(ROOT), "and", len(images), "field images")
