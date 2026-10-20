@@ -38,6 +38,9 @@ scenes=(
   "thermal_charge_fluctuations.py|ThermalChargeFluctuations|thermal-charge-fluctuations|9.0"
   "coupling_test_particle.py|CouplingTestParticle|coupling-test-particle|13.0"
   "coupling_regions.py|CouplingRegions|coupling-regions|21.5"
+  "gyration.py|GyrationTopView|gyration-top-view|9.0"
+  "gyration.py|GyrationComponents|gyration-components|9.5"
+  "gyration.py|GyrationHelix|gyration-helix|11.0"
 )
 
 if [[ "${1:-}" == "--slugs" ]]; then

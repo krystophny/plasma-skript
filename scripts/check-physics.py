@@ -167,6 +167,132 @@ class MotionPhysics(unittest.TestCase):
         self.assertAlmostEqual(m["growth_rate"](np.sqrt(3/8)), 1/(2*np.sqrt(2)))
 
 
+def lorentz_rk4(sign, v0, theta_max, steps, omega=1.0):
+    """Integrate dv/dt = (q/m) v x B e_z with omega_c = 1, B along +z (RK4)."""
+    def rhs(state):
+        x, y, z, vx, vy, vz = state
+        return np.array([vx, vy, vz, sign*omega*vy, -sign*omega*vx, 0.0])
+    h = theta_max/steps
+    state = np.array([0.0, 0.0, 0.0, *v0])
+    out = [state]
+    for _ in range(steps):
+        k1 = rhs(state)
+        k2 = rhs(state + h/2*k1)
+        k3 = rhs(state + h/2*k2)
+        k4 = rhs(state + h*k3)
+        state = state + h/6*(k1 + 2*k2 + 2*k3 + k4)
+        out.append(state)
+    return np.linspace(0, theta_max, steps + 1), np.array(out)
+
+
+class GyrationPhysics(unittest.TestCase):
+    """animations/gyration.py and the gyration tables of slides/05."""
+
+    E, ME, MP = 1.602176634e-19, 9.1093837015e-31, 1.67262192369e-27
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("gyration.py")
+
+    def test_orbit_solves_lorentz_force(self):
+        orbit, velocity = self.m["gyro_orbit"], self.m["gyro_velocity"]
+        for sign in (+1, -1):
+            for phase in (0.0, 0.7):
+                v0 = [*velocity(0.0, sign, 1.0, phase), 0.0]
+                theta, s = lorentz_rk4(sign, v0, 6*np.pi, 6000)
+                start = orbit(0.0, sign, 1.0, phase)
+                x, y = orbit(theta, sign, 1.0, phase)
+                np.testing.assert_allclose(s[:, 0], x - start[0], atol=1e-9)
+                np.testing.assert_allclose(s[:, 1], y - start[1], atol=1e-9)
+                vx, vy = velocity(theta, sign, 1.0, phase)
+                np.testing.assert_allclose(s[:, 3], vx, atol=1e-9)
+                np.testing.assert_allclose(s[:, 4], vy, atol=1e-9)
+
+    def test_sense_of_rotation_is_diamagnetic(self):
+        # B out of the page (+z): ions clockwise, electrons counterclockwise.
+        # The orbit current's moment (q/2) r x v points against B for both.
+        orbit, velocity = self.m["gyro_orbit"], self.m["gyro_velocity"]
+        theta = np.linspace(0, 2*np.pi, 50)
+        for sign in (+1, -1):
+            x, y = orbit(theta, sign)
+            vx, vy = velocity(theta, sign)
+            l_z = x*vy - y*vx
+            self.assertTrue(np.all(-sign*l_z > 0.999), sign)
+            self.assertTrue(np.all(sign*l_z/2 < 0), sign)
+
+    def test_top_view_ratios(self):
+        m = self.m
+        ratio = m["MASS_RATIO"]
+        self.assertAlmostEqual(m["R_ION"]/m["R_ELECTRON"], np.sqrt(ratio))
+        self.assertEqual(m["frequency_ratio"](), ratio)
+        self.assertEqual(m["radius_ratio"](ratio), np.sqrt(ratio))
+        # The video loops: the electron completes an integer number of turns.
+        self.assertEqual((ratio*m["ION_TURNS"]) % 1, 0)
+        # Equal temperature: r_L = sqrt(2 m k T)/(|q| B), omega_c = |q| B/m.
+        kT, B = 1.0, 1.0
+        r = lambda mass: np.sqrt(2*mass*kT)/B
+        self.assertAlmostEqual(r(ratio)/r(1.0), m["radius_ratio"](ratio))
+
+    def test_helix_pitch_matches_parallel_motion(self):
+        m = self.m
+        pitch = m["HELIX_PITCH"]
+        v_par = pitch/(2*np.pi)
+        v0 = [*m["gyro_velocity"](0.0, +1), v_par]
+        theta, s = lorentz_rk4(+1, v0, 6*np.pi, 6000)
+        p = m["helix_point"](theta, +1)
+        start = m["helix_point"](0.0, +1)
+        np.testing.assert_allclose(s[:, :3], (p.T - start), atol=1e-9)
+        self.assertAlmostEqual(p[2][-1] - p[2][0], 3*pitch)
+
+    def boris_radius_period(self, mass, B, energy_ev):
+        """SI Boris push of one gyration: radius and period from the orbit itself."""
+        v = np.sqrt(2*energy_ev*self.E/mass)
+        omega = self.E*B/mass
+        dt = 2*np.pi/omega/4000
+        x, vel = np.zeros(2), np.array([v, 0.0])
+        xs, crossings = [], []
+        t = 0.0
+        for _ in range(8200):
+            tq = self.E*B/mass*dt/2
+            s = 2*tq/(1 + tq**2)
+            v_prime = vel + tq*np.array([vel[1], -vel[0]])
+            new = vel + s*np.array([v_prime[1], -v_prime[0]])
+            if vel[1] < 0 <= new[1] or vel[1] > 0 >= new[1]:
+                crossings.append(t)
+            vel = new
+            x = x + vel*dt
+            t += dt
+            xs.append(x.copy())
+        xs = np.array(xs)
+        radius = (xs[:, 0].max() - xs[:, 0].min())/2
+        period = crossings[2] - crossings[0]
+        return radius, period
+
+    def test_typical_parameters_and_slide_table(self):
+        path = ROOT/"derivations/build/gyration.json"
+        table = json.loads(path.read_text())["table"] if path.is_file() else None
+        rows = {}
+        for species, mass in (("e", self.ME), ("p", self.MP)):
+            for B in (1.0, 5.0):
+                for T in (10.0, 1e4):
+                    r, period = self.boris_radius_period(mass, B, T)
+                    f_c = self.E*B/(2*np.pi*mass)
+                    r_l = np.sqrt(2*T*self.E/mass)*mass/(self.E*B)
+                    self.assertAlmostEqual(r/r_l, 1, delta=1e-4)
+                    self.assertAlmostEqual(1/(period*f_c), 1, delta=1e-3)
+                    rows[species, B, T] = (f_c, r_l)
+        # Electron 1 T: f_ce = 28.0 GHz; proton 1 T: 15.2 MHz.
+        self.assertAlmostEqual(rows["e", 1.0, 10.0][0]/2.7992e10, 1, delta=1e-3)
+        self.assertAlmostEqual(rows["p", 1.0, 10.0][0]/1.5245e7, 1, delta=1e-3)
+        self.assertAlmostEqual(rows["e", 1.0, 10.0][1]/1.066e-5, 1, delta=2e-3)
+        self.assertAlmostEqual(rows["p", 5.0, 1e4][1]/2.889e-3, 1, delta=2e-3)
+        if table is not None:
+            for row in table:
+                f_c, r_l = rows[row["species"], row["B"], row["T_eV"]]
+                self.assertAlmostEqual(row["f"]/f_c, 1, delta=1e-6)
+                self.assertAlmostEqual(row["r"]/r_l, 1, delta=1e-6)
+
+
 class PendulumEnsemblePhysics(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

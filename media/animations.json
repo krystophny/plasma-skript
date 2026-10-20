@@ -92,6 +92,30 @@
       "mp4_sha256": "b3db9d9c78e98062f1e20e56527368f29878fc4dd3790321f05d0a11c84fbe41",
       "appearance": "dark"
     },
+    "gyration-components": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_components.mp4",
+      "poster": "media/posters/gyration-components.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/gyration-components.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_components.mp4?v=62cc3b4110f03c51",
+      "mp4_sha256": "62cc3b4110f03c515e20af6590da36bb7ff904a52b260f972bfec32f87186535",
+      "appearance": "dark"
+    },
+    "gyration-helix": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_helix.mp4",
+      "poster": "media/posters/gyration-helix.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/gyration-helix.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_helix.mp4?v=2a9a79940c4a8308",
+      "mp4_sha256": "2a9a79940c4a83087e82c3b0e59b48f3c67584e5366729e6db7ad7f55939bab3",
+      "appearance": "dark"
+    },
+    "gyration-top-view": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_top_view.mp4",
+      "poster": "media/posters/gyration-top-view.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/gyration-top-view.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_top_view.mp4?v=1c393ea89545b598",
+      "mp4_sha256": "1c393ea89545b598bebb303af15afeea0de153dc003660e7c590fc3cf6b36a7e",
+      "appearance": "dark"
+    },
     "landau-resonance": {
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/landau_resonance.mp4",
       "poster": "media/posters/landau-resonance.png",
