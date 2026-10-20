@@ -71,6 +71,14 @@
     $ rho=(m v_perp)/(abs(q) B)=v_perp/omega_c, quad
       omega_c=(abs(q) B)/m . $
 
+    #derivation-step[Decouple the component equations]
+    Differentiating the first component equation once more and inserting the
+    second gives
+
+    $ dv(v_x,t,2)=Omega dv(v_y,t)=-Omega^2 v_x=-omega_c^2 v_x , $
+
+    a harmonic oscillator at the gyrofrequency; $v_y$ obeys the same equation.
+
     #derivation-step[Integrate the component motion]
     Solving the perpendicular component equations gives, for the chosen
     coordinate orientation,
@@ -78,13 +86,21 @@
     $ v_x=v_perp cos(Omega t+delta), quad
       v_y=-v_perp sin(Omega t+delta) . $
 
-    Integrating once gives a circle in the perpendicular plane plus a constant
-    guiding-center position. Reversing $q$ reverses the sign of $Omega$ and
-    therefore reverses the sense of rotation, while the radius is unchanged.]
+    Integrating once more gives
+
+    $ x=x_0+v_perp/Omega sin(Omega t+delta), quad
+      y=y_0+v_perp/Omega cos(Omega t+delta) , $
+
+    a circle of radius $v_perp\/abs(Omega)=rho$ about the constant
+    guiding-center position $(x_0, y_0)$. Reversing $q$ reverses the sign of
+    $Omega$ and therefore reverses the sense of rotation, while the radius is
+    unchanged. With $v_z=v_parallel$ constant, $z=z_0+v_parallel t$ and the
+    orbit is a helix.]
   )
 
   The guiding center is the center of the circular orbit in the perpendicular
-  plane. Its radius is $rho=v_perp\/omega_c$, where $omega_c=abs(Omega)$ is
+  plane. Its radius is $rho=v_perp\/omega_c$, also called the Larmor radius
+  and written $r_L$, where $omega_c=abs(Omega)$ is
   the positive gyrofrequency. Thus a faster perpendicular particle has a
   larger orbit, while a stronger field bends the same particle more tightly.
 
@@ -95,6 +111,45 @@
   giving $rho_s=v_("th,s")\/omega_(c,s)$ in #unit("m").
 
   #gyroradius-geometry
+
+  Viewed with $bold(B)$ pointing toward the reader, ions ($q>0$) gyrate
+  clockwise and electrons ($q<0$) counterclockwise. In both cases the
+  current of the orbiting charge produces a magnetic moment opposite to
+  $bold(B)$: gyrating particles weaken the applied field, so a plasma is
+  diamagnetic.
+
+  #animation(
+    "../media/gyration-top-view.mp4",
+    "Top view of an ion and an electron gyrating in a uniform magnetic field that points out of the page. The ion circles clockwise on a large orbit, the electron counterclockwise on an orbit four times smaller, turning sixteen times while the ion turns once. Each particle is a small dot with a short fading trail; a bar marks each Larmor radius, and a clock shows the ion gyrophase.",
+    caption: [
+      Ion and electron gyration in a uniform $bold(B)$ out of the page, at
+      equal temperature. A reduced mass ratio $m_i\/m_e=16$ (hydrogen: 1836)
+      keeps both orbits visible: $r_(L i)\/r_(L e)=sqrt(m_i\/m_e)=4$ and
+      $omega_(c e)\/omega_(c i)=16$. Time is $omega_(c i) t$ [1].
+    ],
+    poster: "../media/gyration-top-view.png",
+  )
+
+  #animation(
+    "../media/gyration-components.mp4",
+    "An ion circles clockwise in a magnetic field pointing out of the page, with its perpendicular velocity drawn as an arrow. Beside it, two graphs trace the x component of the velocity, a cosine of amplitude v-perp, and the x position about the guiding center, a sine of amplitude r_L, against the gyrophase over two turns.",
+    caption: [
+      Velocity and position components of a gyrating ion ($q>0$, phase
+      $delta=0$): $v_x\/v_perp=cos omega_c t$ and
+      $(x-x_0)\/rho=sin omega_c t$, both [1], over two gyroperiods.
+    ],
+    poster: "../media/gyration-components.png",
+  )
+
+  #animation(
+    "../media/gyration-helix.mp4",
+    "Oblique view of an ion moving on a helix around a vertical magnetic field line: it circles the dashed guiding-center line while advancing along the field at constant parallel speed. The projection of the orbit onto the base plane is a dashed circle of radius r_L.",
+    caption: [
+      Helical orbit with $v_parallel != 0$ along $bold(B)=B bold(e)_z$: the
+      pitch is $2 pi v_parallel\/omega_c=1.1 rho$; time is $omega_c t$ [1].
+    ],
+    poster: "../media/gyration-helix.png",
+  )
 
   #interpretation(
     [Energy versus orbit geometry],

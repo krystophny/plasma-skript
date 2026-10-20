@@ -135,6 +135,44 @@ for symbol, printed in [(lambda_D, "6.9e-5"), (omega_pe, "5.6e11"), (omega_ce, "
     value = evaluate(symbol, scales[symbol], thermonuclear, SCALE_UNITS[symbol])
     close_to(value, float(printed), rtol=rounding_rtol(printed))
 
+# %% Slide tables: gyrofrequency and thermal Larmor radius, and the
+# thermonuclear scales of the worked example (slides/05-single-particle-motion.typ)
+import json
+from pathlib import Path
+
+import numpy as np
+
+from si import SI_VALUES
+
+E_SI, ME_SI, EPS0_SI = SI_VALUES[e], SI_VALUES[m_e], SI_VALUES[eps0]
+MP_SI = float(PROTON_MASS / u.kilogram)
+
+
+def gyro_scales(mass, field, energy_ev):
+    """omega_c = e B/m, f_c = omega_c/(2 pi), r_L = v_th/omega_c, v_th = sqrt(2 k_B T/m)."""
+    omega = E_SI * field / mass
+    v_thermal = np.sqrt(2 * energy_ev * E_SI / mass)
+    return dict(omega=omega, f=omega / (2 * np.pi), v=v_thermal, r=v_thermal / omega)
+
+
+gyration_table = [dict(species=name, B=field, T_eV=energy,
+                       **gyro_scales(mass, field, energy))
+                  for name, mass in (("e", ME_SI), ("p", MP_SI))
+                  for field in (1.0, 5.0) for energy in (10.0, 1e4)]
+kT = SI_VALUES[k_B] * 1e8
+fusion = dict(n=1e20, T_K=1e8, kT_eV=kT / E_SI, B=5.0,
+              lambda_D=float(np.sqrt(EPS0_SI * kT / (1e20 * E_SI**2))),
+              omega_pe=float(np.sqrt(1e20 * E_SI**2 / (EPS0_SI * ME_SI))),
+              omega_ce=E_SI * 5.0 / ME_SI, omega_ci=E_SI * 5.0 / MP_SI,
+              r_Le=gyro_scales(ME_SI, 5.0, kT / E_SI)["r"],
+              r_Li=gyro_scales(MP_SI, 5.0, kT / E_SI)["r"])
+for key, printed in (("lambda_D", "6.9e-5"), ("omega_pe", "5.6e11"), ("omega_ce", "8.8e11"),
+                     ("omega_ci", "4.8e8"), ("r_Le", "6.3e-5"), ("r_Li", "2.7e-3")):
+    close_to(fusion[key], float(printed), rtol=rounding_rtol(printed))
+Path("build").mkdir(exist_ok=True)
+Path("build/gyration.json").write_text(json.dumps(dict(table=gyration_table, fusion=fusion),
+                                                  indent=2))
+
 # %% Parallel acceleration
 section("Parallel acceleration", script="motion-exb")
 note("Project the Lorentz force on the field direction z")
