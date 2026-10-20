@@ -1,18 +1,19 @@
-"""Weak and strong coupling: test electrons crossing frozen electrons.
+"""Weak and strong coupling: a test electron and its Debye circle.
 
 Model (classical, nonrelativistic): a one-component plasma of electrons with
 a uniform positive neutralizing background, frozen in place (Lorentz-gas
 picture; the frozen charges do not move and do not screen).  Lengths are in
-units of the mean spacing a = n^(-1/3), time in a/v_th with the thermal speed
-v_th = sqrt(2 k_B T/m_e) of the script, energies in k_B T.  The coupling
-parameter Gamma = e^2/(4 pi epsilon_0 a k_B T) is the only parameter.  A test
-electron at x then moves with
+units of the mean spacing a = n_0^(-1/3), time in a/v_th with the thermal
+speed v_th = sqrt(2 k_B T_e/m_e) of the script, energies in k_B T_e.  The
+coupling parameter Gamma_e = e^2/(4 pi epsilon_0 a k_B T_e) = a^2/(4 pi
+lambda_D^2) is the only parameter; it fixes the Debye length
+lambda_D/a = 1/sqrt(4 pi Gamma_e).  A test electron at x then moves with
 
-    d^2 x/dt^2 = (Gamma/2) [sum_j (x - x_j)/|x - x_j|^3 - (4 pi/3) x]
+    d^2 x/dt^2 = (Gamma_e/2) [sum_j (x - x_j)/|x - x_j|^3 - (4 pi/3) x]
 
 (bare Coulomb repulsion by every frozen electron, no softening, and the
 attraction of the uniform background sphere), and conserves
-E/(k_B T) = |v|^2 + Gamma [sum_j 1/|x - x_j| - (2 pi/3)(3 R^2 - |x|^2)].
+E/(k_B T_e) = |v|^2 + Gamma_e [sum_j 1/|x - x_j| - (2 pi/3)(3 R^2 - |x|^2)].
 
 Frozen positions: one electron at a seeded uniform random point of every
 cubic cell of side a with 0 < z < a, ..., whose centre lies inside radius
@@ -20,40 +21,52 @@ RADIUS_CELLS, plus the mirror images z -> -z.  The density is exactly 1/a^3
 and the cells are neutral on the scale a, so the frozen configuration has no
 long-wavelength charge fluctuations.  The background is the uniform sphere
 of the same total charge, (4 pi/3) R^3 = N.  The mirror symmetry makes the
-force on a particle in the plane z = 0 lie in that plane, so the paths stay
-exactly in the drawing plane.  Four test electrons start 0.2 a apart on a
-line across the launch direction, at the thermal speed along +x.  SEED was
-chosen among seeds whose launch points lie in potential valleys at Gamma = 1
-(U <= 0, at least 0.5 a from every frozen electron, as for an electron with
-its own correlation hole) and whose paths stay inside the drawn window.
+force on a particle in the plane z = 0 lie in that plane, so the path stays
+exactly in the drawing plane.  One test electron starts at the thermal
+speed along +x from a point in a potential valley (U <= 0, at least 0.5 a
+from every frozen electron, as for an electron with its own correlation
+hole); SEED and LAUNCH_Y were chosen among such launch points whose paths
+stay inside the drawn window and do not run back over the launch arrow,
+with no drawn electron within 0.4 a of the
+launch point in projection or on the launch arrow, and with a free spot for
+the lambda_D label of the still.
 
-Both panels use the same frozen positions, launch points, window and clock;
-only Gamma differs: Gamma = 1 (strong coupling: deflections by single
-neighbours of order one radian, caging and escape, head-on turning distance
-Gamma a = a) and Gamma = 0.01 (weak coupling: nearly straight paths).  The
-frozen electrons with 0 < |z| < a are drawn, darker when closer to the
-plane; deeper ones act but are not drawn.  The orbits are integrated with an
-adaptive Dormand-Prince 5(4) scheme to a relative tolerance of 1e-10 and
-sampled every DT_OUT; the drawn traces are polylines through these samples.
+Both panels use the same frozen positions, launch point, window and clock;
+only Gamma_e differs: Gamma_e = 0.08 (lambda_D = 1.00 a, strong coupling:
+single neighbours deflect the electron by radians) and Gamma_e = 0.009
+(lambda_D = 2.97 a, weak coupling: a nearly straight path).  The drawn
+frozen electrons are those of the slab 0 < z < a (areal density 1/a^2);
+deeper ones act but are not drawn.  A circle of radius lambda_D moves with
+the test electron; drawn electrons inside it (in projection) are blue, the
+others grey, so about pi (lambda_D/a)^2 electrons are blue: about 3 versus
+about 28.  The same frame at t = 0 is the still on the coupling slide
+(slides/coupling-still.json, scripts/export-coupling-still.py).  The orbits
+are integrated with an adaptive Dormand-Prince 5(4) scheme to a relative
+tolerance of 1e-10 and sampled every DT_OUT; the drawn trace is a polyline
+through these samples.
 """
 
 from manim import *
 import numpy as np
 
 from style import (
-    AXIS_WIDTH, BG, CURVE_WIDTH, EASE, ELECTRON, GRID, INK, ION, LINEAR, MUTED, THIN_WIDTH,
+    AXIS_WIDTH, CURVE_WIDTH, EASE, ELECTRON, GRID, INK, ION, LINEAR, MUTED, THIN_WIDTH,
     StyledScene, label, math, MATH_SMALL, SMALL_SIZE,
 )
 
-SEED = 32
+SEED = 14
 RADIUS_CELLS = 9.0
 LAUNCH_X = -3.5
-LAUNCH_Y = (-0.3, -0.1, 0.1, 0.3)
+LAUNCH_Y = (0.65,)
 T_END = 7.0
 DT_OUT = 0.02
 TOLERANCE = 1e-10
-GAMMAS = (1.0, 0.01)
+GAMMAS = (0.08, 0.009)
 WINDOW = (-7.6, 4.4, -4.5, 4.5)     # x_min, x_max, y_min, y_max in units of a
+SHOWN_MARGIN = 0.12                 # drawn frozen electrons keep this distance to the frame
+# lambda_D label of the still (slides at 125 mm per 12 a): half size and clearance in a.
+LABEL_HALF = (0.36, 0.36)
+LABEL_CLEAR = 0.12
 
 PANEL_W = 6.2
 PANEL_GAP = 0.5
@@ -78,6 +91,71 @@ def frozen_charges(seed=SEED, radius_cells=RADIUS_CELLS):
     charges = np.concatenate([upper, upper * [1.0, 1.0, -1.0]])
     radius = (3 * len(charges) / (4 * np.pi)) ** (1 / 3)
     return charges, radius
+
+
+def debye_radius(gamma):
+    """lambda_D/a from Gamma_e = a^2/(4 pi lambda_D^2)."""
+    return 1.0 / np.sqrt(4 * np.pi * gamma)
+
+
+def shown_charges(charges, window=WINDOW, margin=SHOWN_MARGIN):
+    """Drawn frozen electrons: the slab 0 < z < a inside the window, as (M, 2)."""
+    x_min, x_max, y_min, y_max = window
+    keep = ((charges[:, 2] > 0) & (charges[:, 2] < 1)
+            & (charges[:, 0] > x_min + margin) & (charges[:, 0] < x_max - margin)
+            & (charges[:, 1] > y_min + margin) & (charges[:, 1] < y_max - margin))
+    return charges[keep, :2]
+
+
+def inside_debye_circle(points, centre, gamma):
+    """Drawn electrons within lambda_D of the test electron, in projection."""
+    return np.hypot(points[:, 0] - centre[0], points[:, 1] - centre[1]) < debye_radius(gamma)
+
+
+def label_angle(points, centre, gamma, window=WINDOW, half=LABEL_HALF, clear=LABEL_CLEAR):
+    """Direction (degrees) of the drawn radius whose outer label touches no dot.
+
+    The label box (half sizes `half`) sits just outside the circle along the
+    radius; no drawn electron may lie within `clear` of the box or of the
+    radius line, and the box stays inside the window.  Among the free
+    directions the one closest to 45 degrees is returned.
+    """
+    lam = debye_radius(gamma)
+    x_min, x_max, y_min, y_max = window
+    for step in range(0, 181):
+        for theta in sorted({45 + step, 45 - step}):
+            u = np.array([np.cos(np.radians(theta)), np.sin(np.radians(theta))])
+            reach = lam + half[0] * abs(u[0]) + half[1] * abs(u[1]) + 0.08
+            c = np.asarray(centre) + reach * u
+            if not (x_min + half[0] < c[0] < x_max - half[0]
+                    and y_min + half[1] < c[1] < y_max - half[1]):
+                continue
+            box = np.all(np.abs(points - c) < np.array(half) + clear, axis=1)
+            d = points - np.asarray(centre)
+            along = d @ u
+            across = np.abs(d[:, 0] * u[1] - d[:, 1] * u[0])
+            line = (along > 0) & (along < lam) & (across < clear)
+            if not box.any() and not line.any():
+                return float(theta % 360)
+    raise ValueError(f"Gamma_e = {gamma}: no free direction for the lambda_D label")
+
+
+def still_data(seed=SEED):
+    """Launch frame shared by the animation and the coupling slide (units of a)."""
+    charges, _ = frozen_charges(seed)
+    points = shown_charges(charges)
+    centre = (LAUNCH_X, LAUNCH_Y[0])
+    panels = []
+    for gamma in GAMMAS:
+        panels.append({
+            "gamma": gamma,
+            "lambda": round(float(debye_radius(gamma)), 4),
+            "angle": label_angle(points, centre, gamma),
+            "inside": [bool(b) for b in inside_debye_circle(points, centre, gamma)],
+        })
+    return {"window": list(WINDOW), "centre": list(centre),
+            "points": [[round(float(x), 4), round(float(y), 4)] for x, y in points],
+            "panels": panels}
 
 
 def potential_energy(x, charges, radius, gamma):
@@ -168,86 +246,126 @@ def deflection_angles(v):
 
 
 class CouplingTestParticle(StyledScene):
-    """Gamma = 1 and Gamma = 0.01 side by side, same frozen electrons and clock."""
+    """Gamma_e = 0.08 and 0.009 side by side: same electrons, launch point and clock."""
 
     def build(self):
         charges, _ = frozen_charges()
+        still = still_data()
         x_min, x_max, y_min, y_max = WINDOW
         scale = PANEL_W / (x_max - x_min)
         panel_h = (y_max - y_min) * scale
         centers = [np.array([-(PANEL_W + PANEL_GAP) / 2, 0.15, 0]),
                    np.array([(PANEL_W + PANEL_GAP) / 2, 0.15, 0])]
+        points = shown_charges(charges)
+        lams = [debye_radius(g) for g in GAMMAS]
+        angles = [np.radians(panel["angle"]) for panel in still["panels"]]
 
         runs = []
-        for gamma in GAMMAS:
+        for gamma, lam in zip(GAMMAS, lams):
             times, pos, _, _ = trajectories(gamma)
             inside = ((pos[..., 0] > x_min + 0.2) & (pos[..., 0] < x_max - 0.2)
                       & (pos[..., 1] > y_min + 0.2) & (pos[..., 1] < y_max - 0.2))
             if not inside.all():
-                raise ValueError(f"Gamma = {gamma}: a path leaves the drawn window")
-            runs.append(pos[..., :2])
+                raise ValueError(f"Gamma_e = {gamma}: the path leaves the drawn window")
+            runs.append(pos[:, 0, :2])
         samples = len(times)
 
         def to_panel(p, x, y):
             mid = np.array([(x_min + x_max) / 2, (y_min + y_max) / 2])
             return centers[p] + np.array([x - mid[0], y - mid[1], 0.0]) * scale
 
-        # Static layer: background, frozen electrons (0 < z < a), frame.
-        shown = ((charges[:, 2] > 0) & (charges[:, 2] < 1)
-                 & (charges[:, 0] > x_min + 0.12) & (charges[:, 0] < x_max - 0.12)
-                 & (charges[:, 1] > y_min + 0.12) & (charges[:, 1] < y_max - 0.12))
+        def in_window(xy):
+            return (x_min <= xy[0] <= x_max) and (y_min <= xy[1] <= y_max)
+
+        # Static layer: background, frame.
         panels = VGroup()
         for p in range(2):
             background = Rectangle(width=PANEL_W, height=panel_h, stroke_width=0,
                                    fill_color=ION, fill_opacity=0.10).move_to(centers[p])
             frame = Rectangle(width=PANEL_W, height=panel_h, color=GRID,
                               stroke_width=AXIS_WIDTH).move_to(centers[p])
-            dots = VGroup(*[
-                Dot(to_panel(p, cx, cy), radius=0.055, color=ELECTRON,
-                    fill_opacity=1.0 - 0.6 * cz, stroke_width=0)
-                for cx, cy, cz in charges[shown]])
-            panels.add(VGroup(background, dots, frame))
+            panels.add(VGroup(background, frame))
 
         titles = VGroup()
-        for p, (gamma, name) in enumerate(zip(GAMMAS, ("strong coupling", "weak coupling"))):
-            value = "1" if gamma == 1 else f"{gamma:g}"
-            titles.add(VGroup(math(r"\Gamma=" + value, color=INK, size=MATH_SMALL + 4),
-                              label(name, color=MUTED, size=SMALL_SIZE))
-                       .arrange(RIGHT, buff=0.3, aligned_edge=DOWN)
-                       .next_to(centers[p] + UP * panel_h / 2, UP, buff=0.18))
+        for p, (gamma, lam, name) in enumerate(zip(GAMMAS, lams, ("strong", "weak"))):
+            n = int(round(lam))
+            length = "a" if n == 1 else f"{n}a"
+            title = MathTex(rf"\Gamma_e={gamma:g},\ \lambda_D\approx {length}",
+                            rf"\quad\text{{{name}}}", color=INK, font_size=MATH_SMALL + 4)
+            title[1].set_color(MUTED)
+            titles.add(title.next_to(centers[p] + UP * panel_h / 2, UP, buff=0.18))
 
-        # Test electrons: growing traces and ringed markers.
+        # Test electron at a sample position (fractional index f).
         tracker = ValueTracker(0.0)
 
         def index():
             return tracker.get_value() * (samples - 1)
 
-        def head(p, j):
-            f = index()
+        def head_xy(p, f):
             i = min(int(f), samples - 2)
             w = f - i
-            xy = (1 - w) * runs[p][i, j] + w * runs[p][i + 1, j]
-            return to_panel(p, xy[0], xy[1])
+            return (1 - w) * runs[p][i] + w * runs[p][i + 1]
 
-        def trace(p, j):
-            def make():
-                f = index()
-                i = min(int(f), samples - 2)
-                pts = [to_panel(p, *runs[p][k, j]) for k in range(i + 1)] + [head(p, j)]
-                path = VMobject(stroke_color=INK, stroke_width=THIN_WIDTH, stroke_opacity=0.9)
-                if len(pts) > 1:
-                    path.set_points_as_corners(pts)
-                return path
-            return always_redraw(make)
+        def dots(p, f):
+            """Drawn frozen electrons, blue inside the Debye circle and grey outside."""
+            inside = inside_debye_circle(points, head_xy(p, f), GAMMAS[p])
+            return VGroup(*[
+                Dot(to_panel(p, x, y), radius=0.05, color=ELECTRON if hit else GRID,
+                    stroke_width=0)
+                for (x, y), hit in zip(points, inside)])
 
-        def marker(p, j):
-            return always_redraw(lambda: Dot(head(p, j), radius=0.085, color=ELECTRON,
-                                             stroke_color=INK, stroke_width=2.0))
+        def debye_circle(p, f):
+            """Circle of radius lambda_D and its radius line, clipped to the window."""
+            c = head_xy(p, f)
+            group = VGroup()
+            phi = np.linspace(0.0, 2 * np.pi, 361)
+            ring = c + lams[p] * np.column_stack([np.cos(phi), np.sin(phi)])
+            run = []
+            for xy in list(ring) + [None]:
+                if xy is not None and in_window(xy):
+                    run.append(to_panel(p, *xy))
+                    continue
+                if len(run) > 1:
+                    group.add(VMobject(stroke_color=INK, stroke_width=THIN_WIDTH)
+                              .set_points_as_corners(run))
+                run = []
+            u = np.array([np.cos(angles[p]), np.sin(angles[p])])
+            ends = [c + s * lams[p] * u for s in np.linspace(0.0, 1.0, 41)]
+            ends = [e for e in ends if in_window(e)]
+            if len(ends) > 1:
+                group.add(Line(to_panel(p, *ends[0]), to_panel(p, *ends[-1]), color=INK,
+                               stroke_width=AXIS_WIDTH))
+            return group
 
-        traces = VGroup(*[trace(p, j) for p in range(2) for j in range(len(LAUNCH_Y))])
-        markers = VGroup(*[marker(p, j) for p in range(2) for j in range(len(LAUNCH_Y))])
+        def marker(p, f):
+            xy = head_xy(p, f)
+            return Dot(to_panel(p, *xy), radius=0.085, color=ELECTRON, stroke_color=INK,
+                       stroke_width=2.0)
+
+        def trace(p, f):
+            i = min(int(f), samples - 2)
+            pts = [to_panel(p, *runs[p][k]) for k in range(i + 1)]
+            pts.append(to_panel(p, *head_xy(p, f)))
+            path = VMobject(stroke_color=INK, stroke_width=THIN_WIDTH, stroke_opacity=0.9)
+            if len(pts) > 1:
+                path.set_points_as_corners(pts)
+            return path
+
+        def layer(f, moving):
+            """Frozen electrons, Debye circles and test electrons at index f."""
+            if moving:
+                return VGroup(
+                    *[always_redraw(lambda p=p: dots(p, index())) for p in range(2)],
+                    *[always_redraw(lambda p=p: trace(p, index())) for p in range(2)],
+                    *[always_redraw(lambda p=p: debye_circle(p, index())) for p in range(2)],
+                    *[always_redraw(lambda p=p: marker(p, index())) for p in range(2)])
+            return VGroup(*[dots(p, f) for p in range(2)],
+                          *[debye_circle(p, f) for p in range(2)],
+                          *[marker(p, f) for p in range(2)])
+
         launch_arrows = VGroup(*[
-            Arrow(to_panel(p, LAUNCH_X - 1.35, 0), to_panel(p, LAUNCH_X - 0.25, 0), buff=0,
+            Arrow(to_panel(p, LAUNCH_X - 1.35, LAUNCH_Y[0]),
+                  to_panel(p, LAUNCH_X - 0.25, LAUNCH_Y[0]), buff=0,
                   color=MUTED, stroke_width=THIN_WIDTH, max_tip_length_to_length_ratio=0.3)
             for p in range(2)])
 
@@ -261,15 +379,20 @@ class CouplingTestParticle(StyledScene):
                  color=INK, stroke_width=AXIS_WIDTH))
         bar_label = math("a", color=INK, size=MATH_SMALL).next_to(bar, RIGHT, buff=0.15)
 
+        icon_r = 0.17
         legend = VGroup(
             VGroup(Dot(radius=0.085, color=ELECTRON, stroke_color=INK, stroke_width=2.0),
                    label("test electron", size=SMALL_SIZE)).arrange(RIGHT, buff=0.12),
-            VGroup(Dot(radius=0.055, color=ELECTRON),
+            VGroup(VGroup(Dot(radius=0.05, color=ELECTRON), Dot(radius=0.05, color=GRID))
+                   .arrange(RIGHT, buff=0.08),
                    label("frozen electron", size=SMALL_SIZE)).arrange(RIGHT, buff=0.12),
+            VGroup(VGroup(Circle(radius=icon_r, color=INK, stroke_width=THIN_WIDTH),
+                          Line(ORIGIN, icon_r * RIGHT, color=INK, stroke_width=AXIS_WIDTH)),
+                   math(r"\lambda_D", color=INK, size=MATH_SMALL)).arrange(RIGHT, buff=0.12),
             VGroup(Square(0.24, stroke_width=0, fill_color=ION, fill_opacity=0.35),
-                   math(r"+en", color=MUTED, size=MATH_SMALL)).arrange(RIGHT, buff=0.12),
+                   math(r"+en_0", color=MUTED, size=MATH_SMALL)).arrange(RIGHT, buff=0.12),
         ).arrange(RIGHT, buff=0.4)
-        legend.next_to(bar_label, RIGHT, buff=0.6).set_y(bottom)
+        legend.next_to(bar_label, RIGHT, buff=0.5).set_y(bottom)
 
         # Clock right-aligned with the right panel (room for "7.0").
         clock_label = math(r"t\,v_{\mathrm{th}}/a=", color=MUTED, size=MATH_SMALL)
@@ -284,22 +407,22 @@ class CouplingTestParticle(StyledScene):
         clock.add_updater(place_clock)
         place_clock(clock)
 
-        launch_markers = VGroup(*[
-            Dot(to_panel(p, LAUNCH_X, y0), radius=0.085, color=ELECTRON, stroke_color=INK,
-                stroke_width=2.0) for p in range(2) for y0 in LAUNCH_Y])
+        launch = layer(0.0, moving=False)
+        moving = layer(0.0, moving=True)
 
         # The first and last frames are the launch state, so the video loops.
-        self.add(panels, titles, bar, bar_label, legend, clock_label, clock, launch_arrows,
-                 launch_markers)
+        self.add(panels, launch, titles, bar, bar_label, legend, clock_label, clock,
+                 launch_arrows)
         self.wait(1.0)
-        self.remove(launch_markers)
-        self.add(traces, markers)
+        self.remove(launch)
+        self.add(moving)
+        self.bring_to_front(titles)
         self.play(tracker.animate.set_value(1.0), run_time=PLAY_TIME, rate_func=LINEAR)
         self.audit_layout()
         self.wait(HOLD)
-        traces.clear_updaters()
-        markers.clear_updaters()
+        for mob in moving:
+            mob.clear_updaters()
         clock.clear_updaters()
-        self.play(FadeOut(traces), FadeOut(markers), FadeIn(launch_markers),
-                  clock.animate.set_value(0.0), run_time=0.8, rate_func=EASE)
+        self.play(FadeOut(moving), FadeIn(launch), clock.animate.set_value(0.0),
+                  run_time=0.8, rate_func=EASE)
         self.wait(0.2)

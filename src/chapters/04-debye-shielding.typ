@@ -129,12 +129,16 @@
 
   #animation(
     "../media/coupling-test-particle.mp4",
-    "Two panels with the same frozen electrons on a uniform positive background and the same four test electrons, launched side by side at the thermal speed from the left. Left, coupling parameter Gamma = 1: single neighbours deflect the test electrons by about a radian, the paths kink, rattle in cages and separate. Right, Gamma = 0.01: the paths stay nearly straight and parallel. A bar shows the mean spacing a; a clock shows the normalized time. Lengths are normalized by a and time by a over the thermal speed, with unit [1].",
+    "Two panels with the same frozen electrons on a uniform positive background and the same test electron, launched at the thermal speed from the left. A circle of radius lambda_D moves with the test electron; frozen electrons inside it are blue, the others grey. Left, coupling parameter Gamma_e = 0.08, lambda_D about a: about three electrons lie inside the circle, and single neighbours deflect the test electron by about two radians. Right, Gamma_e = 0.009, lambda_D about 3a: about thirty electrons lie inside the circle, and the path stays nearly straight. A bar shows the mean spacing a; a clock shows the normalized time. Lengths are normalized by a and time by a over the thermal speed, with unit [1].",
     caption: [
-      Strong and weak coupling. Test electrons cross frozen electrons on a
-      uniform neutralizing background, at $Gamma_e = 1$ (left) and
-      $Gamma_e = 0.01$ (right); configuration, launch points and clock are
-      identical. The frozen charges do not move and do not screen. Exact
+      Strong and weak coupling. A test electron crosses frozen electrons on a
+      uniform neutralizing background, at $Gamma_e = 0.08$, $lambda_D approx a$
+      (left) and $Gamma_e = 0.009$, $lambda_D approx 3 a$ (right), with
+      $lambda_D \/ a = (4 pi Gamma_e)^(-1\/2)$; configuration, launch point
+      and clock are identical. The circle of radius $lambda_D$ moves with the test electron;
+      the drawn electrons (the slab $0 < z < a$) inside it are blue, about
+      $pi lambda_D^2 \/ a^2$ of them: few at strong, many at weak coupling.
+      The frozen charges do not move and do not screen. Exact
       three-dimensional Coulomb forces; the paths stay in the drawn plane by
       mirror symmetry of the frozen configuration. Lengths are in units of
       $a$ and time is $t v_("th,e")\/a$ with

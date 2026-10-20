@@ -305,60 +305,6 @@
 
 // ---------------------------------------------------------- illustrations ---
 
-// Two Debye spheres of equal radius λ_D holding N_D ≈ 3 and N_D ≈ 300
-// electrons: uniform random points in a cube of half-width 1.6 λ_D, in 2-D
-// projection. Points inside the sphere are blue; the rest of the plasma is
-// grey and drawn only outside the projected disk. For the small sphere the
-// draw is repeated until it holds exactly three points, none of them on the
-// radius line or its label. Deterministic (linear congruential generator).
-#let lcg(s) = calc.rem(s * 1103515245 + 12345, 2147483648)
-#let debye-points(n, seed, exact: false) = {
-  let half = 1.6
-  let count = int(n * calc.pow(2 * half, 3) / (4 * calc.pi / 3))
-  let s = seed
-  let result = none
-  while result == none {
-    let points = ()
-    for _ in range(count) {
-      let p = ()
-      for _ in range(3) {
-        s = lcg(s)
-        p.push((s / 2147483648 * 2 - 1) * half)
-      }
-      points.push(p)
-    }
-    let inside = points.filter(p => p.map(x => x * x).sum() < 1)
-    let clear = inside.all(p => not (calc.abs(p.at(1)) < 0.2 and p.at(0) > -0.1))
-    if not exact or (inside.len() == n and clear) {
-      let outside = points.filter(p => p.at(0) * p.at(0) + p.at(1) * p.at(1) > 1)
-      result = (inside: inside, outside: outside)
-    }
-  }
-  result
-}
-
-#let debye-sphere(n, seed, dot, exact: false) = {
-  let size = cols(6)
-  let unit = (size - dot) / 3.2
-  let pts = debye-points(n, seed, exact: exact)
-  let pos(p) = (size / 2 + p.at(0) * unit - dot / 2, size / 2 - p.at(1) * unit - dot / 2)
-  block(width: size, height: size)[
-    #for p in pts.outside {
-      let (x, y) = pos(p)
-      place(dx: x, dy: y, circle(radius: dot / 2, fill: rgb("#C8CED6"), stroke: none))
-    }
-    #for p in pts.inside {
-      let (x, y) = pos(p)
-      place(dx: x, dy: y, circle(radius: dot / 2, fill: plot-blue, stroke: none))
-    }
-    #place(dx: size / 2 - unit, dy: size / 2 - unit,
-      circle(radius: unit, stroke: 0.9pt + ink))
-    #place(dx: size / 2, dy: size / 2, line(length: unit, stroke: 0.7pt + ink))
-    #place(dx: size / 2, dy: size / 2 - 8.5mm, box(width: unit,
-      align(center, box(fill: white, outset: (x: 1mm, y: 1.5mm), $lambda_D$))))
-  ]
-}
-
 // The model ladder from particles to magnetohydrodynamics.
 #let model-ladder() = {
   let w = cols(4)

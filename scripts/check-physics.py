@@ -6,6 +6,7 @@ quadrature, rather than matching source strings or stored expected arrays.
 """
 
 import ast
+import json
 import math
 from pathlib import Path
 import runpy
@@ -482,8 +483,9 @@ class CouplingTestParticlePhysics(unittest.TestCase):
 
     def test_launch_points_in_potential_valleys(self):
         m = self.m
-        x0 = self.runs[1.0][1][0]
-        self.assertLessEqual(np.max(m["potential_energy"](x0, self.charges, self.radius, 1.0)), 0.0)
+        strong = m["GAMMAS"][0]
+        x0 = self.runs[strong][1][0]
+        self.assertLessEqual(np.max(m["potential_energy"](x0, self.charges, self.radius, strong)), 0.0)
         distance = np.linalg.norm(x0[:, None] - self.charges[None], axis=2)
         self.assertGreaterEqual(distance.min(), 0.5)
 
@@ -506,10 +508,36 @@ class CouplingTestParticlePhysics(unittest.TestCase):
 
     def test_strong_coupling_deflects_much_more(self):
         m = self.m
+        strong, weak = m["GAMMAS"]
         angles = {g: m["deflection_angles"](v) for g, (_, _, v, _) in self.runs.items()}
-        self.assertGreater(angles[1.0].mean(), 1.0)
-        self.assertLess(angles[0.01].mean(), 0.1)
-        self.assertGreater(angles[1.0].mean(), 10*angles[0.01].mean())
+        self.assertGreater(angles[strong].mean(), 1.0)
+        self.assertLess(angles[weak].mean(), 0.1)
+        self.assertGreater(angles[strong].mean(), 10*angles[weak].mean())
+
+    def test_debye_circle_holds_few_versus_many(self):
+        # Gamma_e = a^2/(4 pi lambda_D^2); the drawn slab 0 < z < a has areal
+        # density 1/a^2, so about pi (lambda_D/a)^2 drawn electrons are inside.
+        m = self.m
+        for gamma in m["GAMMAS"]:
+            lam = m["debye_radius"](gamma)
+            self.assertAlmostEqual(1/(4*np.pi*lam**2), gamma, places=12)
+        lam_strong, lam_weak = (m["debye_radius"](g) for g in m["GAMMAS"])
+        self.assertAlmostEqual(lam_strong, 1.0, delta=0.05)
+        self.assertAlmostEqual(lam_weak, 3.0, delta=0.05)
+        points = m["shown_charges"](self.charges)
+        for gamma in m["GAMMAS"]:
+            _, x, _, _ = self.runs[gamma]
+            counts = [m["inside_debye_circle"](points, x[k, 0, :2], gamma).sum()
+                      for k in range(0, len(x), 10)]
+            expected = np.pi*m["debye_radius"](gamma)**2
+            self.assertLess(abs(np.mean(counts) - expected), 0.35*expected + 1.5, gamma)
+
+    def test_slide_still_matches_animation(self):
+        stored = json.loads((ROOT/"slides/coupling-still.json").read_text())
+        fresh = self.m["still_data"]()
+        self.assertEqual(stored["panels"], json.loads(json.dumps(fresh["panels"])))
+        np.testing.assert_allclose(stored["points"], fresh["points"], atol=1e-9)
+        self.assertEqual(stored["centre"], list(fresh["centre"]))
 
 
 if __name__ == "__main__":

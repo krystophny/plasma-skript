@@ -40,8 +40,8 @@
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coupling_test_particle.mp4",
       "poster": "media/posters/coupling-test-particle.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/coupling-test-particle.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coupling_test_particle.mp4?v=38a549848cf141cb",
-      "mp4_sha256": "38a549848cf141cbe7fdcd94ff56426aa8b7371fc2f844b511d8058ceb1284dd",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coupling_test_particle.mp4?v=ee7384255d977f10",
+      "mp4_sha256": "ee7384255d977f1008b9222c67d97551a45c9e47a4ed483e83083076ab3a5c34",
       "appearance": "dark"
     },
     "debye-shielding": {

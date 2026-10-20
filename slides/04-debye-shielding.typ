@@ -1,6 +1,6 @@
 #import "theme.typ": *
 #import "@preview/physica:0.9.8": laplacian, grad
-#import "debye-drawings.typ": sphere-picture
+#import "debye-drawings.typ": sphere-picture, coupling-still, coupling-heading, coupling-bar
 #show: deck.with(chapter: 4)
 #slide(section: "debye-collective-validity", title: [Charge separation])[
   #at(1, 6, y: 4mm, sphere-picture())
@@ -14,11 +14,12 @@
 #animation-page("thermal-charge-fluctuations", "thermal_charge_fluctuations", section: "debye-collective-validity")
 #animation-page("coupling-test-particle", "coupling_test_particle", section: "debye-collective-validity")
 #slide(section: "debye-collective-validity", title: [Weak and strong coupling])[
-  #at(1, 6, align(center)[$lambda_D tilde a$: strong])
-  #at(7, 6, align(center)[$lambda_D >> a$: weak])
-  #at(1, 6, y: 14mm, debye-sphere(1, 11, 3.4mm, exact: true))
-  #at(7, 6, y: 14mm, debye-sphere(30, 5, 2.2mm))
-  #at(3, 8, y: 132mm, align(center, $Gamma_e = (e^2 \/ (4 pi epsilon_0 a))/(k_B T_e) = a^2/(4 pi lambda_D^2), quad a = n_0^(-1\/3)$))
+  #at(1, 6, align(center, coupling-heading(0, [strong])))
+  #at(7, 6, align(center, coupling-heading(1, [weak])))
+  #at(1, 6, y: 13mm, coupling-still(0, cols(6)))
+  #at(7, 6, y: 13mm, coupling-still(1, cols(6)))
+  #at(1, 2, y: 112mm, coupling-bar(cols(6)))
+  #at(3, 8, y: 116mm, align(center, $Gamma_e = (e^2 \/ (4 pi epsilon_0 a))/(k_B T_e) = a^2/(4 pi lambda_D^2), quad a = n_0^(-1\/3)$))
 ]
 #slide(section: "debye-collective-validity", title: [Debye number])[
   #at(2, 10, y: 14mm, align(center, $Gamma_e N_D^(2\/3) = (36 pi)^(-1\/3) approx 0.21$))

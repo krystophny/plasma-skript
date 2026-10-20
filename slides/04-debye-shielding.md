@@ -20,8 +20,8 @@ derivation overview, comparison page. The board plan is
 | 1 | Title | static | debye-shielding | Screening opener. |
 | 2 | Charge separation | static | debye-collective-validity | Before the animation: electron-free sphere, last electron out, R of order lambda_D (2025 pp. 21-22). |
 | 3 | Thermal charge fluctuations | animation | debye-collective-validity | After the rigid sphere: no test charge; thermal motion alone opens red/blue regions of size lambda_D (kin6d). |
-| 4 | Coupling test particles | animation | debye-collective-validity | Same frozen electrons at Gamma = 1 and 0.01: single neighbours deflect by a radian versus nearly straight paths. |
-| 5 | Weak and strong coupling | static | debye-collective-validity | After the whiteboard coupling: one particle versus many in the sphere; Gamma from the neighbour energy. |
+| 4 | Coupling test particles | animation | debye-collective-validity | Same frozen electrons at Gamma_e = 0.08 (lambda_D = a) and 0.009 (lambda_D = 3a): the Debye circle moves with the test electron; few versus many electrons inside, deflection by radians versus a nearly straight path. |
+| 5 | Weak and strong coupling | static | debye-collective-validity | After the whiteboard coupling: the launch frame of page 4 (same electrons, radii and colours), few versus many electrons in the Debye circle; Gamma_e from the neighbour energy. |
 | 6 | Debye number | static | debye-collective-validity | Rewrite weak coupling as N_D >> 1 (2025 pp. 39-40). |
 | 7 | Plasma regime map | static | debye-collective-validity | Typical lambda_D and plasmas; N_D = 1 line. |
 | 8 | Ideal plasma | static | debye-collective-validity | Exam question (g): N_D >> 1 and lambda_D << L (2025 pp. 41, 43). |
@@ -61,10 +61,14 @@ The script shows it in §4.1.
 ## Coupling animation
 
 The `coupling-test-particle` scene (`animations/coupling_test_particle.py`)
-sends four test electrons at the thermal speed through the same frozen
-electrons on a uniform positive background, side by side at $\Gamma=1$ and
-$\Gamma=0.01$. Lengths are in units of the mean spacing $a$ [1], time is
-$t v_{th}/a$ [1]. Page 4, before the whiteboard coupling. The script shows it
+sends a test electron at the thermal speed through the same frozen electrons
+on a uniform positive background, side by side at $\Gamma_e=0.08$
+($\lambda_D\approx a$) and $\Gamma_e=0.009$ ($\lambda_D\approx 3a$), with
+$\lambda_D/a=(4\pi\Gamma_e)^{-1/2}$. A circle of radius $\lambda_D$ moves with
+the test electron; drawn electrons inside it are blue (about 3 versus 28),
+the others grey. Page 5 shows the launch frame from
+`slides/coupling-still.json` (`scripts/export-coupling-still.py`). Lengths are
+in units of the mean spacing $a$ [1], time is $t v_{th}/a$ [1]. Page 4, before the whiteboard coupling. The script shows it
 in §4.1.
 
 ## Particle animation
