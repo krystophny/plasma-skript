@@ -44,6 +44,10 @@ scenes=(
   "grad_b_drift.py|GradBDrift|grad-b-drift|17.0"
   "curvature_drift.py|CurvatureDrift|curvature-drift|17.0"
   "magnetic_mirror.py|MagneticMirror|magnetic-mirror|21.0"
+  "exb_frame.py|ExBFrameChange|exb-frame-change|11.2"
+  "gravity_drift.py|GravityDrift|gravity-drift|11.0"
+  "mu_ramp.py|MuRamp|mu-ramp|22.5"
+  "polarization_drift.py|PolarizationDrift|polarization-drift|15.8"
   "kernel_smoothing.py|KernelSmoothing|kernel-smoothing|27.0"
   "kernel_smoothing.py|KernelWidth|kernel-width|9.0"
 )

@@ -290,7 +290,7 @@ class GyrationPhysics(unittest.TestCase):
             for row in table:
                 f_c, r_l = rows[row["species"], row["B"], row["T_eV"]]
                 self.assertAlmostEqual(row["f"]/f_c, 1, delta=1e-6)
-                self.assertAlmostEqual(row["r"]/r_l, 1, delta=1e-6)
+                self.assertAlmostEqual(row["rho_L"]/r_l, 1, delta=1e-6)
 
 
 class DriftOrbitPhysics(unittest.TestCase):
@@ -391,6 +391,126 @@ class DriftOrbitPhysics(unittest.TestCase):
                 z_b = length*np.sqrt((1/sin2 - 1)/(ratio - 1))               # B(z_b) = B_0/sin^2
                 self.assertAlmostEqual(np.abs(x[:, 2]).max()/z_b, 1, delta=0.03)
                 self.assertLess(abs(mu - 1).max(), 0.01)
+
+
+class FieldChangePhysics(unittest.TestCase):
+    """animations/drift_models.py models with E or g (E x B frame change,
+    gravity drift, polarization drift, mu in a growing field).
+
+    Oracles: an independent RK4 integration with gyro-period averages, the
+    drift formulas written out here, and the mu-ramp plot of the derivations.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("drift_models.py")
+
+    @staticmethod
+    def rk4(accel, qm, x0, v0, dt, steps):
+        """dv/dt = accel(t) + qm v x e_z in the (x, y) plane."""
+        def rhs(t, s):
+            a = accel(t)
+            return np.array([s[2], s[3], a[0] + qm*s[3], a[1] - qm*s[2]])
+        s = np.array([x0[0], x0[1], v0[0], v0[1]], float)
+        out = np.empty((steps + 1, 4))
+        out[0] = s
+        for i in range(steps):
+            t = i*dt
+            k1 = rhs(t, s)
+            k2 = rhs(t + dt/2, s + dt/2*k1)
+            k3 = rhs(t + dt/2, s + dt/2*k2)
+            k4 = rhs(t + dt, s + dt*k3)
+            s = s + dt/6*(k1 + 2*k2 + 2*k3 + k4)
+            out[i + 1] = s
+        return np.arange(steps + 1)*dt, out
+
+    @staticmethod
+    def boxcar(t, q, period):
+        n = int(round(period/(t[1] - t[0])))
+        return t[n//2:n//2 + len(q) - n + 1], np.convolve(q, np.ones(n)/n, mode="valid")
+
+    def test_exb_drift_and_circle_in_the_drift_frame(self):
+        m = self.m
+        e = m["EXB_E"]
+        dt = 2*np.pi/400
+        t, out = self.rk4(lambda s: (0.0, e), 1.0, (0.0, 1.0), (1.0 + e, 0.0), dt, 3*400)
+        tt, xb = self.boxcar(t, out[:, 0], 2*np.pi)
+        self.assertAlmostEqual(np.polyfit(tt, xb, 1)[0], e, delta=1e-6)       # E x B/B^2 = E e_x
+        radius = np.hypot(out[:, 0] - e*t, out[:, 1])
+        self.assertLess(abs(radius - 1).max(), 1e-6)
+        t_s, x_s, _, v_d, frame = m["exb_orbit"]()
+        omega = 2*np.arctan((t_s[1] - t_s[0])/2)/(t_s[1] - t_s[0])
+        drift = m["fit_drift_and_gyration"](t_s, x_s, omega)
+        self.assertAlmostEqual(drift[0], e, delta=1e-12)
+        self.assertAlmostEqual(drift[1], 0, delta=1e-12)
+        r = m["drift_frame_radius"](frame)
+        self.assertLess((r.max() - r.min())/r.mean(), 1e-12)
+        self.assertAlmostEqual(r.mean(), 1, delta=1e-4)                      # rho_L = u/omega_c to O(dt^2)
+        print(f"ExB: RK4 drift {np.polyfit(tt, xb, 1)[0]:.8f}, Boris {drift[0]:.12f}, "
+              f"drift-frame radius spread {(r.max() - r.min())/r.mean():.1e}")
+
+    def test_gravity_drift_opposite_and_proportional_to_mass(self):
+        m = self.m
+        g = m["GRAVITY_G"]
+        drifts = []
+        for qm, v_perp in ((1.0, 1.0), (-16.0, 4.0)):
+            omega = abs(qm)
+            dt = 2*np.pi/omega/200
+            steps = int(round(6*2*np.pi/dt))
+            expected = -g/qm                     # (m/q) (g x B)/B^2, g = -g e_y, B = e_z
+            # guiding centre at the origin: x = -(m/q) v_perp x e_z / ..., start on top
+            t, out = self.rk4(lambda s: (0.0, -g), qm, (0.0, v_perp/omega), (np.sign(qm)*v_perp + expected, 0.0),
+                              dt, steps)
+            tt, xb = self.boxcar(t, out[:, 0], 2*np.pi/omega)
+            measured = np.polyfit(tt, xb, 1)[0]
+            self.assertAlmostEqual(measured/expected, 1, delta=2e-3)
+            t_s, x_s, _ = m["gravity_orbit"](qm, v_perp, 6*2*np.pi)
+            scene = m["averaged_drift"](t_s, x_s, 2*np.pi/omega)[0]
+            self.assertAlmostEqual(scene/expected, 1, delta=2e-3)
+            self.assertAlmostEqual(m["gravity_formula"](qm), expected, places=12)
+            print(f"gravity qm={qm:+g}: RK4 {measured:+.6f} scene {scene:+.6f} formula {expected:+.6f}")
+            drifts.append(measured)
+        self.assertLess(drifts[0], 0)
+        self.assertGreater(drifts[1], 0)
+        self.assertAlmostEqual(-drifts[0]/drifts[1], 16, delta=0.05)
+
+    def test_polarization_shift_follows_e(self):
+        m = self.m
+        e1, ramp, t_end = m["POL_E1"], m["POL_RAMP"], m["POL_T_END"]
+
+        def e_of_t(s):
+            return e1*0.5*(1 - np.cos(np.pi*min(s, ramp)/ramp))
+
+        for qm, v_perp in ((1.0, 1.0), (-16.0, 4.0)):
+            omega = abs(qm)
+            dt = 2*np.pi/omega/150
+            steps = int(round(t_end/dt))
+            t, out = self.rk4(lambda s: (0.0, qm*e_of_t(s)), qm, (0.0, v_perp/omega), (np.sign(qm)*v_perp, 0.0),
+                              dt, steps)
+            tt, yb = self.boxcar(t, out[:, 1], 2*np.pi/omega)
+            shift = yb[tt > ramp + np.pi/omega].mean()          # the guiding centre starts at y = 0
+            expected = e1/qm                     # (m/(q B^2)) E_1
+            self.assertAlmostEqual(shift/expected, 1, delta=5e-3)
+            t_s, _, centre = m["pol_orbit"](qm, v_perp)
+            scene = centre[t_s >= ramp, 1].mean()             # started about the origin
+            self.assertAlmostEqual(scene/expected, 1, delta=5e-3)
+            print(f"polarization qm={qm:+g}: RK4 shift {shift:+.5f} scene {scene:+.5f} formula {expected:+.5f}")
+
+    def test_mu_ramp_scene_reuses_plot_numerics(self):
+        m = self.m
+        plot = runpy.run_path(str(ROOT/"derivations/plot_mu_ramp.py"))
+        for tau in (1.0, 2.0):
+            scene = m["mu_ramp_orbit"](tau=tau, half=8*tau + 40*np.pi, steps_per_turn=800)[4][-1] - 1
+            reference = plot["boris"]([tau], True, steps_per_turn=800)[0]
+            self.assertAlmostEqual(scene, reference, delta=1e-9)
+        t, b, rho, flux, mu, xy = m["mu_ramp_orbit"]()
+        b = b/b[0]
+        self.assertLess(abs(mu - 1).max(), 1e-3)
+        self.assertLess(abs(flux - 1).max(), 1e-3)
+        self.assertAlmostEqual(rho[-1]*np.sqrt(b[-1]), 1, delta=1e-4)
+        self.assertAlmostEqual(np.hypot(xy[-1, 0], xy[-1, 1]), rho[-1], delta=1e-12)
+        print(f"mu ramp: max|mu-1| {abs(mu - 1).max():.1e}, max|flux-1| {abs(flux - 1).max():.1e}, "
+              f"rho_end sqrt(B_end) - 1 {rho[-1]*np.sqrt(b[-1]) - 1:+.1e}")
 
 
 class KernelSmoothingPhysics(unittest.TestCase):

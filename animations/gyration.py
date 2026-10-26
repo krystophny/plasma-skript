@@ -4,17 +4,18 @@ components, and the helix.
 Model (B = B e_z, E = 0, charge sign s = sign(q)): the board solution
 
     v_x = v_perp cos(omega_c t + phi),   v_y = -s v_perp sin(omega_c t + phi),
-    x = x_0 + r_L sin(omega_c t + phi),  y = y_0 + s r_L cos(omega_c t + phi),
+    x = x_0 + rho_L sin(omega_c t + phi),  y = y_0 + s rho_L cos(omega_c t + phi),
     z = z_0 + v_par t,
 
-with omega_c = |q| B/m and r_L = v_perp/omega_c. Viewed with B out of the
+with omega_c = |q_alpha| B/m_alpha (the magnitude of the signed gyrofrequency
+q_alpha B/m_alpha) and the Larmor radius rho_L = v_perp/omega_c. Viewed with B out of the
 page, ions (s = +1) turn clockwise and electrons (s = -1) counterclockwise.
 scripts/check-physics.py integrates the Lorentz force against gyro_orbit.
 
 Top view: an ion and an electron at equal temperature, T_i = T_e, so
-r_Li/r_Le = sqrt(m_i/m_e) and omega_ce/omega_ci = m_i/m_e. The scene uses the
+rho_Li/rho_Le = sqrt(m_i/m_e) and omega_ce/omega_ci = m_i/m_e. The scene uses the
 stated reduced ratio m_i/m_e = 16 (hydrogen: 1836), which keeps the electron
-orbit visible (r_Le = r_Li/4) and its rotation countable (16 turns per ion
+orbit visible (rho_Le = rho_Li/4) and its rotation countable (16 turns per ion
 turn). Lengths are in scene units; time is shown as omega_ci t [1].
 """
 
@@ -35,7 +36,7 @@ R_ELECTRON = R_ION / np.sqrt(MASS_RATIO)
 ION_TURNS = 1                                # loop: integer turns of both
 TOP_PLAY_TIME = 14.0                         # seconds of video for one ion turn
 
-# Helix: B along z, pitch 2 pi v_par/omega_c in units of r_L.
+# Helix: B along z, pitch 2 pi v_par/omega_c in units of rho_L.
 HELIX_PITCH = 1.1
 HELIX_TURNS = 3.0
 HELIX_PLAY_TIME = 12.0
@@ -69,7 +70,7 @@ def frequency_ratio(mass_ratio=MASS_RATIO):
 
 
 def radius_ratio(mass_ratio=MASS_RATIO):
-    """r_Li/r_Le at equal temperature: v_perp ~ m^(-1/2), r_L ~ m v_perp."""
+    """rho_Li/rho_Le at equal temperature: v_perp ~ m^(-1/2), rho_L ~ m v_perp."""
     return np.sqrt(mass_ratio)
 
 
@@ -136,8 +137,8 @@ class GyrationTopView(StyledScene):
                           .move_to(c_el), num_dashes=24)
         gc_ion = Dot(c_ion, radius=0.05, color=INK)
         gc_el = Dot(c_el, radius=0.05, color=INK)
-        r_ion = radius_marker(c_ion, R_ION, -2.4, r"r_{Li}", ION)
-        r_el = radius_marker(c_el, R_ELECTRON, -2.4, r"r_{Le}", ELECTRON)
+        r_ion = radius_marker(c_ion, R_ION, -2.4, r"\rho_{Li}", ION)
+        r_el = radius_marker(c_el, R_ELECTRON, -2.4, r"\rho_{Le}", ELECTRON)
         r_el[1].move_to(c_el + np.array([-0.95, -0.55, 0]))
         sense_ion = sense_arrow(c_ion, R_ION + 0.28, 1.35, +1, ION)
         sense_el = sense_arrow(c_el, R_ELECTRON + 0.28, 1.0, -1, ELECTRON)
@@ -195,7 +196,7 @@ class GyrationTopView(StyledScene):
 
 
 class GyrationComponents(StyledScene):
-    """Ion orbit next to v_x(t) and x(t): cosine and sine of amplitude v_perp, r_L."""
+    """Ion orbit next to v_x(t) and x(t): cosine and sine of amplitude v_perp, rho_L."""
 
     def build(self):
         r = 1.9
@@ -218,14 +219,14 @@ class GyrationComponents(StyledScene):
                        math(r"\mathbf{B}", color=B_FIELD, size=MATH_SIZE)).arrange(RIGHT, buff=0.15)
         b_key.move_to(c + np.array([-1.3, -r - 1.05, 0]))
         sense = sense_arrow(c, r + 0.3, 2.0, +1, ION)
-        r_mark = radius_marker(c, r, -2.3, r"r_L", INK)
+        r_mark = radius_marker(c, r, -2.3, r"\rho_L", INK)
 
         w, h = 6.4, 2.3
         top = axes([0, theta_max, np.pi], [-1.3, 1.3, 1], w, h).move_to([2.95, 1.75, 0])
         bot = axes([0, theta_max, np.pi], [-1.3, 1.3, 1], w, h).move_to([2.95, -1.75, 0])
-        top_y = math(r"v_x/v_\perp", color=MUTED, size=MATH_SMALL).next_to(top.y_axis, UP, buff=0.12)
-        bot_y = math(r"(x-x_0)/r_L", color=MUTED, size=MATH_SMALL).next_to(bot.y_axis, UP, buff=0.12)
-        bot_x = math(r"\omega_c t", color=MUTED, size=MATH_SMALL)
+        top_y = math(r"v_x/v_\perp\ [1]", color=MUTED, size=MATH_SMALL).next_to(top.y_axis, UP, buff=0.12)
+        bot_y = math(r"(x-x_0)/\rho_L\ [1]", color=MUTED, size=MATH_SMALL).next_to(bot.y_axis, UP, buff=0.12)
+        bot_x = math(r"\omega_c t\ [1]", color=MUTED, size=MATH_SMALL)
         bot_x.next_to(bot.x_axis.get_right(), DOWN, buff=0.22).align_to(bot.x_axis.get_right(), RIGHT)
         ticks = VGroup()
         for ax in (top, bot):
@@ -306,7 +307,7 @@ class GyrationHelix(StyledScene):
     """Ion helix with v_par != 0 along B = B e_z, its guiding centre and projection."""
 
     def build(self):
-        scale = 1.5                          # scene units per r_L
+        scale = 1.5                          # scene units per rho_L
         theta_max = 2 * np.pi * HELIX_TURNS
         z_top = HELIX_PITCH * HELIX_TURNS
         origin = np.array([-0.6, -2.55, 0])
@@ -329,7 +330,7 @@ class GyrationHelix(StyledScene):
                                     for a in angles])]
         r_line = Line(to_screen([0, 0, 0]), to_screen([np.cos(a_front), np.sin(a_front), 0]),
                       color=MUTED, stroke_width=AXIS_WIDTH)
-        r_lab = math(r"r_L", color=INK, size=MATH_SMALL).next_to(r_line.get_end(), DR, buff=0.08)
+        r_lab = math(r"\rho_L", color=INK, size=MATH_SMALL).next_to(r_line.get_end(), DR, buff=0.08)
         v_par = Arrow(to_screen([0, 0, z_top + 0.45]), to_screen([0, 0, z_top + 1.25]), buff=0,
                       color=INK, stroke_width=3, max_tip_length_to_length_ratio=0.25)
         v_par_lab = math(r"v_\parallel", color=INK, size=MATH_SMALL).next_to(v_par, RIGHT, buff=0.12)
@@ -363,7 +364,7 @@ class GyrationHelix(StyledScene):
 
         clock.add_updater(place_clock)
         place_clock(clock)
-        key = math(rf"2\pi v_\parallel/\omega_c={HELIX_PITCH:g}\,r_L", color=MUTED,
+        key = math(rf"2\pi v_\parallel/\omega_c={HELIX_PITCH:g}\,\rho_L", color=MUTED,
                    size=MATH_SMALL).move_to([4.4, -3.3, 0])
 
         self.add(base, axis, b_arrow, b_lab, r_line, r_lab, v_par, v_par_lab, key,

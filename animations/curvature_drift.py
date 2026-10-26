@@ -1,18 +1,18 @@
 """Curvature plus grad-B drift in a toroidal vacuum field, B = B_0 R_0/R e_phi.
 
 Model: ion and electron (m_i/m_e = 16, T_i = T_e, charge +/-1; the
-gyration-scene conventions) start on the midplane at R = R_0 = 40 r_Li with
+gyration-scene conventions) start on the midplane at R = R_0 = 40 rho_Li with
 v_par = v_perp (drift_models.torus_orbit, full Boris push of the Lorentz
 force in Cartesian coordinates, E = 0).  The field lines are circles about
 the machine axis, so each guiding centre feels the centrifugal force
-m v_par^2/R (curvature drift) and the gradient force -mu grad B; both point
+m_alpha v_par^2/R (curvature drift) and the gradient force -mu grad B; both point
 along Z and add up:
 
-    v_Z = (m/(q B R)) (v_par^2 + v_perp^2/2),  B R = B_0 R_0 = const.
+    v_Z = (m_alpha/(q_alpha B R)) (v_par^2 + v_perp^2/2),  B R = B_0 R_0 = const.
 
-The sign of q fixes the direction: ions drift up, electrons down, the charge
+The sign of q_alpha fixes the direction: ions drift up, electrons down, the charge
 separation that a purely toroidal field cannot hold.  The view is the
-poloidal plane (R, Z) in units of r_Li [1]; the particles move around the
+poloidal plane (R, Z) in units of rho_Li [1]; the particles move around the
 torus (out of the plane) at v_par, which is why the clock shows the
 toroidal angle phi [1] reached by the ion.  The measured value is the slope
 of the guiding-centre Z(t).
@@ -66,7 +66,7 @@ class CurvatureDrift(StyledScene):
         _, ion_phi = on_grid(ion[0], np.arctan2(ion[1][:, 1], ion[1][:, 0])[:, None])
         t_end = grid[-1]
 
-        # R - R_0 in [-4, 4], Z in [-6, 6] at equal scale (0.5 u per r_Li).
+        # R - R_0 in [-4, 4], Z in [-6, 6] at equal scale (0.5 u per rho_Li).
         scale = 0.5
         ax = axes([-4, 4, 1], [-6, 6, 1], 8 * scale, 12 * scale, ticks=False)
         ax.move_to([-4.2, 0.1, 0])
@@ -84,7 +84,7 @@ class CurvatureDrift(StyledScene):
                 marks.add(VGroup(Circle(radius=0.1 * b, color=B_FIELD, stroke_width=1.4),
                                  Dot(radius=0.028 * b, color=B_FIELD)).move_to(ax.c2p(dr, z)))
         marks.set_opacity(0.55)
-        r_lab = math(r"(R-R_0)/r_{Li}\ [1]", color=MUTED, size=MATH_SMALL).next_to(ax, DOWN, buff=0.2)
+        r_lab = math(r"(R-R_0)/\rho_{Li}\ [1]", color=MUTED, size=MATH_SMALL).next_to(ax, DOWN, buff=0.2)
         z_ticks = VGroup(*[
             VGroup(Line(ax.c2p(-4, v), ax.c2p(-3.85, v), color=MUTED, stroke_width=1.6),
                    math(f"{v:d}", color=MUTED, size=MATH_SMALL).next_to(ax.c2p(-4, v), LEFT, buff=0.12))
@@ -95,7 +95,7 @@ class CurvatureDrift(StyledScene):
             for v in (-2, 0, 2)])
         frame = Rectangle(width=ax.x_length, height=ax.y_length, color=MUTED, stroke_width=1.4
                           ).move_to(ax.get_center())
-        z_lab = math(r"Z/r_{Li}\ [1]", color=MUTED, size=MATH_SMALL).next_to(frame, UP, buff=0.12)
+        z_lab = math(r"Z/\rho_{Li}\ [1]", color=MUTED, size=MATH_SMALL).next_to(frame, UP, buff=0.12)
         r_lab.next_to(frame, DOWN, buff=0.45)
         torus_axis = DashedLine(ax.c2p(-4, -6), ax.c2p(-4, 6), color=MUTED, stroke_width=THIN_WIDTH, dash_length=0.1)
         b_key = VGroup(VGroup(Circle(radius=0.11, color=B_FIELD, stroke_width=2.0),
@@ -131,11 +131,11 @@ class CurvatureDrift(StyledScene):
 
         # Electron turns 4x faster around the torus (v_par,e = 4 v_par,i): same time, 1 turn.
         rows = VGroup(
-            math(r"v_Z/(r_{Li}\Omega_i)\ [1]\quad \mathrm{orbit}\ \mid\ \frac{m}{qBR}(v_\parallel^2+\tfrac12 v_\perp^2)\ \ (\mathrm{dev.})",
+            math(r"v_{D,Z}/(\rho_{Li}\omega_{ci})\ [1]\ \ \mathrm{orbit}\mid\tfrac{m_\alpha}{q_\alpha BR}(v_\parallel^2+\tfrac12 v_\perp^2)\ (\mathrm{dev.})",
                  color=MUTED, size=MATH_SMALL),
             math(rf"\mathrm{{ion}}\ \ {{{ion[3]:+.4f}}}\ \mid\ {{{ion[4]:+.4f}}}\ \ ({{{100*(ion[3]/ion[4]-1):+.1f}}}\,\%)", color=ION, size=MATH_SMALL),
             math(rf"\mathrm{{electron}}\ \ {{{ele[3]:+.4f}}}\ \mid\ {{{ele[4]:+.4f}}}\ \ ({{{100*(ele[3]/ele[4]-1):+.1f}}}\,\%)", color=ELECTRON, size=MATH_SMALL),
-            math(rf"R_0={TORUS_R0:g}\,r_{{Li}},\ v_\parallel=v_\perp,\ m_i/m_e=16,\ T_i=T_e",
+            math(rf"R_0={TORUS_R0:g}\,\rho_{{Li}},\ v_\parallel=v_\perp,\ m_i/m_e=16,\ T_i=T_e",
                  color=MUTED, size=MATH_SMALL),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.14).move_to([2.6, -0.35, 0])
         clock_label = math(r"\varphi_{\mathrm{ion}}=", color=MUTED, size=MATH_SMALL)

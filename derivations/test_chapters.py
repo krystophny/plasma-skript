@@ -65,6 +65,58 @@ def test_debye_nonlinear_poisson_boltzmann():
         assert abs(model.unit_crossing(sol) / lam - 1) < 0.02, lam
 
 
+def test_mu_ramp_boris_against_dop853():
+    """The Boris values of mu_final/mu_initial - 1 agree with an independent
+    high-order integration of the same orbit, are non-negative, and fall
+    exponentially for the tanh ramp but only algebraically for the linear one."""
+    import numpy as np
+    from scipy.integrate import solve_ivp
+    import plot_mu_ramp as model
+
+    def reference(tau, smooth):
+        def rhs(t, y):
+            b = model.field(t, tau, smooth)
+            if smooth:
+                b_dot = 0.5 / tau / np.cosh(t / tau) ** 2
+            else:
+                b_dot = 0.5 / tau if abs(t) < tau else 0.0
+            ex, ey = 0.5 * b_dot * y[1], -0.5 * b_dot * y[0]
+            return [y[2], y[3], ex + y[3] * b, ey - y[2] * b]
+        half = 8 * tau + 20 * np.pi
+        cuts = [-half, half] if smooth else [-half, -tau, tau, half]
+        y = [1.0, 0.0, 0.0, -1.0]
+        for a, b in zip(cuts[:-1], cuts[1:]):
+            y = solve_ivp(rhs, (a, b), y, method="DOP853", rtol=1e-12, atol=1e-13).y[:, -1]
+        return 0.5 * (y[2] ** 2 + y[3] ** 2) / 2.0 / 0.5 - 1
+
+    taus = np.array([1.0, 2.0, 3.0, 4.0])
+    for smooth in (True, False):
+        boris = model.boris(taus, smooth, steps_per_turn=800)
+        exact = np.array([reference(tau, smooth) for tau in taus])
+        assert np.all(boris > 0), boris
+        assert np.allclose(boris, exact, rtol=2e-3), (smooth, boris, exact)
+        if smooth:
+            assert np.all(boris[1:] < 0.1 * boris[:-1]), boris      # a decade per unit of tau
+        else:
+            assert boris[3] > 0.1 * boris[1], boris                 # algebraic: less than a decade over two units
+
+
+def test_loss_cone_sample_against_pitch_angle():
+    """The trapped/lost test from mu and energy along B(z) agrees particle by
+    particle with the pitch-angle condition sin^2(alpha) >= 1/R_m, and the lost
+    fraction of the isotropic sample agrees with the solid angle of the two
+    cones, 1 - (1 - 1/R_m)^(1/2), within four binomial standard deviations."""
+    import numpy as np
+    import plot_loss_cone as model
+
+    v_par, v_perp = model.sample(20_000, seed=5)
+    sin2 = v_perp**2 / (v_par**2 + v_perp**2)
+    for ratio in (1.5, 4.0, 10.0):
+        assert np.array_equal(model.trapped(v_par, v_perp, ratio), sin2 >= 1 / ratio)
+        lost = model.lost_fraction(ratio, n=50_000, seed=7)
+        p = model.lost_formula(ratio)
+        assert abs(lost - p) < 4 * np.sqrt(p * (1 - p) / 50_000), (ratio, lost, p)
+
 CHAPTERS = sorted((Path(__file__).parent / "chapters").glob("ch*.py"))
 LINE_REFERENCE = re.compile(r'\.typ:\d|"\d*:\d+(?:-\d+)?"')
 

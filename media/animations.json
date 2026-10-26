@@ -88,32 +88,32 @@
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/exb_drift.mp4",
       "poster": "media/posters/exb-drift.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/exb-drift.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/exb_drift.mp4?v=b3db9d9c78e98062",
-      "mp4_sha256": "b3db9d9c78e98062f1e20e56527368f29878fc4dd3790321f05d0a11c84fbe41",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/exb_drift.mp4?v=3520356c9f258826",
+      "mp4_sha256": "3520356c9f25882601fd32a502dd3a1d646617192dab8e13e3cde1961223a44d",
       "appearance": "dark"
     },
     "gyration-components": {
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_components.mp4",
       "poster": "media/posters/gyration-components.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/gyration-components.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_components.mp4?v=62cc3b4110f03c51",
-      "mp4_sha256": "62cc3b4110f03c515e20af6590da36bb7ff904a52b260f972bfec32f87186535",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_components.mp4?v=b7396d52c112831c",
+      "mp4_sha256": "b7396d52c112831c319842857c5e71a06448dfa64125218372216eec5f07ecd9",
       "appearance": "dark"
     },
     "gyration-helix": {
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_helix.mp4",
       "poster": "media/posters/gyration-helix.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/gyration-helix.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_helix.mp4?v=2a9a79940c4a8308",
-      "mp4_sha256": "2a9a79940c4a83087e82c3b0e59b48f3c67584e5366729e6db7ad7f55939bab3",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_helix.mp4?v=4939daada3732cdd",
+      "mp4_sha256": "4939daada3732cddd13b0d6144bbf50841b75947131554b0eeb395a05b40a279",
       "appearance": "dark"
     },
     "gyration-top-view": {
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_top_view.mp4",
       "poster": "media/posters/gyration-top-view.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/gyration-top-view.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_top_view.mp4?v=1c393ea89545b598",
-      "mp4_sha256": "1c393ea89545b598bebb303af15afeea0de153dc003660e7c590fc3cf6b36a7e",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_top_view.mp4?v=d11692c94c0231a2",
+      "mp4_sha256": "d11692c94c0231a2e1824f888d32cf6762908ac2696bc8cf3fe4816b43c4196a",
       "appearance": "dark"
     },
     "landau-resonance": {
@@ -226,8 +226,8 @@
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/grad_b_drift.mp4",
       "poster": "media/posters/grad-b-drift.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/grad-b-drift.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/grad_b_drift.mp4?v=d48a9717b8592437",
-      "mp4_sha256": "d48a9717b859243740753ef193475e280f2d8b399947e1715f08296e7aa0f190",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/grad_b_drift.mp4?v=ddd9c9eba1b84dd5",
+      "mp4_sha256": "ddd9c9eba1b84dd56ccb0568d81a5ee0582d5e86816aa752e37f82d4912384cb",
       "appearance": "dark",
       "supplementary_chapter": "chapters/05-single-particle-motion.html",
       "supplementary_description": "Full Lorentz-force orbits of an ion and an electron in a magnetic field B = B0(1 + y/L) along z that grows in y, with L = 10 ion Larmor radii, reduced mass ratio 16 and equal temperatures. The orbit is tighter where B is stronger, so the guiding centres drift along x in opposite directions for the two charges. The measured drift speeds agree with mu grad B x B/(q B^2) within 1.3 % (ion) and 0.1 % (electron). Lengths in ion Larmor radii and time in inverse ion gyrofrequencies, with unit [1]."
@@ -236,8 +236,8 @@
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/curvature_drift.mp4",
       "poster": "media/posters/curvature-drift.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/curvature-drift.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/curvature_drift.mp4?v=d1a8dea8bd5b2593",
-      "mp4_sha256": "d1a8dea8bd5b259329a105d0d5825757cf3f1e4d69244341ba5fc7cd18ed5170",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/curvature_drift.mp4?v=a0cb1b4260a3911d",
+      "mp4_sha256": "a0cb1b4260a3911ddbe4b2a8651ed4bd8354b8109d9266c0b056e66fe5402dd2",
       "appearance": "dark",
       "supplementary_chapter": "chapters/05-single-particle-motion.html",
       "supplementary_description": "Full Lorentz-force orbits of an ion and an electron in the toroidal vacuum field B proportional to 1/R, shown in the poloidal plane. The combined curvature and grad-B drift moves the ion up and the electron down, a charge separation that a purely toroidal field cannot hold. The measured vertical drift speeds agree with (m/(q B R))(v_par^2 + v_perp^2/2) within 1.6 % (ion) and 0.4 % (electron). Lengths in ion Larmor radii, with unit [1]."
@@ -246,8 +246,8 @@
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetic_mirror.mp4",
       "poster": "media/posters/magnetic-mirror.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/magnetic-mirror.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetic_mirror.mp4?v=277d8f3bdf91a032",
-      "mp4_sha256": "277d8f3bdf91a0323386a9055086045b3d1fb954821a3ad5003a5998f017ae0e",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetic_mirror.mp4?v=6285b8254c790782",
+      "mp4_sha256": "6285b8254c790782dc459657e6ac605f7d3a39a89ee434eca83b4601fdb93e4e",
       "appearance": "dark",
       "supplementary_chapter": "chapters/05-single-particle-motion.html",
       "supplementary_description": "Six ions of equal speed with midplane pitch angles from 18 to 70 degrees in a magnetic mirror with mirror ratio R_m = 4. Ions with sin^2(alpha) < 1/R_m, inside the 30 degree loss cone, leave through the throat; the others are reflected. The magnetic moment stays constant within 0.3 % for reflected and 1.6 % for escaping ions. Positions in units of the mirror half-length L, with unit [1]."
@@ -271,6 +271,46 @@
       "appearance": "dark",
       "supplementary_chapter": "chapters/06-kinetic-theory.html",
       "supplementary_description": "The kernel width h is varied from 0.25 to 20 mean particle spacings for particles drawn from a known density. Narrow kernels return the spikes and statistical noise, which falls like 1/sqrt(particles per kernel width); wide kernels smooth away real structure. The lower panel shows noise, bias and total error. Positions in units of the mean particle spacing, with unit [1]."
+    },
+    "exb-frame-change": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/exb_frame_change.mp4",
+      "poster": "media/posters/exb-frame-change.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/exb-frame-change.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/exb_frame_change.mp4?v=9715ae7a61486504",
+      "mp4_sha256": "9715ae7a61486504ab3680765f029d09db859d37475df50245a556d8bf1fd06f",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/05-single-particle-motion.html",
+      "supplementary_description": "Full Lorentz-force orbit of an ion in uniform crossed fields with E/B = 0.4 times its gyration speed, shown twice in the same axes. In the lab frame it is a looped trochoid that drifts along E x B; its fitted drift speed equals E/B. In the frame moving with v_D = E x B/B^2 the electric field E' = E + v_D x B vanishes and the orbit is a circle whose radius is constant to 3e-14. Lengths in Larmor radii and time in inverse gyrofrequencies, with unit [1]."
+    },
+    "gravity-drift": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gravity_drift.mp4",
+      "poster": "media/posters/gravity-drift.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/gravity-drift.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gravity_drift.mp4?v=8c70cb1ddcda5e85",
+      "mp4_sha256": "8c70cb1ddcda5e85a5f4417973a144dab7260bad7775055750e964d976d2c8c2",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/05-single-particle-motion.html",
+      "supplementary_description": "Full Lorentz-force orbits of an ion and an electron in a uniform magnetic field with gravity perpendicular to it, at a reduced mass ratio of 16 and equal temperatures. The ion drifts one way and the electron the other way, 16 times slower, because the force m g does not depend on the charge: the measured drifts agree with (m/q) g x B/B^2 to better than 0.01 %. Lengths in ion Larmor radii and time in inverse ion gyrofrequencies, with unit [1]."
+    },
+    "mu-ramp": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/mu_ramp.mp4",
+      "poster": "media/posters/mu-ramp.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/mu-ramp.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/mu_ramp.mp4?v=6c3bf4c0fdb0233a",
+      "mp4_sha256": "6c3bf4c0fdb0233a8830ab994f3625b597d068a6a6df69ed231f45a462ed126f",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/05-single-particle-motion.html",
+      "supplementary_description": "An ion circling the axis of a uniform magnetic field that grows smoothly from B0 to 2B0 over about twenty gyrations, with the induced electric field of Faraday's law. The orbit shrinks as B to the power -1/2, while the flux through the orbit and the magnetic moment mu stay constant to better than 0.05 %. Lengths in the initial Larmor radius and time in inverse initial gyrofrequencies, with unit [1]."
+    },
+    "polarization-drift": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/polarization_drift.mp4",
+      "poster": "media/posters/polarization-drift.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/polarization-drift.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/polarization_drift.mp4?v=8ca3b31191896054",
+      "mp4_sha256": "8ca3b311918960543bee8a31e04b7048ad05431a2ab1a2bd5ff119d0b550206e",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/05-single-particle-motion.html",
+      "supplementary_description": "Full Lorentz-force orbits of an ion and an electron while a perpendicular electric field is switched on smoothly over three ion gyroperiods, at a reduced mass ratio of 16. With the common E x B displacement removed, the ion guiding centre moves along E by m E/(q B^2) and the electron 16 times less in the opposite direction, as the polarization drift predicts. Lengths in ion Larmor radii and time in inverse ion gyrofrequencies, with unit [1]."
     }
   }
 }

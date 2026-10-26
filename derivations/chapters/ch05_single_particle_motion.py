@@ -149,10 +149,10 @@ MP_SI = float(PROTON_MASS / u.kilogram)
 
 
 def gyro_scales(mass, field, energy_ev):
-    """omega_c = e B/m, f_c = omega_c/(2 pi), r_L = v_th/omega_c, v_th = sqrt(2 k_B T/m)."""
+    """|omega_c| = e B/m, f_c = |omega_c|/(2 pi), rho_L = v_th/|omega_c|, v_th = sqrt(2 k_B T/m)."""
     omega = E_SI * field / mass
     v_thermal = np.sqrt(2 * energy_ev * E_SI / mass)
-    return dict(omega=omega, f=omega / (2 * np.pi), v=v_thermal, r=v_thermal / omega)
+    return dict(omega=omega, f=omega / (2 * np.pi), v=v_thermal, rho_L=v_thermal / omega)
 
 
 gyration_table = [dict(species=name, B=field, T_eV=energy,
@@ -164,10 +164,10 @@ fusion = dict(n=1e20, T_K=1e8, kT_eV=kT / E_SI, B=5.0,
               lambda_D=float(np.sqrt(EPS0_SI * kT / (1e20 * E_SI**2))),
               omega_pe=float(np.sqrt(1e20 * E_SI**2 / (EPS0_SI * ME_SI))),
               omega_ce=E_SI * 5.0 / ME_SI, omega_ci=E_SI * 5.0 / MP_SI,
-              r_Le=gyro_scales(ME_SI, 5.0, kT / E_SI)["r"],
-              r_Li=gyro_scales(MP_SI, 5.0, kT / E_SI)["r"])
+              rho_Le=gyro_scales(ME_SI, 5.0, kT / E_SI)["rho_L"],
+              rho_Li=gyro_scales(MP_SI, 5.0, kT / E_SI)["rho_L"])
 for key, printed in (("lambda_D", "6.9e-5"), ("omega_pe", "5.6e11"), ("omega_ce", "8.8e11"),
-                     ("omega_ci", "4.8e8"), ("r_Le", "6.3e-5"), ("r_Li", "2.7e-3")):
+                     ("omega_ci", "4.8e8"), ("rho_Le", "6.3e-5"), ("rho_Li", "2.7e-3")):
     close_to(fusion[key], float(printed), rtol=rounding_rtol(printed))
 Path("build").mkdir(exist_ok=True)
 Path("build/gyration.json").write_text(json.dumps(dict(table=gyration_table, fusion=fusion),
@@ -412,6 +412,150 @@ omega_res_e = evaluate(sp.Symbol("omega_res,e"), e * B / m_e, weak_field, 1 / u.
 close_to(omega_res_e, 1.76e9, rtol=rounding_rtol("1.76e9"))
 omega_res_i = evaluate(sp.Symbol("omega_res,i"), e * B / m_p, weak_field, 1 / u.second)
 close_to(omega_res_i, 9.58e5, rtol=rounding_rtol("9.58e5"))
+
+# %% Lecture deck (slides/05-single-particle-motion.typ): the board routes in
+# the lecturer's notation, q_a, m_a, signed w_c = q_a B/m_a, rho_L = v_perp/|w_c|.
+section("Deck: gyration with signed gyrofrequency", script="motion-lorentz")
+q_a = sp.Symbol("q_alpha", nonzero=True, real=True)
+m_a, B_d, vp_d, vpar_d = sp.symbols("m_alpha B v_perp v_par", positive=True)
+w_c = q_a * B_d / m_a                                   # signed
+rho_L = vp_d / sp.Abs(w_c)
+phi_g, x_0, y_0, z_0 = sp.symbols("phi x_0 y_0 z_0", real=True)
+note("Force balance m v_perp^2/rho_L = |q| v_perp B gives rho_L = v_perp/|w_c|")
+agrees(sp.solve(sp.Eq(m_a * vp_d**2 / rho, sp.Abs(q_a) * vp_d * B_d), rho)[0], rho_L, lhs=rho,
+       source="deck")
+vx_d = vp_d * sp.cos(w_c * t + phi_g)
+vy_d = -vp_d * sp.sin(w_c * t + phi_g)                  # corrected sign of the 2025 notes
+assert sp.simplify(m_a * vx_d.diff(t) - q_a * B_d * vy_d) == 0
+assert sp.simplify(m_a * vy_d.diff(t) + q_a * B_d * vx_d) == 0
+assert sp.simplify(vx_d.diff(t, 2) + w_c**2 * vx_d) == 0
+x_d = x_0 + vp_d / w_c * sp.sin(w_c * t + phi_g)
+y_d = y_0 + vp_d / w_c * sp.cos(w_c * t + phi_g)
+assert sp.simplify(x_d.diff(t) - vx_d) == 0 and sp.simplify(y_d.diff(t) - vy_d) == 0
+assert sp.simplify((x_d - x_0) ** 2 + (y_d - y_0) ** 2 - rho_L**2) == 0
+# Sense of rotation, B out of the page: d(angle)/dt = (x v_y - y v_x)/r^2 = -w_c,
+# clockwise for ions, counterclockwise for electrons.
+angular = ((x_d - x_0) * vy_d - (y_d - y_0) * vx_d) / rho_L**2
+assert sp.simplify(angular + w_c) == 0
+
+section("Deck: E x B drift from the ansatz", script="motion-exb")
+E_d, B_v, vD_d, vg_d = vec("E", real=True), B_d * e_z, vec("v_D", real=True), vec("u", real=True)
+note("v = v_par b + v_perp(t) + v_D, m dv_perp/dt = q v_perp x B, v_D constant")
+residual = (E_d + (vg_d + vD_d).cross(B_v)) - vg_d.cross(B_v)   # q/m times what is left
+perp = sp.Matrix([residual[0], residual[1], 0])
+sol = sp.solve(list(perp) + [vD_d[2]], list(vD_d), dict=True)[0]
+agrees_vector(vD_d.subs(sol), E_d.cross(B_v) / B_d**2, "v_D", eq="motion-exb-drift")
+# cross with B: (v_D x B) x B = -B^2 v_D for v_D perpendicular to B
+assert sp.simplify(vD_d.subs(sol).cross(B_v).cross(B_v) + B_d**2 * vD_d.subs(sol)) == sp.zeros(3, 1)
+# Drift frame: E' = E_perp + v_D x B = 0
+assert sp.simplify(sp.Matrix([E_d[0], E_d[1], 0]) + vD_d.subs(sol).cross(B_v)) == sp.zeros(3, 1)
+
+section("Deck: gravity drift and current", script="motion-exb")
+g_v = vec("g", real=True)
+n_d, m_i_d, m_e_d, e_d = sp.symbols("n m_i m_e e", positive=True)
+v_grav = lambda mass, charge: (mass * g_v).cross(B_v) / (charge * B_d**2)
+j_grav = n_d * e_d * v_grav(m_i_d, e_d) + n_d * (-e_d) * v_grav(m_e_d, -e_d)
+assert sp.simplify(j_grav - n_d * (m_i_d + m_e_d) * g_v.cross(B_v) / B_d**2) == sp.zeros(3, 1)
+
+section("Deck: curvature drift, e_R from the centre of curvature", script="motion-nonuniform-fields")
+Rc_d, X_d, Y_d = sp.symbols("R_c X Y", positive=True)
+# Field line circle about the origin, b = e_phi; at (R_c, 0) e_R = e_x, b = e_y.
+b_field = sp.Matrix([-Y_d, X_d, 0]) / sp.sqrt(X_d**2 + Y_d**2)
+jac = b_field.jacobian([X_d, Y_d, sp.Symbol("Z")])
+b_grad_b = sp.simplify(jac * b_field)
+e_R = sp.Matrix([X_d, Y_d, 0]) / sp.sqrt(X_d**2 + Y_d**2)
+assert sp.simplify(b_grad_b + e_R / sp.sqrt(X_d**2 + Y_d**2)) == sp.zeros(3, 1)   # (b.grad)b = -e_R/R_c
+F_cf = m_a * vpar_d**2 / Rc_d * e_R.subs({X_d: Rc_d, Y_d: 0})
+b_0 = b_field.subs({X_d: Rc_d, Y_d: 0})
+v_curv = (F_cf / q_a).cross(B_d * b_0) / B_d**2
+eR_0 = e_R.subs({X_d: Rc_d, Y_d: 0})
+assert sp.simplify(v_curv - m_a * vpar_d**2 / (q_a * B_d * Rc_d) * eR_0.cross(b_0)) == sp.zeros(3, 1)
+rho_par, Omega_par = vpar_d / w_c, vpar_d / Rc_d       # mnemonic v_D = rho_par Omega_par
+assert sp.simplify(v_curv - rho_par * Omega_par * eR_0.cross(b_0)) == sp.zeros(3, 1)
+# b = e_phi: e_R x b = e_z, ions drift along +z (up in the torus), as in the curvature-drift scene
+assert sp.simplify(v_curv[2] - rho_par * Omega_par) == 0 and eR_0.cross(b_0) == e_z
+
+section("Deck: mirror force from div B = 0", script="motion-nonuniform-fields")
+r_c, z_c, th_c = sp.symbols("r z theta", real=True)
+Bz_f = sp.Function("B_z")
+B_r = -r_c / 2 * sp.diff(Bz_f(z_c), z_c)
+divergence = sp.diff(r_c * B_r, r_c) / r_c + sp.diff(Bz_f(z_c), z_c)
+assert sp.simplify(divergence) == 0
+# Orbit centred on the axis, r = rho_L, sense of rotation from the signed w_c:
+# v_theta = r dtheta/dt = -sign(q) v_perp; (v x B)_z = v_r B_theta - v_theta B_r = -v_theta B_r.
+for sign in (1, -1):
+    q_s = sign * sp.Symbol("Q", positive=True)
+    rho_s = m_a * vp_d / (sp.Abs(q_s) * Bz_f(z_c))
+    v_theta = -sign * vp_d
+    F_z = sp.integrate(q_s * (-v_theta * B_r.subs(r_c, rho_s)), (th_c, 0, 2 * sp.pi)) / (2 * sp.pi)
+    mu_d = m_a * vp_d**2 / (2 * Bz_f(z_c))
+    assert sp.simplify(F_z + mu_d * sp.diff(Bz_f(z_c), z_c)) == 0
+note("F_par = -mu dB/ds for both signs of the charge")
+G_d = vec("G", real=True)
+mu_s = sp.Symbol("mu", positive=True)
+F_mu = -mu_s * sp.Matrix([G_d[0], G_d[1], 0])
+v_gradB = (F_mu / q_a).cross(B_v) / B_d**2
+assert sp.simplify(v_gradB - mu_s / q_a * B_v.cross(G_d) / B_d**2) == sp.zeros(3, 1)
+# Vacuum toroidal field: grad B = -B e_R/R_c, so curvature + grad-B = (m/(q B R_c))(v_par^2 + v_perp^2/2) e_R x b
+gradB_vac = -B_d * eR_0 / Rc_d
+v_sum = v_curv + (mu_s / q_a) * (B_d * b_0).cross(gradB_vac) / B_d**2
+assert sp.simplify(v_sum.subs(mu_s, m_a * vp_d**2 / (2 * B_d))
+                   - m_a / (q_a * B_d * Rc_d) * (vpar_d**2 + vp_d**2 / 2) * eR_0.cross(b_0)) == sp.zeros(3, 1)
+
+section("Deck: magnetic moment of the orbit current", script="motion-guiding-center")
+I_d = sp.Abs(q_a) * sp.Abs(w_c) / (2 * sp.pi)
+agrees(sp.simplify(I_d * sp.pi * rho_L**2), m_a * vp_d**2 / (2 * B_d), lhs=mu, source="deck")
+# Energy identity: m v^2/2 = m v_par^2/2 + mu B with the instantaneous mu.
+assert sp.simplify(m_a * (vpar_d**2 + vp_d**2) / 2 - (m_a * vpar_d**2 / 2 + m_a * vp_d**2 / (2 * B_d) * B_d)) == 0
+
+section("Deck: mu from Faraday's law over one gyration", script="motion-guiding-center")
+Bdot = sp.Symbol("Bdot", real=True)
+# Stokes: path integral along the orbit; ions run left-handed about B, so
+# q oint E.dl = q (+pi rho^2 Bdot) for q > 0 and q (-pi rho^2 Bdot) for q < 0.
+dW = sp.Abs(q_a) * sp.pi * rho_L**2 * Bdot
+mu_0d = m_a * vp_d**2 / (2 * B_d)
+dB_turn = Bdot * 2 * sp.pi / sp.Abs(w_c)
+assert sp.simplify(dW - mu_0d * dB_turn) == 0
+W_perp = m_a * vp_d**2 / 2
+d_mu = dW / B_d - W_perp * dB_turn / B_d**2               # first order in dB
+assert sp.simplify(d_mu) == 0
+
+section("Deck: mu from the mirror force and loss cone", script="motion-nonuniform-fields")
+# The mirror route is the 'Adiabatic balance for mu' check above: d/dt(m v_par^2/2 + mu B) = B dmu/dt.
+alpha_s, R_m = sp.symbols("alpha R_m", positive=True)
+v_s, B_0d = sp.symbols("v B_0", positive=True)
+mu_mid = m_a * (v_s * sp.sin(alpha_s)) ** 2 / (2 * B_0d)
+B_turn = sp.solve(sp.Eq(mu_mid * sp.Symbol("B_t"), m_a * v_s**2 / 2), sp.Symbol("B_t"))[0]
+assert sp.simplify(B_turn - B_0d / sp.sin(alpha_s) ** 2) == 0  # v_par = 0 where B = W/mu
+assert sp.simplify(B_turn.subs(sp.sin(alpha_s), 1 / sp.sqrt(R_m)) - R_m * B_0d) == 0  # sin^2 alpha_c = 1/R_m
+
+section("Deck: action of the gyration and the gyrophase momentum", script="motion-guiding-center")
+th_g = sp.Symbol("vartheta", real=True)                 # gyrophase w_c t + phi
+for sign in (1, -1):
+    q_s = sign * sp.Symbol("Q", positive=True)
+    wc_s = q_s * B_d / m_a
+    rad = vp_d / wc_s                                   # signed v_perp/w_c, |rad| = rho_L
+    pos = sp.Matrix([rad * sp.sin(th_g), rad * sp.cos(th_g), 0])   # about the orbit centre
+    vel = sp.Matrix([vp_d * sp.cos(th_g), -vp_d * sp.sin(th_g), 0])
+    A_g = (B_d * e_z).cross(pos) / 2                    # A = B x r/2, centred on the orbit
+    p_can = m_a * vel + q_s * A_g
+    # one turn along the motion: theta runs 0 -> 2 pi sign(q), dl = v dt = v dtheta/w_c
+    J = sp.integrate((p_can.dot(vel) / wc_s).subs(th_g, sign * th_g), (th_g, 0, 2 * sp.pi)) * sign
+    rhoL_s = vp_d / sp.Abs(wc_s)
+    mv_term = sp.integrate((m_a * vel.dot(vel) / wc_s).subs(th_g, sign * th_g), (th_g, 0, 2 * sp.pi)) * sign
+    assert sp.simplify(mv_term - 2 * sp.pi * m_a * vp_d * rhoL_s) == 0
+    assert sp.simplify(J - mv_term + sp.pi * sp.Abs(q_s) * B_d * rhoL_s**2) == 0   # A term -pi|q|B rho_L^2
+    mu_s_ = m_a * vp_d**2 / (2 * B_d)
+    assert sp.simplify(J - 2 * sp.pi * m_a / sp.Abs(q_s) * mu_s_) == 0
+    assert sp.simplify(J - sp.Abs(q_s) * sp.pi * rhoL_s**2 * B_d) == 0        # |q| times the flux
+    # momentum conjugate to the gyrophase: p_theta about the centre, theta = -vartheta + const
+    p_theta = (pos.cross(p_can))[2]
+    assert sp.simplify(-p_theta - m_a / q_s * mu_s_) == 0                       # p_vartheta = (m/q) mu
+# Guiding-centre Hamiltonian: -dH/ds gives the mirror force and the parallel electric force.
+s_g = sp.Symbol("s")
+H_gc = m_a * vpar_d**2 / 2 + mu_s * sp.Function("B")(s_g) + q_a * sp.Function("Phi")(s_g)
+assert sp.simplify(-H_gc.diff(s_g) - (-mu_s * sp.Function("B")(s_g).diff(s_g)
+                                      - q_a * sp.Function("Phi")(s_g).diff(s_g))) == 0
 
 # %%
 if __name__ == "__main__":

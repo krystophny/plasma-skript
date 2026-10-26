@@ -38,7 +38,8 @@ test: $(OUTLINE)
 	$(PYTHON) -m pytest -q test_chapters.py
 
 tex: $(TEX)
-fig: $(TEX) build/fig/saha_cmod.svg build/fig/debye_nonlinear_potential.svg
+fig: $(TEX) build/fig/saha_cmod.svg build/fig/debye_nonlinear_potential.svg build/fig/mu_ramp.svg \
+     build/fig/loss_cone.svg
 pdf: $(PDF)
 
 build/tex/%.tex: chapters/%.py si.py notebook.py $(OUTLINE)
@@ -49,6 +50,12 @@ build/fig/saha_cmod.svg: plot_saha_cmod.py data/saha-cmod/data.csv $(wildcard ..
 
 build/fig/debye_nonlinear_potential.svg: plot_debye_nonlinear.py si.py
 	$(PYTHON) plot_debye_nonlinear.py
+
+build/fig/mu_ramp.svg: plot_mu_ramp.py si.py
+	$(PYTHON) plot_mu_ramp.py
+
+build/fig/loss_cone.svg: plot_loss_cone.py si.py
+	$(PYTHON) plot_loss_cone.py
 
 build/pdf/%.pdf: build/tex/%.tex
 	latexmk -pdf -quiet -interaction=nonstopmode -outdir=build/pdf $< >/dev/null

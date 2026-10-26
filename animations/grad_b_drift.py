@@ -1,18 +1,18 @@
 """Grad-B drift of an ion and an electron from full Lorentz-force orbits.
 
-Model: B = B_0 (1 + y/L) e_z (out of the page), L = 10 r_Li, E = 0.  Both
+Model: B = B_0 (1 + y/L) e_z (out of the page), L = 10 rho_Li, E = 0.  Both
 species start with their guiding centre at the origin, equal temperature,
 reduced mass ratio m_i/m_e = 16 (gyration scenes); the orbits are Boris
-pushes of dv/dt = (q/m) v x B (drift_models.grad_b_orbit), not drawn paths.
-Drift formula (first order in r_L/L):
+pushes of dv/dt = (q_alpha/m_alpha) v x B (drift_models.grad_b_orbit), not drawn paths.
+Drift formula (first order in rho_L/L):
 
-    v_gradB = (m v_perp^2/(2 q B)) (B x grad B)/B^2 = -mu B'/(q B^2) e_x,
+    v_D^gradB = (mu/q_alpha) (B x grad B)/B^2 = -mu B'/(q_alpha B) e_x,
 
-mu = m v_perp^2/(2B); at equal temperature mu is the same for both species,
+mu = m_alpha v_perp^2/(2B); at equal temperature mu is the same for both species,
 so the speeds are equal and the directions opposite.  Velocities are shown in
-units of r_Li Omega_i [1], lengths in r_Li [1], time as Omega_i t [1].
+units of rho_Li omega_ci [1], lengths in rho_Li [1], time as omega_ci t [1].
 The measured value is the slope of the guiding centre
-R = x + (m/q) v x B/B^2 over the whole run.
+R = x + (m_alpha/q_alpha) v x B/B^2 over the whole run.
 """
 
 from manim import *
@@ -105,19 +105,19 @@ class GradBDrift(StyledScene):
                        dash_length=0.1) if index() > 3 else VMobject(),
             Dot(to_screen(ele_c[index()]), radius=DOT_RADIUS, color=INK)))
 
-        ion_tag = math(r"\mathrm{ion}\ (q>0)", color=ION, size=MATH_SMALL).move_to(ax.c2p(-1.6, 1.85))
-        ele_tag = math(r"\mathrm{electron}\ (q<0)", color=ELECTRON, size=MATH_SMALL).move_to(ax.c2p(3.2, 1.85))
+        ion_tag = math(r"\mathrm{ion}\ (q_\alpha>0)", color=ION, size=MATH_SMALL).move_to(ax.c2p(-1.6, 1.85))
+        ele_tag = math(r"\mathrm{electron}\ (q_\alpha<0)", color=ELECTRON, size=MATH_SMALL).move_to(ax.c2p(3.2, 1.85))
 
-        unit_note = math(r"x/r_{Li},\ y/r_{Li}\ [1];\quad B=B_0\,(1+y/10r_{Li});\quad m_i/m_e=16,\ T_i=T_e",
+        unit_note = math(r"x/\rho_{Li},\ y/\rho_{Li}\ [1];\quad B=B_0\,(1+y/10\rho_{Li});\quad m_i/m_e=16,\ T_i=T_e",
                          color=MUTED, size=MATH_SMALL).move_to([0, -1.75, 0])
         rows = VGroup(
-            math(r"v_{\nabla B,x}/(r_{Li}\Omega_i)\ [1]\quad \mathrm{orbit}\ \mid\ -\mu\,\partial_yB/(qB^2)\ \ (\mathrm{dev.})",
+            math(r"v^{\nabla B}_{D,x}/(\rho_{Li}\omega_{ci})\ [1]\quad \mathrm{orbit}\ \mid\ -\mu\,\partial_yB/(q_\alpha B)\ \ (\mathrm{dev.})",
                  color=MUTED, size=MATH_SMALL),
             math(rf"\mathrm{{ion}}\ \ {{{ion[3]:+.4f}}}\ \mid\ {{{ion[4]:+.4f}}}\ \ ({{{100*(ion[3]/ion[4]-1):+.1f}}}\,\%)", color=ION, size=MATH_SMALL),
             math(rf"\mathrm{{electron}}\ \ {{{ele[3]:+.4f}}}\ \mid\ {{{ele[4]:+.4f}}}\ \ ({{{100*(ele[3]/ele[4]-1):+.1f}}}\,\%)",
                  color=ELECTRON, size=MATH_SMALL),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.1).move_to([0, -2.85, 0])
-        clock_label = math(r"\Omega_i t=", color=MUTED, size=MATH_SMALL).move_to([4.7, 3.3, 0])
+        clock_label = math(r"\omega_{ci} t=", color=MUTED, size=MATH_SMALL).move_to([4.7, 3.3, 0])
         clock = DecimalNumber(0.0, num_decimal_places=1, color=INK, font_size=MATH_SMALL)
 
         def place_clock(m):

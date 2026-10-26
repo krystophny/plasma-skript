@@ -1,8 +1,8 @@
 """Magnetic mirror: bounce, loss cone and the adiabatic invariant mu.
 
 Model: axisymmetric mirror field with B_z = B_0 [1 + (R_m - 1)(z/L)^2] and
-B_r = -(r/2) dB_z/dz (div B = 0), R_m = 4, L = 30 r_L0, where
-r_L0 = v/Omega_0 is the Larmor radius of the full speed v at B_0.  Six ions of equal speed start on the midplane
+B_r = -(r/2) dB_z/dz (div B = 0), R_m = 4, L = 30 rho_L0, where
+rho_L0 = v/omega_c0 is the Larmor radius of the full speed v at B_0.  Six ions of equal speed start on the midplane
 z = 0 with pitch angles alpha = 18, 26, 29, 31, 45, 70 degrees; their
 orbits are full Boris pushes of the Lorentz force (drift_models.mirror_orbit),
 not drawn paths.  At the midplane
@@ -12,7 +12,7 @@ not drawn paths.  At the midplane
 Particles with sin^2 alpha < 1/R_m reach the mirror throat z = L and leave
 (open circle at the throat); the others reflect where B = B_0/sin^2 alpha,
 z_b = L sqrt((1/sin^2 alpha - 1)/(R_m - 1)).  The inset shows
-mu = m v_perp^2/(2B) (about the local field direction) divided by its starting
+mu = m_alpha v_perp^2/(2B) (about the local field direction) divided by its starting
 value (first full gyro-period average): constant to 0.3 % for the
 reflected ions, 1.6 % for the escaping ones.  Axes are
 z/L [1], x/L [1] at equal scale, time v t/L [1].
@@ -101,7 +101,7 @@ class MagneticMirror(StyledScene):
         prof_lab = math(r"B/B_0\ [1]\ \mathrm{vs}\ z/L\ [1]", color=B_FIELD, size=MATH_SMALL).next_to(prof_frame, UP, buff=0.1)
         rm_mark = DashedLine(prof.c2p(-1.0, MIRROR_RATIO), prof.c2p(1.0, MIRROR_RATIO), color=MUTED,
                              stroke_width=THIN_WIDTH, dash_length=0.1)
-        rm_lab = math(r"R_m=4,\ L=30\,r_{L0}", color=MUTED, size=MATH_SMALL).move_to(prof.c2p(0, 2.9))
+        rm_lab = math(r"R_m=4,\ L=30\,\rho_{L0}", color=MUTED, size=MATH_SMALL).move_to(prof.c2p(0, 2.9))
 
         tracker = ValueTracker(0.0)
 
