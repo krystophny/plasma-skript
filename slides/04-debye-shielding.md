@@ -101,3 +101,45 @@ $-\delta n_e/(\kappa n_0)$ [1] approaches the periodic Debye response after
 time and ensemble averaging; one snapshot does not reveal the screening
 cloud. Page 9, after the plasma-parameter pages. It plays once, because
 the average converges to its final state. The script shows it in §4.1.
+
+## New visuals (2026-10-26)
+
+**Nonlinear versus linear screening** (two light plots, place after the
+Debye-Hückel derivation, script section `intro-debye-shielding`). Source
+`derivations/plot_debye_nonlinear.py` (`make -C derivations fig`), output
+`derivations/build/fig/debye_nonlinear_potential` and
+`debye_nonlinear_density` as `.svg`, `.pdf` and `.png`; every axis is
+dimensionless [1], log-log.
+- Computed: the spherical Poisson-Boltzmann equation
+  $\rho^{-2}(\rho^2\varphi')'=e^{\varphi}-1$ with $\varphi=e\Phi/k_BT_e$,
+  $\rho=r/\lambda_D$, Boltzmann electrons $n_e=n_0e^{\varphi}$ and fixed
+  ions, solved as a boundary-value problem (ODE residual below $10^{-3}$,
+  checked in `derivations/test_chapters.py`). Strength of the positive charge
+  $\Lambda=qe/(4\pi\varepsilon_0\lambda_Dk_BT_e)=(q/e)/(4\pi n_0\lambda_D^3)$;
+  shown $\Lambda=10^{-4},10^{-3},10^{-2}$, i.e. $q=e$ in plasmas with
+  $N_D=n_0\lambda_D^3\approx800,80,8$.
+- A strict point charge $q>0$ has no Boltzmann solution: $e^{\Lambda/\rho}$ is
+  not integrable at $\rho\to0$ (classical collapse onto the charge). The charge
+  is therefore a sphere of radius $a=0.1\Lambda\lambda_D$, where
+  $e\Phi\approx10\,k_BT_e$. Halving $a$ changes the potential at
+  $r=2\lambda_D$ by 0.004 %, 0.4 % and 8 % for the three values; this is
+  the number of electrons the collapse adds to the core, not screening.
+- `debye_nonlinear_potential`: $e\Phi/k_BT_e$ [1] against $r/\lambda_D$ [1].
+  The exact curve (solid blue, light to dark for increasing $\Lambda$), Debye-
+  Hückel $\Lambda e^{-\rho}/\rho$ (dashed) and bare Coulomb $\Lambda/\rho$
+  (dotted) coincide for $r\ll\lambda_D$; Coulomb parts from them beyond
+  $0.1\lambda_D$. Markers (circle, square, triangle) at
+  $e\Phi=k_BT_e$, i.e. $r_1\approx\Lambda\lambda_D=qe/(4\pi\varepsilon_0k_BT_e)$,
+  the Landau length for $q=e$. Exact over Debye-Hückel at $r=1$ to
+  $3\lambda_D$: 0.99998, 0.9997, 0.997.
+- `debye_nonlinear_density`: excess density $n_e/n_0-1$ [1] against
+  $r/\lambda_D$ [1], exact $e^{\varphi}-1$ (solid) against the linearised
+  $\varphi_{DH}$ (dashed), same markers. Outside the marker the two agree; inside,
+  the exact density rises to $e^{10}\approx2\times10^4$ while the linear one
+  stays at $\Lambda/r$.
+- Message: under its assumptions (thermal equilibrium, mean field) Boltzmann
+  is exact; only the linearisation $e^{\varphi}\approx1+\varphi$ fails, and only
+  inside $r_1\approx\Lambda\lambda_D$. That sphere holds on average
+  $5.7\times10^{-8}$, $5.7\times10^{-6}$ and $5.6\times10^{-4}$ electrons
+  (for $q=e$), so the screening cloud is linear; even there the potential is
+  still Coulomb, so only the density is wrong.

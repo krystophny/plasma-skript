@@ -44,6 +44,27 @@ def test_saha_cmod_measured_populations():
     assert len(ratios) == 6
     assert np.all((ratios >= 1.0) & (ratios <= 1.5)), ratios
 
+def test_debye_nonlinear_poisson_boltzmann():
+    """The solver solves the Poisson-Boltzmann ODE with the enclosed-charge
+    boundary condition, the far field agrees with Debye-Hueckel to order
+    Lambda, and e Phi = k_B T_e lies at r ~ Lambda lambda_D (Coulomb region)."""
+    import numpy as np
+    import plot_debye_nonlinear as model
+
+    for lam in model.STRENGTHS:
+        sol = model.solve(lam)
+        assert abs(sol.sol(sol.a)[1] + lam) < 1e-8 * max(lam, 1)   # rho^2 phi' = -Lambda at a
+        x = np.geomspace(2 * sol.a, 6.0, 60)
+        h = 1e-4 * x
+        phi, up, dn = sol.sol(x)[0], sol.sol(x + h)[0], sol.sol(x - h)[0]
+        residual = (up - 2 * phi + dn) / h**2 + 2 * (up - dn) / (2 * h) / x - np.expm1(phi)
+        scale = abs((up - 2 * phi + dn) / h**2) + abs(np.expm1(phi))
+        assert np.max(abs(residual) / scale) < 1e-3, lam
+        ratio = model.far_field_ratio(sol, lam)
+        assert np.all(abs(ratio - 1) < lam), (lam, ratio)
+        assert abs(model.unit_crossing(sol) / lam - 1) < 0.02, lam
+
+
 CHAPTERS = sorted((Path(__file__).parent / "chapters").glob("ch*.py"))
 LINE_REFERENCE = re.compile(r'\.typ:\d|"\d*:\d+(?:-\d+)?"')
 

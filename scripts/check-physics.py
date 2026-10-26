@@ -293,6 +293,170 @@ class GyrationPhysics(unittest.TestCase):
                 self.assertAlmostEqual(row["r"]/r_l, 1, delta=1e-6)
 
 
+class DriftOrbitPhysics(unittest.TestCase):
+    """animations/drift_models.py (grad-B, toroidal curvature, mirror scenes).
+
+    Oracle: an independent RK4 integration of the Lorentz force and, for the
+    drift, a boxcar average of the position over one gyroperiod, not the
+    guiding-centre formula used by the scenes.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("drift_models.py")
+
+    @staticmethod
+    def rk4(field, qm, x0, v0, dt, steps):
+        def rhs(s):
+            return np.concatenate([s[3:], qm*np.cross(s[3:], field(s[:3]))])
+        s = np.concatenate([x0, v0])
+        out = np.empty((steps + 1, 6))
+        out[0] = s
+        for i in range(steps):
+            k1 = rhs(s)
+            k2 = rhs(s + dt/2*k1)
+            k3 = rhs(s + dt/2*k2)
+            k4 = rhs(s + dt*k3)
+            s = s + dt/6*(k1 + 2*k2 + 2*k3 + k4)
+            out[i + 1] = s
+        return out
+
+    @staticmethod
+    def averaged_slope(t, q, period, skip=1.5):
+        """Slope of q averaged over one gyroperiod (centred boxcar)."""
+        dt = t[1] - t[0]
+        n = int(round(period/dt))
+        box = np.convolve(q, np.ones(n)/n, mode="valid")
+        tt = t[n//2:n//2 + len(box)]
+        keep = (tt > skip*period) & (tt < tt[-1] - skip*period)
+        return np.polyfit(tt[keep], box[keep], 1)[0]
+
+    def test_grad_b_drift_matches_formula_and_flips_with_charge(self):
+        m = self.m
+        speeds = []
+        for qm, v_perp in ((1.0, 1.0), (-16.0, 4.0)):
+            omega = abs(qm)
+            r_l = v_perp/omega
+            dt = 2*np.pi/omega/200
+            steps = int(10*2*np.pi/dt)
+            x0 = np.array([-np.sign(qm)*r_l, 0.0, 0.0])
+            out = self.rk4(m["grad_b_field"], qm, x0, np.array([0.0, v_perp, 0.0]), dt, steps)
+            t = np.arange(steps + 1)*dt
+            v_x = self.averaged_slope(t, out[:, 0], 2*np.pi/omega)
+            # mu = m v_perp^2/(2B), v = mu (B x grad B)/(q B^3): independent of the scene formula
+            expected = -(v_perp**2/(2*qm))*(1/m["GRAD_B_L"])
+            self.assertAlmostEqual(v_x/expected, 1, delta=0.03)
+            print(f"grad-B qm={qm:+g}: RK4 {v_x:+.5f} formula {expected:+.5f} ({100*(v_x/expected-1):+.2f}%)")
+            speeds.append(v_x)
+            # the scene's own Boris orbit agrees with the RK4 orbit
+            t_b, _, _, centre = m["grad_b_orbit"](qm, v_perp, periods=10)
+            self.assertAlmostEqual(m["drift_speed"](t_b, centre)[0]/v_x, 1, delta=0.03)
+        self.assertLess(speeds[0], 0)
+        self.assertGreater(speeds[1], 0)
+        self.assertAlmostEqual(speeds[0]/-speeds[1], 1, delta=0.03)
+
+    def test_toroidal_vertical_drift_separates_charges(self):
+        m = self.m
+        r0 = m["TORUS_R0"]
+        drifts = []
+        for qm, v in ((1.0, 1.0), (-16.0, 4.0)):
+            omega = abs(qm)
+            dt = 2*np.pi/omega/150
+            steps = int(80/dt)
+            b0 = m["torus_field"](np.array([r0, 0.0, 0.0]))
+            v0 = np.array([0.0, v, v])
+            x0 = np.array([r0, 0.0, 0.0]) - np.cross(v0, b0)/(qm*(b0 @ b0))
+            out = self.rk4(m["torus_field"], qm, x0, v0, dt, steps)
+            t = np.arange(steps + 1)*dt
+            v_z = self.averaged_slope(t, out[:, 2], 2*np.pi/omega)
+            # (m/q)(v_par^2 + v_perp^2/2)/(B R), B R = B_0 R_0 = r0 in these units
+            expected = (v**2 + 0.5*v**2)/(qm*r0)
+            self.assertAlmostEqual(v_z/expected, 1, delta=0.04)
+            self.assertAlmostEqual(np.hypot(out[:, 0], out[:, 1]).mean()/r0, 1, delta=0.01)
+            print(f"toroidal qm={qm:+g}: RK4 {v_z:+.5f} formula {expected:+.5f} ({100*(v_z/expected-1):+.2f}%)")
+            drifts.append(v_z)
+        self.assertGreater(drifts[0], 0)
+        self.assertLess(drifts[1], 0)
+
+    def test_mirror_loss_cone_and_adiabatic_invariant(self):
+        m = self.m
+        ratio, length = m["MIRROR_RATIO"], m["MIRROR_L"]
+        self.assertAlmostEqual(m["loss_cone_angle"](), 30.0, places=6)
+        for alpha, x_gc in zip(m["PITCH_DEG"], (-2, -1.2, -0.4, 0.4, 1.2, 2)):
+            t, x, v, mu, lost = m["mirror_orbit"](alpha, x_gc, t_end=60.0)
+            sin2 = np.sin(np.radians(alpha))**2
+            self.assertEqual(lost, sin2 < 1/ratio, alpha)
+            self.assertLess(abs(np.sum(v**2, axis=1) - 1).max(), 1e-9)       # |v| conserved
+            if not lost:
+                z_b = length*np.sqrt((1/sin2 - 1)/(ratio - 1))               # B(z_b) = B_0/sin^2
+                self.assertAlmostEqual(np.abs(x[:, 2]).max()/z_b, 1, delta=0.03)
+                self.assertLess(abs(mu - 1).max(), 0.01)
+
+
+class KernelSmoothingPhysics(unittest.TestCase):
+    """animations/kernel_smoothing.py.
+
+    Oracles: an FFT convolution of a fine particle histogram (and of the true
+    density) with the Gaussian's Fourier transform, and a Monte Carlo with its
+    own seed against the Poisson variance n_bar int K_h^2.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("kernel_smoothing.py")
+        cls.particles = cls.m["sample"](np.random.default_rng(cls.m["SEED"]))
+
+    def fft_smooth(self, values, h):
+        """Periodic convolution with exp(-k^2 h^2/2) on a uniform grid."""
+        k = 2*np.pi*np.fft.fftfreq(len(values), d=self.m["DOMAIN"]/len(values))
+        return np.real(np.fft.ifft(np.fft.fft(values)*np.exp(-0.5*(k*h)**2)))
+
+    def test_sum_of_kernels_is_convolution_and_keeps_particle_number(self):
+        m, p = self.m, self.particles
+        cells = 2**14
+        dx = m["DOMAIN"]/cells
+        x = (np.arange(cells) + 0.5)*dx
+        hist = np.bincount((p/dx).astype(int), minlength=cells)/dx
+        for h in (0.5, 1.5, 20.0):
+            direct = m["smoothed"](x, p, h)
+            self.assertAlmostEqual(direct.sum()*dx/len(p), 1, delta=1e-9)
+            ref = self.fft_smooth(hist, h)
+            # the histogram puts particles at cell centres: error ~ dx/h
+            self.assertLess(abs(direct - ref).max()/direct.max(), 3*dx/h)
+
+    def test_expected_density_and_spike_limit(self):
+        m = self.m
+        cells = 4096
+        x = (np.arange(cells) + 0.5)*m["DOMAIN"]/cells
+        for h in (0.5, 4.0, 20.0):
+            ref = self.fft_smooth(m["true_density"](x), h)
+            self.assertLess(abs(m["smoothed_truth"](x, h) - ref).max(), 1e-9)
+        # h -> 0: each particle carries weight 1 in a narrow window around it
+        p = self.particles
+        gaps = np.diff(np.r_[p[-1] - m["DOMAIN"], p, p[0] + m["DOMAIN"]])
+        i = int(np.argmax(np.minimum(gaps[:-1], gaps[1:])))     # most isolated
+        xs = np.linspace(p[i] - 0.1, p[i] + 0.1, 2001)
+        weight = np.trapezoid(m["smoothed"](xs, p, 0.01), xs)
+        self.assertAlmostEqual(weight, 1, delta=1e-6)
+
+    def test_noise_follows_poisson_variance(self):
+        m = self.m
+        rng = np.random.default_rng(99)
+        x = np.linspace(0, m["DOMAIN"], 320, endpoint=False)
+        widths = (0.5, 2.0, 8.0)
+        sq = np.zeros(len(widths))
+        runs = 400
+        for _ in range(runs):
+            p = m["sample"](rng)
+            for j, h in enumerate(widths):
+                sq[j] += np.mean((m["smoothed"](x, p, h) - m["smoothed_truth"](x, h))**2)
+        for h, s2 in zip(widths, sq/runs):
+            # n_bar int K_h^2 = 1/(2 sqrt(pi) h) for n_bar Delta = 1 (images negligible)
+            self.assertAlmostEqual(np.sqrt(s2)*np.sqrt(2*np.sqrt(np.pi)*h), 1, delta=0.03)
+            self.assertAlmostEqual(m["noise_theory"](h)*np.sqrt(2*np.sqrt(np.pi)*h), 1, delta=1e-6)
+            print(f"kernel h={h:g}: noise {np.sqrt(s2):.4f}, 1/sqrt(2 sqrt(pi) h) {1/np.sqrt(2*np.sqrt(np.pi)*h):.4f}")
+
+
 class PendulumEnsemblePhysics(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

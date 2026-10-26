@@ -221,6 +221,46 @@
       "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/wave_packet.mp4?v=ed12a84dd3fe4715",
       "mp4_sha256": "ed12a84dd3fe471574d11bc449a05f11c109cfd4dca626f57ac21966581f04fb",
       "appearance": "dark"
+    },
+    "grad-b-drift": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/grad_b_drift.mp4",
+      "poster": "media/posters/grad-b-drift.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/grad-b-drift.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/grad_b_drift.mp4?v=d48a9717b8592437",
+      "mp4_sha256": "d48a9717b859243740753ef193475e280f2d8b399947e1715f08296e7aa0f190",
+      "appearance": "dark"
+    },
+    "curvature-drift": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/curvature_drift.mp4",
+      "poster": "media/posters/curvature-drift.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/curvature-drift.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/curvature_drift.mp4?v=d1a8dea8bd5b2593",
+      "mp4_sha256": "d1a8dea8bd5b259329a105d0d5825757cf3f1e4d69244341ba5fc7cd18ed5170",
+      "appearance": "dark"
+    },
+    "magnetic-mirror": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetic_mirror.mp4",
+      "poster": "media/posters/magnetic-mirror.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/magnetic-mirror.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetic_mirror.mp4?v=277d8f3bdf91a032",
+      "mp4_sha256": "277d8f3bdf91a0323386a9055086045b3d1fb954821a3ad5003a5998f017ae0e",
+      "appearance": "dark"
+    },
+    "kernel-smoothing": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_smoothing.mp4",
+      "poster": "media/posters/kernel-smoothing.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/kernel-smoothing.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_smoothing.mp4?v=de41d17676b63c7a",
+      "mp4_sha256": "de41d17676b63c7a90e1b9ca2379e4c4d048e4fa77b91569b7b93a40639b7d32",
+      "appearance": "dark"
+    },
+    "kernel-width": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_width.mp4",
+      "poster": "media/posters/kernel-width.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/kernel-width.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_width.mp4?v=93bb5db2763185bd",
+      "mp4_sha256": "93bb5db2763185bd0a489e1cd89a643c6c93492fc31859139d6cb3c509090c3b",
+      "appearance": "dark"
     }
   }
 }

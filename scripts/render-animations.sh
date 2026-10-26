@@ -41,6 +41,11 @@ scenes=(
   "gyration.py|GyrationTopView|gyration-top-view|9.0"
   "gyration.py|GyrationComponents|gyration-components|9.5"
   "gyration.py|GyrationHelix|gyration-helix|11.0"
+  "grad_b_drift.py|GradBDrift|grad-b-drift|17.0"
+  "curvature_drift.py|CurvatureDrift|curvature-drift|17.0"
+  "magnetic_mirror.py|MagneticMirror|magnetic-mirror|21.0"
+  "kernel_smoothing.py|KernelSmoothing|kernel-smoothing|27.0"
+  "kernel_smoothing.py|KernelWidth|kernel-width|9.0"
 )
 
 if [[ "${1:-}" == "--slugs" ]]; then
@@ -63,6 +68,10 @@ hash_files() {
 # (animations/data/kin6d/<slug>/).
 scene_stamp() {
   local files=("$repo_root/animations/$1" "$repo_root/animations/style.py" "$self")
+  # The drift scenes compute their orbits in a shared model module.
+  if grep -q '^from drift_models import' "$repo_root/animations/$1"; then
+    files+=("$repo_root/animations/drift_models.py")
+  fi
   local data="$repo_root/animations/data/kin6d/$2"
   if [[ -d "$data" ]]; then
     files+=("$repo_root/animations/kin6d_data.py")
