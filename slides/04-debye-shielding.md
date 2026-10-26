@@ -28,7 +28,7 @@ plasma frequency. The board plan is
 | 8 | Ideal plasma | static | debye-collective-validity | Exam question (g): N_D >> 1 and lambda_D << L (2025 pp. 41, 43). |
 | 9 | Debye shielding from particles | animation | intro-debye-shielding | After the whiteboard physics; the cloud is an average, no hole in one snapshot. |
 | 10 | Debye shielding | static | intro-debye-shielding | Read after the whiteboard derivation (2025 pp. 31-37): force balance, Poisson, linearize, a(r)/r, Debye-Hückel potential. |
-| 11 | Dielectric function | static | intro-debye-shielding | Corrections lecture: the screened equation in k-space; 1/epsilon(k) is the surviving fraction of a pattern (0 for k lambda_D << 1, 1/2 at 1, 1 for >> 1); Phi_hat flattens below k lambda_D ~ 1. Test charge Q delta(r) is "external" = prescribed, not part of the response. |
+| 11 | Dielectric function | static | intro-debye-shielding | Corrections lecture: the screened equation in k-space; 1/epsilon(k) = net charge / imposed charge for a pattern (0 for k lambda_D << 1, 1/2 at 1, 1 for >> 1); Phi_hat flattens below k lambda_D ~ 1. Test charge Q delta(r) is "external" = prescribed, not part of the response. |
 | 12 | Charge separation and screening | static | intro-debye-shielding | Rigid sphere next to the point-charge response (2025 p. 38), Debye length. |
 | 13 | Coupling test particles | animation | intro-debye-shielding | After the shielded point charge: same frozen electrons at Gamma_e = 0.08 (lambda_D = a) and 0.009 (lambda_D = 3a); the Debye circle moves with the test electron; few versus many electrons inside. |
 | 14 | Debye length and plasma frequency | static | intro-debye-shielding | Knowing v_th and omega_pe gives lambda_D (2025 p. 22); fusion example 10 keV, 1e20 m^-3. |

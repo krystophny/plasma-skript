@@ -46,8 +46,8 @@
 ]
 #slide(section: "intro-debye-shielding", title: [Dielectric function])[
   #at(1, 6, y: 0mm, align(center)[
-    #text(fill: muted)[surviving fraction of a pattern $e^(i bold(k) dot bold(r))$] \
-    #v(2mm) $1/epsilon(k) = (k^2 lambda_D^2)/(1 + k^2 lambda_D^2)$])
+    #text(fill: muted)[net charge / imposed charge, pattern $e^(i bold(k) dot bold(r))$] \
+    #v(2mm) $1/epsilon(k) = k^2/(k^2 + 1\/lambda_D^2)$])
   #at(7, 6, y: 0mm, align(center)[
     #text(fill: muted)[potential of the test charge $Q delta(bold(r))$] \
     #v(2mm) $hat(Phi)(k) = Q/(epsilon_0 k^2 epsilon(k)) = Q/(epsilon_0 (k^2 + 1\/lambda_D^2))$])

@@ -340,9 +340,10 @@
     $epsilon = 1$ and $hat(Phi) = Q\/(epsilon_0 k^2)$ is the bare Coulomb potential.
   ]
 
-  The dielectric function divides the vacuum potential, so $1\/epsilon(k)$
-  is the fraction of a charge pattern of wavelength $2 pi\/k$ that survives
-  the plasma response. Patterns much longer than $lambda_D$ are cancelled
+  For an imposed charge pattern of wavelength $2 pi\/k$, the electrons add
+  an induced charge of the same shape, and
+  $1\/epsilon(k) = k^2\/(k^2 + 1\/lambda_D^2)$ is the net charge over the
+  imposed charge, equally the potential over its vacuum value. Patterns much longer than $lambda_D$ are cancelled
   almost completely: the electrons have room to pile up in the troughs, and
   $epsilon -> oo$ as $k -> 0$. The induced charge $hat(rho)_"ind" = -Q\/(1 + k^2 lambda_D^2)$
   tends to $-Q$, so the cloud neutralises the test charge exactly. Patterns
