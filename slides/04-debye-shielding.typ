@@ -44,6 +44,17 @@
   ))
   #at(3, 8, y: 92mm, result-box(align(center, $Phi = Q/(4 pi epsilon_0 r) e^(-r\/lambda_D)$), [Debye–Hückel potential]))
 ]
+#slide(section: "intro-debye-shielding", title: [Dielectric function])[
+  #at(1, 6, y: 0mm, align(center)[
+    #text(fill: muted)[surviving fraction of a pattern $e^(i bold(k) dot bold(r))$] \
+    #v(2mm) $1/epsilon(k) = (k^2 lambda_D^2)/(1 + k^2 lambda_D^2)$])
+  #at(7, 6, y: 0mm, align(center)[
+    #text(fill: muted)[potential of the test charge $Q delta(bold(r))$] \
+    #v(2mm) $hat(Phi)(k) = Q/(epsilon_0 k^2 epsilon(k)) = Q/(epsilon_0 (k^2 + 1\/lambda_D^2))$])
+  #at(1, 6, y: 28mm, align(center, plot("debye_surviving_fraction", columns: 5)))
+  #at(7, 6, y: 28mm, align(center, plot("debye_potential_k", columns: 5)))
+  #at(1, 12, y: 124mm, align(center, text(size: result-size, $epsilon(k) = 1 + 1/(k^2 lambda_D^2)$)))
+]
 #slide(section: "intro-debye-shielding", title: [Charge separation and screening])[
   #at(1, 6, y: 0mm, align(center)[
     #text(fill: muted)[rigid: electrons removed] \

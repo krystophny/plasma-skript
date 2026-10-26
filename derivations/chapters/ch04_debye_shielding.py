@@ -120,6 +120,27 @@ assert sp.simplify(laplacian(screened).doit() - screened / lambda_D**2) == 0
 bare = sp.limit(screened * r, r, 0) / r  # r << lambda_D
 check(bare, Q / (4 * sp.pi * eps0 * r), unit=u.volt, units=SI_UNITS)
 
+# %% Dielectric function
+section("Dielectric function", script="intro-debye-shielding")
+kw = sp.Symbol("k", positive=True)
+note("Fourier transform with the convention f(k) = integral of f(r) exp(-i k.r) over all space; for a radial f it reduces to the sine integral below")
+
+
+def fourier_radial(f):
+    return sp.simplify(sp.integrate(4 * sp.pi * r**2 * f * sp.sin(kw * r) / (kw * r), (r, 0, sp.oo), conds="none"))
+
+
+phi_hat = agrees(fourier_radial(screened), Q / (eps0 * (kw**2 + 1 / lambda_D**2)), lhs=sp.Symbol(r"\hat{\Phi}"))
+phi_hat_bare = Q / (eps0 * kw**2)
+note("The bare Coulomb potential transforms to", phi_hat_bare)
+epsilon_k = agrees(sp.simplify(phi_hat_bare / phi_hat), 1 + 1 / (kw**2 * lambda_D**2), lhs=sp.Symbol(r"\varepsilon(k)"))
+surviving = agrees(sp.simplify(1 / epsilon_k), kw**2 * lambda_D**2 / (1 + kw**2 * lambda_D**2), lhs=1 / sp.Symbol(r"\varepsilon(k)"))
+note("Induced charge from Poisson's equation in k-space,", sp.Eq(eps0 * kw**2 * sp.Symbol(r"\hat{\Phi}"), Q + sp.Symbol(r"\hat{\rho}_{\mathrm{ind}}")))
+rho_ind_hat = agrees(sp.simplify(eps0 * kw**2 * phi_hat - Q), -Q / (1 + kw**2 * lambda_D**2), lhs=sp.Symbol(r"\hat{\rho}_{\mathrm{ind}}"))
+agrees(sp.limit(rho_ind_hat, kw, 0), -Q, lhs=sp.Symbol(r"\hat{\rho}_{\mathrm{ind}}(0)"))
+assert sp.limit(surviving, kw, 0) == 0 and sp.limit(surviving, kw, sp.oo) == 1
+assert surviving.subs(kw, 1 / lambda_D) == sp.Rational(1, 2)
+
 # %% Debye number and coupling
 section("Debye number and coupling", script="debye-collective-validity")
 N_D, Gamma = sp.symbols("N_D Gamma", positive=True)
@@ -332,6 +353,36 @@ ax.set(xscale="log", yscale="log", xlim=(1e6, 1e32), ylim=(1e-4, 1e16),
 log_ticks(ax.xaxis, 6, 30, 8)
 log_ticks(ax.yaxis, -4, 16, 4)
 save(fig, "debye_number")
+
+# %% Plot: surviving fraction 1/epsilon(k) of a charge pattern
+# k in units of 1/lambda_D.
+wavenumber = np.geomspace(1e-2, 1e2, 400)
+surviving_curve = sp.lambdify(kw, surviving.subs(lambda_D, 1), "numpy")
+fig, ax = figure(*PANEL)
+ax.plot(wavenumber, surviving_curve(wavenumber), color=BLUE)
+ax.plot([1], [0.5], "o", color=BLUE, ms=4)
+label(ax, 0.7, 0.52, r"half at $k\lambda_D = 1$", BLUE, ha="right")
+label(ax, 1.3e-2, 0.08, "screened", GRAY)
+label(ax, 90, 0.9, "unscreened", GRAY, ha="right", va="top")
+ax.set(xscale="log", xlim=(1e-2, 1e2), ylim=(0, 1.05), yticks=[0, 0.5, 1],
+       xlabel=r"$k\lambda_D$", ylabel=r"$1/\varepsilon(k)$")
+log_ticks(ax.xaxis, -2, 2)
+save(fig, "debye_surviving_fraction")
+
+# %% Plot: bare and screened potential in k-space
+# Phi_hat in units of Q lambda_D^2/eps0.
+bare_k = sp.lambdify(kw, (phi_hat_bare * eps0 / (Q * lambda_D**2)).subs(lambda_D, 1), "numpy")
+screened_k = sp.lambdify(kw, (phi_hat * eps0 / (Q * lambda_D**2)).subs(lambda_D, 1), "numpy")
+fig, ax = figure(*PANEL)
+ax.plot(wavenumber, bare_k(wavenumber), color=ORANGE, ls="--")
+ax.plot(wavenumber, screened_k(wavenumber), color=BLUE)
+label(ax, 0.25, 3e2, r"bare $\propto 1/k^2$", ORANGE)
+label(ax, 1.3e-2, 1.6, "screened", BLUE)
+ax.set(xscale="log", yscale="log", xlim=(1e-2, 1e2), ylim=(1e-4, 1e4),
+       xlabel=r"$k\lambda_D$", ylabel=r"$\varepsilon_0\hat{\Phi}/(Q\lambda_D^2)$")
+log_ticks(ax.xaxis, -2, 2)
+log_ticks(ax.yaxis, -4, 4, 2)
+save(fig, "debye_potential_k")
 
 # %%
 if __name__ == "__main__":

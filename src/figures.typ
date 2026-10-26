@@ -236,6 +236,17 @@
   ],
 )[#derived-plot("debye_potential")]
 
+#let debye-dielectric = figure(
+  alt: "Two plots against k times the Debye length on a logarithmic axis from 0.01 to 100. Left: the surviving fraction one over epsilon of k rises from zero at long wavelengths through one half at k lambda_D equal to one to one at short wavelengths. Right: the Fourier-space potential of a point charge on logarithmic axes; the dashed bare Coulomb potential falls as one over k squared everywhere, while the solid screened potential is flat below k lambda_D of about one and joins the bare curve above it.",
+  caption: [
+    Debye screening in Fourier space. Left: fraction $1\/epsilon(k) = k^2 lambda_D^2\/(1 + k^2 lambda_D^2)$
+    of a charge pattern $e^(i bold(k) dot bold(r))$ that survives screening;
+    it is one half at $k lambda_D = 1$. Right: bare $Q\/(epsilon_0 k^2)$ (dashed)
+    and screened $Q\/(epsilon_0 (k^2 + 1\/lambda_D^2))$ (solid) potential of a
+    point charge, in units of $Q lambda_D^2\/epsilon_0$. Wavenumber in units of $1\/lambda_D$.
+  ],
+)[#derived-plot-pair("debye_surviving_fraction", "debye_potential_k")]
+
 #let charge-separation-energy = figure(
   alt: "Electron potential energy around a sphere from which all electrons have been removed, in units of the thermal energy, against r over the Debye length. Inside the sphere of radius root three Debye lengths the curve is an inverted parabola starting at 1.5; at the boundary it touches a dotted horizontal line at one thermal energy, marked by a dot; outside it falls as 1 over r. There is no screening: the surrounding plasma is held rigid.",
   caption: [

@@ -1,6 +1,6 @@
 #import "../theme.typ": *
 #import "@preview/physica:0.9.8": grad, div, curl, laplacian, pdv, dv, vb
-#import "../figures.typ": charge-separation-energy, debye-regime-map, debye-screened-point
+#import "../figures.typ": charge-separation-energy, debye-regime-map, debye-screened-point, debye-dielectric
 
 #let chapter = [
   #page-title(number: 4)[Debye shielding] <debye-shielding>
@@ -326,6 +326,30 @@
   rearrange until the Coulomb tail is cut off beyond $lambda_D$. An extended
   source much smaller than $lambda_D$ is screened like a point charge of the
   same total charge.
+
+  In Fourier space, with $hat(f)(bold(k)) = integral f(bold(r)) e^(-i bold(k) dot bold(r)) dif^3 r$,
+  the screened equation for a test charge $Q delta(bold(r))$ becomes algebraic:
+
+  $ (k^2 + 1/lambda_D^2) hat(Phi)(k) = Q/epsilon_0, quad
+    hat(Phi)(k) = Q/(epsilon_0 k^2 epsilon(k)), quad
+    epsilon(k) = 1 + 1/(k^2 lambda_D^2) $ <debye-dielectric-function>
+
+  #equation-note[
+    $k$ is the wavenumber in #unit("m^-1"); $epsilon(k)$ is the static
+    dielectric function of the plasma, dimensionless. Without the plasma,
+    $epsilon = 1$ and $hat(Phi) = Q\/(epsilon_0 k^2)$ is the bare Coulomb potential.
+  ]
+
+  The dielectric function divides the vacuum potential, so $1\/epsilon(k)$
+  is the fraction of a charge pattern of wavelength $2 pi\/k$ that survives
+  the plasma response. Patterns much longer than $lambda_D$ are cancelled
+  almost completely: the electrons have room to pile up in the troughs, and
+  $epsilon -> oo$ as $k -> 0$. The induced charge $hat(rho)_"ind" = -Q\/(1 + k^2 lambda_D^2)$
+  tends to $-Q$, so the cloud neutralises the test charge exactly. Patterns
+  much shorter than $lambda_D$ survive, $epsilon -> 1$: thermal motion
+  smears the electrons out before they can follow.
+
+  #debye-dielectric
 
   #animation(
     "../media/coupling-test-particle.mp4",
