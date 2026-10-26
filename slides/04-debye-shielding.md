@@ -109,7 +109,7 @@ Debye-Hückel derivation, script section `intro-debye-shielding`). Source
 `derivations/plot_debye_nonlinear.py` (`make -C derivations fig`), output
 `derivations/build/fig/debye_nonlinear_potential` and
 `debye_nonlinear_density` as `.svg`, `.pdf` and `.png`; every axis is
-dimensionless [1], log-log.
+normalized [1], log-log.
 - Computed: the spherical Poisson-Boltzmann equation
   $\rho^{-2}(\rho^2\varphi')'=e^{\varphi}-1$ with $\varphi=e\Phi/k_BT_e$,
   $\rho=r/\lambda_D$, Boltzmann electrons $n_e=n_0e^{\varphi}$ and fixed

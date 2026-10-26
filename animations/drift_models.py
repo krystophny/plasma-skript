@@ -1,6 +1,6 @@
 """Full-orbit models for the drift and mirror animations (numpy only).
 
-Dimensionless units: |q| = 1, B_0 = 1, ion mass m_i = 1 (Omega_i = 1) and
+Normalized units: |q| = 1, B_0 = 1, ion mass m_i = 1 (Omega_i = 1) and
 the reduced mass ratio m_i/m_e = 16 of the gyration scenes (Omega_e = 16),
 equal temperatures T_i = T_e, so v_perp,e = 4 v_perp,i.  Lengths are in
 units of the ion Larmor radius at B_0, time in 1/Omega_i.  E = 0 everywhere.
