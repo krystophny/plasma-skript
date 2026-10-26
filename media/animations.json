@@ -228,7 +228,9 @@
       "player_url": "https://krystophny.github.io/plasma-skript/animations/grad-b-drift.html",
       "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/grad_b_drift.mp4?v=d48a9717b8592437",
       "mp4_sha256": "d48a9717b859243740753ef193475e280f2d8b399947e1715f08296e7aa0f190",
-      "appearance": "dark"
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/05-single-particle-motion.html",
+      "supplementary_description": "Full Lorentz-force orbits of an ion and an electron in a magnetic field B = B0(1 + y/L) along z that grows in y, with L = 10 ion Larmor radii, reduced mass ratio 16 and equal temperatures. The orbit is tighter where B is stronger, so the guiding centres drift along x in opposite directions for the two charges. The measured drift speeds agree with mu grad B x B/(q B^2) within 1.3 % (ion) and 0.1 % (electron). Lengths in ion Larmor radii and time in inverse ion gyrofrequencies, with unit [1]."
     },
     "curvature-drift": {
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/curvature_drift.mp4",
@@ -236,7 +238,9 @@
       "player_url": "https://krystophny.github.io/plasma-skript/animations/curvature-drift.html",
       "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/curvature_drift.mp4?v=d1a8dea8bd5b2593",
       "mp4_sha256": "d1a8dea8bd5b259329a105d0d5825757cf3f1e4d69244341ba5fc7cd18ed5170",
-      "appearance": "dark"
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/05-single-particle-motion.html",
+      "supplementary_description": "Full Lorentz-force orbits of an ion and an electron in the toroidal vacuum field B proportional to 1/R, shown in the poloidal plane. The combined curvature and grad-B drift moves the ion up and the electron down, a charge separation that a purely toroidal field cannot hold. The measured vertical drift speeds agree with (m/(q B R))(v_par^2 + v_perp^2/2) within 1.6 % (ion) and 0.4 % (electron). Lengths in ion Larmor radii, with unit [1]."
     },
     "magnetic-mirror": {
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetic_mirror.mp4",
@@ -244,7 +248,9 @@
       "player_url": "https://krystophny.github.io/plasma-skript/animations/magnetic-mirror.html",
       "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetic_mirror.mp4?v=277d8f3bdf91a032",
       "mp4_sha256": "277d8f3bdf91a0323386a9055086045b3d1fb954821a3ad5003a5998f017ae0e",
-      "appearance": "dark"
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/05-single-particle-motion.html",
+      "supplementary_description": "Six ions of equal speed with midplane pitch angles from 18 to 70 degrees in a magnetic mirror with mirror ratio R_m = 4. Ions with sin^2(alpha) < 1/R_m, inside the 30 degree loss cone, leave through the throat; the others are reflected. The magnetic moment stays constant within 0.3 % for reflected and 1.6 % for escaping ions. Positions in units of the mirror half-length L, with unit [1]."
     },
     "kernel-smoothing": {
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_smoothing.mp4",
@@ -252,7 +258,9 @@
       "player_url": "https://krystophny.github.io/plasma-skript/animations/kernel-smoothing.html",
       "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_smoothing.mp4?v=de41d17676b63c7a",
       "mp4_sha256": "de41d17676b63c7a90e1b9ca2379e4c4d048e4fa77b91569b7b93a40639b7d32",
-      "appearance": "dark"
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/06-kinetic-theory.html",
+      "supplementary_description": "Particles on a line are a sum of delta spikes. Placing a Gaussian kernel of width h on every particle and summing gives a smooth density; the same result follows from sliding the kernel along x and adding the kernel values at all particles, which is the convolution of the kernel with the spike sum. Positions in units of the mean particle spacing, with unit [1]."
     },
     "kernel-width": {
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_width.mp4",
@@ -260,7 +268,9 @@
       "player_url": "https://krystophny.github.io/plasma-skript/animations/kernel-width.html",
       "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_width.mp4?v=93bb5db2763185bd",
       "mp4_sha256": "93bb5db2763185bd0a489e1cd89a643c6c93492fc31859139d6cb3c509090c3b",
-      "appearance": "dark"
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/06-kinetic-theory.html",
+      "supplementary_description": "The kernel width h is varied from 0.25 to 20 mean particle spacings for particles drawn from a known density. Narrow kernels return the spikes and statistical noise, which falls like 1/sqrt(particles per kernel width); wide kernels smooth away real structure. The lower panel shows noise, bias and total error. Positions in units of the mean particle spacing, with unit [1]."
     }
   }
 }
