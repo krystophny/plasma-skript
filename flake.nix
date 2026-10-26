@@ -50,7 +50,7 @@
       };
       physicsPython = pkgs.python3.withPackages (ps: [ps.numpy]);
       # SymPy derivations write the data plots that the Typst sources include.
-      derivationsPython = pkgs.python3.withPackages (ps: [ps.numpy ps.sympy ps.matplotlib ps.pytest]);
+      derivationsPython = pkgs.python3.withPackages (ps: [ps.numpy ps.sympy ps.matplotlib ps.pytest ps.scipy]);
       # Fixed-output downloads make presenter media available in the sandbox.
       # Select precisely the animations used by the current single-source decks.
       animationRegistry = (builtins.fromJSON (builtins.readFile ./media/animations.json)).animations;
