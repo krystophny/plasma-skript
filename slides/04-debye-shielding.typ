@@ -67,6 +67,26 @@
   #at(1, 12, y: 122mm, align(center, text(size: result-size, $lambda_D = sqrt((epsilon_0 k_B T_e)/(n_0 e^2))$)))
 ]
 #animation-page("coupling-test-particle", "coupling_test_particle", section: "intro-debye-shielding")
+#slide(section: "intro-debye-shielding", title: [Typical scales])[
+  #let examples = json("/derivations/build/debye-scales.json")
+  #let sci(v) = {
+    let power = calc.floor(calc.log(v, base: 10))
+    let a = calc.round(v / calc.pow(10.0, power), digits: 1)
+    if a == 1 { $10^#power$ } else if a == 10 { $10^#(power + 1)$ } else { $#a times 10^#power$ }
+  }
+  #let plain(v) = if v >= 1000 { $#calc.round(v / 1000) thin 000$ } else { $#v$ }
+  #at(1, 12, y: 8mm, table(
+    columns: (auto, 1fr, 1fr, 1fr, 1fr, 1fr),
+    align: (left, right, right, right, right, right),
+    stroke: (x, y) => if y == 0 { (bottom: 0.6pt + muted) } else { none },
+    inset: (x: 4mm, y: 4.5mm),
+    [], [$n_e$ [m#super[−3]]], [$k_B T_e$ [eV]], [$lambda_D$ [m]], [$omega_(p e)$ [s#super[−1]]], [$N_D$],
+    ..examples.map(r => (
+      r.name, sci(r.n), plain(r.T_eV), sci(r.lambda_D), sci(r.omega_pe), sci(r.N_D),
+    )).flatten(),
+  ))
+  #at(1, 12, y: 118mm, align(center, text(fill: muted)[$lambda_D approx 7400 "m" sqrt((k_B T_e \/ "eV")/(n_e \/ "m"^(-3)))$, #h(8mm) $omega_(p e) approx 56 thin "s"^(-1) sqrt(n_e \/ "m"^(-3))$]))
+]
 #slide(section: "intro-debye-shielding", title: [Debye length and plasma frequency])[
   #at(3, 8, y: 14mm, result-box(align(center, $lambda_D = v_("th",e)/(sqrt(2) thin omega_(p e))$), [$v_("th",e) = sqrt(2 k_B T_e\/m_e)$]))
   #at(1, 12, y: 84mm, align(center)[

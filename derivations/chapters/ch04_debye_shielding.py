@@ -384,6 +384,25 @@ log_ticks(ax.xaxis, -2, 2)
 log_ticks(ax.yaxis, -4, 4, 2)
 save(fig, "debye_potential_k")
 
+# %% Example plasmas: Debye length, plasma frequency, Debye number
+import json
+from pathlib import Path
+
+lambda_D_of = numeric(lambda_D_expr, n0, T_e)
+omega_pe_of = numeric(omega_pe_expr, n0)
+scale_examples = []
+for name in ["H II region", "ionosphere", "solar corona", "Hall thruster", "tokamak core"]:
+    density_example, T_eV_example = EXAMPLE_PLASMAS[name]
+    T_K = T_eV_example * kelvin_per_eV
+    scale_examples.append(dict(name=name, n=density_example, T_eV=T_eV_example,
+                               lambda_D=float(lambda_D_of(density_example, T_K)),
+                               omega_pe=float(omega_pe_of(density_example)),
+                               N_D=float(N_D_of(density_example, T_K))))
+tokamak = scale_examples[-1]
+assert abs(tokamak["lambda_D"] / 7.43e-5 - 1) < 0.01 and abs(tokamak["omega_pe"] / 5.64e11 - 1) < 0.01
+Path("build").mkdir(exist_ok=True)
+Path("build/debye-scales.json").write_text(json.dumps(scale_examples, indent=2))
+
 # %%
 if __name__ == "__main__":
     report(__file__, "Chapter 3 · Debye shielding")

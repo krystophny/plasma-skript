@@ -12,7 +12,7 @@ Delivery: title, whiteboard rigid sphere, charge-separation page, thermal
 fluctuation animation, coupling-regions animation, whiteboard coupling (neighbour
 energy versus k_B T), coupling page, Debye number, regime map, ideal plasma, point-charge
 animation, whiteboard Boltzmann derivation,
-derivation overview, dielectric function, comparison page, Debye-circle animation, Debye length and
+derivation overview, dielectric function, comparison page, Debye-circle animation, typical scales, Debye length and
 plasma frequency. The board plan is
 `~/Nextcloud/lv/lecturer/plasma/board/04-debye-shielding.typ`.
 
@@ -31,7 +31,8 @@ plasma frequency. The board plan is
 | 11 | Dielectric function | static | intro-debye-shielding | Corrections lecture: the screened equation in k-space; 1/epsilon(k) = net charge / imposed charge for a pattern (0 for k lambda_D << 1, 1/2 at 1, 1 for >> 1); Phi_hat flattens below k lambda_D ~ 1. Test charge Q delta(r) is "external" = prescribed, not part of the response. |
 | 12 | Charge separation and screening | static | intro-debye-shielding | Rigid sphere next to the point-charge response (2025 p. 38), Debye length. |
 | 13 | Coupling test particles | animation | intro-debye-shielding | After the shielded point charge: same frozen electrons at Gamma_e = 0.08 (lambda_D = a) and 0.009 (lambda_D = 3a); the Debye circle moves with the test electron; few versus many electrons inside. |
-| 14 | Debye length and plasma frequency | static | intro-debye-shielding | Knowing v_th and omega_pe gives lambda_D (2025 p. 22); fusion example 10 keV, 1e20 m^-3. |
+| 14 | Typical scales | static | intro-debye-shielding | Table from derivations/build/debye-scales.json (ch04 derivation): n_e, k_B T_e, lambda_D, omega_pe, N_D for the five example plasmas of the introduction overview; rules of thumb lambda_D ~ 7400 m sqrt(T_eV/n), omega_pe ~ 56 s^-1 sqrt(n). |
+| 15 | Debye length and plasma frequency | static | intro-debye-shielding | Knowing v_th and omega_pe gives lambda_D (2025 p. 22); fusion example 10 keV, 1e20 m^-3. |
 
 Rebuilt from scratch on 2026-10-13. The 2025 fluid preliminaries (pp. 25-30:
 conservation laws, Euler and Lagrange derivatives) are saved for the moments
