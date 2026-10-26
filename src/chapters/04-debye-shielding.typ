@@ -1,6 +1,6 @@
 #import "../theme.typ": *
 #import "@preview/physica:0.9.8": grad, div, curl, laplacian, pdv, dv, vb
-#import "../figures.typ": charge-separation-energy, debye-regime-map, debye-screened-point, debye-dielectric
+#import "../figures.typ": charge-separation-energy, debye-regime-map, debye-screened-point, debye-dielectric, debye-number-density, debye-nonlinear-screening
 
 #let chapter = [
   #page-title(number: 4)[Debye shielding] <debye-shielding>
@@ -158,6 +158,8 @@
     Dimensionless. $N_D$ counts electrons inside a Debye sphere. The symbol
     $>> 1$ states an ordering assumption.
   ]
+
+  #debye-number-density
 
   Compare the Debye length with the system or gradient length $L$ in
   #unit("m"). The dimensionless ratio $lambda_D\/L << 1$ supports bulk
@@ -326,6 +328,13 @@
   rearrange until the Coulomb tail is cut off beyond $lambda_D$. An extended
   source much smaller than $lambda_D$ is screened like a point charge of the
   same total charge.
+
+  The linearization $abs(e Phi) << k_B T_e$ fails close to the charge, where
+  the bare potential is large. Solving the full Boltzmann response
+  numerically shows how small that region is when $N_D >> 1$: outside it
+  the screened potential above is accurate.
+
+  #debye-nonlinear-screening
 
   In Fourier space, with $hat(f)(bold(k)) = integral f(bold(r)) e^(-i bold(k) dot bold(r)) dif^3 r$,
   the screened equation for a test charge $Q delta(bold(r))$ becomes algebraic:

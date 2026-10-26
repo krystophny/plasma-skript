@@ -1,6 +1,6 @@
 #import "../theme.typ": *
 #import "@preview/physica:0.9.8": grad, div, curl, laplacian, pdv, dv, vb
-#import "../figures.typ": plasma-frequency-scale
+#import "../figures.typ": plasma-frequency-scale, cold-em-dispersion
 #import "../opening-diagrams.typ": electron-slab
 
 #let chapter = [
@@ -122,6 +122,8 @@
   $omega << omega_(p,e)$; the wave is reflected. Above $omega_(p,e)$ the
   electron bulk can no longer follow, and the wave is transmitted with a
   longer wavelength than in vacuum.
+
+  #cold-em-dispersion
 
   #animation(
     "../media/em-wave-plasma-reflection.mp4",

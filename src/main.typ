@@ -229,7 +229,8 @@
           Entropy is $S=k_B ln W$ in #unit("J/K"). The ionization energy $chi$
           is in #unit("J") or #unit("eV"); scattering angles use $theta_("sc")$.
           Chemical potential $mu$ is an energy per particle; mechanical mobility
-          is $mu_("mob")$, and magnetic moment is $mu_("mag")$ in #unit("J/T").
+          is $mu_("mob")$, and magnetic moment is $mu_("mag")$ in #unit("J/T"),
+          written $mu$ in the single-particle chapter.
           Total kinetic-energy density is $E_("kin",s)$ in #unit("J/m^3"),
           keeping $W_s$ available for species multiplicity.
           Slots $M_s$ and internal degeneracies $g_s$ are
@@ -248,6 +249,10 @@
         #html.dd[
           The positive rate $omega_c = (abs(q) B)/m$. The
           signed quantity $Omega = (q B)/m$ retains charge orientation.
+          The single-particle chapter follows the lecture notation instead:
+          $omega_c = q_alpha B\/m_alpha$ is signed for species $alpha$,
+          $abs(omega_c)$ is the positive rate, and the Larmor radius is
+          $rho_L = v_perp\/abs(omega_c)$.
         ]
         #html.dt[Debye length]
         #html.dd[

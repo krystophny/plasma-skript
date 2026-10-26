@@ -201,13 +201,13 @@
 }
 
 #let gyroradius-geometry = figure(
-  alt: "A circular orbit of a positive charge in a uniform magnetic field pointing into the page, traversed counterclockwise. The orbit center is marked, the radius from the center to the particle is labelled gyroradius, and a straight arrow shows the perpendicular velocity at the particle.",
+  alt: "A circular orbit of a positive charge in a uniform magnetic field pointing into the page, traversed counterclockwise. The orbit center is marked, the radius from the center to the particle is labelled rho_L, the Larmor radius, and a straight arrow shows the perpendicular velocity at the particle.",
   caption: [
-    Geometry of uniform-field gyromotion for a positive charge, with
-    $bold(B)$ into the page ($times.o$). The radius is the gyroradius
-    $rho$ (a length in #unit("m")), and the tangent arrow represents the
-    perpendicular velocity $bold(v)_perp$; a negative charge circles the
-    other way.
+    Geometry of uniform-field gyromotion for a positive charge
+    ($q_alpha > 0$), with $bold(B)$ into the page ($times.o$). The radius is
+    the Larmor radius $rho_L$ (a length in #unit("m")), and the tangent arrow
+    represents the perpendicular velocity $bold(v)_perp$; a negative charge
+    circles the other way.
   ],
 )[
   #graphic(cetz.canvas({
@@ -218,7 +218,7 @@
     circle((1.5, 0), radius: 0.08, fill: accent, stroke: none)
     line((1.5, 0), (1.5, 0.95), stroke: 1pt + accent, mark: (end: "stealth", fill: accent))
     content((0, -0.32), text(size: 0.9em)[guiding center])
-    content((0.75, 0.24), [$rho$])
+    content((0.75, 0.24), [$rho_L$])
     content((1.82, 0.95), [$bold(v)_perp$])
     content((-1.55, 1.3), [$times.o thin bold(B)$])
   }))
@@ -282,6 +282,82 @@
     first differ at fourth order.
   ],
 )[#derived-plot("moment_ambiguity", width: 8.6cm)]
+
+#let cold-em-dispersion = figure(
+  alt: "Angular frequency over the electron plasma frequency against c k over the plasma frequency, both from 0 to 4. The plasma curve starts at 1 for k equal to zero and bends up to approach the dashed vacuum line omega equal to c k from above. A dotted horizontal line marks omega equal to the plasma frequency; no wave of real k lies below it.",
+  caption: [
+    Transverse waves in a cold, unmagnetized plasma,
+    $omega^2 = omega_(p,e)^2 + c^2 k^2$ (solid), against the vacuum line
+    $omega = c k$ (dashed). The plasma branch starts at the cutoff
+    $omega = omega_(p,e)$ (dotted): lower frequencies have no real $k$ and
+    are reflected. Frequency in units of $omega_(p,e)$, wavenumber in units
+    of $omega_(p,e)\/c$.
+  ],
+)[#derived-plot("cold_em_dispersion")]
+
+#let debye-number-density = figure(
+  alt: "Log-log plot of the Debye number N_D against electron density from 10 to the 6 to 10 to the 30 per cubic metre, for three temperatures: 10 keV (solid), 10 eV (dashed) and 0.1 eV (dotted). Each line falls with slope minus one half; hotter plasmas lie higher. The region below N_D equal to one is shaded; the 0.1 eV line enters it near 3 times 10 to the 21 per cubic metre, the 10 eV line near 3 times 10 to the 27.",
+  caption: [
+    Debye number $N_D = (4 pi\/3) n_e lambda_D^3$ against electron density
+    $n_e$ at $k_B T_e = 10$ keV (solid), 10 eV (dashed) and 0.1 eV
+    (dotted). $N_D prop T_e^(3\/2) n_e^(-1\/2)$: dense, cold plasmas reach
+    the shaded region $N_D < 1$, where the collective description fails.
+  ],
+)[#derived-plot("debye_number")]
+
+#let debye-nonlinear-screening = figure(
+  alt: "Two log-log plots against r over the Debye length from 10 to the minus 5 to 8, for three strengths Lambda equal to 10 to the minus 4, minus 3 and minus 2. Left: the potential e Phi over k_B T_e. Close to the charge the exact Poisson-Boltzmann curves follow the bare Coulomb line; a marker shows where e Phi equals k_B T_e, at r about Lambda Debye lengths. Farther out, beyond about one Debye length, the exact and the dashed Debye-Hueckel curves coincide and fall exponentially. Right: the excess electron density n_e over n_0 minus one. Inside the marker the exact density rises exponentially far above the linearised one; outside, the two agree.",
+  caption: [
+    Screening of a positive point charge without linearization. Solid:
+    numerical solution of the Poisson--Boltzmann equation
+    $laplacian Phi = (e n_0\/epsilon_0)(e^(e Phi\/(k_B T_e)) - 1)$ for fixed
+    ions; dashed: the Debye--Hückel solution derived above; dotted: bare
+    Coulomb. Left: potential $e Phi\/(k_B T_e)$; right: excess electron
+    density $n_e\/n_0 - 1$. The strength
+    $Lambda = q e\/(4 pi epsilon_0 lambda_D k_B T_e)$ sets where
+    $e Phi = k_B T_e$ (markers): at $r approx Lambda lambda_D$. For a unit
+    charge $q = e$, $Lambda = 1\/(4 pi n_0 lambda_D^3) = 1\/(3 N_D)$, so
+    $Lambda = 10^(-4), 10^(-3), 10^(-2)$ correspond to $N_D approx 3300$,
+    $330$, $33$. Only inside that small radius is the density far from
+    linear; beyond one Debye length the two potentials differ by about
+    $0.3$~% for $Lambda = 10^(-2)$ and less for weaker charges. The charge is a small sphere of radius
+    $0.1 Lambda lambda_D$, because a positive point charge would collapse the
+    Boltzmann electron density. Radius in units of $lambda_D$.
+  ],
+)[#derived-plot-pair("debye_nonlinear_potential", "debye_nonlinear_density")]
+
+#let motion-mu-ramp = figure(
+  alt: "Log-linear plot of the relative change of the magnetic moment after the magnetic field has doubled, against the ramp time in units of the inverse initial gyrofrequency, from 0.25 to 8. The smooth tanh ramp falls along a nearly straight line from about 0.1 to about 10 to the minus 11. The linear ramp with the same largest slope falls only to about 10 to the minus 3 and oscillates.",
+  caption: [
+    Change of $mu$ when a uniform field doubles, $B: B_0 -> 2 B_0$, from
+    the full orbit with the induced field
+    $bold(E) = -(1\/2) (pdv(B,t, style: "horizontal")) bold(e)_z times bold(r)$,
+    started on a circle about the axis. Smooth ramp
+    $B\/B_0 = 3\/2 + tanh(t\/tau)\/2$: the change falls exponentially with
+    the ramp time $tau$, to $2 dot 10^(-11)$ at $abs(omega_(c 0)) tau = 8$.
+    Linear ramp of the same largest slope, with kinks at $t = plus.minus tau$:
+    the change falls only algebraically, to $8 dot 10^(-4)$ at
+    $abs(omega_(c 0)) tau = 8$. $mu$ is an adiabatic invariant, not an exact
+    constant, and its error is set by the sharpest feature of the field's
+    time dependence. Ramp time in units of $1\/abs(omega_(c 0))$,
+    $omega_(c 0) = q_alpha B_0\/m_alpha$.
+  ],
+)[#derived-plot("mu_ramp")]
+
+#let motion-loss-cone = figure(
+  alt: "Two plots. Left: 1500 particles of an isotropic Maxwellian at the midplane of a mirror with mirror ratio 4, plotted as perpendicular against parallel velocity in thermal speeds. Most are trapped dots; lost particles, marked by triangles, fill the two wedges around the parallel axis below dashed lines at the loss-cone angle, sine squared alpha_c equal to one over R_m. Right: fraction of particles lost against the mirror ratio from 1 to 20; sample points lie on the curve one minus the square root of one minus one over R_m, falling from 1 to about 0.03.",
+  caption: [
+    Loss cone in velocity space. Left: an isotropic Maxwellian sample at the
+    midplane of a mirror with $R_m = 4$. Each particle is classified by
+    following $v_parallel^2 (z) = v^2 - v_(perp 0)^2 B(z)\/B_0$ to the throat
+    in the field $B(z)\/B_0 = 1 + (R_m - 1)(z\/L)^2$, without using the
+    loss-cone formula; the lost particles (triangles) lie inside the dashed
+    lines $sin^2 alpha_c = 1\/R_m$. Right: lost fraction of an isotropic
+    distribution against $R_m$, sample (dots) and the solid-angle fraction
+    $1 - sqrt(1 - 1\/R_m)$ of the two cones. Velocities in units of
+    $v_"th" = sqrt(2 k_B T\/m_alpha)$.
+  ],
+)[#derived-plot("loss_cone")]
 
 #let plasma-frequency-scale = figure(
   alt: "Log-log plot of the electron plasma frequency in hertz against electron density per cubic metre. A straight line of slope one half rises from about 10 kilohertz at 10 to the 6 per cubic metre. Horizontal guides mark megahertz, gigahertz and terahertz. Five example plasmas lie on the line: H II region near 0.3 MHz, ionosphere near 9 MHz, solar corona near 0.3 GHz, Hall thruster near 9 GHz and tokamak core near 90 GHz.",

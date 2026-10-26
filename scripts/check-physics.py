@@ -1061,5 +1061,619 @@ class CouplingRegionsPhysics(unittest.TestCase):
             np.testing.assert_array_equal(saved, image)
 
 
+class HardSphereRelaxationPhysics(unittest.TestCase):
+    """animations/hard_sphere_relaxation.py: elastic hard disks relax from one
+    speed to the 2D Maxwellian at the same energy.
+
+    Oracles: the head-on elastic collision of equal masses, energy
+    conservation, a Kolmogorov-Smirnov test against the Maxwellian
+    cumulative distribution 1 - exp(-v^2/v_0^2), and the entropy estimator on
+    an independent Maxwellian sample.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("hard_sphere_relaxation.py")
+        cls.pos, cls.vel, cls.clock = cls.m["hs_run"]()
+        cls.speed = np.linalg.norm(cls.vel, axis=2)
+
+    def test_head_on_collision_exchanges_velocities(self):
+        r = self.m["HS_RADIUS"]
+        pos = np.array([[0.5 - 0.99*r, 0.5], [0.5 + 0.99*r, 0.5]])
+        vel = np.array([[1.0, 0.2], [-0.5, 0.0]])
+        _, after, hits = self.m["hs_step"](pos, vel, dt=0.0)
+        self.assertEqual(hits, 1)
+        np.testing.assert_allclose(after, [[-0.5, 0.2], [1.0, 0.0]], atol=1e-14)
+
+    def test_energy_conserved_and_initial_state_monoenergetic(self):
+        e = 0.5*np.sum(self.speed**2, axis=1)
+        self.assertLess(abs(self.speed[0] - 1).max(), 1e-14)
+        self.assertLess(abs(e/e[0] - 1).max(), 1e-13)
+        print(f"hard disks: max |E/E0 - 1| = {abs(e/e[0] - 1).max():.1e} over "
+              f"{self.clock[-1]:.1f} collisions per disk")
+
+    def test_late_speeds_follow_the_maxwellian(self):
+        late = np.nonzero(self.clock >= 4.0)[0]
+        frames = late[::max(1, len(late)//6)]
+        worst = 0.0
+        for k in frames:
+            v = np.sort(self.speed[k])
+            cdf = 1 - np.exp(-v**2)
+            n = len(v)
+            d = max(np.max(np.arange(1, n + 1)/n - cdf), np.max(cdf - np.arange(n)/n))
+            worst = max(worst, d)
+        self.assertLess(worst, 1.63/np.sqrt(len(self.speed[0])))        # 1 % KS level per frame
+        early = self.speed[1]
+        d0 = np.max(np.abs(np.arange(1, len(early) + 1)/len(early) - (1 - np.exp(-np.sort(early)**2))))
+        self.assertGreater(d0, 0.2)                                       # far from Maxwellian at the start
+        print(f"hard disks: KS distance to the Maxwellian, late frames <= {worst:.3f} "
+              f"(1 % level {1.63/np.sqrt(len(self.speed[0])):.3f}); first stored frame {d0:.2f}")
+
+    def test_entropy_rises_to_the_maxwellian_value(self):
+        m = self.m
+        s = np.array([m["velocity_entropy"](v) for v in self.speed])
+        target = 1 + np.log(np.pi)
+        self.assertAlmostEqual(m["HS_ENTROPY_MAXWELL"], target, places=14)
+        rng = np.random.default_rng(1)
+        sample = np.sqrt(-np.log(rng.random(600)))                        # inverse of 1 - exp(-v^2)
+        self.assertAlmostEqual(m["velocity_entropy"](sample), target, delta=0.03)
+        late = s[self.clock >= 4.0]
+        self.assertLess(s[0], 0.1)
+        self.assertAlmostEqual(late.mean(), target, delta=0.015)
+        self.assertLess(late.std(), 0.015)
+        print(f"hard disks: entropy {s[0]:.3f} at the start, late mean {late.mean():.4f} +- {late.std():.4f}, "
+              f"Maxwellian 1 + ln(pi) = {target:.4f}")
+
+
+class SheetOscillationPhysics(unittest.TestCase):
+    """animations/sheet_oscillation.py: cold electron sheets on an ion background.
+
+    Oracles: the field summed sheet by sheet (each sheet +-sigma/2 epsilon_0 on
+    either side, background field x - pi), an independent RK4 integration
+    with that field, and the crossing time of two discrete neighbouring sheets.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("sheet_oscillation.py")
+
+    @staticmethod
+    def direct_accel(x):
+        n = len(x)
+        delta = 2*np.pi/n
+        e = -0.5*delta*np.sign(x[:, None] - x[None, :]).sum(axis=1) + (x - np.pi)
+        return -(e - (x.mean() - np.pi))          # zero-mean field, -eE/m_e
+
+    def test_rank_field_equals_sheet_sum(self):
+        rng = np.random.default_rng(4)
+        x = np.mod(self.m["sheet_equilibrium"](40) + rng.normal(0, 0.4, 40), 2*np.pi)
+        np.testing.assert_allclose(self.m["sheet_accel"](x), self.direct_accel(x), atol=1e-12)
+
+    def test_small_amplitude_oscillates_at_plasma_frequency(self):
+        m = self.m
+        n, kv = 40, m["SMALL_KV"]
+        x = m["sheet_equilibrium"](n)
+        state = np.concatenate([x, kv*np.sin(x)])
+        dt = 2*np.pi/400
+
+        def rhs(s):
+            return np.concatenate([s[n:], self.direct_accel(np.mod(s[:n], 2*np.pi))])
+
+        for _ in range(400):
+            k1 = rhs(state); k2 = rhs(state + dt/2*k1); k3 = rhs(state + dt/2*k2); k4 = rhs(state + dt*k3)
+            state = state + dt/6*(k1 + 2*k2 + 2*k3 + k4)
+        np.testing.assert_allclose(state[:n], x, atol=1e-9)              # back after one period 2 pi/omega_pe
+        np.testing.assert_allclose(state[n:], kv*np.sin(x), atol=1e-9)
+        t, xs, vs = m["sheet_run"](kv)
+        omega = m["mode_frequency"](t, vs)
+        self.assertAlmostEqual(omega, 1, delta=2e-5)                      # leapfrog: (omega dt)^2/24 = 1.0e-5
+        self.assertEqual(m["first_crossing"](t, xs), np.inf)
+        print(f"sheets k v0/omega_pe = {kv}: RK4 period error {abs(state[:n] - x).max():.1e}, "
+              f"leapfrog omega/omega_pe = {omega:.7f}, no crossing")
+
+    def test_large_amplitude_breaks_at_predicted_time(self):
+        m = self.m
+        kv, n = m["LARGE_KV"], m["SHEETS"]
+        t, xs, _ = m["sheet_run"](kv)
+        crossing = m["first_crossing"](t, xs)
+        delta = 2*np.pi/n
+        discrete = np.arcsin(delta/(2*kv*np.sin(delta/2)))
+        self.assertAlmostEqual(crossing, discrete, delta=1e-3)
+        self.assertAlmostEqual(discrete, np.arcsin(1/kv), delta=1e-4)
+        print(f"sheets k v0/omega_pe = {kv}: first crossing omega_pe t = {crossing:.5f}, "
+              f"discrete sheets {discrete:.5f}, continuum arcsin(1/(k v0)) = {np.arcsin(1/kv):.5f}")
+
+
+class TwoSpeciesOscillationPhysics(unittest.TestCase):
+    """derivations/plot_two_species_oscillation.py: cold electron-ion
+    oscillation at omega_p^2 = omega_pe^2 + omega_pi^2 with antiphase
+    displacements xi_i = -(m_e/m_i) xi_e."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = runpy.run_path(str(ROOT/"derivations/plot_two_species_oscillation.py"))
+
+    def test_gauss_field_of_a_displaced_layer(self):
+        m = self.m
+        n = 4096
+        x0 = (np.arange(n) + 0.5)*2*np.pi/n
+        xi = 0.01*np.sin(x0)
+        x = np.concatenate([x0 + xi, x0])
+        charge = np.concatenate([-np.ones(n), np.ones(n)])*2*np.pi/n
+        e = m["field"](x, charge)
+        # Gauss: before any crossing the field at an electron is its own displacement,
+        # e E = m_e omega_pe^2 xi; linear weighting adds an O((k h)^2) = 6e-4 relative error.
+        np.testing.assert_allclose(e[:n], xi, atol=1e-3*0.01)
+
+    def test_frequency_and_amplitude_ratio(self):
+        m = self.m
+        for ratio in (1, 4, 100):
+            t, xi_e, xi_i, v_e = m["run"](ratio)
+            omega = m["measured_frequency"](t, v_e)
+            self.assertAlmostEqual(omega/np.sqrt(1 + 1/ratio), 1, delta=5e-4)
+            big = abs(xi_e) > 0.5*abs(xi_e).max()
+            self.assertAlmostEqual(np.median(xi_i[big]/xi_e[big]), -1/ratio, delta=0.01/ratio)
+            print(f"two species m_i/m_e = {ratio}: omega/omega_pe = {omega:.6f}, "
+                  f"sqrt(1 + m_e/m_i) = {np.sqrt(1 + 1/ratio):.6f}, xi_i/xi_e = {np.median(xi_i[big]/xi_e[big]):+.4f}")
+
+
+class BoltzmannCountingPhysics(unittest.TestCase):
+    """derivations/plot_boltzmann_counting.py: P(E) of one oscillator in contact
+    with an Einstein-solid reservoir.
+
+    Oracles: brute-force enumeration of all microstates of a small solid and
+    the Boltzmann factor at the reservoir temperature eps/ln 2.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = runpy.run_path(str(ROOT/"derivations/plot_boltzmann_counting.py"))
+
+    def test_counts_match_enumeration(self):
+        import itertools
+        for oscillators in (3, 4):
+            quanta = oscillators
+            counts = np.zeros(quanta + 1)
+            for state in itertools.product(range(quanta + 1), repeat=oscillators + 1):
+                if sum(state) == quanta:
+                    counts[state[0]] += 1                        # state[0]: the small oscillator
+            np.testing.assert_allclose(self.m["probability"](np.arange(quanta + 1), oscillators),
+                                       counts/counts.sum(), rtol=1e-12)
+
+    def test_large_reservoir_gives_boltzmann_factor(self):
+        m = self.m
+        self.assertAlmostEqual(m["temperature"](), 1/np.log(2), places=14)
+        n = np.arange(5)
+        devs = [np.abs(m["probability"](n, size)/m["boltzmann"](n) - 1).max() for size in (40, 400, 4000)]
+        self.assertLess(devs[2], 3e-4)
+        self.assertAlmostEqual(devs[0]/devs[1], 10, delta=1.0)               # 1/N convergence
+        self.assertAlmostEqual(devs[1]/devs[2], 10, delta=0.5)
+        self.assertAlmostEqual(m["probability"](np.arange(400 + 1), 400).sum(), 1, places=10)   # lgamma round-off
+        print("Boltzmann counting: max |P/P_B - 1| for E <= 4 eps at N = 40, 400, 4000: "
+              + ", ".join(f"{d:.2e}" for d in devs))
+
+
+class CyclotronResonancePhysics(unittest.TestCase):
+    """animations/cyclotron_resonance.py: Boris orbits in B with a rotating E.
+
+    Oracles: an RK4 integration of dw/dt = -i omega_c w + (q/m) E_0 e^{-i s omega t},
+    the closed-form |w(t)| from rest, and the resonance condition s omega = omega_c.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("cyclotron_resonance.py")
+
+    @staticmethod
+    def rk4_speed(qm, sense, omega, t_end, steps):
+        omega_c = np.sign(qm)
+
+        def rhs(t, w):
+            return -1j*omega_c*w + qm*np.exp(-1j*sense*omega*t)
+
+        w, dt = 0j, t_end/steps
+        for i in range(steps):
+            t = i*dt
+            k1 = rhs(t, w); k2 = rhs(t + dt/2, w + dt/2*k1); k3 = rhs(t + dt/2, w + dt/2*k2); k4 = rhs(t + dt, w + dt*k3)
+            w += dt/6*(k1 + 2*k2 + 2*k3 + k4)
+        return abs(w)
+
+    def test_orbits_match_closed_form_and_rk4(self):
+        m = self.m
+        for run in m["CR_RUNS"] + ((-1.0, 1, 1.0),):
+            t, x, speed = m["cr_orbit"](*run)
+            formula = m["cr_speed_formula"](t, *run)
+            dt = t[1] - t[0]
+            self.assertLess(abs(speed - formula).max(), 0.6*dt)           # Boris velocity lags by dt/2 from rest
+            reference = self.rk4_speed(*run, t[-1], 4000)
+            self.assertAlmostEqual(reference, formula[-1], delta=1e-8)
+
+    def test_resonance_growth_and_bounds(self):
+        m = self.m
+        res_i = m["cr_orbit"](1.0, 1, 1.0)
+        res_e = m["cr_orbit"](-1.0, -1, 1.0)
+        for t, _, speed in (res_i, res_e):
+            self.assertAlmostEqual(m["cr_growth_rate"](t, speed), 1, delta=2e-4)    # dv_perp/dt = |q| E_0/m
+            w = 0.5*speed**2
+            late = t > 2*np.pi
+            self.assertAlmostEqual(np.polyfit(np.log(t[late]), np.log(w[late]), 1)[0], 2, delta=0.01)
+        detuned = m["cr_orbit"](1.0, 1, m["CR_DETUNED"])[2].max()
+        self.assertAlmostEqual(detuned, 2/(1 - m["CR_DETUNED"]), delta=0.01)
+        for wrong in ((1.0, -1, 1.0), (-1.0, 1, 1.0)):                    # counter-rotating for each species
+            self.assertLess(m["cr_orbit"](*wrong)[2].max(), 1.0 + 1e-3)
+        print(f"cyclotron resonance: dv_perp/dt = {m['cr_growth_rate'](res_i[0], res_i[2]):.5f} (ion), "
+              f"{m['cr_growth_rate'](res_e[0], res_e[2]):.5f} (electron), formula 1; "
+              f"detuned max {detuned:.4f} (formula {2/(1 - m['CR_DETUNED']):.4f}); "
+              f"counter-rotating max {m['cr_orbit'](1.0, -1, 1.0)[2].max():.4f} (formula 1)")
+
+
+# --- Chapters 7-12: upcoming-chapter visuals -------------------------------
+
+class DiamagneticDriftPhysics(unittest.TestCase):
+    """Gyrating ions with fixed guiding centres against the magnetization current."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("diamagnetic_drift.py")
+
+    def test_orbits_solve_lorentz_force_with_fixed_centre(self):
+        m = self.m
+        x0, y0, phase = (a[:50] for a in m["guiding_centres"]())
+        t = np.linspace(0.0, 2*np.pi, 4001)
+        pos, vel = m["orbit"](x0, y0, phase, t)
+        dt = t[1] - t[0]
+        # dx/dt = v and dv/dt = omega_c v x e_z (q_alpha > 0, B along +z).
+        np.testing.assert_allclose(np.gradient(pos, dt, axis=1)[:, 1:-1], vel[:, 1:-1], atol=1e-5)
+        accel = np.gradient(vel, dt, axis=1)[:, 1:-1]
+        lorentz = m["OMEGA_C"]*np.stack([vel[..., 1], -vel[..., 0]], axis=-1)[:, 1:-1]
+        np.testing.assert_allclose(accel, lorentz, atol=1e-5)
+        centre = pos + np.stack([vel[..., 1], -vel[..., 0]], axis=-1)/m["OMEGA_C"]
+        np.testing.assert_allclose(centre[..., 0], np.repeat(x0[:, None], len(t), 1), atol=1e-12)
+        np.testing.assert_allclose(centre[..., 1], np.repeat(y0[:, None], len(t), 1), atol=1e-12)
+
+    def test_sampled_density_has_the_stated_gradient(self):
+        m = self.m
+        _, y0, _ = m["guiding_centres"]()
+        counts, edges = np.histogram(y0, np.linspace(-m["Y_FILL"], m["Y_FILL"], 9))
+        mid = 0.5*(edges[1:] + edges[:-1])
+        area = np.diff(edges)*2*m["X_HALF"]
+        slope = np.polyfit(mid, counts/area, 1)
+        self.assertAlmostEqual(slope[0], m["N0"]/m["L_GRAD"], delta=0.02*m["N0"]/m["L_GRAD"])
+        self.assertAlmostEqual(slope[1], m["N0"], delta=0.02*m["N0"])
+
+    def test_time_stepped_count_equals_geometric_count(self):
+        # Over one period an ion whose circle reaches the line crosses it at
+        # Y +- sqrt(rho^2 - d^2): moving right at the top (clockwise ion).
+        m = self.m
+        x0, y0, _ = m["guiding_centres"]()
+        rho, edges = m["RHO_L"], m["BIN_EDGES"]
+        net = np.zeros(len(edges) - 1)
+        for line in m["LINES"]:
+            d = x0 - line
+            hit = np.abs(d) < rho
+            s = np.sqrt(rho**2 - d[hit]**2)
+            net += np.histogram(y0[hit] + s, edges)[0] - np.histogram(y0[hit] - s, edges)[0]
+        stepped = m["binned_counts"](periods=1)*len(m["LINES"])
+        np.testing.assert_array_equal(stepped, net)
+
+    def test_current_matches_b_cross_grad_p(self):
+        # j = B x grad p/B^2 with p = n m v_perp^2/2, B = B e_z, grad n = n_0/L e_y:
+        # j_x = -(m v_perp^2/(2B)) n_0/L; in units of q n_0 v_perp: -rho_L/(2L).
+        m = self.m
+        expected = -0.5*m["RHO_L"]/m["L_GRAD"]
+        measured = m["measured_current"]()
+        self.assertAlmostEqual(np.mean(measured), expected, delta=0.02*abs(expected))
+        self.assertTrue(np.all(np.abs(measured/expected - 1) < 0.2), measured)
+        self.assertAlmostEqual(m["formula_current"](), expected, places=14)
+
+
+class MagnetizedRandomWalkPhysics(unittest.TestCase):
+    """Guiding-centre random walk against the Green-Kubo coefficient."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("magnetized_random_walk.py")
+        cls.d = {b: cls.m["measured_diffusion"](b) for b in cls.m["B_VALUES"]}
+
+    def test_free_motion_between_collisions_is_a_larmor_circle(self):
+        m = self.m
+        t, x, centre, hits = m["single_ion"]()
+        radius = np.linalg.norm(x - centre, axis=1)
+        np.testing.assert_allclose(radius, m["V_PERP"], rtol=1e-12)    # rho_L = v_perp/omega_c, omega_c = 1
+        k = np.searchsorted(hits, t, side="right")
+        same = k[1:] == k[:-1]
+        speed = np.linalg.norm(np.diff(x, axis=0), axis=1)/np.diff(t)
+        np.testing.assert_allclose(speed[same], m["V_PERP"], rtol=1e-4)
+        self.assertGreater(len(hits), 5)
+
+    def test_jump_mean_square_is_two_larmor_radii_squared(self):
+        m = self.m
+        times, angles = m["collision_sequence"](2000)
+        for b in m["B_VALUES"]:
+            steps = m["jumps"](times, angles, b)
+            ms = np.mean(np.sum(steps**2, axis=-1))
+            self.assertAlmostEqual(ms/(2*(m["V_PERP"]/b)**2), 1.0, delta=0.02)
+
+    def test_diffusion_matches_green_kubo_quadrature(self):
+        # D = (1/2) int_0^inf <v(0).v(t)> dt with <v(0).v(t)> = v^2 exp(-nu t) cos(omega t)
+        # for isotropic redirection at Poisson rate nu (two dimensions).
+        m = self.m
+        nu, v = m["NU"], m["V_PERP"]
+        s = np.linspace(0.0, 60.0/nu, 600001)
+        for b, d in self.d.items():
+            integrand = v**2*np.exp(-nu*s)*np.cos(b*s)
+            gk = 0.5*np.sum(0.5*(integrand[1:] + integrand[:-1])*np.diff(s))
+            self.assertAlmostEqual(d/gk, 1.0, delta=0.06, msg=f"B={b}")
+
+    def test_perpendicular_diffusion_scales_as_inverse_square_field(self):
+        b = np.array(sorted(self.d))
+        slope = np.polyfit(np.log(b), np.log([self.d[k] for k in b]), 1)[0]
+        self.assertAlmostEqual(slope, -2.0, delta=0.08)
+
+
+class FrozenFluxPhysics(unittest.TestCase):
+    """Induction equation for A_z: frozen flux at R_m = 10^4, diffusion at u = 0."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("frozen_flux.py")
+
+    @staticmethod
+    def fourier_value(field, point):
+        """Trigonometric interpolation of a periodic grid field[y, x] on [0, 2 pi)^2."""
+        n = field.shape[0]
+        k = np.fft.fftfreq(n, 1.0 / n)
+        coeff = np.fft.fft2(field) / n**2
+        return np.real(np.exp(1j * k * point[1]) @ coeff @ np.exp(1j * k * point[0]))
+
+    def test_large_rm_carries_flux_with_fluid(self):
+        from scipy.integrate import solve_ivp
+        m = self.m
+        t, states, _, _ = m["solve"](1.0 / m["REYNOLDS"][0], n=128)
+        start = m["tracer_start"]()
+
+        def u(_, p):
+            x, y = p
+            return [np.sin(x) * np.cos(y), -np.cos(x) * np.sin(y)]
+
+        for p0 in start[::4]:
+            path = solve_ivp(u, (0, t[-1]), p0, method="DOP853", rtol=1e-10, atol=1e-12,
+                             t_eval=t).y.T
+            values = [self.fourier_value(s, p) for s, p in zip(states, path)]
+            # A_z/A_0 on the traced field line stays at 1/2 within 3 %.
+            self.assertLess(np.max(np.abs(np.array(values) / m["TRACER_LEVEL"] - 1)), 0.03)
+        # O-point flux: max A_z falls only by the Gaussian diffusion estimate.
+        sigma2 = m["SIGMA"] ** 2
+        estimate = sigma2 / (sigma2 + 2 * t[-1] / m["REYNOLDS"][0])
+        self.assertAlmostEqual(states[-1].max(), estimate, delta=0.01)
+        self.assertGreater(states[-1].max(), 0.97)
+
+    def test_small_rm_loses_the_fluid_elements(self):
+        m = self.m
+        _, _, _, values = m["solve"](1.0 / m["REYNOLDS"][1], n=96)
+        self.assertLess(values[-1].mean() / m["TRACER_LEVEL"], 0.25)
+
+    def test_mode_decays_on_diffusion_time(self):
+        m = self.m
+        for diffusivity in (0.1, 0.05):
+            self.assertAlmostEqual(m["mode_decay_time"](diffusivity, mode=(2, 1)),
+                                   1.0 / (diffusivity * 5), places=6)
+
+    def test_gaussian_diffuses_without_flow(self):
+        m = self.m
+        diffusivity = 1.0 / m["REYNOLDS"][1]
+        t, states, _, _ = m["solve"](diffusivity, flow=0.0, n=96,
+                                     tracers=np.zeros((1, 2)))
+        centre = (np.pi / 2 + m["OFFSET"], np.pi / 2)
+        peak = np.array([self.fourier_value(s, centre) for s in states])
+        sigma2 = m["SIGMA"] ** 2
+        exact = sigma2 / (sigma2 + 2 * diffusivity * t)          # 2D Gaussian peak
+        np.testing.assert_allclose(peak, exact, rtol=1e-4)
+
+    def test_contours_lie_on_level(self):
+        m = self.m
+        x, _ = m["grid"](96)
+        xx, yy = np.meshgrid(x, x)
+        f = m["initial_flux"](xx, yy)
+        exact_r = m["SIGMA"] * np.sqrt(-2 * np.log(0.5))
+        for line in m["contour_paths"](f, 0.5, x):
+            r = np.hypot(line[:, 0] - np.pi / 2 - m["OFFSET"], line[:, 1] - np.pi / 2)
+            self.assertLess(np.max(np.abs(r / exact_r - 1)), 0.02)
+            np.testing.assert_allclose(line[0], line[-1])          # closed loop
+
+
+class AlfvenWavePhysics(unittest.TestCase):
+    """Linearized shear Alfven wave on a tied field line."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("alfven_wave.py")
+
+    def test_pulse_speed_is_alfven_speed(self):
+        m = self.m
+        for b0, rho in ((1.0, 1.0), (1.0, 4.0), (2.0, 1.0)):
+            x, t, xi = m["solve"](rho, b0)
+            v_a = b0 / np.sqrt(m["MU0"] * rho)
+            # Centroid of the right half of the split pulse, before any reflection.
+            use = (t > 4 * m["WIDTH"] / v_a) & (m["X_PLUCK"] + v_a * t < 0.85)
+            centroids = []
+            for s, ti in zip(xi[use], t[use]):
+                window = (x > m["X_PLUCK"] + 0.5 * v_a * ti) & (x < 1.0)
+                w = np.where(s[window] > 0.05, s[window], 0.0)     # pulse body only
+                centroids.append(np.sum(w * x[window]) / np.sum(w))
+            speed = np.polyfit(t[use], centroids, 1)[0]
+            self.assertLess(abs(speed / v_a - 1), 1e-3)
+            self.assertLess(abs(m["measured_speed"](rho, b0)[0] / v_a - 1), 1e-3)
+
+    def test_matches_dalembert_before_reflection(self):
+        m = self.m
+        x, t, xi = m["solve"](1.0)
+        x0, w = m["X_PLUCK"], m["WIDTH"]
+
+        def pluck(z):
+            return np.exp(-(z - x0) ** 2 / (2 * w**2))
+
+        for s, ti in zip(xi, t):
+            if ti > (x0 - 5 * w):             # left pulse would reach the tied end
+                break
+            exact = 0.5 * (pluck(x - ti) + pluck(x + ti))
+            self.assertLess(np.max(np.abs(s - exact)), 5e-3)
+
+    def test_reflection_inverts_at_tied_end(self):
+        m = self.m
+        x, t, xi = m["solve"](1.0)
+        last = xi[-1]
+        # At t = 0.6 L/v_A the left pulse has reflected from x = 0 and travels
+        # right inverted, centred at 0.6 - 0.3 = 0.3 L.
+        i = np.argmin(np.abs(x - 0.3))
+        self.assertLess(last[i], -0.45)
+        self.assertAlmostEqual(last[0], 0.0)
+        self.assertAlmostEqual(last[-1], 0.0)
+
+
+class SmallAngleDeflectionPhysics(unittest.TestCase):
+    """Coulomb-logarithm rate of the accumulated small-angle deflection."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("small_angle_deflections.py")
+
+    def test_rutherford_angle_from_orbit(self):
+        # Integrate the repulsive Coulomb orbit, r'' = b90 v^2 r/|r|^3 in units
+        # b90 = v = 1 (same |theta| as attraction), and compare the outgoing angle.
+        from scipy.integrate import solve_ivp
+
+        def rhs(_, y):
+            r = np.hypot(y[0], y[1])
+            return [y[2], y[3], y[0] / r**3, y[1] / r**3]
+
+        for b in (0.3, 1.0, 3.0, 10.0):
+            x0 = -2e4
+            sol = solve_ivp(rhs, (0, 4e4), [x0, b, 1.0, 0.0], rtol=1e-11, atol=1e-12)
+            vx, vy = sol.y[2, -1], sol.y[3, -1]
+            theta = np.arctan2(vy, vx)
+            # the finite start and end distance leave O(b90/|x0|) of the angle
+            self.assertAlmostEqual(theta, self.m["rutherford_angle"](b), delta=3e-4)
+
+    def test_strong_constant_by_quad(self):
+        from scipy.integrate import quad
+        f = lambda x: (2 * np.arctan(1 / x))**2 * 2 * x
+        c = (quad(f, 0, 1)[0] + quad(lambda x: f(x) - 8 / x, 1, np.inf, limit=400)[0]) / 8
+        self.assertAlmostEqual(self.m["strong_constant"](), c, places=4)
+        # weak decades approach the small-angle value 8 ln 10
+        self.assertAlmostEqual(self.m["bin_rate"](100.0, 1000.0), 8 * np.log(10), delta=2e-3)
+
+    def test_production_rate_against_coulomb_logarithm(self):
+        m = self.m
+        s, vec, bins, _ = m["simulate"]()
+        rate, _ = m["measured_rate"](s, vec)
+        per = np.sum(vec[:, -1]**2, axis=1) / s[-1]
+        stderr = per.std() / np.sqrt(len(per))
+        exact = 8 * (np.log(m["B_MAX"]) + m["strong_constant"]())
+        self.assertLess(stderr / exact, 0.02)
+        self.assertLess(abs(rate - exact), 3 * stderr)
+        # every weak decade (b > b_90) gives its quadrature share within three
+        # standard errors of a compound Poisson sum, Var = s N_e^-1 int theta^4 dN
+        edges = m["EDGES"]
+        for j in range(1, len(edges) - 1):
+            x = np.geomspace(edges[j], edges[j + 1], 20001)
+            th = m["rutherford_angle"](x)
+            moment = lambda f: np.sum((f[1:] + f[:-1]) / 2 * np.diff(x))
+            second, fourth = moment(th**2 * 2 * x), moment(th**4 * 2 * x)
+            rel_se = np.sqrt(s[-1] * fourth / m["N_ELECTRONS"]) / (s[-1] * second)
+            self.assertLess(rel_se, 0.03)
+            share = bins[j, -1] / s[-1]
+            self.assertLess(abs(share / m["bin_rate"](edges[j], edges[j + 1]) - 1), 3 * rel_se)
+        # strong encounters b < b_90 carry under a tenth of the sum
+        self.assertLess(m["bin_rate"](0.0, 1.0) / exact, 0.1)
+
+
+class AmbipolarExpansionPhysics(unittest.TestCase):
+    """Drift-diffusion slab: free diffusion, conservation and D_a."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("ambipolar_expansion.py")
+
+    def test_free_diffusion_without_field(self):
+        # A negligible Debye coupling turns the field off; both species must
+        # then diffuse with their own coefficients (sigma^2 grows as 2 D t).
+        m = self.m
+        times = np.linspace(0.002, 0.01, 5)
+        x, t, n_i, n_e, _ = m["simulate"](times=times, l_debye=1e-6)
+        x0, _, n0 = m["initial"]()
+        for n, d in ((n_i, 1.0), (n_e, m["d_electron"]())):
+            slope = np.polyfit(t, m["variance"](x, n), 1)[0] / 2
+            self.assertAlmostEqual(slope / d, 1, delta=2e-3)
+
+    def test_conservation_and_ambipolar_limit(self):
+        m = self.m
+        times = np.linspace(0.2, 1.0, 9)
+        d_a = m["d_ambipolar"]()
+        self.assertAlmostEqual(d_a, (m["d_electron"]() + m["MU_RATIO"]) / (1 + m["MU_RATIO"]))
+        deviation = []
+        for l_debye in (10.0, 20.0):
+            x, t, n_i, n_e, e_face = m["simulate"](times=times, l_debye=l_debye)
+            dx = x[1] - x[0]
+            self.assertAlmostEqual(n_i[-1].sum() * dx, 2.0, places=9)
+            self.assertAlmostEqual(n_e[-1].sum() * dx, 2.0, places=9)
+            deviation.append(abs(m["measured_diffusion"](t, x, n_i, t_from=0.2) / d_a - 1))
+            # core field equals the quasi-neutral ambipolar field
+            xf = 0.5 * (x[1:] + x[:-1])
+            core = np.abs(xf) < 1.5
+            e_a = m["ambipolar_field"](x, 0.5 * (n_i[-1] + n_e[-1]))
+            self.assertLess(np.max(np.abs(e_face[-1][core] - e_a[core])) / np.max(np.abs(e_a[core])), 0.01)
+        # finite Debye length is the only departure: it shrinks with lambda_De/L
+        self.assertLess(deviation[1], deviation[0] / 2)
+        self.assertLess(deviation[0], 0.03)
+        self.assertLess(deviation[1], 0.01)
+
+
+class EmWavePacketPhysics(unittest.TestCase):
+    """Fourier packet of omega^2 = omega_pe^2 + c^2 k^2 (normalized, c = omega_pe = 1)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.m = model("em_wave_packet.py")
+
+    def test_local_frequency_and_wavenumber_obey_dispersion(self):
+        # Phase of the analytic field at the envelope centre on a finer,
+        # longer grid than the scene: omega = -d(phase)/dt, k = d(phase)/dx.
+        m, cells, length = self.m, 8192, 600.0
+        t, dt = 30.0, 1e-3
+        centre = m["envelope_peak"](t, cells, length)
+        x = m["grid"](cells, length)
+        i = int(np.argmin(abs(x - centre)))
+        before, after = (m["complex_field"](s, cells, length) for s in (t - dt, t + dt))
+        omega = -np.angle(after[i] / before[i]) / (2 * dt)
+        now = m["complex_field"](t, cells, length)
+        k = np.angle(now[i + 1] / now[i - 1]) / (x[i + 1] - x[i - 1])
+        # Local values are averages over the finite spectrum: 0.5 % off.
+        self.assertAlmostEqual(omega**2 - k**2, 1.0, delta=1e-2)
+        self.assertAlmostEqual(k, m["K0"], delta=0.02)
+
+    def test_measured_speeds_product_is_c_squared(self):
+        vp, vg = self.m["measured_speeds"](8192, 600.0)
+        self.assertGreater(vp, 1.0)          # crest faster than light
+        self.assertLess(vg, 1.0)             # envelope slower
+        self.assertAlmostEqual(vp, np.sqrt(2), delta=0.015 * np.sqrt(2))
+        self.assertAlmostEqual(vg, 1 / np.sqrt(2), delta=0.006)
+        self.assertAlmostEqual(vp * vg, 1.0, delta=0.015)
+
+    def test_narrower_spectrum_converges(self):
+        # Finite bandwidth causes the percent-level deviation: halving it
+        # brings v_g closer to c^2 k_0/omega_0.
+        m = self.m
+        errors = []
+        for dk in (0.1, 0.05):
+            m["DK"] = dk
+            try:
+                errors.append(abs(m["measured_speeds"]()[1] - 1 / np.sqrt(2)))
+            finally:
+                m["DK"] = 0.1
+        self.assertLess(errors[1], 0.5 * errors[0])
+
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

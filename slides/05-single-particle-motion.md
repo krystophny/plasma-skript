@@ -54,6 +54,8 @@ three $\mu$ pages and the Hamiltonian page, mirror).
 | 30 | Polarization drift | static | motion-polarization | Slowly varying E_perp; polarization current carried by ions. |
 | 31 | Polarization drift | animation | motion-polarization | E_perp switched on over three ion turns; view with the common E x B displacement removed: ion guiding centre moves along E by m E_1/(q B^2), electron 16 times less and opposite. |
 | 32 | Drifts | static | (none) | Table: charge and mass dependence of every drift; vacuum-field sum of curvature and grad-B. |
+| 33 | Cyclotron resonance | derivation | motion-cyclotron-resonance | Rotating field E_cw = E_0 e^(-i s omega t); v_cw = v_x + i v_y obeys dv_cw/dt = -i omega_c v_cw + (q/m) E_cw (the script's equation); from rest the modulus 2 abs(sin(Delta t/2)/Delta), Delta = omega_c - s omega; Delta = 0: v_perp grows linearly, W quadratically. Ions take the clockwise, electrons the counterclockwise field (signed omega_c). |
+| 34 | Cyclotron resonance | animation | motion-cyclotron-resonance | Predict each run before it starts: ion with the clockwise field at omega_ci (spiral, straight line in v_perp), at 0.8 omega_ci (beat, peak 10 E_0/B), with the counterclockwise field (nothing), electron with the counterclockwise field (resonance again). Measured slope 0.9999 abs(q) E_0/m against 1. |
 
 ## Evidence and assets
 
@@ -257,3 +259,22 @@ after the polarization page 30).
 
 `animations/magnetized_polarization.py` shows Faraday rotation of a wave, not
 the polarization drift of particles, so the drift got its own scene.
+
+## Cyclotron resonance (2026-10-26)
+
+`animations/cyclotron_resonance.py` (`cyclotron-resonance`, 31 s; page 34,
+after the derivation page 33): uniform B out of the page, uniform field
+rotating clockwise (s = +1) or counterclockwise (s = -1), particle from rest,
+Boris push (`drift_models.boris_em`), 400 steps per gyration, 6 gyrations
+per run; each species normalized with its own abs(omega_c) (speed v B/E_0,
+time abs(omega_c) t, all [1]), so the electron run is the mirror image of the
+ion run. Dashed: the closed form 2 abs(sin(Delta t/2)/Delta).
+Checks (`CyclotronResonancePhysics`): orbit speed equals the closed form to
+0.6 dt (half-step start); RK4 of the complex equation equals it to 1e-8;
+growth rate 0.99994 abs(q) E_0/m (ion and electron), W proportional to t^2
+(log-log slope 2 within 0.01); detuned peak 10.0005 (formula 10); counter-rotating
+peak 1.0000 for both species (formula 1). The page-33 closed form was also
+checked with SymPy (ODE residual 0, v_cw(0) = 0, modulus, Delta -> 0 limit).
+Note: from rest the speed grows linearly and the energy quadratically in time;
+the absorbed power, not the energy, grows linearly.
+

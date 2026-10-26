@@ -52,6 +52,10 @@
   ]
   #at(1, 12, y: 104mm, result-box($P_a prop exp(-E_a/(k_B T))$, [Boltzmann factor of microstate $a$]))
 ]
+#plot-page("boltzmann_counting", columns: 10, section: "thermal-boltzmann", title: [Boltzmann factor by counting],
+  below: [$P(E) prop W_"rest" (Q - E\/epsilon), quad W_"rest" (q) = ((q + N - 1)!)/(q! thin (N - 1)!), quad k_B T = epsilon\/ln 2$ \
+    #v(3mm) #text(fill: muted)[$N$ reservoir oscillators sharing $Q = N$ quanta $epsilon$; $P_B$ Boltzmann value]])
+#animation-page("hard-sphere-relaxation", "hard_sphere_relaxation", section: "thermal-boltzmann")
 #slide(section: "thermal-boltzmann", title: [Drifting Maxwellian])[
   #at(1, 6, y: 6mm)[
     $bold(u) = bold(P)/(N m)$

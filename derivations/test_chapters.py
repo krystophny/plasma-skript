@@ -117,7 +117,36 @@ def test_loss_cone_sample_against_pitch_angle():
         p = model.lost_formula(ratio)
         assert abs(lost - p) < 4 * np.sqrt(p * (1 - p) / 50_000), (ratio, lost, p)
 
-CHAPTERS = sorted((Path(__file__).parent / "chapters").glob("ch*.py"))
+
+def test_moment_weights_against_closed_form():
+    """Quadrature of the plotted integrands gives the moments of the
+    core-plus-beam distribution: n = 1, u = 0.2*2.5 = 0.5,
+    k_B T/m = 0.8(1 + 0.5^2) + 0.2(0.6^2 + 2^2) = 1.872 and
+    q/m = [0.8(-0.5^3 - 1.5) + 0.2(2^3 + 6*0.36)]/2 = 0.366 (by hand)."""
+    import plot_moment_weights as model
+
+    got = model.numerical_moments()
+    for a, b, hand in zip(got, model.analytic_moments(), (1.0, 0.5, 1.872, 0.366)):
+        assert abs(a - b) < 1e-8 and abs(b - hand) < 1e-12, (a, b, hand)
+
+
+def test_spitzer_coefficient_from_collision_time():
+    """NRL's eta_perp = 1.03e-2 Z lnL T^-3/2 Ohm cm (= 1.15e-14 s in Gaussian
+    units, times 1/(4 pi eps_0)) equals m_e/(n e^2 tau_e) with the formulary's
+    tau_e, and the plotted tokamak core is a better conductor than copper."""
+    import math
+    import plot_spitzer_resistivity as model
+
+    assert abs(model.NRL_PERP / model.coefficient() - 1) < 0.005
+    gaussian = 1.15e-14 / (4 * math.pi * 8.8541878128e-12)
+    assert abs(gaussian / model.coefficient() - 1) < 0.005
+    assert model.eta_par(1e20, 1e4) < model.COPPER < model.eta_par(1e20, 1e3)
+    # T^-3/2 at fixed ln Lambda: one decade in T gives 10^-1.5 in eta.
+    ratio = model.eta_perp(1e20, 1e4) / model.eta_perp(1e20, 1e3)
+    lnl = model.coulomb_log(1e20, 1e4) / model.coulomb_log(1e20, 1e3)
+    assert abs(ratio / lnl - 10**-1.5) < 1e-12
+
+CHAPTERS =sorted((Path(__file__).parent / "chapters").glob("ch*.py"))
 LINE_REFERENCE = re.compile(r'\.typ:\d|"\d*:\d+(?:-\d+)?"')
 
 

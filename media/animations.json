@@ -311,6 +311,116 @@
       "appearance": "dark",
       "supplementary_chapter": "chapters/05-single-particle-motion.html",
       "supplementary_description": "Full Lorentz-force orbits of an ion and an electron while a perpendicular electric field is switched on smoothly over three ion gyroperiods, at a reduced mass ratio of 16. With the common E x B displacement removed, the ion guiding centre moves along E by m E/(q B^2) and the electron 16 times less in the opposite direction, as the polarization drift predicts. Lengths in ion Larmor radii and time in inverse ion gyrofrequencies, with unit [1]."
+    },
+    "hard-sphere-relaxation": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/hard_sphere_relaxation.mp4",
+      "poster": "media/posters/hard-sphere-relaxation.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/hard-sphere-relaxation.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/hard_sphere_relaxation.mp4?v=067239774209b9b1",
+      "mp4_sha256": "067239774209b9b1c49e41c440e7172bc8df3b63651a4e4401bd3a7475bb9bb9",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/02-thermal-equilibrium.html",
+      "supplementary_description": "Six hundred elastic hard disks in a box start with the same speed v0 in random directions, far from equilibrium. Collisions spread the speeds: within about four collisions per disk the speed histogram settles on the two-dimensional Maxwellian at the same energy, f(v) = (2v/v0^2) exp(-v^2/v0^2) with k_B T = m v0^2/2, and the entropy of the velocity distribution rises from near zero to the Maxwellian value 1 + ln(pi) and then stays flat. The total kinetic energy is conserved to round-off. Speeds in v0, time in mean collision times, entropy per disk, all with unit [1]."
+    },
+    "sheet-oscillation": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/sheet_oscillation.mp4",
+      "poster": "media/posters/sheet-oscillation.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/sheet-oscillation.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/sheet_oscillation.mp4?v=c725951c77639416",
+      "mp4_sha256": "c725951c7763941667c928f30c83899c0be3a05b9fd6d92182cfb755d367dfb5",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/03-plasma-oscillations.html",
+      "supplementary_description": "One hundred sixty cold electron sheets on a fixed ion background in a periodic box of one wavelength, started at rest positions with velocity v0 sin(kx), k v0/omega_pe = 0.5. Phase space (position, velocity), the sheets in real space and the electric field from Gauss's law are shown together. No sheet overtakes another, so every sheet oscillates at the plasma frequency; the measured frequency is omega/omega_pe = 1.0000. Position x/lambda, velocity k v/omega_pe, field k e E/(m_e omega_pe^2) and time omega_pe t, all with unit [1]."
+    },
+    "sheet-wave-breaking": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/sheet_wave_breaking.mp4",
+      "poster": "media/posters/sheet-wave-breaking.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/sheet-wave-breaking.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/sheet_wave_breaking.mp4?v=a8f81182c66ff616",
+      "mp4_sha256": "a8f81182c66ff6160931b1d947f6dad48e64d6aabe8761b2acbdc826ddb29601",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/03-plasma-oscillations.html",
+      "supplementary_description": "The same cold electron sheet model at three times the amplitude, k v0/omega_pe = 1.5. Neighbouring sheets first cross at omega_pe t = 0.73, as arcsin(omega_pe/(k v0)) predicts: the phase-space curve folds over, several streams coexist at one position, and the field is no longer a smooth sine. This is wave breaking of a cold plasma oscillation. Position x/lambda, velocity k v/omega_pe, field k e E/(m_e omega_pe^2) and time omega_pe t, all with unit [1]."
+    },
+    "cyclotron-resonance": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/cyclotron_resonance.mp4",
+      "poster": "media/posters/cyclotron-resonance.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/cyclotron-resonance.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/cyclotron_resonance.mp4?v=27301f21d7a200b6",
+      "mp4_sha256": "27301f21d7a200b615f1725dad3e2fe9ea0618ffc6cf6b5fd79d19c03407b9f6",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/05-single-particle-motion.html",
+      "supplementary_description": "A charge starts at rest in a uniform magnetic field out of the page and is driven by a uniform electric field rotating in the perpendicular plane. Four runs follow one another: an ion with a clockwise field at its gyrofrequency spirals outward, its speed growing linearly at |q|E0/m and its energy quadratically; at 0.8 of the gyrofrequency the speed beats and stays below 10 E0/B; with the counterclockwise field it stays below E0/B; an electron resonates with the counterclockwise field. The measured growth rate is 0.9999 |q|E0/m for both species. Each species is normalized with its own gyrofrequency; speed v B/E0, time |omega_c| t and positions, all with unit [1]."
+    },
+    "diamagnetic-drift": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/diamagnetic_drift.mp4",
+      "poster": "media/posters/diamagnetic-drift.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/diamagnetic-drift.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/diamagnetic_drift.mp4?v=0dd2f6a6ff1a58ec",
+      "mp4_sha256": "0dd2f6a6ff1a58ecaaadfe374791d830216e6e551578524fa80dd586464a4535",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/08-multiple-fluids.html",
+      "supplementary_description": "About 690 ions gyrate on exact Lorentz-force circles in a uniform magnetic field out of the page; their guiding centres are at rest and fill the plane with the density gradient n = n0(1 + y/L), L = 5 Larmor radii, n0 = 12 per Larmor radius squared. Six vertical lines are cut into bins one Larmor radius high, and every crossing is counted with its direction over two gyration periods. Each ion crosses rightward at the top of its circle and leftward at the bottom; more ions sit above a given height than below it, so the leftward crossings win although no guiding centre moves. The net current j_x/(q n0 v_perp) = -0.0999, averaged over bins and lines (single bins scatter by about 12 % from the finite number of ions), agrees with the diamagnetic current B x grad p/B^2 = -rho_L/(2L) = -0.100 for p = n m v_perp^2/2. Lengths in Larmor radii, time in inverse gyrofrequencies, current in q n0 v_perp, with unit [1]."
+    },
+    "magnetized-random-walk": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetized_random_walk.mp4",
+      "poster": "media/posters/magnetized-random-walk.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/magnetized-random-walk.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetized_random_walk.mp4?v=96b92915320a2128",
+      "mp4_sha256": "96b92915320a2128327147752b7a1733fd74210854828104c17784d992d7c363",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/11-diffusion.html",
+      "supplementary_description": "An ion gyrates in a uniform magnetic field; collisions at the Poisson rate nu = 0.1 omega_c redraw its velocity direction at fixed speed, and the guiding centre jumps by about one Larmor radius at each collision (mean square 2 rho_L^2), a random walk across the field. For 4000 ions at B = B0, 2 B0 and 4 B0 with the same collision sequence, the mean square guiding-centre displacement grows linearly in time; a quarter of its slope gives D_perp = 0.0496, 0.0127 and 0.00304 rho_L0^2 omega_c0 against the exact value v_perp^2 nu/[2(nu^2 + omega_c^2)] = 0.0495, 0.0125 and 0.00312 (within 3 %), with fitted slope -2.01 in B: D_perp is about nu rho_L^2/2 and scales as 1/B^2, while motion along B is unaffected, D_par about v_th^2/nu. Lengths in rho_L0 = v_perp/omega_c0, time omega_c0 t and D in rho_L0^2 omega_c0, with unit [1]."
+    },
+    "frozen-flux": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/frozen_flux.mp4",
+      "poster": "media/posters/frozen-flux.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/frozen-flux.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/frozen_flux.mp4?v=c162b5ae320e2c83",
+      "mp4_sha256": "c162b5ae320e2c83f2fdbd79d23ae864cfca05bb40a97254af126a6c8ebbbe77",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/09-mhd.html",
+      "supplementary_description": "A loop of closed magnetic field lines, the contours of the flux function A_z, sits off-centre in a prescribed cellular vortex u = curl(U L sin(x/L) sin(y/L) e_z), and the induction equation dA_z/dt + u . grad A_z = D_B laplacian A_z is solved on a periodic grid. Twenty-four fluid elements start on the field line A_z = A_0/2. First, at magnetic Reynolds number R_m = U L/D_B = 10^4, the vortex winds the loop into a spiral and the elements stay on their field line: A_z at the elements stays within 2.6 % of its initial value and the peak of A_z within 1.7 %, so the flux between field lines moves with the fluid. Then, from the same start at R_m = 10, the elements are wound up in the same way but the field diffuses through them: A_z at the elements falls to 11 % and the peak to 6 % of A_0 by t U/L = 8. Positions x/L and y/L, time t U/L and A_z/A_0 are normalized, with unit [1]."
+    },
+    "alfven-wave": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/alfven_wave.mp4",
+      "poster": "media/posters/alfven-wave.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/alfven-wave.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/alfven_wave.mp4?v=b76adcbc0c2d843e",
+      "mp4_sha256": "b76adcbc0c2d843e9e4191282d60fa31c424357d5c6e2bbd7cfea631a7df57c6",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/09-mhd.html",
+      "supplementary_description": "A magnetic field line along a uniform field B_0, tied at both ends, is plucked sideways at x = 0.3 L and released. The linearized ideal-MHD equations for the transverse velocity and the field perturbation, rho d(du_y)/dt = (B_0/mu_0) d(dB_y)/dx and d(dB_y)/dt = B_0 d(du_y)/dx, are integrated on a staggered grid. The pluck splits into two pulses that run along the field line in opposite directions; the left one reflects inverted at the tied end. Fluid elements move only sideways. Two runs from the same pluck: at density rho_0 the measured pulse-peak speed is 0.9999 v_A0, and at 4 rho_0 it is 0.4999 v_A0, against v_A = B_0/sqrt(mu_0 rho). Position x/L, displacement xi_y/xi_0 and time t v_A0/L are normalized, with unit [1]."
+    },
+    "small-angle-deflections": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/small_angle_deflections.mp4",
+      "poster": "media/posters/small-angle-deflections.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/small-angle-deflections.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/small_angle_deflections.mp4?v=fd27a53ecc125f0b",
+      "mp4_sha256": "fd27a53ecc125f0b5389240f0e7d3e3fa1c93891820abdc8cbf869e3726723b0",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/10-collisions-conductivity.html",
+      "supplementary_description": "12 000 test electrons cross a field of fixed singly charged ions. Each ion passed deflects an electron by the exact Rutherford angle, tan(theta/2) = b90/b, in a random direction, with impact parameters b drawn uniformly in area up to b_max = 1000 b90. Left: the accumulated deflection of 70 electrons spreads as a cloud of many small kicks; one ringed electron meets a rare strong encounter (b < b90) and jumps. Upper right: the mean-square deflection grows linearly with path length, with slope 59.2 against 8(ln Lambda + C) = 57.4 per 90-degree mean free path, ln Lambda = ln(b_max/b90) = 6.91 and C = 0.27 from the strong encounters. Lower right: every decade of b above b90 contributes almost the same amount, about 8 ln 10, which is why the logarithm appears; all strong encounters together give less than a tenth. Path length s over lambda90 = 1/(n pi b90^2) and b/b90 have unit [1]; angles are in rad."
+    },
+    "ambipolar-expansion": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/ambipolar_expansion.mp4",
+      "poster": "media/posters/ambipolar-expansion.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/ambipolar-expansion.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/ambipolar_expansion.mp4?v=5a2d63a513e957c9",
+      "mp4_sha256": "5a2d63a513e957c9e04ff8125d2f17adfa1c640c99cf86f928a2e4e1cf8b1d87",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/11-diffusion.html",
+      "supplementary_description": "A one-dimensional slab of electrons and ions expands by drift-diffusion with the self-consistent electric field from Poisson's equation, with mobility ratio mu_e/mu_i = 50, T_e/T_i = 2 (so D_e = 100 D_i) and Debye length L/10 for slab half-width L. Left: densities and the electric field; the electrons run ahead at the edges, the space charge builds field spikes that pull them back and drag the ions outward, and the field then relaxes to the smooth ambipolar field. Right, on logarithmic axes: the growth of the density variance follows 2 D_e t for the electrons only at first, then electrons and ions move together along 2 D_a t. The measured slab coefficient 2.87 D_i lies close to D_a = (mu_i D_e + mu_e D_i)/(mu_i + mu_e) = 2.94 D_i, about D_i(1 + T_e/T_i); the small difference comes from the finite Debye length. Position x/L, density n/n0, field e E L/(k_B T_e) and time t D_i/L^2 have unit [1]."
+    },
+    "em-wave-packet": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/em_wave_packet.mp4",
+      "poster": "media/posters/em-wave-packet.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/em-wave-packet.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/em_wave_packet.mp4?v=7da53ad15253325f",
+      "mp4_sha256": "7da53ad15253325fd738f38537493953b0458b06f28f37381f5e266703c07469",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/12-introduction-waves.html",
+      "supplementary_description": "A Gaussian packet of transverse electromagnetic waves in a cold electron plasma, with carrier wavenumber k0 = omega_pe/c and envelope width 10 c/omega_pe, is built from Fourier modes that each advance with their own frequency from omega^2 = omega_pe^2 + c^2 k^2. A dot follows one crest and a triangle the envelope peak, both measured from the computed field; a dashed line moves at the speed of light. The crest starts behind the light front and overtakes it, while the envelope falls behind. The dispersion diagram of the same packet shows the chord slope omega/k (phase velocity) and the tangent slope d omega/dk (group velocity). Measured: v_phi = 1.406 c and v_g = 0.705 c against 1.414 c and 0.707 c, with v_phi v_g = 0.991 c^2; the 1 % difference comes from the finite spectral width and shrinks for a narrower spectrum. Position x omega_pe/c, time omega_pe t, wavenumber c k/omega_pe, frequency omega/omega_pe and field E/E0 are normalized, with unit [1]."
     }
   }
 }

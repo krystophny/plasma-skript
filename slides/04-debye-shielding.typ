@@ -22,8 +22,10 @@
   #at(3, 8, y: 120mm, align(center, $Gamma_e = (e^2 \/ (4 pi epsilon_0 a))/(k_B T_e) = a^2/(4 pi lambda_D^2), quad a = n_0^(-1\/3)$))
 ]
 #slide(section: "debye-collective-validity", title: [Debye number])[
-  #at(2, 10, y: 14mm, align(center, $Gamma_e N_D^(2\/3) = (36 pi)^(-1\/3) approx 0.21$))
-  #at(3, 8, y: 84mm, result-box(align(center, $N_D = (4 pi)/3 n_0 lambda_D^3 >> 1$), [electrons in a Debye sphere]))
+  #at(1, 6, y: 14mm, align(center, $Gamma_e N_D^(2\/3) = (36 pi)^(-1\/3) approx 0.21$))
+  #at(1, 6, y: 64mm, result-box(align(center, $N_D = (4 pi)/3 n_0 lambda_D^3 >> 1$), [electrons in a Debye sphere]))
+  #at(7, 6, y: 4mm, plot("debye_number", columns: 6))
+  #at(7, 6, y: 112mm, align(center, text(fill: muted)[$N_D prop T_e^(3\/2) n_e^(-1\/2)$; shaded: $N_D < 1$]))
 ]
 #plot-page("nt_map", columns: 10, section: "debye-collective-validity", title: [Plasma regime map])
 #slide(section: "debye-collective-validity", title: [Ideal plasma])[
@@ -55,6 +57,12 @@
   #at(7, 6, y: 28mm, align(center, plot("debye_potential_k", columns: 5)))
   #at(1, 12, y: 124mm, align(center, text(size: result-size, $epsilon(k) = 1 + 1/(k^2 lambda_D^2)$)))
 ]
+#plot-page("debye_nonlinear_potential", columns: 7, section: "intro-debye-shielding", title: [Nonlinear screening: potential],
+  below: [$Lambda = q e\/(4 pi epsilon_0 lambda_D k_B T_e)$, #h(0.4em) #text(fill: muted)[$q$ test charge] \
+    #v(3mm) #text(fill: muted)[linear only fails at $r lt.tilde Lambda lambda_D$, where $e Phi > k_B T_e$]])
+#plot-page("debye_nonlinear_density", columns: 7, section: "intro-debye-shielding", title: [Nonlinear screening: density],
+  below: [$n_e\/n_0 = e^(e Phi\/k_B T_e)$ #h(0.4em) against #h(0.4em) $1 + e Phi\/k_B T_e$ \
+    #v(3mm) #text(fill: muted)[solutions of the previous page; markers: $e Phi = k_B T_e$]])
 #slide(section: "intro-debye-shielding", title: [Charge separation and screening])[
   #at(1, 6, y: 0mm, align(center)[
     #text(fill: muted)[rigid: electrons removed] \

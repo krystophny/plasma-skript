@@ -13,6 +13,8 @@
   ]
   #at(4, 6, y: 82mm, result-box(align(center, $omega_(p e) = sqrt((n_0 e^2)/(epsilon_0 m_e))$), [electron plasma frequency]))
 ]
+#animation-page("sheet-oscillation", "sheet_oscillation", section: "intro-plasma-oscillations")
+#animation-page("sheet-wave-breaking", "sheet_wave_breaking", section: "intro-plasma-oscillations")
 #slide(section: "intro-plasma-oscillations", title: [Plasma frequency])[
   #let examples = json("/derivations/build/plasma-frequency.json")
   #let sci(v) = {
@@ -49,3 +51,6 @@
     item($omega_p^2 = omega_(p e)^2 + omega_(p i)^2 = (n_e e^2)/(epsilon_0 m_"eff")$, [ions move too: $1/m_"eff" = 1/m_e + Z/m_i$]),
   ))
 ]
+#plot-page("two_species_oscillation", columns: 10, section: "intro-plasma-oscillations", title: [Ions move too],
+  below: [$xi_i = -(m_e\/m_i) thin xi_e, quad omega_p^2 = omega_(p e)^2 + omega_(p i)^2, quad omega_(p i)^2\/omega_(p e)^2 = m_e\/m_i$ \
+    #v(3mm) #text(fill: muted)[$xi_alpha$ displacement of species $alpha$, $v_0$ initial electron speed amplitude, $Z = 1$]])

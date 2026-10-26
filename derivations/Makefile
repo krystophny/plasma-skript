@@ -57,6 +57,24 @@ build/fig/mu_ramp.svg: plot_mu_ramp.py si.py
 build/fig/loss_cone.svg: plot_loss_cone.py si.py
 	$(PYTHON) plot_loss_cone.py
 
+# Plots for chapters 7 and 10.
+fig: build/fig/moment-weights.svg build/fig/spitzer-resistivity.svg
+
+build/fig/moment-weights.svg: plot_moment_weights.py si.py
+	$(PYTHON) plot_moment_weights.py
+
+build/fig/spitzer-resistivity.svg: plot_spitzer_resistivity.py si.py
+	$(PYTHON) plot_spitzer_resistivity.py
+
+# Plots for chapters 2 and 3.
+fig: build/fig/boltzmann_counting.svg build/fig/two_species_oscillation.svg
+
+build/fig/boltzmann_counting.svg: plot_boltzmann_counting.py si.py
+	$(PYTHON) plot_boltzmann_counting.py
+
+build/fig/two_species_oscillation.svg: plot_two_species_oscillation.py si.py
+	$(PYTHON) plot_two_species_oscillation.py
+
 build/pdf/%.pdf: build/tex/%.tex
 	latexmk -pdf -quiet -interaction=nonstopmode -outdir=build/pdf $< >/dev/null
 	latexmk -c -outdir=build/pdf $< >/dev/null

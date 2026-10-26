@@ -12,7 +12,7 @@ Delivery: title, whiteboard rigid sphere, charge-separation page, thermal
 fluctuation animation, coupling-regions animation, whiteboard coupling (neighbour
 energy versus k_B T), coupling page, Debye number, regime map, ideal plasma, point-charge
 animation, whiteboard Boltzmann derivation,
-derivation overview, dielectric function, comparison page, Debye-circle animation, typical scales, Debye length and
+derivation overview, dielectric function, nonlinear screening (potential, density), comparison page, Debye-circle animation, typical scales, Debye length and
 plasma frequency. The board plan is
 `~/Nextcloud/lv/lecturer/plasma/board/04-debye-shielding.typ`.
 
@@ -23,16 +23,18 @@ plasma frequency. The board plan is
 | 3 | Thermal charge fluctuations | animation | debye-collective-validity | After the rigid sphere: no test charge; thermal motion alone opens red/blue regions of size lambda_D (kin6d). |
 | 4 | Coupling regions | animation | debye-collective-validity | Same density, T_0 versus 9 T_0 (kin6d): red/blue regions of size lambda_D = a with one or a few electrons versus lambda_D = 3a with many; freeze; one electron runs through, strongly deflected versus nearly straight. No Debye circle. |
 | 5 | Weak and strong coupling | static | debye-collective-validity | After the whiteboard coupling: the frozen frame of page 4 (same electrons, colours, scale), Gamma_e = a^2/(4 pi lambda_D^2) from the neighbour energy. |
-| 6 | Debye number | static | debye-collective-validity | Rewrite weak coupling as N_D >> 1 (2025 pp. 39-40). |
+| 6 | Debye number | static | debye-collective-validity | Rewrite weak coupling as N_D >> 1 (2025 pp. 39-40); plot (ch04 derivation, `debye_number`): N_D against n_e at 0.1 eV, 10 eV, 10 keV, shaded N_D < 1. |
 | 7 | Plasma regime map | static | debye-collective-validity | Typical lambda_D and plasmas; N_D = 1 line. |
 | 8 | Ideal plasma | static | debye-collective-validity | Exam question (g): N_D >> 1 and lambda_D << L (2025 pp. 41, 43). |
 | 9 | Debye shielding from particles | animation | intro-debye-shielding | After the whiteboard physics; the cloud is an average, no hole in one snapshot. |
 | 10 | Debye shielding | static | intro-debye-shielding | Read after the whiteboard derivation (2025 pp. 31-37): force balance, Poisson, linearize, a(r)/r, Debye-Hückel potential. |
 | 11 | Dielectric function | static | intro-debye-shielding | Corrections lecture: the screened equation in k-space; 1/epsilon(k) = net charge / imposed charge for a pattern (0 for k lambda_D << 1, 1/2 at 1, 1 for >> 1); Phi_hat flattens below k lambda_D ~ 1. Test charge Q delta(r) is "external" = prescribed, not part of the response. |
-| 12 | Charge separation and screening | static | intro-debye-shielding | Rigid sphere next to the point-charge response (2025 p. 38), Debye length. |
-| 13 | Coupling test particles | animation | intro-debye-shielding | After the shielded point charge: same frozen electrons at Gamma_e = 0.08 (lambda_D = a) and 0.009 (lambda_D = 3a); the Debye circle moves with the test electron; few versus many electrons inside. |
-| 14 | Typical scales | static | intro-debye-shielding | Table from derivations/build/debye-scales.json (ch04 derivation): n_e, k_B T_e, lambda_D, omega_pe, N_D for the five example plasmas of the introduction overview; rules of thumb lambda_D ~ 7400 m sqrt(T_eV/n), omega_pe ~ 56 s^-1 sqrt(n). |
-| 15 | Debye length and plasma frequency | static | intro-debye-shielding | Knowing v_th and omega_pe gives lambda_D (2025 p. 22); fusion example 10 keV, 1e20 m^-3. |
+| 12 | Nonlinear screening: potential | plot | intro-debye-shielding | After the dielectric function: is linearizing safe? Exact Poisson-Boltzmann (derivations/plot_debye_nonlinear.py) against Debye-Hückel and Coulomb for Lambda = 1e-4, 1e-3, 1e-2 (q = e: n_0 lambda_D^3 = 800, 80, 8); they differ only inside r ~ Lambda lambda_D, where e Phi > k_B T_e. |
+| 13 | Nonlinear screening: density | plot | intro-debye-shielding | Same solutions: n_e/n_0 - 1 = e^(e Phi/k_B T_e) - 1 grows far above the linearized value only inside r ~ Lambda lambda_D, which holds less than one electron when N_D >> 1. |
+| 14 | Charge separation and screening | static | intro-debye-shielding | Rigid sphere next to the point-charge response (2025 p. 38), Debye length. |
+| 15 | Coupling test particles | animation | intro-debye-shielding | After the shielded point charge: same frozen electrons at Gamma_e = 0.08 (lambda_D = a) and 0.009 (lambda_D = 3a); the Debye circle moves with the test electron; few versus many electrons inside. |
+| 16 | Typical scales | static | intro-debye-shielding | Table from derivations/build/debye-scales.json (ch04 derivation): n_e, k_B T_e, lambda_D, omega_pe, N_D for the five example plasmas of the introduction overview; rules of thumb lambda_D ~ 7400 m sqrt(T_eV/n), omega_pe ~ 56 s^-1 sqrt(n). |
+| 17 | Debye length and plasma frequency | static | intro-debye-shielding | Knowing v_th and omega_pe gives lambda_D (2025 p. 22); fusion example 10 keV, 1e20 m^-3. |
 
 Rebuilt from scratch on 2026-10-13. The 2025 fluid preliminaries (pp. 25-30:
 conservation laws, Euler and Lagrange derivatives) are saved for the moments

@@ -38,13 +38,13 @@
     ([$bold(B) = B bold(e)_z$], $dif v_x \/ dif t = omega_c v_y, quad dif v_y \/ dif t = -omega_c v_x$),
     ([], $dif v_z \/ dif t = 0$),
     ([$dif \/ dif t$], $dif^2 v_x \/ dif t^2 = omega_c dif v_y \/ dif t = -omega_c^2 v_x$),
-    ([solution], $v_x = v_perp cos(omega_c t + phi)$),
-    ([], $v_y = -v_perp sin(omega_c t + phi)$),
-    ([integrate], $x = x_0 + (v_perp \/ omega_c) sin(omega_c t + phi)$),
-    ([], $y = y_0 + (v_perp \/ omega_c) cos(omega_c t + phi)$),
+    ([solution], $v_x = v_perp cos(omega_c t + phi.alt)$),
+    ([], $v_y = -v_perp sin(omega_c t + phi.alt)$),
+    ([integrate], $x = x_0 + (v_perp \/ omega_c) sin(omega_c t + phi.alt)$),
+    ([], $y = y_0 + (v_perp \/ omega_c) cos(omega_c t + phi.alt)$),
     ([along $bold(B)$], $z = z_0 + v_parallel t$),
   ))
-  #at(1, 12, y: 124mm, note[$phi$ gyrophase, $(x_0, y_0)$ guiding centre, $abs(v_perp\/omega_c) = rho_L$, $v_parallel$ speed along $bold(B)$])
+  #at(1, 12, y: 124mm, note[$phi.alt$ gyrophase, $(x_0, y_0)$ guiding centre, $abs(v_perp\/omega_c) = rho_L$, $v_parallel$ speed along $bold(B)$])
   #at(1, 12, y: 134mm, note[$bold(B)$ out of the page: ions ($omega_c > 0$) clockwise, electrons ($omega_c < 0$) counterclockwise])
   #at(1, 12, y: 150mm, refs(chen))
 ]
@@ -202,11 +202,11 @@
     ([$bold(A) = bold(B) times bold(r) \/ 2$], $J = 2 pi m_alpha v_perp rho_L - pi abs(q_alpha) B rho_L^2 = (2 pi m_alpha \/ abs(q_alpha)) mu = abs(q_alpha) pi rho_L^2 B$),
     ([periodic motion], [action $=$ adiabatic invariant #h(0.6em) #note[slowly shortened pendulum, Solvay 1911]]),
     ([guiding centre], $H = m_alpha v_parallel^2 \/ 2 + mu B(bold(R)) + q_alpha Phi(bold(R))$),
-    ([$phi$ ignorable], [$p_phi = (m_alpha \/ q_alpha) mu = "const."$ #h(0.6em) #note[Noether]]),
+    ([$phi.alt$ ignorable], [$p_phi.alt = (m_alpha \/ q_alpha) mu = "const."$ #h(0.6em) #note[Noether]]),
     ([potential $mu B$], $m_alpha dif v_parallel \/ dif t = -mu thin partial B\/partial s - q_alpha thin partial Phi \/ partial s, quad bold(F)_perp = -grad_perp (mu B) -> bold(v)_D^(grad B)$),
   ))
   #at(1, 12, y: 108mm, note[$bold(p)_perp$ canonical momentum across $bold(B)$, $bold(A)$ vector potential, $bold(r)$ from the orbit centre])
-  #at(1, 12, y: 118mm, note[$dif bold(l)$ along the orbit, $pi rho_L^2 B$ flux through it, $bold(R)$ guiding centre, $p_phi$ conjugate to $phi$])
+  #at(1, 12, y: 118mm, note[$dif bold(l)$ along the orbit, $pi rho_L^2 B$ flux through it, $bold(R)$ guiding centre, $p_phi.alt$ conjugate to $phi.alt$])
   #at(1, 12, y: 138mm, note[exact for the guiding centre, an expansion in $epsilon = rho_L\/L$: $mu$ adiabatic invariant])
 ]
 // --------------------------------------------- 9 adiabatic invariance
@@ -261,3 +261,16 @@
   #at(1, 12, y: 112mm, align(center)[#note[vacuum field:] #h(0.6em) $bold(v)_D^"curv" + bold(v)_D^(grad B) = m_alpha/(q_alpha B R_c) (v_parallel^2 + v_perp^2/2) bold(e)_R times bold(b)$])
   #at(1, 12, y: 134mm, align(center, note[$bold(v)_D = (bold(F)\/q_alpha) times bold(B)\/B^2$ for a force $bold(F)$; opposite drifts carry currents]))
 ]
+// ---------------------------------------------- 13 cyclotron resonance
+#slide(section: "motion-cyclotron-resonance", title: [Cyclotron resonance])[
+  #at(1, 12, y: 2mm, formula-rows(gap: 8mm,
+    ([rotating $bold(E)$], [$E_"cw" = E_x + i E_y = E_0 e^(-i s omega t)$ #h(0.6em) #note[$s = +1$ clockwise, $s = -1$ counterclockwise]]),
+    ([$v_"cw" = v_x + i v_y$], $dif v_"cw" \/ dif t = -i omega_c v_"cw" + (q_alpha \/ m_alpha) E_"cw"$),
+    ([from rest], $v_"cw" = (q_alpha E_0)/m_alpha e^(-i omega_c t) (e^(i Delta t) - 1)/(i Delta), quad Delta = omega_c - s omega$),
+    ([modulus], $v_perp = abs(v_"cw") = (abs(q_alpha) E_0)/m_alpha abs((2 sin(Delta t\/2))/Delta)$),
+  ))
+  #at(2, 10, y: 72mm, result-box(align(center, $Delta = 0: quad v_perp = (abs(q_alpha) E_0)/m_alpha t, quad W = (q_alpha^2 E_0^2)/(2 m_alpha) t^2$),
+    [resonance $s omega = omega_c$: ions clockwise, electrons counterclockwise]))
+  #at(1, 12, y: 134mm, note[$bold(B) = B bold(e)_z$ out of the page, $omega_c = q_alpha B\/m_alpha$ signed, $Delta$ detuning: off resonance $v_perp$ beats with period $2 pi\/abs(Delta)$; $W$ kinetic energy])
+]
+#animation-page("cyclotron-resonance", "cyclotron_resonance", section: "motion-cyclotron-resonance")

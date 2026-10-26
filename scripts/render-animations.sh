@@ -50,6 +50,17 @@ scenes=(
   "polarization_drift.py|PolarizationDrift|polarization-drift|15.8"
   "kernel_smoothing.py|KernelSmoothing|kernel-smoothing|27.0"
   "kernel_smoothing.py|KernelWidth|kernel-width|9.0"
+  "hard_sphere_relaxation.py|HardSphereRelaxation|hard-sphere-relaxation|15.0"
+  "sheet_oscillation.py|SheetOscillation|sheet-oscillation|6.6"
+  "sheet_oscillation.py|SheetWaveBreaking|sheet-wave-breaking|5.9"
+  "cyclotron_resonance.py|CyclotronResonance|cyclotron-resonance|5.5"
+  "diamagnetic_drift.py|DiamagneticDrift|diamagnetic-drift|19.5"
+  "frozen_flux.py|FrozenFlux|frozen-flux|11.0"
+  "alfven_wave.py|AlfvenWave|alfven-wave|5.5"
+  "small_angle_deflections.py|SmallAngleDeflections|small-angle-deflections|19.5"
+  "ambipolar_expansion.py|AmbipolarExpansion|ambipolar-expansion|21.5"
+  "magnetized_random_walk.py|MagnetizedRandomWalk|magnetized-random-walk|22.5"
+  "em_wave_packet.py|EmWavePacket|em-wave-packet|19.8"
 )
 
 if [[ "${1:-}" == "--slugs" ]]; then
