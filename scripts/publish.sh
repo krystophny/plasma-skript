@@ -14,9 +14,10 @@ fi
 # Same fast toolchain as the Pages workflow; `nix flake check` runs in the
 # separate Nix workflow and stays available locally.
 uv run bash scripts/build-site.sh
+bash scripts/build-notebooks.sh public
 bash scripts/verify-spec.sh public
 # SymPy derivations rerun only when their inputs changed since the last pass.
-derivations_key="$(git ls-files -s derivations src scripts/script-outline.sh pyproject.toml uv.lock | sha256sum | cut -c1-16)"
+derivations_key="$(git ls-files -s derivations notebooks src scripts/script-outline.sh pyproject.toml uv.lock | sha256sum | cut -c1-16)"
 derivations_stamp=".cache/derivations-passed-$derivations_key"
 if [[ ! -f "$derivations_stamp" ]]; then
   uv run pytest -q

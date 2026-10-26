@@ -1,0 +1,19 @@
+project:
+  type: default
+  render:
+    - scales.qmd
+    - debye.qmd
+    - orbits.qmd
+    - kernel-smoothing.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: notebook.css
+    embed-resources: true
+    echo: false
+    toc: false
+    lang: en
+    page-layout: article
+    license: "CC BY 4.0 (text), MIT (code)"
+    author: "Christopher Albert"

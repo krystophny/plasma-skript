@@ -8,5 +8,5 @@ dependencies = ["sympy>=1.13", "pytest>=8", "numpy>=1.26", "matplotlib>=3.8", "s
 dev = ["playwright>=1.50"]
 
 [tool.pytest.ini_options]
-testpaths = ["derivations"]
-python_files = ["test_chapters.py"]
+testpaths = ["derivations", "notebooks"]
+python_files = ["test_chapters.py", "test_notebooks.py"]

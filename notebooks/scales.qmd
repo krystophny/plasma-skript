@@ -1,0 +1,167 @@
+---
+title: "Plasma scales"
+subtitle: "Interactive notebook · Plasma Physics · Chapter 4, Debye shielding"
+---
+
+Choose an electron density, temperature and magnetic field to read off the screening, oscillation, coupling and gyration scales and to place the plasma in the density–temperature plane.
+
+## Formulas
+
+$$
+\lambda_D = \sqrt{\frac{\varepsilon_0 k_B T_e}{n_e e^2}}, \qquad
+\omega_{pe} = \sqrt{\frac{n_e e^2}{\varepsilon_0 m_e}}, \qquad
+f_{pe} = \frac{\omega_{pe}}{2\pi}, \qquad
+N_D = \frac{4\pi}{3}\, n_e \lambda_D^3,
+$$
+
+$$
+\Gamma = \frac{e^2}{4\pi\varepsilon_0\, a\, k_B T_e}, \quad a = n_e^{-1/3}, \qquad
+\Gamma\, N_D^{2/3} = (36\pi)^{-1/3} \approx 0.207,
+$$
+
+$$
+|\omega_{c\alpha}| = \frac{|q_\alpha| B}{m_\alpha}, \qquad
+v_{\mathrm{th},\alpha} = \sqrt{\frac{2 k_B T_\alpha}{m_\alpha}}, \qquad
+\rho_{L\alpha} = \frac{v_{\mathrm{th},\alpha}}{|\omega_{c\alpha}|}.
+$$
+
+<table class="symbols">
+<tr><td>$n_e$</td><td>electron density [m⁻³]</td><td>$T_e$</td><td>electron temperature, given as $k_B T_e$ in eV</td></tr>
+<tr><td>$\lambda_D$</td><td>Debye length [m]</td><td>$\omega_{pe}$, $f_{pe}$</td><td>electron plasma frequency [s⁻¹], [Hz]</td></tr>
+<tr><td>$N_D$</td><td>electrons in a Debye sphere [1]</td><td>$\Gamma$, $a$</td><td>coupling parameter [1], mean spacing [m]</td></tr>
+<tr><td>$B$</td><td>magnetic field [T]</td><td>$\alpha$</td><td>species: electrons $e$, protons $p$, with $T_p = T_e$</td></tr>
+<tr><td>$q_\alpha$, $m_\alpha$</td><td>charge [C], mass [kg]</td><td>$\omega_{c\alpha}$, $\rho_{L\alpha}$</td><td>gyrofrequency [s⁻¹], thermal Larmor radius [m]</td></tr>
+<tr><td>$e$, $m_e$</td><td>elementary charge, electron mass</td><td>$\varepsilon_0$, $k_B$</td><td>vacuum permittivity, Boltzmann constant (CODATA 2018)</td></tr>
+</table>
+
+## Parameters
+
+```{ojs}
+import {EXAMPLE_PLASMAS, scales, temperatureForDebyeLength, temperatureForUnitDebyeNumber,
+        formatSci, powerOfTen} from "./plasma.js"
+blue = "#0072B2"
+orange = "#B55000"
+gray = "#555555"
+ink = "#17202A"
+```
+
+```{ojs}
+viewof preset = Inputs.select(EXAMPLE_PLASMAS.map((d) => d.name),
+  {label: "start from", value: "tokamak core"})
+```
+
+```{ojs}
+start = EXAMPLE_PLASMAS.find((d) => d.name === preset)
+viewof n = Inputs.range([1e6, 1e32], {value: start.n, transform: Math.log,
+  format: (v) => v.toExponential(2), label: tex`n_e\ [\mathrm{m^{-3}}]`})
+viewof T = Inputs.range([1e-2, 1e5], {value: start.T_eV, transform: Math.log,
+  format: (v) => v.toPrecision(3), label: tex`k_B T_e\ [\mathrm{eV}]`})
+viewof B = Inputs.range([1e-9, 20], {value: 5, transform: Math.log,
+  format: (v) => v.toPrecision(3), label: tex`B\ [\mathrm{T}]`})
+```
+
+## Scales
+
+```{ojs}
+s = scales(n, T, B)
+row = (name, symbol, value, unit) => html`<tr><td>${name}</td><td>${tex`${symbol}`}</td>
+  <td class="num">${formatSci(value)}</td><td>${unit}</td></tr>`
+html`<table class="readout">
+<tr><th>quantity</th><th>symbol</th><th>value</th><th>unit</th></tr>
+${row("Debye length", "\\lambda_D", s.lambda_D, "m")}
+${row("mean spacing", "a", s.a, "m")}
+${row("electron plasma frequency", "\\omega_{pe}", s.omega_pe, "s⁻¹")}
+${row("", "f_{pe}", s.f_pe, "Hz")}
+${row("Debye number", "N_D", s.N_D, "1")}
+${row("coupling parameter", "\\Gamma", s.Gamma, "1")}
+${row("electron gyrofrequency", "|\\omega_{ce}|", s.electron.omega, "s⁻¹")}
+${row("", "f_{ce}", s.electron.f, "Hz")}
+${row("electron Larmor radius", "\\rho_{Le}", s.electron.rho_L, "m")}
+${row("proton gyrofrequency", "\\omega_{cp}", s.proton.omega, "s⁻¹")}
+${row("proton Larmor radius", "\\rho_{Lp}", s.proton.rho_L, "m")}
+</table>`
+```
+
+```{ojs}
+html`<p>${s.N_D > 1 ? "Weakly coupled" : "Strongly coupled"}: ${tex`N_D`} = ${formatSci(s.N_D)},
+${tex`\Gamma`} = ${formatSci(s.Gamma)}; check ${tex`\Gamma N_D^{2/3}`} = ${(s.Gamma * s.N_D ** (2 / 3)).toFixed(4)}.</p>`
+```
+
+```{ojs}
+ladder = (items, unit, domain) => Plot.plot({
+  width: 760, height: 40 + 30 * items.length, marginLeft: 190, marginRight: 30,
+  x: {type: "log", domain, label: unit, grid: true,
+      ticks: d3.range(Math.log10(domain[0]), Math.log10(domain[1]) + 1, 2).map((k) => 10 ** k),
+      tickFormat: powerOfTen},
+  y: {domain: items.map((d) => d.name), label: null},
+  marks: [
+    Plot.dot(items, {x: "value", y: "name", fill: "color", r: 5, symbol: "symbol"}),
+  ],
+})
+```
+
+```{ojs}
+ladder([
+  {name: "plasma frequency", value: s.omega_pe, color: blue, symbol: "circle"},
+  {name: "electron gyrofrequency", value: s.electron.omega, color: orange, symbol: "triangle"},
+  {name: "proton gyrofrequency", value: s.proton.omega, color: orange, symbol: "diamond"},
+], "angular frequency [s⁻¹] →", [1e-2, 1e18])
+```
+
+## Density–temperature plane
+
+Dashed lines: constant Debye length. Solid line: $N_D = 1$; below it (shaded) the Debye sphere holds less than one electron. Dotted: the Debye length of the chosen plasma.
+
+```{ojs}
+densities = d3.range(6, 32.01, 0.25).map((k) => 10 ** k)
+lambdaLines = [[1e-6, "Debye length 1 µm", 1e21], [1e-2, "Debye length 1 cm", 1e13], [1e2, "Debye length 100 m", 1e7]]
+Plot.plot({
+  width: 760, height: 460, marginLeft: 56, marginBottom: 44,
+  x: {type: "log", domain: [1e6, 1e32], label: "electron density nₑ [m⁻³] →",
+      ticks: d3.range(6, 33, 2).map((k) => 10 ** k), tickFormat: powerOfTen},
+  y: {type: "log", domain: [1e-2, 1e5], label: "↑ electron temperature Tₑ [eV]",
+      ticks: d3.range(-2, 6).map((k) => 10 ** k), tickFormat: powerOfTen},
+  clip: true,
+  marks: [
+    Plot.areaY(densities.filter((d) => temperatureForUnitDebyeNumber(d) > 1e-2), {x: (d) => d, y1: 1e-2,
+      y2: (d) => Math.min(1e5, temperatureForUnitDebyeNumber(d)), fill: orange, fillOpacity: 0.1}),
+    Plot.line(densities, {x: (d) => d, y: temperatureForUnitDebyeNumber, stroke: orange, strokeWidth: 2}),
+    Plot.text([{n: 5e31, T: 2e-2}], {x: "n", y: "T", text: () => "shaded: less than one electron per Debye sphere",
+      fill: orange, dy: -6, textAnchor: "end", fontSize: 13}),
+    lambdaLines.map(([L, label, at]) => [
+      Plot.line(densities.filter((d) => temperatureForDebyeLength(d, L) <= 2e5),
+        {x: (d) => d, y: (d) => temperatureForDebyeLength(d, L), stroke: gray, strokeDasharray: "5,4"}),
+      Plot.text([at], {x: (d) => d, y: (d) => temperatureForDebyeLength(d, L), text: () => label,
+        fill: gray, dx: 8, textAnchor: "start", fontSize: 12}),
+    ]),
+    Plot.line(densities.filter((d) => temperatureForDebyeLength(d, s.lambda_D) <= 2e5),
+      {x: (d) => d, y: (d) => temperatureForDebyeLength(d, s.lambda_D), stroke: blue, strokeDasharray: "1.5,3"}),
+    Plot.dot(EXAMPLE_PLASMAS, {x: "n", y: "T_eV", fill: blue, r: 4}),
+    Plot.text(EXAMPLE_PLASMAS, {x: "n", y: "T_eV", text: "name", dx: 8, textAnchor: "start", fill: ink, fontSize: 12}),
+    Plot.dot([{n, T}], {x: "n", y: "T", r: 8, stroke: ink, strokeWidth: 2, fill: "none"}),
+  ],
+})
+```
+
+## Example plasmas
+
+The same numbers as the table "Typical scales" in the chapter 4 deck.
+
+```{ojs}
+html`<table class="readout">
+<tr><th></th><th>${tex`n_e`} [m⁻³]</th><th>${tex`k_B T_e`} [eV]</th><th>${tex`\lambda_D`} [m]</th>
+<th>${tex`\omega_{pe}`} [s⁻¹]</th><th>${tex`N_D`}</th><th>${tex`\Gamma`}</th></tr>
+${EXAMPLE_PLASMAS.map((d) => {
+  const x = scales(d.n, d.T_eV, 1);
+  return html`<tr><td>${d.name}</td><td class="num">${formatSci(d.n)}</td><td class="num">${formatSci(d.T_eV)}</td>
+    <td class="num">${formatSci(x.lambda_D)}</td><td class="num">${formatSci(x.omega_pe)}</td>
+    <td class="num">${formatSci(x.N_D)}</td><td class="num">${formatSci(x.Gamma)}</td></tr>`;
+})}
+</table>`
+```
+
+## References
+
+- F. F. Chen, *Introduction to Plasma Physics and Controlled Fusion*, 3rd ed., Springer (2016), ch. 1–2, [doi:10.1007/978-3-319-22309-4](https://doi.org/10.1007/978-3-319-22309-4).
+- P. M. Bellan, *Fundamentals of Plasma Physics*, Cambridge University Press (2006), ch. 1, [doi:10.1017/CBO9780511807183](https://doi.org/10.1017/CBO9780511807183).
+- Plasma Physics lecture script, [chapter 4, Debye shielding](https://krystophny.github.io/plasma-skript/chapters/04-debye-shielding.html).

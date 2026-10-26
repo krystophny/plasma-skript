@@ -1,0 +1,21 @@
+/* Colours of slides/theme.typ and derivations/si.py (Okabe-Ito based). */
+:root {
+  --ink: #17202A;
+  --muted: #526175;
+  --plot-blue: #0072B2;
+  --plot-orange: #B55000;
+}
+body { color: var(--ink); }
+.symbols { font-size: 0.92em; color: var(--muted); }
+.symbols td { padding: 0.1em 0.8em 0.1em 0; vertical-align: top; }
+table.readout { border-collapse: collapse; margin: 0.5em 0 1em; font-variant-numeric: tabular-nums; }
+table.readout th, table.readout td { padding: 0.25em 0.9em 0.25em 0; text-align: left; border-bottom: 1px solid #e3e6ea; }
+table.readout td.num { text-align: right; }
+table.readout th { color: var(--muted); font-weight: 500; }
+.note { color: var(--muted); font-size: 0.9em; }
+figure, .observablehq svg { max-width: 100%; }
+/* Observable Inputs: room for the number box next to the slider. */
+form[class^="oi-"] { --input-width: 340px; --label-width: 150px; }
+form[class^="oi-"] input[type="number"] { width: 7em; flex-shrink: 0; }
+form[class^="oi-"] button { color: #fff; background: var(--plot-blue); border: 0; border-radius: 4px; padding: 0.3em 0.9em; }
+.symbols td:nth-child(odd) { white-space: nowrap; }

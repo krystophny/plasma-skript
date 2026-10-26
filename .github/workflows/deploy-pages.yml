@@ -20,6 +20,7 @@ concurrency:
 env:
   TYPST_VERSION: "0.15.1"
   RIPGREP_VERSION: "14.1.1"
+  QUARTO_VERSION: "1.10.18"
   # New Computer Modern for Manim's Text labels (Typst embeds its own copy).
 
 jobs:
@@ -41,7 +42,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .ci/derivations-passed
-          key: derivations-passed-${{ hashFiles('derivations/**', 'src/**/*.typ', 'scripts/script-outline.sh', 'pyproject.toml', 'uv.lock') }}
+          key: derivations-passed-${{ hashFiles('derivations/**', 'notebooks/**', 'src/**/*.typ', 'scripts/script-outline.sh', 'pyproject.toml', 'uv.lock') }}
       - name: Run the SymPy derivations
         if: steps.derivations.outputs.cache-hit != 'true'
         run: |
@@ -108,6 +109,13 @@ jobs:
         run: |
           typst --version
           uv run bash scripts/build-site.sh
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: ${{ env.QUARTO_VERSION }}
+
+      - name: Render the interactive notebooks
+        run: bash scripts/build-notebooks.sh _site
 
       - name: Test presenter touch, H.264 and offline playback
         run: |

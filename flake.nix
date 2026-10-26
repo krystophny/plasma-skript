@@ -302,6 +302,7 @@
           pkgs.findutils
           pkgs.git
           pkgs.perl
+          pkgs.quarto
           pkgs.ripgrep
           pkgs.statix
         ];

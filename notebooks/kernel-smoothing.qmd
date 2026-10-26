@@ -1,0 +1,148 @@
+---
+title: "Kernel smoothing"
+subtitle: "Interactive notebook · Plasma Physics · Chapter 6, Kinetic theory of plasmas"
+---
+
+Change the kernel width and the particle number to see how the sum of point particles becomes a smooth density, and how the width trades statistical noise against smoothing bias.
+
+## Formulas
+
+$$
+N(x) = \sum_i \delta(x - x_i), \qquad
+n_h(x) = \sum_i K_h(x - x_i) = (K_h * N)(x) = \int K_h(x - x')\,N(x')\,dx',
+$$
+
+$$
+K_h^{\mathrm{Gauss}}(u) = \frac{e^{-u^2/2h^2}}{\sqrt{2\pi}\,h}, \qquad
+K_h^{\mathrm{top}}(u) = \frac{1}{2h}\ \text{for } |u| \le h, \ 0 \text{ otherwise}, \qquad \int K_h\,du = 1,
+$$
+
+$$
+\langle n_h\rangle = K_h * n, \qquad
+\operatorname{Var} n_h(x) = (K_h^2 * n)(x), \qquad
+\frac{\sqrt{\overline{\operatorname{Var} n_h}}}{\bar n} = \sqrt{\frac{\int K_h^2\,du}{\bar n}}
+= \begin{cases} (2\sqrt\pi\, \bar n h)^{-1/2} & \text{Gauss} \\ (2 \bar n h)^{-1/2} & \text{top hat.} \end{cases}
+$$
+
+<table class="symbols">
+<tr><td>$x_i$</td><td>particle positions [m]</td><td>$N(x)$</td><td>Klimontovich density, sum of deltas [m⁻¹]</td></tr>
+<tr><td>$K_h$</td><td>kernel of width $h$ [m⁻¹]</td><td>$n_h$</td><td>smoothed density [m⁻¹]</td></tr>
+<tr><td>$n(x)$</td><td>density the particles are drawn from [m⁻¹]</td><td>$\bar n$, $L$</td><td>mean density [m⁻¹], period [m]</td></tr>
+<tr><td>$\langle\cdot\rangle$, $\operatorname{Var}$</td><td>mean and variance over particle samples</td><td>$\overline{\cdot}$</td><td>average over $x$</td></tr>
+</table>
+
+**Model.** A periodic line of length $L$ holds a Poisson number of independent particles, mean $\bar N = \bar n L$, drawn from
+$n(x)/\bar n = c\,[1 + 0.4\sin(2\pi x/L) + 1.5\,e^{-(x - 0.65L)^2/2(0.05L)^2}]$, with $c$ fixing the mean to one.
+This is the profile of the kernel-smoothing animation, where $L = 80\Delta$ and $\Delta = L/\bar N$ is the mean spacing at $\bar N = 80$.
+Positions are given as $x/L$ [1], densities as $n/\bar n$ [1], widths as $h/L$ [1]; the bias $\langle n_h\rangle - n$ grows with $h$, the noise $n_h - \langle n_h\rangle$ falls with $\bar n h$.
+
+## Parameters
+
+```{ojs}
+import {trueDensity, kernel, smoothed, expectedSmoothed, noiseRms, biasRms, samplePositions, formatSci, powerOfTen}
+  from "./plasma.js"
+blue = "#0072B2"
+orange = "#B55000"
+gray = "#555555"
+ink = "#17202A"
+```
+
+```{ojs}
+viewof shape = Inputs.radio(new Map([["Gaussian", "gaussian"], ["top hat", "tophat"]]),
+  {label: "kernel", value: "gaussian"})
+viewof h = Inputs.range([0.002, 0.25], {value: 1.5 / 80, transform: Math.log, step: 0.0005,
+  format: (v) => v.toPrecision(3), label: tex`h/L\ [1]`})
+viewof nBar = Inputs.range([10, 10000], {value: 80, transform: Math.log, step: 1,
+  format: (v) => Math.round(v), label: tex`\bar N = \bar n L\ [1]`})
+viewof seed = Inputs.button("new sample", {value: 7, reduce: (s) => s + 1})
+```
+
+```{ojs}
+particles = samplePositions(Math.round(nBar), seed)
+grid = d3.range(0, 1.0001, 1 / 800)
+nh = smoothed(grid, particles, h, shape, nBar)
+expected = grid.map((x) => expectedSmoothed(x, h, shape))
+truth = grid.map(trueDensity)
+rms = (a, b) => Math.sqrt(d3.mean(a, (v, i) => (v - b[i]) ** 2))
+measured = ({noise: rms(nh, expected), bias: rms(expected, truth), total: rms(nh, truth)})
+html`<p class="note">${particles.length} particles in this sample (Poisson, mean ${Math.round(nBar)}).</p>`
+```
+
+## From particles to a density
+
+```{ojs}
+yMax = Math.max(3.2, d3.max(nh) * 1.05)
+Plot.plot({
+  width: 760, height: 360, marginLeft: 50, marginBottom: 40, clip: true,
+  x: {domain: [0, 1], label: "x/L →", grid: true},
+  y: {domain: [-0.25, yMax], label: "↑ n/n̄", grid: true},
+  marks: [
+    particles.length <= 200 ? Plot.line(particles.flatMap((xi, j) =>
+      d3.range(-4, 4.001, 0.1).map((u) => ({x: xi + u * h, y: kernel(u * h, h, shape) / nBar, j}))),
+      {x: "x", y: "y", z: "j", stroke: gray, strokeOpacity: 0.35, strokeWidth: 0.8}) : null,
+    Plot.ruleX(particles, {x: (d) => d, y1: -0.22, y2: -0.05, stroke: ink, strokeOpacity: Math.min(1, 60 / particles.length + 0.1)}),
+    Plot.line(grid, {x: (d) => d, y: (d, i) => truth[i], stroke: ink, strokeDasharray: "5,4", strokeWidth: 1.5}),
+    Plot.line(grid, {x: (d) => d, y: (d, i) => expected[i], stroke: orange, strokeWidth: 1.5}),
+    Plot.line(grid, {x: (d) => d, y: (d, i) => nh[i], stroke: blue, strokeWidth: 2}),
+  ],
+})
+```
+
+```{ojs}
+html`<p class="note">Ticks: particle positions ${tex`x_i`}. Grey: single kernels ${tex`K_h(x - x_i)/\bar n`} (shown up to 200 particles).
+<span style="color:${blue}">Blue</span>: ${tex`n_h/\bar n`}. <span style="color:${orange}">Orange</span>: mean over samples ${tex`\langle n_h\rangle/\bar n = (K_h * n)/\bar n`}.
+Dashed: ${tex`n/\bar n`}. Horizontal ${tex`x/L`} [1], vertical ${tex`n/\bar n`} [1].</p>`
+```
+
+## Bias against noise
+
+```{ojs}
+widths = d3.range(Math.log(0.002), Math.log(0.25) + 1e-9, (Math.log(0.25) - Math.log(0.002)) / 60).map(Math.exp)
+curves = widths.map((w) => {
+  const noise = noiseRms(w, nBar, shape), bias = biasRms(w, shape, 400);
+  return {h: w, noise, bias, total: Math.hypot(noise, bias)};
+})
+best = d3.least(curves, (d) => d.total)
+Plot.plot({
+  width: 760, height: 340, marginLeft: 60, marginBottom: 40,
+  x: {type: "log", domain: [0.002, 0.25], label: "h/L →", grid: true,
+      ticks: [0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2], tickFormat: (d) => String(d)},
+  y: {type: "log", domain: [1e-3, 3], label: "↑ rms error", grid: true,
+      ticks: [1e-3, 1e-2, 1e-1, 1], tickFormat: powerOfTen},
+  marks: [
+    Plot.line(curves, {x: "h", y: "noise", stroke: blue, strokeWidth: 2, strokeDasharray: "6,4"}),
+    Plot.line(curves, {x: "h", y: "bias", stroke: orange, strokeWidth: 2, strokeDasharray: "2,3"}),
+    Plot.line(curves, {x: "h", y: "total", stroke: ink, strokeWidth: 2}),
+    Plot.text([curves[3]], {x: "h", y: "noise", text: () => "noise", dy: -10, fill: blue, textAnchor: "start"}),
+    Plot.text([curves[52]], {x: "h", y: "bias", text: () => "bias", dx: 6, textAnchor: "start", fill: orange}),
+    Plot.ruleX([h], {stroke: gray, strokeDasharray: "2,3"}),
+    Plot.dot([{h, y: measured.total}], {x: "h", y: "y", r: 5, fill: ink}),
+    Plot.dot([best], {x: "h", y: "total", r: 7, stroke: ink, fill: "none"}),
+  ],
+})
+```
+
+```{ojs}
+html`<p class="note">Lines: theory, averaged over ${tex`x`}: noise ${tex`\sqrt{\int K_h^2\,du/\bar n}`}, bias ${tex`\sqrt{\overline{(K_h * n - n)^2}}/\bar n`},
+total ${tex`\sqrt{\text{noise}^2 + \text{bias}^2}`}. Dot: this sample at the chosen ${tex`h`}. Circle: smallest total error.
+Horizontal ${tex`h/L`} [1], vertical rms error of ${tex`n_h/\bar n`} [1].</p>`
+```
+
+```{ojs}
+html`<table class="readout">
+<tr><th>rms over ${tex`x`}, relative to ${tex`\bar n`} [1]</th><th>this sample</th><th>theory</th></tr>
+<tr><td>noise ${tex`n_h - \langle n_h\rangle`}</td><td class="num">${formatSci(measured.noise)}</td><td class="num">${formatSci(noiseRms(h, nBar, shape))}</td></tr>
+<tr><td>bias ${tex`\langle n_h\rangle - n`}</td><td class="num">${formatSci(measured.bias)}</td><td class="num">${formatSci(biasRms(h, shape))}</td></tr>
+<tr><td>total ${tex`n_h - n`}</td><td class="num">${formatSci(measured.total)}</td><td class="num">${formatSci(Math.hypot(noiseRms(h, nBar, shape), biasRms(h, shape)))}</td></tr>
+<tr><td>particles per kernel width ${tex`2\sqrt\pi\,\bar n h`} (Gauss), ${tex`2\bar n h`} (top hat)</td><td></td>
+  <td class="num">${formatSci((shape === "tophat" ? 2 : 2 * Math.sqrt(Math.PI)) * nBar * h)}</td></tr>
+<tr><td>width with the smallest total error ${tex`h/L`}</td><td></td><td class="num">${formatSci(best.h)}</td></tr>
+</table>`
+```
+
+Doubling $\bar N$ lowers the noise by $\sqrt2$ at fixed $h$, so the best width shrinks as the particle number grows; the bias does not depend on $\bar N$.
+
+## References
+
+- B. W. Silverman, *Density Estimation for Statistics and Data Analysis*, Chapman & Hall (1986); reprint Routledge (2018), [doi:10.1201/9781315140919](https://doi.org/10.1201/9781315140919).
+- Plasma Physics lecture script, [chapter 6, Kinetic theory of plasmas](https://krystophny.github.io/plasma-skript/chapters/06-kinetic-theory.html).

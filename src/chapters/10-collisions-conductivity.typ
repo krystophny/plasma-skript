@@ -74,7 +74,7 @@
 
   Here $D$ is a particle diffusivity in #unit("m^2/s"), and $bold(G)_"diff"$
   is particle flux in #unit("m^-2 s^-1"). The coefficient $mu_("mob")$ in this
-  force-based definition is mobility, with units #unit("s/kg"); it is not
+  force-based definition is mobility, with units #unit("s/kg")\; it is not
   the magnetic moment of Chapter 5. An electric-field mobility instead
   relates velocity directly to the electric field and includes the charge
   factor from the force.
@@ -364,7 +364,7 @@
 
   #unit-ledger[
     The impact parameter $b_90$ and the reduced de Broglie wavelength
-    $ƛ$ are in #unit("m"); the Sommerfeld parameter $eta$ is dimensionless.
+    $ƛ$ are in #unit("m")\; the Sommerfeld parameter $eta$ is dimensionless.
     The Coulomb cutoff logarithm
     $ln Lambda_"cut"$ and plasma parameter $Lambda=n_"e"lambda_D^3$ are
     dimensionless, as is $ln Lambda$.

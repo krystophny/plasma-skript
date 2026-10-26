@@ -26,7 +26,7 @@
     [explain why the logarithm converts multiplicity into additive entropy],
   ))
   #unit-ledger[
-    Multiplicity $W$ is a dimensionless count. Entropy $S$ is in #unit("J/K");
+    Multiplicity $W$ is a dimensionless count. Entropy $S$ is in #unit("J/K")\;
     Boltzmann's constant $k_B$ is in #unit("J/K").
   ]
   Each cell in a simple counting model can be open or filled. A configuration
@@ -82,7 +82,7 @@
   ))
   #unit-ledger[
     Pressure $p$ is in #unit("Pa"). Chemical potential $mu$ is in #unit("J") per particle; total momentum
-    $bold(P)$ is in #unit("kg.m/s"). Its conjugate bulk velocity $bold(u)$
+    $bold(P)$ is in #unit("kg m s^-1"). Its conjugate bulk velocity $bold(u)$
     is in #unit("m/s").
   ]
   Let $E$ be total energy, $V$ volume, $N$ particle number, and $bold(P)$ total
@@ -223,11 +223,11 @@
     [identify electron freedom, internal states, and the reservoir energy penalty],
   ))
   #unit-ledger[
-    Planck's constant $h$ is in #unit("J.s"); thermal de Broglie wavelength
+    Planck's constant $h$ is in #unit("J s")\; thermal de Broglie wavelength
     $lambda_("th",s)$ is in #unit("m"). Ionization energy $chi$ is in
     #unit("J") or #unit("eV"). Box side $L$ and volume $V$ are in
     #unit("m") and #unit("m^3"). Momenta $p_s$ and $p_("th",s)$ are in
-    #unit("kg.m/s"). Sharp-cutoff wavelength $lambda_s$ is in #unit("m");
+    #unit("kg m s^-1"). Sharp-cutoff wavelength $lambda_s$ is in #unit("m")\;
     density $n_s$ is in #unit("m^-3"). Counts $M_s$,
     $N_s$, and $g_s$ have unit [1].
   ]

@@ -344,7 +344,7 @@
     epsilon(k) = 1 + 1/(k^2 lambda_D^2) $ <debye-dielectric-function>
 
   #equation-note[
-    $k$ is the wavenumber in #unit("m^-1"); $epsilon(k)$ is the static
+    $k$ is the wavenumber in #unit("m^-1")\; $epsilon(k)$ is the static
     dielectric function of the plasma, dimensionless. Without the plasma,
     $epsilon = 1$ and $hat(Phi) = Q\/(epsilon_0 k^2)$ is the bare Coulomb potential.
   ]

@@ -223,7 +223,7 @@
 
   #unit-ledger[
     A scalar resistivity defined by $bold(E)=eta bold(j)$ has units
-    #unit("ohm meter"); the conductivity $sigma=1\/eta$ is in #unit("S/m"). The
+    #unit("ohm meter")\; the conductivity $sigma=1\/eta$ is in #unit("S/m"). The
     electron pressure force per charge density is in #unit("V/m"). The
     coefficient $m_(e)\/(e^2 n)$ multiplying a current time derivative has the
     units needed to produce an electric field.

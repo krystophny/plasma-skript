@@ -1,0 +1,211 @@
+---
+title: "Charged-particle orbits"
+subtitle: "Interactive notebook · Plasma Physics · Chapter 5, Single-particle motion"
+---
+
+Choose a field configuration and integrate one particle to compare the measured guiding-centre drift and magnetic moment with the formulas of chapter 5.
+
+## Formulas
+
+$$
+m_\alpha \frac{d\mathbf v}{dt} = q_\alpha(\mathbf E + \mathbf v\times\mathbf B) + m_\alpha\mathbf g, \qquad
+\omega_c = \frac{q_\alpha B}{m_\alpha}, \qquad
+\rho_L = \frac{v_\perp}{|\omega_c|}, \qquad
+\mu = \frac{m_\alpha v_\perp^2}{2B},
+$$
+
+$$
+\mathbf R = \mathbf r - \frac{\mathbf b\times\mathbf v}{\omega_c}, \qquad
+\mathbf v = v_\perp(\cos\phi\,\mathbf e_1 - \sin\phi\,\mathbf e_2) + v_\parallel\mathbf b \ \text{ at } t = 0,
+$$
+
+$$
+\mathbf v_D^{E} = \frac{\mathbf E\times\mathbf B}{B^2}, \qquad
+\mathbf v_D^{g} = \frac{m_\alpha}{q_\alpha}\frac{\mathbf g\times\mathbf B}{B^2}, \qquad
+\mathbf v_D^{\nabla B} = \frac{\mu}{q_\alpha}\frac{\mathbf B\times\nabla B}{B^2}, \qquad
+\mathbf v_D^{\mathrm{curv}+\nabla B} = \frac{m_\alpha}{q_\alpha B R_c}\Big(v_\parallel^2 + \frac{v_\perp^2}{2}\Big)\,\mathbf e_R\times\mathbf b,
+$$
+
+$$
+\text{mirror: trapped if } \sin^2\alpha > \frac{1}{R_m}, \qquad B(z_m) = \frac{B_0}{\sin^2\alpha}, \qquad \tan\alpha = \frac{v_\perp}{v_\parallel}.
+$$
+
+<table class="symbols">
+<tr><td>$q_\alpha$, $m_\alpha$</td><td>charge [C] and mass [kg] of species $\alpha$</td><td>$\mathbf E$, $\mathbf B$, $\mathbf g$</td><td>electric field [V/m], magnetic field [T], gravitational acceleration [m/s²]</td></tr>
+<tr><td>$\omega_c$</td><td>signed gyrofrequency [s⁻¹], negative for electrons</td><td>$\rho_L$</td><td>Larmor radius [m]</td></tr>
+<tr><td>$v_\parallel$, $v_\perp$</td><td>speed along and across $\mathbf b = \mathbf B/B$ [m/s]</td><td>$\phi$</td><td>gyrophase [rad], here $\phi = 0$</td></tr>
+<tr><td>$\mathbf r$, $\mathbf R$</td><td>particle position, guiding centre [m]</td><td>$\mathbf e_1$, $\mathbf e_2$</td><td>unit vectors with $\mathbf e_1\times\mathbf e_2 = \mathbf b$</td></tr>
+<tr><td>$\mu$</td><td>magnetic moment [J/T], here in the frame of the force drift</td><td>$\mathbf v_D$</td><td>guiding-centre drift velocity [m/s]</td></tr>
+<tr><td>$R_c$, $\mathbf e_R$</td><td>radius of curvature [m], unit vector away from the centre of curvature</td><td>$R_m$, $\alpha$, $z_m$</td><td>mirror ratio [1], pitch angle at $B_0$ [rad], mirror point [m]</td></tr>
+</table>
+
+**Normalization.** $m_\alpha = 1$, $|q_\alpha| = 1$, reference field $B_0 = 1$, initial $v_\perp = v_{\perp0} = 1$. Times are $|\omega_{c0}|\,t$ [1] with $\omega_{c0} = q_\alpha B_0/m_\alpha$, lengths are in units of $\rho_{L0} = v_{\perp0}/|\omega_{c0}|$ [1], velocities in $v_{\perp0}$ [1], $E$ in $v_{\perp0}B_0$, $g$ in $v_{\perp0}|\omega_{c0}|$. Multiply by these scales to obtain SI values.
+
+**Fields.** Uniform: $\mathbf B = B_0\mathbf e_z$. E × B: $\mathbf E = E\,\mathbf e_x$. Gravity: $\mathbf g = g\,\mathbf e_x$. Grad-B: $\mathbf B = B_0(1 + \kappa x)\,\mathbf e_z$. Curvature: vacuum toroidal field $\mathbf B = B_0 (R_0/R)\,\mathbf e_\varphi$ about the $z$ axis, $R_c = R_0$ at the start, so $\nabla B = -B\,\mathbf e_R/R_c$. Mirror: $B_z = B_0[1 + (R_m - 1)\sin^2(\pi z/2L)]$ on the axis with $L = 30\,\rho_{L0}$, $B_r = -(r/2)\,\partial B_z/\partial z$; the particle is lost once $|z| > 1.1 L$. μ ramp: $\mathbf B = B_0[3/2 + \tanh(t/\tau)/2]\,\mathbf e_z$ and the induced $\mathbf E = -\tfrac12 (dB/dt)\,\mathbf e_z\times\mathbf r$, guiding centre on the axis.
+
+**Integrator.** Boris scheme: half electric kick, exact-norm rotation about $\mathbf B$, half electric kick, then the position step; 200 steps per gyration (1600 for the μ ramp, which reproduces the lecture figure). The drift is the least-squares slope of $\mathbf R(t)$.
+
+## Parameters
+
+```{ojs}
+import {pushOrbit, muRamp, analyticDrift, mirrorPrediction, formatSci, powerOfTen} from "./plasma.js"
+blue = "#0072B2"
+orange = "#B55000"
+gray = "#555555"
+ink = "#17202A"
+```
+
+```{ojs}
+viewof config = Inputs.radio(new Map([
+  ["uniform B", "uniform"], ["E × B", "exb"], ["gravity", "gravity"], ["grad-B", "gradb"],
+  ["curvature", "curvature"], ["magnetic mirror", "mirror"], ["μ ramp", "ramp"]]),
+  {label: "configuration", value: "exb"})
+viewof sign = Inputs.radio(new Map([["positive (ion)", 1], ["negative (electron)", -1]]),
+  {label: tex`\operatorname{sign} q_\alpha`, value: 1})
+viewof vpar = Inputs.range([0, 3], {value: 0.5, step: 0.05, label: tex`v_\parallel/v_\perp\ [1]`})
+```
+
+```{ojs}
+spec = ({
+  uniform: null,
+  exb: {key: "E", range: [-0.5, 0.5], value: 0.1, step: 0.01, label: tex`E/(v_{\perp0}B_0)\ [1]`},
+  gravity: {key: "g", range: [-0.5, 0.5], value: 0.1, step: 0.01, label: tex`g/(v_{\perp0}|\omega_{c0}|)\ [1]`},
+  gradb: {key: "kappa", range: [-0.2, 0.2], value: 0.03, step: 0.005, label: tex`\kappa\,\rho_{L0}\ [1]`},
+  curvature: {key: "R0", range: [5, 200], value: 30, step: 1, label: tex`R_0/\rho_{L0}\ [1]`},
+  mirror: {key: "Rm", range: [1.2, 10], value: 4, step: 0.1, label: tex`R_m\ [1]`},
+  ramp: {key: "tau", range: [0.25, 8], value: 1, step: 0.25, label: tex`|\omega_{c0}|\,\tau\ [1]`},
+})[config]
+viewof strength = spec ? Inputs.range(spec.range, spec) : Inputs.range([0, 0], {value: 0, label: "no field parameter", disabled: true})
+viewof turns = Inputs.range([5, 80], {value: 30, step: 1, label: "gyrations [1]",
+  disabled: config === "mirror" || config === "ramp"})
+```
+
+```{ojs}
+html`<p class="note">${config === "ramp" ? "The μ ramp is planar: the parallel speed has no effect." :
+  config === "mirror" ? "Side view, B along z. The run lasts at least 16 L/v, about one bounce period." :
+  config === "curvature" ? "Poloidal view (R, Z): B points along the toroidal direction, into the page." :
+  "Top view: B points out of the page."}</p>`
+```
+
+```{ojs}
+params = ({sign, vpar, turns, E: 0, g: 0, kappa: 0, R0: 30, L: 30, Rm: 4,
+           ...(spec ? {[spec.key]: strength} : {})})
+orbit = config === "ramp" ? muRamp(strength, 1600, sign) : pushOrbit(config, params)
+```
+
+## Trajectory
+
+```{ojs}
+view = {
+  const o = orbit;
+  if (config === "curvature") return {
+    xs: o.x.map((x, i) => Math.hypot(x, o.y[i])), ys: o.z,
+    Xs: o.X.map((x, i) => Math.hypot(x, o.Y[i])), Ys: o.Z,
+    xl: "R →", yl: "↑ Z", cap: [String.raw`R/\rho_{L0}`, String.raw`Z/\rho_{L0}`], equal: true};
+  if (config === "mirror") return {xs: o.z, ys: o.x, Xs: o.Z, Ys: o.X,
+    xl: "z →", yl: "↑ x", cap: [String.raw`z/\rho_{L0}`, String.raw`x/\rho_{L0}`], equal: false};
+  return {xs: o.x, ys: o.y, Xs: o.X ?? o.x.map(() => 0), Ys: o.Y ?? o.y.map(() => 0),
+    xl: "x →", yl: "↑ y", cap: [String.raw`x/\rho_{L0}`, String.raw`y/\rho_{L0}`], equal: true};
+}
+trajectoryPlot = {
+  const W = 760, H = 460;
+  const pad = (lo, hi) => [lo - 0.05 * (hi - lo + 1e-9), hi + 0.05 * (hi - lo + 1e-9)];
+  let xd = pad(d3.min(view.xs), d3.max(view.xs)), yd = pad(d3.min(view.ys), d3.max(view.ys));
+  if (config === "mirror") xd = [-1.15 * params.L, 1.15 * params.L];
+  if (view.equal) {
+    // Equal scales in x and y so that gyro-orbits stay circles.
+    const sx = (xd[1] - xd[0]) / (W - 90), sy = (yd[1] - yd[0]) / (H - 70), k = Math.max(sx, sy);
+    const cx = (xd[0] + xd[1]) / 2, cy = (yd[0] + yd[1]) / 2;
+    xd = [cx - k * (W - 90) / 2, cx + k * (W - 90) / 2];
+    yd = [cy - k * (H - 70) / 2, cy + k * (H - 70) / 2];
+  }
+  const pts = view.xs.map((x, i) => ({x, y: view.ys[i], X: view.Xs[i], Y: view.Ys[i]}));
+  return Plot.plot({
+    width: W, height: H, marginLeft: 60, marginBottom: 40, clip: true,
+    x: {domain: xd, label: view.xl, grid: true}, y: {domain: yd, label: view.yl, grid: true},
+    marks: [
+      config === "mirror" ? Plot.ruleX([-params.L, params.L], {stroke: gray, strokeDasharray: "4,4"}) : null,
+      Plot.line(pts, {x: "x", y: "y", stroke: blue, strokeWidth: 1}),
+      config === "ramp" ? null : Plot.line(pts, {x: "X", y: "Y", stroke: orange, strokeWidth: 2.5}),
+      Plot.dot([pts[0]], {x: "x", y: "y", fill: ink, r: 4}),
+      Plot.text([pts[0]], {x: "x", y: "y", text: () => "start", dx: 8, textAnchor: "start", fill: ink}),
+    ],
+  });
+}
+html`<p class="note">Horizontal ${tex`${view.cap[0]}`} [1], vertical ${tex`${view.cap[1]}`} [1].
+<span style="color:${blue}">Thin line</span>: particle ${tex`\mathbf r(t)`}
+${config === "ramp" ? "" : html`; <span style="color:${orange}">thick line</span>: guiding centre ${tex`\mathbf R(t)`}`}.</p>`
+```
+
+## Magnetic moment
+
+```{ojs}
+Plot.plot({
+  width: 760, height: 260, marginLeft: 60, marginBottom: 40,
+  x: {label: "time →", grid: true},
+  y: {label: "↑ μ/μ(0)", grid: true,
+      domain: config === "ramp" ? [0.9, 2.1]
+        : [Math.min(0.98, d3.min(orbit.mu)), Math.max(1.02, d3.max(orbit.mu))]},
+  marks: [
+    Plot.ruleY([1], {stroke: gray}),
+    config === "ramp" ? Plot.line(orbit.t, {x: (d) => d, y: (d, i) => orbit.B[i], stroke: gray, strokeDasharray: "5,4"}) : null,
+    config === "ramp" ? Plot.text([orbit.t.length - 1], {x: (i) => orbit.t[i], y: (i) => orbit.B[i], text: () => "B/B₀", dy: -10, textAnchor: "end", fill: gray}) : null,
+    Plot.line(orbit.t, {x: (d) => d, y: (d, i) => orbit.mu[i], stroke: blue, strokeWidth: 1.5}),
+  ],
+})
+html`<p class="note">Horizontal ${tex`|\omega_{c0}|\,t`} [1], vertical ${tex`\mu/\mu(0)`} [1]${config === "ramp" ? html`; dashed: ${tex`B/B_0`} [1]` : ""}.
+${["gradb", "curvature", "mirror"].includes(config) ? "In a non-uniform field the instantaneous μ oscillates at the gyrofrequency, at first order in the Larmor radius over the gradient length; its gyro-average stays constant." : ""}</p>`
+```
+
+## Measured against the formulas
+
+```{ojs}
+result = {
+  if (config === "ramp") return html`<table class="readout">
+    <tr><th>ramp time ${tex`|\omega_{c0}|\tau`}</th><td class="num">${strength}</td></tr>
+    <tr><th>${tex`\mu_\mathrm{final}/\mu_\mathrm{initial} - 1`}</th><td class="num">${formatSci(orbit.deltaMu)}</td></tr>
+    </table><p class="note">Lecture figure: ${tex`3\times10^{-2}`} at ${tex`|\omega_{c0}|\tau = 1`},
+    ${tex`2\times10^{-11}`} at ${tex`|\omega_{c0}|\tau = 8`}: the change of μ is exponentially small in the ramp time.</p>`;
+  if (config === "mirror") {
+    const m = mirrorPrediction(params);
+    return html`<table class="readout">
+    <tr><th></th><th>formula</th><th>Boris</th></tr>
+    <tr><td>pitch angle ${tex`\alpha`} [°] / loss cone ${tex`\alpha_c`} [°]</td><td class="num">${m.pitchDeg.toFixed(1)} / ${m.lossConeDeg.toFixed(1)}</td><td></td></tr>
+    <tr><td>trapped</td><td class="num">${m.trapped ? "yes" : "no"}</td><td class="num">${orbit.lost ? "no" : "yes"}</td></tr>
+    <tr><td>mirror point ${tex`z_m/\rho_{L0}`}</td><td class="num">${m.trapped ? m.z_m.toFixed(2) : "–"}</td>
+        <td class="num">${orbit.lost ? "–" : orbit.zMax.toFixed(2)}</td></tr>
+    </table>`;
+  }
+  const a = analyticDrift(config, params), d = orbit.drift;
+  const names = config === "curvature" ? [["R", 0], ["Z", 2]] : [["x", 0], ["y", 1]];
+  return html`<table class="readout">
+    <tr><th>drift component [1]</th><th>formula</th><th>Boris</th><th>difference</th></tr>
+    ${names.map(([n, i]) => html`<tr><td>${tex`v_{D,${n}}/v_{\perp0}`}</td><td class="num">${formatSci(a[i])}</td>
+      <td class="num">${formatSci(d[i])}</td><td class="num">${formatSci(d[i] - a[i])}</td></tr>`)}
+    </table><p class="note">${config === "gradb" || config === "curvature"
+      ? html`The formulas are first order in ${tex`\rho_L/L`}, ${tex`L`} the gradient or curvature length; the difference shrinks with it.` : ""}</p>`;
+}
+```
+
+```{ojs}
+rampCurve = d3.range(0.25, 8.001, 0.25).map((tau) => ({tau, dmu: muRamp(tau, 1600, 1, 10).deltaMu}))
+config === "ramp" ? Plot.plot({
+  width: 760, height: 280, marginLeft: 60, marginBottom: 40,
+  x: {domain: [0, 8.2], label: "ramp time →", grid: true},
+  y: {type: "log", domain: [1e-12, 1], label: "↑ change of μ",
+      ticks: d3.range(-12, 1, 2).map((k) => 10 ** k), tickFormat: powerOfTen, grid: true},
+  marks: [
+    Plot.line(rampCurve, {x: "tau", y: "dmu", stroke: blue}),
+    Plot.dot(rampCurve, {x: "tau", y: "dmu", fill: blue, r: 2}),
+    Plot.dot([{tau: strength, dmu: orbit.deltaMu}], {x: "tau", y: "dmu", r: 7, stroke: ink, strokeWidth: 2, fill: "none"}),
+  ],
+}) : html``
+config === "ramp" ? html`<p class="note">Horizontal ${tex`|\omega_{c0}|\,\tau`} [1], vertical ${tex`\mu_\mathrm{final}/\mu_\mathrm{initial} - 1`} [1]; circle: the run above.</p>` : html``
+```
+
+## References
+
+- J. P. Boris, "Relativistic plasma simulation—optimization of a hybrid code", *Proc. 4th Conf. Numerical Simulation of Plasmas*, Naval Research Laboratory, Washington DC (1970), pp. 3–67.
+- H. Qin, S. Zhang, J. Xiao et al., "Why is Boris algorithm so good?", *Phys. Plasmas* **20**, 084503 (2013), [doi:10.1063/1.4818428](https://doi.org/10.1063/1.4818428).
+- F. F. Chen, *Introduction to Plasma Physics and Controlled Fusion*, 3rd ed., Springer (2016), ch. 2, [doi:10.1007/978-3-319-22309-4](https://doi.org/10.1007/978-3-319-22309-4).
+- Plasma Physics lecture script, [chapter 5, Single-particle motion](https://krystophny.github.io/plasma-skript/chapters/05-single-particle-motion.html).

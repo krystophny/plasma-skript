@@ -3,7 +3,7 @@
 #
 # Usage: scripts/export-course-folder.sh <dest>
 # Run after a site build (nix run .#build-site).  Writes and synchronises
-# exactly five subfolders of <dest>; everything else is left untouched:
+# exactly six subfolders of <dest>; everything else is left untouched:
 #   slides/              the live lecture decks, public/slides/<stem>.pdf
 #   skript/              public/plasma-physics.pdf
 #   animations/          rendered MP4s plus one PNG still per scene
@@ -13,6 +13,10 @@
 #   derivations/         Makefile, helper modules, chapters/*.py, build/pdf/*.pdf,
 #                        script-outline.json (the section names they cite)
 #                        (SymPy derivations; no build/tex, no build/fig)
+#   notebooks/           the Quarto notebooks (*.qmd, plasma.js, notebook.css,
+#                        _quarto.yml); render with `quarto preview` or
+#                        `quarto render`, or open the online pages
+#                        https://krystophny.github.io/plasma-skript/notebooks/<name>.html
 # Files that are no longer produced are deleted from those subfolders; files
 # with unchanged content are not rewritten.
 #
@@ -54,7 +58,7 @@ media_cache="${MEDIA_DIR:-$repo_root/.cache/animations}"
 
 staging="$(mktemp -d "${TMPDIR:-/tmp}/plasma-export.XXXXXX")"
 trap 'rm -rf -- "$staging"' EXIT
-mkdir -p "$staging/slides" "$staging/skript" "$staging/animations" "$staging/animation-sources" "$staging/derivations"
+mkdir -p "$staging/slides" "$staging/skript" "$staging/animations" "$staging/animation-sources" "$staging/derivations" "$staging/notebooks"
 
 if ! compgen -G "$site_dir/slides/*.pdf" >/dev/null; then
   echo "missing $site_dir/slides/*.pdf; build the site first (nix run .#build-site)" >&2
@@ -94,9 +98,14 @@ if compgen -G "$deriv/build/pdf/*.pdf" >/dev/null; then
   cp "$deriv"/build/pdf/*.pdf "$staging/derivations/build/pdf/"
 fi
 
+# Notebook sources only: their Observable JS needs an HTTP server, so a
+# downloaded HTML page would not run; the rendered pages are on the website.
+cp "$repo_root"/notebooks/*.qmd "$repo_root/notebooks/plasma.js" \
+  "$repo_root/notebooks/notebook.css" "$repo_root/notebooks/_quarto.yml" "$staging/notebooks/"
+
 mkdir -p "$dest"
-for sub in slides skript animations animation-sources derivations; do
+for sub in slides skript animations animation-sources derivations notebooks; do
   mkdir -p "$dest/$sub"
   rsync -r --checksum --delete "$staging/$sub/" "$dest/$sub/"
 done
-echo "Exported slides, Skript PDF, animations, animation-sources and derivations to $dest"
+echo "Exported slides, Skript PDF, animations, animation-sources, derivations and notebooks to $dest"

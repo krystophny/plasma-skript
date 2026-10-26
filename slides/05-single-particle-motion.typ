@@ -109,6 +109,7 @@
     ([current], $bold(j) = sum_alpha n_alpha q_alpha bold(v)_D = n (m_i + m_e) (bold(g) times bold(B))/B^2$),
   ))
   #at(1, 12, y: 134mm, note[$bold(F)$ constant force, $bold(g)$ gravitational acceleration, $n_alpha$ density of species $alpha$, hydrogen $n_i = n_e = n$])
+  #at(1, 12, y: 148mm, note[#link("https://krystophny.github.io/plasma-skript/notebooks/orbits.html")[notebook: particle orbits and drifts]])
 ]
 #animation-page("gravity-drift", "gravity_drift", section: "motion-exb")
 // ------------------------------------------------- 4 guiding centre

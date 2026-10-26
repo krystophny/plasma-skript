@@ -63,8 +63,10 @@ HTML-specific components have an equivalent paged fallback.
   must never constrain the interactive website or block its release.
 - The initial playground scope is interactive reading: collapsible theory,
   media controls, navigation, accessible prompts, and readable plots. Live
-  parameter controls and browser-side recomputation are out of scope unless
-  explicitly added in a later revision.
+  parameter controls and browser-side recomputation belong only to the
+  interactive notebooks (added 2026-10-26): Quarto pages with Observable JS in
+  `notebooks/`, published as `notebooks/<name>.html`, never Jupyter or a
+  server-side kernel.
 - The published site includes a visible bibliography with citations for the
   physics sources, source material, figures, and external documentation used
   in the script. The public `src/sources.bib` file is the source database;

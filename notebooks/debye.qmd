@@ -1,0 +1,126 @@
+---
+title: "Debye shielding"
+subtitle: "Interactive notebook · Plasma Physics · Chapter 4, Debye shielding"
+---
+
+Change the Debye length to see how the plasma screens a test charge in real space and which wavelengths of an imposed charge pattern survive.
+
+## Formulas
+
+$$
+\Phi(r) = \frac{q}{4\pi\varepsilon_0 r}\, e^{-r/\lambda_D}, \qquad
+\Phi_{\mathrm{bare}}(r) = \frac{q}{4\pi\varepsilon_0 r},
+$$
+
+$$
+\varepsilon(k) = \frac{\hat\Phi_{\mathrm{bare}}(k)}{\hat\Phi(k)} = 1 + \frac{1}{k^2\lambda_D^2}, \qquad
+\frac{1}{\varepsilon(k)} = \frac{k^2}{k^2 + 1/\lambda_D^2} = \frac{q + \hat\rho_{\mathrm{ind}}(k)}{q}, \qquad
+\hat\rho_{\mathrm{ind}}(k) = -\frac{q}{1 + k^2\lambda_D^2}.
+$$
+
+<table class="symbols">
+<tr><td>$r$</td><td>distance from the test charge [m]</td><td>$q$</td><td>test charge, here $q = e$ [C]</td></tr>
+<tr><td>$\Phi$</td><td>screened potential [V]</td><td>$\Phi_{\mathrm{bare}}$</td><td>Coulomb potential without plasma [V]</td></tr>
+<tr><td>$\lambda_D$</td><td>Debye length [m]</td><td>$k$</td><td>wavenumber of a charge pattern [m⁻¹]</td></tr>
+<tr><td>$\hat\Phi$, $\hat\rho_{\mathrm{ind}}$</td><td>Fourier transforms of potential [V m³] and induced charge [C]</td><td>$\varepsilon(k)$</td><td>dielectric function [1]</td></tr>
+<tr><td>$1/\varepsilon(k)$</td><td>net charge over imposed charge [1]</td><td>$\varepsilon_0$</td><td>vacuum permittivity [F/m]</td></tr>
+</table>
+
+Linear response of Boltzmann electrons, $e\Phi \ll k_B T_e$, ions immobile. The fusion example $n_e = 10^{20}\,\mathrm{m^{-3}}$, $k_B T_e = 10\,\mathrm{keV}$ has $\lambda_D = 74\,\mu\mathrm{m}$.
+
+## Parameter
+
+```{ojs}
+import {coulombPotential, screenedPotential, dielectric, survivingFraction, formatSci, powerOfTen}
+  from "./plasma.js"
+blue = "#0072B2"
+orange = "#B55000"
+gray = "#555555"
+```
+
+```{ojs}
+viewof lambdaUm = Inputs.range([1, 1000], {value: 74.3, transform: Math.log, step: 0.1,
+  format: (v) => v.toPrecision(3), label: tex`\lambda_D\ [\mu\mathrm{m}]`})
+lambda = lambdaUm * 1e-6
+```
+
+## Potential of a test charge
+
+```{ojs}
+radii = d3.range(0.5, 300.01, 0.5)
+Plot.plot({
+  width: 760, height: 380, marginLeft: 60, clip: true,
+  x: {domain: [0, 300], label: "distance r [µm] →"},
+  y: {type: "log", domain: [1e-8, 1e-2], label: "↑ potential Φ [V]",
+      ticks: d3.range(-8, -1).map((k) => 10 ** k), tickFormat: powerOfTen, grid: true},
+  marks: [
+    Plot.ruleX([lambdaUm], {stroke: gray, strokeDasharray: "2,3"}),
+    Plot.text([lambdaUm], {x: (d) => d, y: 3e-3, text: () => "r = Debye length", dx: 6, textAnchor: "start", fill: gray}),
+    Plot.line(radii, {x: (d) => d, y: (d) => coulombPotential(d * 1e-6), stroke: orange, strokeDasharray: "6,4", strokeWidth: 2}),
+    Plot.line(radii, {x: (d) => d, y: (d) => screenedPotential(d * 1e-6, lambda), stroke: blue, strokeWidth: 2}),
+    Plot.text([250], {x: (d) => d, y: (d) => coulombPotential(d * 1e-6), text: () => "bare", dy: -10, fill: orange}),
+    Plot.text([Math.min(0.5 * lambdaUm, 150)], {x: (d) => d, y: (d) => screenedPotential(d * 1e-6, lambda),
+      text: () => "screened", dx: -6, dy: 12, textAnchor: "end", fill: blue}),
+  ],
+})
+```
+
+```{ojs}
+html`<p>At ${tex`r = \lambda_D`} the screened potential is the fraction ${tex`e^{-1} \approx 0.37`} of the bare one:
+${formatSci(screenedPotential(lambda, lambda))} V against ${formatSci(coulombPotential(lambda))} V.
+At ${tex`r = 5\lambda_D`} it is ${formatSci(Math.exp(-5))} of the bare value.</p>`
+```
+
+## Dielectric function
+
+```{ojs}
+wavenumbers = d3.range(2, 7.001, 0.02).map((k) => 10 ** k)
+kHalf = 1 / lambda
+Plot.plot({
+  width: 760, height: 300, marginLeft: 60, clip: true,
+  x: {type: "log", domain: [1e2, 1e7], label: "wavenumber k [m⁻¹] →",
+      ticks: d3.range(2, 8).map((k) => 10 ** k), tickFormat: powerOfTen, grid: true},
+  y: {domain: [0, 1.05], label: "↑ net/imposed charge 1/ε(k) [1]", grid: true},
+  marks: [
+    Plot.ruleX([kHalf], {stroke: gray, strokeDasharray: "2,3"}),
+    Plot.line(wavenumbers, {x: (d) => d, y: (d) => survivingFraction(d, lambda), stroke: blue, strokeWidth: 2}),
+    Plot.dot([kHalf], {x: (d) => d, y: 0.5, fill: blue, r: 4}),
+    Plot.text([kHalf], {x: (d) => d, y: 0.5, text: () => "half at k = 1/(Debye length)", dx: 8, textAnchor: "start", fill: blue}),
+    Plot.text([1.3e2], {x: (d) => d, y: 0.06, text: () => "screened", textAnchor: "start", fill: gray}),
+    Plot.text([8e6], {x: (d) => d, y: 0.95, text: () => "unscreened", textAnchor: "end", fill: gray}),
+  ],
+})
+```
+
+```{ojs}
+Plot.plot({
+  width: 760, height: 300, marginLeft: 60, clip: true,
+  x: {type: "log", domain: [1e2, 1e7], label: "wavenumber k [m⁻¹] →",
+      ticks: d3.range(2, 8).map((k) => 10 ** k), tickFormat: powerOfTen, grid: true},
+  y: {type: "log", domain: [0.5, 1e9], label: "↑ dielectric function ε(k) [1]",
+      ticks: d3.range(0, 10, 2).map((k) => 10 ** k), tickFormat: powerOfTen, grid: true},
+  marks: [
+    Plot.ruleY([1], {stroke: gray}),
+    Plot.ruleX([kHalf], {stroke: gray, strokeDasharray: "2,3"}),
+    Plot.line(wavenumbers, {x: (d) => d, y: (d) => dielectric(d, lambda), stroke: blue, strokeWidth: 2}),
+    Plot.dot([kHalf], {x: (d) => d, y: 2, fill: blue, r: 4}),
+    Plot.text([kHalf], {x: (d) => d, y: 2, text: () => "ε = 2", dx: 8, dy: -8, textAnchor: "start", fill: blue}),
+  ],
+})
+```
+
+```{ojs}
+html`<table class="readout">
+<tr><th>${tex`k\lambda_D`}</th><th>${tex`k`} [m⁻¹]</th><th>${tex`\varepsilon(k)`}</th><th>${tex`1/\varepsilon(k)`}</th></tr>
+${[0.1, 0.3, 1, 3, 10].map((x) => html`<tr><td class="num">${x}</td><td class="num">${formatSci(x / lambda)}</td>
+  <td class="num">${formatSci(dielectric(x / lambda, lambda))}</td><td class="num">${formatSci(survivingFraction(x / lambda, lambda))}</td></tr>`)}
+</table>`
+```
+
+Long wavelengths, $k\lambda_D \ll 1$, are screened: the induced charge cancels the imposed charge. Patterns shorter than $\lambda_D$, $k\lambda_D \gg 1$, keep their charge.
+
+## References
+
+- F. F. Chen, *Introduction to Plasma Physics and Controlled Fusion*, 3rd ed., Springer (2016), sec. 1.4, [doi:10.1007/978-3-319-22309-4](https://doi.org/10.1007/978-3-319-22309-4).
+- P. M. Bellan, *Fundamentals of Plasma Physics*, Cambridge University Press (2006), ch. 1, [doi:10.1017/CBO9780511807183](https://doi.org/10.1017/CBO9780511807183).
+- Plasma Physics lecture script, [chapter 4, Debye shielding](https://krystophny.github.io/plasma-skript/chapters/04-debye-shielding.html).

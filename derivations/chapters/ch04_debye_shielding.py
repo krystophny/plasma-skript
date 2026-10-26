@@ -342,8 +342,11 @@ for T_example, text, color, ls in [(1e4, r"$10\,\mathrm{keV}$", BLUE, "-"),
     k = np.searchsorted(density, 1e8)
     # Labels above their curves; the lowest one in the free corner below it
     # (parallel lines leave no room for a level label between them).
+    # The 10 eV label sits close above its curve, clear of the 10 keV line.
     if T_example < 1:
         label(ax, 2e6, 10**2.2, text, color)
+    elif T_example < 1e3:
+        label(ax, density[k], count_curve[k] * 4, text, color)
     else:
         label(ax, density[k], count_curve[k] * 60, text, color)
 ax.axhline(1, color=ORANGE, lw=0.6)

@@ -56,6 +56,7 @@
   #at(1, 6, y: 28mm, align(center, plot("debye_surviving_fraction", columns: 5)))
   #at(7, 6, y: 28mm, align(center, plot("debye_potential_k", columns: 5)))
   #at(1, 12, y: 124mm, align(center, text(size: result-size, $epsilon(k) = 1 + 1/(k^2 lambda_D^2)$)))
+  #at(1, 12, y: 148mm, align(center, text(fill: muted)[#link("https://krystophny.github.io/plasma-skript/notebooks/debye.html")[notebook: Debye shielding]]))
 ]
 #plot-page("debye_nonlinear_potential", columns: 7, section: "intro-debye-shielding", title: [Nonlinear screening: potential],
   below: [$Lambda = q e\/(4 pi epsilon_0 lambda_D k_B T_e)$, #h(0.4em) #text(fill: muted)[$q$ test charge] \
@@ -94,6 +95,7 @@
     )).flatten(),
   ))
   #at(1, 12, y: 118mm, align(center, text(fill: muted)[$lambda_D approx 7400 "m" sqrt((k_B T_e \/ "eV")/(n_e \/ "m"^(-3)))$, #h(8mm) $omega_(p e) approx 56 thin "s"^(-1) sqrt(n_e \/ "m"^(-3))$]))
+  #at(1, 12, y: 140mm, align(center, text(fill: muted)[#link("https://krystophny.github.io/plasma-skript/notebooks/scales.html")[notebook: plasma scales]]))
 ]
 #slide(section: "intro-debye-shielding", title: [Debye length and plasma frequency])[
   #at(3, 8, y: 14mm, result-box(align(center, $lambda_D = v_("th",e)/(sqrt(2) thin omega_(p e))$), [$v_("th",e) = sqrt(2 k_B T_e\/m_e)$]))

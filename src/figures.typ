@@ -1388,7 +1388,7 @@
   alt: "Log-log plot of thermal speed in metres per second against k_B T in electron-volts from 0.01 eV to 10 keV, with the temperature in kelvin on the top axis. Two parallel lines of slope one half: electrons from about 6 times 10 to the 4 to 6 times 10 to the 7 metres per second, and protons a factor 43 lower.",
   caption: [
     Thermal speed $v_"th" = sqrt(2 k_B T\/m)$ of electrons (solid) and
-    protons (dashed) against $k_B T$ in #unit("eV"); top axis: $T$ in
+    protons (dashed) against $k_B T$ in #unit("eV")\; top axis: $T$ in
     #unit("K"), $1 #unit("eV") \/ k_B approx 1.16 dot 10^4 #unit("K")$. Both
     lines have slope $1\/2$; their ratio is $sqrt(m_p\/m_e) approx 43$.
     Nonrelativistic.

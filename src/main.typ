@@ -227,7 +227,7 @@
         #html.dd[
           Multiplicity is $W$ (a dimensionless microstate count), never $Omega$.
           Entropy is $S=k_B ln W$ in #unit("J/K"). The ionization energy $chi$
-          is in #unit("J") or #unit("eV"); scattering angles use $theta_("sc")$.
+          is in #unit("J") or #unit("eV")\; scattering angles use $theta_("sc")$.
           Chemical potential $mu$ is an energy per particle; mechanical mobility
           is $mu_("mob")$, and magnetic moment is $mu_("mag")$ in #unit("J/T"),
           written $mu$ in the single-particle chapter.
@@ -237,10 +237,10 @@
           dimensionless counts. Neutral, ion, and electron densities are
           $n_n$, $n_i$, and $n_e$ in #unit("m^-3"). The thermal de Broglie
           wavelength is $lambda_("th",s)=h/sqrt(2 pi m_s k_B T)$ in #unit("m"),
-          with Planck's constant $h$ in #unit("J.s"). For electrons,
+          with Planck's constant $h$ in #unit("J s"). For electrons,
           $lambda_("th",e)=h/(sqrt(pi) m_e v_("th",e))$.
-          Thermal momentum $p_("th",s)=sqrt(2 m_s k_B T)$ is in #unit("kg.m/s").
-          A sharp momentum cutoff $p_s$ is in #unit("kg.m/s"); its estimate
+          Thermal momentum $p_("th",s)=sqrt(2 m_s k_B T)$ is in #unit("kg m s^-1").
+          A sharp momentum cutoff $p_s$ is in #unit("kg m s^-1")\; its estimate
           $lambda_s=h/p_s$ is in #unit("m") and is distinct from
           $lambda_("th",s)$, which uses the Maxwellian-weighted momentum states.
           Normalized wave frequency uses $hat(omega)$, reserving $W$ for multiplicity.
