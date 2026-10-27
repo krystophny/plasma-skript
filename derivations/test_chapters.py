@@ -103,7 +103,7 @@ def test_mu_ramp_boris_against_dop853():
 
 def test_loss_cone_sample_against_pitch_angle():
     """The trapped/lost test from mu and energy along B(z) agrees particle by
-    particle with the pitch-angle condition sin^2(alpha) >= 1/R_m, and the lost
+    particle with the pitch-angle condition sin^2(theta) >= 1/R_m, and the lost
     fraction of the isotropic sample agrees with the solid angle of the two
     cones, 1 - (1 - 1/R_m)^(1/2), within four binomial standard deviations."""
     import numpy as np

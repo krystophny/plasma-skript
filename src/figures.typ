@@ -333,11 +333,11 @@
     the full orbit with the induced field
     $bold(E) = -(1\/2) (pdv(B,t, style: "horizontal")) bold(e)_z times bold(r)$,
     started on a circle about the axis. Smooth ramp
-    $B\/B_0 = 3\/2 + tanh(t\/tau)\/2$: the change falls exponentially with
-    the ramp time $tau$, to $2 dot 10^(-11)$ at $abs(omega_(c 0)) tau = 8$.
-    Linear ramp of the same largest slope, with kinks at $t = plus.minus tau$:
+    $B\/B_0 = 3\/2 + tanh(t\/tau_B)\/2$: the change falls exponentially with
+    the ramp time $tau_B$, to $2 dot 10^(-11)$ at $abs(omega_(c 0)) tau_B = 8$.
+    Linear ramp of the same largest slope, with kinks at $t = plus.minus tau_B$:
     the change falls only algebraically, to $8 dot 10^(-4)$ at
-    $abs(omega_(c 0)) tau = 8$. $mu$ is an adiabatic invariant, not an exact
+    $abs(omega_(c 0)) tau_B = 8$. $mu$ is an adiabatic invariant, not an exact
     constant, and its error is set by the sharpest feature of the field's
     time dependence. Ramp time in units of $1\/abs(omega_(c 0))$,
     $omega_(c 0) = q_alpha B_0\/m_alpha$.
@@ -345,14 +345,14 @@
 )[#derived-plot("mu_ramp")]
 
 #let motion-loss-cone = figure(
-  alt: "Two plots. Left: 1500 particles of an isotropic Maxwellian at the midplane of a mirror with mirror ratio 4, plotted as perpendicular against parallel velocity in thermal speeds. Most are trapped dots; lost particles, marked by triangles, fill the two wedges around the parallel axis below dashed lines at the loss-cone angle, sine squared alpha_c equal to one over R_m. Right: fraction of particles lost against the mirror ratio from 1 to 20; sample points lie on the curve one minus the square root of one minus one over R_m, falling from 1 to about 0.03.",
+  alt: "Two plots. Left: 1500 particles of an isotropic Maxwellian at the midplane of a mirror with mirror ratio 4, plotted as perpendicular against parallel velocity in thermal speeds. Most are trapped dots; lost particles, marked by triangles, fill the two wedges around the parallel axis below dashed lines at the loss-cone angle, sine squared theta_c equal to one over R_m. Right: fraction of particles lost against the mirror ratio from 1 to 20; sample points lie on the curve one minus the square root of one minus one over R_m, falling from 1 to about 0.03.",
   caption: [
     Loss cone in velocity space. Left: an isotropic Maxwellian sample at the
     midplane of a mirror with $R_m = 4$. Each particle is classified by
     following $v_parallel^2 (z) = v^2 - v_(perp 0)^2 B(z)\/B_0$ to the throat
-    in the field $B(z)\/B_0 = 1 + (R_m - 1)(z\/L)^2$, without using the
+    in the field $B(z)\/B_0 = 1 + (R_m - 1)(z\/L_m)^2$, without using the
     loss-cone formula; the lost particles (triangles) lie inside the dashed
-    lines $sin^2 alpha_c = 1\/R_m$. Right: lost fraction of an isotropic
+    lines $sin^2 theta.alt_c = 1\/R_m$. Right: lost fraction of an isotropic
     distribution against $R_m$, sample (dots) and the solid-angle fraction
     $1 - sqrt(1 - 1\/R_m)$ of the two cones. Velocities in units of
     $v_"th" = sqrt(2 k_B T\/m_alpha)$.

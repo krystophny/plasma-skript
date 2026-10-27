@@ -126,13 +126,13 @@ def mirror_field(p, ratio=MIRROR_RATIO, length=MIRROR_L):
 
 
 def loss_cone_angle(ratio=MIRROR_RATIO):
-    """Midplane pitch angle [deg] with sin^2(alpha) = 1/R_m."""
+    """Midplane pitch angle [deg] with sin^2(theta) = 1/R_m."""
     return np.degrees(np.arcsin(np.sqrt(1.0 / ratio)))
 
 
 def mirror_orbit(pitch_deg, x_gc, steps_per_turn=60, t_end=80.0, ratio=MIRROR_RATIO,
                  length=MIRROR_L, escape=1.0):
-    """Ion, speed 1, midplane pitch angle alpha, guiding centre at (x_gc, 0, 0).
+    """Ion, speed 1, midplane pitch angle theta, guiding centre at (x_gc, 0, 0).
 
     The orbit stops once |z| > escape * L (reached the mirror throat z = L).
     Returns t, x, v, mu(t)/mu_start and lost; mu = v_perp^2/(2 B) about the local B,

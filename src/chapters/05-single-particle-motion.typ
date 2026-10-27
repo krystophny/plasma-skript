@@ -1013,49 +1013,49 @@
     #derivation-step[Find the mirror point]
     At the initial point, use
 
-    $ v_(perp,0)=v_0 sin alpha_0, quad
-      v_(parallel,0)=v_0 cos alpha_0 . $
+    $ v_(perp,0)=v_0 sin theta.alt_0, quad
+      v_(parallel,0)=v_0 cos theta.alt_0 . $
 
     At the mirror point $B_m$, $v_parallel$ is zero. Conservation of $K$
     and $mu$ gives
 
     $ mu B_m=(m_alpha v_0^2)/2, quad
-      mu B_0=(m_alpha v_0^2 sin^2 alpha_0)/2 . $
+      mu B_0=(m_alpha v_0^2 sin^2 theta.alt_0)/2 . $
 
     Hence
 
-    $ B_m/B_0=1/(sin^2 alpha_0) . $
+    $ B_m/B_0=1/(sin^2 theta.alt_0) . $
 
     If the largest available field is $B_"max"$, reflection occurs when
 
-    $ sin^2 alpha_0 >= B_0/B_"max" . $
+    $ sin^2 theta.alt_0 >= B_0/B_"max" . $
 
     The complementary range is the loss cone: particles with
-    $sin^2 alpha_0 < B_0\/B_"max"$ pass through the mirror and escape.]
+    $sin^2 theta.alt_0 < B_0\/B_"max"$ pass through the mirror and escape.]
   )
 
   The boundary of the loss cone depends only on the mirror ratio
   $R_m = B_"max"\/B_0$:
 
-  $ sin^2 alpha_c = 1/R_m $ <motion-loss-cone>
+  $ sin^2 theta.alt_c = 1/R_m $ <motion-loss-cone>
 
   #equation-note[
-    $alpha_c$ is the loss-cone angle and $R_m$ is dimensionless. Particles
-    with $alpha_0 < alpha_c$, or $alpha_0 > pi - alpha_c$ when moving the
+    $theta.alt_c$ is the loss-cone angle and $R_m$ is dimensionless. Particles
+    with $theta.alt_0 < theta.alt_c$, or $theta.alt_0 > pi - theta.alt_c$ when moving the
     other way, leave through the mirror throat. The angle does not depend on
     the particle's speed, charge or mass.
   ]
 
   #animation(
     "../media/magnetic-mirror.mp4",
-    "Six ions of equal speed start at the midplane of a magnetic mirror with pitch angles of 18, 26, 29, 31, 45 and 70 degrees. The three below 30 degrees pass through the throat and leave; the other three slow down where the field lines converge, turn around and bounce between the two mirror points. Positions in units of the mirror half-length L, with unit [1].",
+    "Six ions of equal speed start at the midplane of a magnetic mirror with pitch angles of 18, 26, 29, 31, 45 and 70 degrees. The three below 30 degrees pass through the throat and leave; the other three slow down where the field lines converge, turn around and bounce between the two mirror points. Positions in units of the mirror half-length L_m, with unit [1].",
     caption: [
       Six ions of equal speed in a mirror with $R_m = 4$, computed from the
-      full Lorentz force. Ions with $sin^2 alpha_0 < 1\/R_m$, inside the
+      full Lorentz force. Ions with $sin^2 theta.alt_0 < 1\/R_m$, inside the
       $30 degree$ loss cone, leave through the throat; the others are
       reflected. $mu$ stays constant within $0.3$~% for the reflected and
       $1.6$~% for the escaping ions. Positions in units of the mirror
-      half-length $L$ [1].
+      half-length $L_m$ [1].
     ],
     poster: "../media/magnetic-mirror.png",
   )
@@ -1065,12 +1065,12 @@
   #rechenbeispiel[
     A particle starts in a minimum field $B_0 = qty("0.0100", "T")$ and sees a
     maximum field $B_"max" = qty("0.0500", "T")$. Determine the critical pitch
-    angle $alpha_"c"$ separating reflected particles from the loss cone.
-    Here $0 <= alpha_0 <= pi\/2$ is the acute pitch angle to the direction of
+    angle $theta.alt_c$ separating reflected particles from the loss cone.
+    Here $0 <= theta.alt_0 <= pi\/2$ is the acute pitch angle to the direction of
     approach, in a static field with no electric work.
 
-    Numerical result: $alpha_"c" = 26.6 degree$. Particles with
-    $alpha_0 >= alpha_"c"$ reflect in this ideal adiabatic model.
+    Numerical result: $theta.alt_c = 26.6 degree$. Particles with
+    $theta.alt_0 >= theta.alt_c$ reflect in this ideal adiabatic model.
   ]
 
   #interpretation(

@@ -27,7 +27,7 @@ $$
 $$
 
 $$
-\text{mirror: trapped if } \sin^2\alpha > \frac{1}{R_m}, \qquad B(z_m) = \frac{B_0}{\sin^2\alpha}, \qquad \tan\alpha = \frac{v_\perp}{v_\parallel}.
+\text{mirror: trapped if } \sin^2\vartheta > \frac{1}{R_m}, \qquad B(z_m) = \frac{B_0}{\sin^2\vartheta}, \qquad \tan\vartheta = \frac{v_\perp}{v_\parallel}.
 $$
 
 <table class="symbols">
@@ -36,12 +36,12 @@ $$
 <tr><td>$v_\parallel$, $v_\perp$</td><td>speed along and across $\mathbf b = \mathbf B/B$ [m/s]</td><td>$\phi$</td><td>gyrophase [rad], here $\phi = 0$</td></tr>
 <tr><td>$\mathbf r$, $\mathbf R$</td><td>particle position, guiding centre [m]</td><td>$\mathbf e_1$, $\mathbf e_2$</td><td>unit vectors with $\mathbf e_1\times\mathbf e_2 = \mathbf b$</td></tr>
 <tr><td>$\mu$</td><td>magnetic moment [J/T], here in the frame of the force drift</td><td>$\mathbf v_D$</td><td>guiding-centre drift velocity [m/s]</td></tr>
-<tr><td>$R_c$, $\mathbf e_R$</td><td>radius of curvature [m], unit vector away from the centre of curvature</td><td>$R_m$, $\alpha$, $z_m$</td><td>mirror ratio [1], pitch angle at $B_0$ [rad], mirror point [m]</td></tr>
+<tr><td>$R_c$, $\mathbf e_R$</td><td>radius of curvature [m], unit vector away from the centre of curvature</td><td>$R_m$, $\vartheta$, $z_m$</td><td>mirror ratio [1], pitch angle at $B_0$ [rad], mirror point [m]</td></tr>
 </table>
 
 **Normalization.** $m_\alpha = 1$, $|q_\alpha| = 1$, reference field $B_0 = 1$, initial $v_\perp = v_{\perp0} = 1$. Times are $|\omega_{c0}|\,t$ [1] with $\omega_{c0} = q_\alpha B_0/m_\alpha$, lengths are in units of $\rho_{L0} = v_{\perp0}/|\omega_{c0}|$ [1], velocities in $v_{\perp0}$ [1], $E$ in $v_{\perp0}B_0$, $g$ in $v_{\perp0}|\omega_{c0}|$. Multiply by these scales to obtain SI values.
 
-**Fields.** Uniform: $\mathbf B = B_0\mathbf e_z$. E × B: $\mathbf E = E\,\mathbf e_x$. Gravity: $\mathbf g = g\,\mathbf e_x$. Grad-B: $\mathbf B = B_0(1 + \kappa x)\,\mathbf e_z$. Curvature: vacuum toroidal field $\mathbf B = B_0 (R_0/R)\,\mathbf e_\varphi$ about the $z$ axis, $R_c = R_0$ at the start, so $\nabla B = -B\,\mathbf e_R/R_c$. Mirror: $B_z = B_0[1 + (R_m - 1)\sin^2(\pi z/2L)]$ on the axis with $L = 30\,\rho_{L0}$, $B_r = -(r/2)\,\partial B_z/\partial z$; the particle is lost once $|z| > 1.1 L$. μ ramp: $\mathbf B = B_0[3/2 + \tanh(t/\tau)/2]\,\mathbf e_z$ and the induced $\mathbf E = -\tfrac12 (dB/dt)\,\mathbf e_z\times\mathbf r$, guiding centre on the axis.
+**Fields.** Uniform: $\mathbf B = B_0\mathbf e_z$. E × B: $\mathbf E = E\,\mathbf e_x$. Gravity: $\mathbf g = g\,\mathbf e_x$. Grad-B: $\mathbf B = B_0(1 + \kappa x)\,\mathbf e_z$. Curvature: vacuum toroidal field $\mathbf B = B_0 (R_0/R)\,\mathbf e_\varphi$ about the $z$ axis, $R_c = R_0$ at the start, so $\nabla B = -B\,\mathbf e_R/R_c$. Mirror: $B_z = B_0[1 + (R_m - 1)\sin^2(\pi z/2L_m)]$ on the axis with $L_m = 30\,\rho_{L0}$, $B_r = -(r/2)\,\partial B_z/\partial z$; the particle is lost once $|z| > 1.1 L_m$. μ ramp: $\mathbf B = B_0[3/2 + \tanh(t/\tau_B)/2]\,\mathbf e_z$ and the induced $\mathbf E = -\tfrac12 (dB/dt)\,\mathbf e_z\times\mathbf r$, guiding centre on the axis.
 
 **Integrator.** Boris scheme: half electric kick, exact-norm rotation about $\mathbf B$, half electric kick, then the position step; 200 steps per gyration (1600 for the μ ramp, which reproduces the lecture figure). The drift is the least-squares slope of $\mathbf R(t)$.
 
@@ -73,7 +73,7 @@ spec = ({
   gradb: {key: "kappa", range: [-0.2, 0.2], value: 0.03, step: 0.005, label: tex`\kappa\,\rho_{L0}\ [1]`},
   curvature: {key: "R0", range: [5, 200], value: 30, step: 1, label: tex`R_0/\rho_{L0}\ [1]`},
   mirror: {key: "Rm", range: [1.2, 10], value: 4, step: 0.1, label: tex`R_m\ [1]`},
-  ramp: {key: "tau", range: [0.25, 8], value: 1, step: 0.25, label: tex`|\omega_{c0}|\,\tau\ [1]`},
+  ramp: {key: "tau", range: [0.25, 8], value: 1, step: 0.25, label: tex`|\omega_{c0}|\,\tau_B\ [1]`},
 })[config]
 viewof strength = spec ? Inputs.range(spec.range, spec) : Inputs.range([0, 0], {value: 0, label: "no field parameter", disabled: true})
 viewof turns = Inputs.range([5, 80], {value: 30, step: 1, label: "gyrations [1]",
@@ -82,7 +82,7 @@ viewof turns = Inputs.range([5, 80], {value: 30, step: 1, label: "gyrations [1]"
 
 ```{ojs}
 html`<p class="note">${config === "ramp" ? "The μ ramp is planar: the parallel speed has no effect." :
-  config === "mirror" ? "Side view, B along z. The run lasts at least 16 L/v, about one bounce period." :
+  config === "mirror" ? html`Side view, B along z. The run lasts at least ${tex`16\,L_m/v`}, about one bounce period.` :
   config === "curvature" ? "Poloidal view (R, Z): B points along the toroidal direction, into the page." :
   "Top view: B points out of the page."}</p>`
 ```
@@ -162,15 +162,15 @@ ${["gradb", "curvature", "mirror"].includes(config) ? "In a non-uniform field th
 ```{ojs}
 result = {
   if (config === "ramp") return html`<table class="readout">
-    <tr><th>ramp time ${tex`|\omega_{c0}|\tau`}</th><td class="num">${strength}</td></tr>
+    <tr><th>ramp time ${tex`|\omega_{c0}|\tau_B`}</th><td class="num">${strength}</td></tr>
     <tr><th>${tex`\mu_\mathrm{final}/\mu_\mathrm{initial} - 1`}</th><td class="num">${formatSci(orbit.deltaMu)}</td></tr>
-    </table><p class="note">Lecture figure: ${tex`3\times10^{-2}`} at ${tex`|\omega_{c0}|\tau = 1`},
-    ${tex`2\times10^{-11}`} at ${tex`|\omega_{c0}|\tau = 8`}: the change of μ is exponentially small in the ramp time.</p>`;
+    </table><p class="note">Lecture figure: ${tex`3\times10^{-2}`} at ${tex`|\omega_{c0}|\tau_B = 1`},
+    ${tex`2\times10^{-11}`} at ${tex`|\omega_{c0}|\tau_B = 8`}: the change of μ is exponentially small in the ramp time.</p>`;
   if (config === "mirror") {
     const m = mirrorPrediction(params);
     return html`<table class="readout">
     <tr><th></th><th>formula</th><th>Boris</th></tr>
-    <tr><td>pitch angle ${tex`\alpha`} [°] / loss cone ${tex`\alpha_c`} [°]</td><td class="num">${m.pitchDeg.toFixed(1)} / ${m.lossConeDeg.toFixed(1)}</td><td></td></tr>
+    <tr><td>pitch angle ${tex`\vartheta`} [°] / loss cone ${tex`\vartheta_c`} [°]</td><td class="num">${m.pitchDeg.toFixed(1)} / ${m.lossConeDeg.toFixed(1)}</td><td></td></tr>
     <tr><td>trapped</td><td class="num">${m.trapped ? "yes" : "no"}</td><td class="num">${orbit.lost ? "no" : "yes"}</td></tr>
     <tr><td>mirror point ${tex`z_m/\rho_{L0}`}</td><td class="num">${m.trapped ? m.z_m.toFixed(2) : "–"}</td>
         <td class="num">${orbit.lost ? "–" : orbit.zMax.toFixed(2)}</td></tr>
@@ -200,7 +200,7 @@ config === "ramp" ? Plot.plot({
     Plot.dot([{tau: strength, dmu: orbit.deltaMu}], {x: "tau", y: "dmu", r: 7, stroke: ink, strokeWidth: 2, fill: "none"}),
   ],
 }) : html``
-config === "ramp" ? html`<p class="note">Horizontal ${tex`|\omega_{c0}|\,\tau`} [1], vertical ${tex`\mu_\mathrm{final}/\mu_\mathrm{initial} - 1`} [1]; circle: the run above.</p>` : html``
+config === "ramp" ? html`<p class="note">Horizontal ${tex`|\omega_{c0}|\,\tau_B`} [1], vertical ${tex`\mu_\mathrm{final}/\mu_\mathrm{initial} - 1`} [1]; circle: the run above.</p>` : html``
 ```
 
 ## References

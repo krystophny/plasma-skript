@@ -12,42 +12,48 @@ the charge, so the drift
     v_D = (m_alpha/q_alpha) g x B/B^2
 
 is opposite for the two signs of q_alpha and proportional to m_alpha: the ion
-drifts to -x, the electron 16 times slower to +x.  The measured drift is the
-slope of the gyro-period average of the orbit.
+drifts to -x, the electron 16 times slower to +x.  On screen only the field
+keys, species labels, the x axis, the drift formula and the clock; the drift of
+the orbits against the formula is checked in scripts/check-physics.py, not
+shown.
 """
 
 from manim import *
 import numpy as np
 
-from drift_models import GRAVITY_G, QM_ELECTRON, QM_ION, averaged_drift, gravity_formula, gravity_orbit
+from drift_models import QM_ELECTRON, QM_ION, gravity_orbit
 from style import (
     B_FIELD, CURVE_WIDTH, DOT_RADIUS, ELECTRON, INK, ION, LINEAR, MATH_SIZE, MATH_SMALL,
-    MUTED, THIN_WIDTH, StyledScene, axes, math,
+    MUTED, StyledScene, axes, math,
 )
 
 ION_TURNS = 6
 T_END = ION_TURNS * 2 * np.pi
 GRID = 6000
 PLAY_TIME = 12.0
-ROWS = {"ion": 1.15, "electron": -1.25}      # y offset of each species on screen [rho_Li]
+ROWS = {"ion": 1.3, "electron": -1.1}       # y offset of each species on screen [rho_Li]
+X_LO, X_HI = -8.7, 1.2                      # x window [rho_Li]
+SCALE = 1.2                                 # Manim units per rho_Li, equal on both axes
 
 
 def run_species(qm, v_perp):
     t, x, _ = gravity_orbit(qm, v_perp, T_END)
-    measured = averaged_drift(t, x, 2 * np.pi / abs(qm))[0]
     grid = np.linspace(0, t[-1], GRID)
     pos = np.array([np.interp(grid, t, x[:, k]) for k in range(2)]).T
-    return grid, pos, measured, gravity_formula(qm)
+    return grid, pos
 
 
 class GravityDrift(StyledScene):
     """Ion and electron in uniform B with g perpendicular to B."""
 
     def build(self):
-        grid, ion, ion_meas, ion_form = run_species(QM_ION, 1.0)
-        _, ele, ele_meas, ele_form = run_species(QM_ELECTRON, 4.0)
+        grid, ion = run_species(QM_ION, 1.0)
+        _, ele = run_species(QM_ELECTRON, 4.0)
 
-        ax = axes([-8.6, 2.0, 1], [-2.0, 2.4, 1], 11.66, 4.84, ticks=False).move_to([0.2, 0.85, 0])
+        y_lo, y_hi = -1.65, 2.3
+        ax = axes([X_LO, X_HI, 1], [y_lo, y_hi, 1], SCALE * (X_HI - X_LO), SCALE * (y_hi - y_lo),
+                  ticks=False)
+        ax.move_to([-6.55 + ax.width / 2, 0.15, 0])
         ax.x_axis.set_opacity(0)
         ax.y_axis.set_opacity(0)
 
@@ -56,34 +62,24 @@ class GravityDrift(StyledScene):
 
         marks = VGroup()
         for x in np.arange(-8.0, 1.6, 1.6):
-            for y in (-0.05,):
-                marks.add(VGroup(Circle(radius=0.09, color=B_FIELD, stroke_width=1.5),
-                                 Dot(radius=0.025, color=B_FIELD)).move_to(ax.c2p(x, y)))
+            marks.add(VGroup(Circle(radius=0.09, color=B_FIELD, stroke_width=1.5),
+                             Dot(radius=0.025, color=B_FIELD)).move_to(ax.c2p(x, -0.1)))
         marks.set_opacity(0.55)
         b_key = VGroup(VGroup(Circle(radius=0.11, color=B_FIELD, stroke_width=2.0),
                               Dot(radius=0.03, color=B_FIELD)),
                        math(r"\mathbf{B}", color=B_FIELD, size=MATH_SIZE)).arrange(RIGHT, buff=0.15)
-        b_key.move_to([-5.8, 3.35, 0])
-        g_arrow = Arrow(ax.c2p(1.6, 1.4), ax.c2p(1.6, -0.6), buff=0, color=INK, stroke_width=4,
-                        max_tip_length_to_length_ratio=0.15)
-        g_lab = math(r"\mathbf{g}", color=INK, size=MATH_SIZE).next_to(g_arrow, RIGHT, buff=0.12)
+        g_key = VGroup(Arrow(UP * 0.3, DOWN * 0.3, buff=0, color=INK, stroke_width=3,
+                             max_tip_length_to_length_ratio=0.25),
+                       math(r"\mathbf{g}", color=INK, size=MATH_SIZE)).arrange(RIGHT, buff=0.15)
+        keys = VGroup(b_key, g_key).arrange(RIGHT, buff=0.7).move_to([-5.2, 3.35, 0])
 
-        ion_tag = math(r"\mathrm{ion}\ \leftarrow", color=ION, size=MATH_SMALL).move_to([-3.2, 3.35, 0])
-        ele_tag = math(r"\mathrm{electron}\ \rightarrow", color=ELECTRON, size=MATH_SMALL).next_to(ax.c2p(0.75, ROWS["electron"]), RIGHT, buff=0.15)
+        ion_tag = math(r"\mathrm{ion}\ \leftarrow", color=ION, size=MATH_SMALL
+                       ).next_to(ax.c2p(1.15, ROWS["ion"]), RIGHT, buff=0)
+        ele_tag = math(r"\mathrm{electron}\ \rightarrow", color=ELECTRON, size=MATH_SMALL
+                       ).next_to(ax.c2p(-0.45, ROWS["electron"]), LEFT, buff=0)
 
-        rows = VGroup(
-            math(r"v_{D,x}/(\rho_{Li}\omega_{ci})\ [1]\quad \mathrm{orbit}\ \mid\ (m_\alpha/q_\alpha)(\mathbf{g}\times\mathbf{B})_x/B^2",
-                 color=MUTED, size=MATH_SMALL),
-            math(rf"\mathrm{{ion}}\ \ {{{ion_meas:+.5f}}}\ \mid\ {{{ion_form:+.5f}}}", color=ION, size=MATH_SMALL),
-            math(rf"\mathrm{{electron}}\ \ {{{ele_meas:+.5f}}}\ \mid\ {{{ele_form:+.5f}}}", color=ELECTRON, size=MATH_SMALL),
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.1)
-        rows.next_to([-6.45, -2.95, 0], RIGHT, buff=0)
-        note = VGroup(
-            math(r"m_i/m_e=16\ (\mathrm{H}{:}\ 1836),\ T_i=T_e", color=MUTED, size=MATH_SMALL),
-            math(rf"g={GRAVITY_G:g}\,\rho_{{Li}}\omega_{{ci}}^2;\ x/\rho_{{Li}}\ [1]", color=MUTED, size=MATH_SMALL),
-        )
-        note[0].move_to([0.8, 3.35, 0])
-        note[1].next_to([2.4, -2.6, 0], RIGHT, buff=0)
+        formula = math(r"\mathbf{v}_D=(m_\alpha/q_\alpha)\,(\mathbf{g}\times\mathbf{B})/B^2",
+                       color=INK, size=MATH_SIZE).move_to([0, -3.45, 0])
 
         clock_label = math(r"\omega_{ci}t=", color=MUTED, size=MATH_SMALL).move_to([4.6, 3.35, 0])
         clock = DecimalNumber(0.0, num_decimal_places=1, color=INK, font_size=MATH_SMALL)
@@ -115,13 +111,15 @@ class GravityDrift(StyledScene):
         ion_dot = always_redraw(lambda: Dot(to_screen(ion[index()], "ion"), radius=DOT_RADIUS * 1.8, color=ION))
         ele_dot = always_redraw(lambda: Dot(to_screen(ele[index()], "electron"), radius=DOT_RADIUS * 1.8, color=ELECTRON))
         ticks = VGroup(*[
-            VGroup(Line(ax.c2p(v, -1.75), ax.c2p(v, -1.6), color=MUTED, stroke_width=1.6),
-                   math(f"{v:d}".replace("-", "{-}"), color=MUTED, size=MATH_SMALL).next_to(ax.c2p(v, -1.75), DOWN, buff=0.08))
+            VGroup(Line(ax.c2p(v, y_lo - 0.12), ax.c2p(v, y_lo), color=MUTED, stroke_width=1.6),
+                   math(f"{v:d}".replace("-", "{-}"), color=MUTED, size=MATH_SMALL).next_to(ax.c2p(v, y_lo - 0.12), DOWN, buff=0.08))
             for v in (-8, -6, -4, -2, 0)])
-        base = Line(ax.c2p(-8.6, -1.6), ax.c2p(1.0, -1.6), color=MUTED, stroke_width=1.4)
+        base = Line(ax.c2p(X_LO, y_lo), ax.c2p(1.0, y_lo), color=MUTED, stroke_width=1.4)
+        x_lab = math(r"x/\rho_{Li}\ [1]", color=MUTED, size=MATH_SMALL)
+        x_lab.next_to(ticks[-1][1], RIGHT, buff=0.45)
 
-        self.add(marks, b_key, g_arrow, g_lab, ion_tag, ele_tag, rows, note, clock_label, clock,
-                 start_ion, start_ele, base, ticks, ion_path, ele_path, ion_dot, ele_dot)
+        self.add(marks, keys, ion_tag, ele_tag, formula, clock_label, clock,
+                 start_ion, start_ele, base, ticks, x_lab, ion_path, ele_path, ion_dot, ele_dot)
         self.wait(0.5)
         self.play(tracker.animate.set_value(1.0), run_time=PLAY_TIME, rate_func=LINEAR)
         self.wait(1.5)

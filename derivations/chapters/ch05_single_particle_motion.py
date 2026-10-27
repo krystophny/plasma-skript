@@ -318,14 +318,14 @@ mu_const = {mirror.lhs: mirror.rhs.subs(mu_t, mu), streaming.lhs: streaming.rhs}
 energy = show(sp.Eq(sp.Function("K")(t), m * v_par_t**2 / 2 + mu * B_s)).rhs
 agrees(sp.simplify(energy.diff(t).subs(mu_const).doit()), 0,
        lhs=sp.Derivative(sp.Function("K")(t), t), eq="motion-mirror-energy")
-v_0, alpha_0, B_m, B_max = sp.symbols("v_0 alpha_0 B_m B_max", positive=True)
+v_0, alpha_0, B_m, B_max = sp.symbols("v_0 vartheta_0 B_m B_max", positive=True)
 note("Pitch angle", alpha_0, "at", B_0, "; at the mirror point", sp.Eq(v_par, 0, evaluate=False))
 reflection = show(sp.Eq(m * (v_0 * sp.sin(alpha_0)) ** 2 / (2 * B_0) * B_m, m * v_0**2 / 2))
 B_mirror = sp.solve(reflection, B_m)[0]
 agrees(B_mirror / B_0, 1 / sp.sin(alpha_0) ** 2, lhs=B_m / B_0)
 note("Particles with", sp.Gt(B_mirror, B_max), "are lost; the loss-cone angle is")
-alpha_c = sp.Symbol("alpha_c", positive=True)
-sine = sp.Symbol("S", positive=True)  # sin(alpha_c), 0 < alpha_c < pi/2
+alpha_c = sp.Symbol("vartheta_c", positive=True)
+sine = sp.Symbol("S", positive=True)  # sin(vartheta_c), 0 < vartheta_c < pi/2
 loss_cone = show(sp.Eq(alpha_c, sp.asin(sp.solve(sp.Eq(B_mirror.subs(sp.sin(alpha_0), sine), B_max),
                                                  sine)[0]))).rhs
 mirror_ratio = {B_0: 0.01 * u.tesla, B_max: 0.05 * u.tesla}
@@ -522,12 +522,12 @@ assert sp.simplify(d_mu) == 0
 
 section("Deck: mu from the mirror force and loss cone", script="motion-nonuniform-fields")
 # The mirror route is the 'Adiabatic balance for mu' check above: d/dt(m v_par^2/2 + mu B) = B dmu/dt.
-alpha_s, R_m = sp.symbols("alpha R_m", positive=True)
+alpha_s, R_m = sp.symbols("vartheta R_m", positive=True)
 v_s, B_0d = sp.symbols("v B_0", positive=True)
 mu_mid = m_a * (v_s * sp.sin(alpha_s)) ** 2 / (2 * B_0d)
 B_turn = sp.solve(sp.Eq(mu_mid * sp.Symbol("B_t"), m_a * v_s**2 / 2), sp.Symbol("B_t"))[0]
 assert sp.simplify(B_turn - B_0d / sp.sin(alpha_s) ** 2) == 0  # v_par = 0 where B = W/mu
-assert sp.simplify(B_turn.subs(sp.sin(alpha_s), 1 / sp.sqrt(R_m)) - R_m * B_0d) == 0  # sin^2 alpha_c = 1/R_m
+assert sp.simplify(B_turn.subs(sp.sin(alpha_s), 1 / sp.sqrt(R_m)) - R_m * B_0d) == 0  # sin^2 vartheta_c = 1/R_m
 
 section("Deck: action of the gyration and the gyrophase momentum", script="motion-guiding-center")
 th_g = sp.Symbol("vartheta", real=True)                 # gyrophase w_c t + phi

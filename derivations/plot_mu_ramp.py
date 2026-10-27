@@ -18,9 +18,11 @@ The particle starts on the circle of radius rho_L0 centred on the axis, so the
 problem is rotationally symmetric and the result does not depend on the
 gyrophase. The canonical angular momentum about the axis is then exact, and a
 non-adiabatic change only displaces the guiding centre off the axis, which
-raises mu: mu_final/mu_initial - 1 >= 0. It falls exponentially with tau for
-the smooth ramp and only algebraically for the linear one, whose two kinks
-interfere.
+raises mu: mu_f/mu_i - 1 >= 0 (final over initial value; mu_i, not mu_0,
+which is the vacuum permeability). The plot shows |mu_f/mu_i - 1| against
+the ramp time tau_B (tau alone is the collision time of the deck). It falls
+exponentially with tau_B for the smooth ramp and only as a power law for the
+linear one, whose two kinks interfere.
 
 Integrator: Boris push. Velocities live on half steps; the start is the exact
 discrete circle of the scheme, and E uses the field increment over each step,
@@ -45,7 +47,7 @@ def field(t, tau, smooth):
 
 
 def boris(taus, smooth, steps_per_turn=STEPS_PER_TURN):
-    """mu_final/mu_initial - 1 [1] for every ramp time in `taus`."""
+    """mu_f/mu_i - 1 [1] for every ramp time in `taus`."""
     taus = np.atleast_1d(np.asarray(taus, float))
     half = 8 * taus.max() + 40 * np.pi       # ramp plus 20 turns on each side
     dt = 2 * np.pi / steps_per_turn
@@ -76,13 +78,13 @@ def plot():
 
     smooth, linear = boris(TAU, True), boris(TAU, False)
     fig, ax = figure(slide_width(8), 2.3)
-    ax.semilogy(TAU, linear, color=ORANGE, ls="--", marker="o", ms=2.2)
-    ax.semilogy(TAU, smooth, color=BLUE, marker="o", ms=2.2)
+    ax.semilogy(TAU, abs(linear), color=ORANGE, ls="--", marker="o", ms=2.2)
+    ax.semilogy(TAU, abs(smooth), color=BLUE, marker="o", ms=2.2)
     label(ax, 5.3, 8e-3, "linear ramp", ORANGE)
     label(ax, 3.4, 1e-9, r"$\tanh$ ramp", BLUE)
     ax.set(xlim=(0, 8.2), ylim=(1e-12, 1), xticks=range(0, 9),
-           xlabel=r"$|\omega_{c0}|\,\tau\ [1]$",
-           ylabel=r"$\mu_\mathrm{final}/\mu_\mathrm{initial}-1\ [1]$")
+           xlabel=r"$|\omega_{c0}|\,\tau_B\ [1]$",
+           ylabel=r"$|\mu_f/\mu_i-1|\ [1]$")
     ax.set_yticks([10.0**k for k in range(-12, 1, 2)])
     ax.minorticks_off()
     save(fig, "mu_ramp")

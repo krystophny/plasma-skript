@@ -1,21 +1,23 @@
 """Magnetic mirror: bounce, loss cone and the adiabatic invariant mu.
 
-Model: axisymmetric mirror field with B_z = B_0 [1 + (R_m - 1)(z/L)^2] and
-B_r = -(r/2) dB_z/dz (div B = 0), R_m = 4, L = 30 rho_L0, where
+Model: axisymmetric mirror field with B_z = B_0 [1 + (R_m - 1)(z/L_m)^2] and
+B_r = -(r/2) dB_z/dz (div B = 0), R_m = 4, L_m = 30 rho_L0 (mirror
+half-length; L is the field-variation length of the deck), where
 rho_L0 = v/omega_c0 is the Larmor radius of the full speed v at B_0.  Six ions of equal speed start on the midplane
-z = 0 with pitch angles alpha = 18, 26, 29, 31, 45, 70 degrees; their
+z = 0 with pitch angles theta = 18, 26, 29, 31, 45, 70 degrees (theta, as
+alpha is the species index); their
 orbits are full Boris pushes of the Lorentz force (drift_models.mirror_orbit),
 not drawn paths.  At the midplane
 
-    sin^2 alpha_c = B(0)/B(L) = 1/R_m  ->  alpha_c = 30 deg.
+    sin^2 theta_c = B(0)/B(L_m) = 1/R_m  ->  theta_c = 30 deg.
 
-Particles with sin^2 alpha < 1/R_m reach the mirror throat z = L and leave
-(open circle at the throat); the others reflect where B = B_0/sin^2 alpha,
-z_b = L sqrt((1/sin^2 alpha - 1)/(R_m - 1)).  The inset shows
-mu = m_alpha v_perp^2/(2B) (about the local field direction) divided by its starting
-value (first full gyro-period average): constant to 0.3 % for the
-reflected ions, 1.6 % for the escaping ones.  Axes are
-z/L [1], x/L [1] at equal scale, time v t/L [1].
+Particles with sin^2 theta < 1/R_m reach the mirror throat z = L_m and leave
+(open circle at the throat); the others reflect where B = B_0/sin^2 theta,
+z_b = L_m sqrt((1/sin^2 theta - 1)/(R_m - 1)).  The inset shows
+mu = m_alpha v_perp^2/(2B) (about the local field direction) divided by its
+initial value mu_i (first full gyro-period average): constant to 0.3 % for
+the reflected ions, 1.6 % for the escaping ones.  Axes are
+z/L_m [1], x/L_m [1] at equal scale, time v t/L_m [1].
 """
 
 from manim import *
@@ -76,12 +78,12 @@ class MagneticMirror(StyledScene):
             VGroup(Line(ax.c2p(v, -0.3), ax.c2p(v, -0.27), color=MUTED, stroke_width=1.6),
                    math(f"{v:g}", color=MUTED, size=MATH_SMALL).next_to(ax.c2p(v, -0.3), DOWN, buff=0.08))
             for v in (-1, -0.5, 0, 0.5, 1)])
-        z_lab = math(r"z/L\ [1]", color=MUTED, size=MATH_SMALL).next_to(ax.c2p(0.77, -0.3), DOWN, buff=0.08)
+        z_lab = math(r"z/L_m\ [1]", color=MUTED, size=MATH_SMALL).next_to(ax.c2p(0.77, -0.3), DOWN, buff=0.08)
         x_ticks = VGroup(*[
             VGroup(Line(ax.c2p(-zr, v), ax.c2p(-zr + 0.03, v), color=MUTED, stroke_width=1.6),
                    math(f"{v:g}".replace("-", "{-}"), color=MUTED, size=MATH_SMALL).move_to(ax.c2p(-1.15, v)))
             for v in (-0.2, 0, 0.2)])
-        x_lab = math(r"x/L\ [1]", color=MUTED, size=MATH_SMALL).next_to(frame, UP, buff=0.1).align_to(frame, LEFT)
+        x_lab = math(r"x/L_m\ [1]", color=MUTED, size=MATH_SMALL).next_to(frame, UP, buff=0.1).align_to(frame, LEFT)
 
         # B(z)/B0 profile, bottom left.
         prof = axes([-1.0, 1.0, 0.5], [0, 4.4, 1], 5.6, 1.7, ticks=False).move_to([-3.4, -2.1, 0])
@@ -98,10 +100,12 @@ class MagneticMirror(StyledScene):
         prof_x = VGroup(*[
             math(f"{v:g}", color=MUTED, size=MATH_SMALL).next_to(prof.c2p(v, 0), DOWN, buff=0.1)
             for v in (-1, 0, 1)])
-        prof_lab = math(r"B/B_0\ [1]\ \mathrm{vs}\ z/L\ [1]", color=B_FIELD, size=MATH_SMALL).next_to(prof_frame, UP, buff=0.1)
+        prof_lab = VGroup(
+            math(r"B/B_0\ [1]", color=B_FIELD, size=MATH_SMALL).next_to(prof_frame, UP, buff=0.1).align_to(prof_frame, LEFT),
+            math(r"z/L_m\ [1]", color=MUTED, size=MATH_SMALL).next_to(prof.c2p(0.5, 0), DOWN, buff=0.1))
         rm_mark = DashedLine(prof.c2p(-1.0, MIRROR_RATIO), prof.c2p(1.0, MIRROR_RATIO), color=MUTED,
                              stroke_width=THIN_WIDTH, dash_length=0.1)
-        rm_lab = math(r"R_m=4,\ L=30\,\rho_{L0}", color=MUTED, size=MATH_SMALL).move_to(prof.c2p(0, 2.9))
+        rm_lab = math(r"R_m=4,\ L_m=30\,\rho_{L0}", color=MUTED, size=MATH_SMALL).move_to(prof.c2p(0, 2.9))
 
         tracker = ValueTracker(0.0)
 
@@ -145,12 +149,13 @@ class MagneticMirror(StyledScene):
         inset.y_axis.set_opacity(0)
         inset_frame = Rectangle(width=inset.x_length, height=inset.y_length, color=MUTED, stroke_width=1.4
                                 ).move_to(inset.get_center())
-        inset_title = math(r"\mu/\mu_{\mathrm{start}}\ [1]\ \mathrm{vs}\ vt/L\ [1]", color=MUTED,
-                           size=MATH_SMALL).next_to(inset_frame, UP, buff=0.1)
+        inset_title = VGroup(
+            math(r"\mu/\mu_i\ [1]", color=MUTED, size=MATH_SMALL).next_to(inset_frame, UP, buff=0.1).align_to(inset_frame, LEFT),
+            math(r"vt/L_m\ [1]", color=MUTED, size=MATH_SMALL).next_to(inset.c2p(4.5 * length, 0.9), DOWN, buff=0.1))
         inset_ticks = VGroup(*[
             VGroup(Line(inset.c2p(0, v), inset.c2p(1.5, v), color=MUTED, stroke_width=1.6),
-                   math(f"{v:.1f}", color=MUTED, size=MATH_SMALL).next_to(inset.c2p(0, v), LEFT, buff=0.1))
-            for v in (0.9, 1.0, 1.1)])
+                   math(f"{v:.2f}", color=MUTED, size=MATH_SMALL).next_to(inset.c2p(0, v), LEFT, buff=0.1))
+            for v in (0.95, 1.0, 1.05)])
         inset_xt = VGroup(*[
             math(f"{v:g}", color=MUTED, size=MATH_SMALL).next_to(inset.c2p(v * length, 0.9), DOWN, buff=0.1)
             for v in (0, 3, 6)])
@@ -171,11 +176,11 @@ class MagneticMirror(StyledScene):
         key_dot = Dot(radius=DOT_RADIUS * 1.6, color=ION)
         key_ring = Circle(radius=DOT_RADIUS * 1.5, color=ION, stroke_width=2.4)
         rule = VGroup(
-            math(rf"\sin^2\alpha_c=1/R_m\ \Rightarrow\ \alpha_c={a_c:.0f}^\circ", color=INK, size=MATH_SMALL),
+            math(rf"\sin^2\vartheta_c=1/R_m\ \Rightarrow\ \vartheta_c={a_c:.0f}^\circ", color=INK, size=MATH_SMALL),
             key_dot, math(r"\mathrm{reflected}", color=MUTED, size=MATH_SMALL),
             key_ring, math(r"\mathrm{lost\ at\ throat}", color=MUTED, size=MATH_SMALL),
         ).arrange(RIGHT, buff=0.3).move_to([-0.3, -0.32, 0])
-        lane_note = math(r"\alpha:\ \mathrm{midplane\ pitch\ angle}", color=MUTED, size=MATH_SMALL)
+        lane_note = math(r"\vartheta:\ \mathrm{midplane\ pitch\ angle}", color=MUTED, size=MATH_SMALL)
         lane_note.next_to(frame, UP, buff=0.1).align_to(frame, RIGHT)
 
         self.add(lines, frame, coils, z_ticks, z_lab, x_lab, x_ticks, lane_note, lane_labels, prof_frame, prof_curve,

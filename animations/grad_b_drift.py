@@ -10,7 +10,8 @@ Drift formula (first order in rho_L/L):
 
 mu = m_alpha v_perp^2/(2B); at equal temperature mu is the same for both species,
 so the speeds are equal and the directions opposite.  Velocities are shown in
-units of rho_Li omega_ci [1], lengths in rho_Li [1], time as omega_ci t [1].
+units of rho_Li omega_ci [1], lengths in rho_Li [1] on framed axes x/rho_Li,
+y/rho_Li [1], time as omega_ci t [1]; the field is written B_0 [1 + y/(10 rho_Li)].
 The measured value is the slope of the guiding centre
 R = x + (m_alpha/q_alpha) v x B/B^2 over the whole run.
 """
@@ -58,9 +59,26 @@ class GradBDrift(StyledScene):
         _, ele_c = on_grid(ele[0], ele[2])
         t_end = grid[-1]
 
-        ax = axes([-5, 5, 1], [-2, 2, 1], 11.0, 4.4, ticks=False).move_to([0, 0.75, 0])
+        ax = axes([-5, 5, 1], [-2, 2, 1], 10.0, 4.0, ticks=False).move_to([0.3, 0.9, 0])
         ax.x_axis.set_opacity(0)
         ax.y_axis.set_opacity(0)
+        # Real axes: frame, ticks and labels in rho_Li [1] (equal scale).
+        frame = Rectangle(width=ax.x_length, height=ax.y_length, color=MUTED, stroke_width=1.4
+                          ).move_to(ax.get_center())
+        x_ticks = VGroup(*[
+            VGroup(Line(ax.c2p(v, -2), ax.c2p(v, -1.85), color=MUTED, stroke_width=1.6),
+                   math(f"{v:d}".replace("-", "{-}"), color=MUTED, size=MATH_SMALL
+                        ).next_to(ax.c2p(v, -2), DOWN, buff=0.1))
+            for v in (-4, -2, 0, 2)])
+        y_ticks = VGroup(*[
+            VGroup(Line(ax.c2p(-5, v), ax.c2p(-4.85, v), color=MUTED, stroke_width=1.6),
+                   math(f"{v:d}".replace("-", "{-}"), color=MUTED, size=MATH_SMALL
+                        ).next_to(ax.c2p(-5, v), LEFT, buff=0.12))
+            for v in (-2, 0, 2)])
+        x_lab = math(r"x/\rho_{Li}\ [1]", color=MUTED, size=MATH_SMALL)
+        x_lab.next_to(ax.c2p(5, -2), DOWN, buff=0.1).align_to(frame, RIGHT)
+        y_lab = math(r"y/\rho_{Li}\ [1]", color=MUTED, size=MATH_SMALL)
+        y_lab.next_to(frame, UP, buff=0.1).align_to(frame, LEFT)
 
         def to_screen(p):
             return ax.c2p(p[0], p[1])
@@ -68,15 +86,15 @@ class GradBDrift(StyledScene):
         # B out of the page; the circle grows with |B| (B = 1 + y/L).
         marks = VGroup()
         for x in np.arange(-4.5, 4.6, 1.5):
-            for y in np.arange(-1.6, 1.7, 0.8):
+            for y in np.arange(-1.2, 1.3, 0.8):
                 b = 1 + y / GRAD_B_L
                 marks.add(VGroup(Circle(radius=0.12 * b, color=B_FIELD, stroke_width=1.5),
                                  Dot(radius=0.033 * b, color=B_FIELD)).move_to(to_screen([x, y])))
         marks.set_opacity(0.6)
-        grad_arrow = Arrow(ax.c2p(-4.9, -1.5), ax.c2p(-4.9, 1.2), buff=0, color=INK, stroke_width=3,
+        grad_arrow = Arrow(ax.c2p(-4.75, -1.5), ax.c2p(-4.75, 1.2), buff=0, color=INK, stroke_width=3,
                            max_tip_length_to_length_ratio=0.12)
         grad_lab = math(r"\nabla B", color=INK, size=MATH_SIZE).next_to(grad_arrow, RIGHT, buff=0.08)
-        b_lab = math(r"\mathbf{B}\ \odot", color=B_FIELD, size=MATH_SIZE).move_to(ax.c2p(-4.2, 1.85))
+        b_lab = math(r"\mathbf{B}\ \odot", color=B_FIELD, size=MATH_SIZE).move_to(ax.c2p(-3.9, 1.68))
 
         tracker = ValueTracker(0.0)          # fraction of the run
 
@@ -105,18 +123,19 @@ class GradBDrift(StyledScene):
                        dash_length=0.1) if index() > 3 else VMobject(),
             Dot(to_screen(ele_c[index()]), radius=DOT_RADIUS, color=INK)))
 
-        ion_tag = math(r"\mathrm{ion}\ (q_\alpha>0)", color=ION, size=MATH_SMALL).move_to(ax.c2p(-1.6, 1.85))
-        ele_tag = math(r"\mathrm{electron}\ (q_\alpha<0)", color=ELECTRON, size=MATH_SMALL).move_to(ax.c2p(3.2, 1.85))
+        ion_tag = math(r"\mathrm{ion}\ (q_\alpha>0)", color=ION, size=MATH_SMALL).move_to(ax.c2p(-1.4, 1.68))
+        ele_tag = math(r"\mathrm{electron}\ (q_\alpha<0)", color=ELECTRON, size=MATH_SMALL).move_to(ax.c2p(3.0, 1.68))
 
-        unit_note = math(r"x/\rho_{Li},\ y/\rho_{Li}\ [1];\quad B=B_0\,(1+y/10\rho_{Li});\quad m_i/m_e=16,\ T_i=T_e",
-                         color=MUTED, size=MATH_SMALL).move_to([0, -1.75, 0])
+        unit_note = VGroup(
+            math(r"B=B_0\,[1+y/(10\,\rho_{Li})]", color=MUTED, size=MATH_SMALL).move_to([0.4, 3.3, 0]),
+            math(r"m_i/m_e=16,\ T_i=T_e", color=MUTED, size=MATH_SMALL).move_to([4.6, -2.95, 0]))
         rows = VGroup(
             math(r"v^{\nabla B}_{D,x}/(\rho_{Li}\omega_{ci})\ [1]\quad \mathrm{orbit}\ \mid\ -\mu\,\partial_yB/(q_\alpha B)\ \ (\mathrm{dev.})",
                  color=MUTED, size=MATH_SMALL),
             math(rf"\mathrm{{ion}}\ \ {{{ion[3]:+.4f}}}\ \mid\ {{{ion[4]:+.4f}}}\ \ ({{{100*(ion[3]/ion[4]-1):+.1f}}}\,\%)", color=ION, size=MATH_SMALL),
             math(rf"\mathrm{{electron}}\ \ {{{ele[3]:+.4f}}}\ \mid\ {{{ele[4]:+.4f}}}\ \ ({{{100*(ele[3]/ele[4]-1):+.1f}}}\,\%)",
                  color=ELECTRON, size=MATH_SMALL),
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.1).move_to([0, -2.85, 0])
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.1).move_to([0, -2.65, 0])
         clock_label = math(r"\omega_{ci} t=", color=MUTED, size=MATH_SMALL).move_to([4.7, 3.3, 0])
         clock = DecimalNumber(0.0, num_decimal_places=1, color=INK, font_size=MATH_SMALL)
 
@@ -127,7 +146,7 @@ class GradBDrift(StyledScene):
         clock.add_updater(place_clock)
         place_clock(clock)
 
-        self.add(marks, grad_arrow, grad_lab, b_lab, ion_tag, ele_tag, unit_note, rows,
+        self.add(frame, x_ticks, y_ticks, x_lab, y_lab, marks, grad_arrow, grad_lab, b_lab, ion_tag, ele_tag, unit_note, rows,
                  clock_label, clock, ion_path, ele_path, ion_gc, ele_gc, ion_dot, ele_dot)
         self.wait(0.5)
         self.play(tracker.animate.set_value(1.0), run_time=PLAY_TIME, rate_func=LINEAR)
