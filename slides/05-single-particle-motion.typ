@@ -140,7 +140,7 @@
   #symbols[$epsilon = v \/ (abs(omega_c)L) << 1$; for $v_parallel sim v_perp$, this is of order $rho_L \/ L$]
 ]
 // ---------------------------------- Curvature: centrifugal force then drift
-#slide(section: "motion-nonuniform-fields", title: [Curvature drift])[ 
+#slide(section: "motion-guiding-center", title: [Curvature drift])[
   #at(7, 5, y: 8mm, curvature-picture(unit: 12mm))
   #at(1, 7, y: rows-y, lrows(size: 22pt, label-width: 34mm, gap: 14mm,
     ([centrifugal force], $bold(F)_c = (m_alpha v_parallel^2) \/ R_c thin bold(e)_R$),
@@ -149,7 +149,7 @@
   #at(1, 8, y: result-y, result-box($bold(v)_D^"curv" = (m_alpha v_parallel^2) \/ (q_alpha B R_c) thin bold(e)_R times bold(b)$, [first-order drift]))
   #symbols[$R_c$ field-line radius of curvature, $bold(e)_R$ outward; $v_D^"curv"\/v = O(epsilon)$ when $R_c sim L$]
 ]
-#animation-page("curvature-drift", "curvature_drift", section: "motion-nonuniform-fields")
+#animation-page("curvature-drift", "curvature_drift", section: "motion-guiding-center")
 // ------------------------------------------- Magnetic moment of the gyro-orbit
 #slide(section: "motion-guiding-center", title: [Magnetic moment])[
   #at(8, 5, y: 14mm, gyration-picture(unit: 10.2mm))
@@ -185,7 +185,7 @@
   #at(1, 8, y: result-y, result-box($m_alpha dot(v)_parallel = -mu thin dif B \/ dif s$, [mirror force toward weaker field]))
   #symbols[$s$ arc length along $bold(B)$, $p_parallel = m_alpha v_parallel$, $mu$ held constant to leading order; static field, $bold(E) = 0$]
 ]
-#slide(section: "motion-guiding-center", title: [Magnetic mirror: reflection])[ 
+#slide(section: "motion-guiding-center", title: [Magnetic mirror: reflection])[
   #at(8, 5, y: 4mm, mirror-picture(unit: 11.5mm))
   #at(1, 8, y: rows-y, lrows(size: 22pt, label-width: 40mm, gap: 15mm,
     ([energy], $W = (m_alpha v_parallel^2)\/2 + mu B = "const."$),
