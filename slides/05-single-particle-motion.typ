@@ -137,7 +137,7 @@
     ([field varies over $L$], $dif (bold(b) \/ omega_c) \/ dif t = O(v \/ (abs(omega_c) L))$),
   ))
   #at(1, 12, y: 111mm, result-box($dot(bold(R)) = v_parallel bold(b) + O(epsilon v)$, [field-line following at leading order]))
-  #symbols[$epsilon = v \/ (abs(omega_c)L) << 1$; for $v_parallel sim v_perp$, this is of order $rho_L \/ L$]
+  #symbols[$epsilon = v \/ (abs(omega_c)L) << 1$; for $v_parallel approx v_perp$, this is of order $rho_L \/ L$]
 ]
 // ---------------------------------- Curvature: centrifugal force then drift
 #slide(section: "motion-guiding-center", title: [Curvature drift])[
@@ -147,7 +147,7 @@
     ([general force drift], $bold(v)_D = (bold(F) times bold(B)) \/ (q_alpha B^2)$),
   ))
   #at(1, 8, y: result-y, result-box($bold(v)_D^"curv" = (m_alpha v_parallel^2) \/ (q_alpha B R_c) thin bold(e)_R times bold(b)$, [first-order drift]))
-  #symbols[$R_c$ field-line radius of curvature, $bold(e)_R$ outward; $v_D^"curv"\/v = O(epsilon)$ when $R_c sim L$]
+  #symbols[$R_c$ field-line radius of curvature, $bold(e)_R$ outward; $v_D^"curv"\/v = O(epsilon)$ when $R_c approx L$]
 ]
 #animation-page("curvature-drift", "curvature_drift", section: "motion-guiding-center")
 // ------------------------------------------- Magnetic moment of the gyro-orbit
