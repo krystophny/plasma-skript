@@ -175,24 +175,24 @@
   #at(1, 12, y: 119mm, align(center)[Slower field variation $=>$ better conservation of $mu$])
   #symbols[Illustration: field strength doubles; $mu_i$ and $mu_f$ are the moments before and after the ramp.]
 ]
-// ------------------------------------------ Mirror: effective one-dimensional potential
-#slide(section: "motion-guiding-center", title: [Mirror force from the Hamiltonian])[
+// ------------------------------------------ Magnetic-moment energy and force
+#slide(section: "motion-guiding-center", title: [Magnetic-moment energy and force])[
   #at(8, 5, y: 4mm, mirror-force-picture(unit: 12.5mm))
   #at(1, 8, y: rows-y, lrows(size: 22pt, label-width: 39mm, gap: 15mm,
-    ([effective energy], $H_parallel = p_parallel^2 \/ (2 m_alpha) + mu B(s)$),
-    ([Hamilton's equation], $dot(p)_parallel = - dif H_parallel \/ dif s$),
+    ([energy], $H = (m_alpha v_parallel^2) \/ 2 + mu B$),
+    ([moment force], $bold(F)_mu = -mu grad B$),
   ))
-  #at(1, 8, y: result-y, result-box($m_alpha dot(v)_parallel = -mu thin dif B \/ dif s$, [mirror force toward weaker field]))
-  #symbols[$s$ arc length along $bold(B)$, $p_parallel = m_alpha v_parallel$, $mu$ held constant to leading order; static field, $bold(E) = 0$]
+  #at(1, 9, y: result-y, result-box($F_(mu,parallel) = -mu bold(b) dot grad B, quad bold(F)_(mu,perp) = -mu grad_perp B$, [mirror force and grad-$B$ force]))
+  #symbols[$mu$ held constant to leading order; static magnetic field, $bold(E) = 0$]
 ]
 #slide(section: "motion-guiding-center", title: [Magnetic mirror: reflection])[
   #at(8, 5, y: 8mm, mirror-picture(unit: 8.5mm))
   #at(1, 8, y: rows-y, lrows(size: 22pt, label-width: 40mm, gap: 15mm,
-    ([energy], $W = (m_alpha v_parallel^2)\/2 + mu B = "const."$),
+    ([energy], $H = (m_alpha v_parallel^2) \/ 2 + mu B = "const."$),
     ([turning point], $v_parallel = 0$),
   ))
-  #at(1, 8, y: result-y, result-box($B_m = W \/ mu$, [parallel energy converted into perpendicular energy]))
-  #symbols[$B_m$ magnetic field at reflection, $W$ conserved kinetic energy, $mu$ adiabatically invariant]
+  #at(1, 8, y: result-y, result-box($B_m = H \/ mu$, [parallel energy converted into perpendicular energy]))
+  #symbols[$B_m$ magnetic field at reflection, $H$ conserved energy, $mu$ adiabatically invariant]
 ]
 #slide(section: "motion-nonuniform-fields", title: [Mirror ratio and loss cone])[
   #at(8, 5, y: 8mm, loss-cone-picture(unit: 13mm))
@@ -211,15 +211,15 @@
   #at(1, 12, y: 128mm, align(center)[lost $= 1 - cos theta.alt_c = 1 - sqrt(1 - 1 \/ R_m)$ #h(1em) #note[isotropic velocity distribution]])
   #symbols[$v_(perp 0)$ at midplane, $R_m = B_max \/ B_0$, $L_m$ mirror half-length]
 ]
-// --------------------------------------- Grad-B: same moment, perpendicular force
+// --------------------------------------- Grad-B: perpendicular part of the moment force
 #slide(section: "motion-nonuniform-fields", title: [Grad-$B$ drift])[
   #at(6, 7, y: 0mm, gradb-picture(unit: 12mm))
-  #at(1, 6, y: rows-y, lrows(size: 23pt, label-width: 31mm, gap: 15mm,
-    ([effective energy], $U_mu = mu B$),
-    ([moment force], $bold(F)_mu = -mu grad B$),
+  #at(1, 6, y: rows-y, lrows(size: 22pt, label-width: 38mm, gap: 15mm,
+    ([perpendicular force], $bold(F)_(mu,perp) = -mu grad_perp B$),
+    ([general force drift], $bold(v)_D = (bold(F) times bold(B)) \/ (q_alpha B^2)$),
   ))
-  #at(1, 9, y: 90mm, result-box($bold(v)_D^(grad B) = mu \/ (q_alpha B^2) thin bold(B) times grad B$, [perpendicular force drift]))
-  #symbols[The parallel part of $-mu grad B$ is the mirror force; the perpendicular part causes this first-order drift.]
+  #at(1, 9, y: 90mm, result-box($bold(v)_D^(grad B) = mu \/ (q_alpha B^2) thin bold(B) times grad B$, [grad-$B$ drift]))
+  #symbols[The parallel component of the same force $-mu grad B$ is the mirror force.]
 ]
 #animation-page("grad-b-drift", "grad_b_drift", section: "motion-nonuniform-fields")
 // ---------------------------------------------------- 13 polarization

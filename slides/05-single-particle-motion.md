@@ -49,12 +49,12 @@ $\rho_L/L$ ordering when $v_\parallel\sim v_\perp$.
 | 20 | Why is mu nearly constant? | derivation | motion-guiding-center | The fast gyroaction $J=E_\perp/|\omega_c|=(m_\alpha/|q_\alpha|)\mu$ is adiabatically invariant if the magnetic field changes little in one gyroperiod. No canonical line integral or Faraday-law calculation in the live deck. |
 | 21 | mu in a slowly growing field | animation | motion-guiding-center | Preserve the original $B(t)$ ramp and shrinking orbit with magnetic-moment readouts; use it as a visual example after the adiabatic argument. |
 | 22 | Adiabatic invariance: numerical example | plot | motion-guiding-center | Preserve the original smooth-vs-kink ramp plot; the only spoken conclusion is that slower field changes give better conservation of $\mu$. The detailed rate dependence is optional script material. |
-| 23 | Mirror force from the Hamiltonian | derivation + original illustration | motion-guiding-center | With conserved total kinetic energy and adiabatic $\mu$, $H_\parallel=p_\parallel^2/(2m_\alpha)+\mu B(s)$. Hamilton: $\dot p_\parallel=-\mu\,dB/ds$. The original converging-field illustration remains; no near-axis $\nabla\cdot\mathbf B$ derivation. |
-| 24 | Magnetic mirror: reflection | derivation + original mirror illustration | motion-guiding-center | $W=m_\alpha v_\parallel^2/2+\mu B$ is constant; at the turning point $v_\parallel=0$, so $B_m=W/\mu$. |
+| 23 | Magnetic-moment energy and force | derivation + original illustration | motion-guiding-center | Write only $H=m_\alpha v_\parallel^2/2+\mu B$. At fixed adiabatic $\mu$, the effective potential $\mu B$ gives $\mathbf F_\mu=-\mu\nabla B$. Its parallel component is the mirror force; its perpendicular component later gives the grad-$B$ drift. No $p_\parallel$ or separate one-dimensional Hamiltonian. |
+| 24 | Magnetic mirror: reflection | derivation + original mirror illustration | motion-guiding-center | $H=m_\alpha v_\parallel^2/2+\mu B$ is constant; at the turning point $v_\parallel=0$, so $B_m=H/\mu$. |
 | 25 | Mirror ratio and loss cone | derivation + original illustration | motion-nonuniform-fields | Pitch angle $\sin\vartheta=v_\perp/v$; $\sin^2\vartheta/B$ remains constant, so $\sin^2\vartheta_c=1/R_m$. |
 | 26 | Magnetic mirror | animation | motion-nonuniform-fields | Preserve the six-orbit full-Lorentz mirror animation, now after the loss-cone threshold is defined. |
 | 27 | Loss cone in velocity space | plot | motion-nonuniform-fields | Preserve the original loss-cone plot and the isotropic lost fraction. |
-| 28 | Grad-B drift | derivation + original illustration | motion-nonuniform-fields | Same magnetic-moment energy $U_\mu=\mu B$ gives $\mathbf F_\mu=-\mu\nabla B$. Its parallel component is the mirror force; its perpendicular component in $\mathbf v_D=\mathbf F\times\mathbf B/(q_\alpha B^2)$ produces grad-$B$ drift. |
+| 28 | Grad-B drift | derivation + original illustration | motion-nonuniform-fields | Take the perpendicular component $\mathbf F_{\mu,\perp}=-\mu\nabla_\perp B$ from page 23 and insert it into $\mathbf v_D=\mathbf F\times\mathbf B/(q_\alpha B^2)$. |
 | 29 | Grad-B drift | animation | motion-nonuniform-fields | Preserve the full-Lorentz ion/electron animation and its original gradient illustration. |
 | 30 | Polarization drift | static | motion-polarization | Slowly varying E_perp; polarization current carried by ions. |
 | 31 | Polarization drift | animation | motion-polarization | E_perp switched on over three ion turns; view with the common E x B displacement removed: ion guiding centre moves along E by m E_1/(q B^2), electron 16 times less and opposite. |
@@ -102,32 +102,33 @@ $O(\epsilon)$; the slow guiding-center invariant is the quantity being
 approximated. Illustrate with the existing ramp animation and plot.
 Do not derive Faraday's law or the canonical action in the live lesson.
 
-**23–24. Mirror force and reflection.** For static $\mathbf B$ with no
-electric field, use the effective one-dimensional Hamiltonian
-$H_\parallel=p_\parallel^2/(2m_\alpha)+\mu B(s)$.
-Hamilton's equation gives $m_\alpha\dot v_\parallel=-\mu,dB/ds$.
-Energy conservation gives $W=m_\alpha v_\parallel^2/2+\mu B$;
-at reflection, $B_m=W/\mu$. Then introduce the loss-cone threshold.
+**23–24. Magnetic-moment force and reflection.** Write
+$H=m_\alpha v_\parallel^2/2+\mu B$. With $\mu$ held fixed to
+leading order, $\mu B$ is the effective potential and therefore
+$\mathbf F_\mu=-\mu\nabla B$. Its parallel component is
+$F_{\mu,\parallel}=-\mu\mathbf b\cdot\nabla B$, the mirror force;
+its perpendicular component is retained for the grad-$B$ slide.
+There is no need to introduce $p_\parallel$, a separate
+$H_\parallel$, or Hamilton's equations. Since $H$ is constant in a
+static magnetic field, reflection occurs at $v_\parallel=0$ and
+$B_m=H/\mu$. Then introduce the loss-cone threshold.
 
 **25–27. Loss cone and animation.** With speed fixed and $\mu$ approximately conserved,
 $\sin^2\vartheta/B$ is constant. Therefore
 $\sin^2\vartheta_c=B_0/B_{\max}=1/R_m$.
 Show the magnetic-mirror animation (page 26), then retain the original velocity-space plot (page 27).
 
-**28–29. Grad-$B$ drift.** The same effective perpendicular energy
-$U_\mu=\mu B$ motivates the gyroaveraged force
-$\mathbf F_\mu=-\mu\nabla B$.
-Its parallel component is the mirror force.
-Its perpendicular component in the general force-drift formula gives
+**28–29. Grad-$B$ drift.** Reuse the perpendicular component
+$\mathbf F_{\mu,\perp}=-\mu\nabla_\perp B$ from page 23.
+Insert it into the already derived force-drift formula to obtain
 $\mathbf v_D^{\nabla B}=
 (\mu/q_\alpha)\mathbf B\times\nabla B/B^2$.
-Both effective forces are first order compared with the cyclotron Lorentz
-force, so the associated drifts are first order in $\epsilon$.
+Thus the mirror force and grad-$B$ drift are the parallel and
+perpendicular consequences of the same $-\mu\nabla B$ force.
 Show the existing grad-$B$ animation.
 
-The fast-gyroaction reasoning and the Hamiltonian are used only to explain
-the slow moment and mirror motion, not to introduce the noncanonical
-guiding-center symplectic structure.
+The Hamiltonian is used only as compact energy bookkeeping. No canonical
+momentum or noncanonical guiding-center equations are introduced.
 
 ## Evidence and assets
 
