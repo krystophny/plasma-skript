@@ -194,7 +194,6 @@
   #at(1, 8, y: result-y, result-box($B_m = W \/ mu$, [parallel energy converted into perpendicular energy]))
   #symbols[$B_m$ magnetic field at reflection, $W$ conserved kinetic energy, $mu$ adiabatically invariant]
 ]
-#animation-page("magnetic-mirror", "magnetic_mirror", section: "motion-nonuniform-fields")
 #slide(section: "motion-nonuniform-fields", title: [Mirror ratio and loss cone])[
   #at(8, 5, y: 8mm, loss-cone-picture(unit: 13mm))
   #at(1, 7, y: rows-y, lrows(label-width: 44mm,
@@ -205,6 +204,7 @@
   #at(1, 7, y: result-y, result-box($sin^2 theta.alt_c = 1 \/ R_m$, [$R_m = B_max \/ B_0$ mirror ratio]))
   #symbols[$theta.alt_0$ pitch angle at the midplane, $theta.alt_c$ loss-cone angle; speed $v$ constant in a static magnetic field]
 ]
+#animation-page("magnetic-mirror", "magnetic_mirror", section: "motion-nonuniform-fields")
 #slide(section: "motion-nonuniform-fields", title: [Loss cone in velocity space])[
   #at(1, 12, y: 0mm, align(center, plot("loss_cone", columns: 11)))
   #at(1, 12, y: 114mm, align(center)[$v_parallel^2 (z) = v^2 - v_(perp 0)^2 B(z) \/ B_0$])
