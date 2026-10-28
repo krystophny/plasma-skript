@@ -120,124 +120,108 @@
   #at(1, 12, y: 148mm, note[#link("https://krystophny.github.io/plasma-skript/notebooks/orbits.html")[notebook: particle orbits and drifts]])
 ]
 #animation-page("gravity-drift", "gravity_drift", section: "motion-exb")
-// ------------------------------------------------- 4 guiding centre
-// Block layout: picture and rows with a fixed label column, result box
-// below the rows, at most one symbol line at the bottom.
+// ------------------------------------ Leading-order guiding-centre motion
 #slide(section: "motion-guiding-center", title: [Guiding centre])[
   #at(1, 12, y: 2mm, guiding-centre-picture(unit: 10.5mm))
-  #at(1, 12, y: 74mm, lrows(size: 24pt, gap: 13mm,
-    ([split], $bold(r) = bold(R) + bold(rho), quad bold(rho) = (bold(b) times bold(v)) \/ omega_c$),
+  #at(1, 12, y: 74mm, lrows(size: 23pt, gap: 13mm,
+    ([position], $bold(r) = bold(R) + bold(rho), quad bold(rho) = (bold(b) times bold(v)) \/ omega_c$),
     ([uniform $bold(B)$], $dot(bold(rho)) = bold(v)_perp quad => quad dot(bold(R)) = v_parallel bold(b)$),
-    ([ordering], $epsilon = rho_L \/ L << 1, quad omega \/ abs(omega_c) << 1$),
+    ([slow variation], $epsilon = v \/ (abs(omega_c) L) << 1$),
   ))
-  #symbols[$bold(R)$ guiding centre, $bold(rho)$ gyration vector, $O$ origin, $L$ field-variation length, $omega$ field-change rate]
+  #symbols[$bold(R)$ guiding centre, $bold(rho)$ gyration vector, $L$ field variation length, $v$ characteristic particle speed]
 ]
-#slide(section: "motion-guiding-center", title: [Staying on a field line])[
+#slide(section: "motion-guiding-center", title: [Why follow magnetic field lines?])[
   #at(1, 12, y: 0mm, pad(left: 14mm, field-line-picture(unit: 10mm)))
-  #at(1, 12, y: 58mm, lrows(
-    ([along $bold(b)$], $dif (v_parallel bold(b)) \/ dif t = (dif v_parallel \/ dif t) thin bold(b) + v_parallel^2 bold(kappa)$),
-    ([supplied by drift], $q_alpha bold(v)_D^"curv" times bold(B) = m_alpha v_parallel^2 bold(kappa) quad => quad bold(v)_D^"curv" = (m_alpha v_parallel^2) \/ (q_alpha B) thin bold(b) times bold(kappa)$),
+  #at(1, 12, y: 59mm, lrows(size: 20pt, label-width: 42mm, gap: 12mm,
+    ([differentiate], $dot(bold(R)) = v_parallel bold(b) - (dif (bold(b) \/ omega_c) \/ dif t) times bold(v)$),
+    ([field varies over $L$], $dif (bold(b) \/ omega_c) \/ dif t = O(v \/ (abs(omega_c) L))$),
   ))
-  #at(1, 12, y: 94mm, result-box($dot(bold(R)) = v_parallel bold(b) + bold(v)_D^"curv", quad Delta_perp approx abs(bold(v)_D^"curv") ell \/ abs(v_parallel) = (ell \/ R_c) abs(v_parallel \/ omega_c)$, [per pass of arc length $ell$]))
-  #symbols[$bold(kappa) = (bold(b) dot grad) bold(b)$ curvature vector, $R_c = 1 \/ abs(bold(kappa))$ radius of curvature, $Delta_perp$ offset across $bold(B)$]
+  #at(1, 12, y: 111mm, result-box($dot(bold(R)) = v_parallel bold(b) + O(epsilon v)$, [field-line following at leading order]))
+  #symbols[$epsilon = v \/ (abs(omega_c)L) << 1$; for $v_parallel sim v_perp$, this is of order $rho_L \/ L$]
 ]
-// ------------------------------------------------- 5 magnetic moment
+// ---------------------------------- Curvature: centrifugal force then drift
+#slide(section: "motion-nonuniform-fields", title: [Curvature drift])[ 
+  #at(7, 5, y: 8mm, curvature-picture(unit: 12mm))
+  #at(1, 7, y: rows-y, lrows(size: 22pt, label-width: 34mm, gap: 14mm,
+    ([centrifugal force], $bold(F)_c = (m_alpha v_parallel^2) \/ R_c thin bold(e)_R$),
+    ([general force drift], $bold(v)_D = (bold(F) times bold(B)) \/ (q_alpha B^2)$),
+  ))
+  #at(1, 8, y: result-y, result-box($bold(v)_D^"curv" = (m_alpha v_parallel^2) \/ (q_alpha B R_c) thin bold(e)_R times bold(b)$, [first-order drift]))
+  #symbols[$R_c$ field-line radius of curvature, $bold(e)_R$ outward; $v_D^"curv"\/v = O(epsilon)$ when $R_c sim L$]
+]
+#animation-page("curvature-drift", "curvature_drift", section: "motion-nonuniform-fields")
+// ------------------------------------------- Magnetic moment of the gyro-orbit
 #slide(section: "motion-guiding-center", title: [Magnetic moment])[
   #at(8, 5, y: 14mm, gyration-picture(unit: 10.2mm))
   #at(1, 6, y: 10mm, lrows(size: 24pt, label-width: 40mm,
     ([orbit current], $I = abs(q_alpha) abs(omega_c) \/ (2 pi)$),
     ([orbit area], $S = pi rho_L^2$),
   ))
-  #at(1, 7, y: result-y, result-box($mu = I S = (m_alpha v_perp^2)/(2 B), quad bold(mu) = -mu bold(b)$, [diamagnetic]))
-  #symbols[$bold(mu)$ magnetic moment of the orbit]
+  #at(1, 7, y: result-y, result-box($mu = I S = (m_alpha v_perp^2)\/(2 B), quad bold(mu) = -mu bold(b)$, [diamagnetic]))
+  #symbols[$bold(mu)$ magnetic moment of the orbit; the circulating charge produces a moment opposite to $bold(B)$]
 ]
-// ------------------------------------------------------ 6 mirror force
-#slide(section: "motion-guiding-center", title: [Mirror force])[
-  #at(8, 5, y: 4mm, mirror-force-picture(unit: 12.5mm))
-  #at(1, 8, y: rows-y, lrows(label-width: 36mm,
-    ([$grad dot bold(B) = 0$], $B_r = -(r \/ 2) thin partial B \/ partial z$),
-    ([gyroaverage], $⟨ F_parallel ⟩ = abs(q_alpha) v_perp B_r (rho_L) = -mu thin partial B \/ partial z$),
+#slide(section: "motion-guiding-center", title: [Why is $mu$ nearly constant?])[
+  #at(8, 4, y: 12mm, gyration-picture(unit: 9mm))
+  #at(1, 8, y: rows-y, lrows(size: 22pt, label-width: 35mm, gap: 15mm,
+    ([fast gyration], $T_c = 2 pi \/ abs(omega_c)$),
+    ([gyroaction], $J = E_perp \/ abs(omega_c) = (m_alpha \/ abs(q_alpha)) mu$),
   ))
-  #at(1, 8, y: result-y, result-box($m_alpha thin dif v_parallel \/ dif t = -mu thin partial B \/ partial s - q_alpha thin partial Phi \/ partial s$, [parallel equation of motion]))
-  #symbols[$r$, $z$ about, along the orbit axis; $s = z$ arc length along $bold(B)$; $⟨ dot ⟩$ gyroaverage; $Phi$ potential]
-]
-// ------------------------------------------------- 7 energy and mu
-#slide(section: "motion-guiding-center", title: [Energy and $mu$])[
-  #at(9, 4, y: 84mm, pad(left: 2mm, mirror-picture(unit: 7.5mm)))
-  #at(1, 12, y: rows-y, lrows(label-width: 46mm,
-    ([energy], $W = m_alpha v_parallel^2 \/ 2 + mu B + q_alpha Phi$),
-    ([$⟨ F_parallel ⟩ v_parallel$, $dot(W) = 0$], [$dot(mu) = 0$ #h(0.5em) #text(size: 18pt, fill: muted)[to leading order in $epsilon$, static fields]]),
-    ([orbit flux], $psi = pi rho_L^2 B = (2 pi m_alpha \/ q_alpha^2) mu = "const."$),
-  ))
-  #at(1, 8, y: result-y, result-box($v_parallel = 0 "where" B = (W - q_alpha Phi) \/ mu$, [mirror point]))
-  #symbols[$W$ total energy, $mu = m_alpha v_perp^2 \/ (2 B)$ at each instant, $psi$ magnetic flux, $B_0$, $B_max$ at midplane, throat]
-]
-// ------------------------------------------- 8 time-dependent field
-#slide(section: "motion-guiding-center", title: [$mu$ from Faraday's law])[
-  #at(9, 4, y: 2mm, faraday-picture(unit: 10.5mm))
-  #at(1, 8, y: 4mm, lrows(size: 22pt, label-width: 42mm, gap: 13mm,
-    ([one gyration], $delta (m_alpha v_perp^2 \/ 2) = q_alpha integral.cont bold(E) dot dif bold(l)$),
-    ([Faraday], $integral.cont bold(E) dot dif bold(l) = plus.minus pi rho_L^2 thin partial B \/ partial t$),
-    ([per turn], $delta (m_alpha v_perp^2 \/ 2) = mu thin delta B$),
-  ))
-  #at(1, 8, y: result-y, result-box($delta mu approx 0$, [slowly varying $B(t)$]))
-  #symbols[$delta$ change per gyration, $delta B = (2 pi \/ abs(omega_c)) thin partial B \/ partial t$; $plus.minus$ ions, electrons; $bold(E)$ induced field]
+  #at(1, 8, y: result-y, result-box($J approx "const." quad => quad mu approx "const."$, [adiabatic invariant of a fast periodic motion]))
+  #symbols[The magnetic field must vary little during one gyroperiod; the instantaneous particle moment may have small oscillations.]
 ]
 #animation-page("mu-ramp", "mu_ramp", section: "motion-guiding-center")
-#slide(section: "motion-guiding-center", title: [Adiabatic invariance])[
+#slide(section: "motion-guiding-center", title: [Adiabatic invariance: numerical example])[
   #at(3, 8, y: 0mm, plot("mu_ramp", columns: 8))
-  #at(1, 12, y: 114mm, align(center)[tanh ramp: $B \/ B_0 = 3\/2 + tanh(t \/ tau_B) \/ 2$ #h(2em) linear ramp: kinks at $t = plus.minus tau_B$])
-  #at(1, 12, y: 128mm, align(center)[smooth ramp: exponentially small; kinks: power law in $1 \/ (abs(omega_(c 0)) tau_B)$])
-  #symbols[$tau_B$ ramp time, $omega_(c 0) = q_alpha B_0 \/ m_alpha$, $B_0$ initial field, $mu_i$, $mu_f$ initial and final $mu$]
+  #at(1, 12, y: 119mm, align(center)[Slower field variation $=>$ better conservation of $mu$])
+  #symbols[Illustration: field strength doubles; $mu_i$ and $mu_f$ are the moments before and after the ramp.]
 ]
-// ------------------------------------------------- 9 Hamiltonian
-#slide(section: "motion-guiding-center", title: [$mu$ in the Hamiltonian picture])[
-  #at(1, 12, y: rows-y, lrows(size: 24pt, gap: 13mm,
-    ([action], $J = integral.cont (m_alpha bold(v)_perp + q_alpha bold(A)) dot dif bold(l)$),
-    ([one turn], $J = 2 pi m_alpha v_perp rho_L - pi abs(q_alpha) B rho_L^2 = (2 pi m_alpha \/ abs(q_alpha)) mu$),
-    ([guiding centre], $H = m_alpha v_parallel^2 \/ 2 + mu B(bold(R)) + q_alpha Phi(bold(R))$),
+// ------------------------------------------ Mirror: effective one-dimensional potential
+#slide(section: "motion-guiding-center", title: [Mirror force from the Hamiltonian])[
+  #at(8, 5, y: 4mm, mirror-force-picture(unit: 12.5mm))
+  #at(1, 8, y: rows-y, lrows(size: 22pt, label-width: 39mm, gap: 15mm,
+    ([effective energy], $H_parallel = p_parallel^2 \/ (2 m_alpha) + mu B(s)$),
+    ([Hamilton's equation], $dot(p)_parallel = - dif H_parallel \/ dif s$),
   ))
-  #at(1, 9, y: 84mm, result-box([$J$ adiabatic invariant $=>$ $mu$ adiabatic invariant], [$mu B$ acts as a potential: mirror force and grad-$B$ drift]))
-  #symbols[$J$ action, $bold(A) = bold(B) times bold(rho) \/ 2$ vector potential, $dif bold(l)$ along the orbit in the direction of motion]
+  #at(1, 8, y: result-y, result-box($m_alpha dot(v)_parallel = -mu thin dif B \/ dif s$, [mirror force toward weaker field]))
+  #symbols[$s$ arc length along $bold(B)$, $p_parallel = m_alpha v_parallel$, $mu$ held constant to leading order; static field, $bold(E) = 0$]
 ]
-// ---------------------------------------------------------- 10 mirror
+#slide(section: "motion-guiding-center", title: [Magnetic mirror: reflection])[ 
+  #at(8, 5, y: 4mm, mirror-picture(unit: 11.5mm))
+  #at(1, 8, y: rows-y, lrows(size: 22pt, label-width: 40mm, gap: 15mm,
+    ([energy], $W = (m_alpha v_parallel^2)\/2 + mu B = "const."$),
+    ([turning point], $v_parallel = 0$),
+  ))
+  #at(1, 8, y: result-y, result-box($B_m = W \/ mu$, [parallel energy converted into perpendicular energy]))
+  #symbols[$B_m$ magnetic field at reflection, $W$ conserved kinetic energy, $mu$ adiabatically invariant]
+]
+#animation-page("magnetic-mirror", "magnetic_mirror", section: "motion-nonuniform-fields")
 #slide(section: "motion-nonuniform-fields", title: [Mirror ratio and loss cone])[
   #at(8, 5, y: 8mm, loss-cone-picture(unit: 13mm))
   #at(1, 7, y: rows-y, lrows(label-width: 44mm,
     ([pitch angle], $sin theta.alt = v_perp \/ v$),
-    ([$mu$ const., $Phi = 0$], $sin^2 theta.alt \/ B = "const."$),
+    ([$mu$ const., $bold(E) = 0$], $sin^2 theta.alt \/ B = "const."$),
     ([trapped], $B_0 \/ sin^2 theta.alt_0 < B_max$),
   ))
   #at(1, 7, y: result-y, result-box($sin^2 theta.alt_c = 1 \/ R_m$, [$R_m = B_max \/ B_0$ mirror ratio]))
-  #symbols[$theta.alt_0$ pitch angle at the midplane, $theta.alt_c$ loss-cone angle; $Phi = 0$: speed $v$ constant]
+  #symbols[$theta.alt_0$ pitch angle at the midplane, $theta.alt_c$ loss-cone angle; speed $v$ constant in a static magnetic field]
 ]
-#animation-page("magnetic-mirror", "magnetic_mirror", section: "motion-nonuniform-fields")
 #slide(section: "motion-nonuniform-fields", title: [Loss cone in velocity space])[
   #at(1, 12, y: 0mm, align(center, plot("loss_cone", columns: 11)))
   #at(1, 12, y: 114mm, align(center)[$v_parallel^2 (z) = v^2 - v_(perp 0)^2 B(z) \/ B_0$])
-  #at(1, 12, y: 128mm, align(center)[lost $= 1 - cos theta.alt_c = 1 - sqrt(1 - 1 \/ R_m)$ #h(1em) #note[isotropic: solid angle of the two cones over $4 pi$]])
-  #symbols[$v_(perp 0)$ at the midplane, $B(z) \/ B_0 = 1 + (R_m - 1)(z \/ L_m)^2$, throat at $z = L_m$]
+  #at(1, 12, y: 128mm, align(center)[lost $= 1 - cos theta.alt_c = 1 - sqrt(1 - 1 \/ R_m)$ #h(1em) #note[isotropic velocity distribution]])
+  #symbols[$v_(perp 0)$ at midplane, $R_m = B_max \/ B_0$, $L_m$ mirror half-length]
 ]
-// ---------------------------------------------------------- 11 grad-B
+// --------------------------------------- Grad-B: same moment, perpendicular force
 #slide(section: "motion-nonuniform-fields", title: [Grad-$B$ drift])[
   #at(6, 7, y: 0mm, gradb-picture(unit: 12mm))
-  #at(1, 5, y: rows-y, lrows(size: 24pt, label-width: 30mm,
-    ([across $bold(B)$], $bold(F)_perp = -mu grad_perp B$),
+  #at(1, 6, y: rows-y, lrows(size: 23pt, label-width: 31mm, gap: 15mm,
+    ([effective energy], $U_mu = mu B$),
+    ([moment force], $bold(F)_mu = -mu grad B$),
   ))
-  #at(1, 6, y: 88mm, result-box($bold(v)_D^(grad B) = mu/q_alpha (bold(B) times grad B)/B^2$, [force drift]))
-  #symbols[$grad_perp$ gradient across $bold(B)$; $bold(B)$ out of the page, $bold(v)_D$ ion]
+  #at(1, 6, y: 90mm, result-box($bold(v)_D^(grad B) = (mu \/ q_alpha) (bold(B) times grad B)\/B^2$, [perpendicular force drift]))
+  #symbols[The parallel part of $-mu grad B$ is the mirror force; the perpendicular part causes this first-order drift.]
 ]
 #animation-page("grad-b-drift", "grad_b_drift", section: "motion-nonuniform-fields")
-// ------------------------------------------------------- 12 curvature
-#slide(section: "motion-nonuniform-fields", title: [Curvature drift])[
-  #at(7, 6, y: 10mm, curvature-picture(unit: 13mm))
-  #at(1, 6, y: rows-y, lrows(label-width: 30mm,
-    ([curvature], $bold(kappa) = (bold(b) dot grad) bold(b) = -bold(e)_R \/ R_c$),
-  ))
-  #at(1, 6, y: 60mm, result-box($bold(v)_D^"curv" = (m_alpha v_parallel^2)/(q_alpha B R_c) bold(e)_R times bold(b)$, [from "Staying on a field line"]))
-  #symbols[$R_c$ radius of curvature, $bold(e)_R$ away from the centre of curvature; torus: $R_c = R$, $R$ major radius]
-]
-#animation-page("curvature-drift", "curvature_drift", section: "motion-nonuniform-fields")
 // ---------------------------------------------------- 13 polarization
 #slide(section: "motion-polarization", title: [Polarization drift])[
   #at(1, 12, y: 6mm, formula-rows(gap: 12mm,
