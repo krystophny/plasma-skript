@@ -51,8 +51,8 @@ $\rho_L/L$ ordering when $v_\parallel\sim v_\perp$.
 | 22 | Adiabatic invariance: numerical example | plot | motion-guiding-center | Preserve the original smooth-vs-kink ramp plot; the only spoken conclusion is that slower field changes give better conservation of $\mu$. The detailed rate dependence is optional script material. |
 | 23 | Mirror force from the Hamiltonian | derivation + original illustration | motion-guiding-center | With conserved total kinetic energy and adiabatic $\mu$, $H_\parallel=p_\parallel^2/(2m_\alpha)+\mu B(s)$. Hamilton: $\dot p_\parallel=-\mu\,dB/ds$. The original converging-field illustration remains; no near-axis $\nabla\cdot\mathbf B$ derivation. |
 | 24 | Magnetic mirror: reflection | derivation + original mirror illustration | motion-guiding-center | $W=m_\alpha v_\parallel^2/2+\mu B$ is constant; at the turning point $v_\parallel=0$, so $B_m=W/\mu$. |
-| 25 | Magnetic mirror | animation | motion-nonuniform-fields | Preserve the six-orbit full-Lorentz mirror animation, immediately following the mirror-force/energy argument. |
-| 26 | Mirror ratio and loss cone | derivation + original illustration | motion-nonuniform-fields | Pitch angle $\sin\vartheta=v_\perp/v$; $\sin^2\vartheta/B$ remains constant, so $\sin^2\vartheta_c=1/R_m$. |
+| 25 | Mirror ratio and loss cone | derivation + original illustration | motion-nonuniform-fields | Pitch angle $\sin\vartheta=v_\perp/v$; $\sin^2\vartheta/B$ remains constant, so $\sin^2\vartheta_c=1/R_m$. |
+| 26 | Magnetic mirror | animation | motion-nonuniform-fields | Preserve the six-orbit full-Lorentz mirror animation, now after the loss-cone threshold is defined. |
 | 27 | Loss cone in velocity space | plot | motion-nonuniform-fields | Preserve the original loss-cone plot and the isotropic lost fraction. |
 | 28 | Grad-B drift | derivation + original illustration | motion-nonuniform-fields | Same magnetic-moment energy $U_\mu=\mu B$ gives $\mathbf F_\mu=-\mu\nabla B$. Its parallel component is the mirror force; its perpendicular component in $\mathbf v_D=\mathbf F\times\mathbf B/(q_\alpha B^2)$ produces grad-$B$ drift. |
 | 29 | Grad-B drift | animation | motion-nonuniform-fields | Preserve the full-Lorentz ion/electron animation and its original gradient illustration. |
@@ -102,17 +102,17 @@ $O(\epsilon)$; the slow guiding-center invariant is the quantity being
 approximated. Illustrate with the existing ramp animation and plot.
 Do not derive Faraday's law or the canonical action in the live lesson.
 
-**23–25. Mirror force and reflection.** For static $\mathbf B$ with no
+**23–24. Mirror force and reflection.** For static $\mathbf B$ with no
 electric field, use the effective one-dimensional Hamiltonian
 $H_\parallel=p_\parallel^2/(2m_\alpha)+\mu B(s)$.
 Hamilton's equation gives $m_\alpha\dot v_\parallel=-\mu,dB/ds$.
 Energy conservation gives $W=m_\alpha v_\parallel^2/2+\mu B$;
-at reflection, $B_m=W/\mu$. Show the mirror animation.
+at reflection, $B_m=W/\mu$. Then introduce the loss-cone threshold.
 
-**26–27. Loss cone.** With speed fixed and $\mu$ approximately conserved,
+**25–27. Loss cone and animation.** With speed fixed and $\mu$ approximately conserved,
 $\sin^2\vartheta/B$ is constant. Therefore
 $\sin^2\vartheta_c=B_0/B_{\max}=1/R_m$.
-Keep the original drawing and velocity-space plot.
+Show the magnetic-mirror animation (page 26), then retain the original velocity-space plot (page 27).
 
 **28–29. Grad-$B$ drift.** The same effective perpendicular energy
 $U_\mu=\mu B$ motivates the gyroaveraged force
@@ -234,8 +234,8 @@ curvature-drift page 17).
   first order in $\rho_L/R_0$ (it halves when $R_0$ doubles and does not change
   with the time step).
 
-**`magnetic-mirror`** (`animations/magnetic_mirror.py`, 24 s; page 25,
-after the mirror-energy page 24, which defines $\vartheta$,
+**`magnetic-mirror`** (`animations/magnetic_mirror.py`, 24 s; page 26,
+after the mirror-ratio and loss-cone page 25, which defines $\vartheta$,
 $\vartheta_c$ and $R_m$).
 - Computed: six ions of equal speed $v$, midplane pitch angles
   $18^\circ,26^\circ,29^\circ,31^\circ,45^\circ,70^\circ$, in
@@ -330,7 +330,7 @@ general-force-drift page 13).
   At $\omega_{c0}\tau=1,2$ the final $\mu$ equals `plot_mu_ramp.boris` to $10^{-13}$.
 
 **`loss_cone`** plot (`derivations/plot_loss_cone.py`, page 27 "Loss cone in
-velocity space", after the loss-cone derivation page 26 and the mirror animation page 25).
+velocity space", after the loss-cone derivation page 25 and the mirror animation page 26).
 - Computed: 1500 particles of an isotropic Maxwellian at the midplane (seeded),
   $v_\parallel$, $v_\perp$ in $v_\mathrm{th}=(2k_BT/m_\alpha)^{1/2}$ [1]; field
   $B(z)/B_0=1+(R_m-1)(z/L_m)^2$, $R_m=4$. Trapped if
