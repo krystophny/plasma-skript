@@ -1,0 +1,155 @@
+name: One-time simplify magnetic-moment slides
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/one-time-simplify-magnetic-moment.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Simplify the magnetic-moment teaching path
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          def replace_between(text: str, start: str, end: str, replacement: str) -> str:
+              i = text.index(start)
+              j = text.index(end, i)
+              return text[:i] + replacement + text[j:]
+
+          typ_path = Path("slides/05-single-particle-motion.typ")
+          typ = typ_path.read_text()
+
+          typ = replace_between(
+              typ,
+              "// ------------------------------------------ Mirror: effective one-dimensional potential\n",
+              '#slide(section: "motion-guiding-center", title: [Magnetic mirror: reflection])[',
+              '''// ------------------------------------------ Magnetic-moment energy and force
+          #slide(section: "motion-guiding-center", title: [Magnetic-moment energy and force])[
+            #at(8, 5, y: 4mm, mirror-force-picture(unit: 12.5mm))
+            #at(1, 8, y: rows-y, lrows(size: 22pt, label-width: 39mm, gap: 15mm,
+              ([energy], $H = (m_alpha v_parallel^2) \/ 2 + mu B$),
+              ([moment force], $bold(F)_mu = -mu grad B$),
+            ))
+            #at(1, 9, y: result-y, result-box($F_(mu,parallel) = -mu bold(b) dot grad B, quad bold(F)_(mu,perp) = -mu grad_perp B$, [mirror force and grad-$B$ force]))
+            #symbols[$mu$ held constant to leading order; static magnetic field, $bold(E) = 0$]
+          ]
+          ''',
+          )
+
+          typ = replace_between(
+              typ,
+              '#slide(section: "motion-guiding-center", title: [Magnetic mirror: reflection])[',
+              '#slide(section: "motion-nonuniform-fields", title: [Mirror ratio and loss cone])[',
+              '''#slide(section: "motion-guiding-center", title: [Magnetic mirror: reflection])[
+            #at(8, 5, y: 8mm, mirror-picture(unit: 8.5mm))
+            #at(1, 8, y: rows-y, lrows(size: 22pt, label-width: 40mm, gap: 15mm,
+              ([energy], $H = (m_alpha v_parallel^2) \/ 2 + mu B = "const."$),
+              ([turning point], $v_parallel = 0$),
+            ))
+            #at(1, 8, y: result-y, result-box($B_m = H \/ mu$, [parallel energy converted into perpendicular energy]))
+            #symbols[$B_m$ magnetic field at reflection, $H$ conserved energy, $mu$ adiabatically invariant]
+          ]
+          ''',
+          )
+
+          typ = replace_between(
+              typ,
+              "// --------------------------------------- Grad-B: same moment, perpendicular force\n",
+              '#animation-page("grad-b-drift", "grad_b_drift", section: "motion-nonuniform-fields")',
+              '''// --------------------------------------- Grad-B: perpendicular part of the moment force
+          #slide(section: "motion-nonuniform-fields", title: [Grad-$B$ drift])[
+            #at(6, 7, y: 0mm, gradb-picture(unit: 12mm))
+            #at(1, 6, y: rows-y, lrows(size: 22pt, label-width: 38mm, gap: 15mm,
+              ([perpendicular force], $bold(F)_(mu,perp) = -mu grad_perp B$),
+              ([general force drift], $bold(v)_D = (bold(F) times bold(B)) \/ (q_alpha B^2)$),
+            ))
+            #at(1, 9, y: 90mm, result-box($bold(v)_D^(grad B) = mu \/ (q_alpha B^2) thin bold(B) times grad B$, [grad-$B$ drift]))
+            #symbols[The parallel component of the same force $-mu grad B$ is the mirror force.]
+          ]
+          ''',
+          )
+
+          assert "H_parallel" not in typ
+          assert "p_parallel" not in typ
+          typ_path.write_text(typ)
+
+          md_path = Path("slides/05-single-particle-motion.md")
+          md = md_path.read_text()
+
+          replacements = {
+              23: '| 23 | Magnetic-moment energy and force | derivation + original illustration | motion-guiding-center | Write only $H=m_\\alpha v_\\parallel^2/2+\\mu B$. At fixed adiabatic $\\mu$, the effective potential $\\mu B$ gives $\\mathbf F_\\mu=-\\mu\\nabla B$. Its parallel component is the mirror force; its perpendicular component later gives the grad-$B$ drift. No $p_\\parallel$ or separate one-dimensional Hamiltonian. |',
+              24: '| 24 | Magnetic mirror: reflection | derivation + original mirror illustration | motion-guiding-center | $H=m_\\alpha v_\\parallel^2/2+\\mu B$ is constant; at the turning point $v_\\parallel=0$, so $B_m=H/\\mu$. |',
+              28: '| 28 | Grad-B drift | derivation + original illustration | motion-nonuniform-fields | Take the perpendicular component $\\mathbf F_{\\mu,\\perp}=-\\mu\\nabla_\\perp B$ from page 23 and insert it into $\\mathbf v_D=\\mathbf F\\times\\mathbf B/(q_\\alpha B^2)$. |',
+          }
+          for page, line in replacements.items():
+              md, count = re.subn(rf'^\\| {page} \\|.*$', line, md, count=1, flags=re.MULTILINE)
+              assert count == 1, page
+
+          md = replace_between(
+              md,
+              "**23–24. Mirror force and reflection.**",
+              "**25–27. Loss cone and animation.**",
+              '''**23–24. Magnetic-moment force and reflection.** Write
+          $H=m_\\alpha v_\\parallel^2/2+\\mu B$. With $\\mu$ held fixed to
+          leading order, $\\mu B$ is the effective potential and therefore
+          $\\mathbf F_\\mu=-\\mu\\nabla B$. Its parallel component is
+          $F_{\\mu,\\parallel}=-\\mu\\mathbf b\\cdot\\nabla B$, the mirror force;
+          its perpendicular component is retained for the grad-$B$ slide.
+          There is no need to introduce $p_\\parallel$, a separate
+          $H_\\parallel$, or Hamilton's equations. Since $H$ is constant in a
+          static magnetic field, reflection occurs at $v_\\parallel=0$ and
+          $B_m=H/\\mu$. Then introduce the loss-cone threshold.
+
+          ''',
+          )
+
+          md = replace_between(
+              md,
+              "**28–29. Grad-$B$ drift.**",
+              "\n\nThe fast-gyroaction reasoning",
+              '''**28–29. Grad-$B$ drift.** Reuse the perpendicular component
+          $\\mathbf F_{\\mu,\\perp}=-\\mu\\nabla_\\perp B$ from page 23.
+          Insert it into the already derived force-drift formula to obtain
+          $\\mathbf v_D^{\\nabla B}=
+          (\\mu/q_\\alpha)\\mathbf B\\times\\nabla B/B^2$.
+          Thus the mirror force and grad-$B$ drift are the parallel and
+          perpendicular consequences of the same $-\\mu\\nabla B$ force.
+          Show the existing grad-$B$ animation.''',
+          )
+
+          md = md.replace(
+              "The fast-gyroaction reasoning and the Hamiltonian are used only to explain\n"
+              "the slow moment and mirror motion, not to introduce the noncanonical\n"
+              "guiding-center symplectic structure.",
+              "The Hamiltonian is used only as compact energy bookkeeping. No canonical\n"
+              "momentum or noncanonical guiding-center equations are introduced.",
+          )
+
+          assert "H_parallel" not in md
+          assert "p_parallel" not in md
+          md_path.write_text(md)
+          PY
+
+      - name: Commit the simplified slides
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add slides/05-single-particle-motion.typ slides/05-single-particle-motion.md
+          git diff --cached --check
+          git diff --cached --quiet && { echo "No slide changes produced"; exit 1; }
+          git commit -m "Simplify magnetic-moment force and drift slides"
+          git push origin HEAD:main
