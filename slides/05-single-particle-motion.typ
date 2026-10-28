@@ -1,6 +1,6 @@
 #import "theme.typ": *
 #import "@preview/physica:0.9.8": dv, pdv, grad
-#import "motion-drawings.typ": gyration-picture, exb-picture, curvature-picture, loss-cone-picture, guiding-centre-picture, mirror-force-picture, faraday-picture, field-line-picture, gradb-picture, mirror-picture
+#import "motion-drawings.typ": gyration-picture, exb-picture, curvature-picture, loss-cone-picture, guiding-centre-picture, mirror-force-picture, field-line-picture, gradb-picture, mirror-picture
 #show: deck.with(chapter: 5)
 #let row(label, f) = ([#text(fill: muted, label)], f)
 #let formula-rows(..items, gap: 8mm) = grid(columns: (auto, 1fr), column-gutter: 8mm, row-gutter: gap,
@@ -245,8 +245,7 @@
       ([polarization], $(m_alpha\/(q_alpha B^2)) thin partial bold(E)_perp \/ partial t$, [opposite], [$prop m_alpha$]),
     ),
     align: left)))
-  #at(1, 12, y: 112mm, align(center)[#note[vacuum field:] #h(0.6em) $bold(v)_D^"curv" + bold(v)_D^(grad B) = m_alpha/(q_alpha B R_c) (v_parallel^2 + v_perp^2/2) bold(e)_R times bold(b)$])
-  #at(1, 12, y: 134mm, align(center, note[$bold(v)_D = (bold(F)\/q_alpha) times bold(B)\/B^2$ for a force $bold(F)$; opposite drifts carry currents]))
+  #at(1, 12, y: 118mm, align(center, note[$bold(v)_D = (bold(F)\/q_alpha) times bold(B)\/B^2$ for a force $bold(F)$; opposite drifts carry currents]))
 ]
 // ---------------------------------------------- 15 cyclotron resonance
 #slide(section: "motion-cyclotron-resonance", title: [Cyclotron resonance])[
