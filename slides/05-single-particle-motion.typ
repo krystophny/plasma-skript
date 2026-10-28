@@ -157,8 +157,8 @@
     ([orbit current], $I = abs(q_alpha) abs(omega_c) \/ (2 pi)$),
     ([orbit area], $S = pi rho_L^2$),
   ))
-  #at(1, 7, y: result-y, result-box($mu = I S = (m_alpha v_perp^2)\/(2 B), quad bold(mu) = -mu bold(b)$, [diamagnetic]))
-  #symbols[$bold(mu)$ magnetic moment of the orbit; the circulating charge produces a moment opposite to $bold(B)$]
+  #at(1, 8, y: result-y, result-box($mu = I S = (m_alpha v_perp^2)\/(2 B)$, [diamagnetic]))
+  #symbols[Orbital dipole $bold(mu) = -mu bold(b)$: both positive and negative charges produce a moment opposite to $bold(B)$.]
 ]
 #slide(section: "motion-guiding-center", title: [Why is $mu$ nearly constant?])[
   #at(8, 4, y: 12mm, gyration-picture(unit: 9mm))
@@ -186,7 +186,7 @@
   #symbols[$s$ arc length along $bold(B)$, $p_parallel = m_alpha v_parallel$, $mu$ held constant to leading order; static field, $bold(E) = 0$]
 ]
 #slide(section: "motion-guiding-center", title: [Magnetic mirror: reflection])[
-  #at(8, 5, y: 4mm, mirror-picture(unit: 11.5mm))
+  #at(8, 5, y: 8mm, mirror-picture(unit: 8.5mm))
   #at(1, 8, y: rows-y, lrows(size: 22pt, label-width: 40mm, gap: 15mm,
     ([energy], $W = (m_alpha v_parallel^2)\/2 + mu B = "const."$),
     ([turning point], $v_parallel = 0$),
@@ -218,7 +218,7 @@
     ([effective energy], $U_mu = mu B$),
     ([moment force], $bold(F)_mu = -mu grad B$),
   ))
-  #at(1, 6, y: 90mm, result-box($bold(v)_D^(grad B) = (mu \/ q_alpha) (bold(B) times grad B)\/B^2$, [perpendicular force drift]))
+  #at(1, 9, y: 90mm, result-box($bold(v)_D^(grad B) = mu \/ (q_alpha B^2) thin bold(B) times grad B$, [perpendicular force drift]))
   #symbols[The parallel part of $-mu grad B$ is the mirror force; the perpendicular part causes this first-order drift.]
 ]
 #animation-page("grad-b-drift", "grad_b_drift", section: "motion-nonuniform-fields")
