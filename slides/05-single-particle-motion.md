@@ -1,32 +1,29 @@
 # Single-particle motion
 
-LOOK deck; THINK work takes place on blank Goodnotes notebook pages.
-No writing pages in the deck. One idea per page.
+LOOK deck; the short board derivations take place in Goodnotes.
+No writing pages in the deck. One idea and, at most, a few formulas per slide.
 
 Online deck: [present/05-single-particle-motion/](https://krystophny.github.io/plasma-skript/present/05-single-particle-motion/).
-The site build exports the same pages as SVG and PDF, with inline animations and offline caching.
 
 ## Page sequence
 
-Route (rebuilt 2026-10-26): one derivation-overview page per topic, in the
-lecturer's notation of 2024/25 (species index $\alpha$, signed
-$\omega_c = q_\alpha B/m_\alpha$, Larmor radius $\rho_L = v_\perp/|\omega_c|$,
-gyrophase $\phi$, $\mathbf b = \mathbf B/B$, drifts $\mathbf v_D$,
-curvature with $R_c$ and $\mathbf e_R$ pointing away from the centre of
-curvature, $(\mathbf b\cdot\nabla)\mathbf b = -\mathbf e_R/R_c$), each next to
-its animation. Corrected against his notes: $v_y = -v_\perp\sin(\omega_c t + \phi)$
-with signed $\omega_c$; ions rotate clockwise for $\mathbf B$ out of the page.
-Section numbers follow the script: 5.3 from the guiding centre to the
-Hamiltonian page (field-line following, moment, mirror force, energy and
-$\mu$, the time-varying field), 5.4 for the mirror, the loss cone and the
-grad-$B$ and curvature drifts (rebuilt 2026-10-27). Pages 15-30 are LOOK
-pages: picture, at most three formula rows and one result; the derivation
-route between start and result is in the THINK list below. Symbols added
-2026-10-27 to avoid clashes: pitch angle $\vartheta$ (not $\alpha$, the species
-index; the Skript uses $\vartheta$ as well), mirror half-length $L_m$ (not $L$, the
-field-variation length), ramp time $\tau_B$ (not $\tau$, the collision time),
-initial value $\mu_i$ (not $\mu_0$), magnetic flux $\psi$ (not $\Phi$), pass length
-$\ell$; italic $R$ is the major radius, bold $\mathbf R$ the guiding centre.
+Revised route (2026-10-28): **local Lorentz helix → field-line following at
+zeroth order → curvature drift → magnetic moment → adiabatic invariance →
+mirror force and reflection → grad-$B$ drift**.
+
+This retains the existing figures, full-Lorentz animations, loss-cone plot and
+adiabatic-invariance plot. The more elaborate near-axis mirror calculation,
+Faraday-law proof and canonical action integral are deliberately **not** in
+the live deck; they remain as optional reference material in the script.
+The original earlier topics (gyration, $E\times B$, general force drift)
+and later polarization/cyclotron topics remain unchanged.
+
+Notation: $q_\alpha$, $m_\alpha$, signed
+$\omega_c=q_\alpha B/m_\alpha$, $\rho_L=v_\perp/|\omega_c|$,
+$\mathbf b=\mathbf B/B$, guiding center $\mathbf R$, curvature radius $R_c$,
+outward normal $\mathbf e_R$, magnetic moment $\mu$, field-variation length $L$.
+The general small parameter $\epsilon=v/(|\omega_c|L)$ reduces to the usual
+$\rho_L/L$ ordering when $v_\parallel\sim v_\perp$.
 
 | Page | Title | Kind | Script section label | Lecturer cue |
 |---|---|---|---|---|
@@ -44,101 +41,93 @@ $\ell$; italic $R$ is the major radius, bold $\mathbf R$ the guiding centre.
 | 12 | E x B drift in the drift frame | animation | motion-exb | Same ion orbit twice: lab frame, looped trochoid drifting with v_D; then the frame moving with v_D = E x B/B^2, where E' = E + v_D x B = 0 and the orbit is a circle. The ansatz of page 10 is an exact frame change. |
 | 13 | General force drift | derivation | motion-exb | Replace q E by F: v_D = (F/q) x B/B^2; F = q E is the special case without charge separation; gravity drift opposite for ions and electrons, current n (m_i + m_e) g x B/B^2. |
 | 14 | Gravity drift | animation | motion-exb | F = m g in the force drift: ion and electron drift opposite, the electron 16 times slower (reduced mass ratio m_i/m_e = 16, spoken); formula v_D = (m_alpha/q_alpha)(g x B)/B^2 on screen. |
-| 15 | Guiding centre | static | motion-guiding-center | Side view: ion helix about the field line through R (axis b); R from O to the guiding centre on the axis, r from O to the particle, rho = r - R from R to the particle, perpendicular to b. r = R + rho with rho = (b x v)/omega_c; uniform B: rho-dot = v_perp, so R-dot = v_par b exactly; ordering eps = rho_L/L << 1, omega/abs(omega_c) << 1. See "THINK route, pages 15-30" below. |
-| 16 | Staying on a field line | derivation | motion-guiding-center | Helix centred on a curved field line, kappa to the centre of curvature, ion v_D^curv into the page, one pass of arc length ell (L stays the field-variation length). d(v_par b)/dt = (dv_par/dt) b + v_par^2 kappa; supplied by the drift, q v_D^curv x B = m v_par^2 kappa, so v_D^curv = (m v_par^2/(q B)) b x kappa. Result: R-dot = v_par b + v_D^curv, offset per pass Delta_perp ~ abs(v_D^curv) ell/abs(v_par) = (ell/R_c) abs(v_par/omega_c). Rotational transform only in THINK. See "THINK route, pages 15-30" below. |
-| 17 | Magnetic moment | derivation | motion-guiding-center | I = abs(q) abs(omega_c)/(2 pi), S = pi rho_L^2: mu = I S = m v_perp^2/(2B), mu-vector = -mu b (diamagnetic). Field symbols on a regular grid. See "THINK route, pages 15-30" below. |
-| 18 | Mirror force | derivation | motion-guiding-center | div B = 0: B_r = -(r/2) dB/dz; <F_par> = abs(q) v_perp B_r(rho_L) = -mu dB/dz; parallel equation m dv_par/dt = -mu dB/ds - q dPhi/ds, s = z on the axis (the figure's axis is z). See "THINK route, pages 15-30" below. |
-| 19 | Energy and mu | derivation | motion-guiding-center | W = m v_par^2/2 + mu B + q Phi = const.; <F_par> v_par with W-dot = 0 gives mu-dot = 0 to leading order in eps, static fields (the mirror force is itself leading order); flux through the orbit psi = pi rho_L^2 B = (2 pi m/q^2) mu = const. (psi, as Phi is the potential); mirror point v_par = 0 where B = (W - q Phi)/mu. See "THINK route, pages 15-30" below. |
-| 20 | mu from Faraday's law | derivation | motion-guiding-center | One gyration: delta(m v_perp^2/2) = q oint E.dl; Faraday along the orbit: oint E.dl = +- pi rho_L^2 dB/dt (+ ions, clockwise for B out of the page; - electrons), so q oint E.dl = abs(q) pi rho_L^2 dB/dt; per turn delta B = 2 pi (dB/dt)/abs(omega_c): delta(m v_perp^2/2) = mu delta B, so delta mu ~ 0. B symbols everywhere. See "THINK route, pages 15-30" below. |
-| 21 | mu in a slowly growing field | animation | motion-guiding-center | B ramps from B_0 to 2B_0 over about 20 turns (ramp time tau_B, omega_c0 = q B_0/m defined on screen), induced E clockwise: orbit shrinks as B^-1/2; flux psi = pi rho_L^2 B and mu stay constant (numbers against psi_i, mu_i). Faraday route of page 20 in motion; numerics of the plot on page 22. |
-| 22 | Adiabatic invariance | plot | motion-guiding-center | Boris orbit in B_0 -> 2B_0 with the induced E: abs(mu_f/mu_i - 1) against abs(omega_c0) tau_B; smooth (tanh) ramp exponentially small, linear ramp with kinks only a power law in 1/(omega_c0 tau_B) (peak envelope about tau_B^-1.8, two kinks interfere). |
-| 23 | mu in the Hamiltonian picture | derivation | motion-guiding-center | J = oint (m v_perp + q A).dl = 2 pi m v_perp rho_L - pi abs(q) B rho_L^2 = (2 pi m/abs(q)) mu; guiding-centre H = m v_par^2/2 + mu B(R) + q Phi(R); J is an adiabatic invariant, hence mu; mu B acts as a potential: mirror force and grad-B drift (the grad-B force itself on page 27). See "THINK route, pages 15-30" below. |
-| 24 | Mirror ratio and loss cone | derivation | motion-nonuniform-fields | Pitch angle theta (theta.alt; alpha is the species index): sin theta = v_perp/v; with mu const. and Phi = 0 (speed constant) sin^2 theta/B = const.; trapped if B_0/sin^2 theta_0 < B_max: sin^2 theta_c = 1/R_m. Cone drawn at theta_c = 30 deg (R_m = 4), both lost sectors labelled. See "THINK route, pages 15-30" below. |
-| 25 | Magnetic mirror | animation | motion-nonuniform-fields | After the loss-cone page, which defines theta, theta_c and R_m. Six pitch angles; 29 deg lost, 31 deg reflected for R_m = 4; mirror half-length L_m. |
-| 26 | Loss cone in velocity space | plot | motion-nonuniform-fields | Isotropic sample at the midplane, R_m = 4: lost particles fill the cone sin^2 theta < 1/R_m around v_par; lost fraction 1 - cos theta_c = 1 - sqrt(1 - 1/R_m), the solid angle of the two cones over 4 pi, 13 % at R_m = 4; formula shown once, on the page. |
-| 27 | Grad-B drift | derivation | motion-nonuniform-fields | F_perp = -mu grad_perp B in the force drift: v_D = (mu/q) B x grad B/B^2, opposite for ions and electrons. Sketch: smaller orbits where B is stronger, ion drift arrow to the left, small symbols labelled "weaker B". See "THINK route, pages 15-30" below. |
-| 28 | Grad-B drift | animation | motion-nonuniform-fields | Smaller orbit where B is stronger; opposite drifts. Framed axes x/rho_Li, y/rho_Li [1]; B = B_0 [1 + y/(10 rho_Li)]. |
-| 29 | Curvature drift | static | motion-nonuniform-fields | Merges the former pages "Field-line curvature" and "Curvature drift": picture with b, kappa, R_c e_R and the ion (into the page) and electron drifts; kappa = (b.grad) b = -e_R/R_c; result v_D^curv = m v_par^2 e_R x b/(q B R_c), not re-derived: the drift of "Staying on a field line". Symbols line: torus R_c = R, R major radius. See "THINK route, pages 15-30" below. |
-| 30 | Curvature drift | animation | motion-nonuniform-fields | Ion up, electron down in a purely toroidal field; B = B_phi e_phi into the page (cross) in the right-handed (R, phi, Z) view; R major radius on screen. |
-| 31 | Polarization drift | static | motion-polarization | Slowly varying E_perp; polarization current carried by ions. |
-| 32 | Polarization drift | animation | motion-polarization | E_perp switched on over three ion turns; view with the common E x B displacement removed: ion guiding centre moves along E by m E_1/(q B^2), electron 16 times less and opposite. |
-| 33 | Drifts | static | (none) | Table: charge and mass dependence of every drift; vacuum-field sum of curvature and grad-B. |
-| 34 | Cyclotron resonance | derivation | motion-cyclotron-resonance | Rotating field E_cw = E_0 e^(-i s omega t); v_cw = v_x + i v_y obeys dv_cw/dt = -i omega_c v_cw + (q/m) E_cw (the script's equation); from rest the modulus 2 abs(sin(Delta t/2)/Delta), Delta = omega_c - s omega; Delta = 0: v_perp grows linearly, W quadratically. Ions take the clockwise, electrons the counterclockwise field (signed omega_c). |
-| 35 | Cyclotron resonance | animation | motion-cyclotron-resonance | Predict each run before it starts: ion with the clockwise field at omega_ci (spiral, straight line in v_perp), at 0.8 omega_ci (beat, peak 10 E_0/B), with the counterclockwise field (nothing), electron with the counterclockwise field (resonance again). Measured slope 0.9999 abs(q) E_0/m against 1. |
+| 15 | Guiding centre | derivation + original illustration | motion-guiding-center | Uniform field: the Lorentz helix has a center with exactly $\dot{\mathbf R}=v_\parallel\mathbf b$. Define $\mathbf r=\mathbf R+\boldsymbol\rho$. Set $\epsilon=v/(|\omega_c|L)\ll1$. |
+| 16 | Why follow magnetic field lines? | derivation + original field-line illustration | motion-guiding-center | Differentiate $\mathbf R=\mathbf r-\mathbf b\times\mathbf v/\omega_c$ using the product rule and Lorentz equation. The $\dot{\mathbf v}$ term cancels $\mathbf v_\perp$; remaining term is $O(\epsilon v)$ because gradients vary on scale $L$. Zeroth order: $\dot{\mathbf R}^{(0)}=v_\parallel\mathbf b$. |
+| 17 | Curvature drift | derivation + original illustration | motion-guiding-center | Zeroth-order motion along a curve of radius $R_c$ needs inward acceleration $v_\parallel^2/R_c$. Outward centrifugal force in the line-following frame $\mathbf F_c=m_\alpha v_\parallel^2\mathbf e_R/R_c$ inserted into the already-known general force-drift formula yields the curvature drift. |
+| 18 | Curvature drift | animation | motion-guiding-center | Keep the existing full-Lorentz toroidal-field animation; ion and electron drift in opposite vertical directions. |
+| 19 | Magnetic moment | derivation + original illustration | motion-guiding-center | Gyromotion is a current loop: $I=|q_\alpha||\omega_c|/(2\pi)$ and $S=\pi\rho_L^2$, hence $\mu=IS=m_\alpha v_\perp^2/(2B)$ and its vector points opposite $\mathbf B$. |
+| 20 | Why is mu nearly constant? | derivation | motion-guiding-center | The fast gyroaction $J=E_\perp/|\omega_c|=(m_\alpha/|q_\alpha|)\mu$ is adiabatically invariant if the magnetic field changes little in one gyroperiod. No canonical line integral or Faraday-law calculation in the live deck. |
+| 21 | mu in a slowly growing field | animation | motion-guiding-center | Preserve the original $B(t)$ ramp and shrinking orbit with magnetic-moment readouts; use it as a visual example after the adiabatic argument. |
+| 22 | Adiabatic invariance: numerical example | plot | motion-guiding-center | Preserve the original smooth-vs-kink ramp plot; the only spoken conclusion is that slower field changes give better conservation of $\mu$. The detailed rate dependence is optional script material. |
+| 23 | Mirror force from the Hamiltonian | derivation + original illustration | motion-guiding-center | With conserved total kinetic energy and adiabatic $\mu$, $H_\parallel=p_\parallel^2/(2m_\alpha)+\mu B(s)$. Hamilton: $\dot p_\parallel=-\mu\,dB/ds$. The original converging-field illustration remains; no near-axis $\nabla\cdot\mathbf B$ derivation. |
+| 24 | Magnetic mirror: reflection | derivation + original mirror illustration | motion-guiding-center | $W=m_\alpha v_\parallel^2/2+\mu B$ is constant; at the turning point $v_\parallel=0$, so $B_m=W/\mu$. |
+| 25 | Magnetic mirror | animation | motion-nonuniform-fields | Preserve the six-orbit full-Lorentz mirror animation, immediately following the mirror-force/energy argument. |
+| 26 | Mirror ratio and loss cone | derivation + original illustration | motion-nonuniform-fields | Pitch angle $\sin\vartheta=v_\perp/v$; $\sin^2\vartheta/B$ remains constant, so $\sin^2\vartheta_c=1/R_m$. |
+| 27 | Loss cone in velocity space | plot | motion-nonuniform-fields | Preserve the original loss-cone plot and the isotropic lost fraction. |
+| 28 | Grad-B drift | derivation + original illustration | motion-nonuniform-fields | Same magnetic-moment energy $U_\mu=\mu B$ gives $\mathbf F_\mu=-\mu\nabla B$. Its parallel component is the mirror force; its perpendicular component in $\mathbf v_D=\mathbf F\times\mathbf B/(q_\alpha B^2)$ produces grad-$B$ drift. |
+| 29 | Grad-B drift | animation | motion-nonuniform-fields | Preserve the full-Lorentz ion/electron animation and its original gradient illustration. |
+| 30 | Polarization drift | static | motion-polarization | Slowly varying E_perp; polarization current carried by ions. |
+| 31 | Polarization drift | animation | motion-polarization | E_perp switched on over three ion turns; view with the common E x B displacement removed: ion guiding centre moves along E by m E_1/(q B^2), electron 16 times less and opposite. |
+| 32 | Drifts | static | (none) | Table: charge and mass dependence of every drift; vacuum-field sum of curvature and grad-B. |
+| 33 | Cyclotron resonance | derivation | motion-cyclotron-resonance | Rotating field E_cw = E_0 e^(-i s omega t); v_cw = v_x + i v_y obeys dv_cw/dt = -i omega_c v_cw + (q/m) E_cw (the script's equation); from rest the modulus 2 abs(sin(Delta t/2)/Delta), Delta = omega_c - s omega; Delta = 0: v_perp grows linearly, W quadratically. Ions take the clockwise, electrons the counterclockwise field (signed omega_c). |
+| 34 | Cyclotron resonance | animation | motion-cyclotron-resonance | Predict each run before it starts: ion with the clockwise field at omega_ci (spiral, straight line in v_perp), at 0.8 omega_ci (beat, peak 10 E_0/B), with the counterclockwise field (nothing), electron with the counterclockwise field (resonance again). Measured slope 0.9999 abs(q) E_0/m against 1. |
 
+## THINK route: board derivations
 
-## THINK route, pages 15-30
+**15–16. Why does the center follow a field line?** Begin with the exact
+uniform-field helix. Define
+$\mathbf R=\mathbf r-\mathbf b\times\mathbf v/\omega_c$.
+Differentiate with the product rule and substitute
+$\dot{\mathbf v}=\omega_c\mathbf v\times\mathbf b$:
+the fast perpendicular velocity cancels.
+For static nonuniform $\mathbf B$,
+$\dot{\mathbf R}=v_\parallel\mathbf b-
+[d(\mathbf b/\omega_c)/dt]\times\mathbf v$.
+A Fourier mode has $\nabla\mapsto i\mathbf k$ and
+$(\mathbf v\cdot\nabla)\mapsto i\mathbf v\cdot\mathbf k$.
+With relevant $|\mathbf k|\lesssim1/L$, the correction is bounded by
+$O(v^2/(|\omega_c|L))=O(\epsilon v)$.
+Dot and cross products can **reduce** this bound.
+Conclude that the center follows the field line to *leading relative order*.
+This is not a mechanical constraint and does not eliminate perpendicular gyration.
 
-The LOOK pages carry the start and the result; the steps below are for the
-Goodnotes board and for speaking. Nothing removed from the slides is lost.
+**17. Curvature drift.** In the frame following the curved field,
+the outward centrifugal force is
+$\mathbf F_c=m_\alpha v_\parallel^2\mathbf e_R/R_c$.
+Insert it into the already derived
+$\mathbf v_D=\mathbf F\times\mathbf B/(q_\alpha B^2)$:
+$\mathbf v_D^{\rm curv}=
+m_\alpha v_\parallel^2\mathbf e_R\times\mathbf b/(q_\alpha BR_c)$.
+The zeroth-order streaming velocity produces a first-order inertial force
+and therefore a first-order drift. Show the existing animation immediately.
 
-**15 Guiding centre.**
-- THINK: velocity split: $d\mathbf R/dt = v_\parallel\mathbf b + \mathbf v_D$, $d\boldsymbol\rho/dt\approx\mathbf v_\perp$, so $\mathbf v=v_\parallel\mathbf b+\mathbf v_\perp+\mathbf v_D$ (script equation `motion-velocity-split`); the gyration velocity averages to zero over one turn.
-- THINK: $\rho=(\mathbf b\times\mathbf v)/\omega_c$ agrees with the board solution of page 3: for $\mathbf b=\mathbf e_z$, $(\mathbf b\times\mathbf v)/\omega_c=((v_\perp/\omega_c)\sin(\omega_ct+\phi),(v_\perp/\omega_c)\cos(\omega_ct+\phi))=(x-x_0,y-y_0)$.
-- THINK: uniform $\mathbf B$: $\dot{\mathbf v}=\omega_c\mathbf v\times\mathbf b$ gives $\dot{\boldsymbol\rho}=\mathbf b\times\dot{\mathbf v}/\omega_c=\mathbf b\times(\mathbf v\times\mathbf b)=\mathbf v_\perp$. The gyration velocity is exactly $\dot{\boldsymbol\rho}$, which is why it drops out of $\dot{\mathbf R}=\mathbf v-\dot{\boldsymbol\rho}=v_\parallel\mathbf b$, exactly. Across $\mathbf B$ the orbit is a circle of radius $\rho_L$ about $\mathbf R$: bounded.
-- THINK: numerical check (Boris push, uniform $\mathbf B=\mathbf e_z$, $q/m=\pm1$, 2000 steps per turn, time-centred velocity): $\mathbf R=\mathbf r-(\mathbf b\times\mathbf v)/\omega_c$ is the fitted circle centre for ion and electron; $\mathbf R_\perp$ constant to $5\times10^{-6}\rho_L$, $|d\boldsymbol\rho/dt-\mathbf v_\perp|\le2.5\times10^{-6}v$, $dR_z/dt=v_\parallel$; ion clockwise, electron counterclockwise.
-- THINK: nearly uniform field during one gyration: $\rho_L/L\ll1$ in space, $\omega/|\omega_c|\ll1$ in time; $\omega$ is the rate of change of the fields.
-- THINK: the sketch is a side view: the ion helix about the field line through $\mathbf R$ (front half solid, back half faint); the particle is drawn at the top of a turn, where $\boldsymbol\rho=\mathbf r-\mathbf R$ is perpendicular to $\mathbf b$ and in the page.
+**19–22. Magnetic moment and invariance.** Current times area gives
+$\mu= m_\alpha v_\perp^2/(2B)$; for either charge sign, the
+orbital dipole points opposite $\mathbf B$.
+The action of the fast periodic gyro-orbit is
+$J=E_\perp/|\omega_c|=(m_\alpha/|q_\alpha|)\mu$,
+which is an adiabatic invariant when the field changes slowly.
+The instantaneous $mv_\perp^2/(2B)$ can still oscillate by relative
+$O(\epsilon)$; the slow guiding-center invariant is the quantity being
+approximated. Illustrate with the existing ramp animation and plot.
+Do not derive Faraday's law or the canonical action in the live lesson.
 
-**16 Staying on a field line.**
-- THINK: $q_\alpha\mathbf v\times\mathbf B\perp\mathbf B$: no magnetic force along $\mathbf b$, so $v_\parallel$ changes only through slow forces (mirror force, $q_\alpha E_\parallel$).
-- THINK: a particle moving with $v_\parallel\mathbf b$ along a curved line must be accelerated: $d(v_\parallel\mathbf b)/dt=(dv_\parallel/dt)\,\mathbf b+v_\parallel\,d\mathbf b/dt$, and along the path in a static field $d\mathbf b/dt=v_\parallel(\mathbf b\cdot\nabla)\mathbf b=v_\parallel\boldsymbol\kappa$ (the drift and gyration contributions to $d\mathbf b/dt$ are of higher order in $\epsilon$, which is why the slide writes "=" for the guiding centre moving with $v_\parallel\mathbf b$); $\boldsymbol\kappa=-\mathbf e_R/R_c$ points to the centre of curvature. The only force across $\mathbf B$ is magnetic, so the guiding centre must drift with $q_\alpha\mathbf v_D\times\mathbf B=m_\alpha v_\parallel^2\boldsymbol\kappa$; crossing with $\mathbf B$: $\mathbf v_D=(m_\alpha v_\parallel^2/(q_\alpha B))\,\mathbf b\times\boldsymbol\kappa=(m_\alpha v_\parallel^2/(q_\alpha BR_c))\,\mathbf e_R\times\mathbf b$, the curvature drift of page 29 (sign checked with SymPy).
-- THINK: size: $|\mathbf v_D|=\rho_\parallel v_\parallel/R_c\sim\epsilon v$. Slowly varying $\mathbf B$ in general: $\dot{\boldsymbol\rho}$ gains $(d(\mathbf b/\omega_c)/dt)\times\mathbf v$, with $d(\mathbf b/\omega_c)/dt\sim v/(|\omega_c|L)$, of size $\epsilon v$; a weak force adds $\mathbf F\times\mathbf B/(q_\alpha B^2)$ (page 13).
-- THINK: pass of arc length $\ell$ (not $L$, which is the field-variation length): in the time $\ell/|v_\parallel|$ the guiding centre moves $\ell$ along $\mathbf b$ and $\Delta_\perp=|\mathbf v_D^{\rm curv}|\,\ell/|v_\parallel|=(\ell/R_c)\,|v_\parallel/\omega_c|$ across it (SymPy), about one Larmor radius for $\ell\sim R_c$ and $v_\parallel\sim v_\perp$: it follows the field line to $O(\epsilon)$. The generic estimate $|\mathbf v_D|\sim\epsilon v$ gives $\Delta_\perp\sim\rho_Lv/|v_\parallel|$, which grows as $v_\parallel\to0$; that is the grad-$B$ drift, not the curvature drift, which vanishes with $v_\parallel$.
-- THINK: caveat: near $v_\parallel=0$ (mirror points, trapped particles) the grad-$B$ drift dominates; over many passes the drifts add up to orbit widths (banana orbits) and, in a purely toroidal field, to charge separation; the cure, the rotational transform, comes later (said, no longer on the slide).
-- THINK: converging field lines are the third mechanism: the orbit keeps enclosing the same flux $\psi$ (page 19), so the guiding centre stays on the lines that the orbit encloses.
+**23–25. Mirror force and reflection.** For static $\mathbf B$ with no
+electric field, use the effective one-dimensional Hamiltonian
+$H_\parallel=p_\parallel^2/(2m_\alpha)+\mu B(s)$.
+Hamilton's equation gives $m_\alpha\dot v_\parallel=-\mu,dB/ds$.
+Energy conservation gives $W=m_\alpha v_\parallel^2/2+\mu B$;
+at reflection, $B_m=W/\mu$. Show the mirror animation.
 
-**17 Magnetic moment.**
-- THINK: orbit current $I=|q_\alpha|/T_c$ with $T_c=2\pi/|\omega_c|$; $\mu=IS=|q_\alpha||\omega_c|\rho_L^2/2=m_\alpha v_\perp^2/(2B)$: perpendicular kinetic energy per $B$.
-- THINK: orbit current left-handed about $\mathbf B$ for ions and electrons, so $\boldsymbol\mu$ points against $\mathbf B$: diamagnetic.
+**26–27. Loss cone.** With speed fixed and $\mu$ approximately conserved,
+$\sin^2\vartheta/B$ is constant. Therefore
+$\sin^2\vartheta_c=B_0/B_{\max}=1/R_m$.
+Keep the original drawing and velocity-space plot.
 
-**18 Mirror force.**
-- THINK: cylinder coordinates $r,\theta,z$ about the orbit axis (the figure's axis), $B_z(z)>0$, so $s=z$ on the axis; the rows use $z$, the result the arc length $s$. Near the axis $\nabla\cdot\mathbf B=0$ reads $(1/r)\,\partial(rB_r)/\partial r=-\partial B_z/\partial z$, so $B_r=-(r/2)\,\partial B_z/\partial z$; where the lines converge $B_r$ points to the axis.
-- THINK: orbit on the axis, $r=\rho_L$, $B_\theta=0$, $v_r=0$: $q_\alpha(\mathbf v\times\mathbf B)_z=-q_\alpha v_\theta B_r$. Ions circle $\mathbf B$ left-handed, $v_\theta=-v_\perp$; electrons right-handed, $v_\theta=+v_\perp$; so $v_\theta=-\mathrm{sgn}(q_\alpha)v_\perp$ and $q_\alpha(\mathbf v\times\mathbf B)_z=|q_\alpha|v_\perp B_r$ for both signs (sign checked, unchanged from before; SymPy check "Deck: mirror force from div B = 0").
-- THINK: the same at every gyrophase, so it is the gyroaverage, with $B_r$ evaluated at $r=\rho_L$: $\langle F_\parallel\rangle=-|q_\alpha|v_\perp(\rho_L/2)\,\partial B/\partial z$ and $|q_\alpha|v_\perp\rho_L/2=m_\alpha v_\perp^2/(2B)=\mu$. This is a leading-order result in $\epsilon$ (linear $B_r$, $\partial B/\partial z$ constant across the orbit).
-- THINK: add $q_\alpha E_\parallel=-q_\alpha\partial\Phi/\partial s$ for the parallel equation of motion.
+**28–29. Grad-$B$ drift.** The same effective perpendicular energy
+$U_\mu=\mu B$ motivates the gyroaveraged force
+$\mathbf F_\mu=-\mu\nabla B$.
+Its parallel component is the mirror force.
+Its perpendicular component in the general force-drift formula gives
+$\mathbf v_D^{\nabla B}=
+(\mu/q_\alpha)\mathbf B\times\nabla B/B^2$.
+Both effective forces are first order compared with the cyclotron Lorentz
+force, so the associated drifts are first order in $\epsilon$.
+Show the existing grad-$B$ animation.
 
-**19 Energy and mu.**
-- THINK: magnetic force does no work, $q_\alpha(\mathbf v\times\mathbf B)\cdot\mathbf v=0$; static $\mathbf E=-\nabla\Phi$: $d(m_\alpha v^2/2+q_\alpha\Phi)/dt=0$; with $v^2=v_\parallel^2+v_\perp^2$ and $m_\alpha v_\perp^2/2=\mu B$, $W=m_\alpha v_\parallel^2/2+\mu B+q_\alpha\Phi$. Exact in static fields, $\mu$ and $B$ at the particle.
-- THINK: not circular: $\mu\equiv m_\alpha v_\perp^2/(2B)$ at each instant, allowed to vary. Multiply page 18 by $v_\parallel$, $ds/dt=v_\parallel$: $d(m_\alpha v_\parallel^2/2)/dt=-\mu\,dB/dt-q_\alpha\,d\Phi/dt$. Energy: $d(m_\alpha v_\parallel^2/2+\mu B+q_\alpha\Phi)/dt=0$. Subtract: $B\,d\mu/dt=0$.
-- THINK: the slide says $\dot\mu=0$ to leading order in $\epsilon$, static fields, because the mirror force used here is itself the leading-order result of page 18; adiabatic invariant: constant to leading order in $\epsilon=\rho_L/L$ or $1/(|\omega_c|\tau_B)$, $\tau_B$ time of change; in uniform fields, also with uniform $\mathbf E\perp\mathbf B$ and $\mu$ taken in the drift frame, exactly constant.
-- THINK: consequence for converging fields: $\psi=\pi\rho_L^2B=\pi m_\alpha^2v_\perp^2/(q_\alpha^2B)=(2\pi m_\alpha/q_\alpha^2)\mu=$ const. ($\psi$ magnetic flux; $\Phi$ is the electrostatic potential): the orbit keeps enclosing the same field lines; the guiding centre follows them as they converge.
-- THINK: mirror point where $\mu B+q_\alpha\Phi=W$; with $\Phi=0$, $B=W/\mu$.
-
-**20 mu from Faraday's law.**
-- THINK: one turn: $\delta(m_\alpha v_\perp^2/2)=q_\alpha\oint\mathbf E\cdot d\mathbf l$, $\oint$ along the orbit, left-handed about $\mathbf B$ for $q_\alpha>0$.
-- THINK: Stokes along the orbit in the direction of motion: $\oint\mathbf E\cdot d\mathbf l=\pm\pi\rho_L^2\,\partial B/\partial t$, upper sign for ions (clockwise for $\mathbf B$ out of the page, so the right-hand normal points against $\mathbf B$), lower sign for electrons (SymPy with $\mathbf E=-\tfrac12\dot B\,\mathbf e_z\times\mathbf r$); hence $q_\alpha\oint\mathbf E\cdot d\mathbf l=|q_\alpha|\pi\rho_L^2\,\partial B/\partial t$ for both signs; per turn $\delta B=(2\pi/|\omega_c|)\,\partial B/\partial t$; so $\delta(m_\alpha v_\perp^2/2)=\mu\,\delta B$ and $\delta\mu=\delta(m_\alpha v_\perp^2/2)/B-\mu\,\delta B/B=0$.
-- THINK: assumptions: slow change $|\partial B/\partial t|\ll|\omega_c|B$, $E_\parallel=0$, no $E\times B$ drift of the guiding centre; the box says $\delta\mu\approx0$ because $\rho_L$, $v_\perp$ and $B$ are held fixed over the turn (first order in $\delta B$).
-
-**22 Adiabatic invariance.**
-- THINK: $B:B_0\to2B_0$ with the induced $\mathbf E=-(1/2)(\partial B/\partial t)\,\mathbf e_z\times\mathbf r$, $\mathbf r$ from the axis; Boris integration (details in "Adiabatic-invariance plot" below). Ramp time $\tau_B$ ($\tau$ is the collision time of page 9), initial and final $\mu_i$, $\mu_f$ ($\mu_0$ is the vacuum permeability).
-- THINK: the slide line "smooth ramp: exponentially small; kinks: power law in $1/(|\omega_{c0}|\tau_B)$" is checked against the plotted data: tanh, $\ln|\mu_f/\mu_i-1|$ linear in $\tau_B$ for $|\omega_{c0}|\tau_B\ge2$ (slope $-3.1$ per unit, rms residual 0.04); linear ramp, oscillating, peaks $9.4\times10^{-3}$, $3.5\times10^{-3}$, $1.8\times10^{-3}$ at 2.9, 5.1, 7.3 on a power law of slope $-1.8$ in log-log.
-
-**23 mu in the Hamiltonian picture.**
-- THINK: $J=\oint(m_\alpha\mathbf v_\perp+q_\alpha\mathbf A)\cdot d\mathbf l$ with $\mathbf A=\mathbf B\times\boldsymbol\rho/2$ ($\nabla\times\mathbf A=\mathbf B$): the kinetic part is $m_\alpha v_\perp\cdot2\pi\rho_L$; $\oint\mathbf A\cdot d\mathbf l$ is the flux counted with the sense of motion, $-B\pi\rho_L^2$ for ions (left-handed about $\mathbf B$) and $+B\pi\rho_L^2$ for electrons, so $q_\alpha\oint\mathbf A\cdot d\mathbf l=-|q_\alpha|\pi B\rho_L^2$ for both. With $|q_\alpha|B\rho_L=m_\alpha v_\perp$: $J=2\pi m_\alpha v_\perp\rho_L-\pi|q_\alpha|B\rho_L^2=\pi m_\alpha v_\perp\rho_L=(2\pi m_\alpha/|q_\alpha|)\mu=|q_\alpha|\pi\rho_L^2B$, $|q_\alpha|$ times the flux through the orbit (SymPy). Both rows are on the slide.
-- THINK: actions of periodic motions are adiabatic invariants: slowly shortened pendulum, Einstein and Lorentz, Solvay 1911. $J\propto\mu$, so $\mu$ is one too (the result box).
-- THINK: gyrophase $\phi$ ignorable: $p_\phi=(m_\alpha/q_\alpha)\mu=$ const. (Noether); his 2024 slides (Chapter 1-5, pp. 61-66) and the 2021 recording "#9 Guiding-Center Lagrangian"; $H$ as on his 2025 slides (pp. 15-16).
-- THINK: $-\partial H/\partial s$ gives $m_\alpha dv_\parallel/dt=-\mu\,\partial B/\partial s-q_\alpha\partial\Phi/\partial s$ (page 18); $\mathbf F_\perp=-\nabla_\perp(\mu B)$ gives the grad-$B$ drift, shown on page 27 and not repeated here.
-- THINK: exact for the guiding centre, which is an expansion in $\epsilon=\rho_L/L$; for the particle $\mu$ is an adiabatic invariant.
-
-**24 Mirror ratio and loss cone.**
-- THINK: pitch angle $\vartheta$ (Typst `theta.alt`; $\alpha$ is the species index): $\mu=m_\alpha v^2\sin^2\vartheta/(2B)$; with $\Phi=0$ the energy $W=m_\alpha v^2/2$ fixes $v$, so $\sin^2\vartheta/B=$ const.; mirror point $\vartheta=90^\circ$ at $B=B_0/\sin^2\vartheta_0$; trapped if this is below $B_{\max}$.
-- THINK: the mirror animation (page 25) follows here, after $\vartheta$, $\vartheta_c$ and $R_m$ are defined; the cone in the sketch is drawn at $\vartheta_c=30^\circ$, the $R_m=4$ of the animation and the plot.
-
-**26 Loss cone in velocity space.**
-- THINK: isotropic Maxwellian at the midplane, $v_{\rm th}=\sqrt{2k_BT/m_\alpha}$; trapped if $v_\parallel^2(z)$ reaches 0 before the throat $z=L_m$ (mirror half-length; $L$ stays the field-variation length).
-- THINK: lost fraction: an isotropic distribution fills the solid angle uniformly; each cone of half-angle $\vartheta_c$ has solid angle $2\pi(1-\cos\vartheta_c)$, two cones over $4\pi$ give $1-\cos\vartheta_c=1-\sqrt{1-1/R_m}$ (SymPy).
-
-**27 Grad-B drift.**
-- THINK: gyroaveraged force $\mathbf F=-\mu\nabla B=-\nabla(\mu B)$, $\mu$ constant; the parallel part is the mirror force of page 18; the perpendicular part into $\mathbf v_D=(\mathbf F_\perp/q_\alpha)\times\mathbf B/B^2$ with $-\nabla B\times\mathbf B=\mathbf B\times\nabla B$.
-- THINK: $\mathbf B$ out of the page, stronger at the top (larger symbols; the smaller ones are labelled "weaker $B$"): smaller orbits there; $\mathbf B\times\nabla B$ points to the left, so the ion drifts left (arrow), the electron right.
-
-**29 Curvature drift** (former pages "Field-line curvature" and "Curvature drift").
-- THINK: $s$ arc length, $d\mathbf x/ds=\mathbf b$; chain rule $\boldsymbol\kappa=d\mathbf b/ds=\sum_i(\partial\mathbf b/\partial x_i)(dx_i/ds)=(\mathbf b\cdot\nabla)\mathbf b$, the change of the unit tangent per unit arc length; $R_c=1/|\boldsymbol\kappa|$, $R_c=\infty$ where $\boldsymbol\kappa=0$.
-- THINK: circle of radius $a$: $\mathbf b=\mathbf e_\varphi$, $ds=a\,d\varphi$, $\boldsymbol\kappa=(1/a)\,\partial\mathbf e_\varphi/\partial\varphi=-\mathbf e_R/a$; $\mathbf e_R$ outward.
-- THINK: torus: $R_c=R$, the major radius (symbols line), the $R$ of the animation on page 30; $\mathbf R$ bold stays the guiding centre.
-- THINK: not re-derived on the slide; same drift as "Staying on a field line" (page 16), here in the centrifugal picture: guiding-centre acceleration $\mathbf a=-(v_\parallel^2/R_c)\mathbf e_R$; centrifugal force $m_\alpha v_\parallel^2\mathbf e_R/R_c$ into $\mathbf v_D=\mathbf F\times\mathbf B/(q_\alpha B^2)$; with $\mathbf b\times\boldsymbol\kappa=\mathbf e_R\times\mathbf b/R_c$ it is that result.
-- THINK: mnemonic $\mathbf v_D^{\rm curv}=\rho_\parallel\Omega_\parallel\,\mathbf e_R\times\mathbf b$ with $\rho_\parallel=v_\parallel/\omega_c$, $\Omega_\parallel=v_\parallel/R_c$.
+The fast-gyroaction reasoning and the Hamiltonian are used only to explain
+the slow moment and mirror motion, not to introduce the noncanonical
+guiding-center symplectic structure.
 
 ## Evidence and assets
 
@@ -202,7 +191,7 @@ integration in `scripts/check-physics.py` (`DriftOrbitPhysics`) gives the
 same numbers.
 
 **`grad-b-drift`** (`animations/grad_b_drift.py`, 20 s, plays once; after
-the grad-B page 27).
+the grad-B page 28).
 - Computed: ion and electron in $\mathbf B=B_0(1+y/L)\,\hat{\mathbf z}$,
   $L=10\,\rho_{Li}$, guiding centres start at the origin, 10 ion periods.
 - Shown: $x/\rho_{Li}$, $y/\rho_{Li}$ [1]; B out of the page, symbols grow with $B$;
@@ -216,8 +205,8 @@ the grad-B page 27).
   (ion and electron differ by $4^2$). At equal $T$ the speed does not depend
   on mass; the sign of $q_\alpha$ sets the direction.
 
-**`curvature-drift`** (`animations/curvature_drift.py`, 20 s; page 30, after the
-curvature-drift page 29).
+**`curvature-drift`** (`animations/curvature_drift.py`, 20 s; page 18, after the
+curvature-drift page 17).
 - Computed: both species in the toroidal vacuum field
   $\mathbf B=B_0R_0/R\,\hat{\boldsymbol\varphi}$, $R_0=40\,\rho_{Li}$, start on the
   midplane with $v_\parallel=v_\perp$, run for the time in which the ion goes
@@ -246,7 +235,7 @@ curvature-drift page 29).
   with the time step).
 
 **`magnetic-mirror`** (`animations/magnetic_mirror.py`, 24 s; page 25,
-after the mirror-ratio and loss-cone page 24, which defines $\vartheta$,
+after the mirror-energy page 24, which defines $\vartheta$,
 $\vartheta_c$ and $R_m$).
 - Computed: six ions of equal speed $v$, midplane pitch angles
   $18^\circ,26^\circ,29^\circ,31^\circ,45^\circ,70^\circ$, in
@@ -317,7 +306,7 @@ general-force-drift page 13).
   $(m_\alpha/q_\alpha)(\mathbf g\times\mathbf B)_x/B^2$: ion $-0.20000$ against
   $-0.20000$, electron $+0.01250$ against $+0.01250$ (agree to $10^{-5}$ relative).
 
-**`mu-ramp`** (`animations/mu_ramp.py`, 23 s; page 21, after the Faraday page 20).
+**`mu-ramp`** (`animations/mu_ramp.py`, 23 s; page 21, after the adiabatic-invariance page 20).
 - Computed: the scheme of `derivations/plot_mu_ramp.py` (page 22) with the
   trajectory kept: one ion centred on the axis of a uniform
   $B/B_0=\tfrac32+\tfrac12\tanh(t/\tau)$, $\omega_{c0}\tau=20$, shown from
@@ -340,8 +329,8 @@ general-force-drift page 13).
   the end. The flux uses the measured orbit radius, $\mu$ the measured speed.
   At $\omega_{c0}\tau=1,2$ the final $\mu$ equals `plot_mu_ramp.boris` to $10^{-13}$.
 
-**`loss_cone`** plot (`derivations/plot_loss_cone.py`, page 26 "Loss cone in
-velocity space", after the loss-cone derivation page 24 and the mirror animation page 25).
+**`loss_cone`** plot (`derivations/plot_loss_cone.py`, page 27 "Loss cone in
+velocity space", after the loss-cone derivation page 26 and the mirror animation page 25).
 - Computed: 1500 particles of an isotropic Maxwellian at the midplane (seeded),
   $v_\parallel$, $v_\perp$ in $v_\mathrm{th}=(2k_BT/m_\alpha)^{1/2}$ [1]; field
   $B(z)/B_0=1+(R_m-1)(z/L_m)^2$, $R_m=4$. Trapped if
@@ -359,8 +348,8 @@ velocity space", after the loss-cone derivation page 24 and the mirror animation
   (`test_loss_cone_sample_against_pitch_angle`) checks the test particle by
   particle against $\sin^2\vartheta\ge1/R_m$.
 
-**`polarization-drift`** (`animations/polarization_drift.py`, 17 s; page 32,
-after the polarization page 31).
+**`polarization-drift`** (`animations/polarization_drift.py`, 17 s; page 31,
+after the polarization page 30).
 - Computed: ion and electron in uniform $\mathbf B$ out of the page with
   $\mathbf E=E(t)\,\mathbf e_y$, $E/B=(E_1/B)(1-\cos(\pi t/T_r))/2$ up to
   $T_r$ = three ion periods ($\omega/\omega_{ci}\approx0.17$), then constant,
@@ -381,8 +370,8 @@ the polarization drift of particles, so the drift got its own scene.
 
 ## Cyclotron resonance (2026-10-26)
 
-`animations/cyclotron_resonance.py` (`cyclotron-resonance`, 31 s; page 35,
-after the derivation page 34): uniform B out of the page, uniform field
+`animations/cyclotron_resonance.py` (`cyclotron-resonance`, 31 s; page 34,
+after the derivation page 33): uniform B out of the page, uniform field
 rotating clockwise (s = +1) or counterclockwise (s = -1), particle from rest,
 Boris push (`drift_models.boris_em`), 400 steps per gyration, 6 gyrations
 per run; each species normalized with its own abs(omega_c) (speed v B/E_0,
