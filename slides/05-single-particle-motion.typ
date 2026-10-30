@@ -222,6 +222,19 @@
   #symbols[The parallel component of the same force $-mu grad B$ is the mirror force.]
 ]
 #animation-page("grad-b-drift", "grad_b_drift", section: "motion-nonuniform-fields")
+// ----------------------------------- Summary: first-order guiding-centre physics
+#slide(section: "motion-nonuniform-fields", title: [Guiding-centre motion: results])[
+  #at(1, 12, y: 2mm, align(center, note[static $bold(B)$, $bold(E) = 0$; $epsilon = v / (abs(omega_c) L) << 1$]))
+  #at(1, 12, y: 18mm, lrows(size: 21pt, label-width: 43mm, gap: 10mm,
+    ([field-line motion], $dot(bold(R)) = v_parallel bold(b) + O(epsilon v)$),
+    ([magnetic moment], $mu = (m_alpha v_perp^2) / (2 B) approx "const."$),
+    ([energy], $H = (m_alpha v_parallel^2) / 2 + mu B approx "const."$),
+    ([mirror force], $m_alpha dot(v)_parallel approx -mu bold(b) dot grad B$),
+    ([curvature drift], $bold(v)_D^"curv" = (m_alpha v_parallel^2) / (q_alpha B R_c) thin bold(e)_R times bold(b)$),
+    ([grad-$B$ drift], $bold(v)_D^(grad B) = mu / (q_alpha B^2) thin bold(B) times grad B$),
+  ))
+  #symbols[$mu$ invariant to leading order after gyroaveraging; mirror acceleration and perpendicular drifts are first-order effects.]
+]
 // ---------------------------------------------------- 13 polarization
 #slide(section: "motion-polarization", title: [Polarization drift])[
   #at(1, 12, y: 6mm, formula-rows(gap: 12mm,
