@@ -9,7 +9,7 @@ Online deck: [present/05-single-particle-motion/](https://krystophny.github.io/p
 
 Revised route (2026-10-28): **local Lorentz helix → field-line following at
 zeroth order → curvature drift → magnetic moment → adiabatic invariance →
-mirror force and reflection → grad-$B$ drift**.
+mirror force and reflection → grad-$B$ drift → **one-page results summary**.
 
 This retains the existing figures, full-Lorentz animations, loss-cone plot and
 adiabatic-invariance plot. The more elaborate near-axis mirror calculation,
@@ -56,11 +56,12 @@ $\rho_L/L$ ordering when $v_\parallel\sim v_\perp$.
 | 27 | Loss cone in velocity space | plot | motion-nonuniform-fields | Preserve the original loss-cone plot and the isotropic lost fraction. |
 | 28 | Grad-B drift | derivation + original illustration | motion-nonuniform-fields | Take the perpendicular component $\mathbf F_{\mu,\perp}=-\mu\nabla_\perp B$ from page 23 and insert it into $\mathbf v_D=\mathbf F\times\mathbf B/(q_\alpha B^2)$. |
 | 29 | Grad-B drift | animation | motion-nonuniform-fields | Preserve the full-Lorentz ion/electron animation and its original gradient illustration. |
-| 30 | Polarization drift | static | motion-polarization | Slowly varying E_perp; polarization current carried by ions. |
-| 31 | Polarization drift | animation | motion-polarization | E_perp switched on over three ion turns; view with the common E x B displacement removed: ion guiding centre moves along E by m E_1/(q B^2), electron 16 times less and opposite. |
-| 32 | Drifts | static | (none) | Table: charge and mass dependence of every drift; vacuum-field sum of curvature and grad-B. |
-| 33 | Cyclotron resonance | derivation | motion-cyclotron-resonance | Rotating field E_cw = E_0 e^(-i s omega t); v_cw = v_x + i v_y obeys dv_cw/dt = -i omega_c v_cw + (q/m) E_cw (the script's equation); from rest the modulus 2 abs(sin(Delta t/2)/Delta), Delta = omega_c - s omega; Delta = 0: v_perp grows linearly, W quadratically. Ions take the clockwise, electrons the counterclockwise field (signed omega_c). |
-| 34 | Cyclotron resonance | animation | motion-cyclotron-resonance | Predict each run before it starts: ion with the clockwise field at omega_ci (spiral, straight line in v_perp), at 0.8 omega_ci (beat, peak 10 E_0/B), with the counterclockwise field (nothing), electron with the counterclockwise field (resonance again). Measured slope 0.9999 abs(q) E_0/m against 1. |
+| 30 | Guiding-centre motion: results | summary | motion-nonuniform-fields | One uncluttered recap: ordering, leading field-line motion, magnetic moment, energy, mirror force, curvature drift and grad-B drift. Approximate invariance applies after gyroaveraging. |
+| 31 | Polarization drift | static | motion-polarization | Slowly varying E_perp; polarization current carried by ions. |
+| 32 | Polarization drift | animation | motion-polarization | E_perp switched on over three ion turns; view with the common E x B displacement removed: ion guiding centre moves along E by m E_1/(q B^2), electron 16 times less and opposite. |
+| 33 | Drifts | static | (none) | Table: charge and mass dependence of every drift; vacuum-field sum of curvature and grad-B. |
+| 34 | Cyclotron resonance | derivation | motion-cyclotron-resonance | Rotating field E_cw = E_0 e^(-i s omega t); v_cw = v_x + i v_y obeys dv_cw/dt = -i omega_c v_cw + (q/m) E_cw (the script's equation); from rest the modulus 2 abs(sin(Delta t/2)/Delta), Delta = omega_c - s omega; Delta = 0: v_perp grows linearly, W quadratically. Ions take the clockwise, electrons the counterclockwise field (signed omega_c). |
+| 35 | Cyclotron resonance | animation | motion-cyclotron-resonance | Predict each run before it starts: ion with the clockwise field at omega_ci (spiral, straight line in v_perp), at 0.8 omega_ci (beat, peak 10 E_0/B), with the counterclockwise field (nothing), electron with the counterclockwise field (resonance again). Measured slope 0.9999 abs(q) E_0/m against 1. |
 
 ## THINK route: board derivations
 
@@ -126,6 +127,9 @@ $\mathbf v_D^{\nabla B}=
 Thus the mirror force and grad-$B$ drift are the parallel and
 perpendicular consequences of the same $-\mu\nabla B$ force.
 Show the existing grad-$B$ animation.
+
+**30. Final recap.** The six formula rows collect $\dot{\mathbf R}=v_\parallel\mathbf b+O(\epsilon v)$, $\mu=m_\alpha v_\perp^2/(2B)\simeq\mathrm{const.}$, $H=m_\alpha v_\parallel^2/2+\mu B$, the mirror force, curvature drift and grad-$B$ drift. No derivation steps on the recap slide; refer back to the completed Goodnotes calculation.
+
 
 The Hamiltonian is used only as compact energy bookkeeping. No canonical
 momentum or noncanonical guiding-center equations are introduced.
@@ -349,8 +353,8 @@ velocity space", after the loss-cone derivation page 25 and the mirror animation
   (`test_loss_cone_sample_against_pitch_angle`) checks the test particle by
   particle against $\sin^2\vartheta\ge1/R_m$.
 
-**`polarization-drift`** (`animations/polarization_drift.py`, 17 s; page 31,
-after the polarization page 30).
+**`polarization-drift`** (`animations/polarization_drift.py`, 17 s; page 32,
+after the polarization page 31).
 - Computed: ion and electron in uniform $\mathbf B$ out of the page with
   $\mathbf E=E(t)\,\mathbf e_y$, $E/B=(E_1/B)(1-\cos(\pi t/T_r))/2$ up to
   $T_r$ = three ion periods ($\omega/\omega_{ci}\approx0.17$), then constant,
@@ -371,8 +375,8 @@ the polarization drift of particles, so the drift got its own scene.
 
 ## Cyclotron resonance (2026-10-26)
 
-`animations/cyclotron_resonance.py` (`cyclotron-resonance`, 31 s; page 34,
-after the derivation page 33): uniform B out of the page, uniform field
+`animations/cyclotron_resonance.py` (`cyclotron-resonance`, 31 s; page 35,
+after the derivation page 34): uniform B out of the page, uniform field
 rotating clockwise (s = +1) or counterclockwise (s = -1), particle from rest,
 Boris push (`drift_models.boris_em`), 400 steps per gyration, 6 gyrations
 per run; each species normalized with its own abs(omega_c) (speed v B/E_0,
