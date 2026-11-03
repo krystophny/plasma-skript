@@ -21,6 +21,11 @@ H = 500
 // One simulation for the lifetime of the page; the slider only sets the bath.
 sim = createOCP({L: 4, Lambda: 100, grid: 32, kappa: 0.2})
 reference = linearProfile(sim, Tbath)
+// Electron density in the slab |z| < 1/2, averaged over ~130 frames and lightly
+// blurred: thermal motion moves each electron about lambda_D per frame, so the
+// time-averaged cloud is calm where single electrons only flicker.
+G = 32
+density = ({avg: null, img: (() => { const c = document.createElement("canvas"); c.width = G; c.height = G; return c; })()})
 ```
 
 ```{ojs}
@@ -58,18 +63,46 @@ label = (ctx, s, x, y, {size = 19, color = ink, align = "left"} = {}) => {
 draw = (T) => {
   const ctx = canvas.getContext("2d"), L = sim.L;
   ctx.clearRect(0, 0, W, H);
-  // Left: electrons of the slab |z| < 1/2 around the test charge, projected on (x, y).
+  // Left: electrons of the slab |z| < 1/2 around the test charge, seen along z.
   const S = 440, ox = 14, oy = 14, s = S / L;
   ctx.strokeStyle = grid; ctx.lineWidth = 1; ctx.strokeRect(ox, oy, S, S);
-  ctx.fillStyle = blue;
   const [X, Y, Z] = sim.pos;
+  const counts = new Float64Array(G * G);
+  let inside = 0;
   for (let p = 0; p < sim.N; p++) {
-    const z = Math.abs(Z[p]);
-    if (z > 0.5) continue;
-    ctx.globalAlpha = Math.min(1, (0.5 - z) / 0.1);
-    ctx.beginPath(); ctx.arc(ox + (X[p] + L / 2) * s, oy + (L / 2 - Y[p]) * s, 2.2, 0, 2 * Math.PI); ctx.fill();
+    if (Math.abs(Z[p]) > 0.5) continue;
+    const i = Math.min(G - 1, Math.floor((X[p] / L + 0.5) * G));
+    const j = Math.min(G - 1, Math.floor((0.5 - Y[p] / L) * G));
+    counts[j * G + i] += 1; inside += 1;
   }
-  ctx.globalAlpha = 1;
+  const mean = inside / (G * G);
+  if (!density.avg) density.avg = Float64Array.from(counts, (c) => mean);
+  for (let k = 0; k < G * G; k++) density.avg[k] += 0.015 * (counts[k] - density.avg[k]);
+  const img = density.img.getContext("2d"), data = img.createImageData(G, G);
+  for (let j = 0; j < G; j++) for (let i = 0; i < G; i++) {
+    let sum = 0, wsum = 0;
+    for (let dj = -1; dj <= 1; dj++) for (let di = -1; di <= 1; di++) {
+      const w = (di ? 1 : 2) * (dj ? 1 : 2);
+      sum += w * density.avg[((j + dj + G) % G) * G + (i + di + G) % G]; wsum += w;
+    }
+    const ratio = sum / wsum / mean, q = 4 * (j * G + i);
+    // n_e / n_0 = 0.4 white, 1 mid blue, 1.4 full blue: the hole stands out
+    data.data[q] = 0; data.data[q + 1] = 114; data.data[q + 2] = 178;
+    data.data[q + 3] = Math.round(255 * Math.min(1, Math.max(0, (ratio - 0.4) / 1.0)) * 0.9);
+  }
+  img.putImageData(data, 0, 0);
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(density.img, ox, oy, S, S);
+  if (dots) {
+    ctx.fillStyle = blue;
+    for (let p = 0; p < sim.N; p++) {
+      const z = Math.abs(Z[p]);
+      if (z > 0.5) continue;
+      ctx.globalAlpha = Math.min(1, (0.5 - z) / 0.1);
+      ctx.beginPath(); ctx.arc(ox + (X[p] + L / 2) * s, oy + (L / 2 - Y[p]) * s, 2.2, 0, 2 * Math.PI); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
   const cx = ox + S / 2, cy = oy + S / 2, lambda = Math.sqrt(T);
   ctx.setLineDash([5, 4]); ctx.strokeStyle = ink; ctx.lineWidth = 1.2;
   ctx.beginPath(); ctx.arc(cx, cy, lambda * s, 0, 2 * Math.PI); ctx.stroke(); ctx.setLineDash([]);
@@ -120,6 +153,10 @@ loop = {
 ```{ojs}
 viewof Tbath = Inputs.range([0.25, 4], {value: 1, transform: Math.log, step: 0.01,
   label: html`<i>k</i><sub>B</sub><i>T</i><sub>bath</sub> / <i>k</i><sub>B</sub><i>T</i><sub>0</sub>`})
+```
+
+```{ojs}
+viewof dots = Inputs.toggle({label: "particles", value: false})
 ```
 
 ```{ojs}

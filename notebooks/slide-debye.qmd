@@ -39,24 +39,26 @@ length = (m) => {
 lambda = debyeLength(n, T)
 a = Math.cbrt(1 / n)
 N_D = debyeNumber(n, T)
-radii = d3.range(0, 360.01).map((i) => 10 ** (-10 + 12 * i / 360))
+// r in units of lambda_D on a linear axis; the sliders move lambda_D and n_e^-1/3.
+rho = d3.range(1, 501).map((i) => i / 100)
 ```
 
 ```{ojs}
 subscripts(Plot.plot({
-  width: 970, height: 480, marginLeft: 70, marginRight: 14, marginTop: 44, marginBottom: 48,
+  width: 970, height: 480, marginLeft: 70, marginRight: 44, marginTop: 44, marginBottom: 62,
   style: font, clip: true,
-  x: {type: "log", domain: [1e-10, 1e2], label: "r [m]", labelAnchor: "right", labelArrow: "none",
-      ticks: d3.range(-10, 3, 2).map((k) => 10 ** k), tickFormat: powerOfTen, grid: true},
-  y: {domain: [0, 1.15], label: "4πε_0 r Φ / e", labelArrow: "none", ticks: [0, 0.5, 1]},
+  x: {domain: [0, 5], label: "r / λ_D", labelAnchor: "center", labelOffset: 38, labelArrow: "none",
+      ticks: [0, 1, 2, 3, 4, 5], grid: true},
+  y: {domain: [0, 3], label: "Φ / (e / 4πε_0 λ_D)", labelArrow: "none", ticks: [0, 1, 2, 3]},
   marks: [
-    Plot.rect([0], {x1: 1e-10, x2: a, y1: 0, y2: 1.15, fill: shade}),
-    Plot.text(a > 1e-8 ? [0] : [], {x: a, y: 0.05, text: () => "r < n_e^−1/3", textAnchor: "end", dx: -6, fill: "#526175"}),
-    Plot.ruleY([1], {stroke: orange, strokeDasharray: "8,5", strokeWidth: 2}),
-    Plot.text([0], {x: 6e1, y: 1, text: () => "bare", dy: -12, textAnchor: "end", fill: orange}),
-    Plot.line(radii, {x: (r) => r, y: (r) => Math.exp(-r / lambda), stroke: blue, strokeWidth: 2.5}),
-    Plot.ruleX([lambda], {y1: 0, y2: 1.07, stroke: ink, strokeDasharray: "3,3"}),
-    Plot.text([lambda], {x: (d) => d, y: 1.12, text: () => `λ_D = ${length(lambda)}`, fill: ink, fontSize: 24}),
+    Plot.rect([0], {x1: 0, x2: Math.min(5, a / lambda), y1: 0, y2: 3, fill: shade}),
+    Plot.text(a / lambda > 0.4 ? [0] : [], {x: Math.min(5, a / lambda), y: 0.15, text: () => "r < n_e^−1/3", textAnchor: "end", dx: -6, fill: "#526175"}),
+    Plot.line(rho, {x: (r) => r, y: (r) => 1 / r, stroke: orange, strokeDasharray: "8,5", strokeWidth: 2}),
+    Plot.text([0], {x: 3.0, y: 0.48, text: () => "bare Coulomb", textAnchor: "start", fill: orange}),
+    Plot.line(rho, {x: (r) => r, y: (r) => Math.exp(-r) / r, stroke: blue, strokeWidth: 2.5}),
+    Plot.text([0], {x: 1.3, y: 0.38, text: () => "Debye–Hückel", textAnchor: "start", fill: blue}),
+    Plot.ruleX([1], {y1: 0, y2: 2.8, stroke: ink, strokeDasharray: "3,3"}),
+    Plot.text([0], {x: 1, y: 2.9, text: () => `λ_D = ${length(lambda)}`, fill: ink, fontSize: 24, textAnchor: "start", dx: 6}),
   ],
 }))
 ```
