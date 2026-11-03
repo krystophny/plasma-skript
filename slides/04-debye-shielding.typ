@@ -60,12 +60,12 @@
   #at(1, 12, y: 124mm, align(center, text(size: result-size, $epsilon(k) = 1 + 1/(k^2 lambda_D^2)$)))
   #at(1, 12, y: 148mm, align(center, text(fill: muted)[#link("https://krystophny.github.io/plasma-skript/notebooks/debye.html")[notebook: Debye shielding]]))
 ]
-#plot-page("debye_nonlinear_potential", columns: 7, section: "intro-debye-shielding", title: [Nonlinear screening: potential],
-  below: [$Lambda = q e\/(4 pi epsilon_0 lambda_D k_B T_e)$, #h(0.4em) #text(fill: muted)[$q$ test charge] \
-    #v(3mm) #text(fill: muted)[linear only fails at $r lt.tilde Lambda lambda_D$, where $e Phi > k_B T_e$]])
-#plot-page("debye_nonlinear_density", columns: 7, section: "intro-debye-shielding", title: [Nonlinear screening: density],
-  below: [$n_e\/n_0 = e^(e Phi\/k_B T_e)$ #h(0.4em) against #h(0.4em) $1 + e Phi\/k_B T_e$ \
-    #v(3mm) #text(fill: muted)[solutions of the previous page; markers: $e Phi = k_B T_e$]])
+#plot-page("debye_nonlinear_potential", columns: 10, section: "intro-debye-shielding", title: [Nonlinear screening: potential],
+  below: [test charge $q = -e$: #h(0.4em) $Lambda = 1\/(4 pi n_0 lambda_D^3)$ \
+    #v(3mm) #text(fill: muted)[visible only for $n_0 lambda_D^3 lt.tilde 1$, where mean field itself fails]])
+#plot-page("debye_nonlinear_density", columns: 10, section: "intro-debye-shielding", title: [Nonlinear screening: density],
+  below: [$n_e\/n_0 = e^(e Phi\/k_B T_e) >= 0$ #h(0.4em) against #h(0.4em) $1 + e Phi\/k_B T_e$ \
+    #v(3mm) #text(fill: muted)[$q > 0$: electrons collapse onto the point charge, no solution]])
 #slide(section: "intro-debye-shielding", title: [Charge separation and screening])[
   #at(1, 6, y: 0mm, align(center)[
     #text(fill: muted)[rigid: electrons removed] \

@@ -45,15 +45,16 @@ def test_saha_cmod_measured_populations():
     assert np.all((ratios >= 1.0) & (ratios <= 1.5)), ratios
 
 def test_debye_nonlinear_poisson_boltzmann():
-    """The solver solves the Poisson-Boltzmann ODE with the enclosed-charge
-    boundary condition, the far field agrees with Debye-Hueckel to order
-    Lambda, and e Phi = k_B T_e lies at r ~ Lambda lambda_D (Coulomb region)."""
+    """The solver solves the Poisson-Boltzmann ODE for a negative charge with
+    the enclosed-charge boundary condition, does not depend on the charge
+    radius, and the far field exceeds Debye-Hueckel by less than Lambda
+    (fewer electrons expelled than the linearised density, which goes negative)."""
     import numpy as np
     import plot_debye_nonlinear as model
 
     for lam in model.STRENGTHS:
         sol = model.solve(lam)
-        assert abs(sol.sol(sol.a)[1] + lam) < 1e-8 * max(lam, 1)   # rho^2 phi' = -Lambda at a
+        assert abs(sol.sol(sol.a)[1] - lam) < 1e-8 * max(lam, 1)   # rho^2 phi' = +Lambda at a
         x = np.geomspace(2 * sol.a, 6.0, 60)
         h = 1e-4 * x
         phi, up, dn = sol.sol(x)[0], sol.sol(x + h)[0], sol.sol(x - h)[0]
@@ -61,8 +62,9 @@ def test_debye_nonlinear_poisson_boltzmann():
         scale = abs((up - 2 * phi + dn) / h**2) + abs(np.expm1(phi))
         assert np.max(abs(residual) / scale) < 1e-3, lam
         ratio = model.far_field_ratio(sol, lam)
-        assert np.all(abs(ratio - 1) < lam), (lam, ratio)
-        assert abs(model.unit_crossing(sol) / lam - 1) < 0.02, lam
+        assert np.all((ratio > 1) & (ratio - 1 < lam)), (lam, ratio)
+        assert model.unit_crossing(sol) < lam
+        assert abs(model.cutoff_sensitivity(lam)) < 1e-3, lam
 
 
 def test_mu_ramp_boris_against_dop853():

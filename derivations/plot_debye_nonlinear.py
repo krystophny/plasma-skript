@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Nonlinear Poisson-Boltzmann screening of a positive charge vs Debye-Hueckel.
+"""Nonlinear Poisson-Boltzmann screening of a negative charge vs Debye-Hueckel.
 
 Model (electrons Boltzmann, ions a fixed uniform background, mean field):
 
@@ -7,23 +7,23 @@ Model (electrons Boltzmann, ions a fixed uniform background, mean field):
     (1/rho^2) d/drho (rho^2 dphi/drho) = exp(phi) - 1,
 
 lambda_D^2 = eps_0 k_B T_e/(n_0 e^2).  Near a point charge q the potential is
-Coulomb, phi = Lambda/rho, with
+Coulomb, phi = -Lambda/rho for q < 0, with
 
-    Lambda = q e/(4 pi eps_0 lambda_D k_B T_e) = (q/e)/(4 pi n_0 lambda_D^3),
+    Lambda = |q| e/(4 pi eps_0 lambda_D k_B T_e) = (|q|/e)/(4 pi n_0 lambda_D^3),
 
-so ePhi = k_B T_e at rho_1 ~ Lambda: for q = e this is the Landau length
-e^2/(4 pi eps_0 k_B T_e), far inside the Debye sphere when n_0 lambda_D^3 >> 1.
-For q > 0 a strict point charge has no solution: n_e = n_0 exp(Lambda/rho) is
-not integrable at rho -> 0 (classical collapse onto the charge).  The charge
-is therefore a sphere of radius a = CUTOFF Lambda, where phi ~ 1/CUTOFF = 10;
-the boundary condition there is the enclosed charge,
+so e Phi = -k_B T_e at rho_1 ~ Lambda.  The test charge is negative: electrons
+are expelled and n_e = n_0 exp(phi) stays between 0 and n_0, while the
+linearised density n_0 (1 + phi) turns negative for phi < -1.  (For q > 0 a
+point charge has no Boltzmann solution: n_0 exp(Lambda/rho) is not integrable
+at rho -> 0, and the result depends on the charge radius.)  The charge is a
+sphere of radius a = CUTOFF Lambda; the boundary condition there is the
+enclosed charge,
 
-    rho^2 dphi/drho |_{rho=a} = -Lambda,     phi -> 0 far away.
+    rho^2 dphi/drho |_{rho=a} = +Lambda,     phi -> 0 far away,
 
-Outside rho ~ a the result depends on a only at order Lambda^2
-(cutoff_sensitivity).  Linear (Debye-Hueckel) solution of the same problem:
-phi_DH = Lambda exp(-(rho - a))/(rho (1 + a)), for a << 1 Lambda exp(-rho)/rho.
-Coulomb: phi_C = Lambda/rho.
+and the result does not depend on a (cutoff_sensitivity).  Linear
+(Debye-Hueckel) point-charge solution: phi_DH = -Lambda exp(-rho)/rho.
+For q = -e the strengths below correspond to n_0 lambda_D^3 = 0.1, 1, 10.
 
 Writes build/fig/debye_nonlinear_{potential,density}.{svg,pdf,png}.
 """
@@ -37,8 +37,9 @@ from scipy.optimize import brentq
 
 CUTOFF = 0.1                       # charge radius a/(Lambda lambda_D) [1]
 RHO_MAX = 14.0                     # outer boundary r/lambda_D [1]
-STRENGTHS = (1e-4, 1e-3, 1e-2)     # Lambda [1]; q = e: N_D = n_0 lambda_D^3 = 800, 80, 8
-RHO_PLOT = (1e-5, 8.0)             # plotted r/lambda_D range [1]
+DEBYE_NUMBERS = (10.0, 1.0, 0.1)   # n_0 lambda_D^3 [1] for q = -e
+STRENGTHS = tuple(1 / (4 * np.pi * nd) for nd in DEBYE_NUMBERS)   # Lambda [1]
+RHO_PLOT = (1e-3, 6.0)             # plotted r/lambda_D range [1]
 
 
 def radius(strength, cutoff=CUTOFF):
@@ -55,7 +56,7 @@ def solve(strength, a=None, rho_max=RHO_MAX):
 
     def bc(ya, yb):
         # inner: enclosed charge; outer: decaying exponential, phi' = -(1+1/rho) phi
-        return np.array([ya[1] + strength, yb[1] + (rho_max + 1) * yb[0]])
+        return np.array([ya[1] - strength, yb[1] + (rho_max + 1) * yb[0]])
 
     rho = np.geomspace(a, rho_max, 800)
     phi0 = debye_hueckel(rho, strength, a)
@@ -68,16 +69,16 @@ def solve(strength, a=None, rho_max=RHO_MAX):
 
 
 def debye_hueckel(rho, strength, a=0.0):
-    return strength * np.exp(-(rho - a)) / (rho * (1 + a))
+    return -strength * np.exp(-(rho - a)) / (rho * (1 + a))
 
 
 def coulomb(rho, strength):
-    return strength / rho
+    return -strength / rho
 
 
 def unit_crossing(sol):
-    """rho_1 where the exact potential equals k_B T_e/e (phi = 1)."""
-    return brentq(lambda r: sol.sol(r)[0] - 1.0, sol.a, RHO_MAX)
+    """rho_1 where the exact potential equals -k_B T_e/e (phi = -1)."""
+    return brentq(lambda r: sol.sol(r)[0] + 1.0, sol.a, RHO_MAX)
 
 
 def far_field_ratio(sol, strength, rho=(1.0, 2.0, 3.0)):
@@ -93,26 +94,16 @@ def cutoff_sensitivity(strength, factor=2.0, rho=2.0):
     return small.sol(rho)[0] / base.sol(rho)[0] - 1
 
 
-def electrons_inside(sol, strength, rho_1, n_debye=None):
-    """Mean electron number inside rho_1 for q = e: 4 pi N_D int rho^2 e^phi.
-
-    For q = e, Lambda = 1/(4 pi N_D) with N_D = n_0 lambda_D^3.
-    """
-    n_debye = 1 / (4 * np.pi * strength) if n_debye is None else n_debye
-    integral = quad(lambda r: r**2 * np.exp(sol.sol(r)[0]), sol.a, rho_1, limit=200)[0]
-    return 4 * np.pi * n_debye * integral
-
-
 def solutions(strengths=STRENGTHS):
     return {lam: solve(lam) for lam in strengths}
 
 
-SHADES = {1e-4: "#6baed6", 1e-3: "#2171b5", 1e-2: "#08306b"}
-MARKS = {1e-4: "o", 1e-3: "s", 1e-2: "^"}
+SHADES = dict(zip(STRENGTHS, ("#6baed6", "#2171b5", "#08306b")))
+MARKS = dict(zip(STRENGTHS, ("o", "s", "^")))
 
 
-def _lam_tex(lam):
-    return rf"$\Lambda=10^{{{int(round(np.log10(lam)))}}}$"
+def _nd_tex(lam):
+    return rf"$n_0\lambda_D^3={1 / (4 * np.pi * lam):.2g}$"
 
 
 def plot():
@@ -120,47 +111,42 @@ def plot():
     from si import figure, slide_width, ORANGE, GRAY
 
     sols = solutions()
-    width, height = slide_width(8), 3.0
+    width, height = slide_width(10), 2.8
 
-    # --- potential ---
+    # --- potential relative to the bare Coulomb potential ---
     fig, ax = figure(width, height)
     for lam, sol in sols.items():
-        rho = np.geomspace(sol.a, RHO_PLOT[1], 600)
-        ax.plot(rho, coulomb(rho, lam), color=GRAY, ls=":", lw=1.2)
-        ax.plot(rho, sol.sol(rho)[0], color=SHADES[lam], lw=2.4, solid_capstyle="butt")
-        ax.plot(rho, debye_hueckel(rho, lam), color=ORANGE, ls=(0, (4, 3)), lw=1.1)
+        rho = np.geomspace(max(sol.a, RHO_PLOT[0]), RHO_PLOT[1], 600)
+        ax.plot(rho, sol.sol(rho)[0] / coulomb(rho, lam), color=SHADES[lam], lw=2.4,
+                solid_capstyle="butt", label=_nd_tex(lam))
         r1 = unit_crossing(sol)
-        ax.plot([r1], [1.0], MARKS[lam], color="k", ms=5, zorder=5)
-        ax.text(1.15 * sol.a, 14, _lam_tex(lam), color=SHADES[lam], fontsize=9, ha="left", va="bottom")
-    ax.axhline(1.0, color="0.6", lw=0.7, zorder=0)
-    ax.text(7.5, 0.8, r"$e\Phi=k_BT_e$", color="0.35", fontsize=9, ha="right", va="top")
-    ax.set(xscale="log", yscale="log", xlim=RHO_PLOT, ylim=(1e-7, 1e2),
-           xlabel=r"$r/\lambda_D\ [1]$", ylabel=r"$e\Phi/k_BT_e\ [1]$")
-    ax.legend(handles=[
-        Line2D([], [], color="#4292c6", lw=2.4, label="Poisson–Boltzmann (exact)"),
-        Line2D([], [], color=ORANGE, ls=(0, (4, 3)), lw=1.1, label="Debye–Hückel (linear)"),
-        Line2D([], [], color=GRAY, ls=":", lw=1.0, label="bare Coulomb"),
-        Line2D([], [], color="k", marker="o", ms=5, ls="", label=r"$e\Phi=k_BT_e$")],
-        loc="lower left", fontsize=8.5, title=r"$q=e$: $n_0\lambda_D^3=1/(4\pi\Lambda)$", title_fontsize=8.5)
+        ax.plot([r1], [sol.sol(r1)[0] / coulomb(r1, lam)], MARKS[lam], color="k", ms=5, zorder=5)
+    rho = np.geomspace(*RHO_PLOT, 600)
+    ax.plot(rho, debye_hueckel(rho, 1.0) / coulomb(rho, 1.0), color=ORANGE, ls=(0, (4, 3)), lw=1.4,
+            label="Debye–Hückel (linear)")
+    ax.axhline(1.0, color=GRAY, ls=":", lw=1.2, label="bare Coulomb")
+    ax.plot([], [], "o", color="k", ms=5, ls="", label=r"$e\Phi=-k_BT_e$")
+    ax.set(xscale="log", xlim=RHO_PLOT, ylim=(0, 1.08),
+           xlabel=r"$r/\lambda_D\ [1]$", ylabel=r"$\Phi/\Phi_{\mathrm{Coulomb}}\ [1]$")
+    ax.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), fontsize=8.5, title=r"exact, $q=-e$", title_fontsize=8.5)
     save_all(fig, "debye_nonlinear_potential")
 
-    # --- excess electron density ---
+    # --- electron density ---
     fig, ax = figure(width, height)
     for lam, sol in sols.items():
-        rho = np.geomspace(sol.a, RHO_PLOT[1], 600)
-        phi = sol.sol(rho)[0]
-        ax.plot(rho, np.expm1(phi), color=SHADES[lam], lw=2.4, solid_capstyle="butt")
-        ax.plot(rho, debye_hueckel(rho, lam), color=ORANGE, ls=(0, (4, 3)), lw=1.1)
+        rho = np.geomspace(max(sol.a, RHO_PLOT[0]), RHO_PLOT[1], 600)
+        ax.plot(rho, np.exp(sol.sol(rho)[0]), color=SHADES[lam], lw=2.4, solid_capstyle="butt",
+                label=_nd_tex(lam))
+        ax.plot(rho, 1 + debye_hueckel(rho, lam), color=ORANGE, ls=(0, (4, 3)), lw=1.1)
         r1 = unit_crossing(sol)
-        ax.plot([r1], [np.e - 1], MARKS[lam], color="k", ms=5, zorder=5)
-        ax.text(1.15 * sol.a, 3e4, _lam_tex(lam), color=SHADES[lam], fontsize=9, ha="left", va="bottom")
-    ax.set(xscale="log", yscale="log", xlim=RHO_PLOT, ylim=(1e-5, 1e6),
-           xlabel=r"$r/\lambda_D\ [1]$", ylabel=r"$n_e/n_0-1\ [1]$")
-    ax.legend(handles=[
-        Line2D([], [], color="#4292c6", lw=2.4, label=r"Boltzmann $e^{e\Phi/k_BT_e}-1$"),
-        Line2D([], [], color=ORANGE, ls=(0, (4, 3)), lw=1.1, label=r"linearised $e\Phi_{DH}/k_BT_e$"),
-        Line2D([], [], color="k", marker="o", ms=5, ls="", label=r"$e\Phi=k_BT_e$")],
-        loc="upper right", fontsize=8.5, title=r"$q=e$: $n_0\lambda_D^3=1/(4\pi\Lambda)$", title_fontsize=8.5)
+        ax.plot([r1], [np.exp(-1)], MARKS[lam], color="k", ms=5, zorder=5)
+    ax.axhline(0.0, color="0.6", lw=0.7, zorder=0)
+    ax.plot([], [], color=ORANGE, ls=(0, (4, 3)), lw=1.1, label=r"linearised $1+e\Phi_{DH}/k_BT_e$")
+    ax.plot([], [], "o", color="k", ms=5, ls="", label=r"$e\Phi=-k_BT_e$")
+    ax.set(xscale="log", xlim=RHO_PLOT, ylim=(-1.5, 1.15),
+           xlabel=r"$r/\lambda_D\ [1]$", ylabel=r"$n_e/n_0\ [1]$")
+    ax.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), fontsize=8.5, title=r"Boltzmann $e^{e\Phi/k_BT_e}$, $q=-e$",
+              title_fontsize=8.5)
     save_all(fig, "debye_nonlinear_density")
     return sols
 
@@ -175,12 +161,9 @@ def save_all(fig, name):
 
 def report(sols):
     for lam, sol in sols.items():
-        r1 = unit_crossing(sol)
-        ratio = far_field_ratio(sol, lam)
-        print(f"Lambda={lam:g}: a={sol.a:.1e}  rho_1={r1:.3e}  phi/phi_DH at rho=1,2,3: "
-              + ", ".join(f"{x:.5f}" for x in ratio)
-              + f"  cutoff a/2 changes phi(2) by {cutoff_sensitivity(lam):+.1e}"
-              + f"  electrons inside rho_1 (q=e): {electrons_inside(sol, lam, r1):.1e}")
+        print(f"n0 lD^3={1 / (4 * np.pi * lam):.2g} Lambda={lam:.3g}: rho_1={unit_crossing(sol):.3e}  "
+              "phi/phi_DH at rho=1,2,3: " + ", ".join(f"{x:.4f}" for x in far_field_ratio(sol, lam))
+              + f"  cutoff a/2 changes phi(2) by {cutoff_sensitivity(lam):+.1e}")
 
 
 if __name__ == "__main__":
