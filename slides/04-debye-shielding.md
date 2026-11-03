@@ -131,7 +131,7 @@ normalized [1], $x$ logarithmic.
   point charge has no Boltzmann solution and the ion size enters. The ion is
   a sphere of Bohr radius $a_0$, so $a/\lambda_D=\Lambda k_BT_e/E_h$ and
   $e\Phi(a_0)\approx E_h=27.2$ eV; shown at $k_BT_e=2$ eV (hydrogen plasma
-  densities $1.4\times10^{22}$, $10^{24}$, $10^{26}$ m$^{-3}$). Exact over
+  densities $1.4\times10^{22}$, $1.4\times10^{24}$, $1.4\times10^{26}$ m$^{-3}$). Exact over
   Debye-Hückel at $r=1$ to $3\lambda_D$: 0.996, 0.90, 0.58; mean electron
   number within $2a_0$: 0.002, 0.08, 0.32. Classically these piled-up
   electrons are what quantum mechanics describes as bound states, the
