@@ -22,9 +22,9 @@ NODE = shutil.which("node")
 pytestmark = pytest.mark.skipif(NODE is None, reason="node runs notebooks/plasma.js")
 
 
-def js(body):
+def js(body, module="plasma.js"):
     """Run `body` (an async function body with the module as P) in node; return its JSON result."""
-    module = (ROOT / "notebooks" / "plasma.js").as_uri()
+    module = (ROOT / "notebooks" / module).as_uri()
     code = (f"import * as P from {json.dumps(module)};\n"
             f"console.log(JSON.stringify(await (async () => {{ {body} }})()));")
     run = subprocess.run([NODE, "--input-type=module", "-e", code],
@@ -198,3 +198,39 @@ def test_kernel_smoothing_against_animation_model():
             assert value == pytest.approx(integral / (2 * h), rel=1e-6)
     np.testing.assert_allclose(got["smoothed"], m["smoothed"](scale * xs, scale * particles, scale * 0.03),
                                rtol=1e-10)
+
+
+# ---------------------------------------------------------------- live Debye shielding (ocp.js)
+
+def test_ocp_fft_round_trip_and_mode():
+    got = js("const n = 8, re = new Float64Array(n ** 3), im = new Float64Array(n ** 3);"
+             " for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) for (let k = 0; k < n; k++)"
+             "   re[(i * n + j) * n + k] = Math.cos(2 * Math.PI * (i + 2 * j + 3 * k) / n);"
+             " const orig = Float64Array.from(re); P.fft3(re, im, n);"
+             " const peak = re[(1 * n + 2) * n + 3], rest = re.reduce((s, v) => s + Math.abs(v), 0) - 2 * Math.abs(peak);"
+             " P.fft3(re, im, n, true);"
+             " return {peak, rest, err: Math.max(...re.map((v, q) => Math.abs(v - orig[q])))};", "ocp.js")
+    assert got["peak"] == pytest.approx(8 ** 3 / 2)
+    assert abs(got["rest"]) < 1e-9 and got["err"] < 1e-12
+
+
+def test_ocp_thermostat_reaches_bath_temperature():
+    got = js("const sim = P.createOCP({L: 4, Lambda: 20, grid: 16, seed: 3});"
+             " for (let i = 0; i < 400; i++) P.step(sim, 2);"
+             " return P.temperature(sim);", "ocp.js")
+    assert got == pytest.approx(2, rel=0.05)
+
+
+def test_ocp_linear_reference_is_debye_huckel():
+    """Fine mesh, large box: the particle-mesh linear response is -kappa e^(-r)/r
+    up to the periodic neutralization 4 pi kappa/L^3 and cloud-in-cell smoothing."""
+    got = js("const sim = P.createOCP({L: 8, Lambda: 1, grid: 64, kappa: 0.2, bins: 16});"
+             " return {r: sim.radii, ref: P.linearProfile(sim, 1), hot: P.linearProfile(sim, 4)};", "ocp.js")
+    r = np.array(got["r"])
+    inner = (r > 0.3) & (r < 2)
+    offset = 4 * np.pi / 8 ** 3
+    np.testing.assert_allclose(np.array(got["ref"])[inner] / 0.2 + offset, -np.exp(-r[inner]) / r[inner], atol=0.06)
+    # At T = 4 T_0: -(kappa/T) e^(-r/lambda_D)/r with lambda_D = sqrt(T/T_0) = 2, up to
+    # a constant from the periodic images, which no longer decay within the box.
+    diff = np.array(got["hot"])[inner] / 0.2 + np.exp(-r[inner] / 2) / (4 * r[inner])
+    assert np.ptp(diff) < 0.01

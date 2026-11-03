@@ -31,7 +31,8 @@ mkdir -p "$build/media" "$out_dir"
 
 bash "$repo_root/scripts/script-outline.sh" "$build/script-outline.json"
 
-# Posters named in the decks: animation-page("<slug>", ...).
+# Posters named in the decks: animation-page("<slug>", ...) and
+# widget-page("<name>", ...) as slide-<name>.png.
 rm -f "$build"/media/*.png
 while IFS= read -r slug; do
   found=""
@@ -46,8 +47,10 @@ while IFS= read -r slug; do
     exit 1
   fi
   cp "$found" "$build/media/$slug.png"
-done < <(grep -ho 'animation-page("[^"]*"' "$repo_root"/slides/[0-9]*.typ \
-  | sed 's/.*("\(.*\)"/\1/' | sort -u)
+done < <({ grep -ho 'animation-page("[^"]*"' "$repo_root"/slides/[0-9]*.typ \
+  | sed 's/.*("\(.*\)"/\1/'
+  grep -ho 'widget-page("[^"]*"' "$repo_root"/slides/[0-9]*.typ \
+  | sed 's/.*("\(.*\)"/slide-\1/'; } | sort -u)
 
 stems=()
 for deck in "$repo_root"/slides/[0-9]*.typ; do

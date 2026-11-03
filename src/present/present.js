@@ -2,8 +2,10 @@
  *
  * Reads ./manifest.json (written by scripts/build-present.py):
  *   { stem, chapter, title, course, author, aspect, pdf,
- *     pages: [{ src, kind: "static"|"animation", background: "light"|"dark",
- *               video?, poster?, loop? }] }
+ *     pages: [{ src, kind: "static"|"animation"|"widget", background: "light"|"dark",
+ *               video?, poster?, loop?, widget?, region? }] }
+ * A widget page lays its live Quarto page over region {x, y, w, h} (page
+ * fractions); touches inside it drive the sliders, outside it turn pages.
  * One page fills the viewport. Touch: swipe or tap the left/right part of
  * the page; tap the middle of an animation to play or pause it. Apple
  * Pencil never navigates: it shows a laser dot. Keys: arrows, PageUp/Down,
@@ -79,10 +81,19 @@
       const f = document.createElement("div");
       f.className = "flash";
       el.append(f);
+    } else if (spec.kind === "widget") {
+      const frame = document.createElement("iframe");
+      frame.className = "widget";
+      frame.title = spec.alt || "Interactive figure";
+      frame.dataset.src = spec.widget;
+      const { x, y, w, h } = spec.region;
+      Object.assign(frame.style, { left: `${100 * x}%`, top: `${100 * y}%`,
+        width: `${100 * w}%`, height: `${100 * h}%` });
+      el.append(img, frame);
     } else {
       el.append(img);
     }
-    return { spec, el, img, video: el.querySelector("video") };
+    return { spec, el, img, video: el.querySelector("video"), widget: el.querySelector("iframe") };
   }
 
   // Load the image (and, for animations, the video) of page i.
@@ -90,6 +101,7 @@
     const p = pages[i];
     if (!p) return;
     if (!p.img.src) p.img.src = p.img.dataset.src;
+    if (p.widget && withVideo && !p.widget.src) p.widget.src = p.widget.dataset.src;
     if (p.video && withVideo && !p.video.src) {
       p.video.src = p.video.dataset.src;
       p.video.preload = "auto";
@@ -264,6 +276,14 @@
     else root.dataset.blank = kind;
   }
 
+  // A focused widget page hands over the keys its controls do not use.
+  addEventListener("message", (e) => {
+    const p = currentPage();
+    if (!p?.widget || e.source !== p.widget.contentWindow || e.data?.type !== "slide-widget-key") return;
+    const { key, shiftKey, altKey, ctrlKey, metaKey } = e.data;
+    document.dispatchEvent(new KeyboardEvent("keydown", { key, shiftKey, altKey, ctrlKey, metaKey }));
+  });
+
   document.addEventListener("keydown", (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     const k = e.key;
@@ -367,6 +387,7 @@
       urls.push(new URL(p.src, base).href);
       if (p.poster) urls.push(new URL(p.poster, base).href);
       if (p.video) urls.push(new URL(p.video, base).href);
+      if (p.widget) urls.push(new URL(p.widget, base).href);
     }
     return urls;
   }

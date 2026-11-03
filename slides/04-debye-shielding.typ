@@ -36,6 +36,7 @@
   ))
 ]
 #animation-page("debye-shielding-particles", "debye_shielding_particles", section: "intro-debye-shielding", loop: false)
+#widget-page("debye-particles", section: "intro-debye-shielding", title: [Shielding by particles])
 #slide(section: "intro-debye-shielding", title: [Debye shielding])[
   #let row(label, f) = ([#text(fill: muted, label)], f)
   #at(1, 12, y: 4mm, grid(columns: (auto, 1fr), column-gutter: 10mm, row-gutter: 9mm, align: (right + horizon, left + horizon),
@@ -46,6 +47,7 @@
   ))
   #at(3, 8, y: 92mm, result-box(align(center, $Phi = Q/(4 pi epsilon_0 r) e^(-r\/lambda_D)$), [Debye–Hückel potential]))
 ]
+#widget-page("debye", section: "intro-debye-shielding", title: [Screening length])
 #slide(section: "intro-debye-shielding", title: [Dielectric function])[
   #at(1, 6, y: 0mm, align(center)[
     #text(fill: muted)[net charge / imposed charge, pattern $e^(i bold(k) dot bold(r))$] \

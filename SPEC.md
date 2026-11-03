@@ -67,6 +67,11 @@ HTML-specific components have an equivalent paged fallback.
   interactive notebooks (added 2026-10-26): Quarto pages with Observable JS in
   `notebooks/`, published as `notebooks/<name>.html`, never Jupyter or a
   server-side kernel.
+  Slide widgets (`notebooks/slide-<name>.qmd`, added 2026-11-03) are such
+  notebooks reduced to one figure with sliders, at most a running particle
+  model; a deck places one with `widget-page`, the PDF shows its committed
+  poster `media/posters/slide-<name>.png`, and the presenter and Slopshell lay
+  the live page over it.
 - The published site includes a visible bibliography with citations for the
   physics sources, source material, figures, and external documentation used
   in the script. The public `src/sources.bib` file is the source database;

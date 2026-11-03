@@ -5,6 +5,8 @@ project:
     - debye.qmd
     - orbits.qmd
     - kernel-smoothing.qmd
+    - slide-debye.qmd
+    - slide-debye-particles.qmd
 
 format:
   html:

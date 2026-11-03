@@ -91,14 +91,15 @@
 
 // Positioned metadata binds each presenter entry to its actual paged location.
 #let present-page(kind: "static", background: "light", title: "Title",
-  section: none, slug: none, video: none, loop: false) = context {
+  section: none, slug: none, video: none, loop: false, widget: none, region: none) = context {
   let cue = if section == none { "" } else {
     let info = section-info(section)
     info.number + " " + info.title + ": "
   }
   [#metadata((kind: kind, background: background, title: plain-text(title),
     alt: cue + plain-text(title), page: counter(page).get().first(),
-    chapter: deck-chapter.get(), slug: slug, video: video, loop: loop)) <present-page>]
+    chapter: deck-chapter.get(), slug: slug, video: video, loop: loop,
+    widget: widget, region: region)) <present-page>]
 }
 
 // ---------------------------------------------------------------- pages ---
@@ -163,6 +164,22 @@
       alt: "Static poster of " + slug.replace("-", " ") + "; linked animation shows the time evolution."))
   ]
 }
+
+// Interactive figure: the Quarto/Observable page notebooks/slide-<name>.qmd
+// fills the area under the title. The PDF shows its poster (initial slider
+// values, scripts/render-widget-posters.py) linked to the published page; the
+// presenter and Slopshell lay the live page over `region` (page fractions).
+#let widget-url(name) = "https://krystophny.github.io/plasma-skript/notebooks/slide-" + name + ".html"
+#let widget-page(name, section: none, title: none) = page(foreground: page-number)[
+  #let area = (x: margin / 297mm, y: (margin + title-band) / 210mm,
+    w: text-width / 297mm, h: (text-height - title-band) / 210mm)
+  #present-page(kind: "widget", title: title, section: section, slug: "slide-" + name,
+    widget: "notebooks/slide-" + name + ".qmd", region: area)
+  #place(top + left, section-heading(section, title: title))
+  #place(top + left, dy: title-band, link(widget-url(name),
+    image(poster-path("slide-" + name), width: text-width, height: text-height - title-band,
+      fit: "contain", alt: "Interactive figure " + name + " at its initial slider values.")))
+]
 
 // Full-slide hero photograph with a small legible attribution over the image.
 // Detailed source links remain on the final credits page and in credits.md.

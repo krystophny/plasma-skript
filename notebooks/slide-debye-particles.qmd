@@ -1,0 +1,132 @@
+---
+title: "Debye shielding: particles"
+format:
+  html:
+    css: slide-widget.css
+    page-layout: custom
+    title-block-style: none
+    include-after-body: slide-widget.html
+---
+
+```{ojs}
+//| output: false
+import {createOCP, step, temperature, linearProfile} from "./ocp.js"
+blue = "#0072B2"
+orange = "#B55000"
+ink = "#17202A"
+muted = "#526175"
+grid = "#E3E7EB"
+W = 970
+H = 500
+// One simulation for the lifetime of the page; the slider only sets the bath.
+sim = createOCP({L: 4, Lambda: 100, grid: 32, kappa: 0.2})
+reference = linearProfile(sim, Tbath)
+```
+
+```{ojs}
+canvas = {
+  const c = document.createElement("canvas");
+  const dpr = Math.min(3, window.devicePixelRatio || 1);
+  c.width = W * dpr; c.height = H * dpr;
+  c.style.width = "100%"; c.style.display = "block";
+  c.getContext("2d").scale(dpr, dpr);
+  return c;
+}
+```
+
+```{ojs}
+//| output: false
+// Text with "_x" subscripts, drawn in the slide face.
+label = (ctx, s, x, y, {size = 19, color = ink, align = "left"} = {}) => {
+  const parts = s.split(/(_\{[^}]*\}|_\S)/).filter(Boolean);
+  const font = (z) => `${z}px 'STIX Two Text', serif`;
+  const width = parts.reduce((w, p) => { ctx.font = font(p[0] === "_" ? 0.72 * size : size);
+    return w + ctx.measureText(p.replace(/^_\{?|\}$/g, "")).width; }, 0);
+  let cx = align === "right" ? x - width : align === "center" ? x - width / 2 : x;
+  ctx.fillStyle = color; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+  for (const p of parts) {
+    const sub = p[0] === "_", t = p.replace(/^_\{?|\}$/g, "");
+    ctx.font = font(sub ? 0.72 * size : size);
+    ctx.fillText(t, cx, y + (sub ? 0.25 * size : 0));
+    cx += ctx.measureText(t).width;
+  }
+}
+```
+
+```{ojs}
+//| output: false
+draw = (T) => {
+  const ctx = canvas.getContext("2d"), L = sim.L;
+  ctx.clearRect(0, 0, W, H);
+  // Left: electrons of the slab |z| < 1/2 around the test charge, projected on (x, y).
+  const S = 440, ox = 14, oy = 14, s = S / L;
+  ctx.strokeStyle = grid; ctx.lineWidth = 1; ctx.strokeRect(ox, oy, S, S);
+  ctx.fillStyle = blue;
+  const [X, Y, Z] = sim.pos;
+  for (let p = 0; p < sim.N; p++) {
+    const z = Math.abs(Z[p]);
+    if (z > 0.5) continue;
+    ctx.globalAlpha = Math.min(1, (0.5 - z) / 0.1);
+    ctx.beginPath(); ctx.arc(ox + (X[p] + L / 2) * s, oy + (L / 2 - Y[p]) * s, 2.2, 0, 2 * Math.PI); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  const cx = ox + S / 2, cy = oy + S / 2, lambda = Math.sqrt(T);
+  ctx.setLineDash([5, 4]); ctx.strokeStyle = ink; ctx.lineWidth = 1.2;
+  ctx.beginPath(); ctx.arc(cx, cy, lambda * s, 0, 2 * Math.PI); ctx.stroke(); ctx.setLineDash([]);
+  label(ctx, "λ_D", cx + lambda * s * 0.72 + 6, cy - lambda * s * 0.72 - 6);
+  ctx.fillStyle = orange; ctx.beginPath(); ctx.arc(cx, cy, 6, 0, 2 * Math.PI); ctx.fill();
+  label(ctx, `t ω_p = ${sim.time.toFixed(0)}`, ox + S, oy + S + 26, {size: 17, color: muted, align: "right"});
+
+  // Right: time-averaged density deficit in shells against linear response.
+  const x0 = 560, x1 = 950, y0 = 44, y1 = 430, rmax = L / 2, ymin = -0.5, ymax = 4;
+  const px = (r) => x0 + r / rmax * (x1 - x0), py = (v) => y1 - (v - ymin) / (ymax - ymin) * (y1 - y0);
+  ctx.strokeStyle = grid; ctx.lineWidth = 1;
+  for (const v of [0, 1, 2, 3, 4]) { ctx.beginPath(); ctx.moveTo(x0, py(v)); ctx.lineTo(x1, py(v)); ctx.stroke();
+    label(ctx, String(v), x0 - 8, py(v) + 6, {size: 17, align: "right"}); }
+  for (const r of [0, 0.5, 1, 1.5, 2]) label(ctx, String(r), px(r), y1 + 24, {size: 17, align: "center"});
+  ctx.strokeStyle = ink; ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x0, y1); ctx.lineTo(x1, y1); ctx.stroke();
+  label(ctx, "r / λ_{D0} [1]", x1, y1 + 50, {size: 17, align: "right"});
+  label(ctx, "−δn_e / (κ n_0) [1]", x0 - 40, y0 - 22, {size: 17});
+  ctx.save(); ctx.beginPath(); ctx.rect(x0, y0, x1 - x0, y1 - y0); ctx.clip();
+  ctx.strokeStyle = orange; ctx.lineWidth = 2.5; ctx.setLineDash([8, 5]); ctx.beginPath();
+  sim.radii.forEach((r, b) => { const v = -reference[b] / sim.kappa; b ? ctx.lineTo(px(r), py(v)) : ctx.moveTo(px(r), py(v)); });
+  ctx.stroke(); ctx.setLineDash([]);
+  if (sim.averaged) {
+    ctx.strokeStyle = blue; ctx.fillStyle = blue; ctx.lineWidth = 2.5; ctx.beginPath();
+    sim.radii.forEach((r, b) => { const v = -sim.averaged[b] / sim.kappa; b ? ctx.lineTo(px(r), py(v)) : ctx.moveTo(px(r), py(v)); });
+    ctx.stroke();
+    sim.radii.forEach((r, b) => { ctx.beginPath(); ctx.arc(px(r), py(-sim.averaged[b] / sim.kappa), 4, 0, 2 * Math.PI); ctx.fill(); });
+  }
+  ctx.restore();
+  label(ctx, "particles", x1 - 4, py(3.5), {color: blue, align: "right"});
+  label(ctx, "linear response", x1 - 4, py(3.0), {color: orange, align: "right"});
+  label(ctx, `k_B T_e / k_B T_0 = ${temperature(sim).toFixed(2)}`, x0 + 14, py(-0.25), {size: 17, color: muted});
+}
+```
+
+```{ojs}
+//| output: false
+// Runs once per animation frame while the page is shown (browsers pause it in
+// hidden frames); a new bath temperature only replaces this loop, not the plasma.
+loop = {
+  while (true) {
+    step(sim, Tbath, 0.1, 30);
+    draw(Tbath);
+    yield sim.time;
+  }
+}
+```
+
+```{ojs}
+viewof Tbath = Inputs.range([0.25, 4], {value: 1, transform: Math.log, step: 0.01,
+  label: html`<i>k</i><sub>B</sub><i>T</i><sub>bath</sub> / <i>k</i><sub>B</sub><i>T</i><sub>0</sub>`})
+```
+
+```{ojs}
+//| output: false
+{
+  const div = viewof Tbath.querySelector("div");
+  const out = div.querySelector("output") ?? div.appendChild(document.createElement("output"));
+  out.textContent = Tbath.toFixed(2);
+}
+```

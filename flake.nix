@@ -91,7 +91,7 @@
       };
       buildSiteApp = pkgs.writeShellApplication {
         name = "plasma-build-site";
-        runtimeInputs = [pkgs.bash pkgs.ffmpeg pkgs.gnumake manim derivationsPython typst];
+        runtimeInputs = [pkgs.bash pkgs.ffmpeg pkgs.gnumake pkgs.quarto manim derivationsPython typst];
         text = ''
           export FONTCONFIG_FILE="${fontConfig}"
           site_dir="''${SITE_DIR:-$PWD/public}"
@@ -234,6 +234,7 @@
           pkgs.gnumake
           manim
           newComputerModern
+          pkgs.quarto
           typst
         ];
         FONTCONFIG_FILE = fontConfig;
@@ -241,6 +242,8 @@
 
         buildPhase = ''
           runHook preBuild
+          # Quarto keeps its caches under HOME.
+          export HOME="$TMPDIR"
           bash scripts/build-site.sh
           runHook postBuild
         '';

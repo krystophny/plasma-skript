@@ -89,6 +89,11 @@ html[data-blank] .frame { visibility: hidden; }
   pointer-events: none;
   -webkit-user-drag: none;
 }
+.page > iframe.widget {
+  position: absolute;
+  border: 0;
+  background: transparent;
+}
 .page.animation { background: var(--page-dark); }
 .page.animation > img.poster { transition: opacity 160ms linear; }
 .page.animation.started > img.poster { opacity: 0; }

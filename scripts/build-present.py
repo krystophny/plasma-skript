@@ -158,7 +158,7 @@ def build(site):
             canonical = folder / f"p{number:02}.svg"
             if svg != canonical:
                 svg.rename(canonical)
-            if spec["kind"] not in ("static", "animation") or spec["chapter"] != chapter:
+            if spec["kind"] not in ("static", "animation", "widget") or spec["chapter"] != chapter:
                 raise ValueError(f"Invalid presenter metadata: {stem} page {number}")
             page = {"src": version(canonical), "kind": spec["kind"],
                     "background": spec["background"], "alt": spec["alt"]}
@@ -178,6 +178,16 @@ def build(site):
                 page.update(video="../media/" + version(video),
                             poster="../media/" + version(media / (slug + ".png")),
                             loop=spec["loop"], alt=alt)
+            if spec["kind"] == "widget":
+                # The Quarto page rendered by build-notebooks.sh, laid over the
+                # poster area of the page.
+                rendered = site / "notebooks" / (Path(spec["widget"]).stem + ".html")
+                if not rendered.is_file():
+                    raise FileNotFoundError(f"Missing rendered widget: {rendered}")
+                region = spec["region"]
+                if set(region) != {"x", "y", "w", "h"} or not all(0 <= region[k] <= 1 for k in region):
+                    raise ValueError(f"Invalid widget region: {stem} page {number}")
+                page.update(widget="../../notebooks/" + version(rendered), region=region)
             if not page["alt"]:
                 raise ValueError(f"Empty page alternative: {stem} page {number}")
             pages.append(page)

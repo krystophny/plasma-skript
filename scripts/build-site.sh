@@ -94,6 +94,9 @@ MEDIA_DIR="$media_dir" bash "$repo_root/scripts/build-slides.sh" "$site_dir/slid
 # Link feedback to the current chapter/section without server credentials.
 python3 "$repo_root/scripts/prepare-media.py" "$site_dir"
 python3 "$repo_root/scripts/add-feedback.py" "$site_dir"
+# Interactive notebooks after the reading-page enhancements; the presenter
+# lays the slide widgets among them over its widget pages.
+bash "$repo_root/scripts/build-notebooks.sh" "$site_dir"
 # Copy the presenter last so reading-page enhancements never alter its UI.
 python3 "$repo_root/scripts/build-present.py" "$site_dir"
 

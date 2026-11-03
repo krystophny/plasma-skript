@@ -39,7 +39,7 @@ def check(site):
         assert counts and max(map(int, counts)) == len(pages) == deck["pages"]
         hashed(root, deck["cover"])
         for number, page in enumerate(pages, 1):
-            assert page["kind"] in ("static", "animation"), "Blank or unknown page kind"
+            assert page["kind"] in ("static", "animation", "widget"), "Blank or unknown page kind"
             assert page["background"] in ("light", "dark") and page["alt"].strip()
             assert urlsplit(page["src"]).path == f"p{number:02}.svg"
             hashed(folder, page["src"])
@@ -47,6 +47,10 @@ def check(site):
                 assert isinstance(page["loop"], bool)
                 hashed(folder, page["video"])
                 hashed(folder, page["poster"])
+            if page["kind"] == "widget":
+                hashed(folder, page["widget"])
+                region = page["region"]
+                assert set(region) == {"x", "y", "w", "h"} and all(0 <= v <= 1 for v in region.values())
     print(f"Presenter contract passed: {len(decks)} decks, hashed pages and same-origin media")
 
 

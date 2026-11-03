@@ -102,6 +102,10 @@ jobs:
         if: steps.plots.outputs.cache-hit == 'true'
         run: find derivations/build slides/build/script-outline.json -exec touch {} +
 
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: ${{ env.QUARTO_VERSION }}
+
       - name: Build the site (derivation plots, then Typst)
         env:
           SITE_DIR: ${{ github.workspace }}/_site
@@ -109,13 +113,6 @@ jobs:
         run: |
           typst --version
           uv run bash scripts/build-site.sh
-
-      - uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          version: ${{ env.QUARTO_VERSION }}
-
-      - name: Render the interactive notebooks
-        run: bash scripts/build-notebooks.sh _site
 
       - name: Test presenter touch, H.264 and offline playback
         run: |

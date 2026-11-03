@@ -1,0 +1,89 @@
+---
+title: "Debye shielding"
+format:
+  html:
+    css: slide-widget.css
+    page-layout: custom
+    title-block-style: none
+    include-after-body: slide-widget.html
+---
+
+```{ojs}
+//| output: false
+import {debyeLength, debyeNumber, powerOfTen, formatSci} from "./plasma.js"
+blue = "#0072B2"
+orange = "#B55000"
+ink = "#17202A"
+shade = "#EEF1F4"
+// Drawing units of a 257 mm wide slide area at 970 px: 24 px = 18 pt body text.
+font = ({fontFamily: "'STIX Two Text', serif", fontSize: "19px", color: ink, background: "transparent"})
+// Plot text is plain: draw "λ_D" and "n^-1/3" with sub- and superscripts.
+subscripts = (svg) => {
+  for (const t of svg.querySelectorAll("text")) {
+    if (!/[_^]/.test(t.textContent)) continue;
+    t.innerHTML = t.textContent
+      .replace(/_(\w+)/g, '<tspan baseline-shift="sub" font-size="72%">$1</tspan>')
+      .replace(/\^(\S+)/g, '<tspan baseline-shift="super" font-size="72%">$1</tspan>');
+  }
+  return svg;
+}
+length = (m) => {
+  const units = [[1e3, "km"], [1, "m"], [1e-3, "mm"], [1e-6, "µm"], [1e-9, "nm"], [1e-12, "pm"]];
+  const [s, u] = units.find(([s]) => m >= s) ?? units.at(-1);
+  return `${Number((m / s).toPrecision(2))} ${u}`;
+}
+```
+
+```{ojs}
+//| output: false
+lambda = debyeLength(n, T)
+a = Math.cbrt(1 / n)
+N_D = debyeNumber(n, T)
+radii = d3.range(0, 360.01).map((i) => 10 ** (-10 + 12 * i / 360))
+```
+
+```{ojs}
+subscripts(Plot.plot({
+  width: 970, height: 480, marginLeft: 70, marginRight: 14, marginTop: 44, marginBottom: 48,
+  style: font, clip: true,
+  x: {type: "log", domain: [1e-10, 1e2], label: "r [m]", labelAnchor: "right", labelArrow: "none",
+      ticks: d3.range(-10, 3, 2).map((k) => 10 ** k), tickFormat: powerOfTen, grid: true},
+  y: {domain: [0, 1.15], label: "4πε_0 r Φ / e", labelArrow: "none", ticks: [0, 0.5, 1]},
+  marks: [
+    Plot.rect([0], {x1: 1e-10, x2: a, y1: 0, y2: 1.15, fill: shade}),
+    Plot.text(a > 1e-8 ? [0] : [], {x: a, y: 0.05, text: () => "r < n_e^−1/3", textAnchor: "end", dx: -6, fill: "#526175"}),
+    Plot.ruleY([1], {stroke: orange, strokeDasharray: "8,5", strokeWidth: 2}),
+    Plot.text([0], {x: 6e1, y: 1, text: () => "bare", dy: -12, textAnchor: "end", fill: orange}),
+    Plot.line(radii, {x: (r) => r, y: (r) => Math.exp(-r / lambda), stroke: blue, strokeWidth: 2.5}),
+    Plot.ruleX([lambda], {y1: 0, y2: 1.07, stroke: ink, strokeDasharray: "3,3"}),
+    Plot.text([lambda], {x: (d) => d, y: 1.12, text: () => `λ_D = ${length(lambda)}`, fill: ink, fontSize: 24}),
+  ],
+}))
+```
+
+<div class="readout" id="ND"></div>
+
+```{ojs}
+//| output: false
+document.getElementById("ND").innerHTML = `N<sub>D</sub> = ${formatSci(N_D, 2)}`
+document.getElementById("ND").classList.toggle("warn", N_D < 1)
+```
+
+```{ojs}
+viewof n = Inputs.range([1e6, 1e30], {value: 1e20, transform: Math.log, step: 0.01,
+  label: html`<i>n</i><sub>e</sub>`})
+viewof T = Inputs.range([0.1, 1e5], {value: 1e4, transform: Math.log, step: 0.01,
+  label: html`<i>k</i><sub>B</sub><i>T</i><sub>e</sub>`})
+```
+
+```{ojs}
+//| output: false
+// Slider values with units; the number box of Inputs.range cannot show 10²⁰.
+{
+  for (const [view, v, unit] of [[viewof n, n, "m⁻³"], [viewof T, T, "eV"]]) {
+    const div = view.querySelector("div");
+    const out = div.querySelector("output") ?? div.appendChild(document.createElement("output"));
+    out.textContent = `${formatSci(v, 2)} ${unit}`;
+  }
+}
+```
