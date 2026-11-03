@@ -122,6 +122,8 @@
     if (old && i !== index) {
       old.el.classList.remove("current");
       resetVideo(old);
+      // Focus left in a hidden widget would keep the keys from the presenter.
+      if (old.widget && document.activeElement === old.widget) old.widget.blur();
     }
     index = i;
     const p = pages[index];

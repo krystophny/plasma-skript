@@ -43,6 +43,27 @@ def ready(page, count):
     page.wait_for_function("document.querySelector('.page.current img')?.naturalWidth > 0")
 
 
+def widget_keys(page, number, count):
+    # A focused slider keeps ArrowUp/ArrowDown but must not swallow page turns.
+    slider = page.locator(".page").nth(number - 1).locator("iframe.widget") \
+        .content_frame.locator("input[type=range]").first
+    slider.wait_for(timeout=60000)
+    slider.click()
+    before = slider.input_value()
+    page.keyboard.press("ArrowDown" if slider.evaluate("s => +s.value >= +s.max") else "ArrowUp")
+    page.wait_for_timeout(200)
+    adjusted = slider.input_value()
+    assert adjusted != before, "ArrowUp/ArrowDown must adjust a focused slider"
+    assert page.locator(".where b").text_content() == str(number), "ArrowUp/ArrowDown on a slider turned the page"
+    if number < count:
+        page.keyboard.press("ArrowRight")
+        page.wait_for_function("n => document.querySelector('.where b')?.textContent === String(n)", arg=number + 1)
+        assert slider.input_value() == adjusted, "ArrowRight must turn the page, not move the slider"
+        # Focus must not stay behind in the now hidden widget.
+        page.keyboard.press("ArrowLeft")
+        page.wait_for_function("n => document.querySelector('.where b')?.textContent === String(n)", arg=number)
+
+
 def check(browser, base, artifacts):
     response = browser.new_context()
     decks = response.request.get(urljoin(base, "decks.json")).json()["decks"]
@@ -83,6 +104,7 @@ def check(browser, base, artifacts):
         # Every page must display real content; inspect all images, rather
         # than treating metadata or nonzero SVG bytes as a visual oracle.
         animations = []
+        widgets = 0
         for number, spec in enumerate(manifest["pages"], 1):
             page.evaluate("n => location.hash = '#' + n", number)
             page.wait_for_function("n => document.querySelector('.where b')?.textContent === String(n)", arg=number)
@@ -97,6 +119,9 @@ def check(browser, base, artifacts):
                 page.wait_for_function("document.querySelector('.page.current video')?.currentTime > 0.3")
                 assert page.locator(".page.current video").evaluate("v => !v.paused && v.playsInline")
                 assert not page.evaluate("Boolean(document.fullscreenElement)")
+            if spec["kind"] == "widget":
+                widgets += 1
+                widget_keys(page, number, count)
         page.wait_for_function("window.cacheResult !== null", timeout=180000)
         assert page.evaluate("window.cacheResult.failed") == 0
         if animations:
@@ -132,7 +157,7 @@ def check(browser, base, artifacts):
             artifacts.mkdir(parents=True, exist_ok=True)
             page.screenshot(path=str(artifacts / (deck["stem"] + "-offline.png")))
         assert not errors, f"{deck['stem']}: {errors}"
-        print(f"PASS {deck['stem']}: {count} PDF/SVG pages, touch, keys, {len(animations)} animations, offline", flush=True)
+        print(f"PASS {deck['stem']}: {count} PDF/SVG pages, touch, keys, {len(animations)} animations, {widgets} widgets, offline", flush=True)
         context.close()
 
 

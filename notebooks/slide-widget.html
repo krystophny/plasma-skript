@@ -1,14 +1,20 @@
 <script>
-// Inside a deck (presenter or Slopshell) keys that the focused control does not
-// use are handed to the deck, so page turning keeps working.
+// Inside a deck (presenter or Slopshell) the page-turning keys always belong
+// to the deck, also on a focused slider, radio, select or checkbox; only text
+// fields keep every key and sliders and selects keep ArrowUp/ArrowDown, so the
+// figure stays keyboard-usable without trapping the presenter.
 addEventListener("keydown", (e) => {
   if (parent === window) return;
   const t = e.target;
-  const own = t && t.matches && t.matches("input, textarea, select") &&
-    (/^Arrow|^Page|^Home$|^End$/.test(e.key) || t.type === "number");
-  if (own) return;
+  const text = t && t.matches && (t.isContentEditable || t.matches("textarea, " +
+    "input:not([type=range], [type=checkbox], [type=radio], [type=button], " +
+    "[type=submit], [type=reset], [type=color], [type=file], [type=image])"));
+  if (text) return;
+  const adjusts = t && t.matches && t.matches("input[type=range], select") &&
+    /^Arrow(Up|Down)$/.test(e.key);
+  if (adjusts) return;
   parent.postMessage({type: "slide-widget-key", key: e.key, shiftKey: e.shiftKey,
     altKey: e.altKey, ctrlKey: e.ctrlKey, metaKey: e.metaKey}, "*");
-  if (/^(Arrow|Page)|^ $/.test(e.key)) e.preventDefault();
-});
+  if (/^(Arrow|Page)|^ $|^Home$|^End$/.test(e.key)) e.preventDefault();
+}, true);
 </script>
