@@ -140,7 +140,9 @@ normalized [1], $x$ logarithmic.
 - `debye_nonlinear_potential`: $\Phi/\Phi_\mathrm{Coulomb}$ [1] against
   $r/\lambda_D$ [1]. Exact curves (solid blue, light to dark for decreasing
   $n_0\lambda_D^3$), Debye-Hückel $e^{-\rho}$ (dashed) and bare Coulomb
-  (dotted, 1). Markers (circle, square, triangle) at $|e\Phi|=k_BT_e$.
+  (dotted, 1). Markers (circle, square, triangle) at the Landau length
+  $r_L=e^2/(4\pi\varepsilon_0k_BT_e)=\Lambda\lambda_D$, where the bare
+  test-charge potential equals $k_BT_e$.
 - `debye_nonlinear_density`: $n_e/n_0$ [1] against $r/\lambda_D$ [1], exact
   $e^{\varphi}$ (solid) against the linearised $1+\varphi_{DH}$ (dashed), same
   markers; linear axis for $q=-e$ (the linear density turns negative inside

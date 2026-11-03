@@ -133,7 +133,7 @@ def plot():
     titles = (r"$q=-e$", rf"$q=+e$, ion radius $a_0$, $k_BT_e={ATOM_TEMPERATURE_EV:g}$ eV")
     style = [Line2D([], [], color="#2171b5", lw=2.4, label="Poisson–Boltzmann"),
              Line2D([], [], color=ORANGE, ls=(0, (4, 3)), lw=1.3, label="Debye–Hückel"),
-             Line2D([], [], color="k", marker="o", ms=4.5, ls="", label=r"$|e\Phi|=k_BT_e$")]
+             Line2D([], [], color="k", marker="o", ms=4.5, ls="", label=r"Landau length $r_L$")]
 
     # --- potential relative to the bare Coulomb potential ---
     fig, _ = figure(width, height)
@@ -147,7 +147,7 @@ def plot():
             rho = np.geomspace(max(sol.a, RHO_PLOT[0]), RHO_PLOT[1], 600)
             ax.plot(rho, sol.sol(rho)[0] / coulomb(rho, lam, sol.sign), color=SHADES[lam], lw=2.4,
                     solid_capstyle="butt")
-            r1 = unit_crossing(sol)
+            r1 = lam   # Landau length r_L/lambda_D = Lambda
             ax.plot([r1], [sol.sol(r1)[0] / coulomb(r1, lam, sol.sign)], MARKS[lam], color="k", ms=4.5, zorder=5)
         ax.set(xscale="log", xlim=RHO_PLOT, ylim=(0, 1.08), xlabel=r"$r/\lambda_D\ [1]$", title=title)
         ax.title.set_fontsize(10)
@@ -164,13 +164,13 @@ def plot():
             rho = np.geomspace(max(sol.a, RHO_PLOT[0]), RHO_PLOT[1], 600)
             ax.plot(rho, np.exp(sol.sol(rho)[0]), color=SHADES[lam], lw=2.4, solid_capstyle="butt")
             ax.plot(rho, 1 + debye_hueckel(rho, lam, sol.sign), color=ORANGE, ls=(0, (4, 3)), lw=1.1)
-            r1 = unit_crossing(sol)
-            ax.plot([r1], [np.exp(sol.sign)], MARKS[lam], color="k", ms=4.5, zorder=5)
+            r1 = lam   # Landau length r_L/lambda_D = Lambda
+            ax.plot([r1], [np.exp(sol.sol(r1)[0])], MARKS[lam], color="k", ms=4.5, zorder=5)
         ax.set(xscale="log", xlim=RHO_PLOT, xlabel=r"$r/\lambda_D\ [1]$", title=title)
         ax.title.set_fontsize(10)
     axes[0].axhline(0.0, color="0.6", lw=0.7, zorder=0)
     axes[0].set(ylim=(-1.5, 1.15), ylabel=r"$n_e/n_0\ [1]$")
-    axes[1].set(yscale="log", ylim=(0.5, 1e8))
+    axes[1].set(yscale="log", ylim=(0.5, 1e9))
     axes[1].legend(handles=[Line2D([], [], color=SHADES[lam], lw=2.4, label=rf"$n_0\lambda_D^3={_nd(lam)}$")
                             for lam in STRENGTHS]
                    + [Line2D([], [], color=ORANGE, ls=(0, (4, 3)), lw=1.1, label="linearised"),

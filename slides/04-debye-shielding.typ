@@ -61,7 +61,8 @@
   #at(1, 12, y: 148mm, align(center, text(fill: muted)[#link("https://krystophny.github.io/plasma-skript/notebooks/debye.html")[notebook: Debye shielding]]))
 ]
 #plot-page("debye_nonlinear_potential", columns: 12, section: "intro-debye-shielding", title: [Nonlinear screening: potential],
-  below: [$Lambda = 1\/(4 pi n_0 lambda_D^3)$ #h(1.5em) $q = +e$ needs the ion size: #h(0.3em) $e Phi(a_0) approx E_h = 27.2 "eV"$ \
+  below: [$r_L = e^2\/(4 pi epsilon_0 k_B T_e)$, #h(0.3em) $r_L\/lambda_D = 1\/(4 pi n_0 lambda_D^3)$ \
+    #v(1mm) $q = +e$ needs the ion size: #h(0.3em) $e Phi(a_0) approx E_h = 27.2 "eV"$ \
     #v(2mm) #text(fill: muted)[visible only for $n_0 lambda_D^3 lt.tilde 1$, where mean field itself fails]])
 #plot-page("debye_nonlinear_density", columns: 12, section: "intro-debye-shielding", title: [Nonlinear screening: density],
   below: [$n_e\/n_0 = e^(e Phi\/k_B T_e)$: #h(0.4em) hole for $q < 0$, #h(0.4em) pile-up $tilde e^(E_h\/k_B T_e)$ at the ion for $q > 0$ \
