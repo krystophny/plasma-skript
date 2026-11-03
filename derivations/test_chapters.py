@@ -65,6 +65,10 @@ def test_debye_nonlinear_poisson_boltzmann():
         assert np.all((ratio > 1) & (ratio - 1 < lam)), (lam, ratio)
         assert model.unit_crossing(sol) < lam
         assert abs(model.cutoff_sensitivity(lam)) < 1e-3, lam
+        atom = model.solve(lam, +1)                      # ion of Bohr radius
+        assert abs(atom.sol(atom.a)[1] + lam) < 1e-8 * max(lam, 1)
+        assert abs(model.screening_charge(atom, lam, model.RHO_MAX) - 1) < 1e-3, lam
+        assert np.all(model.far_field_ratio(atom, lam) < 1), lam   # piled-up electrons screen more
 
 
 def test_mu_ramp_boris_against_dop853():
