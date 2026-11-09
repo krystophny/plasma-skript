@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# Explicit release: build and verify, export the student folder, push main.
+# Explicit release: build and verify, export the student folder, push main and
+# replace gh-pages with one commit of the local public/, which GitHub Pages
+# serves without rebuilding.
 set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repo_root"
@@ -27,5 +29,12 @@ python3 scripts/animation-export-test.py
 uv run python scripts/present-test.py public
 uv run bash scripts/export-course-folder.sh "${COURSE_DIR:-$HOME/Nextcloud/lv/plasma/2026}"
 # The hook rechecks export on direct pushes. This release already exported it.
-COURSE_EXPORT_DONE=1 git push origin main
-COURSE_EXPORT_DONE=1 git push github main
+touch public/.nojekyll
+index=$(mktemp -u)
+GIT_INDEX_FILE="$index" git --work-tree=public add -f -A .
+tree=$(GIT_INDEX_FILE="$index" git write-tree)
+rm -f "$index"
+site=$(git commit-tree "$tree" -m "Site built from $(git rev-parse --short HEAD)")
+COURSE_EXPORT_DONE=1 git push origin main & origin=$!
+COURSE_EXPORT_DONE=1 git push github main "+$site:refs/heads/gh-pages"
+wait "$origin"

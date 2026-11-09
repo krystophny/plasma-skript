@@ -84,8 +84,9 @@ HTML-specific components have an equivalent paged fallback.
   sign conventions, temperature conventions, and normalized-variable names.
 - The `solutions/` directory is author-only material. It is ignored by Git and
   excluded from every public build and GitHub Pages artifact.
-- GitHub Pages is a supported deployment target. The workflow publishes only
-  the generated static site bundle from the default branch.
+- GitHub Pages is a supported deployment target. `scripts/publish.sh`
+  publishes only the generated static site bundle, built from `main`, to the
+  `gh-pages` branch.
 - Preserve the established reference order; the rendered course PDFs in
   `resources/content/` are historical evidence. The course plan owns the live
   selection and multi-year evidence can improve explanations.
@@ -662,11 +663,12 @@ and font updates do not create needless failures.
 
 ### 9.1 GitHub Pages
 
-The GitHub Actions workflow builds the site with the flake, copies only the
-generated static bundle into the Pages artifact, and deploys from `main`.
-Pull requests may build and validate the artifact but must not deploy it.
+`scripts/publish.sh` builds and verifies the site from a clean `main`, then
+replaces the `gh-pages` branch with one commit of the generated static
+bundle, which Pages serves without a rebuild. The GitHub Actions workflow
+builds and validates the site on pull requests only and never deploys.
 Author-only material, including `solutions/`, must never be copied into the
-artifact.
+bundle.
 
 ## 10. Solutions handbook
 

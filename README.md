@@ -119,11 +119,11 @@ landscape) to `public/slides/<stem>.pdf` through
 script and reuse its derived plots. `scripts/export-course-folder.sh <dest>`
 copies the deck PDFs, Skript PDF, animations, and derivations into a course folder.
 
-The repository includes a GitHub Pages workflow that builds the same bundle
-with the Typst release binary and uv and deploys pushes to `main`; derivation
-plots and SymPy results are cached by input hash, and Nix checks run separately.
-Enable GitHub Pages with GitHub Actions
-as its publishing source in the repository settings.
+`scripts/publish.sh` deploys the locally built and verified `public/` as one
+commit on the `gh-pages` branch, which GitHub Pages serves directly. The
+GitHub workflow builds and checks the same bundle on pull requests only;
+derivation plots and SymPy results are cached by input hash, and Nix checks
+run separately.
 
 ## HTML presentation mode
 
@@ -250,7 +250,7 @@ slides and print retain light plots. Photos fill the slide with small credits.
 `scripts/animation-player-test.py` checks actual rendered MP4 playback, controls,
 theme switching and no-JavaScript fallback in Chromium or WebKit.
 The maintained public edition is
-[the Plasma Skript](https://krystophny.github.io/plasma-skript/). Pushes to
-`main` deploy it through GitHub Pages after the site and derivation checks pass.
+[the Plasma Skript](https://krystophny.github.io/plasma-skript/). `scripts/publish.sh`
+deploys it to GitHub Pages after the local site and derivation checks pass.
 FuEL's dated HTML snapshot is hidden File resource 747; update that snapshot
 after a verified public deployment so the two editions agree.

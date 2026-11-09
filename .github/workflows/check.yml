@@ -1,12 +1,11 @@
-name: Build and deploy to GitHub Pages
+name: Check derivations and site build
 
 # Plain ubuntu-latest pipeline without Nix.  The Nix flake checks (including
 # the NixOS VM site-integration test) run separately in nix-checks.yml.
 
+# Pages is deployed by scripts/publish.sh from the local build (gh-pages
+# branch); this workflow only checks pull requests.
 on:
-  push:
-    branches:
-      - main
   pull_request:
   workflow_dispatch:
 
@@ -125,30 +124,3 @@ jobs:
 
       - name: Verify the site against SPEC.md
         run: bash scripts/verify-spec.sh _site
-
-      - name: Configure GitHub Pages
-        if: github.event_name != 'pull_request'
-        uses: actions/configure-pages@v5
-
-      - name: Upload the Pages artifact
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: _site
-
-  deploy:
-    if: github.event_name != 'pull_request'
-    needs: [site, derivations]
-    runs-on: ubuntu-latest
-    concurrency:
-      group: pages-deploy
-      cancel-in-progress: false
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
