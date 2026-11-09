@@ -20,12 +20,7 @@
   #at(7, 6, y: 11mm, align(center, coupling-still(1, cols(5))))
   #at(1, 3, y: 118mm, pad(left: (cols(6) - cols(5)) / 2, coupling-bar(cols(5))))
   #at(3, 8, y: 120mm, align(center, $Gamma_e = (e^2 \/ (4 pi epsilon_0 a))/(k_B T_e) = a^2/(4 pi lambda_D^2), quad a = n_0^(-1\/3)$))
-]
-#slide(section: "debye-collective-validity", title: [Debye number])[
-  #at(1, 6, y: 14mm, align(center, $Gamma_e N_D^(2\/3) = (36 pi)^(-1\/3) approx 0.21$))
-  #at(1, 6, y: 64mm, result-box(align(center, $N_D = (4 pi)/3 n_0 lambda_D^3 >> 1$), [electrons in a Debye sphere]))
-  #at(7, 6, y: 4mm, plot("debye_number", columns: 6))
-  #at(7, 6, y: 112mm, align(center, text(fill: muted)[$N_D prop T_e^(3\/2) n_e^(-1\/2)$; shaded: $N_D < 1$]))
+  #at(3, 8, y: 144mm, align(center, [$N_D = (4 pi)/3 n_0 lambda_D^3, quad Gamma_e N_D^(2\/3) approx 0.21$ #h(4mm) #text(fill: muted)[weak coupling:] $N_D >> 1$]))
 ]
 #plot-page("nt_map", columns: 10, section: "debye-collective-validity", title: [Plasma regime map])
 #slide(section: "debye-collective-validity", title: [Ideal plasma])[
