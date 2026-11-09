@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Explicit release: build and verify, export the student folder, push main and
-# replace gh-pages with one commit of the local public/, which GitHub Pages
+# add one commit of the local public/ to gh-pages, which GitHub Pages
 # serves without rebuilding.
 set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -43,8 +43,13 @@ index=$(mktemp -u)
 GIT_INDEX_FILE="$index" git --work-tree=public add -f -A .
 tree=$(GIT_INDEX_FILE="$index" git write-tree)
 rm -f "$index"
-site=$(git commit-tree "$tree" -m "Site built from $(git rev-parse --short HEAD)")
+# The previous deploy is the parent, so the push sends only changed files.
+git fetch -q github gh-pages
+site=FETCH_HEAD
+if [[ "$(git rev-parse FETCH_HEAD^{tree})" != "$tree" ]]; then
+  site=$(git commit-tree "$tree" -p FETCH_HEAD -m "Site built from $(git rev-parse --short HEAD)")
+fi
 # The hook rechecks export on direct pushes. This release already exported it.
 COURSE_EXPORT_DONE=1 git push origin main & origin=$!
-COURSE_EXPORT_DONE=1 git push github main "+$site:refs/heads/gh-pages"
+COURSE_EXPORT_DONE=1 git push github main "$site:refs/heads/gh-pages"
 wait "$origin"

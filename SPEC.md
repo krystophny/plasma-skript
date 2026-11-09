@@ -664,7 +664,7 @@ and font updates do not create needless failures.
 ### 9.1 GitHub Pages
 
 `scripts/publish.sh` builds and verifies the site from a clean `main`, then
-replaces the `gh-pages` branch with one commit of the generated static
+adds to the `gh-pages` branch one commit of the generated static
 bundle, which Pages serves without a rebuild. The GitHub Actions workflow
 builds and validates the site on pull requests only and never deploys.
 Author-only material, including `solutions/`, must never be copied into the
