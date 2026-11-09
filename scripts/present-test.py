@@ -72,7 +72,8 @@ def check(browser, base, artifacts):
         context = browser.new_context(viewport={"width": 1180, "height": 820}, has_touch=True)
         context.add_init_script("""
           window.cacheResult = null;
-          navigator.serviceWorker.addEventListener('message', e => {
+          // Sandboxed widget frames have no service worker.
+          navigator.serviceWorker?.addEventListener('message', e => {
             if (e.data?.type === 'cached') window.cacheResult = e.data;
           });
         """)
