@@ -1,0 +1,158 @@
+{
+  "stem": "02-thermal-equilibrium",
+  "chapter": 2,
+  "title": "Temperature, entropy, and thermal ionization",
+  "course": "Plasma Physics",
+  "author": "Christopher Albert",
+  "aspect": 1.4142857142857144,
+  "pdf": "../../slides/02-thermal-equilibrium.pdf",
+  "pages": [
+    {
+      "src": "p01.svg?v=aea5df4e",
+      "kind": "static",
+      "background": "light",
+      "alt": "Temperature, entropy, and thermal ionization"
+    },
+    {
+      "src": "p02.svg?v=3d2e6933",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.1 Entropy as counted microstates: What is temperature?"
+    },
+    {
+      "src": "p03.svg?v=876ee178",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.1 Entropy as counted microstates: Microstate counting"
+    },
+    {
+      "src": "p04.svg?v=21e3c8e9",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.1 Entropy as counted microstates: Additive entropy"
+    },
+    {
+      "src": "p05.svg?v=7b5369f4",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.2 Temperature: Two exchanging boxes"
+    },
+    {
+      "src": "p06.svg?v=f6123d40",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.2 Temperature: Energy balance"
+    },
+    {
+      "src": "p07.svg?v=10864a39",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.3 The Boltzmann factor and the Maxwellian: Reservoir weight"
+    },
+    {
+      "src": "p08.svg?v=8087460d",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.3 The Boltzmann factor and the Maxwellian: Boltzmann factor by counting"
+    },
+    {
+      "src": "p09.svg?v=71ea1eda",
+      "kind": "animation",
+      "background": "dark",
+      "alt": "Six hundred elastic hard disks in a box start with the same speed v0 in random directions, far from equilibrium. Collisions spread the speeds: within about four collisions per disk the speed histogram settles on the two-dimensional Maxwellian at the same energy, f(v) = (2v/v0^2) exp(-v^2/v0^2) with k_B T = m v0^2/2, and the entropy of the velocity distribution rises from near zero to the Maxwellian value 1 + ln(pi) and then stays flat. The total kinetic energy is conserved to round-off. Speeds in v0, time in mean collision times, entropy per disk, all with unit [1].",
+      "video": "../media/hard_sphere_relaxation.mp4?v=06723977",
+      "poster": "../media/hard-sphere-relaxation.png?v=c93250d5",
+      "loop": true
+    },
+    {
+      "src": "p10.svg?v=22c324dc",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.3 The Boltzmann factor and the Maxwellian: Drifting Maxwellian"
+    },
+    {
+      "src": "p11.svg?v=066572e4",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.4 The Saha equation: Where the slots come from"
+    },
+    {
+      "src": "p12.svg?v=dc475908",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.4 The Saha equation: Thermal particle slots"
+    },
+    {
+      "src": "p13.svg?v=ee0359f6",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.4 The Saha equation: Adding and removing"
+    },
+    {
+      "src": "p14.svg?v=c1f2c81e",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.4 The Saha equation: One ionization"
+    },
+    {
+      "src": "p15.svg?v=60c62648",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.4 The Saha equation: Heavy particle cancellation"
+    },
+    {
+      "src": "p16.svg?v=775119b8",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.4 The Saha equation: Saha equation"
+    },
+    {
+      "src": "p17.svg?v=c1fbd3a8",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.4 The Saha equation: Saha equation in numbers"
+    },
+    {
+      "src": "p18.svg?v=ac6c4bf5",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.5 How much thermal ionization?: Ionization fraction"
+    },
+    {
+      "src": "p19.svg?v=bc986852",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.5 How much thermal ionization?: Entropy against energy"
+    },
+    {
+      "src": "p20.svg?v=ab5c35ac",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.5 How much thermal ionization?: Why about 10 K?"
+    },
+    {
+      "src": "p21.svg?v=9226c2de",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.5 How much thermal ionization?: Saha in a tokamak divertor"
+    },
+    {
+      "src": "p22.svg?v=7b70a7f5",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.5 How much thermal ionization?: Equilibrium validity"
+    },
+    {
+      "src": "p23.svg?v=722c69ac",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.5 How much thermal ionization?: Quantum degenerate plasma"
+    },
+    {
+      "src": "p24.svg?v=0d2ee77e",
+      "kind": "static",
+      "background": "light",
+      "alt": "Credits"
+    }
+  ]
+}

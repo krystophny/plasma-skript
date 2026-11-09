@@ -1,0 +1,39 @@
+{
+  "decks": [
+    {
+      "stem": "01-introduction",
+      "chapter": 1,
+      "title": "Introduction",
+      "pages": 19,
+      "cover": "01-introduction/p01.svg?v=54c613a7"
+    },
+    {
+      "stem": "02-thermal-equilibrium",
+      "chapter": 2,
+      "title": "Temperature, entropy, and thermal ionization",
+      "pages": 24,
+      "cover": "02-thermal-equilibrium/p01.svg?v=aea5df4e"
+    },
+    {
+      "stem": "03-plasma-oscillations",
+      "chapter": 3,
+      "title": "Plasma oscillations",
+      "pages": 10,
+      "cover": "03-plasma-oscillations/p01.svg?v=167e48b1"
+    },
+    {
+      "stem": "04-debye-shielding",
+      "chapter": 4,
+      "title": "Debye shielding",
+      "pages": 18,
+      "cover": "04-debye-shielding/p01.svg?v=ed82e853"
+    },
+    {
+      "stem": "05-single-particle-motion",
+      "chapter": 5,
+      "title": "Single-particle motion",
+      "pages": 35,
+      "cover": "05-single-particle-motion/p01.svg?v=5fd6121d"
+    }
+  ]
+}

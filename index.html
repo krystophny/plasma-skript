@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Plasma Physics</title>
+    <style>
+      /* Alignment */
+      mtable.right-align mtd,
+      mtable mtd.right-align,
+      mtable.left-align mtd.right-align,
+      mtable.aligned mtd:nth-child(odd) {
+        justify-items: end;
+        text-align: right;
+      }
+      mtable.cases mtd,
+      mtable.left-align mtd,
+      mtable mtd.left-align,
+      mtable.aligned mtd:nth-child(even),
+      math:is(:not([display])) > mtable.multiline-equation mtd {
+        justify-items: start;
+        text-align: left;
+      }
+      mtable.cases mtd,
+      mtable.aligned mtd,
+      mtable mtd.flushed,
+      mtable mtd.left-flush {
+        padding-left: 0;
+      }
+      mtable.cases mtd,
+      mtable.aligned mtd,
+      mtable mtd.flushed,
+      mtable mtd.right-flush {
+        padding-right: 0;
+      }
+      
+      /* Tables */
+      mtable {
+        math-style: inherit;
+      }
+      mtd {
+        math-depth: auto-add;
+        math-style: compact;
+        math-shift: compact;
+      }
+      
+      /* Equations */
+      mtable.multiline-equation mtd {
+        math-depth: inherit;
+        math-style: inherit;
+        math-shift: inherit;
+        padding: 0;
+      }
+      math > mtable.multiline-equation mtr:not(:last-child) mtd {
+        padding-bottom: 0.5em;
+      }
+      
+      /* Fractions */
+      mfrac {
+        padding-inline: 0;
+        margin-inline: 0.1em;
+      }
+      
+      /* Accents */
+      mover[accent="true" i] > :first-child {
+        font-feature-settings: "dtls";
+      }
+      mover.dotted[accent="true" i] > :first-child {
+        font-feature-settings: "dtls" 0;
+      }
+      
+      /* Other rules for scriptlevel, displaystyle and math-shift */
+      munder > :nth-child(2),
+      munderover > :nth-child(2) {
+        math-shift: compact
+      }
+      munder[accentunder="true" i] > :not(:first-child),
+      mover[accent="true" i] > :not(:first-child) {
+        math-depth: inherit;
+        math-style: inherit;
+        math-shift: inherit;
+      }
+    </style>
+  <link rel="stylesheet" href="animation-player.css">
+<link rel="stylesheet" href="feedback.css">
+</head>
+  <body>
+    <div class="site-shell">
+      <link rel="stylesheet" href="styles.css">
+      <header class="site-header">
+        <div class="brand"><a href="index.html">Plasma Physics</a></div>
+        <nav class="site-nav" aria-label="Primary navigation"><a href="index.html">Overview</a> <a href="#contents">Contents</a> <a href="#glossary">Glossary</a> <a href="#bibliography">Bibliography</a></nav>
+      </header>
+      <main class="site-main">
+        <div class="hero">
+          <p class="eyebrow">Graduate lecture notes</p>
+          <h1>Plasma Physics</h1>
+          <p class="lede">From single-particle orbits to collective waves, transport, and plasma sheaths.</p>
+          <div class="hero-actions"><a href="chapters/01-introduction.html">Start reading</a> <a href="#contents">Contents</a> <a href="present/">Lecture decks</a></div>
+        </div>
+        <section class="catalog" id="contents">
+          <h2>Contents</h2>
+          <p>Each section states its question, assumptions, and units, and ends with a short knowledge check. Optional derivations are collapsed.</p>
+          <ol class="chapter-list">
+            <li class="chapter-item">
+              <div class="chapter-number">1</div>
+              <div class="chapter-copy">
+                <h3><a href="chapters/01-introduction.html">Introduction, plasma state, and model hierarchy</a></h3>
+                <p>Plasma examples, temperature, characteristic lengths and times, and model selection.</p>
+              </div>
+            </li>
+            <li class="chapter-item">
+              <div class="chapter-number">2</div>
+              <div class="chapter-copy">
+                <h3><a href="chapters/02-thermal-equilibrium.html">Temperature, entropy, and thermal ionization</a></h3>
+                <p>Counted entropy, temperature, Boltzmann weights, and thermal ionization.</p>
+              </div>
+            </li>
+            <li class="chapter-item">
+              <div class="chapter-number">3</div>
+              <div class="chapter-copy">
+                <h3><a href="chapters/03-plasma-oscillations.html">Plasma oscillations</a></h3>
+                <p>Electron displacement, the restoring electric field, and the cold plasma frequency.</p>
+              </div>
+            </li>
+            <li class="chapter-item">
+              <div class="chapter-number">4</div>
+              <div class="chapter-copy">
+                <h3><a href="chapters/04-debye-shielding.html">Debye shielding</a></h3>
+                <p>Boltzmann response, the Debye length, screened potentials, and the plasma parameter.</p>
+              </div>
+            </li>
+            <li class="chapter-item">
+              <div class="chapter-number">5</div>
+              <div class="chapter-copy">
+                <h3><a href="chapters/05-single-particle-motion.html">Single-particle motion</a></h3>
+                <p>Gyromotion, homogeneous-force drifts, guiding centers, mirrors, polarization drift, and cyclotron resonance.</p>
+              </div>
+            </li>
+            <li class="chapter-item">
+              <div class="chapter-number">6</div>
+              <div class="chapter-copy">
+                <h3><a href="chapters/06-kinetic-theory.html">Kinetic theory of plasmas</a></h3>
+                <p>Collisions, distribution functions, phase space, kinetic balance, and model limits.</p>
+              </div>
+            </li>
+            <li class="chapter-item">
+              <div class="chapter-number">7</div>
+              <div class="chapter-copy">
+                <h3><a href="chapters/07-moments.html">Moments of the Boltzmann equation</a></h3>
+                <p>Velocity moments, continuity, momentum and energy transport, and closure.</p>
+              </div>
+            </li>
+            <li class="chapter-item">
+              <div class="chapter-number">8</div>
+              <div class="chapter-copy">
+                <h3><a href="chapters/08-multiple-fluids.html">Multiple-fluid theory of plasmas</a></h3>
+                <p>Two-fluid hydrogen plasma, species forces, and diamagnetic current.</p>
+              </div>
+            </li>
+            <li class="chapter-item">
+              <div class="chapter-number">9</div>
+              <div class="chapter-copy">
+                <h3><a href="chapters/09-mhd.html">Single-fluid theory and magnetohydrodynamics</a></h3>
+                <p>MHD variables, Ohm’s law, frozen flux, diffusion, and equilibrium.</p>
+              </div>
+            </li>
+            <li class="chapter-item">
+              <div class="chapter-number">10</div>
+              <div class="chapter-copy">
+                <h3><a href="chapters/10-collisions-conductivity.html">Collisions and plasma conductivity</a></h3>
+                <p>Neutral and Coulomb collisions, Spitzer resistivity, and DC or AC conductivity tensors.</p>
+              </div>
+            </li>
+            <li class="chapter-item">
+              <div class="chapter-number">11</div>
+              <div class="chapter-copy">
+                <h3><a href="chapters/11-diffusion.html">Plasma diffusion</a></h3>
+                <p>Random walks, ambipolar transport, cross-field diffusion, and classical or Bohm-like limits.</p>
+              </div>
+            </li>
+            <li class="chapter-item">
+              <div class="chapter-number">12</div>
+              <div class="chapter-copy">
+                <h3><a href="chapters/12-introduction-waves.html">Introduction to waves in plasmas</a></h3>
+                <p>Linearization, plasma oscillations, electromagnetic dispersion, and kinetic limits.</p>
+              </div>
+            </li>
+            <li class="chapter-item">
+              <div class="chapter-number">13</div>
+              <div class="chapter-copy">
+                <h3><a href="chapters/13-cold-magnetized-waves.html">Waves in cold magnetized plasmas</a></h3>
+                <p>Cold dielectric tensor, circular and principal modes, oblique propagation, cutoffs, and resonances.</p>
+              </div>
+            </li>
+            <li class="chapter-item">
+              <div class="chapter-number">14</div>
+              <div class="chapter-copy">
+                <h3><a href="chapters/14-finite-temperature-waves.html">Collisions, ions, and finite-temperature effects on magnetized waves</a></h3>
+                <p>Collisional damping, ion-cyclotron and Alfvén branches, warm dispersion, and model ordering.</p>
+              </div>
+            </li>
+            <li class="chapter-item">
+              <div class="chapter-number">15</div>
+              <div class="chapter-copy">
+                <h3><a href="chapters/15-hot-plasma-waves.html">Waves in hot plasmas</a></h3>
+                <p>Vlasov response, velocity-space resonances, Landau damping, two-stream growth, and hot magnetized harmonics.</p>
+              </div>
+            </li>
+            <li class="chapter-item">
+              <div class="chapter-number">16</div>
+              <div class="chapter-copy">
+                <h3><a href="chapters/16-sheaths-probes.html">Plasma sheaths and Langmuir probes</a></h3>
+                <p>Particle flux, Bohm sheath entry, floating surfaces, and Langmuir-probe diagnostics.</p>
+              </div>
+            </li>
+          </ol>
+        </section>
+        <section class="content-sections supplemental" id="appendices">
+          <p class="eyebrow">Supplemental reference</p>
+          <h2>Mathematical toolkit</h2>
+          <p>A compact reference for the energy-weighted second moment of the kinetic equation and vector operators in common coordinate systems. Full derivation routes are available as collapsed supplemental detail.</p>
+          <a href="appendices/mathematical-toolkit.html">Open the mathematical toolkit →</a>
+          <h2>Gaussian CGS translation</h2>
+          <p>A one-table dictionary from the equations of this script to the Gaussian CGS forms used in much of the older plasma literature.</p>
+          <a href="appendices/cgs-translation.html">Open the CGS translation →</a>
+          <h2>Map of plasma models</h2>
+          <p>An interactive map of the models of plasma physics and the reductions that connect them, shared with the Fusion Physics and Kinetic Theory courses.</p>
+          <a href="map/index.html">Open the map →</a>
+        </section>
+        <section class="content-sections" id="glossary">
+          <p class="eyebrow">Glossary</p>
+          <h2>Notation and conventions</h2>
+          <dl>
+            <dt>SI units</dt>
+            <dd>This script uses SI units throughout, with vacuum permittivity <math><msub><mi>𝜀</mi><mn>0</mn></msub></math> and permeability <math><msub><mi>𝜇</mi><mn>0</mn></msub></math>. For a charge <math><mi>𝑞</mi></math>, the Lorentz force is <math><mi>𝑭</mi><mo>=</mo><mi>𝑞</mi><mrow><mo>(</mo><mrow><mi>𝑬</mi><mo>+</mo><mi>𝒗</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mi>𝑩</mi></mrow><mo>)</mo></mrow></math>, and electrostatic Poisson’s equation for charge density <math><msub><mi>𝜌</mi><mi>𝑞</mi></msub></math> is <math><msup><mo>∇</mo><mn>2</mn></msup><mrow><mo>(</mo><mi mathvariant="normal">Φ</mi><mo>)</mo></mrow><mo>=</mo><mo form="prefix">−</mo><mfrac><msub><mi>𝜌</mi><mi>𝑞</mi></msub><msub><mi>𝜀</mi><mn>0</mn></msub></mfrac></math>. The symbol <math><mi>𝜌</mi></math> without the subscript denotes mass density. Gaussian CGS equivalents are listed only in the <a href="appendices/cgs-translation.html">CGS translation appendix</a>.</dd>
+            <dt>Normalized quantity</dt>
+            <dd>A dimensionless quantity formed by dividing by a stated reference scale, such as <math><mfrac><mi>𝑥</mi><msub><mi>𝜆</mi><mi>𝐷</mi></msub></mfrac></math> [1] or <math><mi>𝑡</mi><msub><mi>𝜔</mi><mi>𝑝</mi></msub></math> [1]. Dimensional reconstruction is given where the quantity is used.</dd>
+            <dt>Statistical notation</dt>
+            <dd>Multiplicity is <math><mi>𝑊</mi></math> (a dimensionless microstate count), never <math><mi mathvariant="normal">Ω</mi></math>. Entropy is <math><mi>𝑆</mi><mo>=</mo><msub><mi>𝑘</mi><mi>𝐵</mi></msub><mo form="prefix" lspace="0.16666666666666666em" rspace="0.16666666666666666em">ln</mo><mi>𝑊</mi></math> in <math><mtext>J</mtext><mspace width="0.1667em"/><msup><mtext>K</mtext><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>. The ionization energy <math><mi>𝜒</mi></math> is in <math><mtext>J</mtext></math> or <math><mtext>eV</mtext></math>; scattering angles use <math><msub><mi>𝜃</mi><mtext>sc</mtext></msub></math>. Chemical potential <math><mi>𝜇</mi></math> is an energy per particle; mechanical mobility is <math><msub><mi>𝜇</mi><mtext>mob</mtext></msub></math>, and magnetic moment is <math><msub><mi>𝜇</mi><mtext>mag</mtext></msub></math> in <math><mtext>J</mtext><mspace width="0.1667em"/><msup><mtext>T</mtext><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>, written <math><mi>𝜇</mi></math> in the single-particle chapter. Total kinetic-energy density is <math><msub><mi>𝐸</mi><mrow><mtext>kin</mtext><mo rspace="0em">,</mo><mi>𝑠</mi></mrow></msub></math> in <math><mtext>J</mtext><mspace width="0.1667em"/><msup><mtext>m</mtext><mrow><mo>−</mo><mn>3</mn></mrow></msup></math>, keeping <math><msub><mi>𝑊</mi><mi>𝑠</mi></msub></math> available for species multiplicity. Slots <math><msub><mi>𝑀</mi><mi>𝑠</mi></msub></math> and internal degeneracies <math><msub><mi>𝑔</mi><mi>𝑠</mi></msub></math> are dimensionless counts. Neutral, ion, and electron densities are <math><msub><mi>𝑛</mi><mi>𝑛</mi></msub></math>, <math><msub><mi>𝑛</mi><mi>𝑖</mi></msub></math>, and <math><msub><mi>𝑛</mi><mi>𝑒</mi></msub></math> in <math><msup><mtext>m</mtext><mrow><mo>−</mo><mn>3</mn></mrow></msup></math>. The thermal de Broglie wavelength is <math><msub><mi>𝜆</mi><mrow><mtext>th</mtext><mo rspace="0em">,</mo><mi>𝑠</mi></mrow></msub><mo>=</mo><mfrac><mi>ℎ</mi><msqrt><mn>2</mn><mi>𝜋</mi><msub><mi>𝑚</mi><mi>𝑠</mi></msub><msub><mi>𝑘</mi><mi>𝐵</mi></msub><mi>𝑇</mi></msqrt></mfrac></math> in <math><mtext>m</mtext></math>, with Planck’s constant <math><mi>ℎ</mi></math> in <math><mtext>J</mtext><mspace width="0.1667em"/><mtext>s</mtext></math>. For electrons, <math><msub><mi>𝜆</mi><mrow><mtext>th</mtext><mo rspace="0em">,</mo><mi>𝑒</mi></mrow></msub><mo>=</mo><mfrac><mi>ℎ</mi><mrow><msqrt><mi>𝜋</mi></msqrt><msub><mi>𝑚</mi><mi>𝑒</mi></msub><msub><mi>𝑣</mi><mrow><mtext>th</mtext><mo rspace="0em">,</mo><mi>𝑒</mi></mrow></msub></mrow></mfrac></math>. Thermal momentum <math><msub><mi>𝑝</mi><mrow><mtext>th</mtext><mo rspace="0em">,</mo><mi>𝑠</mi></mrow></msub><mo>=</mo><msqrt><mn>2</mn><msub><mi>𝑚</mi><mi>𝑠</mi></msub><msub><mi>𝑘</mi><mi>𝐵</mi></msub><mi>𝑇</mi></msqrt></math> is in <math><mtext>k</mtext><mtext>g</mtext><mspace width="0.1667em"/><mtext>m</mtext><mspace width="0.1667em"/><msup><mtext>s</mtext><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>. A sharp momentum cutoff <math><msub><mi>𝑝</mi><mi>𝑠</mi></msub></math> is in <math><mtext>k</mtext><mtext>g</mtext><mspace width="0.1667em"/><mtext>m</mtext><mspace width="0.1667em"/><msup><mtext>s</mtext><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>; its estimate <math><msub><mi>𝜆</mi><mi>𝑠</mi></msub><mo>=</mo><mfrac><mi>ℎ</mi><msub><mi>𝑝</mi><mi>𝑠</mi></msub></mfrac></math> is in <math><mtext>m</mtext></math> and is distinct from <math><msub><mi>𝜆</mi><mrow><mtext>th</mtext><mo rspace="0em">,</mo><mi>𝑠</mi></mrow></msub></math>, which uses the Maxwellian-weighted momentum states. Normalized wave frequency uses <math><mover accent="true"><mi>𝜔</mi><mo>̂</mo></mover></math>, reserving <math><mi>𝑊</mi></math> for multiplicity.</dd>
+            <dt>Gyrofrequency</dt>
+            <dd>The positive rate <math><msub><mi>𝜔</mi><mi>𝑐</mi></msub><mo>=</mo><mfrac><mrow><mrow><mo>|</mo><mi>𝑞</mi><mo>|</mo></mrow><mi>𝐵</mi></mrow><mi>𝑚</mi></mfrac></math>. The signed quantity <math><mi mathvariant="normal">Ω</mi><mo>=</mo><mfrac><mrow><mi>𝑞</mi><mi>𝐵</mi></mrow><mi>𝑚</mi></mfrac></math> retains charge orientation. The single-particle chapter follows the lecture notation instead: <math><msub><mi>𝜔</mi><mi>𝑐</mi></msub><mo>=</mo><msub><mi>𝑞</mi><mi>𝛼</mi></msub><mi>𝐵</mi><mi>/</mi><msub><mi>𝑚</mi><mi>𝛼</mi></msub></math> is signed for species <math><mi>𝛼</mi></math>, <math><mrow><mo>|</mo><msub><mi>𝜔</mi><mi>𝑐</mi></msub><mo>|</mo></mrow></math> is the positive rate, and the Larmor radius is <math><msub><mi>𝜌</mi><mi>𝐿</mi></msub><mo>=</mo><msub><mi>𝑣</mi><mo>⟂</mo></msub><mi>/</mi><mrow><mo>|</mo><msub><mi>𝜔</mi><mi>𝑐</mi></msub><mo>|</mo></mrow></math>.</dd>
+            <dt>Debye length</dt>
+            <dd>The electron screening length when ions do not respond and the electrons have thermodynamic temperature <math><msub><mi>𝑇</mi><mi>𝑒</mi></msub></math> is <math><msub><mi>𝜆</mi><mi>𝐷</mi></msub><mo>=</mo><msqrt><mfrac><mrow><msub><mi>𝜀</mi><mn>0</mn></msub><msub><mi>𝑘</mi><mi>𝐵</mi></msub><msub><mi>𝑇</mi><mi>𝑒</mi></msub></mrow><mrow><msub><mi>𝑛</mi><mi>𝑒</mi></msub><msup><mi>𝑒</mi><mn>2</mn></msup></mrow></mfrac></msqrt></math>. If several classical species respond with Boltzmann densities, <math><msubsup><mi>𝜆</mi><mi>𝐷</mi><mrow><mo>−</mo><mn>2</mn></mrow></msubsup><mo>=</mo><msub><mo form="prefix" lspace="0em">∑</mo><mi>𝑠</mi></msub><mfrac><mrow><msub><mi>𝑛</mi><mi>𝑠</mi></msub><msubsup><mi>𝑞</mi><mi>𝑠</mi><mn>2</mn></msubsup></mrow><mrow><msub><mi>𝜀</mi><mn>0</mn></msub><msub><mi>𝑘</mi><mi>𝐵</mi></msub><msub><mi>𝑇</mi><mi>𝑠</mi></msub></mrow></mfrac></math>.</dd>
+            <dt>Thermal speed and distribution</dt>
+            <dd>The convention is <math><msub><mi>𝑣</mi><mtext>th,s</mtext></msub><mo>=</mo><msqrt><mfrac><mrow><mn>2</mn><msub><mi>𝑘</mi><mi>𝐵</mi></msub><msub><mi>𝑇</mi><mi>𝑠</mi></msub></mrow><msub><mi>𝑚</mi><mi>𝑠</mi></msub></mfrac></msqrt></math>; a centered Maxwellian varies as <math><mo lspace="0em" rspace="0em">exp</mo><mrow><mo>(</mo><mrow><mo>−</mo><mfrac><msup><mi>𝑣</mi><mn>2</mn></msup><msubsup><mi>𝑣</mi><mtext>th,s</mtext><mn>2</mn></msubsup></mfrac></mrow><mo>)</mo></mrow></math>. The three-velocity distribution satisfies <math><mo lspace="0em">∫</mo><msub><mi>𝑓</mi><mi>𝑠</mi></msub><msup><mo form="prefix" lspace="0em" rspace="0em">d</mo><mn>3</mn></msup><mi>𝒗</mi><mo>=</mo><msub><mi>𝑛</mi><mi>𝑠</mi></msub></math>. A one-velocity marginal integrates over the other two velocity components; it is not a slice.</dd>
+            <dt>Wave convention</dt>
+            <dd>Perturbations use <math><mo lspace="0em" rspace="0em">exp</mo><mrow><mo>(</mo><mrow><mi>𝑖</mi><mrow><mo>(</mo><mrow><mi>𝒌</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo><mi>𝒓</mi><mo>−</mo><mi>𝜔</mi><mi>𝑡</mi></mrow><mo>)</mo></mrow></mrow><mo>)</mo></mrow></math>. With <math><mi>𝜔</mi><mo>=</mo><msub><mi>𝜔</mi><mi>𝑟</mi></msub><mo>+</mo><mi>𝑖</mi><mi>𝛾</mi></math>, positive <math><mi>𝛾</mi></math> means temporal growth. For real frequency and propagation toward increasing <math><mi>𝑧</mi></math>, <math><mi>𝑘</mi><mo>=</mo><msub><mi>𝑘</mi><mi>𝑟</mi></msub><mo>+</mo><mi>𝑖</mi><msub><mi>𝑘</mi><mi>𝑖</mi></msub></math> with <math><msub><mi>𝑘</mi><mi>𝑖</mi></msub><mo>></mo><mn>0</mn></math> means spatial attenuation.</dd>
+            <dt>Wave-number normalization</dt>
+            <dd>The refractive index is <math><mi>𝑁</mi><mo>=</mo><mfrac><mrow><mi>𝑘</mi><mi>𝑐</mi></mrow><mi>𝜔</mi></mfrac></math> [1]. A different coordinate is <math><mi>𝐾</mi><mo>=</mo><mfrac><mrow><mi>𝑘</mi><mi>𝑐</mi></mrow><msub><mi>𝜔</mi><mi>𝑝</mi></msub></mfrac></math> [1], with <math><mover accent="true"><mi>𝜔</mi><mo>̂</mo></mover><mo>=</mo><mfrac><mi>𝜔</mi><msub><mi>𝜔</mi><mi>𝑝</mi></msub></mfrac></math> [1] and <math><mi>𝐾</mi><mo>=</mo><mi>𝑁</mi><mover accent="true"><mi>𝜔</mi><mo>̂</mo></mover></math>. In vacuum <math><mi>𝑁</mi><mo>=</mo><mn>1</mn></math>, equivalently <math><mover accent="true"><mi>𝜔</mi><mo>̂</mo></mover><mo>=</mo><mi>𝐾</mi></math>; these axes are not interchangeable.</dd>
+            <dt>Gyroangle</dt>
+            <dd>With <math><msub><mi>𝑩</mi><mn>0</mn></msub><mo>=</mo><msub><mi>𝐵</mi><mn>0</mn></msub><msub><mi>𝒆</mi><mi>𝑧</mi></msub></math>, the usual counterclockwise angle defined by <math><msub><mi>𝑣</mi><mi>𝑥</mi></msub><mo>=</mo><msub><mi>𝑣</mi><mo>⟂</mo></msub><mo form="prefix" lspace="0.16666666666666666em" rspace="0em">cos</mo><mrow><mo>(</mo><mi>𝜃</mi><mo>)</mo></mrow></math> and <math><msub><mi>𝑣</mi><mi>𝑦</mi></msub><mo>=</mo><msub><mi>𝑣</mi><mo>⟂</mo></msub><mo form="prefix" lspace="0.16666666666666666em" rspace="0em">sin</mo><mrow><mo>(</mo><mi>𝜃</mi><mo>)</mo></mrow></math> obeys <math><mfrac><mrow><mi mathvariant="normal">d</mi><mi>𝜃</mi></mrow><mrow><mi mathvariant="normal">d</mi><mi>𝑡</mi></mrow></mfrac><mo>=</mo><mo form="prefix">−</mo><msub><mi mathvariant="normal">Ω</mi><mi>𝑠</mi></msub></math>. The hot-plasma harmonic expansion explicitly uses the opposite orientation; its signed frequency and harmonic labels must be read with that definition.</dd>
+            <dt>Closure</dt>
+            <dd>An additional constitutive assumption that terminates a moment or reduced-model hierarchy.</dd>
+          </dl>
+        </section>
+        <section class="content-sections" id="bibliography">
+          <p class="eyebrow">Bibliography</p>
+          <h2>Sources and implementation references</h2>
+          <p>Citations are numeric and are generated from the public BibLaTeX database. The Typst reference <span id="loc-1">[</span><a href="#loc-8" role="doc-biblioref">1</a>] and typed-HTML reference <span id="loc-2">[</span><a href="#loc-9" role="doc-biblioref">2</a>] describe the authoring and web output. Scientific notation and unit-bearing quantities use <span id="loc-3">[</span><a href="#loc-10" role="doc-biblioref">3</a>] and <span id="loc-4">[</span><a href="#loc-11" role="doc-biblioref">4</a>]; diagrams, plots, and highlighted teaching blocks use <span id="loc-5">[</span><a href="#loc-12" role="doc-biblioref">5</a>–<a href="#loc-13" role="doc-biblioref">7</a>] and <span id="loc-6">[</span><a href="#loc-14" role="doc-biblioref">8</a>]. The Manim documentation <span id="loc-7">[</span><a href="#loc-15" role="doc-biblioref">9</a>] describes the animation workflow. The books and course PDFs used for reference remain private and are not copied into the public site.</p>
+          <section role="doc-bibliography">
+            <ul style="list-style-type: none">
+              <li id="loc-8"><span class="prefix"><a href="#loc-1" role="doc-backlink">[1]</a></span> Typst Project, <em>Typst Documentation: Reference</em>, <a href="https://typst.app/docs/reference/">https://typst.app/docs/reference/</a>.</li>
+              <li id="loc-9"><span class="prefix"><a href="#loc-2" role="doc-backlink">[2]</a></span> Typst Project, <em>Typed HTML Functions</em>, <a href="https://typst.app/docs/reference/html/typed/">https://typst.app/docs/reference/html/typed/</a>.</li>
+              <li id="loc-10"><span class="prefix"><a href="#loc-3" role="doc-backlink">[3]</a></span> Typst Universe, <em>Physica: Scientific Typesetting for Typst</em>, <a href="https://typst.app/universe/package/physica">https://typst.app/universe/package/physica</a>.</li>
+              <li id="loc-11"><span class="prefix"><a href="#loc-4" role="doc-backlink">[4]</a></span> Typst Universe, <em>Unify: Units in Typst</em>, <a href="https://typst.app/universe/package/unify">https://typst.app/universe/package/unify</a>.</li>
+              <li id="loc-12"><span class="prefix"><a href="#loc-5" role="doc-backlink">[5]</a></span> Typst Universe, <em>Cetz: A Drawing and Diagramming Package for Typst</em>, <a href="https://typst.app/universe/package/cetz">https://typst.app/universe/package/cetz</a>.</li>
+              <li><span class="prefix"><a href="#loc-5" role="doc-backlink">[6]</a></span> Typst Universe, <em>Fletcher: Diagramming with Arrows in Typst</em>, <a href="https://typst.app/universe/package/fletcher">https://typst.app/universe/package/fletcher</a>.</li>
+              <li id="loc-13"><span class="prefix"><a href="#loc-5" role="doc-backlink">[7]</a></span> Typst Universe, <em>Lilaq: Data-Driven Plots for Typst</em>, <a href="https://typst.app/universe/package/lilaq">https://typst.app/universe/package/lilaq</a>.</li>
+              <li id="loc-14"><span class="prefix"><a href="#loc-6" role="doc-backlink">[8]</a></span> Typst Universe, <em>Frame-It: Framed Content Blocks for Typst</em>, <a href="https://typst.app/universe/package/frame-it">https://typst.app/universe/package/frame-it</a>.</li>
+              <li id="loc-15"><span class="prefix"><a href="#loc-7" role="doc-backlink">[9]</a></span> Manim Community Developers, <em>Manim Community Documentation</em>, <a href="https://docs.manim.community/">https://docs.manim.community/</a>.</li>
+              <li id="loc-16"><span class="prefix"><a href="chapters/01-introduction.html#loc-1" role="doc-backlink">[10]</a></span> U. S. Inan and M. Gołkowski, <em>Principles of Plasma Physics for Engineers and Scientists</em> (Cambridge University Press, 2011).</li>
+              <li id="loc-17"><span class="prefix"><a href="chapters/01-introduction.html#loc-1" role="doc-backlink">[11]</a></span> F. F. Chen, <em>Introduction to Plasma Physics and Controlled Fusion</em>, 3rd ed. (Springer International Publishing, Cham, 2016).</li>
+              <li id="loc-18"><span class="prefix"><a href="chapters/01-introduction.html#loc-1" role="doc-backlink">[12]</a></span> J. A. Bittencourt, <em>Fundamentals of Plasma Physics</em>, 3rd ed. (Springer, New York, 2004).</li>
+              <li id="loc-19"><span class="prefix"><a href="chapters/02-thermal-equilibrium.html#loc-1" role="doc-backlink">[13]</a></span> F. Reif, <em>Fundamentals of Statistical and Thermal Physics</em> (McGraw-Hill, New York, 1965).</li>
+              <li id="loc-20"><span class="prefix"><a href="chapters/02-thermal-equilibrium.html#loc-2" role="doc-backlink">[14]</a></span> M. N. Saha, Ionization in the solar chromosphere, The London, Edinburgh, And Dublin Philosophical Magazine and Journal of Science <strong>40</strong>, 472 (1920).</li>
+              <li id="loc-21"><span class="prefix"><a href="chapters/02-thermal-equilibrium.html#loc-3" role="doc-backlink">[15]</a></span> National Institute of Standards and Technology, <em>2022 CODATA Recommended Values of the Fundamental Physical Constants</em>, <a href="https://physics.nist.gov/cuu/Constants/">https://physics.nist.gov/cuu/Constants/</a>.</li>
+              <li id="loc-22"><span class="prefix"><a href="chapters/02-thermal-equilibrium.html#loc-4" role="doc-backlink">[16]</a></span> D. Lumma, J. L. Terry, and B. Lipschultz, Radiative and three-body recombination in the Alcator C-Mod divertor, Physics of Plasmas <strong>4</strong>, 2555 (1997).</li>
+              <li id="loc-23"><span class="prefix"><a href="chapters/10-collisions-conductivity.html#loc-1" role="doc-backlink">[17]</a></span> A. S. Richardson, 2019 NRL Plasma Formulary, technical report, 2019.</li>
+              <li id="loc-24"><span class="prefix"><a href="chapters/10-collisions-conductivity.html#loc-2" role="doc-backlink">[18]</a></span> F. Bloch, Zur Bremsung rasch bewegter Teilchen beim Durchgang durch Materie, Annalen Der Physik <strong>408</strong>, 285 (1933).</li>
+              <li><span class="prefix">[19]</span> Plasma Physics Exam Catalogue, (2026).</li>
+            </ul>
+          </section>
+        </section>
+        <section class="content-sections contributors">
+          <p class="eyebrow">Contributors and license</p>
+          <h2>Contributing</h2>
+          <p>Original teaching content is released under CC BY 4.0. Source code, Typst components, CSS, Nix expressions, build scripts, and Manim source are released under the MIT license. Contributions are recorded in the public contributors list with their role or changed area.</p>
+          <p>Initial authors: Christopher Albert and Maximilian Philipp. See <code>CONTRIBUTORS.md</code> and <code>CONTRIBUTING.md</code> for contribution terms.</p>
+        </section>
+      </main>
+      <footer class="site-footer">Lecture notes in Typst, visualizations rendered with Manim. Authors: Christopher Albert and Maximilian Philipp.</footer>
+    </div>
+  <script defer src="animation-player.js"></script>
+<a class="script-feedback" data-script-feedback="true" data-repo-url="https://github.com/krystophny/plasma-skript" data-page-url="https://krystophny.github.io/plasma-skript/index.html" href="https://github.com/krystophny/plasma-skript/issues/new?title=Script+feedback%3A+Plasma+Physics&amp;body=%23%23%23+Location%0APlasma+Physics%0Ahttps%3A%2F%2Fkrystophny.github.io%2Fplasma-skript%2Findex.html%0A%0A%23%23%23+Problem+or+suggestion%0APlease+describe+the+issue+here.%0A" target="_blank" rel="noopener noreferrer" title="Open a GitHub issue for this section (GitHub sign-in required)">Report a problem<span class="feedback-sr-only"> (opens GitHub in a new tab)</span></a>
+<script defer src="feedback.js"></script>
+</body>
+</html>

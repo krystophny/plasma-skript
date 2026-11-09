@@ -1,0 +1,4170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mathematical toolkit</title>
+    <style>
+      /* Alignment */
+      mtable.right-align mtd,
+      mtable mtd.right-align,
+      mtable.left-align mtd.right-align,
+      mtable.aligned mtd:nth-child(odd) {
+        justify-items: end;
+        text-align: right;
+      }
+      mtable.cases mtd,
+      mtable.left-align mtd,
+      mtable mtd.left-align,
+      mtable.aligned mtd:nth-child(even),
+      math:is(:not([display])) > mtable.multiline-equation mtd {
+        justify-items: start;
+        text-align: left;
+      }
+      mtable.cases mtd,
+      mtable.aligned mtd,
+      mtable mtd.flushed,
+      mtable mtd.left-flush {
+        padding-left: 0;
+      }
+      mtable.cases mtd,
+      mtable.aligned mtd,
+      mtable mtd.flushed,
+      mtable mtd.right-flush {
+        padding-right: 0;
+      }
+      
+      /* Tables */
+      mtable {
+        math-style: inherit;
+      }
+      mtd {
+        math-depth: auto-add;
+        math-style: compact;
+        math-shift: compact;
+      }
+      
+      /* Equations */
+      mtable.multiline-equation mtd {
+        math-depth: inherit;
+        math-style: inherit;
+        math-shift: inherit;
+        padding: 0;
+      }
+      math > mtable.multiline-equation mtr:not(:last-child) mtd {
+        padding-bottom: 0.5em;
+      }
+      
+      /* Fractions */
+      mfrac {
+        padding-inline: 0;
+        margin-inline: 0.1em;
+      }
+      
+      /* Accents */
+      mover[accent="true" i] > :first-child {
+        font-feature-settings: "dtls";
+      }
+      mover.dotted[accent="true" i] > :first-child {
+        font-feature-settings: "dtls" 0;
+      }
+      
+      /* Other rules for scriptlevel, displaystyle and math-shift */
+      munder > :nth-child(2),
+      munderover > :nth-child(2) {
+        math-shift: compact
+      }
+      munder[accentunder="true" i] > :not(:first-child),
+      mover[accent="true" i] > :not(:first-child) {
+        math-depth: inherit;
+        math-style: inherit;
+        math-shift: inherit;
+      }
+    </style>
+  <link rel="stylesheet" href="../animation-player.css">
+<link rel="stylesheet" href="../feedback.css">
+</head>
+  <body>
+    <div class="site-shell">
+      <link rel="stylesheet" href="../styles.css">
+      <header class="site-header">
+        <div class="brand"><a href="../index.html">Plasma Physics</a></div>
+        <nav class="site-nav" aria-label="Primary navigation"><a href="../index.html">Overview</a> <a href="../index.html#contents">Contents</a> <a href="../index.html#glossary">Glossary</a> <a href="../index.html#bibliography">Bibliography</a></nav>
+      </header>
+      <main class="site-main">
+        <h1>Appendix: Mathematical toolkit</h1>
+        <p class="lede">The course repeatedly moves between kinetic, fluid, and field descriptions. This appendix collects the energy-weighted second moment of the kinetic equation and the differential operators used in Cartesian, cylindrical, and spherical coordinates, with collapsed derivations for reconstructing each result.</p>
+        <style>
+          #frame-wrapper-349 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-349">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #126e82; ">Checklist for compact plasma equations</span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Key idea 1</span></div>
+            <div style="border: 0.13em solid #126e82; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">Before manipulating a compact plasma equation, identify the species, the integration measure, the active unit convention, the coordinate scale factors, and the boundary terms. Most apparent sign or missing-factor errors can be found at one of those five checkpoints.</div>
+          </figure>
+        </div>
+        <h2>Energy-weighted second moment</h2>
+        <p class="lede">How does the kinetic equation produce an energy equation? Weighting by the single-particle kinetic energy and integrating over velocity converts velocity-space transport into electromagnetic work, spatial transport, and collisional energy exchange. The result is the bridge between a distribution function and the fluid energy equations used later in the script.</p>
+        <section class="objectives">
+          <h3>Learning objectives</h3>
+          <ul>
+            <li>define the bulk, internal, and heat-flux contributions to a species energy moment</li>
+            <li>carry out the velocity-space integration by parts without dropping the boundary condition</li>
+            <li>identify why the magnetic part of the Lorentz force does no work</li>
+            <li>separate the total-energy equation from the internal-energy equation</li>
+          </ul>
+        </section>
+        <aside class="unit-ledger"><strong>Unit ledger</strong> The species distribution is defined by <math><mi>𝑑</mi><msub><mi>𝑁</mi><mi>𝑠</mi></msub><mo>=</mo><msub><mi>𝑓</mi><mi>𝑠</mi></msub><msup><mo form="prefix" lspace="0em" rspace="0em">d</mo><mn>3</mn></msup><mi>𝒓</mi><msup><mo form="prefix" lspace="0em" rspace="0em">d</mo><mn>3</mn></msup><mi>𝒗</mi></math>. The energy density and energy flux below are in <math><mtext>J</mtext><mspace width="0.1667em"/><msup><mtext>m</mtext><mrow><mo>−</mo><mn>3</mn></mrow></msup></math> and <math><mtext>W</mtext><mspace width="0.1667em"/><msup><mtext>m</mtext><mrow><mo>−</mo><mn>2</mn></mrow></msup></math>, respectively.</aside>
+        <style>
+          #frame-wrapper-350 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-350">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #b86418; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #b86418; ">Kinetic equation and velocity-space boundary</span><span style="padding: 5px 10px; border: 0.13em solid #b86418; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #b86418; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Assumptions 2</span></div>
+            <div style="border: 0.13em solid #b86418; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">
+              <p>For species <math><mi>𝑠</mi></math>, use a smooth kinetic equation with acceleration <math><msub><mi>𝒂</mi><mi>𝑠</mi></msub><mo>=</mo><mrow><mo>(</mo><mrow><msub><mi>𝑞</mi><mi>𝑠</mi></msub><mi>/</mi><msub><mi>𝑚</mi><mi>𝑠</mi></msub></mrow><mo>)</mo></mrow><mrow><mo>(</mo><mrow><mi>𝑬</mi><mo>+</mo><mi>𝒗</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mi>𝑩</mi></mrow><mo>)</mo></mrow></math>. The distribution and the velocity-space flux <math><msub><mi>𝑓</mi><mi>𝑠</mi></msub><msub><mi>𝒂</mi><mi>𝑠</mi></msub></math> vanish sufficiently rapidly as <math><mrow><mo>|</mo><mi>𝒗</mi><mo>|</mo></mrow><mo stretchy="false">→</mo><mi>∞</mi></math>, so surface terms at infinite speed are zero. Require species-number-conserving collisions,</p>
+              <math display="block">
+                <mo lspace="0em">∫</mo>
+                <msub>
+                  <mi>𝐶</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mrow>
+                  <mo>[</mo>
+                  <mi>𝑓</mi>
+                  <mo>]</mo>
+                </mrow>
+                <msup>
+                  <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                  <mn>3</mn>
+                </msup>
+                <mi>𝒗</mi>
+                <mo>=</mo>
+                <mn>0</mn>
+                <mo rspace="0em">,</mo>
+              </math>
+              <p>so <math><mrow><mi>𝜕</mi><msub><mi>𝜌</mi><mi>𝑠</mi></msub></mrow><mo lspace="0em" rspace="0em">/</mo><mrow><mi>𝜕</mi><mi>𝑡</mi></mrow><mo>+</mo><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo><mrow><mo>(</mo><mrow><msub><mi>𝜌</mi><mi>𝑠</mi></msub><msub><mi>𝒖</mi><mi>𝑠</mi></msub></mrow><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>. Ionization and recombination are excluded from the internal-energy balance below. Collisions may exchange energy between species, but their weighted integral is retained as a source.</p>
+            </div>
+          </figure>
+        </div>
+        <style>
+          #frame-wrapper-351 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-351">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #356aa0; ">Bulk and thermal variables</span><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Definition 3</span></div>
+            <div style="border: 0.13em solid #356aa0; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">
+              <p>The species flow velocity and random velocity are</p>
+              <math display="block">
+                <msub>
+                  <mi>𝒖</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <mo lspace="0em">∫</mo>
+                    <mi>𝒗</mi>
+                    <msub>
+                      <mi>𝑓</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <msup>
+                      <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                      <mn>3</mn>
+                    </msup>
+                    <mi>𝒗</mi>
+                  </mrow>
+                  <msub>
+                    <mi>𝑛</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mfrac>
+              </math>
+              <p>and <math><msub><mi>𝒄</mi><mi>𝑠</mi></msub><mo>=</mo><mi>𝒗</mi><mo>−</mo><msub><mi>𝒖</mi><mi>𝑠</mi></msub></math>. Define the bulk kinetic-energy density, internal-energy density, pressure tensor, and heat-flux vector by <math><msub><mi>𝐾</mi><mi>𝑠</mi></msub><mo>=</mo><msub><mi>𝜌</mi><mi>𝑠</mi></msub><msup><mrow><mo>|</mo><msub><mi>𝒖</mi><mi>𝑠</mi></msub><mo>|</mo></mrow><mn>2</mn></msup><mi>/</mi><mn>2</mn></math>, <math><msub><mi>𝑈</mi><mi>𝑠</mi></msub><mo>=</mo><mo form="prefix" lspace="0em" rspace="0.16666666666666666em">tr</mo><msub><mi>𝑷</mi><mi>𝑠</mi></msub><mi>/</mi><mn>2</mn></math>,</p>
+              <math display="block">
+                <msub>
+                  <mi>𝑷</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>=</mo>
+                <msub>
+                  <mi>𝑚</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo form="prefix">∫</mo>
+                <msub>
+                  <mi>𝒄</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <msub>
+                  <mi>𝒄</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <msub>
+                  <mi>𝑓</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <msup>
+                  <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                  <mn>3</mn>
+                </msup>
+                <mi>𝒗</mi>
+                <mo rspace="0em">,</mo>
+                <mspace width="1em"/>
+                <mtext>and</mtext>
+                <mspace width="1em"/>
+                <msub>
+                  <mi>𝒒</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <msub>
+                      <mi>𝑚</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <mo form="prefix">∫</mo>
+                    <msup>
+                      <mrow>
+                        <mo>|</mo>
+                        <msub>
+                          <mi>𝒄</mi>
+                          <mi>𝑠</mi>
+                        </msub>
+                        <mo>|</mo>
+                      </mrow>
+                      <mn>2</mn>
+                    </msup>
+                    <msub>
+                      <mi>𝒄</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <msub>
+                      <mi>𝑓</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <msup>
+                      <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                      <mn>3</mn>
+                    </msup>
+                    <mi>𝒗</mi>
+                  </mrow>
+                  <mn>2</mn>
+                </mfrac>
+                <mi>.</mi>
+              </math>
+              <p>Here <math><msub><mi>𝒄</mi><mi>𝑠</mi></msub><msub><mi>𝒄</mi><mi>𝑠</mi></msub></math> is a dyadic product. The total second moment is</p>
+              <math display="block">
+                <msub>
+                  <mi>𝑊</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>=</mo>
+                <msub>
+                  <mi>𝐾</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>+</mo>
+                <msub>
+                  <mi>𝑈</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <msub>
+                      <mi>𝑚</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <mo form="prefix">∫</mo>
+                    <msup>
+                      <mrow>
+                        <mo>|</mo>
+                        <mi>𝒗</mi>
+                        <mo>|</mo>
+                      </mrow>
+                      <mn>2</mn>
+                    </msup>
+                    <msub>
+                      <mi>𝑓</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <msup>
+                      <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                      <mn>3</mn>
+                    </msup>
+                    <mi>𝒗</mi>
+                  </mrow>
+                  <mn>2</mn>
+                </mfrac>
+                <mi>.</mi>
+              </math>
+              <p>For a collision operator <math><msub><mi>𝐶</mi><mi>𝑠</mi></msub><mrow><mo>[</mo><mi>𝑓</mi><mo>]</mo></mrow></math>, define the collisional momentum transfer and kinetic-energy transfer by</p>
+              <math display="block">
+                <msub>
+                  <mi>𝑹</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>=</mo>
+                <msub>
+                  <mi>𝑚</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo form="prefix">∫</mo>
+                <mi>𝒗</mi>
+                <msub>
+                  <mi>𝐶</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mrow>
+                  <mo>[</mo>
+                  <mi>𝑓</mi>
+                  <mo>]</mo>
+                </mrow>
+                <msup>
+                  <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                  <mn>3</mn>
+                </msup>
+                <mi>𝒗</mi>
+                <mspace width="1em"/>
+                <mtext>and</mtext>
+                <mspace width="1em"/>
+                <msub>
+                  <mi>𝑄</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <msub>
+                      <mi>𝑚</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <mo form="prefix">∫</mo>
+                    <msup>
+                      <mrow>
+                        <mo>|</mo>
+                        <mi>𝒗</mi>
+                        <mo>|</mo>
+                      </mrow>
+                      <mn>2</mn>
+                    </msup>
+                    <msub>
+                      <mi>𝐶</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <mrow>
+                      <mo>[</mo>
+                      <mi>𝑓</mi>
+                      <mo>]</mo>
+                    </mrow>
+                    <msup>
+                      <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                      <mn>3</mn>
+                    </msup>
+                    <mi>𝒗</mi>
+                  </mrow>
+                  <mn>2</mn>
+                </mfrac>
+                <mi>.</mi>
+              </math>
+              <p>The source <math><msub><mi>𝑹</mi><mi>𝑠</mi></msub></math> is in <math><mtext>N</mtext><mspace width="0.1667em"/><msup><mtext>m</mtext><mrow><mo>−</mo><mn>3</mn></mrow></msup></math> and <math><msub><mi>𝑄</mi><mi>𝑠</mi></msub></math> is in <math><mtext>W</mtext><mspace width="0.1667em"/><msup><mtext>m</mtext><mrow><mo>−</mo><mn>3</mn></mrow></msup></math>.</p>
+            </div>
+          </figure>
+        </div>
+        <style>
+          #frame-wrapper-352 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-352">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #126e82; ">Species total-energy equation</span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Governing law 4</span></div>
+            <div style="border: 0.13em solid #126e82; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">
+              <p>The energy-weighted kinetic equation gives</p>
+              <math display="block">
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <msub>
+                      <mi>𝑊</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝑡</mi>
+                  </mrow>
+                </mfrac>
+                <mo>+</mo>
+                <mi>𝛁</mi>
+                <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <mrow>
+                      <mo>(</mo>
+                      <msub>
+                        <mi>𝑊</mi>
+                        <mi>𝑠</mi>
+                      </msub>
+                      <mo>)</mo>
+                    </mrow>
+                    <msub>
+                      <mi>𝒖</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <mo>+</mo>
+                    <msub>
+                      <mi>𝑷</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+                    <msub>
+                      <mi>𝒖</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <mo>+</mo>
+                    <msub>
+                      <mi>𝒒</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <msub>
+                  <mi>𝑞</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <msub>
+                  <mi>𝑛</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mi>𝑬</mi>
+                <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+                <msub>
+                  <mi>𝒖</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>+</mo>
+                <msub>
+                  <mi>𝑄</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo rspace="0em">,</mo>
+              </math>
+              <p>where <math><msub><mi>𝑄</mi><mi>𝑠</mi></msub></math> is the collisional rate of kinetic-energy transfer to species <math><mi>𝑠</mi></math> in <math><mtext>W</mtext><mspace width="0.1667em"/><msup><mtext>m</mtext><mrow><mo>−</mo><mn>3</mn></mrow></msup></math>. The magnetic force is absent from the power term because <math><mi>𝒗</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo><mrow><mo>(</mo><mrow><mi>𝒗</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mi>𝑩</mi></mrow><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>.</p>
+            </div>
+          </figure>
+        </div>
+        <p class="equation-note">The three terms in the energy flux have distinct meanings: advection of total particle kinetic energy <math><msub><mi>𝑊</mi><mi>𝑠</mi></msub><msub><mi>𝒖</mi><mi>𝑠</mi></msub></math> (bulk plus internal), pressure work transport <math><msub><mi>𝑷</mi><mi>𝑠</mi></msub><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo><msub><mi>𝒖</mi><mi>𝑠</mi></msub></math>, and random-energy transport <math><msub><mi>𝒒</mi><mi>𝑠</mi></msub></math>. They must not be merged into a scalar heat flux unless isotropy and a closure have been stated.</p>
+        <style>
+          #frame-wrapper-353 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-353">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #126e82; ">Derivation route</span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Key idea 5</span></div>
+            <div style="border: 0.13em solid #126e82; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">Multiply the kinetic equation by <math><msub><mi>𝑚</mi><mi>𝑠</mi></msub><msup><mrow><mo>|</mo><mi>𝒗</mi><mo>|</mo></mrow><mn>2</mn></msup><mi>/</mi><mn>2</mn></math>, integrate over all velocity space, commute time and space derivatives with the integral, integrate the acceleration term by parts in velocity, then decompose <math><mi>𝒗</mi><mo>=</mo><msub><mi>𝒖</mi><mi>𝑠</mi></msub><mo>+</mo><msub><mi>𝒄</mi><mi>𝑠</mi></msub></math>. The collapsed derivation gives each step and the boundary terms.</div>
+          </figure>
+        </div>
+        <details class="disclosure">
+          <summary>Derivation: total energy from the kinetic equation</summary>
+          <div class="disclosure-body">
+            <p class="derivation-step-label"><strong>Step: Weight the kinetic equation</strong></p>
+            <p>Start from the non-conservative form</p>
+            <math display="block">
+              <mfrac>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <msub>
+                    <mi>𝑓</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mrow>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <mi>𝑡</mi>
+                </mrow>
+              </mfrac>
+              <mo>+</mo>
+              <mi>𝒗</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <mi>𝛁</mi>
+              <mrow>
+                <mo>(</mo>
+                <msub>
+                  <mi>𝑓</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>)</mo>
+              </mrow>
+              <mo>+</mo>
+              <msub>
+                <mi>𝒂</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <mfrac>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <msub>
+                    <mi>𝑓</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mrow>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <mi>𝒗</mi>
+                </mrow>
+              </mfrac>
+              <mo>=</mo>
+              <msub>
+                <mi>𝐶</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mrow>
+                <mo>[</mo>
+                <mi>𝑓</mi>
+                <mo>]</mo>
+              </mrow>
+              <mi>.</mi>
+            </math>
+            <p>Since <math><mi>𝒗</mi></math> is independent of <math><mi>𝒓</mi></math>, the streaming term is also <math><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo><mrow><mo>(</mo><mrow><msub><mi>𝑓</mi><mi>𝑠</mi></msub><mi>𝒗</mi></mrow><mo>)</mo></mrow></math>. Define the single-particle kinetic energy</p>
+            <math display="block">
+              <msub>
+                <mi>𝜀</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mrow>
+                <mo>(</mo>
+                <mi>𝒗</mi>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <mfrac>
+                <mrow>
+                  <msub>
+                    <mi>𝑚</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <msup>
+                    <mrow>
+                      <mo>|</mo>
+                      <mi>𝒗</mi>
+                      <mo>|</mo>
+                    </mrow>
+                    <mn>2</mn>
+                  </msup>
+                </mrow>
+                <mn>2</mn>
+              </mfrac>
+              <mi>.</mi>
+            </math>
+            <p>Multiply the kinetic equation by this energy and integrate over all velocity space:</p>
+            <math display="block">
+              <mo lspace="0em">∫</mo>
+              <msub>
+                <mi>𝜀</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mfrac>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <msub>
+                    <mi>𝑓</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mrow>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <mi>𝑡</mi>
+                </mrow>
+              </mfrac>
+              <msup>
+                <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                <mn>3</mn>
+              </msup>
+              <mi>𝒗</mi>
+              <mo>+</mo>
+              <mo form="prefix" lspace="0em">∫</mo>
+              <msub>
+                <mi>𝜀</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mi>𝛁</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+              <mrow>
+                <mo>(</mo>
+                <mrow>
+                  <msub>
+                    <mi>𝑓</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mi>𝒗</mi>
+                </mrow>
+                <mo>)</mo>
+              </mrow>
+              <msup>
+                <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                <mn>3</mn>
+              </msup>
+              <mi>𝒗</mi>
+              <mo>+</mo>
+              <mo form="prefix" lspace="0em">∫</mo>
+              <msub>
+                <mi>𝜀</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mi>𝒂</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <mfrac>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <msub>
+                    <mi>𝑓</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mrow>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <mi>𝒗</mi>
+                </mrow>
+              </mfrac>
+              <msup>
+                <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                <mn>3</mn>
+              </msup>
+              <mi>𝒗</mi>
+              <mo>=</mo>
+              <mo form="prefix" lspace="0em">∫</mo>
+              <msub>
+                <mi>𝜀</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mi>𝐶</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mrow>
+                <mo>[</mo>
+                <mi>𝑓</mi>
+                <mo>]</mo>
+              </mrow>
+              <msup>
+                <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                <mn>3</mn>
+              </msup>
+              <mi>𝒗</mi>
+              <mi>.</mi>
+            </math>
+            <p class="derivation-step-label"><strong>Step: Evaluate the temporal and streaming terms</strong></p>
+            <p>The temporal term is</p>
+            <math display="block">
+              <mo lspace="0em">∫</mo>
+              <msub>
+                <mi>𝜀</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mfrac>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <msub>
+                    <mi>𝑓</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mrow>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <mi>𝑡</mi>
+                </mrow>
+              </mfrac>
+              <msup>
+                <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                <mn>3</mn>
+              </msup>
+              <mi>𝒗</mi>
+              <mo>=</mo>
+              <mfrac>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <mo form="prefix">∫</mo>
+                  <msub>
+                    <mi>𝜀</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <msub>
+                    <mi>𝑓</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <msup>
+                    <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                    <mn>3</mn>
+                  </msup>
+                  <mi>𝒗</mi>
+                </mrow>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <mi>𝑡</mi>
+                </mrow>
+              </mfrac>
+              <mo>=</mo>
+              <mfrac>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <msub>
+                    <mi>𝑊</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mrow>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <mi>𝑡</mi>
+                </mrow>
+              </mfrac>
+              <mi>.</mi>
+            </math>
+            <p>The streaming term commutes with the velocity integral:</p>
+            <math display="block">
+              <mo lspace="0em">∫</mo>
+              <msub>
+                <mi>𝜀</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mi>𝛁</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+              <mrow>
+                <mo>(</mo>
+                <mrow>
+                  <msub>
+                    <mi>𝑓</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mi>𝒗</mi>
+                </mrow>
+                <mo>)</mo>
+              </mrow>
+              <msup>
+                <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                <mn>3</mn>
+              </msup>
+              <mi>𝒗</mi>
+              <mo>=</mo>
+              <mi>𝛁</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+              <mrow>
+                <mo>(</mo>
+                <mfrac>
+                  <mrow>
+                    <msub>
+                      <mi>𝑚</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <mo form="prefix">∫</mo>
+                    <msup>
+                      <mrow>
+                        <mo>|</mo>
+                        <mi>𝒗</mi>
+                        <mo>|</mo>
+                      </mrow>
+                      <mn>2</mn>
+                    </msup>
+                    <mi>𝒗</mi>
+                    <msub>
+                      <mi>𝑓</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <msup>
+                      <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                      <mn>3</mn>
+                    </msup>
+                    <mi>𝒗</mi>
+                  </mrow>
+                  <mn>2</mn>
+                </mfrac>
+                <mo>)</mo>
+              </mrow>
+              <mi>.</mi>
+            </math>
+            <p class="derivation-step-label"><strong>Step: Integrate the acceleration term by parts</strong></p>
+            <p>Write the contracted velocity divergence explicitly as</p>
+            <math display="block">
+              <msub>
+                <mrow>
+                  <mi>𝛁</mi>
+                  <mo form="infix" lspace="0.2222222222222222em" rspace="0em">·</mo>
+                </mrow>
+                <mi>𝒗</mi>
+              </msub>
+              <mrow>
+                <mo>(</mo>
+                <mi>𝑨</mi>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <munder>
+                <mo form="prefix" lspace="0em">∑</mo>
+                <mi>𝑗</mi>
+              </munder>
+              <mfrac>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <msub>
+                    <mi>𝐴</mi>
+                    <mi>𝑗</mi>
+                  </msub>
+                </mrow>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <msub>
+                    <mi>𝑣</mi>
+                    <mi>𝑗</mi>
+                  </msub>
+                </mrow>
+              </mfrac>
+              <mi>.</mi>
+            </math>
+            <p>The velocity-space product rule is</p>
+            <math display="block">
+              <msub>
+                <mi>𝜀</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mi>𝒂</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <mfrac>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <msub>
+                    <mi>𝑓</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mrow>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <mi>𝒗</mi>
+                </mrow>
+              </mfrac>
+              <mo>=</mo>
+              <msub>
+                <mrow>
+                  <mi>𝛁</mi>
+                  <mo form="infix" lspace="0.2222222222222222em" rspace="0em">·</mo>
+                </mrow>
+                <mi>𝒗</mi>
+              </msub>
+              <mrow>
+                <mo>(</mo>
+                <mrow>
+                  <msub>
+                    <mi>𝜀</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <msub>
+                    <mi>𝑓</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <msub>
+                    <mi>𝒂</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mrow>
+                <mo>)</mo>
+              </mrow>
+              <mo>−</mo>
+              <msub>
+                <mi>𝑓</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mi>𝒂</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <mfrac>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <msub>
+                    <mi>𝜀</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mrow>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <mi>𝒗</mi>
+                </mrow>
+              </mfrac>
+              <mo>−</mo>
+              <msub>
+                <mi>𝜀</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mi>𝑓</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mrow>
+                  <mi>𝛁</mi>
+                  <mo form="infix" lspace="0.2222222222222222em" rspace="0em">·</mo>
+                </mrow>
+                <mi>𝒗</mi>
+              </msub>
+              <mrow>
+                <mo>(</mo>
+                <msub>
+                  <mi>𝒂</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>)</mo>
+              </mrow>
+              <mi>.</mi>
+            </math>
+            <p>For the Lorentz acceleration, <math><msub><mrow><mi>𝛁</mi><mo form="infix" lspace="0.2222222222222222em" rspace="0em">·</mo></mrow><mi>𝒗</mi></msub><mrow><mo>(</mo><msub><mi>𝒂</mi><mi>𝑠</mi></msub><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>: the electric field is independent of velocity and the magnetic linear map is antisymmetric, hence has zero trace. The last term therefore vanishes.</p>
+            <p>The first term becomes the surface integral</p>
+            <math display="block">
+              <msub>
+                <mo lspace="0em">∫</mo>
+                <mtext>boundary V_v</mtext>
+              </msub>
+              <msub>
+                <mi>𝜀</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mi>𝑓</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mi>𝒂</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <mi>𝑑</mi>
+              <msub>
+                <mi>𝑺</mi>
+                <mi>𝑣</mi>
+              </msub>
+              <mo rspace="0em">,</mo>
+            </math>
+            <p>which vanishes at infinite speed by the boundary assumption. Because <math><mrow><mi>𝜕</mi><msub><mi>𝜀</mi><mi>𝑠</mi></msub></mrow><mo lspace="0em" rspace="0em">/</mo><mrow><mi>𝜕</mi><mi>𝒗</mi></mrow><mo>=</mo><msub><mi>𝑚</mi><mi>𝑠</mi></msub><mi>𝒗</mi></math>, the remaining term is</p>
+            <math display="block">
+              <mo>−</mo>
+              <msub>
+                <mi>𝑚</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo form="prefix">∫</mo>
+              <msub>
+                <mi>𝑓</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mi>𝒂</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <mi>𝒗</mi>
+              <msup>
+                <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                <mn>3</mn>
+              </msup>
+              <mi>𝒗</mi>
+              <mi>.</mi>
+            </math>
+            <p>Insert the Lorentz acceleration. The magnetic contribution vanishes pointwise, leaving</p>
+            <math display="block">
+              <mo>−</mo>
+              <msub>
+                <mi>𝑞</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mi>𝑬</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <mo form="prefix" lspace="0em">∫</mo>
+              <mi>𝒗</mi>
+              <msub>
+                <mi>𝑓</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msup>
+                <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                <mn>3</mn>
+              </msup>
+              <mi>𝒗</mi>
+              <mo>=</mo>
+              <mo form="prefix">−</mo>
+              <msub>
+                <mi>𝑞</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mi>𝑛</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mi>𝑬</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <msub>
+                <mi>𝒖</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mi>.</mi>
+            </math>
+            <p>Define the collision power</p>
+            <math display="block">
+              <msub>
+                <mi>𝑄</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo>=</mo>
+              <mo form="prefix" lspace="0em">∫</mo>
+              <msub>
+                <mi>𝜀</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mi>𝐶</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mrow>
+                <mo>[</mo>
+                <mi>𝑓</mi>
+                <mo>]</mo>
+              </mrow>
+              <msup>
+                <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                <mn>3</mn>
+              </msup>
+              <mi>𝒗</mi>
+              <mi>.</mi>
+            </math>
+            <p>Moving the electric term to the right gives the conservative energy equation</p>
+            <math display="block">
+              <mfrac>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <msub>
+                    <mi>𝑊</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mrow>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <mi>𝑡</mi>
+                </mrow>
+              </mfrac>
+              <mo>+</mo>
+              <mi>𝛁</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+              <mrow>
+                <mo>(</mo>
+                <mfrac>
+                  <mrow>
+                    <msub>
+                      <mi>𝑚</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <mo form="prefix">∫</mo>
+                    <msup>
+                      <mrow>
+                        <mo>|</mo>
+                        <mi>𝒗</mi>
+                        <mo>|</mo>
+                      </mrow>
+                      <mn>2</mn>
+                    </msup>
+                    <mi>𝒗</mi>
+                    <msub>
+                      <mi>𝑓</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <msup>
+                      <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                      <mn>3</mn>
+                    </msup>
+                    <mi>𝒗</mi>
+                  </mrow>
+                  <mn>2</mn>
+                </mfrac>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <msub>
+                <mi>𝑞</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mi>𝑛</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mi>𝑬</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <msub>
+                <mi>𝒖</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo>+</mo>
+              <msub>
+                <mi>𝑄</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mi>.</mi>
+            </math>
+            <p class="derivation-step-label"><strong>Step: Decompose the energy flux</strong></p>
+            <p>Substitute</p>
+            <math display="block">
+              <mi>𝒗</mi>
+              <mo>=</mo>
+              <msub>
+                <mi>𝒖</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo>+</mo>
+              <msub>
+                <mi>𝒄</mi>
+                <mi>𝑠</mi>
+              </msub>
+            </math>
+            <p><br></p>
+            <math display="block">
+              <msup>
+                <mrow>
+                  <mo>|</mo>
+                  <mi>𝒗</mi>
+                  <mo>|</mo>
+                </mrow>
+                <mn>2</mn>
+              </msup>
+              <mo>=</mo>
+              <msup>
+                <mrow>
+                  <mo>|</mo>
+                  <msub>
+                    <mi>𝒖</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mo>|</mo>
+                </mrow>
+                <mn>2</mn>
+              </msup>
+              <mo>+</mo>
+              <mn>2</mn>
+              <msub>
+                <mi>𝒖</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <msub>
+                <mi>𝒄</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo>+</mo>
+              <msup>
+                <mrow>
+                  <mo>|</mo>
+                  <msub>
+                    <mi>𝒄</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mo>|</mo>
+                </mrow>
+                <mn>2</mn>
+              </msup>
+              <mi>.</mi>
+            </math>
+            <p>The first-order random moment vanishes:</p>
+            <math display="block">
+              <mo lspace="0em">∫</mo>
+              <msub>
+                <mi>𝒄</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mi>𝑓</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msup>
+                <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                <mn>3</mn>
+              </msup>
+              <mi>𝒗</mi>
+              <mo>=</mo>
+              <mn>𝟎</mn>
+              <mi>.</mi>
+            </math>
+            <p>The surviving flux terms are</p>
+            <math display="block">
+              <mfrac>
+                <mrow>
+                  <msub>
+                    <mi>𝑚</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mo form="prefix">∫</mo>
+                  <msup>
+                    <mrow>
+                      <mo>|</mo>
+                      <mi>𝒗</mi>
+                      <mo>|</mo>
+                    </mrow>
+                    <mn>2</mn>
+                  </msup>
+                  <mi>𝒗</mi>
+                  <msub>
+                    <mi>𝑓</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <msup>
+                    <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                    <mn>3</mn>
+                  </msup>
+                  <mi>𝒗</mi>
+                </mrow>
+                <mn>2</mn>
+              </mfrac>
+              <mo>=</mo>
+              <msub>
+                <mi>𝐾</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mi>𝒖</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo>+</mo>
+              <msub>
+                <mi>𝑈</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mi>𝒖</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo>+</mo>
+              <msub>
+                <mi>𝑷</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <msub>
+                <mi>𝒖</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo>+</mo>
+              <msub>
+                <mi>𝒒</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mi>.</mi>
+            </math>
+            <p>Since <math><msub><mi>𝑊</mi><mi>𝑠</mi></msub><mo>=</mo><msub><mi>𝐾</mi><mi>𝑠</mi></msub><mo>+</mo><msub><mi>𝑈</mi><mi>𝑠</mi></msub></math>, this becomes</p>
+            <math display="block">
+              <msub>
+                <mi>𝑊</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mi>𝒖</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo>+</mo>
+              <msub>
+                <mi>𝑷</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <msub>
+                <mi>𝒖</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo>+</mo>
+              <msub>
+                <mi>𝒒</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mi>.</mi>
+            </math>
+            <p>Substitution gives the stated total-energy equation.</p>
+          </div>
+        </details>
+        <style>
+          #frame-wrapper-354 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-354">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #126e82; ">Internal-energy equation</span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Governing law 6</span></div>
+            <div style="border: 0.13em solid #126e82; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">
+              <p>Subtracting the bulk kinetic-energy equation obtained by dotting the species momentum equation with <math><msub><mi>𝒖</mi><mi>𝑠</mi></msub></math> gives</p>
+              <math display="block">
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <msub>
+                      <mi>𝑈</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝑡</mi>
+                  </mrow>
+                </mfrac>
+                <mo>+</mo>
+                <mi>𝛁</mi>
+                <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <msub>
+                      <mi>𝑈</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <msub>
+                      <mi>𝒖</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <mo>+</mo>
+                    <msub>
+                      <mi>𝒒</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <mo form="prefix">−</mo>
+                <msub>
+                  <mi>𝑷</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo lspace="0.2777777777777778em" rspace="0.2777777777777778em">:</mo>
+                <mi>𝛁</mi>
+                <mrow>
+                  <mo>(</mo>
+                  <msub>
+                    <mi>𝒖</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mo>)</mo>
+                </mrow>
+                <mo>+</mo>
+                <msub>
+                  <mi>𝑄</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>−</mo>
+                <msub>
+                  <mi>𝒖</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+                <msub>
+                  <mi>𝑹</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mi>.</mi>
+              </math>
+              <p>The double contraction is</p>
+              <math display="block">
+                <msub>
+                  <mi>𝑷</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo lspace="0.2777777777777778em" rspace="0.2777777777777778em">:</mo>
+                <mi>𝛁</mi>
+                <mrow>
+                  <mo>(</mo>
+                  <msub>
+                    <mi>𝒖</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <munder>
+                  <mo form="prefix" lspace="0em">∑</mo>
+                  <mrow>
+                    <mi>𝑖</mi>
+                    <mo rspace="0em">,</mo>
+                    <mi>𝑗</mi>
+                  </mrow>
+                </munder>
+                <msub>
+                  <mrow>
+                    <mo>(</mo>
+                    <msub>
+                      <mi>𝑃</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <mo>)</mo>
+                  </mrow>
+                  <mrow>
+                    <mi>𝑖</mi>
+                    <mi>𝑗</mi>
+                  </mrow>
+                </msub>
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <msub>
+                      <mrow>
+                        <mo>(</mo>
+                        <msub>
+                          <mi>𝑢</mi>
+                          <mi>𝑠</mi>
+                        </msub>
+                        <mo>)</mo>
+                      </mrow>
+                      <mi>𝑖</mi>
+                    </msub>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <msub>
+                      <mi>𝑟</mi>
+                      <mi>𝑗</mi>
+                    </msub>
+                  </mrow>
+                </mfrac>
+                <mi>.</mi>
+              </math>
+              <p>For an isotropic pressure tensor <math><msub><mi>𝑷</mi><mi>𝑠</mi></msub><mo>=</mo><msub><mi>𝑝</mi><mi>𝑠</mi></msub><mi>𝑰</mi></math>, the pressure work reduces to <math><msub><mi>𝑝</mi><mi>𝑠</mi></msub><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo><mrow><mo>(</mo><msub><mi>𝒖</mi><mi>𝑠</mi></msub><mo>)</mo></mrow></math> and <math><msub><mi>𝑈</mi><mi>𝑠</mi></msub><mo>=</mo><mn>3</mn><msub><mi>𝑝</mi><mi>𝑠</mi></msub><mi>/</mi><mn>2</mn></math> in three spatial dimensions.</p>
+            </div>
+          </figure>
+        </div>
+        <details class="disclosure">
+          <summary>Derivation: subtract bulk energy and identify pressure work</summary>
+          <div class="disclosure-body">
+            <p class="derivation-step-label"><strong>Step: Start from the momentum balance</strong></p>
+            <p>The first moment of the kinetic equation is</p>
+            <math display="block">
+              <mfrac>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <msub>
+                    <mi>𝜌</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <msub>
+                    <mi>𝒖</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mrow>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <mi>𝑡</mi>
+                </mrow>
+              </mfrac>
+              <mo>+</mo>
+              <mi>𝛁</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+              <mrow>
+                <mo>(</mo>
+                <mrow>
+                  <msub>
+                    <mi>𝜌</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <msub>
+                    <mi>𝒖</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <msub>
+                    <mi>𝒖</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mo>+</mo>
+                  <msub>
+                    <mi>𝑷</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mrow>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <msub>
+                <mi>𝑞</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mi>𝑛</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mrow>
+                <mo>(</mo>
+                <mrow>
+                  <mi>𝑬</mi>
+                  <mo>+</mo>
+                  <msub>
+                    <mi>𝒖</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo>
+                  <mi>𝑩</mi>
+                </mrow>
+                <mo>)</mo>
+              </mrow>
+              <mo>+</mo>
+              <msub>
+                <mi>𝑹</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mi>.</mi>
+            </math>
+            <p>Dot this equation with <math><msub><mi>𝒖</mi><mi>𝑠</mi></msub></math>. The number-conserving assumption gives <math><mrow><mi>𝜕</mi><msub><mi>𝜌</mi><mi>𝑠</mi></msub></mrow><mo lspace="0em" rspace="0em">/</mo><mrow><mi>𝜕</mi><mi>𝑡</mi></mrow><mo>+</mo><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo><mrow><mo>(</mo><mrow><msub><mi>𝜌</mi><mi>𝑠</mi></msub><msub><mi>𝒖</mi><mi>𝑠</mi></msub></mrow><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>, so the product rule yields</p>
+            <math display="block">
+              <mfrac>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <msub>
+                    <mi>𝐾</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mrow>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <mi>𝑡</mi>
+                </mrow>
+              </mfrac>
+              <mo>+</mo>
+              <mi>𝛁</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+              <mrow>
+                <mo>(</mo>
+                <mrow>
+                  <msub>
+                    <mi>𝐾</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <msub>
+                    <mi>𝒖</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mrow>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <msub>
+                <mi>𝑞</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <msub>
+                <mi>𝑛</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mi>𝑬</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <msub>
+                <mi>𝒖</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo>−</mo>
+              <msub>
+                <mi>𝒖</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <mi>𝛁</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+              <mrow>
+                <mo>(</mo>
+                <msub>
+                  <mi>𝑷</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>)</mo>
+              </mrow>
+              <mo>+</mo>
+              <msub>
+                <mi>𝒖</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <msub>
+                <mi>𝑹</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mi>.</mi>
+            </math>
+            <p class="derivation-step-label"><strong>Step: Subtract bulk energy from total energy</strong></p>
+            <p>The total-energy equation contains the same electromagnetic power. Insert <math><msub><mi>𝑊</mi><mi>𝑠</mi></msub><mo>=</mo><msub><mi>𝐾</mi><mi>𝑠</mi></msub><mo>+</mo><msub><mi>𝑈</mi><mi>𝑠</mi></msub></math> and subtract the bulk identity:</p>
+            <math display="block">
+              <mfrac>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <msub>
+                    <mi>𝑈</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mrow>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <mi>𝑡</mi>
+                </mrow>
+              </mfrac>
+              <mo>+</mo>
+              <mi>𝛁</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+              <mrow>
+                <mo>(</mo>
+                <mrow>
+                  <msub>
+                    <mi>𝑈</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <msub>
+                    <mi>𝒖</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mo>+</mo>
+                  <msub>
+                    <mi>𝑷</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+                  <msub>
+                    <mi>𝒖</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mo>+</mo>
+                  <msub>
+                    <mi>𝒒</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mrow>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <msub>
+                <mi>𝒖</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <mi>𝛁</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+              <mrow>
+                <mo>(</mo>
+                <msub>
+                  <mi>𝑷</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>)</mo>
+              </mrow>
+              <mo>+</mo>
+              <msub>
+                <mi>𝑄</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo>−</mo>
+              <msub>
+                <mi>𝒖</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <msub>
+                <mi>𝑹</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mi>.</mi>
+            </math>
+            <p class="derivation-step-label"><strong>Step: Rewrite pressure work</strong></p>
+            <p>Apply</p>
+            <math display="block">
+              <mi>𝛁</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+              <mrow>
+                <mo>(</mo>
+                <mrow>
+                  <msub>
+                    <mi>𝑷</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+                  <msub>
+                    <mi>𝒖</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </mrow>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <msub>
+                <mi>𝒖</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <mi>𝛁</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+              <mrow>
+                <mo>(</mo>
+                <msub>
+                  <mi>𝑷</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>)</mo>
+              </mrow>
+              <mo>+</mo>
+              <msub>
+                <mi>𝑷</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo lspace="0.2777777777777778em" rspace="0.2777777777777778em">:</mo>
+              <mi>𝛁</mi>
+              <mrow>
+                <mo>(</mo>
+                <msub>
+                  <mi>𝒖</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>)</mo>
+              </mrow>
+              <mi>.</mi>
+            </math>
+            <p>The first term cancels, leaving the internal-energy equation with pressure work and heat-flux transport. For <math><msub><mi>𝑷</mi><mi>𝑠</mi></msub><mo>=</mo><msub><mi>𝑝</mi><mi>𝑠</mi></msub><mi>𝑰</mi></math>,</p>
+            <math display="block">
+              <msub>
+                <mi>𝑷</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mo lspace="0.2777777777777778em" rspace="0.2777777777777778em">:</mo>
+              <mi>𝛁</mi>
+              <mrow>
+                <mo>(</mo>
+                <msub>
+                  <mi>𝒖</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <msub>
+                <mi>𝑝</mi>
+                <mi>𝑠</mi>
+              </msub>
+              <mi>𝛁</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+              <mrow>
+                <mo>(</mo>
+                <msub>
+                  <mi>𝒖</mi>
+                  <mi>𝑠</mi>
+                </msub>
+                <mo>)</mo>
+              </mrow>
+              <mi>.</mi>
+            </math>
+            <p>This is the isotropic limit.</p>
+          </div>
+        </details>
+        <style>
+          #frame-wrapper-355 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-355">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #356aa0; ">Content of the second-moment equations</span><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Interpretation 7</span></div>
+            <div style="border: 0.13em solid #356aa0; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">The total-energy equation tracks directed and random kinetic energy together. The internal form isolates compressional work, anisotropic shear work, and heat-flux transport. A fluid model closes this equation only after choosing how <math><msub><mi>𝑷</mi><mi>𝑠</mi></msub></math>, <math><msub><mi>𝒒</mi><mi>𝑠</mi></msub></math>, and <math><msub><mi>𝑄</mi><mi>𝑠</mi></msub></math> are represented. When <math><msub><mi>𝐶</mi><mi>𝑠</mi></msub><mrow><mo>[</mo><mi>𝑓</mi><mo>]</mo></mrow><mo>=</mo><mn>0</mn></math>, both <math><msub><mi>𝑄</mi><mi>𝑠</mi></msub><mo>=</mo><mn>0</mn></math> and <math><msub><mi>𝑹</mi><mi>𝑠</mi></msub><mo>=</mo><mn>𝟎</mn></math> for each species. Energy exchange with the fields enters through electric work, not a collision source. For collisional species exchange, the internal source is <math><msub><mi>𝑄</mi><mi>𝑠</mi></msub><mo>−</mo><msub><mi>𝒖</mi><mi>𝑠</mi></msub><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo><msub><mi>𝑹</mi><mi>𝑠</mi></msub></math>: total collisional power and bulk momentum transfer must be separated.</div>
+          </figure>
+        </div>
+        <style>
+          #frame-wrapper-356 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-356">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #126e82; ">Summary</span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Summary 8</span></div>
+            <div style="border: 0.13em solid #126e82; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">Weighting the kinetic equation by <math><msub><mi>𝑚</mi><mi>𝑠</mi></msub><msup><mrow><mo>|</mo><mi>𝒗</mi><mo>|</mo></mrow><mn>2</mn></msup><mi>/</mi><mn>2</mn></math> gives a total energy balance. Velocity-space integration by parts turns the Lorentz force into electric work; the magnetic part does no work. Decomposing velocity into bulk plus random motion separates total-energy advection, pressure work, and heat-flux transport. Representing <math><msub><mi>𝑷</mi><mi>𝑠</mi></msub></math> and <math><msub><mi>𝒒</mi><mi>𝑠</mi></msub></math> in terms of lower moments is a closure choice.</div>
+          </figure>
+        </div>
+        <section class="knowledge-check">
+          <h3>Knowledge check</h3>
+          <ol>
+            <li>
+              Why does the magnetic part of the Lorentz force not appear in the single-species energy source?
+              <details>
+                <summary>Answer</summary>
+                Its power is proportional to <math>
+                  <mi>𝒗</mi>
+                  <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+                  <mrow>
+                    <mo>(</mo>
+                    <mrow>
+                      <mi>𝒗</mi>
+                      <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo>
+                      <mi>𝑩</mi>
+                    </mrow>
+                    <mo>)</mo>
+                  </mrow>
+                </math>, which is zero for every particle. The electric part contributes <math>
+                  <msub>
+                    <mi>𝑞</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <msub>
+                    <mi>𝑛</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mi>𝑬</mi>
+                  <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+                  <msub>
+                    <mi>𝒖</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                </math> in <math>
+                  <mtext>W</mtext>
+                  <mspace width="0.1667em"/>
+                  <msup>
+                    <mtext>m</mtext>
+                    <mrow>
+                      <mo>−</mo>
+                      <mn>3</mn>
+                    </mrow>
+                  </msup>
+                </math>.
+              </details>
+            </li>
+            <li>
+              Which term transports random kinetic energy relative to the species flow?
+              <details>
+                <summary>Answer</summary>
+                <p>The heat-flux vector</p>
+                <math display="block">
+                  <msub>
+                    <mi>𝒒</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mo>=</mo>
+                  <mfrac>
+                    <mrow>
+                      <msub>
+                        <mi>𝑚</mi>
+                        <mi>𝑠</mi>
+                      </msub>
+                      <mo form="prefix">∫</mo>
+                      <msup>
+                        <mrow>
+                          <mo>|</mo>
+                          <msub>
+                            <mi>𝒄</mi>
+                            <mi>𝑠</mi>
+                          </msub>
+                          <mo>|</mo>
+                        </mrow>
+                        <mn>2</mn>
+                      </msup>
+                      <msub>
+                        <mi>𝒄</mi>
+                        <mi>𝑠</mi>
+                      </msub>
+                      <msub>
+                        <mi>𝑓</mi>
+                        <mi>𝑠</mi>
+                      </msub>
+                      <msup>
+                        <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+                        <mn>3</mn>
+                      </msup>
+                      <mi>𝒗</mi>
+                    </mrow>
+                    <mn>2</mn>
+                  </mfrac>
+                </math>
+                <p>transports random energy. It is a third central velocity moment and needs a closure in a truncated fluid model.</p>
+              </details>
+            </li>
+            <li>
+              What assumption removes the velocity-space surface term in the energy derivation?
+              <details>
+                <summary>Answer</summary>
+                The distribution and velocity-space flux must decay fast enough that the surface integral at <math>
+                  <mrow>
+                    <mo>|</mo>
+                    <mi>𝒗</mi>
+                    <mo>|</mo>
+                  </mrow>
+                  <mo stretchy="false">→</mo>
+                  <mi>∞</mi>
+                </math> vanishes. If a high-energy boundary or source is present, that flux must be retained.
+              </details>
+            </li>
+            <li>
+              How does isotropic pressure simplify the internal-energy equation?
+              <details>
+                <summary>Answer</summary>
+                With <math>
+                  <msub>
+                    <mi>𝑷</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mo>=</mo>
+                  <msub>
+                    <mi>𝑝</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mi>𝑰</mi>
+                </math>, the tensor contraction becomes <math>
+                  <msub>
+                    <mi>𝑷</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mo lspace="0.2777777777777778em" rspace="0.2777777777777778em">:</mo>
+                  <mi>𝛁</mi>
+                  <mrow>
+                    <mo>(</mo>
+                    <msub>
+                      <mi>𝒖</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <mo>)</mo>
+                  </mrow>
+                  <mo>=</mo>
+                  <msub>
+                    <mi>𝑝</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mi>𝛁</mi>
+                  <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+                  <mrow>
+                    <mo>(</mo>
+                    <msub>
+                      <mi>𝒖</mi>
+                      <mi>𝑠</mi>
+                    </msub>
+                    <mo>)</mo>
+                  </mrow>
+                </math> and the internal energy is <math>
+                  <msub>
+                    <mi>𝑈</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mo>=</mo>
+                  <mn>3</mn>
+                  <msub>
+                    <mi>𝑝</mi>
+                    <mi>𝑠</mi>
+                  </msub>
+                  <mi>/</mi>
+                  <mn>2</mn>
+                </math> in three dimensions.
+              </details>
+            </li>
+          </ol>
+        </section>
+        <h2>Vector operators and coordinate geometry</h2>
+        <p class="lede">Plasma equations are often simplest in the coordinates selected by the geometry: Cartesian coordinates for a local wave, cylindrical coordinates for a column or pinch, and spherical coordinates for a nearly isotropic expansion. The physical vector is unchanged by the coordinate choice, but the basis vectors and area elements vary. Where do the extra factors of <math><mi>𝑟</mi></math> and <math><mo lspace="0em" rspace="0em">sin</mo><mrow><mo>(</mo><mi>𝜃</mi><mo>)</mo></mrow></math> come from? They are metric scale factors, not new physics.</p>
+        <section class="objectives">
+          <h3>Learning objectives</h3>
+          <ul>
+            <li>state the gradient, divergence, curl, and scalar Laplacian in orthogonal coordinates</li>
+            <li>specialize the formulas to Cartesian, cylindrical, and spherical systems</li>
+            <li>use a divergence or curl identity as a dimensional and limiting-case check</li>
+            <li>choose coordinates that expose the symmetry of a plasma configuration</li>
+          </ul>
+        </section>
+        <aside class="unit-ledger"><strong>Unit ledger</strong> Coordinates <math><mi>𝑥</mi><mo>,</mo><mi>𝑦</mi><mo>,</mo><mi>𝑧</mi><mo>,</mo><mi>𝑟</mi></math> are lengths in <math><mtext>m</mtext></math>, angles <math><mi>𝜑</mi></math> and <math><mi>𝜃</mi></math> are dimensionless, and a scalar field <math><mi>𝜓</mi></math> and vector field <math><mi>𝑨</mi></math> retain whatever physical units the model assigns. Thus <math><mi>𝛁</mi><mrow><mo>(</mo><mi>𝜓</mi><mo>)</mo></mrow></math> has units of <math><mi>𝜓</mi></math> per <math><mtext>m</mtext></math>, <math><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo><mrow><mo>(</mo><mi>𝑨</mi><mo>)</mo></mrow></math> has units of <math><mi>𝑨</mi></math> per <math><mtext>m</mtext></math>, and <math><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mrow><mo>(</mo><mi>𝑨</mi><mo>)</mo></mrow></math> has the same units. The formulas below are dimensional coordinate identities; no normalized radius is implied.</aside>
+        <style>
+          #frame-wrapper-357 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-357">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #b86418; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #b86418; ">Orthogonal curvilinear coordinates</span><span style="padding: 5px 10px; border: 0.13em solid #b86418; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #b86418; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Assumptions 9</span></div>
+            <div style="border: 0.13em solid #b86418; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">Let <math><mrow><mo>(</mo><mrow><msub><mi>𝑞</mi><mn>1</mn></msub><mo>,</mo><msub><mi>𝑞</mi><mn>2</mn></msub><mo>,</mo><msub><mi>𝑞</mi><mn>3</mn></msub></mrow><mo>)</mo></mrow></math> be right-handed orthogonal coordinates with unit basis vectors <math><msub><mi>𝒆</mi><mn>1</mn></msub></math>, <math><msub><mi>𝒆</mi><mn>2</mn></msub></math>, and <math><msub><mi>𝒆</mi><mn>3</mn></msub></math>. Define scale factors by <math><mi>𝑑</mi><mi>𝒓</mi><mo>=</mo><msub><mo form="prefix" lspace="0em">∑</mo><mi>𝑖</mi></msub><msub><mi>ℎ</mi><mi>𝑖</mi></msub><mi>𝑑</mi><msub><mi>𝑞</mi><mi>𝑖</mi></msub><msub><mi>𝒆</mi><mi>𝑖</mi></msub></math>. The basis is orthonormal at each point, but it may vary with position. Components <math><msub><mi>𝐴</mi><mi>𝑖</mi></msub></math> are physical components along the local unit vectors, not covariant components.</div>
+          </figure>
+        </div>
+        <style>
+          #frame-wrapper-358 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-358">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #356aa0; ">Metric scale factors</span><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Definition 10</span></div>
+            <div style="border: 0.13em solid #356aa0; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">
+              <p>The scale factors <math><msub><mi>ℎ</mi><mi>𝑖</mi></msub></math> convert coordinate increments to physical line elements. The three systems used most often here are</p>
+              <math display="block">
+                <mtext>Cartesian:</mtext>
+                <mspace width="0.2222em"/>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <msub>
+                      <mi>𝑞</mi>
+                      <mn>1</mn>
+                    </msub>
+                    <mo>,</mo>
+                    <msub>
+                      <mi>𝑞</mi>
+                      <mn>2</mn>
+                    </msub>
+                    <mo>,</mo>
+                    <msub>
+                      <mi>𝑞</mi>
+                      <mn>3</mn>
+                    </msub>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <mi>𝑥</mi>
+                    <mo>,</mo>
+                    <mi>𝑦</mi>
+                    <mo>,</mo>
+                    <mi>𝑧</mi>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mo>,</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mn>1</mn>
+                    </msub>
+                    <mo>,</mo>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mn>2</mn>
+                    </msub>
+                    <mo>,</mo>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mn>3</mn>
+                    </msub>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <mn>1</mn>
+                    <mo>,</mo>
+                    <mn>1</mn>
+                    <mo>,</mo>
+                    <mn>1</mn>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mo rspace="0em">,</mo>
+              </math>
+              <math display="block">
+                <mtext>cylindrical:</mtext>
+                <mspace width="0.2222em"/>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <msub>
+                      <mi>𝑞</mi>
+                      <mn>1</mn>
+                    </msub>
+                    <mo>,</mo>
+                    <msub>
+                      <mi>𝑞</mi>
+                      <mn>2</mn>
+                    </msub>
+                    <mo>,</mo>
+                    <msub>
+                      <mi>𝑞</mi>
+                      <mn>3</mn>
+                    </msub>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <mi>𝑟</mi>
+                    <mo>,</mo>
+                    <mi>𝜑</mi>
+                    <mo>,</mo>
+                    <mi>𝑧</mi>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mo>,</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mn>1</mn>
+                    </msub>
+                    <mo>,</mo>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mn>2</mn>
+                    </msub>
+                    <mo>,</mo>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mn>3</mn>
+                    </msub>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <mn>1</mn>
+                    <mo>,</mo>
+                    <mi>𝑟</mi>
+                    <mo>,</mo>
+                    <mn>1</mn>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mo rspace="0em">,</mo>
+              </math>
+              <p>and</p>
+              <math display="block">
+                <mtext>spherical:</mtext>
+                <mspace width="0.2222em"/>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <msub>
+                      <mi>𝑞</mi>
+                      <mn>1</mn>
+                    </msub>
+                    <mo>,</mo>
+                    <msub>
+                      <mi>𝑞</mi>
+                      <mn>2</mn>
+                    </msub>
+                    <mo>,</mo>
+                    <msub>
+                      <mi>𝑞</mi>
+                      <mn>3</mn>
+                    </msub>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <mi>𝑟</mi>
+                    <mo>,</mo>
+                    <mi>𝜃</mi>
+                    <mo>,</mo>
+                    <mi>𝜑</mi>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mo>,</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mn>1</mn>
+                    </msub>
+                    <mo>,</mo>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mn>2</mn>
+                    </msub>
+                    <mo>,</mo>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mn>3</mn>
+                    </msub>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <mn>1</mn>
+                    <mo>,</mo>
+                    <mi>𝑟</mi>
+                    <mo>,</mo>
+                    <mi>𝑟</mi>
+                    <mo form="prefix" lspace="0.16666666666666666em" rspace="0em">sin</mo>
+                    <mrow>
+                      <mo>(</mo>
+                      <mi>𝜃</mi>
+                      <mo>)</mo>
+                    </mrow>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mi>.</mi>
+              </math>
+              <p>In spherical coordinates <math><mi>𝜃</mi></math> is the polar angle from positive <math><mi>𝑧</mi></math>, and <math><mi>𝜑</mi></math> is the azimuth measured from positive <math><mi>𝑥</mi></math> toward positive <math><mi>𝑦</mi></math>. The volume element is <math><mo lspace="0em" rspace="0em">d</mo><mi>𝑉</mi><mo>=</mo><msub><mi>ℎ</mi><mn>1</mn></msub><msub><mi>ℎ</mi><mn>2</mn></msub><msub><mi>ℎ</mi><mn>3</mn></msub><mspace width="0.1667em"/><mo form="prefix" lspace="0em" rspace="0em">d</mo><msub><mi>𝑞</mi><mn>1</mn></msub><mspace width="0.1667em"/><mo form="prefix" lspace="0em" rspace="0em">d</mo><msub><mi>𝑞</mi><mn>2</mn></msub><mspace width="0.1667em"/><mo form="prefix" lspace="0em" rspace="0em">d</mo><msub><mi>𝑞</mi><mn>3</mn></msub></math>.</p>
+            </div>
+          </figure>
+        </div>
+        <style>
+          #frame-wrapper-359 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-359">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #126e82; ">Orthogonal-coordinate operators</span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Governing law 11</span></div>
+            <div style="border: 0.13em solid #126e82; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">
+              <p>For a scalar <math><mi>𝜓</mi></math> and vector <math><mi>𝑨</mi><mo>=</mo><msub><mo form="prefix" lspace="0em">∑</mo><mi>𝑖</mi></msub><msub><mi>𝐴</mi><mi>𝑖</mi></msub><msub><mi>𝒆</mi><mi>𝑖</mi></msub></math>, the operators are</p>
+              <math display="block">
+                <mi>𝛁</mi>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>𝜓</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <munder>
+                  <mo form="prefix" lspace="0em" rspace="0em">∑</mo>
+                  <mi>𝑖</mi>
+                </munder>
+                <mrow>
+                  <mo>(</mo>
+                  <mfrac>
+                    <msub>
+                      <mi>𝒆</mi>
+                      <mi>𝑖</mi>
+                    </msub>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mi>𝑖</mi>
+                    </msub>
+                  </mfrac>
+                  <mo>)</mo>
+                </mrow>
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝜓</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <msub>
+                      <mi>𝑞</mi>
+                      <mi>𝑖</mi>
+                    </msub>
+                  </mrow>
+                </mfrac>
+                <mo rspace="0em">,</mo>
+              </math>
+              <math display="block">
+                <mi>𝛁</mi>
+                <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>𝑨</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <msub>
+                      <mo lspace="0em">∑</mo>
+                      <mi>𝑖</mi>
+                    </msub>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mrow>
+                          <mo>(</mo>
+                          <mrow>
+                            <msub>
+                              <mi>ℎ</mi>
+                              <mi>𝑗</mi>
+                            </msub>
+                            <msub>
+                              <mi>ℎ</mi>
+                              <mi>𝑘</mi>
+                            </msub>
+                            <msub>
+                              <mi>𝐴</mi>
+                              <mi>𝑖</mi>
+                            </msub>
+                          </mrow>
+                          <mo>)</mo>
+                        </mrow>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msub>
+                          <mi>𝑞</mi>
+                          <mi>𝑖</mi>
+                        </msub>
+                      </mrow>
+                    </mfrac>
+                  </mrow>
+                  <mrow>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mn>1</mn>
+                    </msub>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mn>2</mn>
+                    </msub>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mn>3</mn>
+                    </msub>
+                  </mrow>
+                </mfrac>
+                <mo rspace="0em">,</mo>
+              </math>
+              <p>where <math><mrow><mo>(</mo><mrow><mi>𝑖</mi><mo>,</mo><mi>𝑗</mi><mo>,</mo><mi>𝑘</mi></mrow><mo>)</mo></mrow></math> cycles through <math><mrow><mo>(</mo><mrow><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn></mrow><mo>)</mo></mrow></math>, and</p>
+              <math display="block">
+                <mi>𝛁</mi>
+                <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>𝑨</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <munder>
+                  <mo form="prefix" lspace="0em" rspace="0em">∑</mo>
+                  <mi>𝑖</mi>
+                </munder>
+                <mrow>
+                  <mo>(</mo>
+                  <mfrac>
+                    <msub>
+                      <mi>𝒆</mi>
+                      <mi>𝑖</mi>
+                    </msub>
+                    <mrow>
+                      <msub>
+                        <mi>ℎ</mi>
+                        <mi>𝑗</mi>
+                      </msub>
+                      <msub>
+                        <mi>ℎ</mi>
+                        <mi>𝑘</mi>
+                      </msub>
+                    </mrow>
+                  </mfrac>
+                  <mo>)</mo>
+                </mrow>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msub>
+                          <mi>ℎ</mi>
+                          <mi>𝑘</mi>
+                        </msub>
+                        <msub>
+                          <mi>𝐴</mi>
+                          <mi>𝑘</mi>
+                        </msub>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msub>
+                          <mi>𝑞</mi>
+                          <mi>𝑗</mi>
+                        </msub>
+                      </mrow>
+                    </mfrac>
+                    <mo>−</mo>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msub>
+                          <mi>ℎ</mi>
+                          <mi>𝑗</mi>
+                        </msub>
+                        <msub>
+                          <mi>𝐴</mi>
+                          <mi>𝑗</mi>
+                        </msub>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msub>
+                          <mi>𝑞</mi>
+                          <mi>𝑘</mi>
+                        </msub>
+                      </mrow>
+                    </mfrac>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mi>.</mi>
+              </math>
+              <p>The scalar Laplacian is</p>
+              <math display="block">
+                <msup>
+                  <mo>∇</mo>
+                  <mn>2</mn>
+                </msup>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>𝜓</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <msub>
+                      <mo lspace="0em">∑</mo>
+                      <mi>𝑖</mi>
+                    </msub>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mrow>
+                          <mo>(</mo>
+                          <mfrac>
+                            <mrow>
+                              <msub>
+                                <mi>ℎ</mi>
+                                <mi>𝑗</mi>
+                              </msub>
+                              <msub>
+                                <mi>ℎ</mi>
+                                <mi>𝑘</mi>
+                              </msub>
+                            </mrow>
+                            <msub>
+                              <mi>ℎ</mi>
+                              <mi>𝑖</mi>
+                            </msub>
+                          </mfrac>
+                          <mo>)</mo>
+                        </mrow>
+                        <mfrac>
+                          <mrow>
+                            <mi>𝜕</mi>
+                            <mi>𝜓</mi>
+                          </mrow>
+                          <mrow>
+                            <mi>𝜕</mi>
+                            <msub>
+                              <mi>𝑞</mi>
+                              <mi>𝑖</mi>
+                            </msub>
+                          </mrow>
+                        </mfrac>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msub>
+                          <mi>𝑞</mi>
+                          <mi>𝑖</mi>
+                        </msub>
+                      </mrow>
+                    </mfrac>
+                  </mrow>
+                  <mrow>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mn>1</mn>
+                    </msub>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mn>2</mn>
+                    </msub>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mn>3</mn>
+                    </msub>
+                  </mrow>
+                </mfrac>
+                <mi>.</mi>
+              </math>
+              <p>Each derivative is with respect to the displayed coordinate, while the scale factors account for physical distance and area.</p>
+            </div>
+          </figure>
+        </div>
+        <p class="equation-note">
+          <p>In the cyclic formulas, for the component with index <math><mi>𝑖</mi></math>, the remaining indices <math><mrow><mo>(</mo><mrow><mi>𝑗</mi><mo>,</mo><mi>𝑘</mi></mrow><mo>)</mo></mrow></math> are taken in cyclic order. For example, the first curl component is</p>
+          <math display="block">
+            <mfrac>
+              <mrow>
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mn>3</mn>
+                    </msub>
+                    <msub>
+                      <mi>𝐴</mi>
+                      <mn>3</mn>
+                    </msub>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <msub>
+                      <mi>𝑞</mi>
+                      <mn>2</mn>
+                    </msub>
+                  </mrow>
+                </mfrac>
+                <mo>−</mo>
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <msub>
+                      <mi>ℎ</mi>
+                      <mn>2</mn>
+                    </msub>
+                    <msub>
+                      <mi>𝐴</mi>
+                      <mn>2</mn>
+                    </msub>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <msub>
+                      <mi>𝑞</mi>
+                      <mn>3</mn>
+                    </msub>
+                  </mrow>
+                </mfrac>
+              </mrow>
+              <mrow>
+                <msub>
+                  <mi>ℎ</mi>
+                  <mn>2</mn>
+                </msub>
+                <msub>
+                  <mi>ℎ</mi>
+                  <mn>3</mn>
+                </msub>
+              </mrow>
+            </mfrac>
+            <mi>.</mi>
+          </math>
+          <p>Writing the scale factors explicitly is safer than importing a Cartesian formula and inserting <math><mi>𝑟</mi></math> by intuition.</p>
+        </p>
+        <style>
+          #frame-wrapper-360 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-360">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #126e82; ">Coordinate choice is a symmetry choice</span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Key idea 12</span></div>
+            <div style="border: 0.13em solid #126e82; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">A straight, locally uniform wave naturally uses Cartesian components. A cylindrical pinch makes <math><msub><mi>𝐴</mi><mi>𝜑</mi></msub></math> and <math><msub><mi>𝐵</mi><mi>𝑧</mi></msub></math> natural components, while a spherically expanding plasma makes the area factor <math><mn>4</mn><mi>𝜋</mi><msup><mi>𝑟</mi><mn>2</mn></msup></math> visible in a divergence. The operator does not change the physical conservation law; only its coordinate representation changes.</div>
+          </figure>
+        </div>
+        <details class="disclosure">
+          <summary>Derivation: origin of the scale factors</summary>
+          <div class="disclosure-body">
+            <p class="derivation-step-label"><strong>Step: Derive the gradient components</strong></p>
+            <p>The directional differential of a scalar field is</p>
+            <math display="block">
+              <mi>𝑑</mi>
+              <mi>𝜓</mi>
+              <mo>=</mo>
+              <mi>𝛁</mi>
+              <mrow>
+                <mo>(</mo>
+                <mi>𝜓</mi>
+                <mo>)</mo>
+              </mrow>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+              <mi>𝑑</mi>
+              <mi>𝒓</mi>
+              <mo>=</mo>
+              <munder>
+                <mo form="prefix" lspace="0em">∑</mo>
+                <mi>𝑖</mi>
+              </munder>
+              <msub>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <mi>𝛁</mi>
+                    <mrow>
+                      <mo>(</mo>
+                      <mi>𝜓</mi>
+                      <mo>)</mo>
+                    </mrow>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mi>𝑖</mi>
+              </msub>
+              <msub>
+                <mi>ℎ</mi>
+                <mi>𝑖</mi>
+              </msub>
+              <mi>𝑑</mi>
+              <msub>
+                <mi>𝑞</mi>
+                <mi>𝑖</mi>
+              </msub>
+              <mi>.</mi>
+            </math>
+            <p>The chain rule gives <math><mi>𝑑</mi><mi>𝜓</mi><mo>=</mo><msub><mo form="prefix" lspace="0em">∑</mo><mi>𝑖</mi></msub><mrow><mi>𝜕</mi><mi>𝜓</mi></mrow><mo lspace="0em" rspace="0em">/</mo><mrow><mi>𝜕</mi><msub><mi>𝑞</mi><mi>𝑖</mi></msub></mrow><mi>𝑑</mi><msub><mi>𝑞</mi><mi>𝑖</mi></msub></math>. Comparing coefficients yields</p>
+            <math display="block">
+              <msub>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <mi>𝛁</mi>
+                    <mrow>
+                      <mo>(</mo>
+                      <mi>𝜓</mi>
+                      <mo>)</mo>
+                    </mrow>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mi>𝑖</mi>
+              </msub>
+              <mo>=</mo>
+              <mfrac>
+                <mrow>
+                  <mfrac>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <mi>𝜓</mi>
+                    </mrow>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <msub>
+                        <mi>𝑞</mi>
+                        <mi>𝑖</mi>
+                      </msub>
+                    </mrow>
+                  </mfrac>
+                </mrow>
+                <msub>
+                  <mi>ℎ</mi>
+                  <mi>𝑖</mi>
+                </msub>
+              </mfrac>
+              <mi>.</mi>
+            </math>
+            <p class="derivation-step-label"><strong>Step: Derive the divergence</strong></p>
+            <p>A small coordinate cell has physical volume</p>
+            <math display="block">
+              <mo lspace="0em" rspace="0em">d</mo>
+              <mi>𝑉</mi>
+              <mo>=</mo>
+              <msub>
+                <mi>ℎ</mi>
+                <mn>1</mn>
+              </msub>
+              <msub>
+                <mi>ℎ</mi>
+                <mn>2</mn>
+              </msub>
+              <msub>
+                <mi>ℎ</mi>
+                <mn>3</mn>
+              </msub>
+              <mspace width="0.1667em"/>
+              <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+              <msub>
+                <mi>𝑞</mi>
+                <mn>1</mn>
+              </msub>
+              <mspace width="0.1667em"/>
+              <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+              <msub>
+                <mi>𝑞</mi>
+                <mn>2</mn>
+              </msub>
+              <mspace width="0.1667em"/>
+              <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+              <msub>
+                <mi>𝑞</mi>
+                <mn>3</mn>
+              </msub>
+              <mi>.</mi>
+            </math>
+            <p>The outward flux through the pair of faces normal to <math><msub><mi>𝒆</mi><mn>1</mn></msub></math> is the difference of <math><msub><mi>ℎ</mi><mn>2</mn></msub><msub><mi>ℎ</mi><mn>3</mn></msub><msub><mi>𝐴</mi><mn>1</mn></msub></math> at the two faces, multiplied by <math><mo lspace="0em" rspace="0em">d</mo><msub><mi>𝑞</mi><mn>2</mn></msub><mspace width="0.1667em"/><mo form="prefix" lspace="0em" rspace="0em">d</mo><msub><mi>𝑞</mi><mn>3</mn></msub></math>. Cyclic permutations give the other faces. Divide the total flux by <math><mo lspace="0em" rspace="0em">d</mo><mi>𝑉</mi></math>:</p>
+            <math display="block">
+              <mi>𝛁</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+              <mrow>
+                <mo>(</mo>
+                <mi>𝑨</mi>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <mfrac>
+                <mrow>
+                  <mfrac>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <msub>
+                        <mi>ℎ</mi>
+                        <mn>2</mn>
+                      </msub>
+                      <msub>
+                        <mi>ℎ</mi>
+                        <mn>3</mn>
+                      </msub>
+                      <msub>
+                        <mi>𝐴</mi>
+                        <mn>1</mn>
+                      </msub>
+                    </mrow>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <msub>
+                        <mi>𝑞</mi>
+                        <mn>1</mn>
+                      </msub>
+                    </mrow>
+                  </mfrac>
+                  <mo>+</mo>
+                  <mfrac>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <msub>
+                        <mi>ℎ</mi>
+                        <mn>3</mn>
+                      </msub>
+                      <msub>
+                        <mi>ℎ</mi>
+                        <mn>1</mn>
+                      </msub>
+                      <msub>
+                        <mi>𝐴</mi>
+                        <mn>2</mn>
+                      </msub>
+                    </mrow>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <msub>
+                        <mi>𝑞</mi>
+                        <mn>2</mn>
+                      </msub>
+                    </mrow>
+                  </mfrac>
+                  <mo>+</mo>
+                  <mfrac>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <msub>
+                        <mi>ℎ</mi>
+                        <mn>1</mn>
+                      </msub>
+                      <msub>
+                        <mi>ℎ</mi>
+                        <mn>2</mn>
+                      </msub>
+                      <msub>
+                        <mi>𝐴</mi>
+                        <mn>3</mn>
+                      </msub>
+                    </mrow>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <msub>
+                        <mi>𝑞</mi>
+                        <mn>3</mn>
+                      </msub>
+                    </mrow>
+                  </mfrac>
+                </mrow>
+                <mrow>
+                  <msub>
+                    <mi>ℎ</mi>
+                    <mn>1</mn>
+                  </msub>
+                  <msub>
+                    <mi>ℎ</mi>
+                    <mn>2</mn>
+                  </msub>
+                  <msub>
+                    <mi>ℎ</mi>
+                    <mn>3</mn>
+                  </msub>
+                </mrow>
+              </mfrac>
+              <mi>.</mi>
+            </math>
+            <p class="derivation-step-label"><strong>Step: Derive curl and the Laplacian</strong></p>
+            <p>Circulation around the face normal to <math><msub><mi>𝒆</mi><mn>1</mn></msub></math> gives</p>
+            <math display="block">
+              <msub>
+                <mrow>
+                  <mo>(</mo>
+                  <mrow>
+                    <mi>𝛁</mi>
+                    <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo>
+                    <mrow>
+                      <mo>(</mo>
+                      <mi>𝑨</mi>
+                      <mo>)</mo>
+                    </mrow>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+                <mn>1</mn>
+              </msub>
+              <mo>=</mo>
+              <mfrac>
+                <mrow>
+                  <mfrac>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <msub>
+                        <mi>ℎ</mi>
+                        <mn>3</mn>
+                      </msub>
+                      <msub>
+                        <mi>𝐴</mi>
+                        <mn>3</mn>
+                      </msub>
+                    </mrow>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <msub>
+                        <mi>𝑞</mi>
+                        <mn>2</mn>
+                      </msub>
+                    </mrow>
+                  </mfrac>
+                  <mo>−</mo>
+                  <mfrac>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <msub>
+                        <mi>ℎ</mi>
+                        <mn>2</mn>
+                      </msub>
+                      <msub>
+                        <mi>𝐴</mi>
+                        <mn>2</mn>
+                      </msub>
+                    </mrow>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <msub>
+                        <mi>𝑞</mi>
+                        <mn>3</mn>
+                      </msub>
+                    </mrow>
+                  </mfrac>
+                </mrow>
+                <mrow>
+                  <msub>
+                    <mi>ℎ</mi>
+                    <mn>2</mn>
+                  </msub>
+                  <msub>
+                    <mi>ℎ</mi>
+                    <mn>3</mn>
+                  </msub>
+                </mrow>
+              </mfrac>
+              <mi>.</mi>
+            </math>
+            <p>Cyclic permutation gives the other components. Finally insert <math><msup><mo>∇</mo><mn>2</mn></msup><mrow><mo>(</mo><mi>𝜓</mi><mo>)</mo></mrow><mo>=</mo><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo><mrow><mo>(</mo><mrow><mi>𝛁</mi><mrow><mo>(</mo><mi>𝜓</mi><mo>)</mo></mrow></mrow><mo>)</mo></mrow><mo form="infix" lspace="0.2777777777777778em" rspace="0em">:</mo></math></p>
+            <math display="block">
+              <msup>
+                <mo>∇</mo>
+                <mn>2</mn>
+              </msup>
+              <mrow>
+                <mo>(</mo>
+                <mi>𝜓</mi>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <mfrac>
+                <mrow>
+                  <msub>
+                    <mo lspace="0em">∑</mo>
+                    <mi>𝑖</mi>
+                  </msub>
+                  <mfrac>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <mrow>
+                        <mo>(</mo>
+                        <mfrac>
+                          <mrow>
+                            <msub>
+                              <mi>ℎ</mi>
+                              <mi>𝑗</mi>
+                            </msub>
+                            <msub>
+                              <mi>ℎ</mi>
+                              <mi>𝑘</mi>
+                            </msub>
+                          </mrow>
+                          <msub>
+                            <mi>ℎ</mi>
+                            <mi>𝑖</mi>
+                          </msub>
+                        </mfrac>
+                        <mo>)</mo>
+                      </mrow>
+                      <mfrac>
+                        <mrow>
+                          <mi>𝜕</mi>
+                          <mi>𝜓</mi>
+                        </mrow>
+                        <mrow>
+                          <mi>𝜕</mi>
+                          <msub>
+                            <mi>𝑞</mi>
+                            <mi>𝑖</mi>
+                          </msub>
+                        </mrow>
+                      </mfrac>
+                    </mrow>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <msub>
+                        <mi>𝑞</mi>
+                        <mi>𝑖</mi>
+                      </msub>
+                    </mrow>
+                  </mfrac>
+                </mrow>
+                <mrow>
+                  <msub>
+                    <mi>ℎ</mi>
+                    <mn>1</mn>
+                  </msub>
+                  <msub>
+                    <mi>ℎ</mi>
+                    <mn>2</mn>
+                  </msub>
+                  <msub>
+                    <mi>ℎ</mi>
+                    <mn>3</mn>
+                  </msub>
+                </mrow>
+              </mfrac>
+              <mi>.</mi>
+            </math>
+            <p>The scale factors must be differentiated whenever they vary with position; otherwise physical flux and circulation are misrepresented.</p>
+          </div>
+        </details>
+        <style>
+          #frame-wrapper-361 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-361">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #356aa0; ">Cartesian specialization</span><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Definition 13</span></div>
+            <div style="border: 0.13em solid #356aa0; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">
+              <p>For <math><mrow><mo>(</mo><mrow><mi>𝑥</mi><mo>,</mo><mi>𝑦</mi><mo>,</mo><mi>𝑧</mi></mrow><mo>)</mo></mrow></math>, all scale factors are one:</p>
+              <math display="block">
+                <mi>𝛁</mi>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>𝜓</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <msub>
+                  <mi>𝒆</mi>
+                  <mi>𝑥</mi>
+                </msub>
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝜓</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝑥</mi>
+                  </mrow>
+                </mfrac>
+                <mo>+</mo>
+                <msub>
+                  <mi>𝒆</mi>
+                  <mi>𝑦</mi>
+                </msub>
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝜓</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝑦</mi>
+                  </mrow>
+                </mfrac>
+                <mo>+</mo>
+                <msub>
+                  <mi>𝒆</mi>
+                  <mi>𝑧</mi>
+                </msub>
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝜓</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝑧</mi>
+                  </mrow>
+                </mfrac>
+                <mo rspace="0em">,</mo>
+              </math>
+              <math display="block">
+                <mi>𝛁</mi>
+                <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>𝑨</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <msub>
+                      <mi>𝐴</mi>
+                      <mi>𝑥</mi>
+                    </msub>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝑥</mi>
+                  </mrow>
+                </mfrac>
+                <mo>+</mo>
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <msub>
+                      <mi>𝐴</mi>
+                      <mi>𝑦</mi>
+                    </msub>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝑦</mi>
+                  </mrow>
+                </mfrac>
+                <mo>+</mo>
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <msub>
+                      <mi>𝐴</mi>
+                      <mi>𝑧</mi>
+                    </msub>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝑧</mi>
+                  </mrow>
+                </mfrac>
+                <mo rspace="0em">,</mo>
+              </math>
+              <p>and</p>
+              <math display="block">
+                <msup>
+                  <mo>∇</mo>
+                  <mn>2</mn>
+                </msup>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>𝜓</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <msup>
+                      <mi>𝜕</mi>
+                      <mn>2</mn>
+                    </msup>
+                    <mi>𝜓</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <msup>
+                      <mi>𝑥</mi>
+                      <mn>2</mn>
+                    </msup>
+                  </mrow>
+                </mfrac>
+                <mo>+</mo>
+                <mfrac>
+                  <mrow>
+                    <msup>
+                      <mi>𝜕</mi>
+                      <mn>2</mn>
+                    </msup>
+                    <mi>𝜓</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <msup>
+                      <mi>𝑦</mi>
+                      <mn>2</mn>
+                    </msup>
+                  </mrow>
+                </mfrac>
+                <mo>+</mo>
+                <mfrac>
+                  <mrow>
+                    <msup>
+                      <mi>𝜕</mi>
+                      <mn>2</mn>
+                    </msup>
+                    <mi>𝜓</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <msup>
+                      <mi>𝑧</mi>
+                      <mn>2</mn>
+                    </msup>
+                  </mrow>
+                </mfrac>
+                <mi>.</mi>
+              </math>
+              <p>The Cartesian curl is</p>
+              <math display="block">
+                <mi>𝛁</mi>
+                <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>𝑨</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <msub>
+                  <mi>𝒆</mi>
+                  <mi>𝑥</mi>
+                </msub>
+                <mrow>
+                  <mo>[</mo>
+                  <mrow>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msub>
+                          <mi>𝐴</mi>
+                          <mi>𝑧</mi>
+                        </msub>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝑦</mi>
+                      </mrow>
+                    </mfrac>
+                    <mo>−</mo>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msub>
+                          <mi>𝐴</mi>
+                          <mi>𝑦</mi>
+                        </msub>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝑧</mi>
+                      </mrow>
+                    </mfrac>
+                  </mrow>
+                  <mo>]</mo>
+                </mrow>
+                <mo>+</mo>
+                <msub>
+                  <mi>𝒆</mi>
+                  <mi>𝑦</mi>
+                </msub>
+                <mrow>
+                  <mo>[</mo>
+                  <mrow>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msub>
+                          <mi>𝐴</mi>
+                          <mi>𝑥</mi>
+                        </msub>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝑧</mi>
+                      </mrow>
+                    </mfrac>
+                    <mo>−</mo>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msub>
+                          <mi>𝐴</mi>
+                          <mi>𝑧</mi>
+                        </msub>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝑥</mi>
+                      </mrow>
+                    </mfrac>
+                  </mrow>
+                  <mo>]</mo>
+                </mrow>
+                <mo>+</mo>
+                <msub>
+                  <mi>𝒆</mi>
+                  <mi>𝑧</mi>
+                </msub>
+                <mrow>
+                  <mo>[</mo>
+                  <mrow>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msub>
+                          <mi>𝐴</mi>
+                          <mi>𝑦</mi>
+                        </msub>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝑥</mi>
+                      </mrow>
+                    </mfrac>
+                    <mo>−</mo>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msub>
+                          <mi>𝐴</mi>
+                          <mi>𝑥</mi>
+                        </msub>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝑦</mi>
+                      </mrow>
+                    </mfrac>
+                  </mrow>
+                  <mo>]</mo>
+                </mrow>
+                <mi>.</mi>
+              </math>
+              <p>These are the local forms used in most linear wave derivations.</p>
+            </div>
+          </figure>
+        </div>
+        <style>
+          #frame-wrapper-362 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-362">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #356aa0; ">Cylindrical specialization</span><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Definition 14</span></div>
+            <div style="border: 0.13em solid #356aa0; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">
+              <p>For <math><mrow><mo>(</mo><mrow><mi>𝑟</mi><mo>,</mo><mi>𝜑</mi><mo>,</mo><mi>𝑧</mi></mrow><mo>)</mo></mrow></math>, the physical line element is <math><mi>𝑑</mi><mi>𝒓</mi><mo>=</mo><mi>𝑑</mi><mi>𝑟</mi><msub><mi>𝒆</mi><mi>𝑟</mi></msub><mo>+</mo><mi>𝑟</mi><mi>𝑑</mi><mi>𝜑</mi><msub><mi>𝒆</mi><mi>𝜑</mi></msub><mo>+</mo><mi>𝑑</mi><mi>𝑧</mi><msub><mi>𝒆</mi><mi>𝑧</mi></msub></math>. Therefore</p>
+              <math display="block">
+                <mi>𝛁</mi>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>𝜓</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <msub>
+                  <mi>𝒆</mi>
+                  <mi>𝑟</mi>
+                </msub>
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝜓</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝑟</mi>
+                  </mrow>
+                </mfrac>
+                <mo>+</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mfrac>
+                    <msub>
+                      <mi>𝒆</mi>
+                      <mi>𝜑</mi>
+                    </msub>
+                    <mi>𝑟</mi>
+                  </mfrac>
+                  <mo>)</mo>
+                </mrow>
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝜓</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝜑</mi>
+                  </mrow>
+                </mfrac>
+                <mo>+</mo>
+                <msub>
+                  <mi>𝒆</mi>
+                  <mi>𝑧</mi>
+                </msub>
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝜓</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝑧</mi>
+                  </mrow>
+                </mfrac>
+                <mo rspace="0em">,</mo>
+              </math>
+              <math display="block">
+                <mi>𝛁</mi>
+                <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>𝑨</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝑟</mi>
+                        <msub>
+                          <mi>𝐴</mi>
+                          <mi>𝑟</mi>
+                        </msub>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝑟</mi>
+                      </mrow>
+                    </mfrac>
+                  </mrow>
+                  <mi>𝑟</mi>
+                </mfrac>
+                <mo>+</mo>
+                <mfrac>
+                  <mrow>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msub>
+                          <mi>𝐴</mi>
+                          <mi>𝜑</mi>
+                        </msub>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝜑</mi>
+                      </mrow>
+                    </mfrac>
+                  </mrow>
+                  <mi>𝑟</mi>
+                </mfrac>
+                <mo>+</mo>
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <msub>
+                      <mi>𝐴</mi>
+                      <mi>𝑧</mi>
+                    </msub>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝑧</mi>
+                  </mrow>
+                </mfrac>
+                <mo rspace="0em">,</mo>
+              </math>
+              <p>and</p>
+              <math display="block">
+                <msup>
+                  <mo>∇</mo>
+                  <mn>2</mn>
+                </msup>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>𝜓</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝑟</mi>
+                        <mfrac>
+                          <mrow>
+                            <mi>𝜕</mi>
+                            <mi>𝜓</mi>
+                          </mrow>
+                          <mrow>
+                            <mi>𝜕</mi>
+                            <mi>𝑟</mi>
+                          </mrow>
+                        </mfrac>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝑟</mi>
+                      </mrow>
+                    </mfrac>
+                  </mrow>
+                  <mi>𝑟</mi>
+                </mfrac>
+                <mo>+</mo>
+                <mfrac>
+                  <mrow>
+                    <mfrac>
+                      <mrow>
+                        <msup>
+                          <mi>𝜕</mi>
+                          <mn>2</mn>
+                        </msup>
+                        <mi>𝜓</mi>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msup>
+                          <mi>𝜑</mi>
+                          <mn>2</mn>
+                        </msup>
+                      </mrow>
+                    </mfrac>
+                  </mrow>
+                  <msup>
+                    <mi>𝑟</mi>
+                    <mn>2</mn>
+                  </msup>
+                </mfrac>
+                <mo>+</mo>
+                <mfrac>
+                  <mrow>
+                    <msup>
+                      <mi>𝜕</mi>
+                      <mn>2</mn>
+                    </msup>
+                    <mi>𝜓</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <msup>
+                      <mi>𝑧</mi>
+                      <mn>2</mn>
+                    </msup>
+                  </mrow>
+                </mfrac>
+                <mi>.</mi>
+              </math>
+              <p>In an axisymmetric state <math><mrow><mi>𝜕</mi><mi>𝜓</mi></mrow><mo lspace="0em" rspace="0em">/</mo><mrow><mi>𝜕</mi><mi>𝜑</mi></mrow><mo>=</mo><mn>0</mn></math>, so the cylindrical area factor remains in the radial divergence even though the azimuthal derivative disappears.</p>
+            </div>
+          </figure>
+        </div>
+        <style>
+          #frame-wrapper-363 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-363">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #356aa0; ">Spherical specialization</span><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Definition 15</span></div>
+            <div style="border: 0.13em solid #356aa0; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">
+              <p>For <math><mrow><mo>(</mo><mrow><mi>𝑟</mi><mo>,</mo><mi>𝜃</mi><mo>,</mo><mi>𝜑</mi></mrow><mo>)</mo></mrow></math>, the physical line element is</p>
+              <math display="block">
+                <mi>𝑑</mi>
+                <mi>𝒓</mi>
+                <mo>=</mo>
+                <mi>𝑑</mi>
+                <mi>𝑟</mi>
+                <msub>
+                  <mi>𝒆</mi>
+                  <mi>𝑟</mi>
+                </msub>
+                <mo>+</mo>
+                <mi>𝑟</mi>
+                <mi>𝑑</mi>
+                <mi>𝜃</mi>
+                <msub>
+                  <mi>𝒆</mi>
+                  <mi>𝜃</mi>
+                </msub>
+                <mo>+</mo>
+                <mi>𝑟</mi>
+                <mo form="prefix" lspace="0.16666666666666666em" rspace="0em">sin</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>𝜃</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mi>𝑑</mi>
+                <mi>𝜑</mi>
+                <msub>
+                  <mi>𝒆</mi>
+                  <mi>𝜑</mi>
+                </msub>
+                <mi>.</mi>
+              </math>
+              <p>The gradient and divergence are</p>
+              <math display="block">
+                <mi>𝛁</mi>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>𝜓</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <msub>
+                  <mi>𝒆</mi>
+                  <mi>𝑟</mi>
+                </msub>
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝜓</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝑟</mi>
+                  </mrow>
+                </mfrac>
+                <mo>+</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mfrac>
+                    <msub>
+                      <mi>𝒆</mi>
+                      <mi>𝜃</mi>
+                    </msub>
+                    <mi>𝑟</mi>
+                  </mfrac>
+                  <mo>)</mo>
+                </mrow>
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝜓</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝜃</mi>
+                  </mrow>
+                </mfrac>
+                <mo>+</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mfrac>
+                    <msub>
+                      <mi>𝒆</mi>
+                      <mi>𝜑</mi>
+                    </msub>
+                    <mrow>
+                      <mi>𝑟</mi>
+                      <mo form="prefix" lspace="0.16666666666666666em" rspace="0em">sin</mo>
+                      <mrow>
+                        <mo>(</mo>
+                        <mi>𝜃</mi>
+                        <mo>)</mo>
+                      </mrow>
+                    </mrow>
+                  </mfrac>
+                  <mo>)</mo>
+                </mrow>
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝜓</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝜑</mi>
+                  </mrow>
+                </mfrac>
+                <mo rspace="0em">,</mo>
+              </math>
+              <math display="block">
+                <mi>𝛁</mi>
+                <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>𝑨</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msup>
+                          <mi>𝑟</mi>
+                          <mn>2</mn>
+                        </msup>
+                        <msub>
+                          <mi>𝐴</mi>
+                          <mi>𝑟</mi>
+                        </msub>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝑟</mi>
+                      </mrow>
+                    </mfrac>
+                  </mrow>
+                  <msup>
+                    <mi>𝑟</mi>
+                    <mn>2</mn>
+                  </msup>
+                </mfrac>
+                <mo>+</mo>
+                <mfrac>
+                  <mrow>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mo form="prefix" lspace="0.16666666666666666em" rspace="0em">sin</mo>
+                        <mrow>
+                          <mo>(</mo>
+                          <mi>𝜃</mi>
+                          <mo>)</mo>
+                        </mrow>
+                        <msub>
+                          <mi>𝐴</mi>
+                          <mi>𝜃</mi>
+                        </msub>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝜃</mi>
+                      </mrow>
+                    </mfrac>
+                  </mrow>
+                  <mrow>
+                    <mi>𝑟</mi>
+                    <mo form="prefix" lspace="0.16666666666666666em" rspace="0em">sin</mo>
+                    <mrow>
+                      <mo>(</mo>
+                      <mi>𝜃</mi>
+                      <mo>)</mo>
+                    </mrow>
+                  </mrow>
+                </mfrac>
+                <mo>+</mo>
+                <mfrac>
+                  <mrow>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msub>
+                          <mi>𝐴</mi>
+                          <mi>𝜑</mi>
+                        </msub>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝜑</mi>
+                      </mrow>
+                    </mfrac>
+                  </mrow>
+                  <mrow>
+                    <mi>𝑟</mi>
+                    <mo form="prefix" lspace="0.16666666666666666em" rspace="0em">sin</mo>
+                    <mrow>
+                      <mo>(</mo>
+                      <mi>𝜃</mi>
+                      <mo>)</mo>
+                    </mrow>
+                  </mrow>
+                </mfrac>
+                <mo rspace="0em">,</mo>
+              </math>
+              <p>and the scalar Laplacian is</p>
+              <math display="block">
+                <msup>
+                  <mo>∇</mo>
+                  <mn>2</mn>
+                </msup>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>𝜓</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msup>
+                          <mi>𝑟</mi>
+                          <mn>2</mn>
+                        </msup>
+                        <mfrac>
+                          <mrow>
+                            <mi>𝜕</mi>
+                            <mi>𝜓</mi>
+                          </mrow>
+                          <mrow>
+                            <mi>𝜕</mi>
+                            <mi>𝑟</mi>
+                          </mrow>
+                        </mfrac>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝑟</mi>
+                      </mrow>
+                    </mfrac>
+                  </mrow>
+                  <msup>
+                    <mi>𝑟</mi>
+                    <mn>2</mn>
+                  </msup>
+                </mfrac>
+                <mo>+</mo>
+                <mfrac>
+                  <mrow>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mo form="prefix" lspace="0.16666666666666666em" rspace="0em">sin</mo>
+                        <mrow>
+                          <mo>(</mo>
+                          <mi>𝜃</mi>
+                          <mo>)</mo>
+                        </mrow>
+                        <mfrac>
+                          <mrow>
+                            <mi>𝜕</mi>
+                            <mi>𝜓</mi>
+                          </mrow>
+                          <mrow>
+                            <mi>𝜕</mi>
+                            <mi>𝜃</mi>
+                          </mrow>
+                        </mfrac>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝜃</mi>
+                      </mrow>
+                    </mfrac>
+                  </mrow>
+                  <mrow>
+                    <msup>
+                      <mi>𝑟</mi>
+                      <mn>2</mn>
+                    </msup>
+                    <mo form="prefix" lspace="0.16666666666666666em" rspace="0em">sin</mo>
+                    <mrow>
+                      <mo>(</mo>
+                      <mi>𝜃</mi>
+                      <mo>)</mo>
+                    </mrow>
+                  </mrow>
+                </mfrac>
+                <mo>+</mo>
+                <mfrac>
+                  <mrow>
+                    <mfrac>
+                      <mrow>
+                        <msup>
+                          <mi>𝜕</mi>
+                          <mn>2</mn>
+                        </msup>
+                        <mi>𝜓</mi>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <msup>
+                          <mi>𝜑</mi>
+                          <mn>2</mn>
+                        </msup>
+                      </mrow>
+                    </mfrac>
+                  </mrow>
+                  <mrow>
+                    <msup>
+                      <mi>𝑟</mi>
+                      <mn>2</mn>
+                    </msup>
+                    <msup>
+                      <mrow>
+                        <mo lspace="0em" rspace="0em">sin</mo>
+                        <mrow>
+                          <mo>(</mo>
+                          <mi>𝜃</mi>
+                          <mo>)</mo>
+                        </mrow>
+                      </mrow>
+                      <mn>2</mn>
+                    </msup>
+                  </mrow>
+                </mfrac>
+                <mi>.</mi>
+              </math>
+              <p>The factors <math><msup><mi>𝑟</mi><mn>2</mn></msup></math> and <math><mo lspace="0em" rspace="0em">sin</mo><mrow><mo>(</mo><mi>𝜃</mi><mo>)</mo></mrow></math> express the changing physical area of spherical coordinate surfaces.</p>
+            </div>
+          </figure>
+        </div>
+        <style>
+          #frame-wrapper-364 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-364">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #126e82; ">Fast identity checks</span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Governing law 16</span></div>
+            <div style="border: 0.13em solid #126e82; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">The coordinate formulas must satisfy <math><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo><mrow><mo>(</mo><mrow><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mrow><mo>(</mo><mi>𝑨</mi><mo>)</mo></mrow></mrow><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math> and <math><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mrow><mo>(</mo><mrow><mi>𝛁</mi><mrow><mo>(</mo><mi>𝜓</mi><mo>)</mo></mrow></mrow><mo>)</mo></mrow><mo>=</mo><mn>𝟎</mn></math> whenever the fields are sufficiently smooth. A purely radial inverse-square flux in spherical geometry has <math><msub><mi>𝐴</mi><mi>𝑟</mi></msub><mo>=</mo><mi>𝐶</mi><mi>/</mi><msup><mi>𝑟</mi><mn>2</mn></msup></math> and zero divergence away from the origin, because <math><msup><mi>𝑟</mi><mn>2</mn></msup><msub><mi>𝐴</mi><mi>𝑟</mi></msub><mo>=</mo><mi>𝐶</mi></math>. A constant scalar has zero gradient and zero Laplacian in every coordinate system. These checks catch missing metric factors before a plasma equilibrium or wave equation is trusted.</div>
+          </figure>
+        </div>
+        <details class="disclosure">
+          <summary>Derivation: cylindrical radial conservation check</summary>
+          <div class="disclosure-body">
+            <p class="derivation-step-label"><strong>Step: Choose the radial flux</strong></p>
+            <p>Take an axisymmetric purely radial vector</p>
+            <math display="block">
+              <mi>𝑨</mi>
+              <mo>=</mo>
+              <msub>
+                <mi>𝐴</mi>
+                <mi>𝑟</mi>
+              </msub>
+              <mrow>
+                <mo>(</mo>
+                <mi>𝑟</mi>
+                <mo>)</mo>
+              </mrow>
+              <msub>
+                <mi>𝒆</mi>
+                <mi>𝑟</mi>
+              </msub>
+              <mi>.</mi>
+            </math>
+            <p class="derivation-step-label"><strong>Step: Compute the cylindrical surface flux</strong></p>
+            <p>The cylindrical divergence is</p>
+            <math display="block">
+              <mi>𝛁</mi>
+              <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo>
+              <mrow>
+                <mo>(</mo>
+                <mi>𝑨</mi>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <mfrac>
+                <mrow>
+                  <mfrac>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <mi>𝑟</mi>
+                      <msub>
+                        <mi>𝐴</mi>
+                        <mi>𝑟</mi>
+                      </msub>
+                    </mrow>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <mi>𝑟</mi>
+                    </mrow>
+                  </mfrac>
+                </mrow>
+                <mi>𝑟</mi>
+              </mfrac>
+              <mi>.</mi>
+            </math>
+            <p>The flux through a cylindrical surface of radius <math><mi>𝑟</mi></math> and length <math><mi>𝐿</mi></math> is</p>
+            <math display="block">
+              <mi mathvariant="normal">Φ</mi>
+              <mrow>
+                <mo>(</mo>
+                <mi>𝑟</mi>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <mn>2</mn>
+              <mi>𝜋</mi>
+              <mi>𝑟</mi>
+              <mi>𝐿</mi>
+              <msub>
+                <mi>𝐴</mi>
+                <mi>𝑟</mi>
+              </msub>
+              <mrow>
+                <mo>(</mo>
+                <mi>𝑟</mi>
+                <mo>)</mo>
+              </mrow>
+              <mi>.</mi>
+            </math>
+            <p>Between <math><mi>𝑟</mi></math> and <math><mi>𝑟</mi><mo rspace="0em">+</mo><mspace width="0.1667em"/><mo form="prefix" lspace="0em" rspace="0em">d</mo><mi>𝑟</mi></math>,</p>
+            <math display="block">
+              <mo lspace="0em" rspace="0em">d</mo>
+              <mi mathvariant="normal">Φ</mi>
+              <mo>=</mo>
+              <mn>2</mn>
+              <mi>𝜋</mi>
+              <mi>𝐿</mi>
+              <mfrac>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <mi>𝑟</mi>
+                  <msub>
+                    <mi>𝐴</mi>
+                    <mi>𝑟</mi>
+                  </msub>
+                </mrow>
+                <mrow>
+                  <mi>𝜕</mi>
+                  <mi>𝑟</mi>
+                </mrow>
+              </mfrac>
+              <mspace width="0.1667em"/>
+              <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+              <mi>𝑟</mi>
+              <mo rspace="0em">,</mo>
+            </math>
+            <p>while the shell volume is</p>
+            <math display="block">
+              <mo lspace="0em" rspace="0em">d</mo>
+              <mi>𝑉</mi>
+              <mo>=</mo>
+              <mn>2</mn>
+              <mi>𝜋</mi>
+              <mi>𝑟</mi>
+              <mi>𝐿</mi>
+              <mspace width="0.1667em"/>
+              <mo form="prefix" lspace="0em" rspace="0em">d</mo>
+              <mi>𝑟</mi>
+              <mi>.</mi>
+            </math>
+            <p class="derivation-step-label"><strong>Step: Compare flux change with volume</strong></p>
+            <p>Dividing gives</p>
+            <math display="block">
+              <mfrac>
+                <mrow>
+                  <mi mathvariant="normal">d</mi>
+                  <mi mathvariant="normal">Φ</mi>
+                </mrow>
+                <mrow>
+                  <mi mathvariant="normal">d</mi>
+                  <mi>𝑉</mi>
+                </mrow>
+              </mfrac>
+              <mo>=</mo>
+              <mfrac>
+                <mrow>
+                  <mfrac>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <mi>𝑟</mi>
+                      <msub>
+                        <mi>𝐴</mi>
+                        <mi>𝑟</mi>
+                      </msub>
+                    </mrow>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <mi>𝑟</mi>
+                    </mrow>
+                  </mfrac>
+                </mrow>
+                <mi>𝑟</mi>
+              </mfrac>
+              <mo rspace="0em">,</mo>
+            </math>
+            <p>exactly the cylindrical divergence. The factor <math><mn>1</mn><mi>/</mi><mi>𝑟</mi></math> converts radial flux change into flux per physical volume.</p>
+          </div>
+        </details>
+        <style>
+          #frame-wrapper-365 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-365">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #b86418; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #b86418; ">Rechenbeispiel</span><span style="padding: 5px 10px; border: 0.13em solid #b86418; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #b86418; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Rechenbeispiel 17</span></div>
+            <div style="border: 0.13em solid #b86418; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">
+              <p>In an axisymmetric cylindrical plasma column, let the radial particle-flux vector be <math><mi>𝚪</mi><mo>=</mo><msub><mi mathvariant="normal">Γ</mi><mi>𝑟</mi></msub><mrow><mo>(</mo><mi>𝑟</mi><mo>)</mo></mrow><msub><mi>𝒆</mi><mi>𝑟</mi></msub></math> with <math><msub><mi mathvariant="normal">Γ</mi><mi>𝑟</mi></msub><mrow><mo>(</mo><mi>𝑟</mi><mo>)</mo></mrow><mo>=</mo><mi>𝐶</mi><mi>/</mi><mi>𝑟</mi></math>. Use <math><mi>𝐶</mi><mo>=</mo><mn>2.00</mn><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo><msup><mn>10</mn><mn>12</mn></msup><mspace width="0.1667em"/><msup><mtext>m</mtext><mrow><mo>−</mo><mn>1</mn></mrow></msup><mspace width="0.1667em"/><msup><mtext>s</mtext><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>, and evaluate the flux at <math><msub><mi>𝑟</mi><mn>1</mn></msub><mo>=</mo><mn>0.100</mn><mspace width="0.1667em"/><mtext>m</mtext></math> and <math><msub><mi>𝑟</mi><mn>2</mn></msub><mo>=</mo><mn>0.200</mn><mspace width="0.1667em"/><mtext>m</mtext></math>. Determine both radial fluxes and <math><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo><mrow><mo>(</mo><mi>𝚪</mi><mo>)</mo></mrow></math> for <math><mi>𝑟</mi><mo>></mo><mn>0</mn></math>.</p>
+              <p>Numerical result: <math><msub><mi mathvariant="normal">Γ</mi><mi>𝑟</mi></msub><mrow><mo>(</mo><msub><mi>𝑟</mi><mn>1</mn></msub><mo>)</mo></mrow><mo>=</mo><mn>2.00</mn><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo><msup><mn>10</mn><mn>13</mn></msup><mspace width="0.1667em"/><msup><mtext>m</mtext><mrow><mo>−</mo><mn>2</mn></mrow></msup><mspace width="0.1667em"/><msup><mtext>s</mtext><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>, <math><msub><mi mathvariant="normal">Γ</mi><mi>𝑟</mi></msub><mrow><mo>(</mo><msub><mi>𝑟</mi><mn>2</mn></msub><mo>)</mo></mrow><mo>=</mo><mn>1.00</mn><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo><msup><mn>10</mn><mn>13</mn></msup><mspace width="0.1667em"/><msup><mtext>m</mtext><mrow><mo>−</mo><mn>2</mn></mrow></msup><mspace width="0.1667em"/><msup><mtext>s</mtext><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>, and <math><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo><mrow><mo>(</mo><mi>𝚪</mi><mo>)</mo></mrow><mo>=</mo><mn>0</mn><mspace width="0.1667em"/><msup><mtext>m</mtext><mrow><mo>−</mo><mn>3</mn></mrow></msup><mspace width="0.1667em"/><msup><mtext>s</mtext><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>.</p>
+            </div>
+          </figure>
+        </div>
+        <style>
+          #frame-wrapper-366 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-366">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #356aa0; ">Read operators geometrically</span><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #356aa0; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Interpretation 18</span></div>
+            <div style="border: 0.13em solid #356aa0; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">
+              <p>A gradient points in the direction of greatest scalar increase. A divergence measures net outward flux density from a small physical volume. A curl measures circulation per physical area. The scale factors ensure that these meanings survive a coordinate change. In a normalized model, one may later set <math><mi>𝜉</mi><mo>=</mo><mi>𝑟</mi><mi>/</mi><mi>𝐿</mi></math> [1] and obtain</p>
+              <math display="block">
+                <mfrac>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝜓</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>𝜕</mi>
+                    <mi>𝑟</mi>
+                  </mrow>
+                </mfrac>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <mfrac>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝜓</mi>
+                      </mrow>
+                      <mrow>
+                        <mi>𝜕</mi>
+                        <mi>𝜉</mi>
+                      </mrow>
+                    </mfrac>
+                  </mrow>
+                  <mi>𝐿</mi>
+                </mfrac>
+                <mo rspace="0em">,</mo>
+              </math>
+              <p>but the reference length <math><mi>𝐿</mi></math> in <math><mtext>m</mtext></math> must be stated explicitly.</p>
+            </div>
+          </figure>
+        </div>
+        <style>
+          #frame-wrapper-367 > figure {  margin-left: 0px;  margin-right: 0px;}
+        </style>
+        <div id="frame-wrapper-367">
+          <figure>
+            <div style="display: flex; align-items: center; "><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: 0; border-bottom: none; border-top-left-radius: 5pt; background-color: #126e82; ">Summary</span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: -2px; border-bottom: none; border-top-right-radius: 5pt; "></span><span style="padding: 5px 10px; border: 0.13em solid #126e82; margin-left: auto; border-bottom: none; border-color: transparent; mragin-right: 0.8em; ">Summary 19</span></div>
+            <div style="border: 0.13em solid #126e82; border-radius: 0 5pt 5pt 5pt; padding: 0.8em; ">Orthogonal-coordinate formulas are generated by physical line elements, face areas, and volumes. Cartesian coordinates have unit scale factors; cylindrical geometry contributes <math><mi>𝑟</mi></math>; spherical geometry contributes <math><mi>𝑟</mi></math> and <math><mi>𝑟</mi><mo form="prefix" lspace="0.16666666666666666em" rspace="0em">sin</mo><mrow><mo>(</mo><mi>𝜃</mi><mo>)</mo></mrow></math>. Check formulas with <math><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mrow><mo>(</mo><mrow><mi>𝛁</mi><mrow><mo>(</mo><mi>𝜓</mi><mo>)</mo></mrow></mrow><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>, <math><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo><mrow><mo>(</mo><mrow><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mrow><mo>(</mo><mi>𝑨</mi><mo>)</mo></mrow></mrow><mo>)</mo></mrow><mo>=</mo><mn>0</mn></math>, and a symmetric flux before using them in a plasma derivation.</div>
+          </figure>
+        </div>
+        <section class="knowledge-check">
+          <h3>Knowledge check</h3>
+          <ol>
+            <li>
+              Why does the cylindrical divergence contain <math>
+                <mn>1</mn>
+                <mi>/</mi>
+                <mi>𝑟</mi>
+              </math>?
+              <details>
+                <summary>Answer</summary>
+                <p>A radial shell has volume proportional to <math><mi>𝑟</mi><mspace width="0.1667em"/><mo form="prefix" lspace="0em" rspace="0em">d</mo><mi>𝑟</mi></math>, while its outward surface flux is proportional to <math><mi>𝑟</mi><msub><mi>𝐴</mi><mi>𝑟</mi></msub></math>. Their ratio gives</p>
+                <math display="block">
+                  <mfrac>
+                    <mrow>
+                      <mfrac>
+                        <mrow>
+                          <mi>𝜕</mi>
+                          <mi>𝑟</mi>
+                          <msub>
+                            <mi>𝐴</mi>
+                            <mi>𝑟</mi>
+                          </msub>
+                        </mrow>
+                        <mrow>
+                          <mi>𝜕</mi>
+                          <mi>𝑟</mi>
+                        </mrow>
+                      </mfrac>
+                    </mrow>
+                    <mi>𝑟</mi>
+                  </mfrac>
+                  <mo rspace="0em">,</mo>
+                </math>
+                <p>including the changing circumference.</p>
+              </details>
+            </li>
+            <li>
+              What does the factor <math>
+                <mi>𝑟</mi>
+                <mo form="prefix" lspace="0.16666666666666666em" rspace="0em">sin</mo>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>𝜃</mi>
+                  <mo>)</mo>
+                </mrow>
+              </math> represent in spherical coordinates?
+              <details>
+                <summary>Answer</summary>
+                It is the physical line scale for an azimuthal angle increment: <math>
+                  <mi>𝑑</mi>
+                  <msub>
+                    <mi>𝑙</mi>
+                    <mi>𝜑</mi>
+                  </msub>
+                  <mo>=</mo>
+                  <mi>𝑟</mi>
+                  <mo form="prefix" lspace="0.16666666666666666em" rspace="0em">sin</mo>
+                  <mrow>
+                    <mo>(</mo>
+                    <mi>𝜃</mi>
+                    <mo>)</mo>
+                  </mrow>
+                  <mi>𝑑</mi>
+                  <mi>𝜑</mi>
+                </math>. It also enters the face areas and therefore the divergence, curl, and Laplacian.
+              </details>
+            </li>
+            <li>
+              Which coordinate system is usually the cleanest starting point for a locally plane plasma wave?
+              <details>
+                <summary>Answer</summary>
+                Cartesian coordinates, because the basis vectors and scale factors are constant. Cylindrical or spherical coordinates become preferable when the equilibrium or boundary has that symmetry.
+              </details>
+            </li>
+            <li>
+              How would a normalized radial coordinate change the gradient?
+              <details>
+                <summary>Answer</summary>
+                <p>If <math><mi>𝜉</mi><mo>=</mo><mi>𝑟</mi><mi>/</mi><mi>𝐿</mi></math> [1] with stated reference length <math><mi>𝐿</mi></math> in <math><mtext>m</mtext></math>, then</p>
+                <math display="block">
+                  <mfrac>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <mi>𝜓</mi>
+                    </mrow>
+                    <mrow>
+                      <mi>𝜕</mi>
+                      <mi>𝑟</mi>
+                    </mrow>
+                  </mfrac>
+                  <mo>=</mo>
+                  <mfrac>
+                    <mrow>
+                      <mfrac>
+                        <mrow>
+                          <mi>𝜕</mi>
+                          <mi>𝜓</mi>
+                        </mrow>
+                        <mrow>
+                          <mi>𝜕</mi>
+                          <mi>𝜉</mi>
+                        </mrow>
+                      </mfrac>
+                    </mrow>
+                    <mi>𝐿</mi>
+                  </mfrac>
+                  <mi>.</mi>
+                </math>
+                <p>Each physical gradient component therefore carries the inverse length scale, which must be recorded before a normalized operator is used.</p>
+              </details>
+            </li>
+          </ol>
+        </section>
+        <nav class="chapter-nav" aria-label="Chapter navigation"><a href="../chapters/16-sheaths-probes.html">← Plasma sheaths and Langmuir probes</a></nav>
+      </main>
+      <footer class="site-footer">Lecture notes in Typst, visualizations rendered with Manim. Authors: Christopher Albert and Maximilian Philipp.</footer>
+    </div>
+  <script defer src="../animation-player.js"></script>
+<a class="script-feedback" data-script-feedback="true" data-repo-url="https://github.com/krystophny/plasma-skript" data-page-url="https://krystophny.github.io/plasma-skript/appendices/mathematical-toolkit.html" href="https://github.com/krystophny/plasma-skript/issues/new?title=Script+feedback%3A+Mathematical+toolkit&amp;body=%23%23%23+Location%0AMathematical+toolkit%0Ahttps%3A%2F%2Fkrystophny.github.io%2Fplasma-skript%2Fappendices%2Fmathematical-toolkit.html%0A%0A%23%23%23+Problem+or+suggestion%0APlease+describe+the+issue+here.%0A" target="_blank" rel="noopener noreferrer" title="Open a GitHub issue for this section (GitHub sign-in required)">Report a problem<span class="feedback-sr-only"> (opens GitHub in a new tab)</span></a>
+<script defer src="../feedback.js"></script>
+</body>
+</html>

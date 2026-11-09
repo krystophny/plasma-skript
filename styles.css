@@ -1,0 +1,1160 @@
+/* Plasma physics lecture script: quiet, typographic reading layout.
+   Light by default, dark when the reader's system asks for it. */
+
+/* STIX Two Text and STIX Two Math, as in the print PDF, the slides, the plots
+   and the animations. Served from fonts/ next to this stylesheet (SIL OFL,
+   fonts/OFL.txt). */
+@font-face {
+  font-family: "STIX Two Math";
+  src: url("fonts/STIXTwoMath-Regular.otf") format("opentype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("fonts/STIXTwoText-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("fonts/STIXTwoText-Italic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("fonts/STIXTwoText-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("fonts/STIXTwoText-BoldItalic.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light dark;
+  --bg: #fbfaf7;
+  --surface: #f3f1ec;
+  --ink: #1c1f23;
+  --ink-soft: #3a4048;
+  --muted: #6b7079;
+  --line: #e3e0d8;
+  --accent: #0e6b78;
+  --accent-soft: rgba(14, 107, 120, 0.08);
+  --blue: #2f5f93;
+  --orange: #a3530f;
+  --plot-surface: transparent;
+  /* Animations are always dark, independently of the reader's page theme. */
+  --video-surface: #111418;
+  --video-frame: var(--line);
+  --reading-width: 42rem;
+  --wide-width: 52rem;
+  --serif: "STIX Two Text", "STIX Two Math", "Iowan Old Style", "Charter",
+    "Sitka Text", Cambria, Georgia, serif;
+  --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --math: "STIX Two Math", "Latin Modern Math",
+    "New Computer Modern Math", "Cambria Math", math;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111418;
+    --surface: #181c21;
+    --ink: #e4e6e9;
+    --ink-soft: #c5c9cf;
+    --muted: #8f969f;
+    --line: #2a2f36;
+    --accent: #6cc4c9;
+    --accent-soft: rgba(108, 196, 201, 0.08);
+    --blue: #8fb5e3;
+    --orange: #e3a368;
+    --plot-surface: transparent;
+    --video-frame: #2a2f36;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 106.25%;
+  line-height: 1.62;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+}
+
+math {
+  font-family: var(--math);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition: text-decoration-color 0.15s ease;
+}
+
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+summary:focus-visible,
+a:focus-visible,
+button:focus-visible,
+video:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+/* ---------- Page frame ---------- */
+
+.site-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.site-header,
+.site-footer {
+  width: min(var(--wide-width), calc(100% - 2.5rem));
+  margin-inline: auto;
+}
+
+.site-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.6rem 0 1.2rem;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.brand-mark {
+  display: none;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.4rem;
+}
+
+.site-nav a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.site-nav a:hover {
+  color: var(--ink);
+}
+
+.site-main {
+  flex: 1;
+  width: min(var(--reading-width), calc(100% - 2.5rem));
+  margin-inline: auto;
+  padding: 3.5rem 0 4rem;
+}
+
+.site-footer {
+  padding: 2rem 0 2.5rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+}
+
+/* ---------- Typography ---------- */
+
+h1,
+h2,
+h3 {
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.012em;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+h1 {
+  margin: 0 0 1.2rem;
+  font-size: clamp(2.1rem, 5.2vw, 3rem);
+  letter-spacing: -0.022em;
+}
+
+.site-main > h1 > ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-main > h1 > ol > li {
+  list-style: none;
+}
+
+.site-main > h1 > ol > li::before {
+  content: attr(value) " ";
+  margin-right: 0.35em;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+h2 {
+  margin: 4.2rem 0 0.9rem;
+  font-size: 1.6rem;
+}
+
+h3 {
+  margin: 2.4rem 0 0.6rem;
+  font-size: 1.15rem;
+}
+
+p,
+li,
+dd {
+  hyphens: auto;
+  text-wrap: pretty;
+}
+
+p {
+  margin: 0 0 1.05rem;
+}
+
+strong {
+  font-weight: 600;
+}
+
+code {
+  padding: 0.05em 0.3em;
+  border-radius: 3px;
+  background: var(--surface);
+  font-family: var(--mono);
+  font-size: 0.86em;
+}
+
+.lede {
+  margin-bottom: 1.6rem;
+  color: var(--ink-soft);
+  font-size: 1.12rem;
+  line-height: 1.55;
+}
+
+h1 + .lede {
+  margin-bottom: 2.4rem;
+  color: var(--muted);
+  font-size: 1.2rem;
+}
+
+.eyebrow,
+.card-kicker {
+  margin: 0 0 0.4rem;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+/* ---------- Teaching components ---------- */
+
+.objectives,
+.unit-ledger,
+.exam-prompt,
+.knowledge-check {
+  margin: 1.8rem 0;
+}
+
+.objectives h3,
+.knowledge-check h3,
+.exam-prompt h3,
+.unit-ledger > strong:first-child {
+  display: block;
+  margin: 0 0 0.5rem;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.objectives ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.objectives li {
+  position: relative;
+  margin: 0.2rem 0;
+  padding-left: 1.2rem;
+  color: var(--ink-soft);
+}
+
+.objectives li::before {
+  content: "";
+  position: absolute;
+  top: 0.72em;
+  left: 0.15rem;
+  width: 0.45rem;
+  height: 1.5px;
+  border-radius: 1px;
+  background: var(--accent);
+}
+
+.unit-ledger {
+  padding: 0.85rem 1rem;
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.unit-ledger > strong:first-child {
+  margin-bottom: 0.3rem;
+}
+
+.equation-note {
+  margin: -0.3rem 0 1.4rem;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.source-note {
+  margin: 0.6rem 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.exam-prompt {
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.exam-prompt ul.exam-prompts-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.exam-prompt ul.exam-prompts-list li {
+  margin: 0.45rem 0;
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--orange);
+}
+
+.knowledge-check {
+  margin-top: 2.6rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+}
+
+.knowledge-check ol {
+  margin: 0;
+  padding-left: 1.3rem;
+}
+
+.knowledge-check li {
+  margin: 0.8rem 0;
+  padding-left: 0.3rem;
+}
+
+.knowledge-check li::marker {
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.85em;
+}
+
+.knowledge-check details {
+  margin-top: 0.3rem;
+  color: var(--ink-soft);
+}
+
+.knowledge-check summary {
+  display: inline-block;
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  list-style: none;
+}
+
+.knowledge-check summary::-webkit-details-marker {
+  display: none;
+}
+
+.knowledge-check summary::after {
+  content: " +";
+}
+
+.knowledge-check details[open] summary::after {
+  content: " −";
+}
+
+.knowledge-check details[open] {
+  padding: 0.2rem 0 0.2rem 0.85rem;
+  border-left: 2px solid var(--line);
+}
+
+/* Collapsed derivations */
+
+.disclosure {
+  margin: 1.4rem 0 1.8rem;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.disclosure summary {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.75rem 0;
+  color: var(--ink-soft);
+  font-family: var(--sans);
+  font-size: 0.86rem;
+  font-weight: 500;
+  cursor: pointer;
+  list-style: none;
+}
+
+.disclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.disclosure summary::before {
+  content: "";
+  flex: none;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-right: 1.5px solid var(--accent);
+  border-bottom: 1.5px solid var(--accent);
+  transform: translateY(-0.12rem) rotate(-45deg);
+  transition: transform 0.18s ease;
+}
+
+.disclosure[open] summary::before {
+  transform: translateY(-0.2rem) rotate(45deg);
+}
+
+.disclosure summary:hover {
+  color: var(--ink);
+}
+
+.disclosure-body {
+  padding: 0.2rem 0 1.2rem;
+}
+
+.disclosure-body > * {
+  max-width: 100%;
+}
+
+.disclosure-body > p {
+  margin: 0.75rem 0;
+}
+
+.disclosure-body > p:last-child {
+  margin-bottom: 0;
+}
+
+.disclosure-body .derivation-step-label {
+  margin: 1.3rem 0 0.3rem;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+}
+
+.disclosure-body .derivation-step-label strong {
+  font-weight: 600;
+}
+
+.disclosure-body .derivation-step-label:first-child {
+  margin-top: 0.4rem;
+}
+
+.disclosure-body .derivation-step-label + p {
+  margin-top: 0.2rem;
+}
+
+.disclosure-body > math[display="block"] {
+  margin: 0.9rem 0;
+}
+
+.disclosure-body > math[display="block"]:first-child {
+  margin-top: 0.3rem;
+}
+
+.disclosure-body > math[display="block"]:last-child {
+  margin-bottom: 0;
+}
+
+/* Short boxed note used on a few pages */
+.callout {
+  margin-block: 2rem;
+  padding: 0.2rem 0 0.2rem 1.1rem;
+  border-left: 2px solid var(--accent);
+}
+
+.callout strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+}
+
+/* ---------- Frame-It blocks ----------
+   Frame-It emits inline "boxy" styles. Keep its structure (flexible title
+   span, hidden empty connector, separate semantic counter) and render it as
+   a quiet ruled block. The frame kind is read from Frame-It's own color. */
+
+main div[id^="frame-wrapper-"] > figure {
+  --kind: var(--accent);
+  margin: 2rem 0;
+  padding: 0.15rem 0 0.15rem 1.15rem;
+  border-left: 2px solid var(--kind);
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+main div[id^="frame-wrapper-"] > figure:has(> div:first-child span[style*="#356aa0"]) {
+  --kind: var(--blue);
+}
+
+main div[id^="frame-wrapper-"] > figure:has(> div:first-child span[style*="#b86418"]) {
+  --kind: var(--orange);
+}
+
+main div[id^="frame-wrapper-"] > figure > div:first-child {
+  display: flex !important;
+  align-items: baseline !important;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  margin-bottom: 0.35rem;
+}
+
+main div[id^="frame-wrapper-"] > figure > div:first-child > span {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+}
+
+main div[id^="frame-wrapper-"] > figure > div:first-child > span:first-child {
+  min-width: 0;
+  flex: 0 1 auto;
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+main div[id^="frame-wrapper-"] > figure > div:first-child > span:nth-child(2) {
+  display: none !important;
+}
+
+main div[id^="frame-wrapper-"] > figure > div:first-child > span:nth-child(3) {
+  flex: 0 0 auto;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+main div[id^="frame-wrapper-"] > figure > div:nth-child(2) {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  color: var(--ink-soft);
+}
+
+main div[id^="frame-wrapper-"] > figure > div:nth-child(2) > p:last-child {
+  margin-bottom: 0;
+}
+
+@media print {
+  main div[id^="frame-wrapper-"] {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+@media (max-width: 42rem) {
+  main div[id^="frame-wrapper-"] > figure > div:first-child {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    column-gap: 0.75rem;
+  }
+
+  main div[id^="frame-wrapper-"] > figure > div:first-child > span:first-child {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  main div[id^="frame-wrapper-"] > figure > div:first-child > span:nth-child(3) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+/* ---------- Math ----------
+   The HTML exporter keeps MathML expressions unbreakable. Contain them at the
+   reading width; long expressions scroll horizontally. */
+
+main svg,
+main img,
+main canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+main math[display="block"],
+main p,
+main li,
+main dt,
+main dd,
+main div[id^="frame-wrapper-"] > figure > div:nth-child(2) {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-color: var(--line) transparent;
+  scrollbar-width: thin;
+}
+
+main math[display="block"] {
+  max-width: 100%;
+  margin: 1.25rem 0;
+  padding: 0.35rem 0 0.45rem;
+  font-size: 1.06em;
+  white-space: nowrap;
+}
+
+/* Consecutive display equations keep a visible gap: the padding above
+   stays even where the margins collapse into one. */
+main math[display="block"] + math[display="block"] {
+  margin-top: 0.6rem;
+}
+
+/* Inline maths is an atomic inline box in Chrome, so block padding enlarges
+   the line box only where an expression (fraction, root, sub/superscript
+   stack) is taller than the line height; plain lines keep their rhythm. */
+main p math:not([display="block"]),
+main li math:not([display="block"]),
+main dd math:not([display="block"]),
+main td math:not([display="block"]) {
+  padding-block: 0.22em;
+}
+
+/* Extra room above and below inline fractions, which otherwise touch the
+   descenders of the line above. */
+main math:not([display="block"]) mfrac {
+  padding-block: 0.08em;
+}
+
+/* A CSS block around exported MathML otherwise makes Chrome's direct math
+   children block-level, stacking a complete equation one symbol per line.
+   Keep the equation itself as the scroll container and its direct terms on
+   one mathematical line. Nested mrow/mfrac elements retain MathML layout. */
+main math[display="block"] > * {
+  display: inline math;
+}
+
+main ::-webkit-scrollbar {
+  height: 0.35rem;
+}
+
+main ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+main ::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 999px;
+}
+
+/* ---------- Figures, plots, animations ---------- */
+
+figure {
+  margin: 2.4rem 0;
+}
+
+figcaption {
+  padding: 0.8rem 0 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+/* Typst numbered-figure captions carry a "Figure n:" prefix span. */
+figcaption .prefix,
+figcaption > strong:first-child {
+  color: var(--ink-soft);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* The build supplies light/dark SVG appearances from the same geometry. */
+.quantitative-plot {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  padding: clamp(0.4rem, 2vw, 1rem);
+  border-radius: 6px;
+  background: var(--plot-surface);
+  color: var(--ink);
+  overflow-x: auto;
+}
+
+.quantitative-plot svg,
+.quantitative-plot img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+/* Matplotlib plots of derived results (derivations/build/fig/*.svg) are
+   transparent with dark ink. Inside .quantitative-plot they get the card
+   above; an SVG image placed without that wrapper gets the same surface. */
+figure img[src^="data:image/svg+xml"] {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+figure > img[src^="data:image/svg+xml"] {
+  padding: clamp(0.4rem, 2vw, 1rem);
+  border-radius: 6px;
+  background: var(--plot-surface);
+}
+
+.concept-figure {
+  margin: 2.4rem auto;
+}
+
+.animation-figure {
+  margin: 2.6rem 0;
+}
+
+.animation-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  background: var(--video-surface);
+  /* The animation remains dark even on a light reading page. */
+  border: 1px solid var(--video-frame);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 8px 28px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ---------- Chapter navigation ---------- */
+
+.chapter-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 4.5rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--sans);
+  font-size: 0.88rem;
+}
+
+.chapter-nav a {
+  display: block;
+  padding: 0.6rem 0;
+  color: var(--ink-soft);
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.chapter-nav a:hover {
+  color: var(--accent);
+}
+
+.chapter-nav a:only-child:not(:first-child),
+.chapter-nav a:last-child:not(:only-child) {
+  grid-column: 2;
+  text-align: right;
+}
+
+.chapter-nav a:only-child {
+  grid-column: 2;
+  text-align: right;
+}
+
+/* ---------- Overview page ---------- */
+
+.hero {
+  margin: 1.5rem 0 4rem;
+}
+
+.hero .eyebrow {
+  margin-bottom: 1rem;
+}
+
+.hero h1 {
+  margin-bottom: 1rem;
+  font-size: clamp(2.6rem, 8vw, 4.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+.hero .lede {
+  max-width: 34rem;
+  color: var(--muted);
+  font-size: 1.2rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.6rem;
+  margin-top: 1.8rem;
+  font-family: var(--sans);
+  font-size: 0.92rem;
+}
+
+.hero-actions a {
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.hero-actions a:first-child {
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.hero-actions a:first-child:hover {
+  background: color-mix(in srgb, var(--accent) 85%, var(--ink));
+}
+
+.hero-actions a:not(:first-child) {
+  align-self: center;
+}
+
+.catalog,
+.content-sections {
+  margin-top: 4.5rem;
+}
+
+.catalog > h2,
+.content-sections > h2 {
+  margin-top: 0;
+}
+
+.content-sections > p:not(.eyebrow) {
+  color: var(--ink-soft);
+}
+
+.chapter-list {
+  margin: 1.6rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.chapter-item {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr);
+  gap: 0.5rem;
+  padding: 1.05rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.chapter-number {
+  padding-top: 0.12rem;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.chapter-copy h3 {
+  margin: 0;
+  font-size: 1.08rem;
+  font-weight: 600;
+}
+
+.chapter-copy h3 a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.chapter-copy h3 a:hover {
+  color: var(--accent);
+}
+
+.chapter-copy p {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+  font-size: 0.93rem;
+  line-height: 1.5;
+}
+
+.chapter-copy .card-kicker {
+  display: none;
+}
+
+dl {
+  margin: 1.4rem 0 0;
+}
+
+dt {
+  margin-top: 1.3rem;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+dd {
+  margin: 0.25rem 0 0;
+  color: var(--ink-soft);
+}
+
+.bibliography,
+#bibliography ul,
+#bibliography ol {
+  padding-left: 1.2rem;
+}
+
+#bibliography li,
+.bibliography li {
+  margin: 0.6rem 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+/* ---------- HTML concept diagrams ---------- */
+
+.model-figure {
+  max-width: 100% !important;
+}
+
+.model-figure-diagram {
+  padding: 1rem 0;
+}
+
+.hierarchy-fallback,
+.mhd-diagram {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 0.92rem;
+}
+
+.hierarchy-fallback {
+  max-width: 36rem;
+}
+
+.mhd-diagram {
+  max-width: 40rem;
+}
+
+.hierarchy-node,
+.mhd-node {
+  --node: var(--accent);
+  min-width: 0;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--node);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+.hierarchy-node strong,
+.hierarchy-node span,
+.mhd-node strong,
+.mhd-node span {
+  display: block;
+}
+
+.hierarchy-node strong,
+.mhd-node strong {
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.hierarchy-node span,
+.mhd-node span {
+  margin-top: 0.2rem;
+  color: var(--ink-soft);
+}
+
+.hierarchy-fields,
+.mhd-node-ohm,
+.mhd-node-hall,
+.mhd-node-magnetic,
+.mhd-node-resistive,
+.mhd-node-diffusion,
+.mhd-node-pressure {
+  --node: var(--orange);
+}
+
+.hierarchy-sums,
+.mhd-node-result,
+.mhd-node-ideal {
+  --node: var(--blue);
+}
+
+.hierarchy-arrow,
+.mhd-arrow {
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.8rem;
+}
+
+.hierarchy-branches,
+.mhd-branches,
+.mhd-term-grid {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.hierarchy-branches,
+.mhd-branches {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.mhd-term-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 42rem) {
+  html {
+    font-size: 100%;
+  }
+
+  .site-header {
+    flex-direction: column;
+    gap: 0.6rem;
+    padding-top: 1.2rem;
+  }
+
+  .site-header,
+  .site-main,
+  .site-footer {
+    width: calc(100% - 2rem);
+  }
+
+  .site-main {
+    padding-top: 2rem;
+  }
+
+  h2 {
+    margin-top: 3.2rem;
+    font-size: 1.4rem;
+  }
+
+  .hierarchy-branches,
+  .mhd-branches,
+  .mhd-term-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chapter-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .chapter-nav a,
+  .chapter-nav a:only-child,
+  .chapter-nav a:last-child:not(:only-child) {
+    grid-column: 1;
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}
+
+@media print {
+  .site-header,
+  .site-footer,
+  .chapter-nav {
+    display: none;
+  }
+}
+
+.brand a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.chapter-copy p,
+.hero .lede,
+h1 + .lede {
+  hyphens: manual;
+}
+
+/* Shared externally hosted animation player; captions retain the physics. */
+.animation-embed {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}

@@ -1,0 +1,349 @@
+/* Interactive map of plasma models (map/index.html, drawn by map.js). Branch
+   colours (--branch) come from map/plasma-models.yaml via src/map.typ. */
+
+.site-main:has(.model-map) {
+  width: min(84rem, calc(100% - 2.5rem));
+}
+
+.map-intro {
+  max-width: var(--reading-width);
+}
+
+.model-map {
+  --map-node-fill: #ffffff;
+  --map-node-ink: var(--ink);
+  --map-edge: #4a5058;
+  --map-edge-dim: #d3d0c8;
+  --map-hi: #b4232a;
+  --map-open: #b4232a;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 24rem;
+  grid-template-areas: "toolbar toolbar" "stage panel" "legend legend";
+  gap: 0.8rem 1.2rem;
+  margin: 1.6rem 0 2.4rem;
+  font-family: var(--sans);
+}
+
+@media (prefers-color-scheme: dark) {
+  .model-map {
+    --map-node-fill: #181c21;
+    --map-edge: #aab2bd;
+    --map-edge-dim: #353b44;
+    --map-hi: #ff8a80;
+    --map-open: #ff8a80;
+  }
+}
+
+.map-toolbar {
+  grid-area: toolbar;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.map-courses,
+.map-zoom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.map-toolbar button {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.map-toolbar button[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.map-stage {
+  grid-area: stage;
+  position: relative;
+  height: min(78vh, 52rem);
+  min-height: 22rem;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.model-map:not(.is-interactive) .map-stage {
+  height: auto;
+  overflow-x: auto;
+}
+
+/* Typst writes an inline em size on the SVG; scale it to the column. */
+.map-static svg,
+.model-map-card svg {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  margin-inline: auto;
+}
+
+.map-graph {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.map-tag {
+  fill: var(--branch);
+  font-size: 15px;
+  font-variant: small-caps;
+  letter-spacing: 0.03em;
+}
+
+.map-node rect {
+  fill: var(--map-node-fill);
+  stroke: var(--branch);
+  stroke-width: 1.6;
+}
+
+.map-node text {
+  fill: var(--map-node-ink);
+  font-size: 15px;
+}
+
+.map-node.is-on text {
+  font-weight: 600;
+}
+
+.map-node,
+.map-edge {
+  cursor: pointer;
+  outline: none;
+}
+
+.map-node.is-on rect {
+  fill: color-mix(in srgb, var(--branch) 16%, var(--map-node-fill));
+  stroke-width: 2.6;
+}
+
+.map-node.is-off rect {
+  stroke: var(--map-edge-dim);
+}
+
+.map-node.is-off text {
+  fill: var(--muted);
+}
+
+.map-node.is-selected rect,
+.map-node:focus-visible rect {
+  stroke: var(--map-hi);
+  stroke-width: 3.2;
+}
+
+.map-node.is-adjacent rect {
+  stroke-width: 3;
+}
+
+.map-edge-hit {
+  stroke: transparent;
+  stroke-width: 14;
+  fill: none;
+}
+
+.map-edge-line {
+  fill: none;
+  stroke: var(--map-edge);
+  stroke-width: 1.4;
+}
+
+.map-edge.is-on .map-edge-line {
+  stroke: var(--ink);
+  stroke-width: 2.4;
+}
+
+.map-edge.is-off .map-edge-line {
+  stroke: var(--map-edge-dim);
+}
+
+.map-edge.is-selected .map-edge-line,
+.map-edge.is-adjacent .map-edge-line,
+.map-edge:focus-visible .map-edge-line {
+  stroke: var(--map-hi);
+  stroke-width: 3;
+}
+
+.map-arrow-base path { fill: var(--map-edge); }
+.map-arrow-dim path { fill: var(--map-edge-dim); }
+.map-arrow-hi path { fill: var(--map-hi); }
+
+/* Status ladder: line pattern (and colour for open problems and errata). */
+.status-stated .map-edge-line,
+.map-status-sample.status-stated line { stroke-dasharray: 7 5; }
+.status-limit-checked .map-edge-line,
+.map-status-sample.status-limit-checked line { stroke-dasharray: 16 3 2 3; }
+.status-defect-measured .map-edge-line,
+.map-status-sample.status-defect-measured line { stroke-dasharray: 16 3 2 3 2 3; }
+.status-literature-intake .map-edge-line,
+.map-status-sample.status-literature-intake line { stroke-dasharray: 2 4; stroke-linecap: round; }
+.status-reproduced .map-edge-line,
+.map-status-sample.status-reproduced line { stroke-dasharray: 10 2; }
+.status-formally-proved .map-edge-line,
+.map-status-sample.status-formally-proved line { stroke-width: 3.4; }
+.status-open-problem .map-edge-line,
+.map-status-sample.status-open-problem line { stroke-dasharray: 10 4 2 4; stroke: var(--map-open); }
+.status-erratum .map-edge-line,
+.map-status-sample.status-erratum line { stroke-dasharray: 3 3; stroke: var(--map-open); }
+
+.map-status-sample {
+  flex: none;
+  margin: 0.45rem 0.5rem 0 0;
+}
+
+.map-status-sample line {
+  stroke: var(--map-edge);
+  stroke-width: 2;
+}
+
+.map-panel {
+  grid-area: panel;
+  max-height: min(78vh, 52rem);
+  overflow-y: auto;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  font-family: var(--serif);
+  font-size: 0.95rem;
+}
+
+.model-map:not(.is-interactive) .map-panel {
+  display: none;
+}
+
+.map-panel-hint {
+  color: var(--muted);
+}
+
+.map-legend {
+  grid-area: legend;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 1.2rem;
+  font-size: 0.85rem;
+}
+
+.map-legend h2 {
+  margin: 0 0 0.4rem;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+}
+
+.map-legend ul,
+.map-legend ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.map-legend li {
+  display: flex;
+  align-items: flex-start;
+  margin: 0.15rem 0;
+}
+
+.map-swatch {
+  flex: none;
+  width: 0.9rem;
+  height: 0.9rem;
+  margin: 0.2rem 0.5rem 0 0;
+  border: 2px solid var(--branch);
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--branch) 16%, transparent);
+}
+
+.map-entry {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1rem;
+  border-left: 3px solid var(--branch, var(--line));
+  background: var(--surface);
+  border-radius: 0 6px 6px 0;
+  overflow-x: auto;
+}
+
+.map-panel .map-entry {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.map-entry h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.1rem;
+}
+
+.map-meta {
+  margin: 0 0 0.6rem;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.8rem;
+}
+
+.map-entry dl {
+  margin: 0.6rem 0 0;
+}
+
+.map-field dt {
+  margin-top: 0.5rem;
+  color: var(--ink-soft);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.map-field dd {
+  margin: 0.1rem 0 0;
+}
+
+.map-field ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.map-entry math[display="block"] {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.model-map-link {
+  display: block;
+  text-decoration: none;
+}
+
+.model-map-card {
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+@media (max-width: 52rem) {
+  .model-map {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "toolbar" "stage" "panel" "legend";
+  }
+  .map-stage {
+    height: 62vh;
+  }
+  .map-panel {
+    max-height: none;
+  }
+  .map-legend {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gaussian CGS translation</title>
+    <style>
+      /* Alignment */
+      mtable.right-align mtd,
+      mtable mtd.right-align,
+      mtable.left-align mtd.right-align,
+      mtable.aligned mtd:nth-child(odd) {
+        justify-items: end;
+        text-align: right;
+      }
+      mtable.cases mtd,
+      mtable.left-align mtd,
+      mtable mtd.left-align,
+      mtable.aligned mtd:nth-child(even),
+      math:is(:not([display])) > mtable.multiline-equation mtd {
+        justify-items: start;
+        text-align: left;
+      }
+      mtable.cases mtd,
+      mtable.aligned mtd,
+      mtable mtd.flushed,
+      mtable mtd.left-flush {
+        padding-left: 0;
+      }
+      mtable.cases mtd,
+      mtable.aligned mtd,
+      mtable mtd.flushed,
+      mtable mtd.right-flush {
+        padding-right: 0;
+      }
+      
+      /* Tables */
+      mtable {
+        math-style: inherit;
+      }
+      mtd {
+        math-depth: auto-add;
+        math-style: compact;
+        math-shift: compact;
+      }
+      
+      /* Equations */
+      mtable.multiline-equation mtd {
+        math-depth: inherit;
+        math-style: inherit;
+        math-shift: inherit;
+        padding: 0;
+      }
+      math > mtable.multiline-equation mtr:not(:last-child) mtd {
+        padding-bottom: 0.5em;
+      }
+      
+      /* Fractions */
+      mfrac {
+        padding-inline: 0;
+        margin-inline: 0.1em;
+      }
+      
+      /* Accents */
+      mover[accent="true" i] > :first-child {
+        font-feature-settings: "dtls";
+      }
+      mover.dotted[accent="true" i] > :first-child {
+        font-feature-settings: "dtls" 0;
+      }
+      
+      /* Other rules for scriptlevel, displaystyle and math-shift */
+      munder > :nth-child(2),
+      munderover > :nth-child(2) {
+        math-shift: compact
+      }
+      munder[accentunder="true" i] > :not(:first-child),
+      mover[accent="true" i] > :not(:first-child) {
+        math-depth: inherit;
+        math-style: inherit;
+        math-shift: inherit;
+      }
+    </style>
+  <link rel="stylesheet" href="../animation-player.css">
+<link rel="stylesheet" href="../feedback.css">
+</head>
+  <body>
+    <div class="site-shell">
+      <link rel="stylesheet" href="../styles.css">
+      <header class="site-header">
+        <div class="brand"><a href="../index.html">Plasma Physics</a></div>
+        <nav class="site-nav" aria-label="Primary navigation"><a href="../index.html">Overview</a> <a href="../index.html#contents">Contents</a> <a href="../index.html#glossary">Glossary</a> <a href="../index.html#bibliography">Bibliography</a></nav>
+      </header>
+      <main class="site-main">
+        <h1>Appendix: Gaussian CGS translation</h1>
+        <p class="lede">The script uses SI throughout; much of the older plasma literature uses Gaussian CGS, and the table below translates the equations and scales used in this script from one system to the other.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Quantity</th>
+              <th>SI</th>
+              <th>Gaussian CGS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Coulomb force</td>
+              <td><math><mi>𝐹</mi><mo>=</mo><msub><mi>𝑞</mi><mn>1</mn></msub><msub><mi>𝑞</mi><mn>2</mn></msub><mi>/</mi><mrow><mo>(</mo><mrow><mn>4</mn><mi>𝜋</mi><msub><mi>𝜀</mi><mn>0</mn></msub><msup><mi>𝑟</mi><mn>2</mn></msup></mrow><mo>)</mo></mrow></math></td>
+              <td><math><mi>𝐹</mi><mo>=</mo><msub><mi>𝑞</mi><mn>1</mn></msub><msub><mi>𝑞</mi><mn>2</mn></msub><mi>/</mi><msup><mi>𝑟</mi><mn>2</mn></msup></math></td>
+            </tr>
+            <tr>
+              <td>Poisson equation</td>
+              <td><math><msup><mo>∇</mo><mn>2</mn></msup><mi mathvariant="normal">Φ</mi><mo>=</mo><mo form="prefix">−</mo><msub><mi>𝜌</mi><mi>𝑞</mi></msub><mi>/</mi><msub><mi>𝜀</mi><mn>0</mn></msub></math></td>
+              <td><math><msup><mo>∇</mo><mn>2</mn></msup><mi mathvariant="normal">Φ</mi><mo>=</mo><mo form="prefix">−</mo><mn>4</mn><mi>𝜋</mi><msub><mi>𝜌</mi><mi>𝑞</mi></msub></math></td>
+            </tr>
+            <tr>
+              <td>Lorentz force</td>
+              <td><math><mi>𝑭</mi><mo>=</mo><mi>𝑞</mi><mrow><mo>(</mo><mrow><mi>𝑬</mi><mo>+</mo><mi>𝒗</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mi>𝑩</mi></mrow><mo>)</mo></mrow></math></td>
+              <td><math><mi>𝑭</mi><mo>=</mo><mi>𝑞</mi><mrow><mo>(</mo><mrow><mi>𝑬</mi><mo>+</mo><mi>𝒗</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mi>𝑩</mi><mi>/</mi><mi>𝑐</mi></mrow><mo>)</mo></mrow></math></td>
+            </tr>
+            <tr>
+              <td>Gauss’s law</td>
+              <td><math><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo><mi>𝑬</mi><mo>=</mo><msub><mi>𝜌</mi><mi>𝑞</mi></msub><mi>/</mi><msub><mi>𝜀</mi><mn>0</mn></msub></math></td>
+              <td><math><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo><mi>𝑬</mi><mo>=</mo><mn>4</mn><mi>𝜋</mi><msub><mi>𝜌</mi><mi>𝑞</mi></msub></math></td>
+            </tr>
+            <tr>
+              <td>Ampère–Maxwell law</td>
+              <td><math><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mi>𝑩</mi><mo>=</mo><msub><mi>𝜇</mi><mn>0</mn></msub><mi>𝒋</mi><mo>+</mo><msub><mi>𝜇</mi><mn>0</mn></msub><msub><mi>𝜀</mi><mn>0</mn></msub><mrow><mi>𝜕</mi><mi>𝑬</mi></mrow><mo lspace="0em" rspace="0em">/</mo><mrow><mi>𝜕</mi><mi>𝑡</mi></mrow></math></td>
+              <td><math><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mi>𝑩</mi><mo>=</mo><mfrac><mrow><mn>4</mn><mi>𝜋</mi></mrow><mi>𝑐</mi></mfrac><mi>𝒋</mi><mo>+</mo><mfrac><mn>1</mn><mi>𝑐</mi></mfrac><mfrac><mrow><mi>𝜕</mi><mi>𝑬</mi></mrow><mrow><mi>𝜕</mi><mi>𝑡</mi></mrow></mfrac></math></td>
+            </tr>
+            <tr>
+              <td>Faraday’s law</td>
+              <td><math><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mi>𝑬</mi><mo>=</mo><mo form="prefix">−</mo><mrow><mi>𝜕</mi><mi>𝑩</mi></mrow><mo lspace="0em" rspace="0em">/</mo><mrow><mi>𝜕</mi><mi>𝑡</mi></mrow></math></td>
+              <td><math><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mi>𝑬</mi><mo>=</mo><mo form="prefix">−</mo><mrow><mo>(</mo><mrow><mn>1</mn><mi>/</mi><mi>𝑐</mi></mrow><mo>)</mo></mrow><mrow><mi>𝜕</mi><mi>𝑩</mi></mrow><mo lspace="0em" rspace="0em">/</mo><mrow><mi>𝜕</mi><mi>𝑡</mi></mrow></math></td>
+            </tr>
+            <tr>
+              <td>No magnetic monopoles</td>
+              <td><math><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo><mi>𝑩</mi><mo>=</mo><mn>0</mn></math></td>
+              <td><math><mi>𝛁</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">·</mo><mi>𝑩</mi><mo>=</mo><mn>0</mn></math></td>
+            </tr>
+            <tr>
+              <td>Debye length</td>
+              <td><math><msub><mi>𝜆</mi><mi>𝐷</mi></msub><mo>=</mo><msqrt><msub><mi>𝜀</mi><mn>0</mn></msub><msub><mi>𝑘</mi><mi>𝐵</mi></msub><msub><mi>𝑇</mi><mi>𝑒</mi></msub><mi>/</mi><mrow><mo>(</mo><mrow><mi>𝑛</mi><msup><mi>𝑒</mi><mn>2</mn></msup></mrow><mo>)</mo></mrow></msqrt></math></td>
+              <td><math><msub><mi>𝜆</mi><mi>𝐷</mi></msub><mo>=</mo><msqrt><msub><mi>𝑘</mi><mi>𝐵</mi></msub><msub><mi>𝑇</mi><mi>𝑒</mi></msub><mi>/</mi><mrow><mo>(</mo><mrow><mn>4</mn><mi>𝜋</mi><mi>𝑛</mi><msup><mi>𝑒</mi><mn>2</mn></msup></mrow><mo>)</mo></mrow></msqrt></math></td>
+            </tr>
+            <tr>
+              <td>Electron plasma frequency</td>
+              <td><math><msub><mi>𝜔</mi><mrow><mi>𝑝</mi><mi>𝑒</mi></mrow></msub><mo>=</mo><msqrt><mi>𝑛</mi><msup><mi>𝑒</mi><mn>2</mn></msup><mi>/</mi><mrow><mo>(</mo><mrow><msub><mi>𝜀</mi><mn>0</mn></msub><msub><mi>𝑚</mi><mi>𝑒</mi></msub></mrow><mo>)</mo></mrow></msqrt></math></td>
+              <td><math><msub><mi>𝜔</mi><mrow><mi>𝑝</mi><mi>𝑒</mi></mrow></msub><mo>=</mo><msqrt><mn>4</mn><mi>𝜋</mi><mi>𝑛</mi><msup><mi>𝑒</mi><mn>2</mn></msup><mi>/</mi><msub><mi>𝑚</mi><mi>𝑒</mi></msub></msqrt></math></td>
+            </tr>
+            <tr>
+              <td>Signed gyrofrequency</td>
+              <td><math><mi mathvariant="normal">Ω</mi><mo>=</mo><mi>𝑞</mi><mi>𝐵</mi><mi>/</mi><mi>𝑚</mi></math></td>
+              <td><math><mi mathvariant="normal">Ω</mi><mo>=</mo><mi>𝑞</mi><mi>𝐵</mi><mi>/</mi><mrow><mo>(</mo><mrow><mi>𝑚</mi><mi>𝑐</mi></mrow><mo>)</mo></mrow></math></td>
+            </tr>
+            <tr>
+              <td>Magnetic pressure</td>
+              <td><math><msup><mi>𝐵</mi><mn>2</mn></msup><mi>/</mi><mrow><mo>(</mo><mrow><mn>2</mn><msub><mi>𝜇</mi><mn>0</mn></msub></mrow><mo>)</mo></mrow></math></td>
+              <td><math><msup><mi>𝐵</mi><mn>2</mn></msup><mi>/</mi><mrow><mo>(</mo><mrow><mn>8</mn><mi>𝜋</mi></mrow><mo>)</mo></mrow></math></td>
+            </tr>
+            <tr>
+              <td>Plasma beta</td>
+              <td><math><mi>𝛽</mi><mo>=</mo><mn>2</mn><msub><mi>𝜇</mi><mn>0</mn></msub><mi>𝑝</mi><mi>/</mi><msup><mi>𝐵</mi><mn>2</mn></msup></math></td>
+              <td><math><mi>𝛽</mi><mo>=</mo><mn>8</mn><mi>𝜋</mi><mi>𝑝</mi><mi>/</mi><msup><mi>𝐵</mi><mn>2</mn></msup></math></td>
+            </tr>
+            <tr>
+              <td><math><mi>𝑬</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mi>𝑩</mi></math> drift</td>
+              <td><math><msub><mi>𝒗</mi><mi>𝐸</mi></msub><mo>=</mo><mi>𝑬</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mi>𝑩</mi><mi>/</mi><msup><mi>𝐵</mi><mn>2</mn></msup></math></td>
+              <td><math><msub><mi>𝒗</mi><mi>𝐸</mi></msub><mo>=</mo><mi>𝑐</mi><mi>𝑬</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mi>𝑩</mi><mi>/</mi><msup><mi>𝐵</mi><mn>2</mn></msup></math></td>
+            </tr>
+            <tr>
+              <td>Magnetic moment of a current loop</td>
+              <td><math><msub><mi>𝜇</mi><mtext>mag</mtext></msub><mo>=</mo><mi>𝐼</mi><mi>𝑆</mi></math></td>
+              <td><math><msub><mi>𝜇</mi><mtext>mag</mtext></msub><mo>=</mo><mi>𝐼</mi><mi>𝑆</mi><mi>/</mi><mi>𝑐</mi></math></td>
+            </tr>
+            <tr>
+              <td>MHD force density</td>
+              <td><math><mi>𝒋</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mi>𝑩</mi></math></td>
+              <td><math><mi>𝒋</mi><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">×</mo><mi>𝑩</mi><mi>/</mi><mi>𝑐</mi></math></td>
+            </tr>
+            <tr>
+              <td>Magnetic field</td>
+              <td><math><mn>1</mn><mspace width="0.2222em"/><mtext>T</mtext></math></td>
+              <td><math><msup><mn>10</mn><mn>4</mn></msup><mspace width="0.2222em"/><mtext>G</mtext></math></td>
+            </tr>
+            <tr>
+              <td>Energy</td>
+              <td><math><mn>1</mn><mspace width="0.2222em"/><mtext>J</mtext></math></td>
+              <td><math><msup><mn>10</mn><mn>7</mn></msup><mspace width="0.2222em"/><mtext>erg</mtext></math></td>
+            </tr>
+            <tr>
+              <td>Number density</td>
+              <td><math><mn>1</mn><mspace width="0.1667em"/><msup><mtext>m</mtext><mrow><mo>−</mo><mn>3</mn></mrow></msup></math></td>
+              <td><math><msup><mn>10</mn><mrow><mo>−</mo><mn>6</mn></mrow></msup><mspace width="0.1667em"/><msup><mtext>cm</mtext><mrow><mo>−</mo><mn>3</mn></mrow></msup></math></td>
+            </tr>
+            <tr>
+              <td>Charge</td>
+              <td><math><mn>1</mn><mspace width="0.2222em"/><mtext>C</mtext></math></td>
+              <td><math><mo form="infix" lspace="0em">≈</mo><mn>2.998</mn><mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo><msup><mn>10</mn><mn>9</mn></msup><mspace width="0.2222em"/><mtext>statC</mtext></math></td>
+            </tr>
+            <tr>
+              <td>Electric potential</td>
+              <td><math><mn>1</mn><mspace width="0.2222em"/><mtext>V</mtext></math></td>
+              <td><math><mo form="infix" lspace="0em">≈</mo><mrow><mo>(</mo><mrow><mn>1</mn><mi>/</mi><mn>299.8</mn></mrow><mo>)</mo></mrow><mspace width="0.2222em"/><mtext>statV</mtext></math></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Purely geometric factors, such as the Debye number <math><msub><mi>𝑁</mi><mi>𝐷</mi></msub><mo>=</mo><mrow><mo>(</mo><mrow><mn>4</mn><mi>𝜋</mi><mi>/</mi><mn>3</mn></mrow><mo>)</mo></mrow><mi>𝑛</mi><msubsup><mi>𝜆</mi><mi>𝐷</mi><mn>3</mn></msubsup></math>, are identical in both systems. Temperatures quoted as <math><msub><mi>𝑘</mi><mi>𝐵</mi></msub><mi>𝑇</mi></math> in electronvolts carry the same number in both systems; only the conversion to energy differs,</p>
+        <math display="block">
+          <mn>1</mn>
+          <mspace width="0.2222em"/>
+          <mtext>eV</mtext>
+          <mo>=</mo>
+          <mn>1.602176634</mn>
+          <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+          <msup>
+            <mn>10</mn>
+            <mrow>
+              <mo>−</mo>
+              <mn>19</mn>
+            </mrow>
+          </msup>
+          <mspace width="0.2222em"/>
+          <mtext>J</mtext>
+          <mo>=</mo>
+          <mn>1.602176634</mn>
+          <mo lspace="0.2222222222222222em" rspace="0.2222222222222222em">⋅</mo>
+          <msup>
+            <mn>10</mn>
+            <mrow>
+              <mo>−</mo>
+              <mn>12</mn>
+            </mrow>
+          </msup>
+          <mspace width="0.2222em"/>
+          <mtext>erg</mtext>
+          <mspace width="0.2222em"/>
+          <mi>.</mi>
+        </math>
+      </main>
+      <footer class="site-footer">Lecture notes in Typst, visualizations rendered with Manim. Authors: Christopher Albert and Maximilian Philipp.</footer>
+    </div>
+  <script defer src="../animation-player.js"></script>
+<a class="script-feedback" data-script-feedback="true" data-repo-url="https://github.com/krystophny/plasma-skript" data-page-url="https://krystophny.github.io/plasma-skript/appendices/cgs-translation.html" href="https://github.com/krystophny/plasma-skript/issues/new?title=Script+feedback%3A+Gaussian+CGS+translation&amp;body=%23%23%23+Location%0AGaussian+CGS+translation%0Ahttps%3A%2F%2Fkrystophny.github.io%2Fplasma-skript%2Fappendices%2Fcgs-translation.html%0A%0A%23%23%23+Problem+or+suggestion%0APlease+describe+the+issue+here.%0A" target="_blank" rel="noopener noreferrer" title="Open a GitHub issue for this section (GitHub sign-in required)">Report a problem<span class="feedback-sr-only"> (opens GitHub in a new tab)</span></a>
+<script defer src="../feedback.js"></script>
+</body>
+</html>

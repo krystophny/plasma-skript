@@ -1,0 +1,83 @@
+{
+  "stem": "03-plasma-oscillations",
+  "chapter": 3,
+  "title": "Plasma oscillations",
+  "course": "Plasma Physics",
+  "author": "Christopher Albert",
+  "aspect": 1.4142857142857144,
+  "pdf": "../../slides/03-plasma-oscillations.pdf",
+  "pages": [
+    {
+      "src": "p01.svg?v=167e48b1",
+      "kind": "static",
+      "background": "light",
+      "alt": "Plasma oscillations"
+    },
+    {
+      "src": "p02.svg?v=f15e51f8",
+      "kind": "animation",
+      "background": "dark",
+      "alt": "An electron slab oscillates against fixed positive ions. The electric field points along the signed displacement, while the electron force points oppositely. Both vanish at equilibrium. Displacement is normalized by its amplitude and time by the inverse electron plasma frequency, with unit [1].",
+      "video": "../media/plasma_oscillation.mp4?v=db7a936d",
+      "poster": "../media/plasma-oscillation.png?v=0cc51d75",
+      "loop": true
+    },
+    {
+      "src": "p03.svg?v=eb96a926",
+      "kind": "static",
+      "background": "light",
+      "alt": "3.1 Electron plasma oscillations: Electron plasma oscillations"
+    },
+    {
+      "src": "p04.svg?v=366e645a",
+      "kind": "animation",
+      "background": "dark",
+      "alt": "One hundred sixty cold electron sheets on a fixed ion background in a periodic box of one wavelength, started at rest positions with velocity v0 sin(kx), k v0/omega_pe = 0.5. Phase space (position, velocity), the sheets in real space and the electric field from Gauss's law are shown together. No sheet overtakes another, so every sheet oscillates at the plasma frequency; the measured frequency is omega/omega_pe = 1.0000. Position x/lambda, velocity k v/omega_pe, field k e E/(m_e omega_pe^2) and time omega_pe t, all with unit [1].",
+      "video": "../media/sheet_oscillation.mp4?v=c725951c",
+      "poster": "../media/sheet-oscillation.png?v=7e9ca920",
+      "loop": true
+    },
+    {
+      "src": "p05.svg?v=73fb7548",
+      "kind": "animation",
+      "background": "dark",
+      "alt": "The same cold electron sheet model at three times the amplitude, k v0/omega_pe = 1.5. Neighbouring sheets first cross at omega_pe t = 0.73, as arcsin(omega_pe/(k v0)) predicts: the phase-space curve folds over, several streams coexist at one position, and the field is no longer a smooth sine. This is wave breaking of a cold plasma oscillation. Position x/lambda, velocity k v/omega_pe, field k e E/(m_e omega_pe^2) and time omega_pe t, all with unit [1].",
+      "video": "../media/sheet_wave_breaking.mp4?v=a8f81182",
+      "poster": "../media/sheet-wave-breaking.png?v=3b85e67a",
+      "loop": true
+    },
+    {
+      "src": "p06.svg?v=77096b72",
+      "kind": "static",
+      "background": "light",
+      "alt": "3.1 Electron plasma oscillations: Plasma frequency"
+    },
+    {
+      "src": "p07.svg?v=7820c0e4",
+      "kind": "animation",
+      "background": "dark",
+      "alt": "Left: electron sheets near the edge of a plasma, their transverse displacement magnified thirty times. Right: the transverse electric field E_y over E_0 across vacuum and plasma, with the plasma edge marked. First run at omega = 0.5 omega_pe: the incident and reflected waves form a standing pattern in vacuum and the field decays inside the plasma; the electrons near the edge oscillate together. Second run at omega = 2 omega_pe: the wave enters the plasma with a longer wavelength and only a weak reflection. At the end of each run the linear-theory envelope fades in. Positions are normalized by c over omega_pe and time by the inverse plasma frequency, with unit [1].",
+      "video": "../media/em_wave_plasma_reflection.mp4?v=8a0ca64f",
+      "poster": "../media/em-wave-plasma-reflection.png?v=c7c6873b",
+      "loop": false
+    },
+    {
+      "src": "p08.svg?v=41d2342e",
+      "kind": "static",
+      "background": "light",
+      "alt": "3.1 Electron plasma oscillations: Electromagnetic waves"
+    },
+    {
+      "src": "p09.svg?v=26b3b67f",
+      "kind": "static",
+      "background": "light",
+      "alt": "3.1 Electron plasma oscillations: Frequency and length scales"
+    },
+    {
+      "src": "p10.svg?v=5564616a",
+      "kind": "static",
+      "background": "light",
+      "alt": "3.1 Electron plasma oscillations: Ions move too"
+    }
+  ]
+}

@@ -1,0 +1,426 @@
+{
+  "schema": "course-animation-hosting-v1",
+  "preferred_host": "native-nextcloud",
+  "animations": {
+    "collective-response": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/collective_response.mp4",
+      "poster": "media/posters/collective-response.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/collective-response.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/collective_response.mp4?v=961e181626a86ae0",
+      "mp4_sha256": "961e181626a86ae0b028830744821293913a01ea135cc124e42ddf85e050cc9c",
+      "appearance": "dark"
+    },
+    "coulomb-encounter-headon": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_headon.mp4",
+      "poster": "media/posters/coulomb-encounter-headon.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/coulomb-encounter-headon.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_headon.mp4?v=8f2e29e267c05f0f",
+      "mp4_sha256": "8f2e29e267c05f0fd02e8c4686130182b5cb96221b2306a58d50ea302012f7ac",
+      "appearance": "dark"
+    },
+    "coulomb-encounter-hot": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_hot.mp4",
+      "poster": "media/posters/coulomb-encounter-hot.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/coulomb-encounter-hot.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_hot.mp4?v=b294558d38f0a55d",
+      "mp4_sha256": "b294558d38f0a55d639e77c4edc2fcd17d58e8089de093ae2ef9fcc7d2a5d7e1",
+      "appearance": "dark"
+    },
+    "coulomb-encounter-offaxis": {
+      "supplementary_chapter": "chapters/10-collisions-conductivity.html",
+      "supplementary_description": "Two electrons approach with impact parameter b = 2 reduced de Broglie wavelengths at Sommerfeld parameter eta = 3, the same encounter as the head-on case in Chapter 10 but off axis. Four panels on one logarithmic colour scale show the probability density of the relative coordinate in the plane of the encounter: a classical Wigner-sampled ensemble, the distinguishable (spin-unresolved) quantum packet, and the singlet and triplet states. The classical and distinguishable panels keep the region inside the head-on turning radius r0 = 2 eta reduced wavelengths nearly empty, and the outgoing density is tilted rather than symmetric about the collision axis; singlet and triplet add exchange fringes of opposite sign, and their average is the distinguishable panel. Positions k x and k z, with k the inverse reduced wavelength, and the time t v/z0 are normalized, with unit [1]. Data: kin6d partial-wave propagation; a visualization without pointwise error bounds.",
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_offaxis.mp4",
+      "poster": "media/posters/coulomb-encounter-offaxis.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/coulomb-encounter-offaxis.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coulomb_encounter_offaxis.mp4?v=5b44fa48bd1afda2",
+      "mp4_sha256": "5b44fa48bd1afda2ec8d31f918be4351315bcd4a727cd426055f09caef415579",
+      "appearance": "dark"
+    },
+    "coupling-regions": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coupling_regions.mp4",
+      "poster": "media/posters/coupling-regions.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/coupling-regions.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coupling_regions.mp4?v=0b83f6f0abb6682b",
+      "mp4_sha256": "0b83f6f0abb6682b2cee19d31d8092f919281ace2b293189771c4063390ea7a9",
+      "appearance": "dark"
+    },
+    "coupling-test-particle": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coupling_test_particle.mp4",
+      "poster": "media/posters/coupling-test-particle.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/coupling-test-particle.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coupling_test_particle.mp4?v=ee7384255d977f10",
+      "mp4_sha256": "ee7384255d977f1008b9222c67d97551a45c9e47a4ed483e83083076ab3a5c34",
+      "appearance": "dark"
+    },
+    "debye-shielding": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_shielding.mp4",
+      "poster": "media/posters/debye-shielding.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/debye-shielding.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_shielding.mp4?v=e2fc34311f66af43",
+      "mp4_sha256": "e2fc34311f66af431372d3b9f3a39a91378a4a9cc255d89c06851342b9308449",
+      "appearance": "dark"
+    },
+    "debye-shielding-particles": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_shielding_particles.mp4",
+      "poster": "media/posters/debye-shielding-particles.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/debye-shielding-particles.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/debye_shielding_particles.mp4?v=a9bcdbf661c78d7c",
+      "mp4_sha256": "a9bcdbf661c78d7ce7c755f6cb1e05361b11e14b5af04c2a6de20d61987a3ffc",
+      "appearance": "dark"
+    },
+    "diffusion-random-walk": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/diffusion_random_walk.mp4",
+      "poster": "media/posters/diffusion-random-walk.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/diffusion-random-walk.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/diffusion_random_walk.mp4?v=848f590ef927f67f",
+      "mp4_sha256": "848f590ef927f67fe4147e60163b1dc885497e0b71e1d2f60cdfef5f766b8184",
+      "appearance": "dark"
+    },
+    "em-wave-plasma-reflection": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/em_wave_plasma_reflection.mp4",
+      "poster": "media/posters/em-wave-plasma-reflection.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/em-wave-plasma-reflection.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/em_wave_plasma_reflection.mp4?v=8a0ca64f6155aa7b",
+      "mp4_sha256": "8a0ca64f6155aa7b3410246c19c117860e00865136ca07b1b710b3e85c1db66a",
+      "appearance": "dark"
+    },
+    "exb-drift": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/exb_drift.mp4",
+      "poster": "media/posters/exb-drift.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/exb-drift.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/exb_drift.mp4?v=3520356c9f258826",
+      "mp4_sha256": "3520356c9f25882601fd32a502dd3a1d646617192dab8e13e3cde1961223a44d",
+      "appearance": "dark"
+    },
+    "gyration-components": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_components.mp4",
+      "poster": "media/posters/gyration-components.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/gyration-components.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_components.mp4?v=b7396d52c112831c",
+      "mp4_sha256": "b7396d52c112831c319842857c5e71a06448dfa64125218372216eec5f07ecd9",
+      "appearance": "dark"
+    },
+    "gyration-helix": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_helix.mp4",
+      "poster": "media/posters/gyration-helix.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/gyration-helix.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_helix.mp4?v=4939daada3732cdd",
+      "mp4_sha256": "4939daada3732cddd13b0d6144bbf50841b75947131554b0eeb395a05b40a279",
+      "appearance": "dark"
+    },
+    "gyration-top-view": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_top_view.mp4",
+      "poster": "media/posters/gyration-top-view.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/gyration-top-view.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gyration_top_view.mp4?v=d11692c94c0231a2",
+      "mp4_sha256": "d11692c94c0231a2e1824f888d32cf6762908ac2696bc8cf3fe4816b43c4196a",
+      "appearance": "dark"
+    },
+    "landau-resonance": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/landau_resonance.mp4",
+      "poster": "media/posters/landau-resonance.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/landau-resonance.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/landau_resonance.mp4?v=a0c0df308d37a384",
+      "mp4_sha256": "a0c0df308d37a38403513bd616d36221b4a2e70df4bb46e33cc166f3a0d81809",
+      "appearance": "dark"
+    },
+    "langmuir-probe": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/langmuir_probe.mp4",
+      "poster": "media/posters/langmuir-probe.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/langmuir-probe.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/langmuir_probe.mp4?v=9d2e174bfada97f5",
+      "mp4_sha256": "9d2e174bfada97f59391ba5eff689d366c700dbe8f9b4a36dcec7bd3554225b7",
+      "appearance": "dark"
+    },
+    "magnetized-polarization": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetized_polarization.mp4",
+      "poster": "media/posters/magnetized-polarization.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/magnetized-polarization.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetized_polarization.mp4?v=fd6849a79682be72",
+      "mp4_sha256": "fd6849a79682be7224c34c2524da4aab4041ea2667ef3d7ac020a8145ca82559",
+      "appearance": "dark"
+    },
+    "magnetosonic-waves": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetosonic_waves.mp4",
+      "poster": "media/posters/magnetosonic-waves.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/magnetosonic-waves.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetosonic_waves.mp4?v=35d6c5ba55439bb3",
+      "mp4_sha256": "35d6c5ba55439bb3b562078c1a78227cca9bde75b928a6786ba1995f86e0fe9e",
+      "appearance": "dark"
+    },
+    "moment-hierarchy": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/moment_hierarchy.mp4",
+      "poster": "media/posters/moment-hierarchy.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/moment-hierarchy.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/moment_hierarchy.mp4?v=9a6281a66c052cad",
+      "mp4_sha256": "9a6281a66c052cad7a6f19996a78a8398838859e37ea41a7a7cf2cd608383134",
+      "appearance": "dark"
+    },
+    "particles-to-moments": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/particles_to_moments.mp4",
+      "poster": "media/posters/particles-to-moments.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/particles-to-moments.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/particles_to_moments.mp4?v=c4905ca6041114a7",
+      "mp4_sha256": "c4905ca6041114a7f869df359d43c768aa02073e4a5e904d776561a23a4b4aa7",
+      "appearance": "dark"
+    },
+    "pendulum-ensemble": {
+      "supplementary_chapter": "chapters/06-kinetic-theory.html",
+      "supplementary_description": "A nonlinear pendulum ensemble compares weak and strong Kac collisions sequentially. Phase mixing filaments the position-momentum distribution; collisions redistribute energy between members while preserving total ensemble energy. The energy histogram is compared with a Gibbs distribution at the same mean energy. Angle, momentum, time and Hamiltonian are normalized, with unit [1]. This is a kinetic-relaxation illustration, not a plasma simulation.",
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/pendulum_ensemble.mp4",
+      "poster": "media/posters/pendulum-ensemble.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/pendulum-ensemble.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/pendulum_ensemble.mp4?v=631896a696991441",
+      "mp4_sha256": "631896a6969914410ef6b51535a78ae18328250b8cb1549e169f099309fe911f",
+      "appearance": "dark"
+    },
+    "phase-space-advection": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/phase_space_advection.mp4",
+      "poster": "media/posters/phase-space-advection.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/phase-space-advection.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/phase_space_advection.mp4?v=d1004fb0a62fc367",
+      "mp4_sha256": "d1004fb0a62fc36791933e4443ba44ce71717a61c8ee06f6766e506fbd43c9ea",
+      "appearance": "dark"
+    },
+    "plasma-oscillation": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/plasma_oscillation.mp4",
+      "poster": "media/posters/plasma-oscillation.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/plasma-oscillation.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/plasma_oscillation.mp4?v=db7a936d55e399e7",
+      "mp4_sha256": "db7a936d55e399e747b80d3f681b06021e486632b1a0e6d7a817161212cd0172",
+      "appearance": "dark"
+    },
+    "sheath-formation": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/sheath_formation.mp4",
+      "poster": "media/posters/sheath-formation.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/sheath-formation.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/sheath_formation.mp4?v=576e6c317fe98f4d",
+      "mp4_sha256": "576e6c317fe98f4d08615297613383967cd8e51f7c82c08e3f666a5f63ebe07c",
+      "appearance": "dark"
+    },
+    "thermal-charge-fluctuations": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/thermal_charge_fluctuations.mp4",
+      "poster": "media/posters/thermal-charge-fluctuations.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/thermal-charge-fluctuations.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/thermal_charge_fluctuations.mp4?v=01668e3a8698f0bd",
+      "mp4_sha256": "01668e3a8698f0bdf2b1d31fe023b268b330699f57b05d707b3a23a7120f81f0",
+      "appearance": "dark"
+    },
+    "two-stream-instability": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/two_stream_instability.mp4",
+      "poster": "media/posters/two-stream-instability.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/two-stream-instability.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/two_stream_instability.mp4?v=88d2cdb7bd740b1d",
+      "mp4_sha256": "88d2cdb7bd740b1d27b98cdc058760dc0a1035cc1271ec5f92a6af499f549f49",
+      "appearance": "dark"
+    },
+    "wave-packet": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/wave_packet.mp4",
+      "poster": "media/posters/wave-packet.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/wave-packet.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/wave_packet.mp4?v=ed12a84dd3fe4715",
+      "mp4_sha256": "ed12a84dd3fe471574d11bc449a05f11c109cfd4dca626f57ac21966581f04fb",
+      "appearance": "dark"
+    },
+    "grad-b-drift": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/grad_b_drift.mp4",
+      "poster": "media/posters/grad-b-drift.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/grad-b-drift.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/grad_b_drift.mp4?v=2a08fb9133f92ed6",
+      "mp4_sha256": "2a08fb9133f92ed6c52e7bacaf5b0f9469242b55ad2fdba0c07952b07da8145d",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/05-single-particle-motion.html",
+      "supplementary_description": "Full Lorentz-force orbits of an ion and an electron in a magnetic field B = B0(1 + y/L) along z that grows in y, with L = 10 ion Larmor radii, reduced mass ratio 16 and equal temperatures. The orbit is tighter where B is stronger, so the guiding centres drift along x in opposite directions for the two charges. The measured drift speeds agree with mu grad B x B/(q B^2) within 1.3 % (ion) and 0.1 % (electron). Lengths in ion Larmor radii and time in inverse ion gyrofrequencies, with unit [1]."
+    },
+    "curvature-drift": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/curvature_drift.mp4",
+      "poster": "media/posters/curvature-drift.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/curvature-drift.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/curvature_drift.mp4?v=5ead4e20eb7415bf",
+      "mp4_sha256": "5ead4e20eb7415bf78da5894d1230a86d110543268448d01acffaf60e3ef4f52",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/05-single-particle-motion.html",
+      "supplementary_description": "Full Lorentz-force orbits of an ion and an electron in the toroidal vacuum field B proportional to 1/R, shown in the poloidal plane. The combined curvature and grad-B drift moves the ion up and the electron down, a charge separation that a purely toroidal field cannot hold. The measured vertical drift speeds agree with (m/(q B R))(v_par^2 + v_perp^2/2) within 1.6 % (ion) and 0.4 % (electron). Lengths in ion Larmor radii, with unit [1]."
+    },
+    "magnetic-mirror": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetic_mirror.mp4",
+      "poster": "media/posters/magnetic-mirror.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/magnetic-mirror.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetic_mirror.mp4?v=c3714b6056d0612c",
+      "mp4_sha256": "c3714b6056d0612c61ca60007b75024375c724a410997cb3fe6bf00e8d71239f",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/05-single-particle-motion.html",
+      "supplementary_description": "Six ions of equal speed with midplane pitch angles from 18 to 70 degrees in a magnetic mirror with mirror ratio R_m = 4. Ions with sin^2(theta) < 1/R_m, inside the 30 degree loss cone, leave through the throat; the others are reflected. The magnetic moment stays constant within 0.3 % for reflected and 1.6 % for escaping ions. Positions in units of the mirror half-length L_m, with unit [1]."
+    },
+    "kernel-smoothing": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_smoothing.mp4",
+      "poster": "media/posters/kernel-smoothing.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/kernel-smoothing.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_smoothing.mp4?v=6d559218bba7558c",
+      "mp4_sha256": "6d559218bba7558cbd2a1d6cbbd45fc15ab823535ccc60f38f1b8821810d66bd",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/06-kinetic-theory.html",
+      "supplementary_description": "Particles on a line are a sum of delta spikes. Placing a Gaussian kernel of width h on every particle and summing gives a smooth density; the same result follows from sliding the kernel along x and adding the kernel values at all particles, which is the convolution of the kernel with the spike sum. Positions in units of the mean particle spacing, with unit [1]."
+    },
+    "kernel-width": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_width.mp4",
+      "poster": "media/posters/kernel-width.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/kernel-width.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_width.mp4?v=cec574ffa23cdf6e",
+      "mp4_sha256": "cec574ffa23cdf6e9fb4bc50d5566dc9057987c372a8d3798ee8b3f895a389d4",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/06-kinetic-theory.html",
+      "supplementary_description": "The kernel width h is varied from 0.25 to 20 mean particle spacings for particles drawn from a known density. Narrow kernels return the spikes and statistical noise, which falls like 1/sqrt(particles per kernel width); wide kernels smooth away real structure. The lower panel shows noise, bias and total error. Positions in units of the mean particle spacing, with unit [1]."
+    },
+    "exb-frame-change": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/exb_frame_change.mp4",
+      "poster": "media/posters/exb-frame-change.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/exb-frame-change.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/exb_frame_change.mp4?v=c432332f373fe7fc",
+      "mp4_sha256": "c432332f373fe7fcd82412213e186d3329d90f20ba5e9771360d80de06144c48",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/05-single-particle-motion.html",
+      "supplementary_description": "Full Lorentz-force orbit of an ion in uniform crossed fields with E/B = 0.4 times its gyration speed, shown twice in the same axes. In the lab frame it is a looped trochoid that drifts along E x B; its fitted drift speed equals E/B. In the frame moving with v_D = E x B/B^2 the electric field E' = E + v_D x B vanishes and the orbit is a circle whose radius is constant to 3e-14. Lengths in Larmor radii and time in inverse gyrofrequencies, with unit [1]."
+    },
+    "gravity-drift": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gravity_drift.mp4",
+      "poster": "media/posters/gravity-drift.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/gravity-drift.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/gravity_drift.mp4?v=c63c647ebf7c1761",
+      "mp4_sha256": "c63c647ebf7c1761b50b43cf74c7de455f84b7cf41e12eef509a4caf5b02c7f2",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/05-single-particle-motion.html",
+      "supplementary_description": "Full Lorentz-force orbits of an ion and an electron in a uniform magnetic field with gravity perpendicular to it, at a reduced mass ratio of 16 and equal temperatures. The ion drifts one way and the electron the other way, 16 times slower, because the force m g does not depend on the charge: the measured drifts agree with (m/q) g x B/B^2 to better than 0.01 %. Lengths in ion Larmor radii and time in inverse ion gyrofrequencies, with unit [1]."
+    },
+    "mu-ramp": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/mu_ramp.mp4",
+      "poster": "media/posters/mu-ramp.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/mu-ramp.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/mu_ramp.mp4?v=98dd26d98e4a9e49",
+      "mp4_sha256": "98dd26d98e4a9e490764dca988ada4edfe6c444c98e48e128ac8b42682bd2e7a",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/05-single-particle-motion.html",
+      "supplementary_description": "An ion circling the axis of a uniform magnetic field that grows smoothly from B0 to 2B0 over about twenty gyrations, with the induced electric field of Faraday's law. The orbit shrinks as B to the power -1/2, while the flux through the orbit and the magnetic moment mu stay constant to better than 0.05 %. Lengths in the initial Larmor radius and time in inverse initial gyrofrequencies, with unit [1]."
+    },
+    "polarization-drift": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/polarization_drift.mp4",
+      "poster": "media/posters/polarization-drift.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/polarization-drift.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/polarization_drift.mp4?v=8ca3b31191896054",
+      "mp4_sha256": "8ca3b311918960543bee8a31e04b7048ad05431a2ab1a2bd5ff119d0b550206e",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/05-single-particle-motion.html",
+      "supplementary_description": "Full Lorentz-force orbits of an ion and an electron while a perpendicular electric field is switched on smoothly over three ion gyroperiods, at a reduced mass ratio of 16. With the common E x B displacement removed, the ion guiding centre moves along E by m E/(q B^2) and the electron 16 times less in the opposite direction, as the polarization drift predicts. Lengths in ion Larmor radii and time in inverse ion gyrofrequencies, with unit [1]."
+    },
+    "hard-sphere-relaxation": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/hard_sphere_relaxation.mp4",
+      "poster": "media/posters/hard-sphere-relaxation.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/hard-sphere-relaxation.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/hard_sphere_relaxation.mp4?v=067239774209b9b1",
+      "mp4_sha256": "067239774209b9b1c49e41c440e7172bc8df3b63651a4e4401bd3a7475bb9bb9",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/02-thermal-equilibrium.html",
+      "supplementary_description": "Six hundred elastic hard disks in a box start with the same speed v0 in random directions, far from equilibrium. Collisions spread the speeds: within about four collisions per disk the speed histogram settles on the two-dimensional Maxwellian at the same energy, f(v) = (2v/v0^2) exp(-v^2/v0^2) with k_B T = m v0^2/2, and the entropy of the velocity distribution rises from near zero to the Maxwellian value 1 + ln(pi) and then stays flat. The total kinetic energy is conserved to round-off. Speeds in v0, time in mean collision times, entropy per disk, all with unit [1]."
+    },
+    "sheet-oscillation": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/sheet_oscillation.mp4",
+      "poster": "media/posters/sheet-oscillation.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/sheet-oscillation.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/sheet_oscillation.mp4?v=c725951c77639416",
+      "mp4_sha256": "c725951c7763941667c928f30c83899c0be3a05b9fd6d92182cfb755d367dfb5",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/03-plasma-oscillations.html",
+      "supplementary_description": "One hundred sixty cold electron sheets on a fixed ion background in a periodic box of one wavelength, started at rest positions with velocity v0 sin(kx), k v0/omega_pe = 0.5. Phase space (position, velocity), the sheets in real space and the electric field from Gauss's law are shown together. No sheet overtakes another, so every sheet oscillates at the plasma frequency; the measured frequency is omega/omega_pe = 1.0000. Position x/lambda, velocity k v/omega_pe, field k e E/(m_e omega_pe^2) and time omega_pe t, all with unit [1]."
+    },
+    "sheet-wave-breaking": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/sheet_wave_breaking.mp4",
+      "poster": "media/posters/sheet-wave-breaking.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/sheet-wave-breaking.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/sheet_wave_breaking.mp4?v=a8f81182c66ff616",
+      "mp4_sha256": "a8f81182c66ff6160931b1d947f6dad48e64d6aabe8761b2acbdc826ddb29601",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/03-plasma-oscillations.html",
+      "supplementary_description": "The same cold electron sheet model at three times the amplitude, k v0/omega_pe = 1.5. Neighbouring sheets first cross at omega_pe t = 0.73, as arcsin(omega_pe/(k v0)) predicts: the phase-space curve folds over, several streams coexist at one position, and the field is no longer a smooth sine. This is wave breaking of a cold plasma oscillation. Position x/lambda, velocity k v/omega_pe, field k e E/(m_e omega_pe^2) and time omega_pe t, all with unit [1]."
+    },
+    "cyclotron-resonance": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/cyclotron_resonance.mp4",
+      "poster": "media/posters/cyclotron-resonance.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/cyclotron-resonance.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/cyclotron_resonance.mp4?v=27301f21d7a200b6",
+      "mp4_sha256": "27301f21d7a200b615f1725dad3e2fe9ea0618ffc6cf6b5fd79d19c03407b9f6",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/05-single-particle-motion.html",
+      "supplementary_description": "A charge starts at rest in a uniform magnetic field out of the page and is driven by a uniform electric field rotating in the perpendicular plane. Four runs follow one another: an ion with a clockwise field at its gyrofrequency spirals outward, its speed growing linearly at |q|E0/m and its energy quadratically; at 0.8 of the gyrofrequency the speed beats and stays below 10 E0/B; with the counterclockwise field it stays below E0/B; an electron resonates with the counterclockwise field. The measured growth rate is 0.9999 |q|E0/m for both species. Each species is normalized with its own gyrofrequency; speed v B/E0, time |omega_c| t and positions, all with unit [1]."
+    },
+    "diamagnetic-drift": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/diamagnetic_drift.mp4",
+      "poster": "media/posters/diamagnetic-drift.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/diamagnetic-drift.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/diamagnetic_drift.mp4?v=0dd2f6a6ff1a58ec",
+      "mp4_sha256": "0dd2f6a6ff1a58ecaaadfe374791d830216e6e551578524fa80dd586464a4535",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/08-multiple-fluids.html",
+      "supplementary_description": "About 690 ions gyrate on exact Lorentz-force circles in a uniform magnetic field out of the page; their guiding centres are at rest and fill the plane with the density gradient n = n0(1 + y/L), L = 5 Larmor radii, n0 = 12 per Larmor radius squared. Six vertical lines are cut into bins one Larmor radius high, and every crossing is counted with its direction over two gyration periods. Each ion crosses rightward at the top of its circle and leftward at the bottom; more ions sit above a given height than below it, so the leftward crossings win although no guiding centre moves. The net current j_x/(q n0 v_perp) = -0.0999, averaged over bins and lines (single bins scatter by about 12 % from the finite number of ions), agrees with the diamagnetic current B x grad p/B^2 = -rho_L/(2L) = -0.100 for p = n m v_perp^2/2. Lengths in Larmor radii, time in inverse gyrofrequencies, current in q n0 v_perp, with unit [1]."
+    },
+    "magnetized-random-walk": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetized_random_walk.mp4",
+      "poster": "media/posters/magnetized-random-walk.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/magnetized-random-walk.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/magnetized_random_walk.mp4?v=96b92915320a2128",
+      "mp4_sha256": "96b92915320a2128327147752b7a1733fd74210854828104c17784d992d7c363",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/11-diffusion.html",
+      "supplementary_description": "An ion gyrates in a uniform magnetic field; collisions at the Poisson rate nu = 0.1 omega_c redraw its velocity direction at fixed speed, and the guiding centre jumps by about one Larmor radius at each collision (mean square 2 rho_L^2), a random walk across the field. For 4000 ions at B = B0, 2 B0 and 4 B0 with the same collision sequence, the mean square guiding-centre displacement grows linearly in time; a quarter of its slope gives D_perp = 0.0496, 0.0127 and 0.00304 rho_L0^2 omega_c0 against the exact value v_perp^2 nu/[2(nu^2 + omega_c^2)] = 0.0495, 0.0125 and 0.00312 (within 3 %), with fitted slope -2.01 in B: D_perp is about nu rho_L^2/2 and scales as 1/B^2, while motion along B is unaffected, D_par about v_th^2/nu. Lengths in rho_L0 = v_perp/omega_c0, time omega_c0 t and D in rho_L0^2 omega_c0, with unit [1]."
+    },
+    "frozen-flux": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/frozen_flux.mp4",
+      "poster": "media/posters/frozen-flux.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/frozen-flux.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/frozen_flux.mp4?v=c162b5ae320e2c83",
+      "mp4_sha256": "c162b5ae320e2c83f2fdbd79d23ae864cfca05bb40a97254af126a6c8ebbbe77",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/09-mhd.html",
+      "supplementary_description": "A loop of closed magnetic field lines, the contours of the flux function A_z, sits off-centre in a prescribed cellular vortex u = curl(U L sin(x/L) sin(y/L) e_z), and the induction equation dA_z/dt + u . grad A_z = D_B laplacian A_z is solved on a periodic grid. Twenty-four fluid elements start on the field line A_z = A_0/2. First, at magnetic Reynolds number R_m = U L/D_B = 10^4, the vortex winds the loop into a spiral and the elements stay on their field line: A_z at the elements stays within 2.6 % of its initial value and the peak of A_z within 1.7 %, so the flux between field lines moves with the fluid. Then, from the same start at R_m = 10, the elements are wound up in the same way but the field diffuses through them: A_z at the elements falls to 11 % and the peak to 6 % of A_0 by t U/L = 8. Positions x/L and y/L, time t U/L and A_z/A_0 are normalized, with unit [1]."
+    },
+    "alfven-wave": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/alfven_wave.mp4",
+      "poster": "media/posters/alfven-wave.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/alfven-wave.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/alfven_wave.mp4?v=b76adcbc0c2d843e",
+      "mp4_sha256": "b76adcbc0c2d843e9e4191282d60fa31c424357d5c6e2bbd7cfea631a7df57c6",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/09-mhd.html",
+      "supplementary_description": "A magnetic field line along a uniform field B_0, tied at both ends, is plucked sideways at x = 0.3 L and released. The linearized ideal-MHD equations for the transverse velocity and the field perturbation, rho d(du_y)/dt = (B_0/mu_0) d(dB_y)/dx and d(dB_y)/dt = B_0 d(du_y)/dx, are integrated on a staggered grid. The pluck splits into two pulses that run along the field line in opposite directions; the left one reflects inverted at the tied end. Fluid elements move only sideways. Two runs from the same pluck: at density rho_0 the measured pulse-peak speed is 0.9999 v_A0, and at 4 rho_0 it is 0.4999 v_A0, against v_A = B_0/sqrt(mu_0 rho). Position x/L, displacement xi_y/xi_0 and time t v_A0/L are normalized, with unit [1]."
+    },
+    "small-angle-deflections": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/small_angle_deflections.mp4",
+      "poster": "media/posters/small-angle-deflections.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/small-angle-deflections.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/small_angle_deflections.mp4?v=fd27a53ecc125f0b",
+      "mp4_sha256": "fd27a53ecc125f0b5389240f0e7d3e3fa1c93891820abdc8cbf869e3726723b0",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/10-collisions-conductivity.html",
+      "supplementary_description": "12 000 test electrons cross a field of fixed singly charged ions. Each ion passed deflects an electron by the exact Rutherford angle, tan(theta/2) = b90/b, in a random direction, with impact parameters b drawn uniformly in area up to b_max = 1000 b90. Left: the accumulated deflection of 70 electrons spreads as a cloud of many small kicks; one ringed electron meets a rare strong encounter (b < b90) and jumps. Upper right: the mean-square deflection grows linearly with path length, with slope 59.2 against 8(ln Lambda + C) = 57.4 per 90-degree mean free path, ln Lambda = ln(b_max/b90) = 6.91 and C = 0.27 from the strong encounters. Lower right: every decade of b above b90 contributes almost the same amount, about 8 ln 10, which is why the logarithm appears; all strong encounters together give less than a tenth. Path length s over lambda90 = 1/(n pi b90^2) and b/b90 have unit [1]; angles are in rad."
+    },
+    "ambipolar-expansion": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/ambipolar_expansion.mp4",
+      "poster": "media/posters/ambipolar-expansion.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/ambipolar-expansion.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/ambipolar_expansion.mp4?v=5a2d63a513e957c9",
+      "mp4_sha256": "5a2d63a513e957c9e04ff8125d2f17adfa1c640c99cf86f928a2e4e1cf8b1d87",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/11-diffusion.html",
+      "supplementary_description": "A one-dimensional slab of electrons and ions expands by drift-diffusion with the self-consistent electric field from Poisson's equation, with mobility ratio mu_e/mu_i = 50, T_e/T_i = 2 (so D_e = 100 D_i) and Debye length L/10 for slab half-width L. Left: densities and the electric field; the electrons run ahead at the edges, the space charge builds field spikes that pull them back and drag the ions outward, and the field then relaxes to the smooth ambipolar field. Right, on logarithmic axes: the growth of the density variance follows 2 D_e t for the electrons only at first, then electrons and ions move together along 2 D_a t. The measured slab coefficient 2.87 D_i lies close to D_a = (mu_i D_e + mu_e D_i)/(mu_i + mu_e) = 2.94 D_i, about D_i(1 + T_e/T_i); the small difference comes from the finite Debye length. Position x/L, density n/n0, field e E L/(k_B T_e) and time t D_i/L^2 have unit [1]."
+    },
+    "em-wave-packet": {
+      "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/em_wave_packet.mp4",
+      "poster": "media/posters/em-wave-packet.png",
+      "player_url": "https://krystophny.github.io/plasma-skript/animations/em-wave-packet.html",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/em_wave_packet.mp4?v=7da53ad15253325f",
+      "mp4_sha256": "7da53ad15253325fd738f38537493953b0458b06f28f37381f5e266703c07469",
+      "appearance": "dark",
+      "supplementary_chapter": "chapters/12-introduction-waves.html",
+      "supplementary_description": "A Gaussian packet of transverse electromagnetic waves in a cold electron plasma, with carrier wavenumber k0 = omega_pe/c and envelope width 10 c/omega_pe, is built from Fourier modes that each advance with their own frequency from omega^2 = omega_pe^2 + c^2 k^2. A dot follows one crest and a triangle the envelope peak, both measured from the computed field; a dashed line moves at the speed of light. The crest starts behind the light front and overtakes it, while the envelope falls behind. The dispersion diagram of the same packet shows the chord slope omega/k (phase velocity) and the tangent slope d omega/dk (group velocity). Measured: v_phi = 1.406 c and v_g = 0.705 c against 1.414 c and 0.707 c, with v_phi v_g = 0.991 c^2; the 1 % difference comes from the finite spectral width and shrinks for a narrower spectrum. Position x omega_pe/c, time omega_pe t, wavenumber c k/omega_pe, frequency omega/omega_pe and field E/E0 are normalized, with unit [1]."
+    }
+  }
+}

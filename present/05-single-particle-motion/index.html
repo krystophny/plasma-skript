@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" class="player" data-bg="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Plasma">
+<meta name="theme-color" content="#111418">
+<title>Plasma Physics</title>
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icon-180.png">
+<link rel="stylesheet" href="../present.css">
+<script src="../present.js" defer></script>
+</head>
+<body>
+<main class="stage" aria-roledescription="presentation">
+  <div class="frame"></div>
+</main>
+<div class="laser" aria-hidden="true"></div>
+<nav class="hud" aria-label="Presentation controls">
+  <a href="../" title="All decks" aria-label="All decks"><svg viewBox="0 0 24 24"><path d="M4 5h7v6H4zM13 5h7v6h-7zM4 13h7v6H4zM13 13h7v6h-7z"/></svg></a>
+  <span class="sep"></span>
+  <button type="button" data-act="prev" title="Previous (←)" aria-label="Previous page"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <span class="where" aria-hidden="true"></span>
+  <button type="button" data-act="next" title="Next (→)" aria-label="Next page"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+  <span class="sep"></span>
+  <button type="button" data-act="overview" title="Overview (G)" aria-label="Overview"><svg viewBox="0 0 24 24"><path d="M4 4h4v4H4zM10 4h4v4h-4zM16 4h4v4h-4zM4 10h4v4H4zM10 10h4v4h-4zM16 10h4v4h-4zM4 16h4v4H4zM10 16h4v4h-4zM16 16h4v4h-4z"/></svg></button>
+  <button type="button" data-act="laser" aria-pressed="false" title="Mouse laser pointer (Shift L)" aria-label="Mouse laser pointer"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></button>
+  <button type="button" data-act="fullscreen" title="Full screen (F)" aria-label="Full screen"><svg viewBox="0 0 24 24"><path d="M9 3H3v6M15 3h6v6M3 15v6h6M21 15v6h-6"/></svg></button>
+  <button type="button" data-act="offline" title="Keep available offline" aria-label="Keep available offline"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></button>
+  <a data-act="pdf" href="#" title="PDF" aria-label="PDF of this deck">PDF</a>
+</nav>
+<div class="progress" aria-hidden="true"></div>
+<div class="overview" aria-label="All pages"><ol></ol></div>
+<div class="help" role="dialog" aria-label="Keys and gestures">
+  <h2>Keys and gestures</h2>
+  <dl>
+    <dt>Swipe / tap right or left</dt><dd>next / previous page</dd>
+    <dt>Tap middle of an animation</dt><dd>play or pause (Space, K)</dd>
+    <dt>Apple Pencil</dt><dd>laser pointer, never turns pages</dd>
+    <dt>Tap the top edge</dt><dd>controls</dd>
+    <dt>→ ← PageDown PageUp</dt><dd>next / previous</dd>
+    <dt>R · J · L</dt><dd>restart · back 2 s · forward 2 s</dd>
+    <dt>G · F · Shift L</dt><dd>overview · full screen · mouse laser</dd>
+    <dt>B · W</dt><dd>black / white screen</dd>
+  </dl>
+</div>
+<div class="status" role="status"></div>
+<div class="sr-only" aria-live="polite"></div>
+</body>
+</html>

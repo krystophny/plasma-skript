@@ -1,0 +1,131 @@
+{
+  "stem": "01-introduction",
+  "chapter": 1,
+  "title": "Introduction",
+  "course": "Plasma Physics",
+  "author": "Christopher Albert",
+  "aspect": 1.4142857142857144,
+  "pdf": "../../slides/01-introduction.pdf",
+  "pages": [
+    {
+      "src": "p01.svg?v=54c613a7",
+      "kind": "static",
+      "background": "light",
+      "alt": "Introduction"
+    },
+    {
+      "src": "p02.svg?v=04c9f3d3",
+      "kind": "static",
+      "background": "dark",
+      "alt": "sun flare sdo"
+    },
+    {
+      "src": "p03.svg?v=11f95ca5",
+      "kind": "static",
+      "background": "dark",
+      "alt": "aurora iss"
+    },
+    {
+      "src": "p04.svg?v=dc5dadf2",
+      "kind": "static",
+      "background": "dark",
+      "alt": "carina eso"
+    },
+    {
+      "src": "p05.svg?v=09440b74",
+      "kind": "static",
+      "background": "dark",
+      "alt": "hall thruster jpl"
+    },
+    {
+      "src": "p06.svg?v=fa26ec4b",
+      "kind": "animation",
+      "background": "dark",
+      "alt": "Two runs, one after the other, in the same panel with the same particle positions. First, neutral gas: a test particle flies straight and changes direction sharply at three contact collisions; only the struck neutrals start to move. Then, plasma: a positive test charge passes through resting electrons; arrows show an attractive force on every electron within about one to two Debye lengths of it at each moment, and its own path bends only slightly under the sum of many weak pulls. The video ends on a still of both final states side by side.",
+      "video": "../media/collective_response.mp4?v=961e1816",
+      "poster": "../media/collective-response.png?v=e7131636",
+      "loop": false
+    },
+    {
+      "src": "p07.svg?v=1d7b83e5",
+      "kind": "static",
+      "background": "light",
+      "alt": "1.1 Plasma as a collective state: Quasineutrality"
+    },
+    {
+      "src": "p08.svg?v=cdec4513",
+      "kind": "static",
+      "background": "light",
+      "alt": "1.1 Plasma as a collective state: Example plasmas"
+    },
+    {
+      "src": "p09.svg?v=269b8e5e",
+      "kind": "static",
+      "background": "light",
+      "alt": "1.2 Speed, energy, and temperature: Thermal motion"
+    },
+    {
+      "src": "p10.svg?v=b6cf41fa",
+      "kind": "static",
+      "background": "light",
+      "alt": "1.2 Speed, energy, and temperature: Thermal speed"
+    },
+    {
+      "src": "p11.svg?v=0546b836",
+      "kind": "static",
+      "background": "light",
+      "alt": "1.2 Speed, energy, and temperature: Temperature scales"
+    },
+    {
+      "src": "p12.svg?v=500c05ab",
+      "kind": "static",
+      "background": "light",
+      "alt": "1.3 Characteristic scales and ordering: Characteristic scales"
+    },
+    {
+      "src": "p13.svg?v=90ebae9a",
+      "kind": "static",
+      "background": "light",
+      "alt": "1.3 Characteristic scales and ordering: Plasma phenomena"
+    },
+    {
+      "src": "p14.svg?v=bd28a125",
+      "kind": "static",
+      "background": "light",
+      "alt": "1.4 From microscopic particles to a model: Microscopic dynamics"
+    },
+    {
+      "src": "p15.svg?v=1623c509",
+      "kind": "static",
+      "background": "light",
+      "alt": "1.4 From microscopic particles to a model: Distribution function"
+    },
+    {
+      "src": "p16.svg?v=aa126243",
+      "kind": "animation",
+      "background": "dark",
+      "alt": "Top, about 700 particle points in the position-velocity plane: a dense band around zero velocity whose density varies along x, and a narrow beam near two and a half thermal speeds. The points are replaced by the smooth distribution f(x, v). Integrating over velocity gives, below, the density n(x), largest at the ends and smallest in the middle, and the bulk velocity u(x), largest where the density is smallest. Square markers from the particle sample lie on the exact curves; neither curve shows that some particles form a beam.",
+      "video": "../media/particles_to_moments.mp4?v=c4905ca6",
+      "poster": "../media/particles-to-moments.png?v=bb1bd05e",
+      "loop": false
+    },
+    {
+      "src": "p17.svg?v=c194c018",
+      "kind": "static",
+      "background": "light",
+      "alt": "1.4 From microscopic particles to a model: Model hierarchy"
+    },
+    {
+      "src": "p18.svg?v=6eafcee3",
+      "kind": "static",
+      "background": "light",
+      "alt": "1.4 From microscopic particles to a model: Map of plasma models"
+    },
+    {
+      "src": "p19.svg?v=712993f0",
+      "kind": "static",
+      "background": "light",
+      "alt": "Credits"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+/* Animation canvases are dark in every reading theme. */
+@font-face { font-family: "STIX Two Text"; src: url("fonts/STIXTwoText-Regular.otf") format("opentype"); font-display: swap; }
+.animation-player { position: relative; background: #111418; color: #e4e6e9; color-scheme: dark; }
+.animation-player video { display: block; width: 100%; height: auto; background: #111418; border: 0; border-radius: 0; box-shadow: none; cursor: pointer; }
+.animation-controls { position: absolute; inset: auto 0 0; display: flex; align-items: center; gap: .6rem; height: 36px; padding: 0 .6rem; box-sizing: border-box; background: linear-gradient(transparent, #111418d9); opacity: 0; pointer-events: none; transition: opacity 120ms; }
+.animation-controls-visible .animation-controls, .animation-controls:has(:focus-visible) { opacity: 1; pointer-events: auto; }
+.animation-controls[hidden] { display: none; }
+.animation-seek { flex: 1; min-width: 0; height: 28px; margin: 0; accent-color: #e4e6e9; cursor: pointer; }
+.animation-fullscreen { display: grid; place-items: center; color: #e4e6e9; background: transparent; border: 0; padding: 0; width: 44px; height: 36px; cursor: pointer; }
+.animation-fullscreen svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+.animation-controls :focus-visible, .animation-player video:focus-visible { outline: 2px solid #56b4e9; outline-offset: -2px; }
+.animation-status { margin: 0; padding: 0 .75rem; text-align: center; }
+.animation-status:empty { display: none; }
+.animation-player:fullscreen { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+.animation-player:fullscreen video { width: 100%; height: 100%; object-fit: contain; }
+.animation-player:fullscreen .animation-status { display: none; }
+.animation-full-window { position: fixed; inset: 0; z-index: 1000; background: #111418; }
+.animation-full-window video { height: 100svh; object-fit: contain; }
+.animation-full-window .animation-status { display: none; }
+.animation-presentation { margin: 0; background: #111418; color: #e4e6e9; font-family: "STIX Two Text", Georgia, serif; }
+.animation-presentation .animation-player video { height: 100svh; object-fit: contain; }
+.animation-presentation .animation-information { max-width: 52rem; margin: 2rem auto; padding: 0 1rem 2rem; line-height: 1.6; }
+.animation-presentation a { color: #56b4e9; }
+.animation-presentation h1 { font-size: 1.4rem; }
+.animation-presentation .script-feedback { position: static; display: block; width: max-content; margin: 2rem auto; }
+@media print { .animation-controls { display: none; } }
