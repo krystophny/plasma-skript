@@ -146,9 +146,11 @@ def build(site):
         svgs = sorted(folder.glob("p*.svg"))
         for svg in svgs:
             repair_svg(svg)
-        if len(metadata) != count or len(svgs) != count:
-            raise ValueError(f"{stem}: PDF={count}, SVG={len(svgs)}, metadata={len(metadata)}")
-        if [p["page"] for p in metadata] != list(range(1, count + 1)):
+        # One SVG per build step; the PDF holds only the final step of each build.
+        steps = len(svgs)
+        if len(metadata) != steps or sum(not p["repeat"] for p in metadata) != count:
+            raise ValueError(f"{stem}: PDF={count}, SVG={steps}, metadata={len(metadata)}")
+        if [p["page"] for p in metadata] != list(range(1, steps + 1)):
             raise ValueError(f"{stem}: expected exactly one metadata entry on each page")
         chapter = int(stem.split("-", 1)[0])
         pages = []
@@ -161,7 +163,7 @@ def build(site):
             if spec["kind"] not in ("static", "animation", "widget") or spec["chapter"] != chapter:
                 raise ValueError(f"Invalid presenter metadata: {stem} page {number}")
             page = {"src": version(canonical), "kind": spec["kind"],
-                    "background": spec["background"], "alt": spec["alt"]}
+                    "background": spec["background"], "alt": spec["alt"], "repeat": spec["repeat"]}
             if spec["kind"] == "animation":
                 slug = spec["slug"]
                 record = records[slug]
@@ -197,8 +199,8 @@ def build(site):
         write_json(folder / "manifest.json", manifest)
         shutil.copyfile(ROOT / "src/present/deck.html", folder / "index.html")
         decks.append(dict(stem=stem, chapter=chapter, title=chapters[chapter],
-                          pages=count, cover=stem + "/" + pages[0]["src"]))
-        print(f"Presenter: {stem}: {count} pages", flush=True)
+                          pages=steps, cover=stem + "/" + pages[0]["src"]))
+        print(f"Presenter: {stem}: {count} pages, {steps} steps", flush=True)
     if not decks:
         raise ValueError("No lecture decks found")
     write_json(target / "decks.json", {"decks": decks})

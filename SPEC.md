@@ -833,13 +833,18 @@ appearance; fix verified bugs locally rather than redesigning it.
 
 Publish the launcher at `present/` and chapter decks at `present/<stem>/`.
 The build copies the shared UI, icons and web manifest, exports one `pNN.svg`
-per PDF page, and asserts one `<present-page>` metadata entry per physical
-page. `decks.json` contains `decks: [{stem, chapter, title, pages, cover}]`.
+per physical page, and asserts one `<present-page>` metadata entry per physical
+page. A slide may build up step by step (`build(n, slide(...))` with
+`reveal(k)[...]` in `slides/theme.typ`): each step is a physical page with the
+slide's page number, and the presenter shows every step. The PDF is compiled
+with `--input handout=1` and holds only the final step of each slide, so its
+page count equals the number of presenter pages whose metadata has
+`repeat: false`. `decks.json` contains `decks: [{stem, chapter, title, pages, cover}]`.
 The cover is `<stem>/p01.svg?v=<sha8>`. Each deck's `manifest.json` contains
 `stem`, `chapter`, `title`, `course: "Plasma Physics"`,
 `author: "Christopher Albert"`, `aspect: 297/210`,
 `pdf: "../../slides/<stem>.pdf"`, and `pages`.
-Each page has `src`, `kind: static|animation`, `background: light|dark`, and
+Each page has `src`, `kind: static|animation`, `background: light|dark`, `repeat`, and
 a short `alt`. Animation pages additionally have `video`, `poster`, and
 boolean `loop`. Use the existing animation alternative description. Static
 pages use their section cue and title. Missing media or inconsistent counts

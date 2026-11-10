@@ -84,9 +84,33 @@
 #let at(c, n, y: 0mm, body) = place(top + left, dx: col-x(c), dy: y,
   block(width: cols(n), body))
 
+// ------------------------------------------------------------ build-up ---
+// A slide built step by step is one physical page per step; every step shows
+// the same page number. `reveal(k)[...]` shows its body from step k on and
+// keeps its space before. `typst compile --input handout=1` (the PDF) sets
+// only the last step of each build; the presenter shows every step.
+#let handout = sys.inputs.at("handout", default: "0") == "1"
+#let build-state = state("build-step", none)
+#let shown(k) = { let s = build-state.get(); s == none or s >= k }
+#let reveal(k, body) = context if shown(k) { body } else { hide(body) }
+#let build(n, page) = {
+  for k in range(if handout { n } else { 1 }, n + 1) {
+    build-state.update(k)
+    page
+  }
+  build-state.update(none)
+}
+// A step that repeats an earlier page of the same slide; page numbers and
+// the PDF page count leave it out.
+#let is-repeat() = { let s = build-state.get(); s != none and s > (if handout { s } else { 1 }) }
+#let repeat-marker = context if is-repeat() [#metadata(none) <build-repeat>]
+#let shown-page(loc) = {
+  let repeats = query(<build-repeat>).filter(m => m.location().page() <= loc.page())
+  counter(page).at(loc).first() - repeats.len()
+}
 #let page-number = context {
   place(bottom + right, dx: -margin, dy: -furniture-y,
-    text(size: small-size, fill: muted, counter(page).display()))
+    text(size: small-size, fill: muted, str(shown-page(here()))))
 }
 
 // Positioned metadata binds each presenter entry to its actual paged location.
@@ -97,7 +121,7 @@
     info.number + " " + info.title + ": "
   }
   [#metadata((kind: kind, background: background, title: plain-text(title),
-    alt: cue + plain-text(title), page: counter(page).get().first(),
+    alt: cue + plain-text(title), page: counter(page).get().first(), repeat: is-repeat(),
     chapter: deck-chapter.get(), slug: slug, video: video, loop: loop,
     widget: widget, region: region)) <present-page>]
 }
@@ -107,6 +131,7 @@
 // One numbered page. With `section` (a script section label) the section
 // title sits at the top and the content starts at the title band.
 #let slide(section: none, title: [Credits], body) = page(foreground: page-number)[
+  #repeat-marker
   #present-page(title: title, section: section)
   #place(top + left, if section != none { section-heading(section, title: title) } else { text(size: title-size, title) })
   #let y0 = title-band
@@ -354,7 +379,7 @@
     columns: (cols(1), 1fr), column-gutter: gutter, row-gutter: 5mm,
     ..for (key, body, source) in entries {
       (
-        align(right, text(fill: muted, context counter(page).at(label(key)).first())),
+        align(right, text(fill: muted, context str(shown-page(locate(label(key)))))),
         [#body#v(4mm, weak: true)#text(fill: muted, source)],
       )
     },

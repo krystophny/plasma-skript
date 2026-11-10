@@ -89,7 +89,9 @@ def check(browser, base, artifacts):
         pdf = context.request.get(urljoin(url, manifest["pdf"]))
         assert pdf.ok, f"PDF missing: {deck['stem']}"
         count = pdf_count(pdf.body())
-        assert len(manifest["pages"]) == deck["pages"] == count
+        assert len(manifest["pages"]) == deck["pages"]
+        assert sum(not p["repeat"] for p in manifest["pages"]) == count, "PDF: one page per slide, final step"
+        count = deck["pages"]
         page.goto(url)
         ready(page, count)
         page.touchscreen.tap(1050, 410)

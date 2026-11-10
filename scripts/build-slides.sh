@@ -56,8 +56,9 @@ stems=()
 for deck in "$repo_root"/slides/[0-9]*.typ; do
   stem="$(basename "$deck" .typ)"
   stems+=("$stem")
+  # The PDF is the handout: each built-up slide only in its final step.
   typst compile --root "$repo_root" --font-path "$repo_root/fonts" --ignore-system-fonts \
-    "$deck" "$out_dir/$stem.pdf"
+    --input handout=1 "$deck" "$out_dir/$stem.pdf"
 done
 
 # Remove PDFs of decks that no longer exist.

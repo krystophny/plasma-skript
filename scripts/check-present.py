@@ -36,7 +36,9 @@ def check(site):
         pages = manifest["pages"]
         pdf = (folder / manifest["pdf"]).read_bytes()
         counts = re.findall(rb"/Type\s*/Pages\b\s*/Count\s+(\d+)", pdf)
-        assert counts and max(map(int, counts)) == len(pages) == deck["pages"]
+        # The PDF holds the final step of each slide; the presenter every step.
+        assert len(pages) == deck["pages"]
+        assert counts and max(map(int, counts)) == sum(not p["repeat"] for p in pages)
         hashed(root, deck["cover"])
         for number, page in enumerate(pages, 1):
             assert page["kind"] in ("static", "animation", "widget"), "Blank or unknown page kind"

@@ -2,15 +2,15 @@
 #import "@preview/physica:0.9.8": laplacian, grad
 #import "debye-drawings.typ": sphere-picture, coupling-still, coupling-heading, coupling-bar
 #show: deck.with(chapter: 4)
-#slide(section: "debye-collective-validity", title: [Charge separation])[
+#build(4, slide(section: "debye-collective-validity", title: [Charge separation])[
   #at(1, 6, y: 4mm, sphere-picture())
   #at(7, 6, y: 6mm)[
     $Q = (4 pi)/3 r_0^3 n_0 e$
-    #v(8mm) $e Phi(r_0) = (e Q)/(4 pi epsilon_0 r_0) = (n_0 e^2 r_0^2)/(3 epsilon_0)$
-    #v(8mm) $e Phi(r_0) approx k_B T_e$
+    #v(8mm) #reveal(2, $e Phi(r_0) = (e Q)/(4 pi epsilon_0 r_0) = (n_0 e^2 r_0^2)/(3 epsilon_0)$)
+    #v(8mm) #reveal(3, $e Phi(r_0) approx k_B T_e$)
   ]
-  #at(7, 5, y: 82mm, result-box(align(center, $r_0 approx sqrt(3) lambda_D$), [largest separated region]))
-]
+  #at(7, 5, y: 82mm, reveal(4, result-box(align(center, $r_0 approx sqrt(3) lambda_D$), [largest separated region])))
+])
 #animation-page("thermal-charge-fluctuations", "thermal_charge_fluctuations", section: "debye-collective-validity")
 #animation-page("coupling-regions", "coupling_regions", section: "debye-collective-validity", loop: false)
 #slide(section: "debye-collective-validity", title: [Weak and strong coupling])[
@@ -23,38 +23,38 @@
   #at(3, 8, y: 144mm, align(center, [$N_D = (4 pi)/3 n_0 lambda_D^3, quad Gamma_e N_D^(2\/3) approx 0.21$ #h(4mm) #text(fill: muted)[weak coupling:] $N_D >> 1$]))
 ]
 #plot-page("nt_map", columns: 10, section: "debye-collective-validity", title: [Plasma regime map])
-#slide(section: "debye-collective-validity", title: [Ideal plasma])[
-  #let item(f, name) = align(center)[#text(size: result-size, f) #v(6mm) #text(fill: muted, name)]
+#build(2, slide(section: "debye-collective-validity", title: [Ideal plasma])[
+  #let item(k, f, name) = reveal(k, align(center)[#text(size: result-size, f) #v(6mm) #text(fill: muted, name)])
   #at(1, 12, y: 24mm, grid(columns: (1fr, 1fr), column-gutter: gutter,
-    item($N_D >> 1$, [weak coupling, collective fields]),
-    item($lambda_D << L$, [quasineutral bulk; walls affect a few $lambda_D$]),
+    item(1, $N_D >> 1$, [weak coupling, collective fields]),
+    item(2, $lambda_D << L$, [quasineutral bulk; walls affect a few $lambda_D$]),
   ))
-]
+])
 #animation-page("debye-shielding-particles", "debye_shielding_particles", section: "intro-debye-shielding", loop: false)
 #widget-page("debye-particles", section: "intro-debye-shielding", title: [Shielding by particles])
-#slide(section: "intro-debye-shielding", title: [Debye shielding])[
-  #let row(label, f) = ([#text(fill: muted, label)], f)
+#build(5, slide(section: "intro-debye-shielding", title: [Debye shielding])[
+  #let row(k, label, f) = (reveal(k, text(fill: muted, label)), reveal(k, f))
   #at(1, 12, y: 4mm, grid(columns: (auto, 1fr), column-gutter: 10mm, row-gutter: 9mm, align: (right + horizon, left + horizon),
-    ..row([force balance], $0 = -k_B T_e grad n_e + e n_e grad Phi quad => quad n_e = n_0 e^(e Phi\/k_B T_e)$),
-    ..row([Poisson], $-epsilon_0 laplacian Phi = e (n_0 - n_e) + Q delta(bold(r))$),
-    ..row([$e Phi << k_B T_e$], $laplacian Phi - Phi/lambda_D^2 = -Q/epsilon_0 delta(bold(r)), quad lambda_D = sqrt((epsilon_0 k_B T_e)/(n_0 e^2))$),
-    ..row([$Phi = a(r)\/r$], $a'' = a/lambda_D^2$),
+    ..row(1, [force balance], $0 = -k_B T_e grad n_e + e n_e grad Phi quad => quad n_e = n_0 e^(e Phi\/k_B T_e)$),
+    ..row(2, [Poisson], $-epsilon_0 laplacian Phi = e (n_0 - n_e) + Q delta(bold(r))$),
+    ..row(3, [$e Phi << k_B T_e$], $laplacian Phi - Phi/lambda_D^2 = -Q/epsilon_0 delta(bold(r)), quad lambda_D = sqrt((epsilon_0 k_B T_e)/(n_0 e^2))$),
+    ..row(4, [$Phi = a(r)\/r$], $a'' = a/lambda_D^2$),
   ))
-  #at(3, 8, y: 92mm, result-box(align(center, $Phi = Q/(4 pi epsilon_0 r) e^(-r\/lambda_D)$), [Debye–Hückel potential]))
-]
+  #at(3, 8, y: 92mm, reveal(5, result-box(align(center, $Phi = Q/(4 pi epsilon_0 r) e^(-r\/lambda_D)$), [Debye–Hückel potential])))
+])
 #widget-page("debye", section: "intro-debye-shielding", title: [Screening length])
-#slide(section: "intro-debye-shielding", title: [Dielectric function])[
+#build(3, slide(section: "intro-debye-shielding", title: [Dielectric function])[
   #at(1, 6, y: 0mm, align(center)[
     #text(fill: muted)[net charge / imposed charge, pattern $e^(i bold(k) dot bold(r))$] \
     #v(2mm) $1/epsilon(k) = k^2/(k^2 + 1\/lambda_D^2)$])
-  #at(7, 6, y: 0mm, align(center)[
+  #at(7, 6, y: 0mm, reveal(2, align(center)[
     #text(fill: muted)[potential of the test charge $Q delta(bold(r))$] \
-    #v(2mm) $hat(Phi)(k) = Q/(epsilon_0 k^2 epsilon(k)) = Q/(epsilon_0 (k^2 + 1\/lambda_D^2))$])
+    #v(2mm) $hat(Phi)(k) = Q/(epsilon_0 k^2 epsilon(k)) = Q/(epsilon_0 (k^2 + 1\/lambda_D^2))$]))
   #at(1, 6, y: 28mm, align(center, plot("debye_surviving_fraction", columns: 5)))
-  #at(7, 6, y: 28mm, align(center, plot("debye_potential_k", columns: 5)))
-  #at(1, 12, y: 124mm, align(center, text(size: result-size, $epsilon(k) = 1 + 1/(k^2 lambda_D^2)$)))
+  #at(7, 6, y: 28mm, reveal(2, align(center, plot("debye_potential_k", columns: 5))))
+  #at(1, 12, y: 124mm, reveal(3, align(center, text(size: result-size, $epsilon(k) = 1 + 1/(k^2 lambda_D^2)$))))
   #at(1, 12, y: 148mm, align(center, text(fill: muted)[#link("https://krystophny.github.io/plasma-skript/notebooks/debye.html")[notebook: Debye shielding]]))
-]
+])
 #plot-page("debye_nonlinear_potential", columns: 12, section: "intro-debye-shielding", title: [Nonlinear screening: potential],
   below: [$r_L = e^2\/(4 pi epsilon_0 k_B T_e)$, #h(0.3em) $r_L\/lambda_D = 1\/(4 pi n_0 lambda_D^3)$ \
     #v(1mm) $q = +e$ needs the ion size: #h(0.3em) $e Phi(a_0) approx E_h = 27.2 "eV"$ \
@@ -62,17 +62,17 @@
 #plot-page("debye_nonlinear_density", columns: 12, section: "intro-debye-shielding", title: [Nonlinear screening: density],
   below: [$n_e\/n_0 = e^(e Phi\/k_B T_e)$: #h(0.4em) hole for $q < 0$, #h(0.4em) pile-up $tilde e^(E_h\/k_B T_e)$ at the ion for $q > 0$ \
     #v(2mm) #text(fill: muted)[up to 0.3 electrons within $2 a_0$: a bound state, Saha (chapter 2)]])
-#slide(section: "intro-debye-shielding", title: [Charge separation and screening])[
+#build(3, slide(section: "intro-debye-shielding", title: [Charge separation and screening])[
   #at(1, 6, y: 0mm, align(center)[
     #text(fill: muted)[rigid: electrons removed] \
     #v(2mm) $e Phi(r_0) approx k_B T_e quad => quad r_0 approx sqrt(3) lambda_D$])
-  #at(7, 6, y: 0mm, align(center)[
+  #at(7, 6, y: 0mm, reveal(2, align(center)[
     #text(fill: muted)[response: mobile electrons] \
-    #v(2mm) $Phi = Q/(4 pi epsilon_0 r) e^(-r\/lambda_D)$])
+    #v(2mm) $Phi = Q/(4 pi epsilon_0 r) e^(-r\/lambda_D)$]))
   #at(1, 6, y: 24mm, align(center, plot("charge_separation_energy", columns: 5)))
-  #at(7, 6, y: 24mm, align(center, plot("debye_potential", columns: 5)))
-  #at(1, 12, y: 122mm, align(center, text(size: result-size, $lambda_D = sqrt((epsilon_0 k_B T_e)/(n_0 e^2))$)))
-]
+  #at(7, 6, y: 24mm, reveal(2, align(center, plot("debye_potential", columns: 5))))
+  #at(1, 12, y: 122mm, reveal(3, align(center, text(size: result-size, $lambda_D = sqrt((epsilon_0 k_B T_e)/(n_0 e^2))$))))
+])
 #animation-page("coupling-test-particle", "coupling_test_particle", section: "intro-debye-shielding")
 #slide(section: "intro-debye-shielding", title: [Typical scales])[
   #let examples = json("/derivations/build/debye-scales.json")
@@ -95,10 +95,10 @@
   #at(1, 12, y: 118mm, align(center, text(fill: muted)[$lambda_D approx 7400 "m" sqrt((k_B T_e \/ "eV")/(n_e \/ "m"^(-3)))$, #h(8mm) $omega_(p e) approx 56 thin "s"^(-1) sqrt(n_e \/ "m"^(-3))$]))
   #at(1, 12, y: 140mm, align(center, text(fill: muted)[#link("https://krystophny.github.io/plasma-skript/notebooks/scales.html")[notebook: plasma scales]]))
 ]
-#slide(section: "intro-debye-shielding", title: [Debye length and plasma frequency])[
+#build(2, slide(section: "intro-debye-shielding", title: [Debye length and plasma frequency])[
   #at(3, 8, y: 14mm, result-box(align(center, $lambda_D = v_("th",e)/(sqrt(2) thin omega_(p e))$), [$v_("th",e) = sqrt(2 k_B T_e\/m_e)$]))
-  #at(1, 12, y: 84mm, align(center)[
+  #at(1, 12, y: 84mm, reveal(2, align(center)[
     fusion plasma, $n_e = 10^20 "m"^(-3)$, $k_B T_e = 10 "keV"$: \
     #v(4mm) $v_("th",e) = 5.9 times 10^7 "m/s", quad omega_(p e) = 5.6 times 10^11 "s"^(-1) quad => quad lambda_D = 74 "µm"$
-  ])
-]
+  ]))
+])
