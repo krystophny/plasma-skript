@@ -11,148 +11,389 @@
       "src": "p01.svg?v=aea5df4e",
       "kind": "static",
       "background": "light",
-      "alt": "Temperature, entropy, and thermal ionization"
+      "alt": "Temperature, entropy, and thermal ionization",
+      "repeat": false
     },
     {
-      "src": "p02.svg?v=3d2e6933",
+      "src": "p02.svg?v=14b579fb",
       "kind": "static",
       "background": "light",
-      "alt": "2.1 Entropy as counted microstates: What is temperature?"
+      "alt": "2.1 Entropy as counted microstates: What is temperature?",
+      "repeat": false
     },
     {
-      "src": "p03.svg?v=876ee178",
+      "src": "p03.svg?v=b5fc4ce4",
       "kind": "static",
       "background": "light",
-      "alt": "2.1 Entropy as counted microstates: Microstate counting"
+      "alt": "2.1 Entropy as counted microstates: What is temperature?",
+      "repeat": true
     },
     {
-      "src": "p04.svg?v=21e3c8e9",
+      "src": "p04.svg?v=82126d13",
       "kind": "static",
       "background": "light",
-      "alt": "2.1 Entropy as counted microstates: Additive entropy"
+      "alt": "2.1 Entropy as counted microstates: What is temperature?",
+      "repeat": true
     },
     {
-      "src": "p05.svg?v=7b5369f4",
+      "src": "p05.svg?v=3d2e6933",
       "kind": "static",
       "background": "light",
-      "alt": "2.2 Temperature: Two exchanging boxes"
+      "alt": "2.1 Entropy as counted microstates: What is temperature?",
+      "repeat": true
     },
     {
-      "src": "p06.svg?v=f6123d40",
+      "src": "p06.svg?v=ec376053",
       "kind": "static",
       "background": "light",
-      "alt": "2.2 Temperature: Energy balance"
+      "alt": "2.1 Entropy as counted microstates: Microstate counting",
+      "repeat": false
     },
     {
-      "src": "p07.svg?v=10864a39",
+      "src": "p07.svg?v=4a287720",
       "kind": "static",
       "background": "light",
-      "alt": "2.3 The Boltzmann factor and the Maxwellian: Reservoir weight"
+      "alt": "2.1 Entropy as counted microstates: Microstate counting",
+      "repeat": true
     },
     {
-      "src": "p08.svg?v=8087460d",
+      "src": "p08.svg?v=68def99f",
       "kind": "static",
       "background": "light",
-      "alt": "2.3 The Boltzmann factor and the Maxwellian: Boltzmann factor by counting"
+      "alt": "2.1 Entropy as counted microstates: Microstate counting",
+      "repeat": true
     },
     {
-      "src": "p09.svg?v=71ea1eda",
+      "src": "p09.svg?v=876ee178",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.1 Entropy as counted microstates: Microstate counting",
+      "repeat": true
+    },
+    {
+      "src": "p10.svg?v=b6760ee4",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.1 Entropy as counted microstates: Additive entropy",
+      "repeat": false
+    },
+    {
+      "src": "p11.svg?v=21e3c8e9",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.1 Entropy as counted microstates: Additive entropy",
+      "repeat": true
+    },
+    {
+      "src": "p12.svg?v=fef540d9",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.2 Temperature: Two exchanging boxes",
+      "repeat": false
+    },
+    {
+      "src": "p13.svg?v=e66e1433",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.2 Temperature: Two exchanging boxes",
+      "repeat": true
+    },
+    {
+      "src": "p14.svg?v=7b5369f4",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.2 Temperature: Two exchanging boxes",
+      "repeat": true
+    },
+    {
+      "src": "p15.svg?v=f6123d40",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.2 Temperature: Energy balance",
+      "repeat": false
+    },
+    {
+      "src": "p16.svg?v=2fc4f25d",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.3 The Boltzmann factor and the Maxwellian: Reservoir weight",
+      "repeat": false
+    },
+    {
+      "src": "p17.svg?v=72e27252",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.3 The Boltzmann factor and the Maxwellian: Reservoir weight",
+      "repeat": true
+    },
+    {
+      "src": "p18.svg?v=c013f15f",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.3 The Boltzmann factor and the Maxwellian: Reservoir weight",
+      "repeat": true
+    },
+    {
+      "src": "p19.svg?v=10864a39",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.3 The Boltzmann factor and the Maxwellian: Reservoir weight",
+      "repeat": true
+    },
+    {
+      "src": "p20.svg?v=8087460d",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.3 The Boltzmann factor and the Maxwellian: Boltzmann factor by counting",
+      "repeat": false
+    },
+    {
+      "src": "p21.svg?v=71ea1eda",
       "kind": "animation",
       "background": "dark",
       "alt": "Six hundred elastic hard disks in a box start with the same speed v0 in random directions, far from equilibrium. Collisions spread the speeds: within about four collisions per disk the speed histogram settles on the two-dimensional Maxwellian at the same energy, f(v) = (2v/v0^2) exp(-v^2/v0^2) with k_B T = m v0^2/2, and the entropy of the velocity distribution rises from near zero to the Maxwellian value 1 + ln(pi) and then stays flat. The total kinetic energy is conserved to round-off. Speeds in v0, time in mean collision times, entropy per disk, all with unit [1].",
+      "repeat": false,
       "video": "../media/hard_sphere_relaxation.mp4?v=06723977",
       "poster": "../media/hard-sphere-relaxation.png?v=c93250d5",
       "loop": true
     },
     {
-      "src": "p10.svg?v=22c324dc",
+      "src": "p22.svg?v=2592f4bd",
       "kind": "static",
       "background": "light",
-      "alt": "2.3 The Boltzmann factor and the Maxwellian: Drifting Maxwellian"
+      "alt": "2.3 The Boltzmann factor and the Maxwellian: Drifting Maxwellian",
+      "repeat": false
     },
     {
-      "src": "p11.svg?v=066572e4",
+      "src": "p23.svg?v=9705366a",
       "kind": "static",
       "background": "light",
-      "alt": "2.4 The Saha equation: Where the slots come from"
+      "alt": "2.3 The Boltzmann factor and the Maxwellian: Drifting Maxwellian",
+      "repeat": true
     },
     {
-      "src": "p12.svg?v=dc475908",
+      "src": "p24.svg?v=22c324dc",
       "kind": "static",
       "background": "light",
-      "alt": "2.4 The Saha equation: Thermal particle slots"
+      "alt": "2.3 The Boltzmann factor and the Maxwellian: Drifting Maxwellian",
+      "repeat": true
     },
     {
-      "src": "p13.svg?v=ee0359f6",
+      "src": "p25.svg?v=3526c84f",
       "kind": "static",
       "background": "light",
-      "alt": "2.4 The Saha equation: Adding and removing"
+      "alt": "2.4 The Saha equation: Where the slots come from",
+      "repeat": false
     },
     {
-      "src": "p14.svg?v=c1f2c81e",
+      "src": "p26.svg?v=066572e4",
       "kind": "static",
       "background": "light",
-      "alt": "2.4 The Saha equation: One ionization"
+      "alt": "2.4 The Saha equation: Where the slots come from",
+      "repeat": true
     },
     {
-      "src": "p15.svg?v=60c62648",
+      "src": "p27.svg?v=c409967e",
       "kind": "static",
       "background": "light",
-      "alt": "2.4 The Saha equation: Heavy particle cancellation"
+      "alt": "2.4 The Saha equation: Thermal particle slots",
+      "repeat": false
     },
     {
-      "src": "p16.svg?v=775119b8",
+      "src": "p28.svg?v=dc475908",
       "kind": "static",
       "background": "light",
-      "alt": "2.4 The Saha equation: Saha equation"
+      "alt": "2.4 The Saha equation: Thermal particle slots",
+      "repeat": true
     },
     {
-      "src": "p17.svg?v=c1fbd3a8",
+      "src": "p29.svg?v=df1b395e",
       "kind": "static",
       "background": "light",
-      "alt": "2.4 The Saha equation: Saha equation in numbers"
+      "alt": "2.4 The Saha equation: Adding and removing",
+      "repeat": false
     },
     {
-      "src": "p18.svg?v=ac6c4bf5",
+      "src": "p30.svg?v=af71ce77",
       "kind": "static",
       "background": "light",
-      "alt": "2.5 How much thermal ionization?: Ionization fraction"
+      "alt": "2.4 The Saha equation: Adding and removing",
+      "repeat": true
     },
     {
-      "src": "p19.svg?v=bc986852",
+      "src": "p31.svg?v=ee0359f6",
       "kind": "static",
       "background": "light",
-      "alt": "2.5 How much thermal ionization?: Entropy against energy"
+      "alt": "2.4 The Saha equation: Adding and removing",
+      "repeat": true
     },
     {
-      "src": "p20.svg?v=ab5c35ac",
+      "src": "p32.svg?v=1f7056c2",
       "kind": "static",
       "background": "light",
-      "alt": "2.5 How much thermal ionization?: Why about 10 K?"
+      "alt": "2.4 The Saha equation: One ionization",
+      "repeat": false
     },
     {
-      "src": "p21.svg?v=9226c2de",
+      "src": "p33.svg?v=0b20dba2",
       "kind": "static",
       "background": "light",
-      "alt": "2.5 How much thermal ionization?: Saha in a tokamak divertor"
+      "alt": "2.4 The Saha equation: One ionization",
+      "repeat": true
     },
     {
-      "src": "p22.svg?v=7b70a7f5",
+      "src": "p34.svg?v=ff91d69f",
       "kind": "static",
       "background": "light",
-      "alt": "2.5 How much thermal ionization?: Equilibrium validity"
+      "alt": "2.4 The Saha equation: One ionization",
+      "repeat": true
     },
     {
-      "src": "p23.svg?v=722c69ac",
+      "src": "p35.svg?v=ad51c7d9",
       "kind": "static",
       "background": "light",
-      "alt": "2.5 How much thermal ionization?: Quantum degenerate plasma"
+      "alt": "2.4 The Saha equation: One ionization",
+      "repeat": true
     },
     {
-      "src": "p24.svg?v=0d2ee77e",
+      "src": "p36.svg?v=c1f2c81e",
       "kind": "static",
       "background": "light",
-      "alt": "Credits"
+      "alt": "2.4 The Saha equation: One ionization",
+      "repeat": true
+    },
+    {
+      "src": "p37.svg?v=72a5b9f7",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.4 The Saha equation: Heavy particle cancellation",
+      "repeat": false
+    },
+    {
+      "src": "p38.svg?v=ace26e94",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.4 The Saha equation: Heavy particle cancellation",
+      "repeat": true
+    },
+    {
+      "src": "p39.svg?v=60c62648",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.4 The Saha equation: Heavy particle cancellation",
+      "repeat": true
+    },
+    {
+      "src": "p40.svg?v=775119b8",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.4 The Saha equation: Saha equation",
+      "repeat": false
+    },
+    {
+      "src": "p41.svg?v=47b36c0a",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.4 The Saha equation: Saha equation in numbers",
+      "repeat": false
+    },
+    {
+      "src": "p42.svg?v=8c46bb4c",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.4 The Saha equation: Saha equation in numbers",
+      "repeat": true
+    },
+    {
+      "src": "p43.svg?v=c1fbd3a8",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.4 The Saha equation: Saha equation in numbers",
+      "repeat": true
+    },
+    {
+      "src": "p44.svg?v=ac6c4bf5",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.5 How much thermal ionization?: Ionization fraction",
+      "repeat": false
+    },
+    {
+      "src": "p45.svg?v=bc986852",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.5 How much thermal ionization?: Entropy against energy",
+      "repeat": false
+    },
+    {
+      "src": "p46.svg?v=e3cefbc2",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.5 How much thermal ionization?: Why about 10 K?",
+      "repeat": false
+    },
+    {
+      "src": "p47.svg?v=ee21ac5d",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.5 How much thermal ionization?: Why about 10 K?",
+      "repeat": true
+    },
+    {
+      "src": "p48.svg?v=ab5c35ac",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.5 How much thermal ionization?: Why about 10 K?",
+      "repeat": true
+    },
+    {
+      "src": "p49.svg?v=9226c2de",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.5 How much thermal ionization?: Saha in a tokamak divertor",
+      "repeat": false
+    },
+    {
+      "src": "p50.svg?v=09078eed",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.5 How much thermal ionization?: Equilibrium validity",
+      "repeat": false
+    },
+    {
+      "src": "p51.svg?v=8ce9f951",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.5 How much thermal ionization?: Equilibrium validity",
+      "repeat": true
+    },
+    {
+      "src": "p52.svg?v=7b70a7f5",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.5 How much thermal ionization?: Equilibrium validity",
+      "repeat": true
+    },
+    {
+      "src": "p53.svg?v=95da4aa3",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.5 How much thermal ionization?: Quantum degenerate plasma",
+      "repeat": false
+    },
+    {
+      "src": "p54.svg?v=722c69ac",
+      "kind": "static",
+      "background": "light",
+      "alt": "2.5 How much thermal ionization?: Quantum degenerate plasma",
+      "repeat": true
+    },
+    {
+      "src": "p55.svg?v=0d2ee77e",
+      "kind": "static",
+      "background": "light",
+      "alt": "Credits",
+      "repeat": false
     }
   ]
 }

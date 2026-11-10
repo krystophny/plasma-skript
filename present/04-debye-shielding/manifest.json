@@ -11,64 +11,101 @@
       "src": "p01.svg?v=ed82e853",
       "kind": "static",
       "background": "light",
-      "alt": "Debye shielding"
+      "alt": "Debye shielding",
+      "repeat": false
     },
     {
-      "src": "p02.svg?v=d652c820",
+      "src": "p02.svg?v=3a92916d",
       "kind": "static",
       "background": "light",
-      "alt": "4.1 Plasma parameter: Charge separation"
+      "alt": "4.1 Plasma parameter: Charge separation",
+      "repeat": false
     },
     {
-      "src": "p03.svg?v=48b4fb0b",
+      "src": "p03.svg?v=0444d6bd",
+      "kind": "static",
+      "background": "light",
+      "alt": "4.1 Plasma parameter: Charge separation",
+      "repeat": true
+    },
+    {
+      "src": "p04.svg?v=ceb09e19",
+      "kind": "static",
+      "background": "light",
+      "alt": "4.1 Plasma parameter: Charge separation",
+      "repeat": true
+    },
+    {
+      "src": "p05.svg?v=d652c820",
+      "kind": "static",
+      "background": "light",
+      "alt": "4.1 Plasma parameter: Charge separation",
+      "repeat": true
+    },
+    {
+      "src": "p06.svg?v=48b4fb0b",
       "kind": "animation",
       "background": "dark",
       "alt": "Colour map of the net charge density in one plane of a periodic cube of electrons in thermal equilibrium, without any test charge: red where electrons are missing, blue where they crowd, dark background where the plasma is neutral. Light dots are the electrons of a thin slab around the plane. Red and blue patches about one Debye length across, of about a tenth of the background charge density, appear and dissolve within a few inverse plasma frequencies. A bar shows the Debye length; a clock shows the normalized time. The charge density is normalized by e n0 and time by the inverse plasma frequency, with unit [1].",
+      "repeat": false,
       "video": "../media/thermal_charge_fluctuations.mp4?v=01668e3a",
       "poster": "../media/thermal-charge-fluctuations.png?v=56156e2e",
       "loop": true
     },
     {
-      "src": "p04.svg?v=b9dc2a2b",
+      "src": "p07.svg?v=b9dc2a2b",
       "kind": "animation",
       "background": "dark",
       "alt": "Two panels at the same electron density and different temperature, each a colour map of the net charge density in one plane of a periodic cube of electrons in thermal equilibrium: red where electrons are missing, blue where they crowd. Light dots are the electrons of a thin slab around the plane. Left, low temperature T0, coupling parameter Gamma_e = 0.08 and Debye length a: small red and blue regions with one or a few electrons each. Right, temperature 9 T0, Gamma_e = 0.009 and Debye length 3a: regions several spacings across with many electrons each. The electrons move, then the picture freezes, and one electron of each panel runs through the frozen charges at its thermal speed: it is deflected strongly on the left and moves nearly straight on the right before it leaves the panel. A bar shows the mean spacing a; a clock shows the normalized time. Time is normalized by the inverse plasma frequency, with unit [1].",
+      "repeat": false,
       "video": "../media/coupling_regions.mp4?v=0b83f6f0",
       "poster": "../media/coupling-regions.png?v=b5a4bddf",
       "loop": false
     },
     {
-      "src": "p05.svg?v=f647f456",
+      "src": "p08.svg?v=f647f456",
       "kind": "static",
       "background": "light",
-      "alt": "4.1 Plasma parameter: Weak and strong coupling"
+      "alt": "4.1 Plasma parameter: Weak and strong coupling",
+      "repeat": false
     },
     {
-      "src": "p06.svg?v=271d5780",
+      "src": "p09.svg?v=271d5780",
       "kind": "static",
       "background": "light",
-      "alt": "4.1 Plasma parameter: Plasma regime map"
+      "alt": "4.1 Plasma parameter: Plasma regime map",
+      "repeat": false
     },
     {
-      "src": "p07.svg?v=829cd0a2",
+      "src": "p10.svg?v=6fb9a5c1",
       "kind": "static",
       "background": "light",
-      "alt": "4.1 Plasma parameter: Ideal plasma"
+      "alt": "4.1 Plasma parameter: Ideal plasma",
+      "repeat": false
     },
     {
-      "src": "p08.svg?v=a7e770c3",
+      "src": "p11.svg?v=829cd0a2",
+      "kind": "static",
+      "background": "light",
+      "alt": "4.1 Plasma parameter: Ideal plasma",
+      "repeat": true
+    },
+    {
+      "src": "p12.svg?v=a7e770c3",
       "kind": "animation",
       "background": "dark",
       "alt": "Left: blue electron markers in a thin slab around a fixed negative test charge, drawn as a white disc, over a uniform positive background in a periodic cube. The markers move thermally; no hole around the test charge is visible in any single frame. Right: the measured electron deficit in spherical shells around the charge, averaged over time and over eight independent runs, plotted as dots against distance. The dots start noisy and settle onto a solid Debye curve, well below a dashed unscreened 1/r curve; at the end, vertical bars show 95 percent intervals over the runs. Positions are normalized by the Debye length, time by the inverse plasma frequency, and the deficit by kappa n0, with unit [1].",
+      "repeat": false,
       "video": "../media/debye_shielding_particles.mp4?v=a9bcdbf6",
       "poster": "../media/debye-shielding-particles.png?v=7a03c412",
       "loop": false
     },
     {
-      "src": "p09.svg?v=4eb4c869",
+      "src": "p13.svg?v=4eb4c869",
       "kind": "widget",
       "background": "light",
       "alt": "4.2 Debye shielding: Shielding by particles",
+      "repeat": false,
       "widget": "../../notebooks/slide-debye-particles.html?v=9fa0e50d",
       "region": {
         "x": 0.06734006734006734,
@@ -78,16 +115,46 @@
       }
     },
     {
-      "src": "p10.svg?v=c893301f",
+      "src": "p14.svg?v=f0e00fe8",
       "kind": "static",
       "background": "light",
-      "alt": "4.2 Debye shielding: Debye shielding"
+      "alt": "4.2 Debye shielding: Debye shielding",
+      "repeat": false
     },
     {
-      "src": "p11.svg?v=c74b3400",
+      "src": "p15.svg?v=d1a17888",
+      "kind": "static",
+      "background": "light",
+      "alt": "4.2 Debye shielding: Debye shielding",
+      "repeat": true
+    },
+    {
+      "src": "p16.svg?v=4ce9444f",
+      "kind": "static",
+      "background": "light",
+      "alt": "4.2 Debye shielding: Debye shielding",
+      "repeat": true
+    },
+    {
+      "src": "p17.svg?v=497679ee",
+      "kind": "static",
+      "background": "light",
+      "alt": "4.2 Debye shielding: Debye shielding",
+      "repeat": true
+    },
+    {
+      "src": "p18.svg?v=c893301f",
+      "kind": "static",
+      "background": "light",
+      "alt": "4.2 Debye shielding: Debye shielding",
+      "repeat": true
+    },
+    {
+      "src": "p19.svg?v=c74b3400",
       "kind": "widget",
       "background": "light",
       "alt": "4.2 Debye shielding: Screening length",
+      "repeat": false,
       "widget": "../../notebooks/slide-debye.html?v=b57955d9",
       "region": {
         "x": 0.06734006734006734,
@@ -97,49 +164,91 @@
       }
     },
     {
-      "src": "p12.svg?v=8275c027",
+      "src": "p20.svg?v=376f3bff",
       "kind": "static",
       "background": "light",
-      "alt": "4.2 Debye shielding: Dielectric function"
+      "alt": "4.2 Debye shielding: Dielectric function",
+      "repeat": false
     },
     {
-      "src": "p13.svg?v=9c6ac410",
+      "src": "p21.svg?v=d4d79ba2",
       "kind": "static",
       "background": "light",
-      "alt": "4.2 Debye shielding: Nonlinear screening: potential"
+      "alt": "4.2 Debye shielding: Dielectric function",
+      "repeat": true
     },
     {
-      "src": "p14.svg?v=9bb998ac",
+      "src": "p22.svg?v=8275c027",
       "kind": "static",
       "background": "light",
-      "alt": "4.2 Debye shielding: Nonlinear screening: density"
+      "alt": "4.2 Debye shielding: Dielectric function",
+      "repeat": true
     },
     {
-      "src": "p15.svg?v=3e94be66",
+      "src": "p23.svg?v=9c6ac410",
       "kind": "static",
       "background": "light",
-      "alt": "4.2 Debye shielding: Charge separation and screening"
+      "alt": "4.2 Debye shielding: Nonlinear screening: potential",
+      "repeat": false
     },
     {
-      "src": "p16.svg?v=2a176c3c",
+      "src": "p24.svg?v=9bb998ac",
+      "kind": "static",
+      "background": "light",
+      "alt": "4.2 Debye shielding: Nonlinear screening: density",
+      "repeat": false
+    },
+    {
+      "src": "p25.svg?v=ae8a8cfc",
+      "kind": "static",
+      "background": "light",
+      "alt": "4.2 Debye shielding: Charge separation and screening",
+      "repeat": false
+    },
+    {
+      "src": "p26.svg?v=688434ab",
+      "kind": "static",
+      "background": "light",
+      "alt": "4.2 Debye shielding: Charge separation and screening",
+      "repeat": true
+    },
+    {
+      "src": "p27.svg?v=3e94be66",
+      "kind": "static",
+      "background": "light",
+      "alt": "4.2 Debye shielding: Charge separation and screening",
+      "repeat": true
+    },
+    {
+      "src": "p28.svg?v=2a176c3c",
       "kind": "animation",
       "background": "dark",
       "alt": "Two panels with the same frozen electrons on a uniform positive background and the same test electron, launched at the thermal speed from the left. A circle of radius lambda_D moves with the test electron; frozen electrons inside it are blue, the others grey. Left, coupling parameter Gamma_e = 0.08, lambda_D about a: about three electrons lie inside the circle, and single neighbours deflect the test electron by about two radians. Right, Gamma_e = 0.009, lambda_D about 3a: about thirty electrons lie inside the circle, and the path stays nearly straight. A bar shows the mean spacing a; a clock shows the normalized time. Lengths are normalized by a and time by a over the thermal speed, with unit [1].",
+      "repeat": false,
       "video": "../media/coupling_test_particle.mp4?v=ee738425",
       "poster": "../media/coupling-test-particle.png?v=29a20ad3",
       "loop": true
     },
     {
-      "src": "p17.svg?v=88dc64f1",
+      "src": "p29.svg?v=88dc64f1",
       "kind": "static",
       "background": "light",
-      "alt": "4.2 Debye shielding: Typical scales"
+      "alt": "4.2 Debye shielding: Typical scales",
+      "repeat": false
     },
     {
-      "src": "p18.svg?v=8529d551",
+      "src": "p30.svg?v=133d5a55",
       "kind": "static",
       "background": "light",
-      "alt": "4.2 Debye shielding: Debye length and plasma frequency"
+      "alt": "4.2 Debye shielding: Debye length and plasma frequency",
+      "repeat": false
+    },
+    {
+      "src": "p31.svg?v=8529d551",
+      "kind": "static",
+      "background": "light",
+      "alt": "4.2 Debye shielding: Debye length and plasma frequency",
+      "repeat": true
     }
   ]
 }
