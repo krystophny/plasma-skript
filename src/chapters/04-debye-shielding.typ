@@ -129,7 +129,7 @@
 
   #animation(
     "../media/coupling-regions.mp4",
-    "Two panels at the same electron density and different temperature, each a colour map of the net charge density in one plane of a periodic cube of electrons in thermal equilibrium: red where electrons are missing, blue where they crowd. Light dots are the electrons of a thin slab around the plane. Left, low temperature T0, coupling parameter Gamma_e = 0.08 and Debye length a: small red and blue regions with one or a few electrons each. Right, temperature 9 T0, Gamma_e = 0.009 and Debye length 3a: regions several spacings across with many electrons each. The electrons move, then the picture freezes, and one electron of each panel runs through the frozen charges at its thermal speed: it is deflected strongly on the left and moves nearly straight on the right before it leaves the panel. A bar shows the mean spacing a; a clock shows the normalized time. Time is normalized by the inverse plasma frequency, with unit [1].",
+    "Two panels at the same electron density and different temperature, each a colour map of the net charge density in one plane of a periodic cube of electrons in thermal equilibrium: red where electrons are missing, blue where they crowd. Light dots are the electrons of a thin slab around the plane. Left, low temperature T0, coupling parameter Gamma_e = 0.08 and Debye length a: small red and blue regions with one or a few electrons each. Right, temperature 9 T0, Gamma_e = 0.009 and Debye length 3a: regions several spacings across with many electrons each. The electrons move, then the picture freezes, and one electron of each panel runs through the frozen charges at its thermal speed: it is deflected strongly on the left and moves nearly straight on the right before it leaves the panel. Under each panel a curve traces the potential energy of the moving electron in the frozen charges, relative to its value at launch and in units of the thermal energy of that panel: on the left it rises twice to about half the launch kinetic energy, on the right it stays below a fifth of it. A bar shows the mean spacing a; a clock shows the normalized time. Time is normalized by the inverse plasma frequency, with unit [1].",
     caption: [
       Weak and strong coupling at equal density, computed with kin6d. 5832
       electrons of a classical one-component plasma in a periodic cube of
@@ -144,7 +144,14 @@
       $omega_(p,e) t = 12$ the electrons are frozen and one of them is
       launched at $v_("th,e") = sqrt(2 k_B T_e\/m_e)$ through the frozen
       charges and the background; its three-dimensional path is drawn in
-      projection. Time is $omega_(p,e) t$ [1].
+      projection. Below each panel: its potential energy $U = -e Phi$, with
+      $Phi$ the electrostatic potential of the frozen electrons and the
+      background, plotted as $Delta U = U - U_0$ relative to the launch
+      value $U_0$ in units of
+      $k_B T_e$ [1], on the same scale in both panels. Since
+      $U + m_e v^2\/2$ is conserved and the launch kinetic energy is $k_B T_e$,
+      $Delta U\/(k_B T_e)$ is the fraction of that energy lost. Time is
+      $omega_(p,e) t$ [1].
     ],
     poster: "../media/coupling-regions.png",
   )

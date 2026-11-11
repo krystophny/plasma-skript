@@ -1017,6 +1017,19 @@ class CouplingRegionsPhysics(unittest.TestCase):
                 e = [m["test_energy"](x[k], v[k], charges) for k in (0, len(t)//2, len(t) - 1)]
                 self.assertLess(np.max(np.abs(np.array(e) - e[0])), 1e-6)
 
+    def test_potential_plot_mirrors_kinetic_energy(self):
+        # Energy conservation: Delta U/(k_B T_e) = 1 - |v|^2/v_th^2 with
+        # v_th^2 = 2 lambda_D^2 omega_p^2; the drawn curves fit U_RANGE.
+        m = self.m
+        for p, flights in enumerate(self.flights):
+            lam = m["RUNS"][p][1]
+            t, x, v, charges = flights[m["LAUNCH"][p]]
+            rise = m["potential_rise"](x, charges, lam)
+            np.testing.assert_allclose(rise, 1 - np.sum(v*v, axis=1)/(2*lam**2), atol=1e-6)
+            n = m["drawn_samples"](x)
+            self.assertGreater(rise[:n].min(), m["U_RANGE"][0])
+            self.assertLess(rise[:n].max(), m["U_RANGE"][1])
+
     def test_launch_choice_and_thermal_speed(self):
         # LAUNCH: the candidate closest to y = 0 whose drawn path stays within
         # |z| < Z_LIMIT (strong: also inside the window for the whole flight).
