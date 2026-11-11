@@ -40,8 +40,8 @@
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coupling_regions.mp4",
       "poster": "media/posters/coupling-regions.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/coupling-regions.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coupling_regions.mp4?v=0b83f6f0abb6682b",
-      "mp4_sha256": "0b83f6f0abb6682b2cee19d31d8092f919281ace2b293189771c4063390ea7a9",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/coupling_regions.mp4?v=60f0077441bcb60f",
+      "mp4_sha256": "60f0077441bcb60f19eb30cdfc7fbc84f1c050c4f7b8236d8a50d00e8788b18f",
       "appearance": "dark"
     },
     "coupling-test-particle": {
