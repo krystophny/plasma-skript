@@ -56,7 +56,7 @@
       "src": "p07.svg?v=b9dc2a2b",
       "kind": "animation",
       "background": "dark",
-      "alt": "Two panels at the same electron density and different temperature, each a colour map of the net charge density in one plane of a periodic cube of electrons in thermal equilibrium: red where electrons are missing, blue where they crowd. Light dots are the electrons of a thin slab around the plane. Left, low temperature T0, coupling parameter Gamma_e = 0.08 and Debye length a: small red and blue regions with one or a few electrons each. Right, temperature 9 T0, Gamma_e = 0.009 and Debye length 3a: regions several spacings across with many electrons each. The electrons move, then the picture freezes, and one electron of each panel runs through the frozen charges at its thermal speed: it is deflected strongly on the left and moves nearly straight on the right before it leaves the panel. A bar shows the mean spacing a; a clock shows the normalized time. Time is normalized by the inverse plasma frequency, with unit [1].",
+      "alt": "Two panels at the same electron density and different temperature, each a colour map of the net charge density in one plane of a periodic cube of electrons in thermal equilibrium: red where electrons are missing, blue where they crowd. Light dots are the electrons of a thin slab around the plane. Left, low temperature T0, coupling parameter Gamma_e = 0.08 and Debye length a: small red and blue regions with one or a few electrons each. Right, temperature 9 T0, Gamma_e = 0.009 and Debye length 3a: regions several spacings across with many electrons each. The electrons move, then the picture freezes, and one electron of each panel runs through the frozen charges at its thermal speed: it is deflected strongly on the left and moves nearly straight on the right before it leaves the panel. Under each panel a curve traces the potential energy of the moving electron in the frozen charges, relative to its value at launch and in units of the thermal energy of that panel: on the left it rises twice to about half the launch kinetic energy, on the right it stays below a fifth of it. A bar shows the mean spacing a; a clock shows the normalized time. Time is normalized by the inverse plasma frequency, with unit [1].",
       "repeat": false,
       "video": "../media/coupling_regions.mp4?v=0b83f6f0",
       "poster": "../media/coupling-regions.png?v=b5a4bddf",
@@ -106,7 +106,7 @@
       "background": "light",
       "alt": "4.2 Debye shielding: Shielding by particles",
       "repeat": false,
-      "widget": "../../notebooks/slide-debye-particles.html?v=9fa0e50d",
+      "widget": "../../notebooks/slide-debye-particles.html?v=dddcc656",
       "region": {
         "x": 0.06734006734006734,
         "y": 0.19047619047619047,
@@ -155,7 +155,7 @@
       "background": "light",
       "alt": "4.2 Debye shielding: Screening length",
       "repeat": false,
-      "widget": "../../notebooks/slide-debye.html?v=b57955d9",
+      "widget": "../../notebooks/slide-debye.html?v=7d6f05be",
       "region": {
         "x": 0.06734006734006734,
         "y": 0.19047619047619047,
