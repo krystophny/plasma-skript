@@ -57,6 +57,13 @@ deflection statistics of the candidates.  The flight ends early once the
 electron is a past the window edge.  The orbits are
 integrated with the adaptive Dormand-Prince 5(4) scheme of the
 coupling-test-particle scene.
+
+Plot under each panel: the potential energy U = -e Phi of the test electron
+in the field of the frozen electrons and the background along its flight,
+as Delta U = U(t) - U(launch) in units of k_B T_e of its panel, on a common
+scale.  Energy conservation makes Delta U/(k_B T_e) = 1 - |v|^2/v_th^2: the
+electron launched with kinetic energy k_B T_e = m_e v_th^2/2 is slowed where
+Delta U rises.  The curve ends where the drawn path leaves the window.
 """
 
 from manim import *
@@ -66,8 +73,8 @@ from kin6d_data import Export
 from thermal_charge_fluctuations import charge_density, NEGATIVE, POSITIVE
 from coupling_test_particle import DP_A, DP_B4, DP_B5
 from style import (
-    AXIS_WIDTH, BG, EASE, GRID, INK, LINEAR, MUTED, THIN_WIDTH, StyledScene, math,
-    MATH_SMALL,
+    AXIS_WIDTH, BG, CURVE_WIDTH, EASE, GRID, INK, LINEAR, MUTED, POTENTIAL, THIN_WIDTH,
+    StyledScene, axes, math, MATH_SMALL,
 )
 
 RUNS = (("coupling-regions/strong", 1.0), ("coupling-regions/weak", 3.0))  # lambda_D/a
@@ -87,8 +94,12 @@ DT_OUT = 0.05           # trajectory samples, 1/omega_p
 TOLERANCE = 1e-9
 TILE_RADIUS = 20.0      # radius of the frozen image sphere, a
 
-PANEL = 5.6
-PANEL_GAP = 0.7
+PANEL = 4.1
+PANEL_GAP = 1.0
+PANEL_Y = 0.45          # panel centre height
+PLOT_HEIGHT = 1.05      # potential plot under each panel
+PLOT_GAP = 0.32         # panel bottom to plot top
+U_RANGE = (-0.25, 0.5)  # Delta U/(k_B T_e) of the potential plots
 PLAY_TIME = 9.0         # seconds for the 12/omega_p of recorded dynamics
 TEST_TIME = 8.0         # seconds for the T_TEST of test-electron flight
 HOLD = 3.0
@@ -218,6 +229,16 @@ def test_trajectory(points, index, lam, t_end=T_TEST, dt_out=DT_OUT,
     return times, out[:, :3], out[:, 3:], charges
 
 
+def potential_rise(path, charges, lam):
+    """Delta U/(k_B T_e) = (U - U(launch))/(k_B T_e) along path (K, 3).
+
+    U/m_e from test_energy at zero velocity in (a omega_p)^2, and
+    k_B T_e/m_e = lambda_D^2 omega_p^2 = lam^2 (a omega_p)^2.
+    """
+    u = np.array([test_energy(x, np.zeros(3), charges) for x in path])
+    return (u - u[0]) / lam ** 2
+
+
 def drawn_samples(path, margin=0.0):
     """Number of leading samples of path (K, 3) inside the window |x|, |y| < BOX/2."""
     inside = np.all(np.abs(path[:, :2]) < BOX / 2 - margin, axis=1)
@@ -257,10 +278,11 @@ def still_data(grid=2 * GRID_POINTS, base="#FFFFFF"):
 
 
 def panel_title(p):
-    """T_e, Gamma_e and lambda_D of panel p as a LaTeX string."""
+    """T_e and Gamma_e, lambda_D of panel p as two LaTeX lines."""
     lam = RUNS[p][1]
     length = "a" if lam == 1 else f"{lam:g}a"
-    return rf"T_e={TEMPERATURES[p]},\ \Gamma_e={coupling(lam):.1g},\ \lambda_D={length}"
+    return (rf"T_e={TEMPERATURES[p]}",
+            rf"\Gamma_e={coupling(lam):.1g},\ \lambda_D={length}")
 
 
 class CouplingRegions(StyledScene):
@@ -277,11 +299,13 @@ class CouplingRegions(StyledScene):
         drawn = [drawn_samples(x) for _, x, _, _ in flights]
         others = [charge_density(np.delete(frozen[p], LAUNCH[p], axis=1), BOX,
                                  SIGMA_DEBYE * RUNS[p][1], 1.0, GRID_POINTS) for p in range(2)]
+        rises = [potential_rise(x, charges, RUNS[p][1])
+                 for p, (_, x, _, charges) in enumerate(flights)]
         samples = int(round(T_TEST / DT_OUT)) + 1
 
         scale = PANEL / BOX
-        centers = [np.array([-(PANEL + PANEL_GAP) / 2, 0.03, 0]),
-                   np.array([(PANEL + PANEL_GAP) / 2, 0.03, 0])]
+        centers = [np.array([-(PANEL + PANEL_GAP) / 2, PANEL_Y, 0]),
+                   np.array([(PANEL + PANEL_GAP) / 2, PANEL_Y, 0])]
 
         def pp(p, x, y):
             return centers[p] + np.array([x, y, 0.0]) * scale
@@ -378,13 +402,14 @@ class CouplingRegions(StyledScene):
                        stroke_width=2.0, fill_opacity=1.0 if visible else 0.0,
                        stroke_opacity=1.0 if visible else 0.0)
 
-        titles = VGroup(*[math(panel_title(p), color=INK, size=MATH_SMALL + 4)
-                          .next_to(centers[p] + UP * PANEL / 2, UP, buff=0.18)
+        titles = VGroup(*[VGroup(*[math(line, color=INK, size=MATH_SMALL + 4)
+                                   for line in panel_title(p)]).arrange(DOWN, buff=0.12)
+                          .next_to(centers[p] + UP * PANEL / 2, UP, buff=0.15)
                           for p in range(2)])
 
-        # Bottom row: scale bar a, colour key, clock.
-        bottom = centers[0][1] - PANEL / 2 - 0.42
-        start = np.array([centers[0][0] - PANEL / 2, bottom, 0])
+        # Left column: scale bar a and colour key; right column: clock.
+        left = centers[0][0] - PANEL / 2 - 1.75
+        start = np.array([left, centers[0][1] + 0.6, 0])
         bar = VGroup(
             Line(start, start + RIGHT * scale, color=INK, stroke_width=4),
             Line(start + UP * 0.09, start + DOWN * 0.09, color=INK, stroke_width=AXIS_WIDTH),
@@ -396,22 +421,67 @@ class CouplingRegions(StyledScene):
                    math(r"\rho>0", color=MUTED, size=MATH_SMALL)).arrange(RIGHT, buff=0.12),
             VGroup(Square(0.24, stroke_width=0, fill_color=NEGATIVE, fill_opacity=1),
                    math(r"\rho<0", color=MUTED, size=MATH_SMALL)).arrange(RIGHT, buff=0.12),
-        ).arrange(RIGHT, buff=0.45).move_to([0, bottom, 0])
+        ).arrange(DOWN, buff=0.3, aligned_edge=LEFT)
+        key.next_to(start, DOWN, buff=0.45, aligned_edge=LEFT)
         clock_label = math(r"\omega_p t=", color=MUTED, size=MATH_SMALL)
-        clock_label.move_to([0, bottom, 0]).align_to(
-            centers[1] + RIGHT * (PANEL / 2 - 0.75), RIGHT)
+        clock_label.next_to(centers[1] + RIGHT * PANEL / 2 + UP * 0.25, RIGHT, buff=0.4)
         clock = DecimalNumber(times[0], num_decimal_places=1, color=INK, font_size=MATH_SMALL)
 
         def place_clock(m):
             i, w = frame_pos(tracker.get_value())
             now = times[i] + w * (times[i + 1] - times[i])
             m.set_value(now + flight.get_value() * T_TEST)
-            m.next_to(clock_label, RIGHT, buff=0.12).match_y(clock_label[0][-1])
+            m.next_to(clock_label, DOWN, buff=0.2, aligned_edge=LEFT)
 
         clock.add_updater(place_clock)
         place_clock(clock)
 
-        self.add(images, frames_drawn, pools, titles, bar, bar_label, key, clock_label, clock)
+        # Potential plots: Delta U/(k_B T_e) against the clock time of the flight.
+        t_freeze = times[-1]
+        plot_y = centers[0][1] - PANEL / 2 - PLOT_GAP - PLOT_HEIGHT / 2
+        plots, plot_labels = VGroup(), VGroup()
+        for p in range(2):
+            ax = axes([t_freeze, t_freeze + T_TEST, 1.0], [*U_RANGE, 0.25],
+                      PANEL, PLOT_HEIGHT)
+            ax.move_to([centers[p][0], plot_y, 0])
+            plots.add(ax)
+            for t in (t_freeze, t_freeze + T_TEST / 2, t_freeze + T_TEST):
+                plot_labels.add(math(f"{t:g}", color=MUTED, size=MATH_SMALL)
+                                .next_to(ax.c2p(t, U_RANGE[0]), DOWN, buff=0.12))
+            for u in (0, 0.5):
+                plot_labels.add(math(f"{u:g}", color=MUTED, size=MATH_SMALL)
+                                .next_to(ax.c2p(t_freeze, u), LEFT, buff=0.12))
+        u_label = math(r"\frac{\Delta U}{k_B T_e}", color=MUTED, size=MATH_SMALL)
+        u_label.move_to([left, plot_y, 0], aligned_edge=LEFT)
+        t_label = math(r"\omega_p t", color=MUTED, size=MATH_SMALL)
+        t_label.next_to(plots[1].c2p(t_freeze + T_TEST, U_RANGE[0]), RIGHT, buff=0.3)
+
+        def flight_points(p):
+            """Plot points of the curve up to now and the current point."""
+            k = min(flight_index(p), drawn[p] - 1)
+            i = int(k)
+            t, u = flights[p][0], rises[p]
+            pts = [plots[p].c2p(t_freeze + t[j], u[j]) for j in range(i + 1)]
+            if k > i:
+                w = k - i
+                pts.append(plots[p].c2p(t_freeze + (1 - w) * t[i] + w * t[i + 1],
+                                        (1 - w) * u[i] + w * u[i + 1]))
+            return pts
+
+        def potential_curve(p):
+            line = VMobject(stroke_color=POTENTIAL, stroke_width=CURVE_WIDTH)
+            pts = flight_points(p)
+            if len(pts) > 1:
+                line.set_points_as_corners(pts)
+            return line
+
+        def potential_dot(p):
+            visible = drawn[p] == len(flights[p][0]) or flight_index(p) < drawn[p] - 1
+            return Dot(flight_points(p)[-1], radius=0.06, color=INK,
+                       fill_opacity=1.0 if visible else 0.0)
+
+        self.add(images, frames_drawn, pools, titles, bar, bar_label, key, clock_label, clock,
+                 plots, plot_labels, u_label, t_label)
         self.play(dot_opacity.animate.set_value(1.0), run_time=0.6, rate_func=EASE)
         self.wait(0.4)
         self.play(tracker.animate.set_value(1.0), run_time=PLAY_TIME, rate_func=LINEAR)
@@ -421,7 +491,9 @@ class CouplingRegions(StyledScene):
         frozen_on.set_value(1.0)
         self.remove(markers)
         moving = VGroup(*[always_redraw(lambda p=p: trace(p)) for p in range(2)],
-                        *[always_redraw(lambda p=p: marker(p)) for p in range(2)])
+                        *[always_redraw(lambda p=p: marker(p)) for p in range(2)],
+                        *[always_redraw(lambda p=p: potential_curve(p)) for p in range(2)],
+                        *[always_redraw(lambda p=p: potential_dot(p)) for p in range(2)])
         self.add(moving)
         self.wait(0.4)
         self.play(flight.animate.set_value(1.0), run_time=TEST_TIME, rate_func=LINEAR)

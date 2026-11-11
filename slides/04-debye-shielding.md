@@ -77,7 +77,10 @@ rms), dots the electrons of $|z|<a/2$. The electrons move for
 $12/\omega_p$, the picture freezes, and one electron per panel runs through
 the frozen charges at $v_{th}=\sqrt{2k_BT_e/m_e}$ for $8/\omega_p$: deflected
 by about $1$ rad at strong coupling, nearly straight (and out of the panel
-after $4/\omega_p$) at weak coupling. Page 5 shows the frozen frame from
+after $4/\omega_p$) at weak coupling. A plot under each panel traces the
+electron's potential energy in the frozen field, $\Delta U/k_BT_e$ relative
+to launch: peaks near $0.5$ at strong coupling, below $0.2$ at weak
+coupling. Page 5 shows the frozen frame from
 `slides/coupling-regions.json` and `slides/coupling-regions-{0,1}.png`
 (`scripts/export-coupling-still.py`). Page 4, before the whiteboard
 coupling. The script shows it in §4.1.
