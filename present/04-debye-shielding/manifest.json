@@ -106,7 +106,7 @@
       "background": "light",
       "alt": "4.2 Debye shielding: Shielding by particles",
       "repeat": false,
-      "widget": "../../notebooks/slide-debye-particles.html?v=dddcc656",
+      "widget": "../../notebooks/slide-debye-particles.html?v=9fa0e50d",
       "region": {
         "x": 0.06734006734006734,
         "y": 0.19047619047619047,
@@ -155,7 +155,7 @@
       "background": "light",
       "alt": "4.2 Debye shielding: Screening length",
       "repeat": false,
-      "widget": "../../notebooks/slide-debye.html?v=7d6f05be",
+      "widget": "../../notebooks/slide-debye.html?v=b57955d9",
       "region": {
         "x": 0.06734006734006734,
         "y": 0.19047619047619047,
