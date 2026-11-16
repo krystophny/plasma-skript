@@ -1,0 +1,135 @@
+---
+title: "Fourier cutoff"
+format:
+  html:
+    css: slide-widget.css
+    page-layout: custom
+    title-block-style: none
+    include-after-body: slide-widget.html
+---
+
+```{ojs}
+//| output: false
+blue = "#0072B2"
+orange = "#B55000"
+ink = "#17202A"
+muted = "#8A96A3"
+shade = "#EEF1F4"
+// Drawing units of a 257 mm wide slide area at 970 px: 24 px = 18 pt body text.
+font = ({fontFamily: "'STIX Two Text', serif", fontSize: "19px", color: ink, background: "transparent"})
+subscripts = (svg) => {
+  for (const t of svg.querySelectorAll("text")) {
+    if (!/[_^]/.test(t.textContent)) continue;
+    t.innerHTML = t.textContent
+      .replace(/_(\w+)/g, '<tspan baseline-shift="sub" font-size="72%">$1</tspan>')
+      .replace(/\^(\S+)/g, '<tspan baseline-shift="super" font-size="72%">$1</tspan>');
+  }
+  return svg;
+}
+// One period Λ sampled at N points; mode m has wavenumber k = 2π m / Λ.
+N = 1024
+M = 256
+xs = d3.range(N).map((i) => i / N)
+// Cubic B-spline with knot spacing h: piecewise cubic, C², peak 2/3.
+bspline = (t) => {
+  const a = Math.abs(t);
+  return a < 1 ? 2 / 3 - a * a + a * a * a / 2 : a < 2 ? (2 - a) ** 3 / 6 : 0;
+}
+sinc = (u) => (u === 0 ? 1 : Math.sin(u) / u)
+sigma = 0.08
+h = 0.1
+w = 0.2
+// Profiles centred at x = Λ/2 with their exact cosine coefficients a_m
+// (f = a_0 + Σ a_m cos 2πm x), so the spectrum has no sampling artefacts.
+profiles = new Map([
+  ["smooth (analytic)", {f: (x) => Math.exp(-0.5 * ((x - 0.5) / sigma) ** 2),
+    c: (m) => sigma * Math.sqrt(2 * Math.PI) * Math.exp(-0.5 * (2 * Math.PI * m * sigma) ** 2),
+    law: "∝ exp(−k^2σ^2/2)"}],
+  ["cubic spline (C²)", {f: (x) => 1.5 * bspline((x - 0.5) / h),
+    c: (m) => 1.5 * h * sinc(Math.PI * m * h) ** 4, law: "∝ k^−4"}],
+  ["kink (C⁰)", {f: (x) => Math.max(0, 1 - Math.abs(x - 0.5) / w),
+    c: (m) => w * sinc(Math.PI * m * w) ** 2, law: "∝ k^−2"}],
+  ["jump", {f: (x) => (Math.abs(x - 0.5) < 0.2 ? 1 : Math.abs(x - 0.5) === 0.2 ? 0.5 : 0),
+    c: (m) => 0.4 * sinc(Math.PI * m * 0.4), law: "∝ k^−1"}],
+])
+spectra = new Map([...profiles].map(([name, p]) => {
+  const a = Float64Array.from(d3.range(M + 1), (m) => (m === 0 ? 1 : 2) * (-1) ** m * p.c(m));
+  return [name, {y: xs.map(p.f), a, law: p.law}];
+}))
+```
+
+```{ojs}
+//| output: false
+s = spectra.get(shape)
+mc = Math.round(kc)
+// Truncated series: keep modes m ≤ m_c.
+yc = xs.map((x) => {
+  let v = s.a[0];
+  for (let m = 1; m <= mc; m++) {
+    const ph = 2 * Math.PI * m * x;
+    v += s.a[m] * Math.cos(ph);
+  }
+  return v;
+})
+err = d3.max(xs, (_, i) => Math.abs(yc[i] - s.y[i]))
+// Exact zeros of the spectrum (nodes of the sinc) are left out of the log plot.
+amp = d3.range(1, M + 1).map((m) => ({m, c: Math.abs(s.a[m]), kept: m <= mc})).filter((d) => d.c > 1e-9)
+real = xs.map((x, i) => ({x, y: s.y[i], yc: yc[i]}))
+```
+
+```{ojs}
+{
+  const spectrum = Plot.plot({
+    width: 400, height: 410, marginLeft: 62, marginRight: 16, marginTop: 44, marginBottom: 62,
+    style: font, clip: true,
+    x: {type: "log", domain: [1, M], label: "m = kΛ/2π [1]", labelAnchor: "center", labelOffset: 40,
+        labelArrow: "none", ticks: [1, 10, 100]},
+    y: {type: "log", domain: [1e-6, 1], label: "|δB̂_m| / δB_max [1]", labelArrow: "none",
+        ticks: [1e-6, 1e-4, 1e-2, 1], tickFormat: (v) => `10^${Math.round(Math.log10(v))}`},
+    marks: [
+      Plot.rect([0], {x1: 1, x2: Math.max(1, mc), y1: 1e-6, y2: 1, fill: shade}),
+      Plot.dot(amp, {x: "m", y: "c", r: 2.2, fill: (d) => (d.kept ? blue : muted), stroke: null}),
+      Plot.ruleX([Math.max(1, mc)], {stroke: orange, strokeWidth: 2}),
+      Plot.text([0], {x: Math.max(1, mc), y: 0.4, text: () => "k_c", fill: orange, textAnchor: "start", dx: 6}),
+      Plot.text([0], {x: 250, y: 0.4, text: () => s.law, fill: ink, textAnchor: "end"}),
+    ],
+  });
+  const space = Plot.plot({
+    width: 570, height: 410, marginLeft: 62, marginRight: 20, marginTop: 44, marginBottom: 62,
+    style: font, clip: true,
+    x: {domain: [0, 1], label: "x / Λ [1]", labelAnchor: "center", labelOffset: 40, labelArrow: "none",
+        ticks: [0, 0.25, 0.5, 0.75, 1], tickFormat: (v) => String(v)},
+    y: {domain: [-0.3, 1.3], label: "δB / δB_max [1]", labelArrow: "none", ticks: [0, 0.5, 1]},
+    marks: [
+      Plot.line(real, {x: "x", y: "y", stroke: muted, strokeWidth: 2, strokeDasharray: "6,4"}),
+      Plot.line(real, {x: "x", y: "yc", stroke: blue, strokeWidth: 2.5}),
+      // Shortest kept wavelength 2π/k_c as a scale bar.
+      Plot.ruleY([-0.17], {x1: 0.04, x2: 0.04 + 1 / mc, stroke: orange, strokeWidth: 3}),
+      Plot.text([0], {x: 0.04 + 1 / mc, y: -0.17, text: () => "2π/k_c", fill: orange, textAnchor: "start", dx: 6}),
+    ],
+  });
+  return htl.html`<div style="display:flex">${subscripts(spectrum)}${subscripts(space)}</div>`;
+}
+```
+
+<div class="readout" id="err"></div>
+
+```{ojs}
+//| output: false
+document.getElementById("err").innerHTML = `max |δ<i>B</i> − δ<i>B</i><sub>c</sub>| / δ<i>B</i><sub>max</sub> = ${err.toFixed(err < 0.01 ? 4 : 2)}`
+```
+
+```{ojs}
+viewof shape = Inputs.radio([...profiles.keys()], {value: "jump", label: "profile"})
+viewof kc = Inputs.range([1, M], {value: 8, transform: Math.log, step: 1,
+  label: html`<i>k</i><sub>c</sub>Λ/2π`})
+```
+
+```{ojs}
+//| output: false
+{
+  const div = viewof kc.querySelector("div");
+  const out = div.querySelector("output") ?? div.appendChild(document.createElement("output"));
+  out.textContent = `${mc}`;
+}
+```

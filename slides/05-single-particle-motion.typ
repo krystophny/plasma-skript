@@ -92,6 +92,7 @@
   ))
   #at(2, 10, y: 92mm, align(center, note[fusion: $rho_(L i) approx 3$ mm against minor radius $a approx 1$ m; equal $T$: $abs(omega_(c e)) tau_e > omega_(c i) tau_i$]))
 ])
+#widget-page("fourier-cutoff", section: "motion-lorentz", title: [Field smoothness and Fourier cutoff])
 // ------------------------------------------------------------ 2 E x B
 #build(5, slide(section: "motion-exb", title: [$E times B$ drift])[
   #at(1, 6, y: 10mm, exb-picture(unit: 11mm))
