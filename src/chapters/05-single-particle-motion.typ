@@ -253,7 +253,7 @@
     ),
   ))
 
-  #section-title[Homogeneous-force drift and the $E times B$ drift] <motion-exb>
+  #section-title[Force drift and the $E times B$ drift] <motion-exb>
 
   #lead[
     A slowly moving orbit center can be found without solving the rapid
@@ -262,9 +262,9 @@
   ]
 
   #objectives((
-    [derive the $E times B$ drift from a gyration-plus-drift ansatz],
-    [generalize it to the drift velocity for a homogeneous force perpendicular to $bold(B)$],
-    [identify which particle properties cancel from the common drift],
+    [derive the drift velocity for a constant force from a gyration-plus-drift ansatz],
+    [obtain the $E times B$ drift as its electric case and explain why it carries no current],
+    [obtain the gravity drift as its gravitational case and the current it carries],
   ))
 
   #unit-ledger[
@@ -272,21 +272,19 @@
     use the same reference state.
   ]
 
-  Resolve the electric field into components parallel and perpendicular to the
-  magnetic field, with $bold(b) = bold(B)\/B$:
-
-  $ bold(E) = E_parallel bold(b) + bold(E)_perp, quad
-    m_alpha dv(v_parallel,t) = q_alpha E_parallel $ <motion-electric-decomposition>
-
-  #equation-note[
-    $E_parallel$ is the scalar component along $bold(B)$. It accelerates a
-    particle along the field. The perpendicular component participates in
-    gyromotion and, when static and homogeneous, in the common $E times B$
-    drift derived below.
+  #assumption(
+    [Uniform crossed-field ordering],
+    [Take uniform, time-independent $bold(B)$ and a constant force $bold(F)$
+    on the particle. The force may be electric, gravitational, or another
+    prescribed force. Averaging over gyromotion leaves a constant
+    orbit-center velocity. The pressure-gradient force used later in fluid
+    theory acts on a population; it is not an additional microscopic force
+    on an isolated particle.
   ]
+  )
 
-  For uniform, static $bold(E)$ and $bold(B)$, try a gyration carried along
-  by a constant drift:
+  With $bold(b) = bold(B)\/B$, try a gyration carried along by a constant
+  drift:
 
   $ bold(v) = v_parallel bold(b) + bold(v)_perp (t) + bold(v)_D $ <motion-exb-ansatz>
 
@@ -296,24 +294,56 @@
     and $bold(v)_D$ is a constant drift velocity perpendicular to $bold(B)$.
   ]
 
-  Insert the ansatz into the Lorentz force. The gyration terms cancel on both
-  sides, $dv(bold(v)_D,t, style: "horizontal") = 0$, and the parallel part was
-  treated above, so the perpendicular remainder is
+  Insert the ansatz into
+  $m_alpha dv(bold(v),t, style: "horizontal") = bold(F) + q_alpha bold(v) times bold(B)$.
+  The gyration terms cancel on both sides and
+  $dv(bold(v)_D,t, style: "horizontal") = 0$. Along $bold(b)$ remains
+  $m_alpha dv(v_parallel,t, style: "horizontal") = F_parallel$, and across
+  $bold(b)$
 
-  $ bold(0) = bold(E)_perp + bold(v)_D times bold(B) . $
+  $ bold(F)_perp + q_alpha (bold(v)_D times bold(B)) = 0 $ <motion-force-balance>
+
+  #equation-note[
+    This is a vector force balance in #unit("N"). The drift has no
+    acceleration because it describes the constant orbit-center translation.
+  ]
 
   Crossing with $bold(B)$ and using
-  $(bold(v)_D times bold(B)) times bold(B) = -B^2 bold(v)_D$ gives
+  $(bold(v)_D times bold(B)) times bold(B) = -B^2 bold(v)_D$ for
+  $bold(v)_D perp bold(B)$ gives
+
+  $ bold(v)_D = (bold(F) times bold(B))/(q_alpha B^2) $ <motion-general-drift>
+
+  #equation-note[
+    The result has velocity units, #unit("m/s"). Only $bold(F)_perp$
+    contributes. The parallel component $F_parallel$ cannot be balanced by
+    the magnetic force and accelerates the particle freely along $bold(B)$.
+  ]
+
+  For an electric force, $bold(F) = q_alpha bold(E)$, resolve the field
+  along and across $bold(B)$:
+
+  $ bold(E) = E_parallel bold(b) + bold(E)_perp, quad
+    m_alpha dv(v_parallel,t) = q_alpha E_parallel $ <motion-electric-decomposition>
+
+  #equation-note[
+    $E_parallel$ is the scalar component along $bold(B)$. It accelerates
+    ions and electrons along the field in opposite directions, at rates set
+    by $q_alpha\/m_alpha$.
+  ]
+
+  Substituted into the force drift, the charge cancels:
 
   $ bold(v)_D = (bold(E) times bold(B))/(B^2) $ <motion-exb-drift>
 
   #equation-note[
     With $E$ in #unit("V/m") and $B$ in #unit("T"), $E\/B$ is directly a
-    speed in #unit("m/s"). The common $E times B$ drift is independent of species mass and charge sign.
+    speed in #unit("m/s"). The drift is independent of species mass and
+    charge sign, so all species drift together and carry no current.
   ]
 
-  The remainder equation also states what the drift means. In a frame moving
-  with $bold(v)_D$, the perpendicular electric field is
+  The perpendicular force balance also states what the drift means.
+  In a frame moving with $bold(v)_D$, the perpendicular electric field is
   $bold(E)'_perp = bold(E)_perp + bold(v)_D times bold(B) = bold(0)$, so there
   the particle only gyrates. In the laboratory the same circle is carried
   along at $bold(v)_D$. For $E\/B << c$ this split is exact, not an average
@@ -344,60 +374,6 @@
     poster: "../media/exb-frame-change.png",
   )
 
-  #assumption(
-    [Uniform crossed-field ordering],
-    [Take uniform, time-independent $bold(B)$ and a constant force with
-    $bold(F) dot bold(B) = 0$. The force may be electric, gravitational, or
-    another prescribed force on the particle. Averaging over gyromotion
-    leaves a constant orbit-center velocity. The pressure-gradient force
-    used later in fluid theory acts on a population; it is not an additional
-    microscopic force on an isolated particle.
-  ]
-  )
-
-  The same argument holds with $q_alpha bold(E)_perp$ replaced by any such
-  force. The force balance for a constant orbit-center velocity is
-
-  $ bold(F) + q_alpha (bold(v)_D times bold(B)) = 0 $ <motion-force-balance>
-
-  #equation-note[
-    This is a vector force balance in #unit("N"). The drift has no
-    acceleration because it describes the constant orbit-center translation.
-  ]
-
-  Crossing with $bold(B)$ and using $bold(v)_D dot bold(B)=0$ gives
-
-  $ bold(v)_D = (bold(F) times bold(B))/(q_alpha B^2) $ <motion-general-drift>
-
-  #equation-note[
-    The result has velocity units, #unit("m/s"). It is valid for a homogeneous
-    perpendicular force and a uniform magnetic field. For
-    $bold(F)=q_alpha bold(E)$ the charge cancels and the $E times B$ drift is
-    recovered.
-  ]
-
-  #details(
-    [Derivation: the force drift as a cross product],
-    [#derivation-step[Start from the orbit-center force balance]
-    A constant drift velocity satisfies
-
-    $ bold(F)+q_alpha (bold(v)_D times bold(B))=bold(0) . $
-
-    The drift is perpendicular to $bold(B)$, so crossing the equation with
-    $bold(B)$ uses
-
-    $ (bold(v)_D times bold(B)) times bold(B)=-bold(v)_D B^2 . $
-
-    #derivation-step[Solve for the drift]
-    The cross-product equation becomes
-
-    $ bold(v)_D=(bold(F) times bold(B))/(q_alpha B^2) . $
-
-    For an electric force, $bold(F)=q_alpha bold(E)$, so both the charge magnitude
-    and its sign cancel. Direct substitution into the original force balance
-    checks the sign of the resulting $E times B$ drift.]
-  )
-
   Gravity, $bold(F) = m_alpha bold(g)$ with the gravitational acceleration
   $bold(g)$ in #unit("m/s^2"), does not contain the charge:
 
@@ -426,10 +402,12 @@
   )
 
   #summary[
-    A homogeneous perpendicular force produces a drift
-    $bold(v)_D = bold(F) times bold(B)\/(q_alpha B^2)$. For an electric force the
-    charge cancels, so all magnetized species share the same $E times B$ drift;
-    in the frame moving with it the electric field vanishes.
+    A constant force produces the drift
+    $bold(v)_D = bold(F) times bold(B)\/(q_alpha B^2)$ across $bold(B)$ and free
+    acceleration along it. For an electric force the charge cancels, so all
+    species share the same $E times B$ drift and carry no current. In the frame
+    moving with it the electric field vanishes. Gravity drives ions and
+    electrons in opposite directions and so drives a current.
   ]
 
   #exam-prompts(
