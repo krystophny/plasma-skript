@@ -95,12 +95,14 @@
 #widget-page("fourier-cutoff", section: "motion-lorentz", title: [Field smoothness and Fourier cutoff])
 #slide(section: "motion-lorentz", title: [Admissible field spectrum])[
   #at(1, 7, y: 0mm, plot("amplitude_bounds", columns: 7))
-  #at(8, 5, y: 6mm)[
+  #at(8, 5, y: 0mm)[
     $B(x + rho) = B + rho B' + rho^2 \/ 2 thin B''(xi)$
-    #v(3mm)
-    #note[$xi$ between $x$ and $x + rho$: only $abs(B'') <= B_* \/ L^2$ is needed]
+    #v(7mm)
+    $B(k) = 1 \/ (2 pi) integral B(x) e^(-i k x) dif x$
+    #v(7mm)
+    $abs(B(k)) <= max abs(B'') \/ k^2$
   ]
-  #at(8, 5, y: 62mm, result-box($abs(B(k)) \/ B_* <= (k L)^(-2)$, [one mode $B(k) cos k x$, $k L > 1$]))
+  #at(8, 5, y: 70mm, result-box($abs(B(k)) <= B_* (k L)^(-2)$, [$k L > 1$]))
 ]
 // ------------------------------------------------------------ 2 force drift, E x B
 #build(5, slide(section: "motion-exb", title: [Force drift])[
@@ -146,6 +148,17 @@
   ))
   #at(1, 12, y: 111mm, reveal(3, result-box($dot(bold(R)) = v_parallel bold(b) + O(epsilon v)$, [field-line following at leading order])))
   #symbols[$epsilon = v \/ (abs(omega_c)L) << 1$; for $v_parallel approx v_perp$, this is of order $rho_L \/ L$]
+])
+#build(5, slide(section: "motion-guiding-center", title: [Fields at the guiding centre])[
+  #at(1, 12, y: 4mm, lrows(size: 20pt, label-width: 52mm, gap: 11mm, steps: (1, 2, 3, 5),
+    ([fields at $bold(R)$], $bold(r) = bold(R) + bold(rho)_0 + O(epsilon^2 L), quad bold(rho)_0 = (bold(b)(bold(R)) times bold(v)) \/ omega_c (bold(R))$),
+    ([differentiate], $dot(bold(R)) = bold(v) - dot(bold(rho))_0 + O(epsilon v)$),
+    ([Lorentz + Taylor], $dot(bold(rho))_0 = bold(b) times (bold(v) times bold(b)) + O(epsilon v) = bold(v)_perp + O(epsilon v)$),
+    ([$dif \/ dif t$ of $O(epsilon^2 L)$], $epsilon^2 L dot abs(omega_c) = epsilon v$),
+  ))
+  #at(1, 12, y: 76mm, reveal(4, result-box($dot(bold(R)) = v_parallel bold(b)(bold(R)) + O(epsilon v)$, [same leading order])))
+  #at(1, 12, y: 122mm, reveal(5, note[first-order drifts: keep the $O(epsilon)$ terms and gyroaverage, or use the guiding-centre Lagrangian]))
+  #symbols[$epsilon = v \/ (abs(omega_c) L)$]
 ])
 // ---------------------------------- Curvature: centrifugal force then drift
 #build(3, slide(section: "motion-guiding-center", title: [Curvature drift])[
