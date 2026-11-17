@@ -150,12 +150,12 @@
       "repeat": true
     },
     {
-      "src": "p20.svg?v=8f2b2763",
+      "src": "p20.svg?v=272b438d",
       "kind": "widget",
       "background": "light",
       "alt": "5.1 The Lorentz force and uniform-field gyromotion: Field smoothness and Fourier cutoff",
       "repeat": false,
-      "widget": "../../notebooks/slide-fourier-cutoff.html?v=13f0511f",
+      "widget": "../../notebooks/slide-fourier-cutoff.html?v=09875fcd",
       "region": {
         "x": 0.06734006734006734,
         "y": 0.19047619047619047,
