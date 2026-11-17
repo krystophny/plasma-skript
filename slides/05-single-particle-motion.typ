@@ -93,6 +93,15 @@
   #at(2, 10, y: 92mm, align(center, note[fusion: $rho_(L i) approx 3$ mm against minor radius $a approx 1$ m; equal $T$: $abs(omega_(c e)) tau_e > omega_(c i) tau_i$]))
 ])
 #widget-page("fourier-cutoff", section: "motion-lorentz", title: [Field smoothness and Fourier cutoff])
+#slide(section: "motion-lorentz", title: [Admissible field spectrum])[
+  #at(1, 7, y: 0mm, plot("amplitude_bounds", columns: 7))
+  #at(8, 5, y: 6mm)[
+    $B(x + rho) = B + rho B' + rho^2 \/ 2 thin B''(xi)$
+    #v(3mm)
+    #note[$xi$ between $x$ and $x + rho$: only $abs(B'') <= B_* \/ L^2$ is needed]
+  ]
+  #at(8, 5, y: 62mm, result-box($abs(B(k)) \/ B_* <= (k L)^(-2)$, [one mode $B(k) cos k x$, $k L > 1$]))
+]
 // ------------------------------------------------------------ 2 E x B
 #build(5, slide(section: "motion-exb", title: [$E times B$ drift])[
   #at(1, 6, y: 10mm, exb-picture(unit: 11mm))
