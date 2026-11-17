@@ -17,7 +17,7 @@ muted = "#8A96A3"
 shade = "#EEF1F4"
 // Drawing units of a 257 mm wide slide area at 970 px: 24 px = 18 pt body text.
 font = ({fontFamily: "'STIX Two Text', serif", fontSize: "19px", color: ink, background: "transparent"})
-// One period −π ≤ x < π; the wavenumbers k are integers.
+// Lengths in units of L: one period −π ≤ x/L < π, so kL takes integer values.
 N = 1024
 K = 256
 xs = d3.range(N).map((i) => -Math.PI + (2 * Math.PI * i) / N)
@@ -28,31 +28,31 @@ bspline = (t) => {
 }
 sinc = (u) => (u === 0 ? 1 : Math.sin(u) / u)
 // Even profiles of peak 1 with their exact transforms F(k) = ∫ f(x) cos kx dx,
-// so δB = a_0 + Σ a_k cos kx with a_0 = F(0)/2π, a_k = F(k)/π, free of sampling artefacts.
+// so B(x) = Σ_k B(k) cos kx with B(0) = F(0)/2π, B(k) = F(k)/π, free of sampling artefacts.
 // Widths in multiples of π put the nodes of the sinc spectra on integer k.
 sigma = 0.5
 h = 0.2 * Math.PI
 w = 0.4 * Math.PI
 profiles = new Map([
   ["smooth (analytic)", {f: (x) => Math.exp(-0.5 * (x / sigma) ** 2),
-    F: (k) => sigma * Math.sqrt(2 * Math.PI) * Math.exp(-0.5 * (k * sigma) ** 2),
-    law: "∝ e<sup>−<i>k</i><sup>2</sup><i>σ</i><sup>2</sup>/2</sup>"}],
+    F: (k) => sigma * Math.sqrt(2 * Math.PI) * Math.exp(-0.5 * (k * sigma) ** 2)}],
   ["cubic spline (C²)", {f: (x) => 1.5 * bspline(x / h),
-    F: (k) => 1.5 * h * sinc(k * h / 2) ** 4, law: "∝ <i>k</i><sup>−4</sup>"}],
+    F: (k) => 1.5 * h * sinc(k * h / 2) ** 4}],
   ["kink (C⁰)", {f: (x) => Math.max(0, 1 - Math.abs(x) / w),
-    F: (k) => w * sinc(k * w / 2) ** 2, law: "∝ <i>k</i><sup>−2</sup>"}],
+    F: (k) => w * sinc(k * w / 2) ** 2}],
   ["jump", {f: (x) => (Math.abs(x) < w ? 1 : Math.abs(x) === w ? 0.5 : 0),
-    F: (k) => 2 * w * sinc(k * w), law: "∝ <i>k</i><sup>−1</sup>"}],
+    F: (k) => 2 * w * sinc(k * w)}],
 ])
 spectra = new Map([...profiles].map(([name, p]) => {
   const a = Float64Array.from(d3.range(K + 1), (k) => p.F(k) / (k === 0 ? 2 * Math.PI : Math.PI));
-  return [name, {y: xs.map(p.f), a, law: p.law}];
+  return [name, {y: xs.map(p.f), a}];
 }))
-// Plain text with "10^-6" style exponents: draw them as superscripts.
+// Plain text with "10^-6" style exponents: draw them as superscripts
+// (dy, since Firefox ignores baseline-shift in SVG).
 superscripts = (svg) => {
   for (const t of svg.querySelectorAll("text")) {
     if (!t.textContent.includes("^")) continue;
-    t.innerHTML = t.textContent.replace(/\^(\S+)/g, '<tspan baseline-shift="super" font-size="72%">$1</tspan>');
+    t.innerHTML = t.textContent.replace(/\^(\S+)/g, '<tspan dy="-0.5em" font-size="72%">$1</tspan>');
   }
   return svg;
 }
@@ -60,11 +60,10 @@ superscripts = (svg) => {
 // with italic variables, sub- and superscripts in the slide font.
 W = 970
 H = 458
-label = (x, y, content, {align = "start", color = ink, size = 0.8, back = false} = {}) => {
+label = (x, y, content, {align = "start", color = ink, size = 0.8} = {}) => {
   const shift = {start: "0", middle: "-50%", end: "-100%"}[align];
   const el = htl.html`<div style="position:absolute; left:${(100 * x) / W}%; top:${(100 * y) / H}%;
-    transform:translate(${shift}, -50%); white-space:nowrap; font-size:${size}rem; color:${color}; line-height:1;
-    ${back ? "background:#fff; padding:0.1rem 0.2rem" : ""}">`;
+    transform:translate(${shift}, -50%); white-space:nowrap; font-size:${size}rem; color:${color}; line-height:1">`;
   el.innerHTML = content;
   return el;
 }
@@ -80,7 +79,6 @@ yc = xs.map((x) => {
   for (let k = 1; k <= kc; k++) v += s.a[k] * Math.cos(k * x);
   return v;
 })
-err = d3.max(xs, (_, i) => Math.abs(yc[i] - s.y[i]))
 // Exact zeros of the spectrum (nodes of the sinc) are left out of the log plot.
 amp = d3.range(1, K + 1).map((k) => ({k, c: Math.abs(s.a[k]), kept: k <= kc})).filter((d) => d.c > 1e-9)
 real = xs.map((x, i) => ({x, y: s.y[i], yc: yc[i]}))
@@ -110,42 +108,28 @@ real = xs.map((x, i) => ({x, y: s.y[i], yc: yc[i]}))
     marks: [
       Plot.line(real, {x: "x", y: "y", stroke: muted, strokeWidth: 2, strokeDasharray: "6,4"}),
       Plot.line(real, {x: "x", y: "yc", stroke: blue, strokeWidth: 2.5}),
-      // Shortest kept wavelength 2π/k_c as a scale bar.
-      Plot.ruleY([-0.17], {x1: -2.9, x2: -2.9 + (2 * Math.PI) / kc, stroke: orange, strokeWidth: 3}),
     ],
   });
   // The slide CSS stretches every plot to full width; keep the drawing proportions.
   spectrum.style.setProperty("width", `${(100 * left) / W}%`, "important");
   space.style.setProperty("width", `${(100 * (W - left)) / W}%`, "important");
   const sx = spectrum.scale("x").apply, sy = spectrum.scale("y").apply;
-  const rx = space.scale("x").apply, ry = space.scale("y").apply;
   const kLabel = Math.min(sx(kc) + 8, sx(K) - 40);
-  const barEnd = Math.min(rx(-2.9 + (2 * Math.PI) / kc) + 8, W - left - 90);
   return htl.html`<div style="position:relative; width:100%; aspect-ratio:${W}/${H}">
     <div style="display:flex; width:100%">${superscripts(spectrum)}${space}</div>
-    ${label(6, 18, "|<i>a</i><sub><i>k</i></sub>| / δ<i>B</i><sub>max</sub> [1]")}
-    ${label(62 + (left - 78) / 2, H - 16, "<i>k</i> [1]", {align: "middle"})}
-    ${label((left + 90) / 2, 18, "δ<i>B</i> = <i>a</i><sub>0</sub> + Σ<sub><i>k</i></sub> <i>a</i><sub><i>k</i></sub> cos <i>kx</i>", {align: "middle"})}
-    ${label(sx(K) - 4, sy(0.3), s.law, {align: "end", back: true})}
-    ${label(kLabel, sy(2e-6), "<i>k</i><sub>c</sub>", {color: orange})}
-    ${label(left + 6, 18, "δ<i>B</i> / δ<i>B</i><sub>max</sub> [1]")}
-    ${label(left + 62 + (W - left - 82) / 2, H - 16, "<i>x</i> [1]", {align: "middle"})}
-    ${label(left + barEnd, ry(-0.17), "2π / <i>k</i><sub>c</sub>", {color: orange})}
+    ${label(6, 18, "|<i>B</i>(<i>k</i>)| [1]")}
+    ${label(62 + (left - 78) / 2, H - 16, "<i>kL</i> [1]", {align: "middle"})}
+    ${label(kLabel, sy(2e-6), "<i>k</i><sub>c</sub><i>L</i>", {color: orange})}
+    ${label(left + 6, 18, "<i>B</i>(<i>x</i>) [1]")}
+    ${label(left + 62 + (W - left - 82) / 2, H - 16, "<i>x</i> / <i>L</i> [1]", {align: "middle"})}
   </div>`;
 }
-```
-
-<div class="readout" id="err"></div>
-
-```{ojs}
-//| output: false
-document.getElementById("err").innerHTML = `max |δ<i>B</i> − δ<i>B</i><sub>c</sub>| / δ<i>B</i><sub>max</sub> = ${err.toFixed(err < 0.01 ? 4 : 2)}`
 ```
 
 ```{ojs}
 viewof shape = Inputs.radio([...profiles.keys()], {value: "jump", label: "profile"})
 viewof kcut = Inputs.range([2, K], {value: 8, transform: Math.log, step: 1,
-  label: html`<i>k</i><sub>c</sub>`})
+  label: html`<i>k</i><sub>c</sub><i>L</i>`})
 ```
 
 ```{ojs}

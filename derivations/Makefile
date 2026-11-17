@@ -39,7 +39,7 @@ test: $(OUTLINE)
 
 tex: $(TEX)
 fig: $(TEX) build/fig/saha_cmod.svg build/fig/debye_nonlinear_potential.svg build/fig/mu_ramp.svg \
-     build/fig/loss_cone.svg
+     build/fig/loss_cone.svg build/fig/amplitude_bounds.svg
 pdf: $(PDF)
 
 build/tex/%.tex: chapters/%.py si.py notebook.py $(OUTLINE)
@@ -56,6 +56,9 @@ build/fig/mu_ramp.svg: plot_mu_ramp.py si.py
 
 build/fig/loss_cone.svg: plot_loss_cone.py si.py
 	$(PYTHON) plot_loss_cone.py
+
+build/fig/amplitude_bounds.svg: plot_amplitude_bounds.py si.py
+	$(PYTHON) plot_amplitude_bounds.py
 
 # Plots for chapters 7 and 10.
 fig: build/fig/moment-weights.svg build/fig/spitzer-resistivity.svg
