@@ -102,36 +102,32 @@
   ]
   #at(8, 5, y: 62mm, result-box($abs(B(k)) \/ B_* <= (k L)^(-2)$, [one mode $B(k) cos k x$, $k L > 1$]))
 ]
-// ------------------------------------------------------------ 2 E x B
-#build(5, slide(section: "motion-exb", title: [$E times B$ drift])[
-  #at(1, 6, y: 10mm, exb-picture(unit: 11mm))
-  #at(7, 6, y: 0mm, formula-rows(gap: 7mm, steps: (1, 1, 2, 3),
+// ------------------------------------------------------------ 2 force drift, E x B
+#build(5, slide(section: "motion-exb", title: [Force drift])[
+  #at(1, 7, y: 0mm, formula-rows(gap: 7mm, steps: (1, 1, 2, 3),
     ([ansatz], $bold(v) = v_parallel bold(b) + bold(v)_perp (t) + bold(v)_D$),
     ([gyration], $dif bold(v)_perp \/ dif t = (q_alpha \/ m_alpha) bold(v)_perp times bold(B)$),
-    ([remainder], $0 = bold(E)_perp + bold(v)_D times bold(B)$),
-    ([$times bold(B)$], $0 = bold(E) times bold(B) - B^2 bold(v)_D$),
+    ([remainder], $0 = bold(F)_perp + q_alpha bold(v)_D times bold(B)$),
+    ([$times bold(B)$], $0 = bold(F) times bold(B) - q_alpha B^2 bold(v)_D$),
   ))
-  #at(7, 6, y: 60mm, reveal(4, result-box($bold(v)_D = (bold(E) times bold(B))/B^2$, [independent of $q_alpha$ and $m_alpha$])))
-  #at(1, 12, y: 108mm, formula-rows(gap: 6mm, steps: (5, 5),
-    ([drift frame], [$bold(E)' = bold(E) + bold(v)_D times bold(B) = 0$ #h(0.6em) #note[exact: gyration + uniform drift ($bold(E) perp bold(B)$, $E\/B << c$)]]),
-    ([along $bold(b)$], [$m_alpha dif v_parallel \/ dif t = q_alpha E_parallel$ #h(0.6em) #note[free acceleration]]),
+  #at(8, 5, y: 20mm, reveal(4, result-box($bold(v)_D = (bold(F) times bold(B))/(q_alpha B^2)$, [constant force $bold(F)$])))
+  #at(1, 12, y: 88mm, formula-rows(gap: 12mm, steps: (4, 5),
+    ([along $bold(b)$], [$m_alpha dif v_parallel \/ dif t = F_parallel$ #h(0.6em) #note[free acceleration]]),
+    ([$bold(F) = m_alpha bold(g)$], [$bold(v)_D = m_alpha/q_alpha (bold(g) times bold(B))/B^2$ #h(0.6em) #note[ions and electrons opposite: current $n (m_i + m_e) (bold(g) times bold(B)) \/ B^2$]]),
   ))
-  #at(1, 12, y: 140mm, note[$bold(b) = bold(B)\/B$, $bold(v)_D$ drift velocity, $bold(v)_perp (t)$ gyration, $bold(E)_perp$, $E_parallel$ field across and along $bold(B)$])
+  #at(1, 12, y: 140mm, note[$bold(b) = bold(B)\/B$, $bold(v)_D$ drift velocity, $bold(v)_perp (t)$ gyration, $bold(g)$ gravitational acceleration, hydrogen $n_i = n_e = n$])
+  #at(1, 12, y: 150mm, note[#link("https://krystophny.github.io/plasma-skript/notebooks/orbits.html")[notebook: particle orbits and drifts]])
+])
+#animation-page("gravity-drift", "gravity_drift", section: "motion-exb")
+#build(3, slide(section: "motion-exb", title: [$E times B$ drift])[
+  #at(1, 6, y: 10mm, exb-picture(unit: 11mm))
+  #at(7, 6, y: 6mm, formula-rows(([$bold(F) = q_alpha bold(E)$], $bold(v)_D = (q_alpha bold(E) times bold(B))/(q_alpha B^2)$)))
+  #at(7, 6, y: 40mm, reveal(2, result-box($bold(v)_D = (bold(E) times bold(B))/B^2$, [same for all species: no current])))
+  #at(1, 12, y: 112mm, reveal(3)[#text(fill: muted)[drift frame] #h(1em) $bold(E)' = bold(E) + bold(v)_D times bold(B) = 0$ #h(0.6em) #note[exact: gyration + uniform drift ($bold(E) perp bold(B)$, $E\/B << c$)]])
+  #at(1, 12, y: 140mm, note[$bold(E)$ electric field across $bold(B)$; $E_parallel$ accelerates freely as any $F_parallel$])
 ])
 #animation-page("exb-drift", "exb_drift", section: "motion-exb")
 #animation-page("exb-frame-change", "exb_frame_change", section: "motion-exb")
-#build(5, slide(section: "motion-exb", title: [General force drift])[
-  #at(1, 12, y: 6mm, formula-rows(gap: 10mm,
-    ([force $bold(F) perp bold(B)$], $bold(F) + q_alpha bold(v)_D times bold(B) = 0$),
-    ([$times bold(B)$], $bold(v)_D = bold(F)/q_alpha times bold(B)/B^2$),
-    ([$bold(F) = q_alpha bold(E)$], [$bold(v)_D = (bold(E) times bold(B))\/B^2$ #h(0.6em) #note[same for all species: no charge separation]]),
-    ([$bold(F) = m_alpha bold(g)$], [$bold(v)_D = m_alpha/q_alpha (bold(g) times bold(B))/B^2$ #h(0.6em) #note[ions and electrons opposite]]),
-    ([current], $bold(j) = sum_alpha n_alpha q_alpha bold(v)_D = n (m_i + m_e) (bold(g) times bold(B))/B^2$),
-  ))
-  #at(1, 12, y: 134mm, note[$bold(F)$ constant force, $bold(g)$ gravitational acceleration, $n_alpha$ density of species $alpha$, hydrogen $n_i = n_e = n$])
-  #at(1, 12, y: 148mm, note[#link("https://krystophny.github.io/plasma-skript/notebooks/orbits.html")[notebook: particle orbits and drifts]])
-])
-#animation-page("gravity-drift", "gravity_drift", section: "motion-exb")
 // ------------------------------------ Leading-order guiding-centre motion
 #build(3, slide(section: "motion-guiding-center", title: [Guiding centre])[
   #at(1, 12, y: 2mm, guiding-centre-picture(unit: 10.5mm))
