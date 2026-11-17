@@ -2,13 +2,14 @@
 """Fourier amplitudes admitted by the derivative bounds of the guiding-centre
 ordering.
 
-Model: one Fourier mode B(x) = B(k) cos(kx) of a field that obeys
-|B| <= B_*, |dB/dx| <= B_*/L and |d^2B/dx^2| <= B_*/L^2 (unit constants).
-The mode has |dB/dx|max = k|B(k)| and |d^2B/dx^2|max = k^2|B(k)|, so in units
-of kL [1] and |B(k)|/B_* [1] the three bounds are 1, (kL)^-1 and (kL)^-2.
-The admissible amplitudes lie below all three, under
-min(1, (kL)^-1, (kL)^-2) = 1 for kL <= 1 and (kL)^-2 for kL > 1: the
-first-derivative bound never sets the envelope.
+Model: a periodic field with |B| <= B_*, |dB/dx| <= B_*/L and
+|d^2B/dx^2| <= B_*/L^2 (unit constants). Its coefficients
+B(k) = (1/2pi) int B(x) exp(-ikx) dx obey |B(k)| <= max|B|, and after one and
+two partial integrations |B(k)| <= max|B'|/k and |B(k)| <= max|B''|/k^2. In
+units of kL [1] and |B(k)|/B_* [1] the three bounds are 1, (kL)^-1 and
+(kL)^-2; every coefficient lies below min(1, (kL)^-1, (kL)^-2) = 1 for
+kL <= 1 and (kL)^-2 for kL > 1, so the first-derivative bound never sets the
+envelope.
 
 Writes build/fig/amplitude_bounds.{svg,pdf}.
 """
