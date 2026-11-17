@@ -272,6 +272,7 @@
   #at(1, 12, y: 4mm, align(center, data-table(
     ([drift], $bold(v)_D$, [ions vs electrons], [mass]),
     (
+      ([force $bold(F)$], $(bold(F) times bold(B))\/(q_alpha B^2)$, [sign of $bold(F)\/q_alpha$], [through $bold(F)$]),
       ([$E times B$], $(bold(E) times bold(B))\/B^2$, [same], [none]),
       ([gravity], $(m_alpha\/q_alpha) (bold(g) times bold(B))\/B^2$, [opposite], [$prop m_alpha$]),
       ([grad-$B$], $(mu\/q_alpha) (bold(B) times grad B)\/B^2$, [opposite], [$prop m_alpha v_perp^2$]),
@@ -279,7 +280,7 @@
       ([polarization], $(m_alpha\/(q_alpha B^2)) thin partial bold(E)_perp \/ partial t$, [opposite], [$prop m_alpha$]),
     ),
     align: left)))
-  #at(1, 12, y: 118mm, align(center, note[$bold(v)_D = (bold(F)\/q_alpha) times bold(B)\/B^2$ for a force $bold(F)$; opposite drifts carry currents]))
+  #at(1, 12, y: 118mm, align(center, note[opposite drifts carry currents]))
 ]
 // ---------------------------------------------- 15 cyclotron resonance
 #build(5, slide(section: "motion-cyclotron-resonance", title: [Cyclotron resonance])[
