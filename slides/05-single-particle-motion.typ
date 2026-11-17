@@ -138,7 +138,7 @@
     ([uniform $bold(B)$], $dot(bold(rho)) = bold(v)_perp quad => quad dot(bold(R)) = v_parallel bold(b)$),
     ([slow variation], $epsilon = v \/ (abs(omega_c) L) << 1$),
   ))
-  #symbols[$bold(R)$ guiding centre, $bold(rho)$ gyration vector, $L$ field variation length, $v$ characteristic particle speed]
+  #symbols[static $bold(B)$, $bold(E) = 0$; $bold(R)$ guiding centre, $bold(rho)$ gyration vector, $L$ field variation length, $v$ characteristic particle speed]
 ])
 #build(3, slide(section: "motion-guiding-center", title: [Why follow magnetic field lines?])[
   #at(1, 12, y: 0mm, pad(left: 14mm, field-line-picture(unit: 10mm)))
@@ -147,7 +147,7 @@
     ([field varies over $L$], $dif (bold(b) \/ omega_c) \/ dif t = O(v \/ (abs(omega_c) L))$),
   ))
   #at(1, 12, y: 111mm, reveal(3, result-box($dot(bold(R)) = v_parallel bold(b) + O(epsilon v)$, [field-line following at leading order])))
-  #symbols[$epsilon = v \/ (abs(omega_c)L) << 1$; for $v_parallel approx v_perp$, this is of order $rho_L \/ L$]
+  #symbols[static $bold(B)$, $bold(E) = 0$; with $bold(E)$: $+ (bold(E) times bold(B)) \/ B^2$ #h(0.3em) · #h(0.3em) $epsilon = v \/ (abs(omega_c)L) << 1$, for $v_parallel approx v_perp$ of order $rho_L \/ L$]
 ])
 #build(5, slide(section: "motion-guiding-center", title: [Fields at the guiding centre])[
   #at(1, 12, y: 4mm, lrows(size: 20pt, label-width: 52mm, gap: 11mm, steps: (1, 2, 3, 5),
@@ -158,7 +158,7 @@
   ))
   #at(1, 12, y: 76mm, reveal(4, result-box($dot(bold(R)) = v_parallel bold(b)(bold(R)) + O(epsilon v)$, [same leading order])))
   #at(1, 12, y: 122mm, reveal(5, note[first-order drifts: keep the $O(epsilon)$ terms and gyroaverage, or use the guiding-centre Lagrangian]))
-  #symbols[$epsilon = v \/ (abs(omega_c) L)$]
+  #symbols[static $bold(B)$, $bold(E) = 0$; $epsilon = v \/ (abs(omega_c) L)$]
 ])
 // ---------------------------------- Curvature: centrifugal force then drift
 #build(3, slide(section: "motion-guiding-center", title: [Curvature drift])[
