@@ -48,11 +48,12 @@ spectra = new Map([...profiles].map(([name, p]) => {
   const a = Float64Array.from(d3.range(K + 1), (k) => p.F(k) / (k === 0 ? 2 * Math.PI : Math.PI));
   return [name, {y: xs.map(p.f), a, law: p.law}];
 }))
-// Plain text with "10^-6" style exponents: draw them as superscripts.
+// Plain text with "10^-6" style exponents: draw them as superscripts
+// (dy, since Firefox ignores baseline-shift in SVG).
 superscripts = (svg) => {
   for (const t of svg.querySelectorAll("text")) {
     if (!t.textContent.includes("^")) continue;
-    t.innerHTML = t.textContent.replace(/\^(\S+)/g, '<tspan baseline-shift="super" font-size="72%">$1</tspan>');
+    t.innerHTML = t.textContent.replace(/\^(\S+)/g, '<tspan dy="-0.5em" font-size="72%">$1</tspan>');
   }
   return svg;
 }
