@@ -38,11 +38,11 @@ $\rho_L/L$ ordering when $v_\parallel\sim v_\perp$.
 | 9 | Magnetized plasma | static | motion-lorentz | rho_L << L and abs(omega_c) tau >> 1. |
 | 10 | Field smoothness and Fourier cutoff | widget | motion-lorentz | One period of a 1D profile truncated at k_c: jump, kink, C2 cubic spline, analytic Gaussian. The spectrum falls off faster the smoother the profile. |
 | 11 | Admissible field spectrum | plot | motion-lorentz | The spectrum need not vanish above a cutoff. Taylor with the mean-value remainder needs only abs(B'') <= B_*/L^2. For one mode B(k) cos kx the three bounds give abs(B(k))/B_* <= min(1, (kL)^-2); the first-derivative bound never sets the envelope. Per mode this is necessary; sum_k k^2 abs(B(k)) <= B_*/L^2 is sufficient. |
-| 12 | E x B drift | derivation | motion-exb | His ansatz v = v_par b + v_perp(t) + v_D, "assume" pure gyration for v_perp, remainder 0 = E_perp + v_D x B, cross with B. Then: in the frame moving with v_D, E' = 0, so the ansatz is an exact Galilean transformation (E perp B, E/B << c); E_par accelerates freely. |
-| 13 | E x B drift | animation | motion-exb | Same drift for both signs; larger radius on the half orbit where the ion gained energy. |
-| 14 | E x B drift in the drift frame | animation | motion-exb | Same ion orbit twice: lab frame, looped trochoid drifting with v_D; then the frame moving with v_D = E x B/B^2, where E' = E + v_D x B = 0 and the orbit is a circle. The ansatz of page 12 is an exact frame change. |
-| 15 | General force drift | derivation | motion-exb | Replace q E by F: v_D = (F/q) x B/B^2; F = q E is the special case without charge separation; gravity drift opposite for ions and electrons, current n (m_i + m_e) g x B/B^2. |
-| 16 | Gravity drift | animation | motion-exb | F = m g in the force drift: ion and electron drift opposite, the electron 16 times slower (reduced mass ratio m_i/m_e = 16, spoken); formula v_D = (m_alpha/q_alpha)(g x B)/B^2 on screen. |
+| 12 | Force drift | derivation | motion-exb | Ansatz v = v_par b + v_perp(t) + v_D with pure gyration for v_perp; remainder 0 = F_perp + q v_D x B, cross with B: v_D = F x B/(q B^2). F_par accelerates freely. F = m g: ions and electrons drift opposite, current n (m_i + m_e) g x B/B^2. |
+| 13 | Gravity drift | animation | motion-exb | F = m g in the force drift: ion and electron drift opposite, the electron 16 times slower (reduced mass ratio m_i/m_e = 16, spoken); formula v_D = (m_alpha/q_alpha)(g x B)/B^2 on screen. |
+| 14 | E x B drift | derivation | motion-exb | Special case F = q E: v_D = E x B/B^2, the same for all species, so no current. In the frame moving with v_D, E' = 0, so the ansatz is an exact Galilean transformation (E perp B, E/B << c). |
+| 15 | E x B drift | animation | motion-exb | Same drift for both signs; larger radius on the half orbit where the ion gained energy. |
+| 16 | E x B drift in the drift frame | animation | motion-exb | Same ion orbit twice: lab frame, looped trochoid drifting with v_D; then the frame moving with v_D = E x B/B^2, where E' = E + v_D x B = 0 and the orbit is a circle. The ansatz of page 12 with F = q E is an exact frame change. |
 | 17 | Guiding centre | derivation + original illustration | motion-guiding-center | Uniform field: the Lorentz helix has a center with exactly $\dot{\mathbf R}=v_\parallel\mathbf b$. Define $\mathbf r=\mathbf R+\boldsymbol\rho$. Set $\epsilon=v/(|\omega_c|L)\ll1$. |
 | 18 | Why follow magnetic field lines? | derivation + original field-line illustration | motion-guiding-center | Differentiate $\mathbf R=\mathbf r-\mathbf b\times\mathbf v/\omega_c$ using the product rule and Lorentz equation. The $\dot{\mathbf v}$ term cancels $\mathbf v_\perp$; remaining term is $O(\epsilon v)$ because gradients vary on scale $L$. Zeroth order: $\dot{\mathbf R}^{(0)}=v_\parallel\mathbf b$. |
 | 19 | Curvature drift | derivation + original illustration | motion-guiding-center | Zeroth-order motion along a curve of radius $R_c$ needs inward acceleration $v_\parallel^2/R_c$. Outward centrifugal force in the line-following frame $\mathbf F_c=m_\alpha v_\parallel^2\mathbf e_R/R_c$ inserted into the already-known general force-drift formula yields the curvature drift. |
@@ -270,8 +270,8 @@ $m_i/m_e=16$ (stated on screen with the hydrogen value) and $T_i=T_e$.
 `scripts/check-physics.py` (`FieldChangePhysics`) repeats every number with
 an independent RK4 integration and gyro-period averages.
 
-**`exb-frame-change`** (`animations/exb_frame.py`, 25 s; page 14, after the
-E x B derivation page 12 and the `exb-drift` scene).
+**`exb-frame-change`** (`animations/exb_frame.py`, 25 s; page 16, after the
+E x B page 14 and the `exb-drift` scene).
 - Computed: one ion in $\mathbf B=B\,\mathbf e_z$, $\mathbf E=E\,\mathbf e_y$,
   $E/B=0.4\,v_\perp$ with $v_\perp$ the gyration speed in the drift frame; $\rho_L=v_\perp/|\omega_c|$;
   three turns, 400 steps per turn.
@@ -293,8 +293,8 @@ E x B derivation page 12 and the `exb-drift` scene).
   constant to $3\times10^{-14}$ (round-off; the mean radius is $v_\perp/|\omega_c|$ to
   $3\times10^{-5}$, the $O(\Delta t^2)$ radius of the discrete circle).
 
-**`gravity-drift`** (`animations/gravity_drift.py`, 14 s; page 16, after the
-general-force-drift page 15).
+**`gravity-drift`** (`animations/gravity_drift.py`, 14 s; page 13, after the
+force-drift page 12).
 - Computed: ion and electron in uniform $\mathbf B$ out of the page with
   $\mathbf g=-g\,\mathbf e_y$, $g=0.2\,\rho_{Li}\omega_{ci}^2$, six ion periods.
 - Shown: both orbits in $x/\rho_{Li}$ [1]; the ion loops drift to $-x$, the
