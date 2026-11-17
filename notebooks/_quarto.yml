@@ -8,6 +8,8 @@ project:
     - slide-debye.qmd
     - slide-debye-particles.qmd
     - slide-fourier-cutoff.qmd
+    - slide-gravity-drift-earth.qmd
+    - slide-tokamak-exb.qmd
 
 format:
   html:
