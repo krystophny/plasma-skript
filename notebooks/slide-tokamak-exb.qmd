@@ -1,0 +1,321 @@
+---
+title: "Tokamak drift and E × B"
+format:
+  html:
+    css: slide-widget.css
+    page-layout: custom
+    title-block-style: none
+    include-after-body: slide-widget.html
+---
+
+```{=html}
+<style>
+#app { position: fixed; inset: 0; display: flex; flex-direction: column; background: #fff; color: #17202A; font-family: "STIX Two Text", serif; }
+#view { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+#view canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.lbl { position: absolute; transform: translate(-50%, -50%); font-size: 0.7rem; pointer-events: none; white-space: nowrap; }
+#readout { position: absolute; top: 0.3rem; left: 0.4rem; font-size: 0.72rem; line-height: 1.25; background: rgba(255,255,255,0.85); padding: 0.2rem 0.35rem; pointer-events: none; }
+#readout table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+#readout td { padding: 0 0.35rem; text-align: right; }
+#readout td:first-child { text-align: left; }
+#readout .h td { border-bottom: 1px solid #ccd3da; }
+#note { position: absolute; right: 0.4rem; top: 0.3rem; font-size: 0.6rem; color: #5D6D7E; text-align: right; pointer-events: none; }
+@media (max-aspect-ratio: 1/1) { #note { top: auto; bottom: 2.4rem; } }
+#src { position: absolute; left: 0.4rem; bottom: 0.15rem; font-size: 12px; color: #5D6D7E; pointer-events: none; }
+#controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.2rem 0.9rem; padding: 0.25rem 0.5rem 0.35rem; font-size: 0.68rem; border-top: 1px solid #EEF1F4; }
+#controls label { display: flex; align-items: center; gap: 0.35rem; }
+#controls input[type=range] { width: 7rem; accent-color: #0072B2; }
+#controls input[type=checkbox] { accent-color: #0072B2; width: 0.8rem; height: 0.8rem; }
+#controls output { min-width: 3.6rem; font-variant-numeric: tabular-nums; }
+#controls button { font: inherit; font-size: 0.68rem; min-width: 1.8rem; background: #fff; border: 1px solid #8A96A3; border-radius: 3px; cursor: pointer; }
+#controls .q { font-size: 0.8rem; }
+#controls .q input[type=range] { width: 9rem; }
+.ion { color: #B55000; } .ele { color: #0072B2; }
+</style>
+<div id="app">
+  <div id="view">
+    <div id="readout"></div>
+    <div id="note">orbits: <i>ρ</i><sub>L</sub> exaggerated, <i>m</i><sub>i</sub>/<i>m</i><sub>e</sub> = 16</div>
+    <div id="src">Chen, Introduction to Plasma Physics (2016), Eq. (2.30) with <i>R</i><sub>c</sub> = <i>R</i></div>
+  </div>
+  <div id="controls">
+    <label><input id="Eon" type="checkbox"> <i>E</i></label>
+    <label><input id="E" type="range" min="0" max="10" step="0.1" value="4"><output id="Eo"></output></label>
+    <label class="q"><input id="twist" type="checkbox"> twist</label>
+    <label class="q"><i>q</i><input id="q" type="range" min="1" max="10" step="0.1" value="3"><output id="qo"></output></label>
+    <button id="play" title="play/pause">❚❚</button><button id="reset" title="reset">↺</button>
+  </div>
+</div>
+<script type="importmap">
+{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+             "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from "three";
+import {OrbitControls} from "three/addons/controls/OrbitControls.js";
+
+// physics-begin
+// Normalised units: R₀ = 1, B₀ = 1, gyrofrequency κB (ion κ = 1, electron −16).
+// Cylindrical (R, φ, Z) with R̂ × φ̂ = Ẑ. Vacuum toroidal field B_φ = R₀/R; the
+// twist adds B_p = ∇ψ × ∇φ with ψ = r²/(2q), r² = (R − R₀)² + Z², i.e.
+// B_R = −Z/(qR), B_Z = (R − R₀)/(qR): divergence-free, safety factor ≈ q.
+const A = 0.35; // minor radius of the vessel
+function field(x, y, z, q, out) {
+  const R = Math.hypot(x, y), c = x / R, s = y / R, Bphi = 1 / R;
+  const BR = q > 0 ? -z / (q * R) : 0, BZ = q > 0 ? (R - 1) / (q * R) : 0;
+  out[0] = BR * c - Bphi * s; out[1] = BR * s + Bphi * c; out[2] = BZ;
+  return out;
+}
+// Boris step for dv/dt = κ (E + v × B), E = −E₀ Ẑ (from + on top to − below).
+function borisStep(p, dt, q, E0, B) {
+  field(p.x[0], p.x[1], p.x[2], q, B);
+  const h = 0.5 * dt, aZ = -p.kappa * E0;
+  let vx = p.v[0], vy = p.v[1], vz = p.v[2] + h * aZ;
+  const tx = p.kappa * B[0] * h, ty = p.kappa * B[1] * h, tz = p.kappa * B[2] * h;
+  const s = 2 / (1 + tx * tx + ty * ty + tz * tz);
+  const px = vx + vy * tz - vz * ty, py = vy + vz * tx - vx * tz, pz = vz + vx * ty - vy * tx;
+  vx += s * (py * tz - pz * ty); vy += s * (pz * tx - px * tz); vz += s * (px * ty - py * tx);
+  vz += h * aZ;
+  p.v[0] = vx; p.v[1] = vy; p.v[2] = vz;
+  p.x[0] += vx * dt; p.x[1] += vy * dt; p.x[2] += vz * dt;
+}
+// Guiding centre at (R₀ + r₀, 0, 0), speed v, v∥/v = xi.
+function launch(kappa, r0, v, xi, q) {
+  const B = field(1 + r0, 0, 0, q, [0, 0, 0]), Bm = Math.hypot(...B), b = B.map((c) => c / Bm);
+  let e = [b[1], -b[0], 0]; const n = Math.hypot(...e); e = e.map((c) => c / n); // b̂ × Ẑ
+  const vpar = v * xi, vperp = v * Math.sqrt(1 - xi * xi);
+  const vel = [0, 1, 2].map((i) => vpar * b[i] + vperp * e[i]);
+  const w = kappa * Bm; // r = R + b̂ × v/ω_c
+  const bxv = [b[1] * vel[2] - b[2] * vel[1], b[2] * vel[0] - b[0] * vel[2], b[0] * vel[1] - b[1] * vel[0]];
+  return {kappa, x: [1 + r0 + bxv[0] / w, bxv[1] / w, bxv[2] / w], v: vel, lost: false};
+}
+function minorRadius(p) { return Math.hypot(Math.hypot(p.x[0], p.x[1]) - 1, p.x[2]); }
+function advance(p, T, q, E0, B) {
+  let t = 0;
+  while (t < T && !p.lost) {
+    const Bm = Math.hypot(...field(p.x[0], p.x[1], p.x[2], q, B));
+    const dt = Math.min(2 * Math.PI / (20 * Math.abs(p.kappa) * Bm), T - t);
+    borisStep(p, dt, q, E0, B); t += dt;
+    if (minorRadius(p) > A) p.lost = true;
+  }
+}
+function guidingCentre(p, q, B) {
+  const [bx, by, bz] = field(p.x[0], p.x[1], p.x[2], q, B), Bm = Math.hypot(bx, by, bz);
+  const w = p.kappa * Bm * Bm, [vx, vy, vz] = p.v;
+  return [p.x[0] - (by * vz - bz * vy) / w, p.x[1] - (bz * vx - bx * vz) / w, p.x[2] - (bx * vy - by * vx) / w];
+}
+// SI readout for a deuteron and an electron at W = 10 keV, v∥/v = 0.8, B₀ = 5.3 T, R₀ = 6.2 m.
+const SI = {e: 1.602176634e-19, W: 1e4 * 1.602176634e-19, B: 5.3, R: 6.2, xi: 0.8,
+  m: {ion: 3.3435837724e-27, ele: 9.1093837e-31}};
+function siDrifts(species, q, E) {
+  const m = SI.m[species], v = Math.sqrt(2 * SI.W / m), vpar = SI.xi * v, vperp2 = v * v - vpar * vpar;
+  const vd = m * (vpar * vpar + vperp2 / 2) / (SI.e * SI.B * SI.R);
+  const rho = m * v / (SI.e * SI.B);
+  return {vd, vE: E / SI.B, rho, Delta: q * rho};
+}
+// physics-end
+
+const ionC = "#B55000", eleC = "#0072B2", grey = "#8A96A3";
+const $ = (id) => document.getElementById(id);
+const view = $("view");
+const renderer = new THREE.WebGLRenderer({antialias: true, preserveDrawingBuffer: true});
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setClearColor(0xffffff, 1);
+view.prepend(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(32, 1, 0.02, 100);
+camera.position.set(0.75, 1.35, 4.9);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; controls.enablePan = false;
+controls.minDistance = 1; controls.maxDistance = 12;
+controls.target.set(0.3, -0.12, 0);
+scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+const sun = new THREE.DirectionalLight(0xffffff, 0.8); sun.position.set(2, 4, 3); scene.add(sun);
+
+// Physics (x, y, z), z up → three.js (x, z, −y), a proper rotation.
+const T = (x, y, z) => new THREE.Vector3(x, z, -y);
+const cyl = (R, phi, Z) => T(R * Math.cos(phi), R * Math.sin(phi), Z);
+const lineMat = (color, opacity = 1) => new THREE.LineBasicMaterial({color, transparent: opacity < 1, opacity});
+const polyline = (pts, mat) => new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat);
+const arrow = (dir, origin, len, color) => new THREE.ArrowHelper(dir.clone().normalize(), origin, len, color, 0.25 * len, 0.12 * len);
+
+// Vessel (r = a), open over −60° < φ < 0 so the cross-section at φ = 0 shows.
+const vessel = new THREE.Mesh(new THREE.TorusGeometry(1, A, 48, 128, 5 * Math.PI / 3),
+  new THREE.MeshPhongMaterial({color: 0xD5DBE1, transparent: true, opacity: 0.2, side: THREE.DoubleSide, depthWrite: false}));
+vessel.geometry.rotateX(-Math.PI / 2);
+scene.add(vessel);
+const phiCut = 0;
+for (const ph of [0, -Math.PI / 3]) {
+  const pts = []; for (let i = 0; i <= 64; i++) { const th = i * 2 * Math.PI / 64; pts.push(cyl(1 + A * Math.cos(th), ph, A * Math.sin(th))); }
+  scene.add(polyline(pts, lineMat(0x5D6D7E, ph === phiCut ? 0.8 : 0.4)));
+}
+// TF coils: thin poloidal rings around the vessel (none in the open sector).
+const coilMat = new THREE.MeshPhongMaterial({color: 0x9AA4AE, transparent: true, opacity: 0.3, depthWrite: false});
+for (let k = 0; k < 8; k++) {
+  const ph = Math.PI / 8 + k * Math.PI / 4;
+  if (ph > 5 * Math.PI / 3) continue;
+  const coil = new THREE.Mesh(new THREE.TorusGeometry(A + 0.08, 0.012, 8, 64), coilMat);
+  coil.position.copy(cyl(1, ph, 0));
+  coil.rotation.y = ph; // ring plane contains Ẑ and R̂(φ)
+  scene.add(coil);
+}
+// Axes at the cross-section φ = 0: R to the right, Z up, B = B φ̂ into the cross-section.
+const corner = cyl(1 + A + 0.06, phiCut, -A);
+scene.add(arrow(cyl(1, phiCut, 0), corner, 0.25, 0x17202A));
+scene.add(arrow(T(0, 0, 1), corner, 0.25, 0x17202A));
+scene.add(arrow(cyl(1, 0, 0), cyl(1 - A - 0.15, -Math.PI / 2 - 0.25, 0), 0.3, 0x5D6D7E));
+const labels = [];
+function label(html, pos, cls = "") {
+  const el = document.createElement("div"); el.className = "lbl " + cls; el.innerHTML = html;
+  view.appendChild(el); labels.push({el, pos}); return el;
+}
+label("<i>R</i>", cyl(1 + A + 0.38, phiCut, -A));
+label("<i>Z</i>", cyl(1 + A + 0.06, phiCut, -A + 0.33));
+label("⊗ <b><i>B</i></b>", cyl(1 - A + 0.1, phiCut, A - 0.06));
+label("<b><i>B</i></b>", cyl(1 - A - 0.15, -Math.PI / 2 - 0.05, 0.1));
+// Charge build-up and E field.
+const charges = new THREE.Group(); scene.add(charges);
+function sign(text, color) {
+  const c = document.createElement("canvas"); c.width = c.height = 64;
+  const g = c.getContext("2d"); g.fillStyle = color; g.font = "bold 56px serif"; g.textAlign = "center"; g.textBaseline = "middle";
+  g.fillText(text, 32, 34);
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({map: new THREE.CanvasTexture(c), depthWrite: false}));
+  s.scale.set(0.11, 0.11, 1); return s;
+}
+for (let k = 0; k < 12; k++) {
+  const ph = k * Math.PI / 6 + Math.PI / 12;
+  const plus = sign("+", ionC); plus.position.copy(cyl(1, ph, A - 0.07)); charges.add(plus);
+  const minus = sign("−", eleC); minus.position.copy(cyl(1, ph, -A + 0.07)); charges.add(minus);
+}
+const efield = new THREE.Group(); scene.add(efield);
+for (const dR of [-0.18, 0.18]) efield.add(arrow(T(0, 0, -1), cyl(1 + dR, phiCut, 0.2), 0.4, 0x2E7D32));
+efield.add(arrow(cyl(1, phiCut, 0), cyl(1 + 0.02, phiCut, -0.26), 0.24, 0x17202A));
+const eLabel = label("<b><i>E</i></b>", cyl(1 + 0.26, phiCut, 0.05));
+const exbLabel = label("<b><i>E</i></b> × <b><i>B</i></b>", cyl(1 + 0.12, phiCut, -0.34));
+// One field line through the launch point, over two poloidal turns or one toroidal turn.
+let fieldLine = null;
+function makeFieldLine(q) {
+  if (fieldLine) { scene.remove(fieldLine); fieldLine.geometry.dispose(); }
+  const pts = [], B = [0, 0, 0]; let x = [1 + 0.08, 0, 0];
+  const turns = q > 0 ? 2 * q + 0.5 : 1, ds = 0.01, n = Math.ceil(turns * 2 * Math.PI * 1.2 / ds);
+  const f = (y) => { field(y[0], y[1], y[2], q, B); const m = Math.hypot(...B); return B.map((c) => c / m); };
+  for (let i = 0; i <= n; i++) {
+    pts.push(T(...x));
+    const k1 = f(x), k2 = f(x.map((c, j) => c + 0.5 * ds * k1[j])), k3 = f(x.map((c, j) => c + 0.5 * ds * k2[j])), k4 = f(x.map((c, j) => c + ds * k3[j]));
+    x = x.map((c, j) => c + ds * (k1[j] + 2 * k2[j] + 2 * k3[j] + k4[j]) / 6);
+  }
+  fieldLine = polyline(pts, lineMat(grey, 0.6)); scene.add(fieldLine);
+}
+
+function trail(color, n, opacity) {
+  const geo = new THREE.BufferGeometry(), arr = new Float32Array(3 * n);
+  geo.setAttribute("position", new THREE.BufferAttribute(arr, 3)); geo.setDrawRange(0, 0);
+  const line = new THREE.Line(geo, lineMat(color, opacity)); line.frustumCulled = false; scene.add(line);
+  return {line, arr, n, count: 0,
+    push(x, y, z) {
+      if (this.count === this.n) { const keep = this.n >> 1; this.arr.copyWithin(0, 3 * (this.n - keep)); this.count = keep; }
+      const i = 3 * this.count; this.arr[i] = x; this.arr[i + 1] = z; this.arr[i + 2] = -y; this.count++;
+    },
+    clear() { this.count = 0; this.sync(); },
+    sync() { this.line.geometry.setDrawRange(0, this.count); this.line.geometry.attributes.position.needsUpdate = true; }};
+}
+// Same energy: v ∝ m^(−1/2), so the electron is 4 times faster and ρ 4 times smaller.
+const species = {
+  ion: {kappa: 1, v: 0.025, color: ionC, orbit: trail(ionC, 30000, 0.45), gc: trail(ionC, 8000, 1)},
+  ele: {kappa: -16, v: 0.1, color: eleC, orbit: trail(eleC, 8000, 0.35), gc: trail(eleC, 8000, 1)},
+};
+for (const s of Object.values(species)) {
+  s.dot = new THREE.Mesh(new THREE.SphereGeometry(0.018, 16, 8), new THREE.MeshBasicMaterial({color: s.color}));
+  scene.add(s.dot);
+}
+const XI = 0.8, R0 = 0.08;
+const state = {playing: true};
+const Bbuf = [0, 0, 0];
+function params() {
+  const q = +$("q").value, twist = $("twist").checked, Eon = $("Eon").checked, E = +$("E").value * 1e3;
+  return {q, twist, qeff: twist ? q : 0, Eon, E: Eon ? E : 0, Eslider: E};
+}
+// Sim E₀ keeps the SI ratio v_E/v_d: E₀ = (v_E/v_d) · v_d,sim at R₀, B₀ = 1.
+function simE(P) {
+  const d = siDrifts("ion", P.q, P.E), v = species.ion.v;
+  return (d.vE / d.vd) * v * v * (XI * XI + (1 - XI * XI) / 2);
+}
+function reset() {
+  const P = params();
+  for (const s of Object.values(species)) {
+    s.p = launch(s.kappa, R0, s.v, XI, P.qeff);
+    s.orbit.clear(); s.gc.clear();
+  }
+  makeFieldLine(P.qeff);
+  update();
+}
+const sup = (n) => String(n).replace("-", "−");
+function fmt(x, unit) {
+  if (x === 0) return `0 ${unit}`;
+  const e = Math.floor(Math.log10(Math.abs(x)) + 1e-9);
+  if (e >= -2 && e <= 3) return `${+x.toPrecision(2)} ${unit}`;
+  return `${(x / 10 ** e).toFixed(1)}×10<sup>${sup(e)}</sup> ${unit}`;
+}
+function update() {
+  const P = params();
+  $("Eo").textContent = `${(P.Eslider / 1e3).toFixed(1)} kV/m`;
+  $("qo").textContent = P.q.toFixed(1);
+  charges.visible = !P.twist;
+  efield.visible = P.Eon; eLabel.style.visibility = exbLabel.style.visibility = P.Eon ? "" : "hidden";
+  const d = {ion: siDrifts("ion", P.q, P.E), ele: siDrifts("ele", P.q, P.E)};
+  const row = (lbl, f, dirs = ["", ""]) => `<tr><td>${lbl}</td><td>${f(d.ion)} ${dirs[0]}</td><td>${f(d.ele)} ${dirs[1]}</td></tr>`;
+  $("readout").innerHTML = `<table>
+    <tr class="h"><td><i>W</i> = 10 keV, <i>v</i><sub>∥</sub>/<i>v</i> = 0.8, <i>B</i><sub>0</sub> = 5.3 T, <i>R</i><sub>0</sub> = 6.2 m</td><td class="ion">D<sup>+</sup></td><td class="ele">e<sup>−</sup></td></tr>
+    ${row("<i>v</i><sub>d</sub> = <i>m</i>(<i>v</i><sub>∥</sub><sup>2</sup> + <i>v</i><sub>⊥</sub><sup>2</sup>/2)/(<i>q</i><sub>α</sub><i>BR</i>)", (x) => fmt(x.vd, "m/s"), ["↑", "↓"])}
+    ${row("<i>v</i><sub><i>E</i></sub> = <i>E</i>/<i>B</i>", (x) => fmt(x.vE, "m/s"), P.Eon ? ["→ <i>R</i>", "→ <i>R</i>"] : ["", ""])}
+    ${row("<i>ρ</i><sub>L</sub> = <i>mv</i>/(|<i>q</i><sub>α</sub>|<i>B</i>)", (x) => fmt(x.rho, "m"))}
+    ${row("Δ ≈ <i>q ρ</i><sub>L</sub>", (x) => P.twist ? fmt(x.Delta, "m") : "–")}
+  </table>`;
+  E0 = simE(P);
+}
+let E0 = 0;
+$("Eon").addEventListener("change", update);
+$("E").addEventListener("input", update);
+$("twist").addEventListener("change", reset);
+$("q").addEventListener("input", () => { if ($("twist").checked) reset(); else update(); });
+$("reset").addEventListener("click", reset);
+$("play").addEventListener("click", () => { state.playing = !state.playing; $("play").textContent = state.playing ? "❚❚" : "▶"; });
+
+function resize() {
+  const w = view.clientWidth, h = view.clientHeight;
+  renderer.setSize(w, h, false); camera.aspect = w / h;
+  // Portrait (phone): widen the view so the whole scene stays in frame.
+  camera.fov = Math.min(70, 32 * Math.max(1, 1.5 / camera.aspect)); camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(view);
+resize();
+reset();
+
+function placeLabels() {
+  const w = view.clientWidth, h = view.clientHeight;
+  for (const {el, pos} of labels) {
+    const p = pos.clone().project(camera);
+    el.style.left = `${(p.x + 1) / 2 * w}px`; el.style.top = `${(1 - p.y) / 2 * h}px`;
+    el.style.display = p.z < 1 ? "" : "none";
+  }
+}
+function frame() {
+  const P = params();
+  if (state.playing) {
+    for (const s of Object.values(species)) {
+      if (s.p.lost) continue;
+      const sub = s.kappa === 1 ? 8 : 80, Tf = 3;
+      for (let k = 0; k < sub; k++) { advance(s.p, Tf / sub, P.qeff, E0, Bbuf); s.orbit.push(...s.p.x); }
+      s.gc.push(...guidingCentre(s.p, P.qeff, Bbuf));
+      s.orbit.sync(); s.gc.sync();
+    }
+  }
+  for (const s of Object.values(species)) s.dot.position.copy(T(...s.p.x));
+  controls.update();
+  renderer.render(scene, camera);
+  placeLabels();
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+```

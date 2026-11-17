@@ -256,6 +256,8 @@
   ))
   #symbols[$mu$ invariant to leading order after gyroaveraging; mirror acceleration and perpendicular drifts are first-order effects.]
 ])
+#widget-page("gravity-drift-earth", section: "motion-nonuniform-fields", title: [Drifts around the Earth])
+#widget-page("tokamak-exb", section: "motion-nonuniform-fields", title: [Tokamak: drift, charge separation, $E times B$])
 // ---------------------------------------------------- 13 polarization
 #build(4, slide(section: "motion-polarization", title: [Polarization drift])[
   #at(1, 12, y: 6mm, formula-rows(gap: 12mm,

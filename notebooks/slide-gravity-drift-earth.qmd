@@ -1,0 +1,336 @@
+---
+title: "Drifts around the Earth"
+format:
+  html:
+    css: slide-widget.css
+    page-layout: custom
+    title-block-style: none
+    include-after-body: slide-widget.html
+---
+
+```{=html}
+<style>
+#app { position: fixed; inset: 0; display: flex; flex-direction: column; background: #fff; }
+#view { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+#view canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.lbl { position: absolute; transform: translate(-50%, -50%); font-size: 0.7rem; color: #17202A; pointer-events: none; white-space: nowrap; }
+#readout { position: absolute; top: 0.3rem; left: 0.4rem; font-size: 0.72rem; line-height: 1.25; background: rgba(255,255,255,0.85); padding: 0.2rem 0.35rem; pointer-events: none; }
+#readout table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+#readout td { padding: 0 0.35rem; text-align: right; }
+#readout td:first-child { text-align: left; }
+#readout .h td { font-weight: normal; border-bottom: 1px solid #ccd3da; }
+#note { position: absolute; right: 0.4rem; top: 0.3rem; font-size: 0.6rem; color: #5D6D7E; text-align: right; pointer-events: none; }
+#src { position: absolute; left: 0.4rem; bottom: 0.15rem; font-size: 12px; color: #5D6D7E; pointer-events: none; }
+@media (max-aspect-ratio: 1/1) { #note { top: auto; bottom: 2.4rem; } }
+#controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.2rem 0.9rem; padding: 0.25rem 0.5rem 0.35rem; font-size: 0.68rem; border-top: 1px solid #EEF1F4; }
+#controls label { display: flex; align-items: center; gap: 0.35rem; }
+#controls input[type=range] { width: 7rem; accent-color: #0072B2; }
+#controls output { min-width: 3.6rem; font-variant-numeric: tabular-nums; }
+#controls select, #controls button { font: inherit; font-size: 0.68rem; }
+#controls button { min-width: 1.8rem; background: #fff; border: 1px solid #8A96A3; border-radius: 3px; cursor: pointer; }
+.ion { color: #B55000; } .ele { color: #0072B2; }
+</style>
+<div id="app">
+  <div id="view">
+    <div id="readout"></div>
+    <div id="note">orbits: <i>ρ</i><sub>L</sub> = 0.05 <i>L R</i><sub>E</sub> (p<sup>+</sup>), <i>m</i><sub>p</sub>/<i>m</i><sub>e</sub> = 16,<br><i>v</i><sub>g</sub>/(<i>v</i><sub>∇<i>B</i></sub> + <i>v</i><sub>c</sub>) as in the table (≤ 3), <b><i>g</i></b><sub>⊥</sub> only</div>
+    <div id="src">Chen, Introduction to Plasma Physics (2016), Eqs. (2.18), (2.30); dipole equator: ∇<i>B</i>/<i>B</i> = 3/<i>r</i>, <i>R</i><sub>c</sub> = <i>r</i>/3, <i>B</i><sub>E</sub> = 3.1×10<sup>−5</sup> T</div>
+  </div>
+  <div id="controls">
+    <label><select id="species"><option value="both">p⁺ and e⁻</option><option value="ion">p⁺</option><option value="ele">e⁻</option></select></label>
+    <label><i>L</i><input id="L" type="range" min="2" max="6" step="0.1" value="3"><output id="Lo"></output></label>
+    <label><i>W</i><input id="W" type="range" min="-2" max="7" step="0.05" value="4"><output id="Wo"></output></label>
+    <label><span><i>α</i><sub>eq</sub></span><input id="pitch" type="range" min="15" max="90" step="1" value="60"><output id="po"></output></label>
+    <button id="play" title="play/pause">❚❚</button><button id="reset" title="reset">↺</button>
+  </div>
+</div>
+<script type="importmap">
+{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+             "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from "three";
+import {OrbitControls} from "three/addons/controls/OrbitControls.js";
+
+// physics-begin
+// Normalised units: lengths in R_E, B in B_E, so the equatorial field is 1/L³
+// and the gyrofrequency is κB with κ = q B_E t₀/m (proton κ = 1, electron −16).
+// Dipole moment along −z (geographic south): B = [3(m·r)r − m r²]/r⁵.
+function dipole(x, y, z, out) {
+  const r2 = x * x + y * y + z * z, r5 = r2 * r2 * Math.sqrt(r2), mr = -z;
+  out[0] = 3 * mr * x / r5; out[1] = 3 * mr * y / r5; out[2] = (3 * mr * z + r2) / r5;
+  return out;
+}
+// Boris step for dv/dt = κ v × B + a⊥ with gravity a = −G r̂/r². Only the
+// part of a across B is kept: it alone drives the drift, while the parallel
+// part would pull the scaled cold orbits into the Earth.
+function borisStep(p, dt, B) {
+  const [x, y, z] = p.x, r2 = x * x + y * y + z * z, r = Math.sqrt(r2);
+  dipole(x, y, z, B);
+  const g = -p.G / (r2 * r), B2 = B[0] * B[0] + B[1] * B[1] + B[2] * B[2];
+  const gb = g * (x * B[0] + y * B[1] + z * B[2]) / B2;
+  const ax = g * x - gb * B[0], ay = g * y - gb * B[1], az = g * z - gb * B[2];
+  const h = 0.5 * dt;
+  let vx = p.v[0] + h * ax, vy = p.v[1] + h * ay, vz = p.v[2] + h * az;
+  const tx = p.kappa * B[0] * h, ty = p.kappa * B[1] * h, tz = p.kappa * B[2] * h;
+  const s = 2 / (1 + tx * tx + ty * ty + tz * tz);
+  const px = vx + vy * tz - vz * ty, py = vy + vz * tx - vx * tz, pz = vz + vx * ty - vy * tx;
+  vx += s * (py * tz - pz * ty); vy += s * (pz * tx - px * tz); vz += s * (px * ty - py * tx);
+  vx += h * ax; vy += h * ay; vz += h * az;
+  p.v[0] = vx; p.v[1] = vy; p.v[2] = vz;
+  p.x[0] += vx * dt; p.x[1] += vy * dt; p.x[2] += vz * dt;
+}
+// Particle with guiding centre at (L, 0, 0), speed v, equatorial pitch angle α.
+function launch(kappa, L, v, alpha, G) {
+  const b = 1 / L ** 3, vperp = v * Math.sin(alpha), vpar = v * Math.cos(alpha);
+  // r = R + b̂ × v/ω_c with b̂ = ẑ and v⊥ along ŷ.
+  return {kappa, G, x: [L - vperp / (kappa * b), 0, 0], v: [0, vperp, vpar], lost: false};
+}
+// Advance by time T with about 20 steps per local gyroperiod.
+function advance(p, T, B, maxSteps = 40000) {
+  let t = 0, n = 0;
+  while (t < T && n < maxSteps && !p.lost) {
+    const Bm = Math.hypot(...dipole(p.x[0], p.x[1], p.x[2], B));
+    const dt = Math.min(2 * Math.PI / (20 * Math.abs(p.kappa) * Bm), T - t);
+    borisStep(p, dt, B);
+    t += dt; n++;
+    if (Math.hypot(p.x[0], p.x[1], p.x[2]) < 1) p.lost = true;
+  }
+  return n;
+}
+// Guiding centre R = r − b̂ × v/ω_c.
+function guidingCentre(p, B) {
+  const [bx, by, bz] = dipole(p.x[0], p.x[1], p.x[2], B), Bm = Math.hypot(bx, by, bz);
+  const w = p.kappa * Bm * Bm, [vx, vy, vz] = p.v;
+  return [p.x[0] - (by * vz - bz * vy) / w, p.x[1] - (bz * vx - bx * vz) / w, p.x[2] - (bx * vy - by * vx) / w];
+}
+// SI drifts at the equator, r = L R_E, from v_D = F × B/(qB²) (Chen Eqs. 2.18, 2.30)
+// with ∇B/B = 3/r and R_c = r/3; relativistic momentum for MeV electrons.
+const SI = {e: 1.602176634e-19, c: 299792458, RE: 6.371e6, BE: 3.1e-5, g0: 9.81,
+  m: {ion: 1.67262192e-27, ele: 9.1093837e-31}};
+function drifts(species, L, WeV, alpha) {
+  const m = SI.m[species], W = WeV * SI.e, B = SI.BE / L ** 3, r = L * SI.RE, g = SI.g0 / L ** 2;
+  const gamma = 1 + W / (m * SI.c ** 2), v = SI.c * Math.sqrt(1 - 1 / gamma ** 2), p = gamma * m * v;
+  const s2 = Math.sin(alpha) ** 2, c2 = Math.cos(alpha) ** 2;
+  const vgradB = 3 * p * v * s2 / (2 * SI.e * B * r);
+  const vcurv = 3 * p * v * c2 / (SI.e * B * r);
+  const vg = gamma * m * g / (SI.e * B);
+  const Wx = m * g * r / (3 * (1 + c2)) / SI.e;
+  return {vgradB, vcurv, vg, ratio: vg / (vgradB + vcurv), Wx, rho: p * Math.sin(alpha) / (SI.e * B), B, g};
+}
+// physics-end
+
+const ink = "#17202A", ionC = "#B55000", eleC = "#0072B2", grey = "#8A96A3";
+const $ = (id) => document.getElementById(id);
+const view = $("view");
+const renderer = new THREE.WebGLRenderer({antialias: true, preserveDrawingBuffer: true});
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setClearColor(0xffffff, 1);
+view.prepend(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(32, 1, 0.05, 200);
+camera.position.set(9, 6.5, 15);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.enablePan = false;
+controls.minDistance = 4; controls.maxDistance = 45;
+scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+const sun = new THREE.DirectionalLight(0xffffff, 1.2);
+sun.position.set(5, 6, 8); scene.add(sun);
+
+// Physics (x, y, z) with z north → three.js (x, z, −y), a proper rotation.
+const T = (x, y, z) => new THREE.Vector3(x, z, -y);
+const lineMat = (color, opacity = 1) => new THREE.LineBasicMaterial({color, transparent: opacity < 1, opacity});
+const polyline = (pts, mat) => new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat);
+
+// Earth with a few meridians and latitude circles.
+scene.add(new THREE.Mesh(new THREE.SphereGeometry(1, 64, 32),
+  new THREE.MeshPhongMaterial({color: 0x9DC3E6, shininess: 10})));
+const grat = lineMat(0x5D6D7E, 0.35);
+for (let k = 0; k < 6; k++) {
+  const ph = k * Math.PI / 6, pts = [];
+  for (let i = 0; i <= 64; i++) { const th = i * Math.PI / 32;
+    pts.push(T(1.002 * Math.sin(th) * Math.cos(ph), 1.002 * Math.sin(th) * Math.sin(ph), 1.002 * Math.cos(th))); }
+  scene.add(polyline(pts, grat));
+}
+for (const lat of [-60, -30, 30, 60]) {
+  const pts = [], c = Math.cos(lat * Math.PI / 180), s = Math.sin(lat * Math.PI / 180);
+  for (let i = 0; i <= 96; i++) { const ph = i * 2 * Math.PI / 96; pts.push(T(1.002 * c * Math.cos(ph), 1.002 * c * Math.sin(ph), 1.002 * s)); }
+  scene.add(polyline(pts, grat));
+}
+// Equatorial plane with circles r = 2, 4, 6 R_E.
+const plane = new THREE.Mesh(new THREE.RingGeometry(1, 6.6, 96),
+  new THREE.MeshBasicMaterial({color: 0xEEF1F4, transparent: true, opacity: 0.45, side: THREE.DoubleSide, depthWrite: false}));
+plane.rotation.x = -Math.PI / 2; scene.add(plane);
+for (const rr of [2, 4, 6]) {
+  const pts = []; for (let i = 0; i <= 128; i++) { const ph = i * 2 * Math.PI / 128; pts.push(T(rr * Math.cos(ph), rr * Math.sin(ph), 0)); }
+  scene.add(polyline(pts, lineMat(grey, 0.5)));
+}
+// Dipole field lines r = L cos²λ in four meridian planes.
+const fl = lineMat(0x5D6D7E, 0.55);
+for (const Lf of [2, 3.5, 5]) for (let k = 0; k < 4; k++) {
+  const ph = k * Math.PI / 2 + Math.PI / 4, pts = [], lmax = Math.acos(Math.sqrt(1 / Lf));
+  for (let i = 0; i <= 80; i++) { const lam = -lmax + 2 * lmax * i / 80, r = Lf * Math.cos(lam) ** 2;
+    pts.push(T(r * Math.cos(lam) * Math.cos(ph), r * Math.cos(lam) * Math.sin(ph), r * Math.sin(lam))); }
+  scene.add(polyline(pts, fl));
+}
+// L-shell at the chosen L: surface of revolution about the dipole axis.
+let shell = null;
+function makeShell(L) {
+  if (shell) { scene.remove(shell); shell.traverse((o) => o.geometry && o.geometry.dispose()); }
+  const lmax = Math.acos(Math.sqrt(1 / L)), prof = [];
+  for (let i = 0; i <= 60; i++) { const lam = -lmax + 2 * lmax * i / 60, r = L * Math.cos(lam) ** 2;
+    prof.push(new THREE.Vector2(r * Math.cos(lam), r * Math.sin(lam))); }
+  shell = new THREE.Group();
+  shell.add(new THREE.Mesh(new THREE.LatheGeometry(prof, 96),
+    new THREE.MeshBasicMaterial({color: 0x0072B2, transparent: true, opacity: 0.06, side: THREE.DoubleSide, depthWrite: false})));
+  const ring = []; for (let i = 0; i <= 128; i++) { const ph = i * 2 * Math.PI / 128; ring.push(T(L * Math.cos(ph), L * Math.sin(ph), 0)); }
+  shell.add(polyline(ring, lineMat(0x0072B2, 0.6)));
+  scene.add(shell);
+}
+// East arrow on the equator (φ̂ at φ = −90°) and B at the equator (northward).
+const arrow = (dir, origin, len, color) => new THREE.ArrowHelper(dir.clone().normalize(), origin, len, color, 0.22 * len, 0.1 * len);
+scene.add(arrow(T(1, 0, 0), T(-0.9, -6.3, 0), 1.8, 0x17202A));
+scene.add(arrow(T(0, 0, 1), T(-5, 0, -0.8), 1.6, 0x5D6D7E));
+
+// HTML labels at 3D points.
+const labels = [];
+function label(html, pos, cls = "") {
+  const el = document.createElement("div"); el.className = "lbl " + cls; el.innerHTML = html;
+  view.appendChild(el); labels.push({el, pos}); return el;
+}
+label("N", T(0, 0, 1.25)); label("S", T(0, 0, -1.25));
+label("east", T(0.0, -6.75, 0)); label("<b><i>B</i></b>", T(-5, 0, 1.1));
+label("<i>m̂</i>", T(0, 0, -2.2));
+scene.add(arrow(T(0, 0, -1), T(0, 0, -1.05), 0.9, 0x5D6D7E));
+function placeLabels() {
+  const w = view.clientWidth, h = view.clientHeight;
+  for (const {el, pos} of labels) {
+    const p = pos.clone().project(camera);
+    el.style.left = `${(p.x + 1) / 2 * w}px`; el.style.top = `${(1 - p.y) / 2 * h}px`;
+    el.style.display = p.z < 1 ? "" : "none";
+  }
+}
+
+// Trails: full orbit (recent part) and guiding centre.
+function trail(color, n, opacity) {
+  const geo = new THREE.BufferGeometry(), arr = new Float32Array(3 * n);
+  geo.setAttribute("position", new THREE.BufferAttribute(arr, 3)); geo.setDrawRange(0, 0);
+  const line = new THREE.Line(geo, lineMat(color, opacity)); line.frustumCulled = false; scene.add(line);
+  return {line, arr, n, count: 0,
+    push(x, y, z) {
+      if (this.count === this.n) { const keep = this.n >> 1; this.arr.copyWithin(0, 3 * (this.n - keep)); this.count = keep; }
+      const i = 3 * this.count; this.arr[i] = x; this.arr[i + 1] = z; this.arr[i + 2] = -y; this.count++;
+    },
+    clear() { this.count = 0; this.sync(); },
+    sync() { this.line.geometry.setDrawRange(0, this.count); this.line.geometry.attributes.position.needsUpdate = true; }};
+}
+const species = {
+  ion: {kappa: 1, color: ionC, mass: 1, orbit: trail(ionC, 20000, 0.55), gc: trail(ionC, 6000, 1)},
+  ele: {kappa: -16, color: eleC, mass: 1 / 16, orbit: trail(eleC, 20000, 0.45), gc: trail(eleC, 6000, 1)},
+};
+for (const s of Object.values(species)) {
+  s.dot = new THREE.Mesh(new THREE.SphereGeometry(0.07, 16, 8), new THREE.MeshBasicMaterial({color: s.color}));
+  scene.add(s.dot);
+}
+
+const state = {playing: true};
+const Bbuf = [0, 0, 0];
+function params() {
+  return {L: +$("L").value, W: 10 ** +$("W").value, alpha: +$("pitch").value * Math.PI / 180, which: $("species").value};
+}
+// Sim gravity G: equatorial v_g/(v_∇B + v_c) as in SI at the chosen W, capped at 3.
+function gravity(name, P, v) {
+  const ratio = Math.min(drifts(name, P.L, P.W, P.alpha).ratio, 3);
+  return ratio * 1.5 * v * v * (1 + Math.cos(P.alpha) ** 2) * P.L;
+}
+function speed(name, L) { return (0.05 / L ** 2) / Math.sqrt(species[name].mass); }
+function reset() {
+  const P = params();
+  makeShell(P.L);
+  for (const [name, s] of Object.entries(species)) {
+    const v = speed(name, P.L);
+    s.p = launch(s.kappa, P.L, v, P.alpha, gravity(name, P, v));
+    s.on = P.which === "both" || P.which === name;
+    s.orbit.clear(); s.gc.clear();
+    s.orbit.line.visible = s.gc.line.visible = s.dot.visible = s.on;
+  }
+  updateReadout();
+}
+const sup = (n) => String(n).replace("-", "−");
+function fmt(x, unit) {
+  if (!isFinite(x)) return "–";
+  const e = Math.floor(Math.log10(Math.abs(x)) + 1e-9);
+  if (e >= -2 && e <= 3) return `${+x.toPrecision(2)} ${unit}`;
+  const m = x / 10 ** e;
+  return `${m.toFixed(1)}×10<sup>${sup(e)}</sup> ${unit}`;
+}
+function fmtE(eV) {
+  const u = [[1e6, "MeV"], [1e3, "keV"], [1, "eV"], [1e-3, "meV"], [1e-6, "µeV"]].find(([f]) => eV >= f * 0.9995) ?? [1e-6, "µeV"];
+  const x = eV / u[0];
+  return `${x >= 100 ? x.toFixed(0) : x >= 10 ? x.toFixed(1) : x.toFixed(2)} ${u[1]}`;
+}
+function updateReadout() {
+  const P = params();
+  $("Lo").textContent = P.L.toFixed(1);
+  $("Wo").textContent = fmtE(P.W);
+  $("po").textContent = `${Math.round(P.alpha * 180 / Math.PI)}°`;
+  const d = {ion: drifts("ion", P.L, P.W, P.alpha), ele: drifts("ele", P.L, P.W, P.alpha)};
+  // Direction for ions (q > 0): gravity east, ∇B and curvature west; electrons opposite.
+  const dir = (name, east) => ((name === "ion") === east ? "E" : "W");
+  const row = (lbl, f, east) => `<tr><td>${lbl}</td>${["ion", "ele"].map((n) =>
+    `<td>${fmt(f(d[n]), "m/s")} ${east === null ? "" : dir(n, east)}</td>`).join("")}</tr>`;
+  const net = (n) => { const x = d[n].vg - d[n].vgradB - d[n].vcurv; return (x > 0) === (n === "ion") ? "E" : "W"; };
+  $("readout").innerHTML = `<table>
+    <tr class="h"><td><i>B</i> = ${fmt(d.ion.B * 1e9, "nT")}, <i>g</i> = ${(d.ion.g).toFixed(2)} m/s²</td><td class="ion">p<sup>+</sup></td><td class="ele">e<sup>−</sup></td></tr>
+    ${row("<i>v</i><sub>g</sub>", (x) => x.vg, true)}
+    ${row("<i>v</i><sub>∇<i>B</i></sub>", (x) => x.vgradB, false)}
+    ${row("<i>v</i><sub>c</sub>", (x) => x.vcurv, false)}
+    <tr><td><i>v</i><sub>g</sub>/(<i>v</i><sub>∇<i>B</i></sub> + <i>v</i><sub>c</sub>)</td><td>${fmt(d.ion.ratio, "")}</td><td>${fmt(d.ele.ratio, "")}</td></tr>
+    <tr><td>net drift</td><td>${net("ion")}</td><td>${net("ele")}</td></tr>
+    <tr><td><i>W</i><sub>×</sub>: <i>v</i><sub>g</sub> = <i>v</i><sub>∇<i>B</i></sub> + <i>v</i><sub>c</sub></td><td>${fmtE(d.ion.Wx)}</td><td>${fmtE(d.ele.Wx)}</td></tr>
+    <tr><td><i>ρ</i><sub>L</sub></td><td>${fmt(d.ion.rho, "m")}</td><td>${fmt(d.ele.rho, "m")}</td></tr>
+  </table>`;
+  // Energy changes only the scaled gravity of the running orbits.
+  for (const [name, s] of Object.entries(species)) if (s.p) s.p.G = gravity(name, P, speed(name, P.L));
+}
+
+$("L").addEventListener("input", reset);
+$("pitch").addEventListener("input", reset);
+$("species").addEventListener("change", reset);
+$("W").addEventListener("input", updateReadout);
+$("reset").addEventListener("click", reset);
+$("play").addEventListener("click", () => { state.playing = !state.playing; $("play").textContent = state.playing ? "❚❚" : "▶"; });
+
+function resize() {
+  const w = view.clientWidth, h = view.clientHeight;
+  renderer.setSize(w, h, false); camera.aspect = w / h;
+  // Portrait (phone): widen the view so the whole scene stays in frame.
+  camera.fov = Math.min(70, 32 * Math.max(1, 1.5 / camera.aspect)); camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(view);
+resize();
+reset();
+
+function frame() {
+  const L = +$("L").value;
+  if (state.playing) {
+    // 0.25 equatorial proton gyroperiods per frame, cut into 8 sub-intervals for the trails.
+    const Tf = 0.25 * 2 * Math.PI * L ** 3;
+    for (const s of Object.values(species)) {
+      if (!s.on || s.p.lost) continue;
+      const sub = s.kappa === 1 ? 4 : 40;
+      for (let k = 0; k < sub; k++) { advance(s.p, Tf / sub, Bbuf); s.orbit.push(...s.p.x); }
+      s.gc.push(...guidingCentre(s.p, Bbuf));
+      s.orbit.sync(); s.gc.sync();
+    }
+  }
+  for (const s of Object.values(species)) s.dot.position.copy(T(...s.p.x));
+  controls.update();
+  renderer.render(scene, camera);
+  placeLabels();
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+```
