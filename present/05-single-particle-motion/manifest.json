@@ -171,35 +171,35 @@
       "repeat": false
     },
     {
-      "src": "p22.svg?v=d5026ca6",
+      "src": "p22.svg?v=23bc9b6f",
       "kind": "static",
       "background": "light",
       "alt": "5.2 Force drift and the E × B drift: Force drift",
       "repeat": false
     },
     {
-      "src": "p23.svg?v=a0aa3e22",
+      "src": "p23.svg?v=e6a920aa",
       "kind": "static",
       "background": "light",
       "alt": "5.2 Force drift and the E × B drift: Force drift",
       "repeat": true
     },
     {
-      "src": "p24.svg?v=1de45aaa",
+      "src": "p24.svg?v=462acd6f",
       "kind": "static",
       "background": "light",
       "alt": "5.2 Force drift and the E × B drift: Force drift",
       "repeat": true
     },
     {
-      "src": "p25.svg?v=58e2162d",
+      "src": "p25.svg?v=110ec422",
       "kind": "static",
       "background": "light",
       "alt": "5.2 Force drift and the E × B drift: Force drift",
       "repeat": true
     },
     {
-      "src": "p26.svg?v=f5bf9924",
+      "src": "p26.svg?v=6dd33ab6",
       "kind": "static",
       "background": "light",
       "alt": "5.2 Force drift and the E × B drift: Force drift",
@@ -257,21 +257,21 @@
       "loop": true
     },
     {
-      "src": "p33.svg?v=8c9b188b",
+      "src": "p33.svg?v=b11eed3c",
       "kind": "static",
       "background": "light",
       "alt": "5.3 Guiding-center approximation and magnetic moment: Guiding centre",
       "repeat": false
     },
     {
-      "src": "p34.svg?v=fdd4cc1d",
+      "src": "p34.svg?v=6c1afbb2",
       "kind": "static",
       "background": "light",
       "alt": "5.3 Guiding-center approximation and magnetic moment: Guiding centre",
       "repeat": true
     },
     {
-      "src": "p35.svg?v=db630e65",
+      "src": "p35.svg?v=bca46fc9",
       "kind": "static",
       "background": "light",
       "alt": "5.3 Guiding-center approximation and magnetic moment: Guiding centre",
@@ -334,28 +334,35 @@
       "repeat": true
     },
     {
-      "src": "p44.svg?v=2b4aceac",
+      "src": "p44.svg?v=84baa497",
       "kind": "static",
       "background": "light",
       "alt": "5.3 Guiding-center approximation and magnetic moment: Curvature drift",
       "repeat": false
     },
     {
-      "src": "p45.svg?v=e47ea8dd",
+      "src": "p45.svg?v=617e72cb",
       "kind": "static",
       "background": "light",
       "alt": "5.3 Guiding-center approximation and magnetic moment: Curvature drift",
       "repeat": true
     },
     {
-      "src": "p46.svg?v=4acbf824",
+      "src": "p46.svg?v=ea8650ea",
       "kind": "static",
       "background": "light",
       "alt": "5.3 Guiding-center approximation and magnetic moment: Curvature drift",
       "repeat": true
     },
     {
-      "src": "p47.svg?v=17936224",
+      "src": "p47.svg?v=d8a668fa",
+      "kind": "static",
+      "background": "light",
+      "alt": "5.3 Guiding-center approximation and magnetic moment: Curvature drift",
+      "repeat": true
+    },
+    {
+      "src": "p48.svg?v=17936224",
       "kind": "animation",
       "background": "dark",
       "alt": "Poloidal cross-section of a purely toroidal magnetic field that points out of the page and weakens with the major radius R. An ion and an electron gyrate; the ion guiding centre drifts upward and the electron guiding centre downward. Lengths in ion Larmor radii, with unit [1].",
@@ -365,136 +372,105 @@
       "loop": true
     },
     {
-      "src": "p48.svg?v=26bc062d",
+      "src": "p49.svg?v=26bc062d",
       "kind": "static",
       "background": "light",
       "alt": "5.3 Guiding-center approximation and magnetic moment: Magnetic moment",
       "repeat": false
     },
     {
-      "src": "p49.svg?v=62e06806",
+      "src": "p50.svg?v=62e06806",
       "kind": "static",
       "background": "light",
       "alt": "5.3 Guiding-center approximation and magnetic moment: Magnetic moment",
       "repeat": true
     },
     {
-      "src": "p50.svg?v=512b0678",
+      "src": "p51.svg?v=512b0678",
       "kind": "static",
       "background": "light",
       "alt": "5.3 Guiding-center approximation and magnetic moment: Magnetic moment",
       "repeat": true
     },
     {
-      "src": "p51.svg?v=cff05965",
+      "src": "p52.svg?v=64ea515f",
       "kind": "static",
       "background": "light",
-      "alt": "5.3 Guiding-center approximation and magnetic moment: Why is μ nearly constant?",
+      "alt": "5.3 Guiding-center approximation and magnetic moment: Mirror force and μ conservation",
       "repeat": false
     },
     {
-      "src": "p52.svg?v=b32e7ceb",
-      "kind": "static",
-      "background": "light",
-      "alt": "5.3 Guiding-center approximation and magnetic moment: Why is μ nearly constant?",
-      "repeat": true
-    },
-    {
-      "src": "p53.svg?v=35f3cb13",
-      "kind": "static",
-      "background": "light",
-      "alt": "5.3 Guiding-center approximation and magnetic moment: Why is μ nearly constant?",
-      "repeat": true
-    },
-    {
-      "src": "p54.svg?v=57ae601f",
-      "kind": "animation",
-      "background": "dark",
-      "alt": "An ion circles the axis of a uniform magnetic field that grows smoothly from B0 to 2 B0 over about twenty gyrations. The orbit shrinks while readouts show the field, the magnetic moment and the flux through the orbit; the magnetic moment and the flux stay constant. Lengths in the initial Larmor radius and time in inverse initial gyrofrequencies, with unit [1].",
-      "repeat": false,
-      "video": "../media/mu_ramp.mp4?v=98dd26d9",
-      "poster": "../media/mu-ramp.png?v=d0251a8c",
-      "loop": true
-    },
-    {
-      "src": "p55.svg?v=23d5a77b",
-      "kind": "static",
-      "background": "light",
-      "alt": "5.3 Guiding-center approximation and magnetic moment: Adiabatic invariance: numerical example",
-      "repeat": false
-    },
-    {
-      "src": "p56.svg?v=ce1bd919",
+      "src": "p53.svg?v=17501b21",
       "kind": "static",
       "background": "light",
       "alt": "5.3 Guiding-center approximation and magnetic moment: Magnetic-moment energy and force",
       "repeat": false
     },
     {
-      "src": "p57.svg?v=56d259ee",
+      "src": "p54.svg?v=517906d4",
       "kind": "static",
       "background": "light",
       "alt": "5.3 Guiding-center approximation and magnetic moment: Magnetic-moment energy and force",
       "repeat": true
     },
     {
-      "src": "p58.svg?v=80902983",
+      "src": "p55.svg?v=bc3621e4",
       "kind": "static",
       "background": "light",
       "alt": "5.3 Guiding-center approximation and magnetic moment: Magnetic-moment energy and force",
       "repeat": true
     },
     {
-      "src": "p59.svg?v=65bc5eac",
+      "src": "p56.svg?v=986ec3bb",
       "kind": "static",
       "background": "light",
       "alt": "5.3 Guiding-center approximation and magnetic moment: Magnetic mirror: reflection",
       "repeat": false
     },
     {
-      "src": "p60.svg?v=c867b1ee",
+      "src": "p57.svg?v=e6d80e8f",
       "kind": "static",
       "background": "light",
       "alt": "5.3 Guiding-center approximation and magnetic moment: Magnetic mirror: reflection",
       "repeat": true
     },
     {
-      "src": "p61.svg?v=bd26f323",
+      "src": "p58.svg?v=cf90719f",
       "kind": "static",
       "background": "light",
       "alt": "5.3 Guiding-center approximation and magnetic moment: Magnetic mirror: reflection",
       "repeat": true
     },
     {
-      "src": "p62.svg?v=9cdc3b86",
+      "src": "p59.svg?v=a2a07b38",
       "kind": "static",
       "background": "light",
       "alt": "5.4 Nonuniform fields: grad-B, curvature, and mirrors: Mirror ratio and loss cone",
       "repeat": false
     },
     {
-      "src": "p63.svg?v=e4799885",
+      "src": "p60.svg?v=db6d5340",
       "kind": "static",
       "background": "light",
       "alt": "5.4 Nonuniform fields: grad-B, curvature, and mirrors: Mirror ratio and loss cone",
       "repeat": true
     },
     {
-      "src": "p64.svg?v=a36fc4f4",
+      "src": "p61.svg?v=db404e37",
       "kind": "static",
       "background": "light",
       "alt": "5.4 Nonuniform fields: grad-B, curvature, and mirrors: Mirror ratio and loss cone",
       "repeat": true
     },
     {
-      "src": "p65.svg?v=caf0a326",
+      "src": "p62.svg?v=1cc0aab1",
       "kind": "static",
       "background": "light",
       "alt": "5.4 Nonuniform fields: grad-B, curvature, and mirrors: Mirror ratio and loss cone",
       "repeat": true
     },
     {
-      "src": "p66.svg?v=b647a820",
+      "src": "p63.svg?v=b647a820",
       "kind": "animation",
       "background": "dark",
       "alt": "Six ions of equal speed start at the midplane of a magnetic mirror with pitch angles of 18, 26, 29, 31, 45 and 70 degrees. The three below 30 degrees pass through the throat and leave; the other three slow down where the field lines converge, turn around and bounce between the two mirror points. Positions in units of the mirror half-length L_m, with unit [1].",
@@ -504,35 +480,35 @@
       "loop": true
     },
     {
-      "src": "p67.svg?v=21004848",
+      "src": "p64.svg?v=7a756d1c",
       "kind": "static",
       "background": "light",
       "alt": "5.4 Nonuniform fields: grad-B, curvature, and mirrors: Loss cone in velocity space",
       "repeat": false
     },
     {
-      "src": "p68.svg?v=d1f35d5d",
+      "src": "p65.svg?v=69a9d4d5",
       "kind": "static",
       "background": "light",
       "alt": "5.4 Nonuniform fields: grad-B, curvature, and mirrors: Grad-B drift",
       "repeat": false
     },
     {
-      "src": "p69.svg?v=1318b39f",
+      "src": "p66.svg?v=56f6d9ec",
       "kind": "static",
       "background": "light",
       "alt": "5.4 Nonuniform fields: grad-B, curvature, and mirrors: Grad-B drift",
       "repeat": true
     },
     {
-      "src": "p70.svg?v=8cd442ab",
+      "src": "p67.svg?v=8fc129dd",
       "kind": "static",
       "background": "light",
       "alt": "5.4 Nonuniform fields: grad-B, curvature, and mirrors: Grad-B drift",
       "repeat": true
     },
     {
-      "src": "p71.svg?v=6c0f8210",
+      "src": "p68.svg?v=6c0f8210",
       "kind": "animation",
       "background": "dark",
       "alt": "An ion and an electron gyrate in a magnetic field out of the page whose strength grows upward. Each orbit is tighter where the field is stronger, so the guiding centres drift sideways, the ion and the electron in opposite directions. Lengths in ion Larmor radii and time in inverse ion gyrofrequencies, with unit [1].",
@@ -542,49 +518,49 @@
       "loop": true
     },
     {
-      "src": "p72.svg?v=3b284d99",
+      "src": "p69.svg?v=d2d03e9e",
       "kind": "static",
       "background": "light",
       "alt": "5.4 Nonuniform fields: grad-B, curvature, and mirrors: Guiding-centre motion: results",
       "repeat": false
     },
     {
-      "src": "p73.svg?v=24aa08ac",
+      "src": "p70.svg?v=21c1b496",
       "kind": "static",
       "background": "light",
       "alt": "5.4 Nonuniform fields: grad-B, curvature, and mirrors: Guiding-centre motion: results",
       "repeat": true
     },
     {
-      "src": "p74.svg?v=5a14279d",
+      "src": "p71.svg?v=dcfeab4d",
       "kind": "static",
       "background": "light",
       "alt": "5.4 Nonuniform fields: grad-B, curvature, and mirrors: Guiding-centre motion: results",
       "repeat": true
     },
     {
-      "src": "p75.svg?v=b216362f",
+      "src": "p72.svg?v=5763c339",
       "kind": "static",
       "background": "light",
       "alt": "5.4 Nonuniform fields: grad-B, curvature, and mirrors: Guiding-centre motion: results",
       "repeat": true
     },
     {
-      "src": "p76.svg?v=15345ab6",
+      "src": "p73.svg?v=77d8906a",
       "kind": "static",
       "background": "light",
       "alt": "5.4 Nonuniform fields: grad-B, curvature, and mirrors: Guiding-centre motion: results",
       "repeat": true
     },
     {
-      "src": "p77.svg?v=e38c7346",
+      "src": "p74.svg?v=38e42076",
       "kind": "static",
       "background": "light",
       "alt": "5.4 Nonuniform fields: grad-B, curvature, and mirrors: Guiding-centre motion: results",
       "repeat": true
     },
     {
-      "src": "p78.svg?v=843adc78",
+      "src": "p75.svg?v=a40665df",
       "kind": "widget",
       "background": "light",
       "alt": "5.4 Nonuniform fields: grad-B, curvature, and mirrors: Drifts around the Earth",
@@ -598,7 +574,7 @@
       }
     },
     {
-      "src": "p79.svg?v=354dd706",
+      "src": "p76.svg?v=630e6329",
       "kind": "widget",
       "background": "light",
       "alt": "5.4 Nonuniform fields: grad-B, curvature, and mirrors: Tokamak: drift, charge separation, E × B",
@@ -612,35 +588,35 @@
       }
     },
     {
-      "src": "p80.svg?v=213e6ad7",
+      "src": "p77.svg?v=44670e7c",
       "kind": "static",
       "background": "light",
       "alt": "5.5 Polarization drift in a slowly varying electric field: Polarization drift",
       "repeat": false
     },
     {
-      "src": "p81.svg?v=4f42b36e",
+      "src": "p78.svg?v=ee0fa635",
       "kind": "static",
       "background": "light",
       "alt": "5.5 Polarization drift in a slowly varying electric field: Polarization drift",
       "repeat": true
     },
     {
-      "src": "p82.svg?v=6fe7d378",
+      "src": "p79.svg?v=88c479a7",
       "kind": "static",
       "background": "light",
       "alt": "5.5 Polarization drift in a slowly varying electric field: Polarization drift",
       "repeat": true
     },
     {
-      "src": "p83.svg?v=748d8a93",
+      "src": "p80.svg?v=57cf22f1",
       "kind": "static",
       "background": "light",
       "alt": "5.5 Polarization drift in a slowly varying electric field: Polarization drift",
       "repeat": true
     },
     {
-      "src": "p84.svg?v=7a3f5338",
+      "src": "p81.svg?v=7a3f5338",
       "kind": "animation",
       "background": "dark",
       "alt": "An ion and an electron gyrate in a uniform magnetic field while a perpendicular electric field is switched on smoothly over three ion gyroperiods. The view moves with the common E cross B displacement. In this view the ion guiding centre shifts along the electric field and the electron guiding centre shifts a sixteenth as far the other way. Lengths in ion Larmor radii and time in inverse ion gyrofrequencies, with unit [1].",
@@ -650,49 +626,49 @@
       "loop": true
     },
     {
-      "src": "p85.svg?v=84dd3720",
+      "src": "p82.svg?v=9f3fda39",
       "kind": "static",
       "background": "light",
       "alt": "Drifts",
       "repeat": false
     },
     {
-      "src": "p86.svg?v=ec51d5af",
+      "src": "p83.svg?v=5a35f038",
       "kind": "static",
       "background": "light",
       "alt": "5.6 Cyclotron resonance and circular polarization: Cyclotron resonance",
       "repeat": false
     },
     {
-      "src": "p87.svg?v=f9ecf46d",
+      "src": "p84.svg?v=ffc437d6",
       "kind": "static",
       "background": "light",
       "alt": "5.6 Cyclotron resonance and circular polarization: Cyclotron resonance",
       "repeat": true
     },
     {
-      "src": "p88.svg?v=fabe8294",
+      "src": "p85.svg?v=8498d64d",
       "kind": "static",
       "background": "light",
       "alt": "5.6 Cyclotron resonance and circular polarization: Cyclotron resonance",
       "repeat": true
     },
     {
-      "src": "p89.svg?v=24b90f85",
+      "src": "p86.svg?v=6eb717e7",
       "kind": "static",
       "background": "light",
       "alt": "5.6 Cyclotron resonance and circular polarization: Cyclotron resonance",
       "repeat": true
     },
     {
-      "src": "p90.svg?v=788bd561",
+      "src": "p87.svg?v=6df11570",
       "kind": "static",
       "background": "light",
       "alt": "5.6 Cyclotron resonance and circular polarization: Cyclotron resonance",
       "repeat": true
     },
     {
-      "src": "p91.svg?v=dcdd553f",
+      "src": "p88.svg?v=dcdd553f",
       "kind": "animation",
       "background": "dark",
       "alt": "A charge starts at rest in a uniform magnetic field out of the page and is driven by a uniform electric field rotating in the perpendicular plane. Four runs follow one another: an ion with a clockwise field at its gyrofrequency spirals outward, its speed growing linearly at |q|E0/m and its energy quadratically; at 0.8 of the gyrofrequency the speed beats and stays below 10 E0/B; with the counterclockwise field it stays below E0/B; an electron resonates with the counterclockwise field. The measured growth rate is 0.9999 |q|E0/m for both species. Each species is normalized with its own gyrofrequency; speed v B/E0, time |omega_c| t and positions, all with unit [1].",
