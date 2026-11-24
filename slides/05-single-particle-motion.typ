@@ -280,29 +280,37 @@
 #animation-page("polarization-drift", "polarization_drift", section: "motion-polarization")
 // ---------------------------------------------------------- 14 table
 #slide(title: [Drifts])[
-  #at(1, 12, y: 4mm, align(center, data-table(
-    ([drift], $bold(v)_D$, [ions vs electrons], [mass]),
-    (
-      ([force $bold(F)$], $(bold(F) times bold(B))\/(q_alpha B^2)$, [sign of $bold(F)\/q_alpha$], [through $bold(F)$]),
-      ([$E times B$], $(bold(E) times bold(B))\/B^2$, [same], [none]),
-      ([gravity], $(m_alpha\/q_alpha) (bold(g) times bold(B))\/B^2$, [opposite], [$prop m_alpha$]),
-      ([grad-$B$], $(mu\/q_alpha) (bold(B) times grad B)\/B^2$, [opposite], [$prop m_alpha v_perp^2$]),
-      ([curvature], $m_alpha v_parallel^2 (bold(e)_R times bold(b))\/(q_alpha B R_c)$, [opposite], [$prop m_alpha v_parallel^2$]),
-      ([polarization], $(m_alpha\/(q_alpha B^2)) thin partial bold(E)_perp \/ partial t$, [opposite], [$prop m_alpha$]),
-    ),
-    align: left)))
-  #at(1, 12, y: 118mm, align(center, note[opposite drifts carry currents]))
+  #let d(x) = math.display(x)
+  // The theme fixes text edges for line layout, so fractions need their real bounds here.
+  #at(1, 12, y: 0mm, align(center, text(top-edge: "bounds", bottom-edge: "bounds", table(
+    columns: 4,
+    align: (left + horizon, center + horizon, center + horizon, center + horizon),
+    stroke: none,
+    inset: (x: 6mm, y: 2mm),
+    table.hline(stroke: 1pt + ink),
+    ..([drift], $bold(v)_D$, [ions vs electrons], [mass dependence]).map(h => text(top-edge: "cap-height", bottom-edge: "baseline", fill: muted, h)),
+    table.hline(stroke: 0.5pt + rule),
+    [force $bold(F)$], d($(bold(F) times bold(B)) / (q_alpha B^2)$), [sign of $bold(F) \/ q_alpha$], [through $bold(F)$],
+    [$E times B$], d($(bold(E) times bold(B)) / B^2$), [same], [none],
+    [gravity], d($m_alpha / q_alpha thin (bold(g) times bold(B)) / B^2$), [opposite], $prop m_alpha$,
+    [grad-$B$], d($mu / q_alpha thin (bold(B) times grad B) / B^2$), [opposite], $prop m_alpha v_perp^2$,
+    [curvature], d($(m_alpha v_parallel^2) / (q_alpha B R_c) thin bold(e)_R times bold(b)$), [opposite], $prop m_alpha v_parallel^2$,
+    [polarization], d($m_alpha / (q_alpha B^2) thin pdv(bold(E)_perp, t)$), [opposite], $prop m_alpha$,
+    table.hline(stroke: 1pt + ink),
+  ))))
+  #at(1, 12, y: 140mm, align(center, note[drifts with opposite signs for ions and electrons carry currents]))
 ]
 // ---------------------------------------------- 15 cyclotron resonance
 #build(5, slide(section: "motion-cyclotron-resonance", title: [Cyclotron resonance])[
-  #at(1, 12, y: 2mm, formula-rows(gap: 8mm,
-    ([rotating $bold(E)$], [$E_"cw" = E_x + i E_y = E_0 e^(-i s omega t)$ #h(0.6em) #note[$s = +1$ clockwise, $s = -1$ counterclockwise]]),
-    ([$v_"cw" = v_x + i v_y$], $dif v_"cw" \/ dif t = -i omega_c v_"cw" + (q_alpha \/ m_alpha) E_"cw"$),
-    ([from rest], $v_"cw" = (q_alpha E_0)/m_alpha e^(-i omega_c t) (e^(i Delta t) - 1)/(i Delta), quad Delta = omega_c - s omega$),
-    ([modulus], $v_perp = abs(v_"cw") = (abs(q_alpha) E_0)/m_alpha abs((2 sin(Delta t\/2))/Delta)$),
-  ))
-  #at(2, 10, y: 72mm, reveal(5, result-box(align(center, $Delta = 0: quad v_perp = (abs(q_alpha) E_0)/m_alpha t, quad W = (q_alpha^2 E_0^2)/(2 m_alpha) t^2$),
-    [resonance $s omega = omega_c$: ions clockwise, electrons counterclockwise])))
-  #at(1, 12, y: 134mm, note[$bold(B) = B bold(e)_z$ out of the page, $omega_c = q_alpha B\/m_alpha$ signed, $Delta$ detuning: off resonance $v_perp$ beats with period $2 pi\/abs(Delta)$; $W$ kinetic energy])
+  #let d(x) = math.display(x)
+  #at(1, 12, y: 0mm, text(top-edge: "bounds", bottom-edge: "bounds", formula-rows(gap: 6mm,
+    ([rotating field, electron], [$bold(E) = E_0 vec(cos omega t, sin omega t, 0), quad bold(v)_perp = v_perp vec(cos theta.alt, sin theta.alt, 0), quad bold(B) = B_0 bold(e)_z$]),
+    ([Lorentz force $dot bold(v)_perp$], [#d($m_e v_perp (dif v_perp)/(dif t) = -e bold(E) dot bold(v)_perp$) #h(0.6em) #note[$bold(v) times bold(B)$ does no work]]),
+    ([projection], d($(dif v_perp)/(dif t) = -(e E_0)/m_e cos(theta.alt - omega t)$)),
+    ([gyration $theta.alt = omega_"ce" t + theta.alt_0$], d($(dif v_perp)/(dif t) = -(e E_0)/m_e cos[(omega_"ce" - omega) t + theta.alt_0]$)),
+  )))
+  #at(2, 10, y: 96mm, reveal(5, result-box(align(center, d($omega = omega_"ce", quad theta.alt_0 = pi: quad (dif v_perp)/(dif t) = (e E_0)/m_e$)),
+    [resonance: $v_perp$ grows linearly, $W prop t^2$])))
+  #at(1, 12, y: 140mm, note[$bold(B)$ out of the page, $omega_"ce" = e B_0\/m_e$: electron and field turn counterclockwise; off resonance $v_perp$ beats with period $2 pi\/abs(omega_"ce" - omega)$])
 ])
 #animation-page("cyclotron-resonance", "cyclotron_resonance", section: "motion-cyclotron-resonance")
