@@ -256,8 +256,8 @@
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_smoothing.mp4",
       "poster": "media/posters/kernel-smoothing.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/kernel-smoothing.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_smoothing.mp4?v=6d559218bba7558c",
-      "mp4_sha256": "6d559218bba7558cbd2a1d6cbbd45fc15ab823535ccc60f38f1b8821810d66bd",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_smoothing.mp4?v=bd069e0a23ffe45f",
+      "mp4_sha256": "bd069e0a23ffe45f77d662d725b09ccacb1cc00c894daf38f217f95276d8f944",
       "appearance": "dark",
       "supplementary_chapter": "chapters/06-kinetic-theory.html",
       "supplementary_description": "Particles on a line are a sum of delta spikes. Placing a Gaussian kernel of width h on every particle and summing gives a smooth density; the same result follows from sliding the kernel along x and adding the kernel values at all particles, which is the convolution of the kernel with the spike sum. Positions in units of the mean particle spacing, with unit [1]."
@@ -266,8 +266,8 @@
       "fallback_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_width.mp4",
       "poster": "media/posters/kernel-width.png",
       "player_url": "https://krystophny.github.io/plasma-skript/animations/kernel-width.html",
-      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_width.mp4?v=cec574ffa23cdf6e",
-      "mp4_sha256": "cec574ffa23cdf6e9fb4bc50d5566dc9057987c372a8d3798ee8b3f895a389d4",
+      "stream_url": "https://cloud.tugraz.at/public.php/dav/files/S4bwLaYWgXtHQak/animations/kernel_width.mp4?v=18e4e60fdf5908eb",
+      "mp4_sha256": "18e4e60fdf5908eb894a4315df3fc565cba1ada6b8e6751c18eba7c945f89b8b",
       "appearance": "dark",
       "supplementary_chapter": "chapters/06-kinetic-theory.html",
       "supplementary_description": "The kernel width h is varied from 0.25 to 20 mean particle spacings for particles drawn from a known density. Narrow kernels return the spikes and statistical noise, which falls like 1/sqrt(particles per kernel width); wide kernels smooth away real structure. The lower panel shows noise, bias and total error. Positions in units of the mean particle spacing, with unit [1]."

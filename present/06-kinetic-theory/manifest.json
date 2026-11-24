@@ -162,23 +162,23 @@
       "repeat": true
     },
     {
-      "src": "p23.svg?v=d3cf9572",
+      "src": "p23.svg?v=fcae92a1",
       "kind": "animation",
       "background": "dark",
       "alt": "Particles on a line are a sum of delta spikes. Placing a Gaussian kernel of width h on every particle and summing gives a smooth density; the same result follows from sliding the kernel along x and adding the kernel values at all particles, which is the convolution of the kernel with the spike sum. Positions in units of the mean particle spacing, with unit [1].",
       "repeat": false,
-      "video": "../media/kernel_smoothing.mp4?v=6d559218",
-      "poster": "../media/kernel-smoothing.png?v=163d8d31",
+      "video": "../media/kernel_smoothing.mp4?v=bd069e0a",
+      "poster": "../media/kernel-smoothing.png?v=4f8b18ec",
       "loop": false
     },
     {
-      "src": "p24.svg?v=efd5de44",
+      "src": "p24.svg?v=f26cdd00",
       "kind": "animation",
       "background": "dark",
       "alt": "The kernel width h is varied from 0.25 to 20 mean particle spacings for particles drawn from a known density. Narrow kernels return the spikes and statistical noise, which falls like 1/sqrt(particles per kernel width); wide kernels smooth away real structure. The lower panel shows noise, bias and total error. Positions in units of the mean particle spacing, with unit [1].",
       "repeat": false,
-      "video": "../media/kernel_width.mp4?v=cec574ff",
-      "poster": "../media/kernel-width.png?v=16f647f2",
+      "video": "../media/kernel_width.mp4?v=18e4e60f",
+      "poster": "../media/kernel-width.png?v=637b70b2",
       "loop": false
     },
     {
@@ -214,6 +214,76 @@
       "kind": "static",
       "background": "light",
       "alt": "6.4 The Boltzmann and Vlasov equations: Many-particle distribution and its marginal",
+      "repeat": true
+    },
+    {
+      "src": "p30.svg?v=7765322c",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.4 The Boltzmann and Vlasov equations: Interactions: mean field and collisions",
+      "repeat": false
+    },
+    {
+      "src": "p31.svg?v=eb55d610",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.4 The Boltzmann and Vlasov equations: Interactions: mean field and collisions",
+      "repeat": true
+    },
+    {
+      "src": "p32.svg?v=0817ebbe",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.4 The Boltzmann and Vlasov equations: Interactions: mean field and collisions",
+      "repeat": true
+    },
+    {
+      "src": "p33.svg?v=fd8fd1dc",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.4 The Boltzmann and Vlasov equations: Interactions: mean field and collisions",
+      "repeat": true
+    },
+    {
+      "src": "p34.svg?v=07161356",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.1 Collisions in gases and plasmas: Mean free path",
+      "repeat": false
+    },
+    {
+      "src": "p35.svg?v=36e79351",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.1 Collisions in gases and plasmas: Coulomb collisions",
+      "repeat": false
+    },
+    {
+      "src": "p36.svg?v=d62f6895",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.1 Collisions in gases and plasmas: Collision frequency and collisionality",
+      "repeat": false
+    },
+    {
+      "src": "p37.svg?v=13a21c74",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.4 The Boltzmann and Vlasov equations: Boltzmann equation",
+      "repeat": false
+    },
+    {
+      "src": "p38.svg?v=3fdcaf29",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.4 The Boltzmann and Vlasov equations: Boltzmann equation",
+      "repeat": true
+    },
+    {
+      "src": "p39.svg?v=3fdcaf29",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.4 The Boltzmann and Vlasov equations: Boltzmann equation",
       "repeat": true
     }
   ]
