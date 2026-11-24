@@ -4,8 +4,8 @@ Deck `06-kinetic-theory.typ` (2026-11-24): from flows to the distribution
 function and the Vlasov equation for given fields. Order chosen by Chris:
 Lagrange/Euler, advection operator, volume change (Arnold §16), distribution
 function, phase-space flow, one species in a given field, delta peaks and
-smoothing, many-particle distribution and marginal. Collisions (6.1) are not
-in this deck. Figures: `derivations/plot_phase_space_flow.py` (all trajectories
+smoothing, many-particle distribution and marginal, then interactions and
+collisions (6.1) leading to the Boltzmann equation. Figures: `derivations/plot_phase_space_flow.py` (all trajectories
 RK4, areas and densities computed from them).
 
 | # | Section | Page | Content |
@@ -78,3 +78,8 @@ convolution of a fine particle histogram and a separate Monte Carlo.
 - Optional extension, not rendered: the same operation on particle velocities
   gives a smooth $f_h(v)$; the kernel width then trades velocity resolution
   against noise in the same way.
+| 13 | 6.4 | Interactions: mean field and collisions (4 steps) | Pair forces; marginal of Liouville gives the f1 equation with −∫ a12·∂f2/∂v1 dz2; f2 = f1 f1 + g12: the product gives the mean field ⟨a⟩ (self-consistent E, B), the correlation g12 gives C[f]. |
+| 14 | 6.1 | Mean free path | `free_paths`: 2D rays among random disks (σ = 2a), one path with its collisions, free-path histogram against e^(−ℓ/λ), measured mean 0.93 λ (excluded area of the disks). dS/dℓ = −nσS, λ = 1/(nσ), ν = v/λ. |
+| 15 | 6.1 | Coulomb collisions | `coulomb_orbits`: computed repulsive orbits b = 0.25 … 4 b90; measured χ(b) on 2 arctan(b90/b), tail 2 b90/b; ⟨χ²⟩ ∝ ∫ db/b → ln Λ = ln(λ_D/b_min). Rutherford (1911). |
+| 16 | 6.1 | Collision frequency and collisionality | `collisionality`: electron λ_mfp = v_th/ν_ei over (n_e, T_e), NRL formulary ν_ei and ln Λ, example plasmas of `si.py` (tokamak core 10⁴ m). ν_ei ∝ n e⁴ ln Λ/(ε0² m² v³), K_n = λ_mfp/L, ντ. |
+| 17 | 6.4 | Boltzmann equation (3 steps) | Boltzmann with E, B external plus mean field and C_s; ντ ≪ 1: Vlasov; λ_mfp ≪ L: local Maxwellian, fluid. |
