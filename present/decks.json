@@ -34,6 +34,13 @@
       "title": "Single-particle motion",
       "pages": 88,
       "cover": "05-single-particle-motion/p01.svg?v=5fd6121d"
+    },
+    {
+      "stem": "06-kinetic-theory",
+      "chapter": 6,
+      "title": "Kinetic theory of plasmas",
+      "pages": 29,
+      "cover": "06-kinetic-theory/p01.svg?v=65bcc4fe"
     }
   ]
 }

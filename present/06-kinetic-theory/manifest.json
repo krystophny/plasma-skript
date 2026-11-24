@@ -1,0 +1,220 @@
+{
+  "stem": "06-kinetic-theory",
+  "chapter": 6,
+  "title": "Kinetic theory of plasmas",
+  "course": "Plasma Physics",
+  "author": "Christopher Albert",
+  "aspect": 1.4142857142857144,
+  "pdf": "../../slides/06-kinetic-theory.pdf",
+  "pages": [
+    {
+      "src": "p01.svg?v=65bcc4fe",
+      "kind": "static",
+      "background": "light",
+      "alt": "Kinetic theory of plasmas",
+      "repeat": false
+    },
+    {
+      "src": "p02.svg?v=fe9642dc",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.3 Convective derivatives and phase-space transport: Lagrangian and Eulerian descriptions",
+      "repeat": false
+    },
+    {
+      "src": "p03.svg?v=1b694f65",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.3 Convective derivatives and phase-space transport: Advection operator",
+      "repeat": false
+    },
+    {
+      "src": "p04.svg?v=9a8405fa",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.3 Convective derivatives and phase-space transport: Advection operator",
+      "repeat": true
+    },
+    {
+      "src": "p05.svg?v=9a8405fa",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.3 Convective derivatives and phase-space transport: Advection operator",
+      "repeat": true
+    },
+    {
+      "src": "p06.svg?v=51d045a4",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.3 Convective derivatives and phase-space transport: Volume carried by a flow",
+      "repeat": false
+    },
+    {
+      "src": "p07.svg?v=9074ca62",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.3 Convective derivatives and phase-space transport: Volume change of a flow",
+      "repeat": false
+    },
+    {
+      "src": "p08.svg?v=d4bd066d",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.3 Convective derivatives and phase-space transport: Volume change of a flow",
+      "repeat": true
+    },
+    {
+      "src": "p09.svg?v=11566d20",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.3 Convective derivatives and phase-space transport: Volume change of a flow",
+      "repeat": true
+    },
+    {
+      "src": "p10.svg?v=00f49909",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.3 Convective derivatives and phase-space transport: Volume change of a flow",
+      "repeat": true
+    },
+    {
+      "src": "p11.svg?v=eaaebabc",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.3 Convective derivatives and phase-space transport: Volume change of a flow",
+      "repeat": true
+    },
+    {
+      "src": "p12.svg?v=e245c740",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.3 Convective derivatives and phase-space transport: Volume change of a flow",
+      "repeat": true
+    },
+    {
+      "src": "p13.svg?v=65c229dc",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.2 Distribution functions and phase space: Distribution function",
+      "repeat": false
+    },
+    {
+      "src": "p14.svg?v=938f0949",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.3 Convective derivatives and phase-space transport: Flow in phase space",
+      "repeat": false
+    },
+    {
+      "src": "p15.svg?v=770f56e3",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.4 The Boltzmann and Vlasov equations: Non-interacting particles in a given field",
+      "repeat": false
+    },
+    {
+      "src": "p16.svg?v=b54d9e71",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.4 The Boltzmann and Vlasov equations: Vlasov equation for given fields",
+      "repeat": false
+    },
+    {
+      "src": "p17.svg?v=999209d9",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.4 The Boltzmann and Vlasov equations: Vlasov equation for given fields",
+      "repeat": true
+    },
+    {
+      "src": "p18.svg?v=e4ca974a",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.4 The Boltzmann and Vlasov equations: Vlasov equation for given fields",
+      "repeat": true
+    },
+    {
+      "src": "p19.svg?v=75226924",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.4 The Boltzmann and Vlasov equations: Vlasov equation for given fields",
+      "repeat": true
+    },
+    {
+      "src": "p20.svg?v=fd8a95f1",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.2 Distribution functions and phase space: Many particles as delta peaks",
+      "repeat": false
+    },
+    {
+      "src": "p21.svg?v=1133680b",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.2 Distribution functions and phase space: Many particles as delta peaks",
+      "repeat": true
+    },
+    {
+      "src": "p22.svg?v=b1b36b2a",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.2 Distribution functions and phase space: Many particles as delta peaks",
+      "repeat": true
+    },
+    {
+      "src": "p23.svg?v=d3cf9572",
+      "kind": "animation",
+      "background": "dark",
+      "alt": "Particles on a line are a sum of delta spikes. Placing a Gaussian kernel of width h on every particle and summing gives a smooth density; the same result follows from sliding the kernel along x and adding the kernel values at all particles, which is the convolution of the kernel with the spike sum. Positions in units of the mean particle spacing, with unit [1].",
+      "repeat": false,
+      "video": "../media/kernel_smoothing.mp4?v=6d559218",
+      "poster": "../media/kernel-smoothing.png?v=163d8d31",
+      "loop": false
+    },
+    {
+      "src": "p24.svg?v=efd5de44",
+      "kind": "animation",
+      "background": "dark",
+      "alt": "The kernel width h is varied from 0.25 to 20 mean particle spacings for particles drawn from a known density. Narrow kernels return the spikes and statistical noise, which falls like 1/sqrt(particles per kernel width); wide kernels smooth away real structure. The lower panel shows noise, bias and total error. Positions in units of the mean particle spacing, with unit [1].",
+      "repeat": false,
+      "video": "../media/kernel_width.mp4?v=cec574ff",
+      "poster": "../media/kernel-width.png?v=16f647f2",
+      "loop": false
+    },
+    {
+      "src": "p25.svg?v=6e5c78ed",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.4 The Boltzmann and Vlasov equations: Smoothing and advection",
+      "repeat": false
+    },
+    {
+      "src": "p26.svg?v=b1b0d679",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.4 The Boltzmann and Vlasov equations: Many-particle distribution and its marginal",
+      "repeat": false
+    },
+    {
+      "src": "p27.svg?v=5660b5b0",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.4 The Boltzmann and Vlasov equations: Many-particle distribution and its marginal",
+      "repeat": true
+    },
+    {
+      "src": "p28.svg?v=d81bb590",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.4 The Boltzmann and Vlasov equations: Many-particle distribution and its marginal",
+      "repeat": true
+    },
+    {
+      "src": "p29.svg?v=2b7da276",
+      "kind": "static",
+      "background": "light",
+      "alt": "6.4 The Boltzmann and Vlasov equations: Many-particle distribution and its marginal",
+      "repeat": true
+    }
+  ]
+}
