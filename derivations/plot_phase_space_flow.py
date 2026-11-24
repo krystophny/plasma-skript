@@ -22,6 +22,12 @@ smoothing_advection   600 particles drawn from f0 and advected to omega0 t = 8 (
                       Gaussian kernel estimate f_h (middle), the exact f (right).
 pair_marginal         two particles on a periodic line: F2 = 1 (uncorrelated) and
                       F2 = 1 + c(x1 - x2) with a correlation hole; both marginals f1 = 1.
+free_paths            2D rays among random disks (radius a): one path with its collisions, and the
+                      free-path histogram against exp(-l/lambda), lambda = 1/(n sigma), sigma = 2a.
+coulomb_orbits        repulsive Coulomb orbits off a fixed charge for b = 0.25 .. 4 b_90, and the
+                      measured deflection chi(b) against 2 arctan(b_90/b) and its tail 2 b_90/b.
+collisionality        electron mean free path v_th/nu_ei over (n_e, T_e), NRL formulary nu_ei and
+                      ln Lambda, with the example plasmas of si.py.
 
 Writes build/fig/<name>.{svg,pdf}.
 """
@@ -382,8 +388,155 @@ def pair_marginal():
     save(fig, "pair_marginal")
 
 
+def free_paths():
+    """2D Monte Carlo: rays among random disks of radius A, density N2; sigma = 2A, lambda = 1/(N2 sigma)."""
+    fig, (a, b) = panels(12, 2.6, 2, gridspec_kw=dict(width_ratios=(1.5, 1)))
+    box, n_disk, rad = 120.0, 2880, 0.3
+    centres = RNG.uniform(0, box, (n_disk, 2))
+    lam = 1 / (n_disk / box ** 2 * 2 * rad)
+
+    def first_hit(p, d, skip=None):
+        rel = centres - p
+        along = rel @ d
+        perp2 = (rel ** 2).sum(1) - along ** 2
+        ok = (along > 0) & (perp2 < rad ** 2)
+        if skip is not None:
+            ok[skip] = False  # the disk just left
+        if not ok.any():
+            return np.inf, None
+        t = along[ok] - np.sqrt(rad ** 2 - perp2[ok])
+        k = np.argmin(t)
+        return t[k], np.flatnonzero(ok)[k]
+
+    def free_start(lo, hi):
+        while True:
+            p = RNG.uniform(lo, hi, 2)
+            if (((centres - p) ** 2).sum(1) > rad ** 2).all():
+                return p
+
+    # one zigzag path in the window [40, 80] x [45, 70]
+    p = free_start(57, 63)
+    path, k = [p], None
+    while len(path) < 9:
+        ang = RNG.uniform(0, 2 * np.pi)
+        d = np.array([np.cos(ang), np.sin(ang)])
+        t, hit = first_hit(p, d, k)
+        q = p + t * d
+        if not (np.isfinite(t) and 42 < q[0] < 78 and 47 < q[1] < 68):
+            continue  # keep the drawn path inside the window
+        p, k = q, hit
+        path.append(p)
+    path = np.array(path)
+    from matplotlib.patches import Circle
+    org = np.array([40.0, 45.0])  # window origin; axes in units of lambda_mfp
+    for c in centres:
+        if 38 < c[0] < 82 and 43 < c[1] < 72:
+            a.add_patch(Circle((c - org) / lam, rad / lam, color=GRAY, alpha=0.55, lw=0))
+    w = (path - org) / lam
+    a.plot(w[:, 0], w[:, 1], color=BLUE, lw=1.3)
+    a.plot(w[1:-1, 0], w[1:-1, 1], "o", color=ORANGE, ms=3.5)
+    a.plot(*w[0], "o", color=BLUE, ms=5, mfc="white", mew=1.3)
+    a.set_xlim(0, 40 / lam)
+    a.set_ylim(0, 25 / lam)
+    a.set_aspect("equal")
+    a.set_xlabel("$x$ [$\\lambda_\\mathrm{mfp}$]")
+    a.set_ylabel("$y$ [$\\lambda_\\mathrm{mfp}$]")
+    # free-path statistics
+    ells = []
+    for _ in range(3000):
+        p = free_start(45, box - 45)
+        ang = RNG.uniform(0, 2 * np.pi)
+        t, _ = first_hit(p, np.array([np.cos(ang), np.sin(ang)]))
+        ells.append(t)
+    ells = np.array(ells)
+    ells = ells[np.isfinite(ells)]  # rays leaving the box unhit (a few per mille)
+    b.hist(ells / lam, bins=30, range=(0, 4), density=True, color="#c6dbef", ec="white")
+    g = np.linspace(0, 4, 200)
+    b.plot(g, np.exp(-g), color=BLUE)
+    b.text(1.2, 0.6, "$e^{-\\ell/\\lambda}$", color=BLUE)
+    b.text(2.0, 0.85, f"mean {ells.mean() / lam:.2f} $\\lambda$", color=GRAY, fontsize=9)
+    b.set_xlim(0, 4)
+    b.set_xlabel("$\\ell$ [$\\lambda_\\mathrm{mfp}$]")
+    b.set_ylabel("$p(\\ell)$ [$1/\\lambda_\\mathrm{mfp}$]")
+    save(fig, "free_paths")
+
+
+def coulomb_orbits():
+    """Repulsive Coulomb scattering off a fixed charge; lengths in b_90, speeds in v: r'' = r/|r|^3."""
+    fig, (a, b) = panels(12, 2.6, 2, gridspec_kw=dict(width_ratios=(1.5, 1)))
+    rhs = lambda z: np.array([z[2], z[3], *(z[:2] / np.hypot(z[0], z[1]) ** 3)])  # noqa: E731
+    bs = np.array([0.25, 0.5, 1.0, 2.0, 4.0])
+    measured = []
+    for bb in np.geomspace(0.1, 30, 16):
+        z = rk4(rhs, np.array([-200.0, bb, 1.0, 0.0]), 400.0, 40000)[-1]
+        measured.append((bb, np.arctan2(z[3], z[2])))
+    for bb, col in zip(bs, [GRAY, GRAY, ORANGE, BLUE, BLUE]):
+        path = rk4(rhs, np.array([-12.0, bb, 1.0, 0.0]), 26.0, 5200)
+        keep = (np.abs(path[:, 0]) < 12) & (path[:, 1] < 9) & (path[:, 1] > -1)
+        end = path[keep][-1]
+        a.plot(path[keep, 0], path[keep, 1], color=col, lw=1.4 if bb == 1 else 1.0)
+        a.text(end[0] + (0.3 if end[0] > -11 else 0.2), end[1] - 0.2 if end[1] > 8 else end[1] + 0.3,
+               f"$b = {bb:g}$", color=col, fontsize=9, ha="left" if end[0] > -11 else "left", va="top")
+    a.plot(0, 0, "o", color=INKC, ms=6)
+    a.set_xlim(-12, 12)
+    a.set_ylim(-1, 9)
+    a.set_aspect("equal")
+    a.set_xlabel("$x$ [$b_{90}$]")
+    a.set_ylabel("$y$ [$b_{90}$]")
+    m = np.array(measured)
+    g = np.geomspace(0.1, 30, 200)
+    b.loglog(g, np.degrees(2 * np.arctan(1 / g)), color=BLUE)
+    b.loglog(m[:, 0], np.degrees(m[:, 1]), "o", color=ORANGE, ms=3.5)
+    b.loglog(g[g > 2], np.degrees(2 / g[g > 2]), color=GRAY, ls="--")
+    b.axhline(90, color="#cccccc", lw=0.6)
+    b.text(0.12, 105, "$90^\\circ$", color=GRAY, fontsize=9)
+    b.text(3.0, 60, "$2\\arctan(b_{90}/b)$", color=BLUE, fontsize=9)
+    b.text(5.0, 6.0, "$2 b_{90}/b$", color=GRAY, fontsize=9)
+    b.set_xlabel("$b$ [$b_{90}$]")
+    b.set_ylabel("$\\chi$ [deg]")
+    save(fig, "coulomb_orbits")
+
+
+def collisionality():
+    """Electron mean free path lambda = v_th/nu_ei over (n_e, T_e); NRL formulary nu_ei and ln Lambda."""
+    import matplotlib.pyplot as plt
+    from si import EXAMPLE_PLASMAS
+    fig, ax = panels(12, 2.75, 1)
+
+    def ln_lambda(n, t):  # n [m^-3], T [eV]; NRL electron-ion
+        ncc = n * 1e-6
+        return np.where(t < 10, 23 - np.log(ncc ** 0.5 * t ** -1.5), 24 - np.log(ncc ** 0.5 / t))
+
+    def mfp(n, t):
+        nu = 2.91e-12 * n * ln_lambda(n, t) * t ** -1.5  # [s^-1], n in m^-3 (NRL: 2.91e-6 n[cm^-3])
+        vth = np.sqrt(2 * t * 1.602176634e-19 / 9.1093837015e-31)
+        return vth / nu
+
+    n, t = np.meshgrid(np.geomspace(1e6, 1e28, 300), np.geomspace(1e-2, 1e5, 300))
+    ok = ln_lambda(n, t) > 2
+    lm = np.where(ok, np.log10(mfp(n, t)), np.nan)
+    cs = ax.contourf(n, t, lm, levels=np.arange(-8, 19, 2), cmap=CMAP)
+    ax.contour(n, t, lm, levels=np.arange(-8, 19, 2), colors="white", linewidths=0.4)
+    cb = fig.colorbar(cs, ax=ax, pad=0.01)
+    cb.set_label("$\\log_{10}\\,\\lambda_\\mathrm{mfp}$ [m]")
+    for name, (nn, tt) in EXAMPLE_PLASMAS.items():
+        ax.plot(nn, tt, "o", color=ORANGE, ms=5)
+        val = mfp(nn, tt)
+        ax.annotate(f"{name}\n$10^{{{int(round(np.log10(val)))}}}$ m", (nn, tt), xytext=(6, 4),
+                    textcoords="offset points", color=INKC, fontsize=9,
+                    bbox=dict(fc="white", ec="none", pad=0.8, alpha=0.75))
+    ax.fill_between([1e6, 1e28], 1e-2, 1e-2, color="none")
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_xlabel("$n_e$ [m$^{-3}$]")
+    ax.set_ylabel("$k_B T_e$ [eV]")
+    ax.text(3e25, 2e-2, "$\\ln\\Lambda < 2$", color=GRAY, fontsize=9, ha="center")
+    save(fig, "collisionality")
+
+
 if __name__ == "__main__":
     import sys
     for name in sys.argv[1:] or ["flow_lagrange_euler", "advection_probe", "volume_flow", "phase_space_flow",
-                                 "distribution_cells", "vlasov_well", "smoothing_advection", "pair_marginal"]:
+                                 "distribution_cells", "vlasov_well", "smoothing_advection", "pair_marginal",
+                                 "free_paths", "coulomb_orbits", "collisionality"]:
         globals()[name]()

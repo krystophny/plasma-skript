@@ -163,9 +163,9 @@ class KernelSmoothing(StyledScene):
         spikes = VGroup(*[Arrow(ax.c2p(p, 0), ax.c2p(p, 0) + UP * spike_h, buff=0, color=ELECTRON,
                                 stroke_width=1.6, max_tip_length_to_length_ratio=0.12,
                                 max_stroke_width_to_length_ratio=10) for p in particles])
-        title = math(r"N(x)=\sum_i\delta(x-x_i)\quad\mathrm{(Klimontovich;\ arrows:\ }\delta\mathrm{,\ weight\ 1)}",
+        title = math(r"N(x)=\sum_i\delta(x-x_i)",
                      color=INK, size=MATH_SIZE).to_edge(UP, buff=0.4)
-        params = math(rf"N={n}\ \mathrm{{particles}},\ \Delta=\mathrm{{mean\ spacing}},\ h={h:g}\,\Delta",
+        params = math(rf"h={h:g}\,\Delta",
                       color=MUTED, size=MATH_SMALL).to_edge(DOWN, buff=0.45)
 
         self.add(frame, params)
@@ -175,7 +175,7 @@ class KernelSmoothing(StyledScene):
         self.wait(1.0)
 
         # --- one kernel per particle, summed left to right ------------------
-        build_title = math(r"n_h(x)=\sum_i K_h(x-x_i),\qquad K_h(u)=\frac{e^{-u^2/2h^2}}{\sqrt{2\pi}\,h}",
+        build_title = math(r"n_h(x)=\sum_i K_h(x-x_i)",
                            color=INK, size=MATH_SIZE).to_edge(UP, buff=0.3)
         count = ValueTracker(0.0)
 
@@ -207,11 +207,9 @@ class KernelSmoothing(StyledScene):
         sum_line.clear_updaters()
 
         # --- the same sum as a sliding convolution --------------------------
-        conv_title = math(r"n_h(x)=(K_h*N)(x)=\int K_h(x-x')\,N(x')\,dx'=\sum_i K_h(x-x_i)",
+        conv_title = math(r"n_h=K_h*N",
                           color=INK, size=MATH_SIZE).to_edge(UP, buff=0.3)
-        note = math(r"K_h\ \mathrm{is\ even:\ the\ flipped\ kernel}\ K_h(x-x')\ \mathrm{looks\ the\ same}",
-                    color=MUTED, size=MATH_SMALL).next_to(conv_title, DOWN, buff=0.12).shift(RIGHT * 1.2)
-        self.play(FadeOut(build_title, shift=UP * 0.2), FadeIn(conv_title, shift=UP * 0.2), FadeIn(note),
+        self.play(FadeOut(build_title, shift=UP * 0.2), FadeIn(conv_title, shift=UP * 0.2),
                   FadeOut(kernel_lines), FadeOut(sum_line), spikes.animate.set_opacity(0.18),
                   run_time=1.2, rate_func=EASE)
 
@@ -260,15 +258,13 @@ class KernelSmoothing(StyledScene):
                       stroke_width=2),
             math(r"K_h(x-x')", color=MUTED, size=MATH_SMALL),
             Line(ORIGIN, UP * 0.3, color=GREEN, stroke_width=5),
-            math(r"K_h(x-x_i)\ \mathrm{at\ each\ particle,\ stacked\ at}\ x", color=MUTED, size=MATH_SMALL),
+            math(r"K_h(x-x_i)", color=MUTED, size=MATH_SMALL),
             Line(ORIGIN, RIGHT * 0.45, color=VERMILION, stroke_width=CURVE_WIDTH - 0.8),
             math(r"n_h(x)", color=MUTED, size=MATH_SMALL),
         ).arrange(RIGHT, buff=0.18).next_to(params, UP, buff=0.3)
         self.add(window, trace, weights, tip)
         self.play(FadeIn(key), run_time=0.6)
         self.wait(1.5)
-        # the note would cover the tallest peak; it has been read by now
-        self.play(FadeOut(note), run_time=0.5, rate_func=EASE)
         self.play(probe.animate.set_value(DOMAIN), run_time=14.0, rate_func=LINEAR)
         self.wait(2.0)
 
@@ -312,13 +308,9 @@ class KernelWidth(StyledScene):
 
         legend = VGroup(
             DashedLine(ORIGIN, RIGHT * 0.5, color=INK, stroke_width=THIN_WIDTH, dash_length=0.08),
-            math(r"\mathrm{true}\ n(x)", color=MUTED, size=MATH_SMALL),
+            math(r"n(x)", color=MUTED, size=MATH_SMALL),
             Line(ORIGIN, RIGHT * 0.5, color=VERMILION, stroke_width=CURVE_WIDTH - 1.0),
-            math(r"n_h=K_h*N", color=MUTED, size=MATH_SMALL),
-            Dot(radius=DOT_RADIUS, color=ELECTRON),
-            math(rf"{len(particles)}\ \mathrm{{particles}}", color=MUTED, size=MATH_SMALL),
-            Triangle(color=VERMILION, fill_opacity=1, stroke_width=0).scale(0.07),
-            math(r"\mathrm{off\ scale}", color=MUTED, size=MATH_SMALL),
+            math(r"n_h", color=MUTED, size=MATH_SMALL),
         ).arrange(RIGHT, buff=0.18)
         legend.to_edge(UP, buff=0.4).to_edge(RIGHT, buff=0.55)
         h_label = math(r"h/\Delta=", color=INK, size=MATH_SIZE).to_edge(UP, buff=0.38).to_edge(LEFT, buff=0.6)
@@ -352,7 +344,7 @@ class KernelWidth(StyledScene):
                               for v in (-1, 0)])
         err_x = math(r"h/\Delta\ [1]", color=MUTED, size=MATH_SMALL).next_to(err_frame, RIGHT, buff=0.12
                                                                            ).align_to(err_frame, DOWN)
-        err_y = math(r"\mathrm{rms\ error\ of}\ n_h\Delta\ [1]", color=MUTED,
+        err_y = math(r"\mathrm{rms}\ \delta n\,\Delta\ [1]", color=MUTED,
                      size=MATH_SMALL).next_to(err_frame, UP, buff=0.1).align_to(err_frame, LEFT)
         hs = np.geomspace(0.25, 20, 200)
         theory = VMobject().set_points_as_corners(
@@ -373,40 +365,31 @@ class KernelWidth(StyledScene):
                                                   color=INK, stroke_width=1.6, dash_length=0.06))
         err_key = VGroup(
             VGroup(Dot(radius=0.06, color=BLUE),
-                   math(r"\mathrm{noise}\ n_h-K_h*n,\ 300\ \mathrm{samples}", color=MUTED, size=MATH_SMALL)
+                   math(r"n_h-K_h*n", color=MUTED, size=MATH_SMALL)
                    ).arrange(RIGHT, buff=0.15),
             VGroup(DashedLine(ORIGIN, RIGHT * 0.45, color=BLUE, stroke_width=2.2, dash_length=0.07),
-                   math(r"1/\sqrt{N_h},\ N_h=2\sqrt{\pi}\,\bar n h", color=MUTED,
+                   math(r"N_h^{-1/2}", color=MUTED,
                         size=MATH_SMALL)).arrange(RIGHT, buff=0.15),
             VGroup(Line(ORIGIN, RIGHT * 0.45, color=GREEN, stroke_width=2.8),
-                   math(r"\mathrm{bias}\ K_h*n-n", color=MUTED, size=MATH_SMALL)).arrange(RIGHT, buff=0.15),
+                   math(r"K_h*n-n", color=MUTED, size=MATH_SMALL)).arrange(RIGHT, buff=0.15),
             VGroup(Square(side_length=0.12, color=INK, fill_opacity=1, stroke_width=0),
-                   math(r"\mathrm{total}\ n_h-n", color=MUTED, size=MATH_SMALL)).arrange(RIGHT, buff=0.15),
+                   math(r"n_h-n", color=MUTED, size=MATH_SMALL)).arrange(RIGHT, buff=0.15),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.12)
         err_key.to_edge(RIGHT, buff=0.6).to_edge(DOWN, buff=0.55)
-
-        cue = math(r"h\ll\Delta:\ \mathrm{spikes\ return}", color=INK, size=MATH_SMALL).move_to([0.25, -0.95, 0])
-
-        def show_cue(text):
-            new = math(text, color=INK, size=MATH_SMALL).move_to(cue.get_center())
-            return Transform(cue, new)
 
         fine = np.geomspace(0.25, 20, 400)
         best = fine[np.argmin(np.hypot(noise_theory(fine), [bias_rms(x) for x in fine]))]
 
         self.add(frame, truth, dots, estimate, clip_marks, legend, h_label, h_value,
                  err_frame, x_ticks, y_ticks, tick_lines, err_x, err_y, theory, bias_line, noise_pts,
-                 total_pts, marker, err_key, cue)
+                 total_pts, marker, err_key)
         self.wait(2.0)
-        self.play(log_h.animate.set_value(np.log10(1.5)), show_cue(
-            rf"h=1.5\,\Delta:\ \mathrm{{bump\ resolved,\ rms\ noise}}\approx{noise_theory(1.5):.2f}\,\bar n"),
+        self.play(log_h.animate.set_value(np.log10(1.5)),
             run_time=6.0, rate_func=LINEAR)
         self.wait(2.5)
-        self.play(log_h.animate.set_value(np.log10(20.0)), show_cue(
-            r"h\gg\mathrm{bump\ width}:\ \mathrm{smooth,\ bump\ washed\ out\ (bias)}"),
+        self.play(log_h.animate.set_value(np.log10(20.0)),
             run_time=7.0, rate_func=LINEAR)
         self.wait(2.0)
-        self.play(log_h.animate.set_value(np.log10(best)), show_cue(
-            rf"\mathrm{{least\ rms\ error:}}\ h\approx{best:.0f}\,\Delta,\ \mathrm{{noise}}\approx\mathrm{{bias,\ bump\ flattened}}"),
+        self.play(log_h.animate.set_value(np.log10(best)),
             run_time=3.0, rate_func=EASE)
         self.wait(3.0)

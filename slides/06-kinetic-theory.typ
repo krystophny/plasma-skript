@@ -114,3 +114,48 @@
   ))
   #symbols[$F_N$ probability density on the $6 N$-dimensional phase space · figure: $N = 2$ on a periodic line, $F_2 = 1$ and $F_2 = 1 + c(x_1 - x_2)$: same $f_1$]
 ])
+
+// ------------------------------------------------ 12 interactions in the marginal
+#build(4, slide(section: "kinetic-boltzmann", title: [Interactions: mean field and collisions])[
+  #at(1, 12, y: 0mm, formula-rows(gap: 9mm,
+    ([pair forces], $dot(bold(v))_i = bold(a)_"ext" (bold(r)_i) + sum_(j != i) bold(a)_(i j) (bold(r)_i, bold(r)_j)$),
+    ([marginal of Liouville], $pdv(f_1, t) + bold(v)_1 dot grad_1 f_1 + bold(a)_"ext" dot pdv(f_1, bold(v)_1) = - integral bold(a)_12 dot pdv(f_2, bold(v)_1) dif bold(z)_2$),
+    ([split], $f_2 (bold(z)_1, bold(z)_2) = f_1 (bold(z)_1) f_1 (bold(z)_2) + g_12$),
+  ))
+  #at(1, 12, y: 84mm, reveal(4, grid(columns: (1fr, 1fr), column-gutter: 8mm,
+    result-box($f_1 f_1: quad chevron.l bold(a) chevron.r$, [mean field: self-consistent $bold(E)$, $bold(B)$]),
+    result-box($g_12: quad C[f]$, [correlations: collisions]))))
+  #symbols[$bold(a)_(i j)$ acceleration of $i$ by $j$ · $f_2 = N(N - 1) integral F_N dif bold(z)_3 dots dif bold(z)_N$ · $chevron.l bold(a) chevron.r = integral bold(a)_12 f_1 (bold(z)_2) dif bold(z)_2$ · $g_12$ pair correlation]
+])
+
+// ------------------------------------------------ 13 mean free path
+#slide(section: "kinetic-collisions", title: [Mean free path])[
+  #at(1, 12, y: -6mm, plot("free_paths", columns: 12))
+  #at(1, 12, y: 124mm, align(center)[$dv(S, ell) = - n sigma S$ #h(8mm) $S = e^(-ell \/ lambda_"mfp"), quad lambda_"mfp" = 1/(n sigma)$ #h(8mm) $nu = v / lambda_"mfp"$])
+  #symbols[$S(ell)$ probability to fly $ell$ without collision · $n$ target density · $sigma$ cross section (2D disks: $sigma = 2 a$) · 3000 rays among random disks]
+]
+
+// ------------------------------------------------ 14 Coulomb collisions
+#slide(section: "kinetic-collisions", title: [Coulomb collisions])[
+  #at(1, 12, y: -6mm, plot("coulomb_orbits", columns: 12))
+  #at(1, 12, y: 122mm, align(center)[$m_r v^2 b_90 = abs(q_a q_b) / (4 pi epsilon_0)$ #h(6mm) $tan chi/2 = b_90/b$ #h(6mm)
+    $chevron.l chi^2 chevron.r prop integral_(b_"min")^(lambda_D) (b_90/b)^2 b dif b prop ln Lambda, quad ln Lambda = ln lambda_D / b_"min"$])
+  #at(1, 12, y: 146mm, text(size: 12pt, fill: muted)[$b$ impact parameter · $chi$ deflection · $m_r$ reduced mass · dots: computed orbits · #link("https://doi.org/10.1080/14786440508637080")[E. Rutherford, Phil. Mag. 21, 669 (1911)]])
+]
+
+// ------------------------------------------------ 15 collisionality
+#slide(section: "kinetic-collisions", title: [Collision frequency and collisionality])[
+  #at(1, 12, y: -6mm, plot("collisionality", columns: 12))
+  #at(1, 12, y: 128mm, align(center)[$nu_(e i) prop (n_e e^4 ln Lambda) / (epsilon_0^2 m_e^2 v^3)$ #h(10mm) $K_n = lambda_"mfp" / L$ #h(10mm) $nu tau$])
+  #symbols[$lambda_"mfp" = v_"th" \/ nu_(e i)$, $v_"th" = sqrt(2 k_B T_e \/ m_e)$ · $nu_(e i)$ and $ln Lambda$: NRL Plasma Formulary (2019) · $L$, $tau$ length and time of interest]
+]
+
+// ------------------------------------------------ 16 Boltzmann equation
+#build(3, slide(section: "kinetic-boltzmann", title: [Boltzmann equation])[
+  #at(1, 12, y: 0mm, result-box($pdv(f_s, t) + bold(v) dot grad f_s + q_s/m_s (bold(E) + bold(v) times bold(B)) dot pdv(f_s, bold(v)) = C_s [f]$,
+    [$bold(E)$, $bold(B)$: external plus mean field · $C_s$: collisions]))
+  #at(1, 12, y: 60mm, formula-rows(gap: 10mm,
+    ([$nu tau << 1$], [$C_s -> 0$: #h(2mm) Vlasov]),
+    ([$lambda_"mfp" << L$], [$C_s$ dominates: #h(2mm) $f_s ->$ local Maxwellian, fluid]),
+  ))
+])
