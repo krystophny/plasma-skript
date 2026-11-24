@@ -1,6 +1,27 @@
 # Kinetic theory
 
-No deck plan yet; this file collects the visuals prepared for the chapter.
+Deck `06-kinetic-theory.typ` (2026-11-24): from flows to the distribution
+function and the Vlasov equation for given fields. Order chosen by Chris:
+Lagrange/Euler, advection operator, volume change (Arnold §16), distribution
+function, phase-space flow, one species in a given field, delta peaks and
+smoothing, many-particle distribution and marginal. Collisions (6.1) are not
+in this deck. Figures: `derivations/plot_phase_space_flow.py` (all trajectories
+RK4, areas and densities computed from them).
+
+| # | Section | Page | Content |
+|---|---|---|---|
+| 1 | — | Title | |
+| 2 | 6.3 | Lagrangian and Eulerian descriptions | `flow_lagrange_euler`: cellular flow u = (sin πx cos πy, −cos πx sin πy); parcel paths with equal-time dots vs the field on a grid with a fixed probe; steady ∂u/∂t = 0. |
+| 3 | 6.3 | Advection operator (2 steps) | `advection_probe`: bump g0(x − ut) at t = 0, 1, probe x_p; g at the probe vs along a parcel. Chain rule → D/Dt = ∂t + u·∇; Dg/Dt = 0 ⇒ ∂t g = −u·∇g. |
+| 4 | 6.3 | Volume carried by a flow | `volume_flow`: square patch in the cellular flow (area 1.00 at t = 0.6, 1.2) and in u = (0.6 sin πx, 0) (1.63 at t = 0.9, 0.22 at t = 2.2). |
+| 5 | 6.3 | Volume change of a flow (6 steps) | Arnold §16: flow map, V(t) = ∫ det ∂x/∂x0, I + tA, det = 1 + t tr A, tr A = ∇·u, dV/dt = ∫ ∇·u; ∇·u = 0 ⇔ volumes conserved (incompressible). |
+| 6 | 6.2 | Distribution function | `distribution_cells`: 3000 particles, n(x) ∝ 1 + 0.6 sin 2πx, Maxwellian v; one counting cell ΔN; marginal histograms with exact curves. dN = f d³r d³v, n = ∫ f d³v. |
+| 7 | 6.3 | Flow in phase space | `phase_space_flow`: free streaming shears a disk in (x, v), area 1.00; E ⊥ B rotates a velocity-space disk about v_E (ion, clockwise). ∇_z·ż = ∇_r·v + ∇_v·a = 0. |
+| 8 | 6.4 | Non-interacting particles in a given field | `vlasov_well`: pendulum well, f(z, t) = f0(z0(z, t)) by backward characteristics at ω0t = 0, 8, 40 (filamentation); n(x, t) below. |
+| 9 | 6.4 | Vlasov equation for given fields (4 steps) | number balance → product rule with ∇_z·ż = 0 → Df/Dt = 0 → Vlasov with given E, B. |
+| 10 | 6.2 | Many particles as delta peaks (3 steps) | Klimontovich N(z, t) = Σ δ(z − z_i(t)); ∂t N + ż·∇_z N = 0; f_h = K_h * N. Then animations `kernel-smoothing`, `kernel-width` (below). |
+| 11 | 6.4 | Smoothing and advection | `smoothing_advection`: 600 particles from f0 advected to ω0t = 8, kernel estimate f_h (h = 0.18) vs exact f; filaments thinner than h blur. |
+| 12 | 6.4 | Many-particle distribution and its marginal (4 steps) | `pair_marginal`: N = 2 on a periodic line, F2 = 1 and F2 = 1 + c(x1 − x2) with a correlation hole, both f1 = 1. F_N, Liouville, f1 = N ∫ F_N, uncorrelated F_N = Π f1/N. |
 
 ## New visuals (2026-10-26)
 
