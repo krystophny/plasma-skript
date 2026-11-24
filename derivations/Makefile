@@ -60,6 +60,12 @@ build/fig/loss_cone.svg: plot_loss_cone.py si.py
 build/fig/amplitude_bounds.svg: plot_amplitude_bounds.py si.py
 	$(PYTHON) plot_amplitude_bounds.py
 
+# Plots of the chapter 6 deck (one script writes all of them).
+fig: build/fig/flow_lagrange_euler.svg
+
+build/fig/flow_lagrange_euler.svg: plot_phase_space_flow.py si.py
+	$(PYTHON) plot_phase_space_flow.py
+
 # Plots for chapters 7 and 10.
 fig: build/fig/moment-weights.svg build/fig/spitzer-resistivity.svg
 
